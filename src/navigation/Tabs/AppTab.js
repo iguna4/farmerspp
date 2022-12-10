@@ -1,0 +1,76 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable prettier/prettier */
+import React, { useState } from 'react';
+import { Text, StatusBar } from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
+
+// import HomeStackScreen from '../Stack/HomeStackScreen';
+// import FarmersStackScreen from '../Stack/FarmersStackScreen';
+// import HomeScreen from './screens/HomeScreen/HomeScreen';
+
+import HomeStackScreen from '../Stacks/HomeStackScreen';
+import FarmersStackScreen from '../Stacks/FarmersStackScreen';
+import FarmlandsStackScreen from '../Stacks/FarmlandsStackScreen';
+import UsersStackScreen from '../Stacks/UsersStackScreen';
+import {Icon } from '@rneui/themed';
+
+
+const Tab = createBottomTabNavigator();
+
+
+export default function AppTab() {
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  return (
+    <>
+    <StatusBar barStyle="dark-content" backgroundColor="#005000" />
+    <NavigationContainer>
+      {
+        isSignedIn ?
+        (
+          <>
+            <UsersStackScreen />
+          </>
+        )
+        :
+        (
+        <Tab.Navigator
+        initialRouteName="HomeStack"
+        shifting={true}
+        labeled={false}
+        screenOptions={({ route })=>({
+          headerShown: false,
+        })}>
+          <Tab.Screen
+            options={{
+              tabBarIcon: ()=><Icon name="home" color="grey" size={40} />,
+              tabBarLabel: 'Painel',
+            }}
+            name="HomeStack"
+            component={HomeStackScreen}
+            />
+          <Tab.Screen
+            options={{
+              tabBarIcon: ()=><Icon name="people" color="grey" size={40} />,
+              tabBarLabel: 'Produtores',
+            }}
+            name="FarmersStack"
+            component={FarmersStackScreen}
+           />
+          <Tab.Screen
+            options={{
+              tabBarIcon: ()=><Icon name="agriculture" color="grey" size={40} />,
+              tabBarColor: '#005000',
+              tabBarLabel: 'Pomares',
+            }}
+            name="FarmlandsStack"
+            component={FarmlandsStackScreen}
+            />
+      </Tab.Navigator>
+      )
+    }
+    </NavigationContainer>
+    </>
+  );
+}

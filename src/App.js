@@ -10,16 +10,21 @@ import AppTab from './navigation/Tabs/AppTab';
 import elementTheme from './elementTheme';
 import nbTheme from './nbTheme';
 
+import { AppContext } from './models/realm';
+const { RealmProvider, useRealm } = AppContext;
+
 export default function App() {
   return (
     <SafeAreaProvider>
-      <ThemeProvider theme={elementTheme}>
-        <NativeBaseProvider theme={nbTheme}>
-          <ApplicationProvider {...eva} theme={eva.light}>
-            <AppTab />
-          </ApplicationProvider>
-        </NativeBaseProvider>
-      </ThemeProvider>
+      <RealmProvider>
+        <ThemeProvider theme={elementTheme}>
+          <NativeBaseProvider theme={nbTheme}>
+            <ApplicationProvider {...eva} theme={eva.light}>
+              <AppTab />
+            </ApplicationProvider>
+          </NativeBaseProvider>
+        </ThemeProvider>
+      </RealmProvider>
     </SafeAreaProvider>
   );
 }

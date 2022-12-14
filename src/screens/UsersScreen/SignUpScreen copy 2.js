@@ -16,89 +16,83 @@ const { useRealm } = AppContext;
 export default function SignUpScreen({ navigation }) {
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-    const [province, setProvince] = useState('');
-    const [district, setDistrict] = useState('');
+    // const [selectedProvince, setSelectedProvince] = useState('');
+    // const [selectedDistrict, setSelectedDistrict] = useState('');
     const [selectedDistricts, setSelectedDistricts] = useState([]);
-    const [fullname, setFullname] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordConfirm, setPasswordConfirm] = useState('');
-    const [primaryPhone, setPrimaryPhone] = useState(null);
-    const [secondaryPhone, setSecondaryPhone] = useState(null);
-
+    // const [fullname, setFullname] = useState('');
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
+    // const [passwordConfirm, setPasswordConfirm] = useState('');
+    // const [primaryPhone, setPrimaryPhone] = useState(null);
+    // const [secondaryPhone, setSecondaryPhone] = useState(null);
     const [errors, setErrors] = useState({});
+
+    const [userData, setUserData] = useState({
+        fullname: '',
+        email: '',
+        password: '',
+        passwordConfirm: '',
+        primaryPhone: '',
+        secondaryPhone: '',
+        address: {
+            province: '',
+            district: ''
+        }
+    });
 
     const appRealm = useRealm();
 
-
-    const resetState = ()=>{
-        setShowPassword(false);
-        setShowPasswordConfirm(false);
-        setProvince('');
-        setDistrict('');
-        setSelectedDistricts([]);
-        setFullname('');
-        setEmail('');
-        setPassword('');
-        setPasswordConfirm('');
-        setPrimaryPhone(null);
-        setSecondaryPhone(null);
-    }
-
-
-
     useEffect(()=>{
 
-        if (province) {
-            setSelectedDistricts(districts[province]);
-
+        if (userData.address.province) {
+            setSelectedDistricts(districts[userData.address.province]);
         }
 
 
-    }, [province, errors]);
+    }, [userData, errors]);
 
 
     const validateUserData = () => {
         // let flag 
-        if ((!fullname) || (fullname.trim().split(' ').length <= 1)) {
+        if ((!userData.fullname) || (userData.fullname.trim().split(' ').length <= 1)) {
             setErrors({ ...errors,
                 fullname: 'Nome não completo.'
             });
             return false;
         } 
 
-        if (!email || !email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
+        if (!userData.email || !userData.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
             setErrors({ ...errors,
                 email: 'Endereço electrónico inválido.'
             });
             return false;
         }
 
-        if (password !== passwordConfirm) {
+        if (userData.password !== userData.passwordConfirm) {
             setErrors({ ...errors,
                 password: 'Senhas não iguais.',
                 passwordConfirm: 'Senhas não iguais.'
             });
             return false;
         }
-        else if (password.length < 6) {
+        else if (userData.password.length < 6) {
             setErrors({ ...errors,
                 password: 'Pelo menos 6 caracteres.',
             });
             return false;
         }
 
-        if (!primaryPhone && !secondaryPhone) {
+        if (!userData.primaryPhone && !userData.secondaryPhone) {
             setErrors({ ...errors,
                 primaryPhone: 'Pelo menos um número de telefone.',
             });
             return false;            
         }
         else if (
-            !Number.isInteger(parseInt(primaryPhone))  || 
-            primaryPhone.toString().length !== 9       ||
-            parseInt(primaryPhone.toString()[0]) !== 8 ||
-            [2,3,4,5,6,7].indexOf(parseInt(primaryPhone.toString()[1])) < 0
+            !Number.isInteger(parseInt(userData.primaryPhone))  || 
+            userData.primaryPhone.toString().length !== 9       ||
+            parseInt(userData.primaryPhone.toString()[0]) !== 8 ||
+            [2,3,4,5,6,7].indexOf(parseInt(userData.primaryPhone.toString()[1])) < 0
             ) {      
             setErrors({ ...errors,
                 primaryPhone: 'Número de telefone inválido.',
@@ -106,12 +100,12 @@ export default function SignUpScreen({ navigation }) {
             return false;                   
         }
 
-        if (secondaryPhone && 
+        if (userData.secondaryPhone && 
             (
-            !Number.isInteger(parseInt(secondaryPhone))  || 
-            secondaryPhone.toString().length !== 9       ||
-            parseInt(secondaryPhone.toString()[0]) !== 8 ||
-            [2,3,4,5,6,7].indexOf(parseInt(secondaryPhone.toString()[1])) < 0   
+            !Number.isInteger(parseInt(userData.secondaryPhone))  || 
+            userData.secondaryPhone.toString().length !== 9       ||
+            parseInt(userData.secondaryPhone.toString()[0]) !== 8 ||
+            [2,3,4,5,6,7].indexOf(parseInt(userData.secondaryPhone.toString()[1])) < 0   
             )
         ){
             setErrors({ ...errors,
@@ -120,14 +114,14 @@ export default function SignUpScreen({ navigation }) {
             return false;               
         }
 
-        if (!province) {
+        if (!userData.address.province) {
              setErrors({ ...errors,
                 province: 'Indica a província',
             });
             return false;                
         }
 
-        if (!district) {
+        if (!userData.address.district) {
              setErrors({ ...errors,
                 province: 'Indica o distrito',
             });
@@ -139,49 +133,47 @@ export default function SignUpScreen({ navigation }) {
 
 
 
+    const testInput = ()=>{
+
+       validateUserData() ? console.log('userData:', userData) : console.log("failed")
+    }
+
     const addUser = useCallback(()=>{
-  
-       if (!validateUserData()) {
-            return ;
-       } 
-    
-       appRealm.write(()=>{
+        const { 
+            fullname,
+            email, 
+            password, 
+            passwordConfirm,
+            primaryPhone,
+            secondaryPhone
+        } = userData;
+        const { province, district } = userData.address;
+
+        if (password !== passwordConfirm) {
+            Alert.alert("")
+        }
+
+        appRealm.write(()=>{
+            if (true) {
+                return ;
+            }
             const newUser = appRealm.create('User', 
-            {
-                _id: new Realm.BSON.ObjectId(),
-                fullname, 
-                email, 
-                password,
-                primaryPhone: parseInt(primaryPhone),
-                secondaryPhone: parseInt(secondaryPhone),
-                address: {
-                province,
-                district,
-                },
-                achievement: {
-                    registeredFarmers: 0,
-                    registeredFarmlands: 0,
-                    targetFarmers: 0,
-                    targetFarmlands: 0,
-                },
-                createdAt: new Date(),
-            });
-            navigation.navigate('')
-            resetState();
+                {
+                  _id: new Realm.BSON.ObjectId(),
+                  fullname: 'Evariste Musekwa', 
+                  email: 'evariste@gmail.com', 
+                  password: 'evariste',
+                  primaryPhone: 860140080,
+                  secondaryPhone: 0,
+                  address: {
+                    province: 'Nampula',
+                    district: 'Mogovolas',
+                  },
+                });
             console.log('user:', newUser);
         })
         appRealm.close();
-    }, [
-            appRealm,             
-            fullname,
-            email,
-            password,
-            passwordConfirm,
-            primaryPhone,
-            secondaryPhone,
-            district,
-            province,
-        ])
+    }, [appRealm, userData])
 
 
   return (
@@ -203,21 +195,18 @@ export default function SignUpScreen({ navigation }) {
                 <CustomInput
                     width="100%"
                     placeholder="Nome completo"
-                    value={fullname}
+                    value={userData?.fullname}
                     type="text"
                     autoCapitalize="words"
-                    // onFocus={}
                     // onChangeText={(text)=>setFullname(text)}
-                    onChangeText={(newFullname)=>{
-                        setErrors(prev=>({...prev, fullname: ''}))
-                        setFullname(newFullname)}
-                    }
+                    onChangeText={(newFullname)=>setUserData((prevState)=>({
+                        ...prevState,
+                        fullname: newFullname,
+                    }))}
                 />
             {
             'fullname' in errors 
-            ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.fullname}</FormControl.ErrorMessage> 
+            ? <FormControl.ErrorMessage _text={{ fontSize: 'xs'}}>{errors?.fullname}</FormControl.ErrorMessage> 
             : <FormControl.HelperText></FormControl.HelperText>
             }
                 {/* <FormControl.ErrorMessage 
@@ -233,13 +222,13 @@ export default function SignUpScreen({ navigation }) {
                     width="100%"
                     placeholder="Endereço Electrónico"
                     keyboardType="email-address"
-                    value={email}
+                    value={userData?.email}
                     type="emailAddress"
                     // onChangeText={(text)=>setEmail(text)}
-                    onChangeText={(newEmail)=>{
-                        setErrors(prev=>({...prev, email: ''}))
-                        setEmail(newEmail)}
-                    }
+                    onChangeText={(newEmail)=>setUserData((prevState)=>({
+                        ...prevState,
+                        email: newEmail,
+                    }))}
                     InputLeftElement={
                         <Icon
                             name="email"
@@ -251,9 +240,7 @@ export default function SignUpScreen({ navigation }) {
                 />
             {
             'email' in errors 
-            ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.email}</FormControl.ErrorMessage> 
+            ? <FormControl.ErrorMessage _text={{ fontSize: 'xs'}}>{errors?.email}</FormControl.ErrorMessage> 
             : <FormControl.HelperText></FormControl.HelperText>
             }
                 {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
@@ -266,13 +253,13 @@ export default function SignUpScreen({ navigation }) {
                 <CustomInput
                     width="100%"
                     placeholder="Senha"
-                    secureTextEntry={!showPassword ? true : false}
-                    value={password}
+                     secureTextEntry={showPassword}
+                    value={userData?.password}
                     // onChangeText={(text)=>setPassword(text)}
-                    onChangeText={(newPassword)=>{
-                        setErrors(prev=>({...prev, password: '', passwordConfirm: ''}))   
-                        setPassword(newPassword)}
-                    }
+                    onChangeText={(newPassword)=>setUserData((prevState)=>({
+                        ...prevState,
+                        password: newPassword,
+                    }))}
                     InputRightElement={
                         <Icon
                             name={showPassword ? 'visibility' : 'visibility-off'}
@@ -285,9 +272,7 @@ export default function SignUpScreen({ navigation }) {
                 />
             {
             'password' in errors 
-            ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.password}</FormControl.ErrorMessage> 
+            ? <FormControl.ErrorMessage _text={{ fontSize: 'xs'}}>{errors?.password}</FormControl.ErrorMessage> 
             : <FormControl.HelperText></FormControl.HelperText>
             }
                 {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
@@ -299,13 +284,13 @@ export default function SignUpScreen({ navigation }) {
                 <CustomInput
                     width="100%"
                     placeholder="Confirmar senha"
-                    secureTextEntry={!showPasswordConfirm ? true : false}
-                    value={passwordConfirm}
+                    secureTextEntry={showPasswordConfirm}
+                    value={userData?.passwordConfirm}
                     // onChangeText={(text)=>setPasswordConfirm(text)}
-                    onChangeText={(newPasswordConfirm)=>{
-                        setErrors(prev=>({...prev, passsword: '', passwordConfirm: ''}))
-                        setPasswordConfirm(newPasswordConfirm)}
-                    }
+                    onChangeText={(newPasswordConfirm)=>setUserData((prevState)=>({
+                        ...prevState,
+                        passwordConfirm: newPasswordConfirm,
+                    }))}
                     InputRightElement={
                         <Icon
                             name={showPasswordConfirm ? 'visibility' : 'visibility-off'}
@@ -318,9 +303,7 @@ export default function SignUpScreen({ navigation }) {
                 />
             {
             'passwordConfirm' in errors 
-            ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.passwordConfirm}</FormControl.ErrorMessage> 
+            ? <FormControl.ErrorMessage _text={{ fontSize: 'xs'}}>{errors?.passwordConfirm}</FormControl.ErrorMessage> 
             : <FormControl.HelperText></FormControl.HelperText>
             }
                 {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
@@ -338,12 +321,12 @@ export default function SignUpScreen({ navigation }) {
                     type="telephoneNumber"
                     placeholder="Telemóvel"
                     keyboardType="numeric"
-                    value={primaryPhone}
+                    value={userData?.primaryPhone}
                     // onChangeText={(newPrimaryPhone)=>setPrimaryPhone(newPrimaryPhone)}
-                    onChangeText={(newPrimaryPhone)=>{
-                        setErrors(prev=>({...prev, primaryPhone: ''}))
-                        setPrimaryPhone(newPrimaryPhone)}
-                    }
+                    onChangeText={(newPrimaryPhone)=>setUserData((prevState)=>({
+                        ...prevState,
+                        primaryPhone: newPrimaryPhone,
+                    }))}
                     InputLeftElement={
                         <Icon
                             name="phone"
@@ -356,9 +339,7 @@ export default function SignUpScreen({ navigation }) {
                 />
             {
             'primaryPhone' in errors 
-            ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.primaryPhone}</FormControl.ErrorMessage> 
+            ? <FormControl.ErrorMessage _text={{ fontSize: 'xs'}}>{errors?.primaryPhone}</FormControl.ErrorMessage> 
             : <FormControl.HelperText></FormControl.HelperText>
             }
                 {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
@@ -372,12 +353,12 @@ export default function SignUpScreen({ navigation }) {
                     type="number"
                     placeholder="Telemóvel"
                     keyboardType="numeric"
-                    value={secondaryPhone}
+                    value={userData?.secondaryPhone}
                     // onChangeText={(newSecondaryPhone)=>setSecondaryPhone(newSecondaryPhone)}
-                    onChangeText={(newSecondaryPhone)=>{
-                        setErrors(prev=>({...prev, secondaryPhone: ''}))
-                        setSecondaryPhone(newSecondaryPhone)}
-                    }
+                    onChangeText={(newSecondaryPhone)=>setUserData((prevState)=>({
+                        ...prevState,
+                        secondaryPhone: newSecondaryPhone,
+                    }))}
                     InputLeftElement={
                         <Icon
                             name="phone"
@@ -390,9 +371,7 @@ export default function SignUpScreen({ navigation }) {
                 />
             {
             'secondaryPhone' in errors 
-            ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.secondaryPhone}</FormControl.ErrorMessage> 
+            ? <FormControl.ErrorMessage _text={{ fontSize: 'xs'}}>{errors?.secondaryPhone}</FormControl.ErrorMessage> 
             : <FormControl.HelperText></FormControl.HelperText>
             }
                 {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
@@ -406,7 +385,7 @@ export default function SignUpScreen({ navigation }) {
                     <FormControl.Label>Província</FormControl.Label>
                     <Select
                         // selectedValue={selectedProvince}
-                        selectedValue={province}
+                        selectedValue={userData.address?.province}
                         accessibilityLabel="Escolha sua província"
                         placeholder="Escolha sua província"
                         _selectedItem={{
@@ -416,11 +395,13 @@ export default function SignUpScreen({ navigation }) {
                         }}
                         mt={1}
                         // onValueChange={itemValue => setSelectedProvince(itemValue)}
-                        onValueChange={(newProvince)=>{
-                            setErrors(prev=>({...prev, province: ''}));
-                            setDistrict('');
-                            setProvince(newProvince);
-                        }}
+                        onValueChange={(newProvince)=>setUserData((prevState)=>({
+                            ...prevState,
+                            address: {
+                                ...prevState.address,
+                                province: newProvince,
+                            },
+                        }))}
                     >
                         <Select.Item label="Cabo Delgado" value="Cabo Delgado" />
                         <Select.Item label="Nampula" value="Nampula" />
@@ -429,9 +410,7 @@ export default function SignUpScreen({ navigation }) {
                     </Select>
                     {
                     'province' in errors 
-                    ? <FormControl.ErrorMessage 
-                        leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                        _text={{ fontSize: 'xs'}}>{errors?.province}</FormControl.ErrorMessage> 
+                    ? <FormControl.ErrorMessage _text={{ fontSize: 'xs'}}>{errors?.province}</FormControl.ErrorMessage> 
                     : <FormControl.HelperText></FormControl.HelperText>
                     }
                     {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
@@ -442,7 +421,7 @@ export default function SignUpScreen({ navigation }) {
                 <FormControl.Label>Distrito</FormControl.Label>
                     <Select
                         // selectedValue={selectedDistrict}
-                        selectedValue={district}
+                        selectedValue={userData.address?.district}
                         accessibilityLabel="Escolha seu distrito"
                         placeholder="Escolha seu distrito"
                         _selectedItem={{
@@ -452,10 +431,13 @@ export default function SignUpScreen({ navigation }) {
                         }}
                         mt={1}
                         // onValueChange={itemValue => setSelectedDistrict(itemValue)}
-                        onValueChange={(newDistrict)=>{
-                            setErrors(prev=>({...prev, district: ''}))
-                            setDistrict(newDistrict)}
-                        }
+                        onValueChange={(newDistrict)=>setUserData(prevState=>({
+                            ...prevState,
+                            address: {
+                                ...prevState.address,
+                                district: newDistrict,
+                            }
+                        }))}
                     >{
                         selectedDistricts?.map((district, index)=>(
                             <Select.Item key={index} label={district} value={district} />
@@ -464,9 +446,7 @@ export default function SignUpScreen({ navigation }) {
                     </Select>
                     {
                     'district' in errors 
-                    ? <FormControl.ErrorMessage 
-                        leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                        _text={{ fontSize: 'xs'}}>{errors?.district}</FormControl.ErrorMessage> 
+                    ? <FormControl.ErrorMessage _text={{ fontSize: 'xs'}}>{errors?.district}</FormControl.ErrorMessage> 
                     : <FormControl.HelperText></FormControl.HelperText>
                     }
                 {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
@@ -477,7 +457,7 @@ export default function SignUpScreen({ navigation }) {
         <Center m="6">
             <Button 
                 title="Criar conta" 
-                onPress={addUser}
+                onPress={testInput}
             />
         </Center>
         </ScrollView>

@@ -18,6 +18,13 @@ const styles = StyleSheet.create({
     signInSubTitle: {
         fontFamily: 'JosefinSans-Regular',
     },
+    signInErrorMessage: {
+        fontFamily: 'JosefinSans-Regular',
+        textAlign: 'center',
+        fontSize: 16,
+        color: '#2c2c2c',
+        paddingVertical: 10,
+    },
     signInLink: {
         color: '#005000',
         textDecorationLine: 'underline',

@@ -18,6 +18,12 @@ export function CustomInput({
     type,
     label,
     error,
+    value,
+    secureTextEntry,
+    onChangeText,
+    autoCapitalize,
+    keyboardType,
+    onFocus,
      ...props
 }) {
     return (
@@ -26,10 +32,21 @@ export function CustomInput({
             placeholder={placeholder}
             w={props?.width}
             Icon={Icon}
-            type={type}
+            // type={type}
+            textContentType={type}
+            secureTextEntry={ secureTextEntry ? true : false}
             InputLeftElement={InputLeftElement}
             InputRightElement={InputRightElement}
             borderColor="#005000"
+            color="#2c2c2c"
+            fontFamily="JosefinSans-Regular"
+            fontSize={20}
+            value={value}
+            autoCapitalize={autoCapitalize ? autoCapitalize : 'none'}
+            keyboardType={keyboardType ? keyboardType : 'default'}
+            onChangeText={onChangeText}
+            onFocus={onFocus}
+            // props={...props}
         />
     );
 }

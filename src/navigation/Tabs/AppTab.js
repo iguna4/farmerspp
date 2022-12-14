@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import { Text, StatusBar } from 'react-native';
@@ -12,22 +11,28 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import HomeStackScreen from '../Stacks/HomeStackScreen';
 import FarmersStackScreen from '../Stacks/FarmersStackScreen';
-import FarmlandsStackScreen from '../Stacks/FarmlandsStackScreen';
+// import FarmlandsStackScreen from '../Stacks/FarmlandsStackScreen';
 import UsersStackScreen from '../Stacks/UsersStackScreen';
 import {Icon } from '@rneui/themed';
-
+import { AppContext } from '../../models/realm';
+import { User } from '../../models/User';
+const { useRealm } = AppContext;
 
 const Tab = createBottomTabNavigator();
 
 
 export default function AppTab() {
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const appRealm = useRealm();
+
+
+
   return (
     <>
     <StatusBar barStyle="dark-content" backgroundColor="#005000" />
     <NavigationContainer>
       {
-        isSignedIn ?
+        !isSignedIn ?
         (
           <>
             <UsersStackScreen />
@@ -58,7 +63,7 @@ export default function AppTab() {
             name="FarmersStack"
             component={FarmersStackScreen}
            />
-          <Tab.Screen
+          {/* <Tab.Screen
             options={{
               tabBarIcon: ()=><Icon name="agriculture" color="grey" size={40} />,
               tabBarColor: '#005000',
@@ -66,7 +71,7 @@ export default function AppTab() {
             }}
             name="FarmlandsStack"
             component={FarmlandsStackScreen}
-            />
+            /> */}
       </Tab.Navigator>
       )
     }

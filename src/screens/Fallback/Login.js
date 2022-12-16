@@ -1,51 +1,60 @@
-/* eslint-disable prettier/prettier */
-import { SafeAreaView, Text, StatusBar, Alert } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import { Pressable, SafeAreaView, Text, View } from 'react-native';
+import React, {useEffect, useState, useCallback} from 'react';
 import styles from './styles';
-import { Icon, Button } from '@rneui/themed';
-import { Box, Center, Stack, ScrollView, FormControl, Select, CheckIcon } from 'native-base';
+import { Button, Icon } from '@rneui/themed';
+import { Box, Stack, FormControl, Center, Select, CheckIcon, ScrollView } from 'native-base';
 
 import { CustomInput } from '../../components/Inputs/CustomInput';
+
+import { useApp } from '@realm/react';
+
+import validateUserData from '../../helpers/validateUserData';
 import districts from '../../fakedata/districts';
 
-import { AppContext } from '../../models/realm';
-import { User } from '../../models/User';
-// const { useRealm } = AppContext;
-
-
-export default function SignUpScreen({ navigation, setIsNewUser }) {
+const Login = () => {
+    const [isLoggingIn, setIsLoggingIn] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
+    const [emailFailMessage, setEmailFailMessage] = useState('');
+    const [passwordFailMessage, setPasswordFailMessage] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState({});
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
     const [province, setProvince] = useState('');
     const [district, setDistrict] = useState('');
     const [selectedDistricts, setSelectedDistricts] = useState([]);
     const [fullname, setFullname] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [primaryPhone, setPrimaryPhone] = useState(null);
     const [secondaryPhone, setSecondaryPhone] = useState(null);
 
-    const [errors, setErrors] = useState({});
 
-    // const appRealm = useRealm();
-
-
-    const resetState = ()=>{
-        setShowPassword(false);
-        setShowPasswordConfirm(false);
-        setProvince('');
-        setDistrict('');
-        setSelectedDistricts([]);
-        setFullname('');
-        setEmail('');
-        setPassword('');
-        setPasswordConfirm('');
-        setPrimaryPhone(null);
-        setSecondaryPhone(null);
+    const onLogin = ()=>{
+       
+        if (isLoggingIn) {
+            const userData = {
+                email, password,
+            }
+            if (!validateUserData(userData, isLoggingIn, errors, setErrors)) {
+                return ;
+            }
+        }
+        else {
+            const userData = {
+                fullname, 
+                email, 
+                password, 
+                passwordConfirm, 
+                primaryPhone, 
+                secondaryPhone,
+                district,
+                province,
+            }
+            if (!validateUserData(userData, isLoggingIn, errors, setErrors)) {
+                return ;
+            }
+        }
     }
-
-
 
     useEffect(()=>{
 
@@ -54,231 +63,147 @@ export default function SignUpScreen({ navigation, setIsNewUser }) {
 
         }
 
-
-    }, [province, errors]);
-
-
-    const validateUserData = () => {
-        const retrievedFullname = fullname?.trim();
-        const retrievedEmail = email?.trim();
-        const retrievedPassword = password?.trim();
-        const retrievedPasswordConfirm = passwordConfirm?.trim();
-        const retrievedPrimaryPhone = primaryPhone?.trim();
-        const retrievedSecondaryPhone = secondaryPhone?.trim();
-        const retrievedProvince = province?.trim();
-        const retrievedDistrict = district?.trim();
-
-        if ((!retrievedFullname) || (retrievedFullname?.split(' ')?.length <= 1)) {
-            setErrors({ ...errors,
-                fullname: 'Nome não completo.'
-            });
-            return false;
-        } 
-
-        if (!retrievedEmail || !retrievedEmail?.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
-            setErrors({ ...errors,
-                email: 'Endereço electrónico inválido.'
-            });
-            return false;
-        }
-
-        if (retrievedPassword !== retrievedPasswordConfirm) {
-            setErrors({ ...errors,
-                password: 'Senhas não iguais.',
-                passwordConfirm: 'Senhas não iguais.'
-            });
-            return false;
-        }
-        else if (retrievedPassword?.length < 6) {
-            setErrors({ ...errors,
-                password: 'Pelo menos 6 caracteres.',
-            });
-            return false;
-        }
-
-        if (!retrievedPrimaryPhone && !retrievedSecondaryPhone) {
-            setErrors({ ...errors,
-                primaryPhone: 'Pelo menos um número de telefone.',
-            });
-            return false;            
-        }
-        else if (
-            !Number.isInteger(parseInt(retrievedPrimaryPhone))  || 
-            retrievedPrimaryPhone?.toString().length !== 9       ||
-            parseInt(retrievedPrimaryPhone.toString()[0]) !== 8 ||
-            [2,3,4,5,6,7].indexOf(parseInt(retrievedPrimaryPhone?.toString()[1])) < 0
-            ) {      
-            setErrors({ ...errors,
-                primaryPhone: 'Número de telefone inválido.',
-            });
-            return false;                   
-        }
-
-        if (retrievedSecondaryPhone && 
-            (
-            !Number.isInteger(parseInt(retrievedSecondaryPhone))  || 
-            retrievedSecondaryPhone?.toString().length !== 9       ||
-            parseInt(retrievedSecondaryPhone?.toString()[0]) !== 8 ||
-            [2,3,4,5,6,7].indexOf(parseInt(retrievedSecondaryPhone?.toString()[1])) < 0   
-            )
-        ){
-            setErrors({ ...errors,
-                secondaryPhone: 'Número de telefone inválido.',
-            });
-            return false;               
-        }
-
-        if (!retrievedProvince) {
-             setErrors({ ...errors,
-                province: 'Indica a província',
-            });
-            return false;                
-        }
-
-        if (!retrievedDistrict) {
-             setErrors({ ...errors,
-                province: 'Indica o distrito',
-            });
-            return false;                
-        }
-
-        return {
-            fullname: retrievedFullname,
-            email: retrievedEmail,
-            password: retrievedPassword,
-            primaryPhone: retrievedPrimaryPhone ? parseInt(retrievedPrimaryPhone) : 0,
-            secondaryPhone: retrievedSecondaryPhone ? parseInt(retrievedSecondaryPhone) : 0,
-            province: retrievedProvince,
-            district: retrievedDistrict,
-        };
-    };
-
-
-
-    const addUser = useCallback(()=>{
-  
-       if (!validateUserData()) {
-            return ;
-       } 
-
-       const userData = validateUserData();
-    
-    //    appRealm.write(()=>{
-    //         const newUser = appRealm.create('User', 
-    //         {
-    //             _id: new Realm.BSON.ObjectId(),
-    //             fullname: userData.fullname, 
-    //             email: userData.email, 
-    //             password: userData.password,
-    //             primaryPhone: userData?.primaryPhone,
-    //             secondaryPhone: userData?.secondaryPhone,
-    //             address: {
-    //             province: userData.province,
-    //             district: userData.district,
-    //             },
-    //             achievement: {
-    //                 registeredFarmers: 0,
-    //                 registeredFarmlands: 0,
-    //                 targetFarmers: 0,
-    //                 targetFarmlands: 0,
-    //             },
-    //             createdAt: new Date(),
-    //         });
-    //         // navigation.navigate('')
-    //         resetState();
-    //         console.log('user:', newUser);
-    //     })
-        // appRealm.close();
-    }, [
-            // appRealm,             
-            fullname,
-            email,
-            password,
-            passwordConfirm,
-            primaryPhone,
-            secondaryPhone,
-            district,
-            province,
-        ])
+    }, [province, errors, isLoggingIn]);
 
 
   return (
-
-    <SafeAreaView style={styles.signUpContainer}>
-        <StatusBar barStyle="dark-content" backgroundColor="#005000" />
+    <SafeAreaView style={styles.loginContainer}>
         <ScrollView>
-        <Box mb="5">
-            <Text style={styles.signUpHeaderText}>
-                Nova Conta
-            </Text>
-            <Text style={styles.signUpDescription}>
-                Introduza os seus dados
-            </Text>
-        </Box>
-        <Box w="100%" alignItems="center">
-            <FormControl isRequired my="3" isInvalid={'fullname' in errors}>
-                <FormControl.Label>Nome Completo</FormControl.Label>
-                <CustomInput
-                    width="100%"
-                    placeholder="Nome completo"
-                    value={fullname}
-                    type="text"
-                    autoCapitalize="words"
-                    // onFocus={}
-                    // onChangeText={(text)=>setFullname(text)}
-                    onChangeText={(newFullname)=>{
-                        setErrors(prev=>({...prev, fullname: ''}))
-                        setFullname(newFullname)}
-                    }
+        { isLoggingIn &&        
+            <Center mt={isLoggingIn ? '1/4' : '3'}>
+                <Text style={styles.signInTitle}>Connect Caju - 2023</Text>
+            </Center>
+        }
+        <Box my="5" alignItems="center">
+            { ('errorMessage' in errors && errors?.errorMessage && isLoggingIn) ?
+                <Box backgroundColor='error.100'  w="80" height="10">
+                    <Text style={styles.signInErrorMessage}>{errors.errorMessage}</Text>
+                </Box>
+                : isLoggingIn ?
+                <Icon 
+                    name='lock-open'
+                    size={40}
+                    color="#005000"
                 />
+                :
+                <Text 
+                    style={{ 
+                        marginHorizontal: 10, 
+                        fontFamily: 'JosefinSans-BoldItalic', 
+                        fontSize: 18, color: '#005000', }}
+                    >
+                        Novo Usuário
+                </Text>
+
+            }
+            <Stack w="100%" direction="row" my="4">
+                <Box 
+                    w="50%" 
+                    alignItems="center"
+                >
+
+                </Box>
+                <Box 
+                    pr={5} 
+                    w="50%" 
+                    alignItems="center"
+                >
+                    <Text 
+                        style={{ 
+                            fontFamily: 'JosefinSans-Regular',
+                        }}
+                    >
+                        { isLoggingIn ? "És usuário novo?" : "Já tens uma conta?" }
+                    </Text>
+                    <Pressable onPress={()=>setIsLoggingIn(prevState => !prevState)}>
+                        <Text 
+                            style={{ 
+                                textAlign: 'center',
+                                fontSize: 16,
+                                color: '#005000',
+                                fontFamily: 'JosefinSans-Regular',
+                                textDecoration: 'underline',
+                            }}
+                        >
+                            { isLoggingIn ? "Criar conta" : "Entrar" }
+                        </Text>
+                    </Pressable>
+                </Box>
+            </Stack>
+        </Box>
+
+        <Stack space={1} w="90%" mx="auto">
             {
-            'fullname' in errors 
-            ? <FormControl.ErrorMessage 
+            !isLoggingIn &&  (
+                <FormControl isRequired my="3" isInvalid={'fullname' in errors}>
+                    <FormControl.Label>Nome Completo</FormControl.Label>
+                    <CustomInput
+                        width="100%"
+                        placeholder="Nome completo"
+                        value={fullname}
+                        type="text"
+                        autoCapitalize="words"
+                        onChangeText={(newFullname)=>{
+                            setErrors(prev=>({...prev, fullname: ''}))
+                            setFullname(newFullname)}
+                        }
+                    />
+                {
+                'fullname' in errors 
+                ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.fullname}</FormControl.ErrorMessage> 
-            : <FormControl.HelperText></FormControl.HelperText>
-            }
-                {/* <FormControl.ErrorMessage 
-                    _text={{
-                        fontSize: 'xs',
-
-                    }}
-                >{''}</FormControl.ErrorMessage> */}
+                : <FormControl.HelperText></FormControl.HelperText>
+                }
             </FormControl>
-            <FormControl isRequired my="3" isInvalid={'email' in errors}>
+        )}
+
+            <FormControl isRequired isInvalid={'email' in errors}>
                 <FormControl.Label>Endereço Electrónico</FormControl.Label>
                 <CustomInput
                     width="100%"
                     placeholder="Endereço Electrónico"
-                    keyboardType="email-address"
-                    value={email}
                     type="emailAddress"
-                    // onChangeText={(text)=>setEmail(text)}
+                    value={email}
                     onChangeText={(newEmail)=>{
-                        setErrors(prev=>({...prev, email: ''}))
-                        setEmail(newEmail)}
-                    }
-                    InputLeftElement={
+                        setErrors((prev)=>({...prev, errorMessage: undefined}))
+                        setEmail(newEmail)
+                    }}
+                    InputLeftElement={<Icon name="email" color="grey" />}
+                    />
+                <FormControl.HelperText></FormControl.HelperText>
+            </FormControl>
+            {
+                isLoggingIn &&
+
+                <FormControl isRequired isInvalid={'password' in errors}>
+                <FormControl.Label>Senha</FormControl.Label>
+                <CustomInput
+                    width="100%"
+                    placeholder="Senha"
+                    secureTextEntry={!showPassword ? true : false }
+                    value={password}
+                    onChangeText={(newPassword)=>{
+                        setErrors(prev=>({...prev, errorMessage: undefined}))
+                        setPassword(newPassword)
+                    }}
+                    InputRightElement={
                         <Icon
-                            name="email"
-                            color="grey"
-                            size={30}
-                            type="material"
+                        name={showPassword ? 'visibility' : 'visibility-off'}
+                        color="grey"
+                        size={30}
+                        type="material"
+                        onPress={()=>setShowPassword(prev=>!prev)}
                         />
                     }
-                />
-            {
-            'email' in errors 
-            ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.email}</FormControl.ErrorMessage> 
-            : <FormControl.HelperText></FormControl.HelperText>
-            }
-                {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
+                    />
+                <FormControl.HelperText></FormControl.HelperText>
             </FormControl>
-
-            <Stack direction="row" mx="3" w="100%">
-            <Box w="50%" px="1">
+            }
+            {
+            !isLoggingIn &&  (
+            <Stack direction="row" w="100%" space={1}>
+            <Box w="50%">
             <FormControl isRequired my="3" isInvalid={'password' in errors}>
                 <FormControl.Label>Senha</FormControl.Label>
                 <CustomInput
@@ -308,10 +233,9 @@ export default function SignUpScreen({ navigation, setIsNewUser }) {
                 _text={{ fontSize: 'xs'}}>{errors?.password}</FormControl.ErrorMessage> 
             : <FormControl.HelperText></FormControl.HelperText>
             }
-                {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
             </FormControl>
             </Box>
-            <Box w="50%" px="1">
+            <Box w="50%" >
             <FormControl isRequired my="3" isInvalid={'passwordConfirm' in errors}>
                 <FormControl.Label>Confirmar Senha</FormControl.Label>
                 <CustomInput
@@ -319,7 +243,6 @@ export default function SignUpScreen({ navigation, setIsNewUser }) {
                     placeholder="Confirmar senha"
                     secureTextEntry={!showPasswordConfirm ? true : false}
                     value={passwordConfirm}
-                    // onChangeText={(text)=>setPasswordConfirm(text)}
                     onChangeText={(newPasswordConfirm)=>{
                         setErrors(prev=>({...prev, passsword: '', passwordConfirm: ''}))
                         setPasswordConfirm(newPasswordConfirm)}
@@ -341,14 +264,14 @@ export default function SignUpScreen({ navigation, setIsNewUser }) {
                 _text={{ fontSize: 'xs'}}>{errors?.passwordConfirm}</FormControl.ErrorMessage> 
             : <FormControl.HelperText></FormControl.HelperText>
             }
-                {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
             </FormControl>
             </Box>
-            </Stack>
-
-
-            <Stack direction="row" mx="3" w="100%">
-            <Box w="50%" px="1">
+        </Stack>
+        )}
+        {
+            !isLoggingIn && (
+            <Stack direction="row" w="100%" space={1}>
+            <Box w="50%" >
             <FormControl isRequired my="3" isInvalid={'primaryPhone' in errors}>
                 <FormControl.Label>Telemóvel</FormControl.Label>
                 <CustomInput
@@ -382,7 +305,7 @@ export default function SignUpScreen({ navigation, setIsNewUser }) {
                 {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
             </FormControl>
             </Box>
-            <Box w="50%" px="1">
+            <Box w="50%" >
             <FormControl my="3" isInvalid={'secondaryPhone' in errors}>
                 <FormControl.Label>Telemóvel Alternativo</FormControl.Label>
                 <CustomInput
@@ -418,8 +341,12 @@ export default function SignUpScreen({ navigation, setIsNewUser }) {
             </Box>
             </Stack>
 
-            <Stack direction="row" mx="3" w="100%">
-            <Box w="50%" px="1">
+            )
+        }
+        {
+            !isLoggingIn && (
+            <Stack direction="row" w="100%">
+            <Box w="50%">
                 <FormControl isRequired my="3" isInvalid={'province' in errors}>
                     <FormControl.Label>Província</FormControl.Label>
                     <Select
@@ -455,7 +382,7 @@ export default function SignUpScreen({ navigation, setIsNewUser }) {
                     {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
                 </FormControl>
             </Box>
-            <Box w="50%" px="1">
+            <Box w="50%">
             <FormControl isRequired my="3" isInvalid={'district' in errors}>
                 <FormControl.Label>Distrito</FormControl.Label>
                     <Select
@@ -477,7 +404,7 @@ export default function SignUpScreen({ navigation, setIsNewUser }) {
                     >{
                         selectedDistricts?.map((district, index)=>(
                             <Select.Item key={index} label={district} value={district} />
-                        ))
+                            ))
                     }
                     </Select>
                     {
@@ -491,14 +418,20 @@ export default function SignUpScreen({ navigation, setIsNewUser }) {
             </FormControl>
             </Box>
             </Stack>
-        </Box>
-        <Center m="6">
+
+            )
+        }
+        </Stack>
+        <Box alignItems="center">
             <Button 
-                title="Criar conta" 
-                onPress={addUser}
+                title={isLoggingIn ? "Entrar" : "Registar-se" } 
+                onPress={onLogin} 
             />
-        </Center>
+        </Box>
+        
         </ScrollView>
     </SafeAreaView>
-  );
+  )
 }
+
+export default Login

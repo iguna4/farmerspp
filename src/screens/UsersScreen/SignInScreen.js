@@ -1,11 +1,16 @@
 /* eslint-disable prettier/prettier */
 import { Pressable, SafeAreaView, Text } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import styles from './styles';
 import { Button, Icon } from '@rneui/themed';
 import { Box, Stack, FormControl, Center } from 'native-base';
 
 import { CustomInput } from '../../components/Inputs/CustomInput';
+
+import { useApp } from '@realm/react';
+import { AppContext } from '../../models/realm';
+import { User } from '../../models/User';
+// const { useRealm, useQuery } = AppContext;
 
 
 export default function SignInScreen({ navigation }) {
@@ -16,31 +21,86 @@ export default function SignInScreen({ navigation }) {
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
 
-    const login = ()=>{
-        validateCredentials() ? console.log('crendentials:', {email, password} ) : console.log('Failed')
-    }
+    // const appRealm = useRealm();
+    // const users = useQuery('User')
 
+    const login = useCallback(async ()=>{
+
+        if (!validateCredentials()) {
+            return ;
+        }
+
+        const {email, password } = validateCredentials();
+
+
+        // console.log('credentials:--------------- ')
+        // const credentials = Realm.Credentials.emailPassword(email, password);
+        // try {
+        // // sign in
+        // await appRealm.logIn(credentials);
+        // } catch (error) {
+        // // sign un
+        // try {
+        //     await appRealm.emailPasswordAuth.registerUser({
+        //     email,
+        //     password,
+        //     })
+        // } catch (error) {
+        //     console.log(error)
+        // }
+        // await realmApp.logIn(credentials);
+        // }
+    }, [
+        // realmApp
+    ])
+
+
+
+
+
+    useEffect(()=>{
+
+    }, [navigation])
+
+    // console.log('users', users);
+
+    
     const validateCredentials = () => {
-
-        if (!email || !email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
+        const retrievedEmail = email.trim();
+        const retrievedPassword = password.trim();
+        
+        if (!retrievedEmail || !retrievedEmail.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
             setErrors({ ...errors,
                 errorMessage: 'Credenciais inválidas!',
             });
             return false;
         }
-        else if (password !== passwordConfirm) {
+        else if ('savedPassword' && 'savedPassword' !== retrievedPassword) { // compare the provided pass with the saved one
             setErrors({ ...errors,
                 errorMessage: 'Credenciais inválidas!',
             });
             return false;
         }
-
-        return true;
+        
+        return {
+            email: retrievedEmail,
+            password: retrievedPassword,
+        };
     };
+    
+    // const login = ()=>{
+    //     if (!validateCredentials()) {
+    //         return ;
+    //     }
+        // const {email, password } = validateCredentials();
+       
+        // appRealm.write(()=>{
+            // appRealm.
+        // })
 
+    // }
 
   return (
-
     <SafeAreaView style={styles.signInContainer}>
         <Box mb="4">
             <Text style={styles.signInTitle}>Connect Caju - 2023</Text>
@@ -105,7 +165,12 @@ export default function SignInScreen({ navigation }) {
                 >Recuperar Senha</Text>
             </Box>
             <Box w="50%" alignItems="center">
-                <Pressable onPress={()=>navigation.navigate('SignUp')}>
+                <Pressable 
+                onPress={()=>{}
+                    // setIsNewUser(true)
+                    // ()=>navigation.navigate('SignUp')
+                }
+                >
                     <Text style={styles.signInLink}>
                         Criar Conta
                     </Text>

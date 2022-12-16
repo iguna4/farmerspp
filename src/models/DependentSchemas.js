@@ -23,7 +23,7 @@ export const Address = {
 }
 
 
-export const Contacts = {
+export const Contact = {
     name: 'Contact',
     embedded: true,
     properties: {

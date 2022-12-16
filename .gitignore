@@ -22,6 +22,10 @@ DerivedData
 *.xcuserstate
 ios/.xcode.env.local
 
+# secrets
+secrets.js
+
+
 # Android/IntelliJ
 #
 build/

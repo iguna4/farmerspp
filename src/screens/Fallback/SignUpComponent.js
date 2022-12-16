@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { SafeAreaView, Text, StatusBar, Alert } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import styles from './styles';
@@ -8,203 +7,25 @@ import { Box, Center, Stack, ScrollView, FormControl, Select, CheckIcon } from '
 import { CustomInput } from '../../components/Inputs/CustomInput';
 import districts from '../../fakedata/districts';
 
-import { AppContext } from '../../models/realm';
-import { User } from '../../models/User';
-// const { useRealm } = AppContext;
-
-
-export default function SignUpScreen({ navigation, setIsNewUser }) {
-    const [showPassword, setShowPassword] = useState(false);
-    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-    const [province, setProvince] = useState('');
-    const [district, setDistrict] = useState('');
-    const [selectedDistricts, setSelectedDistricts] = useState([]);
-    const [fullname, setFullname] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordConfirm, setPasswordConfirm] = useState('');
-    const [primaryPhone, setPrimaryPhone] = useState(null);
-    const [secondaryPhone, setSecondaryPhone] = useState(null);
-
-    const [errors, setErrors] = useState({});
-
-    // const appRealm = useRealm();
-
-
-    const resetState = ()=>{
-        setShowPassword(false);
-        setShowPasswordConfirm(false);
-        setProvince('');
-        setDistrict('');
-        setSelectedDistricts([]);
-        setFullname('');
-        setEmail('');
-        setPassword('');
-        setPasswordConfirm('');
-        setPrimaryPhone(null);
-        setSecondaryPhone(null);
-    }
-
-
-
-    useEffect(()=>{
-
-        if (province) {
-            setSelectedDistricts(districts[province]);
-
-        }
-
-
-    }, [province, errors]);
-
-
-    const validateUserData = () => {
-        const retrievedFullname = fullname?.trim();
-        const retrievedEmail = email?.trim();
-        const retrievedPassword = password?.trim();
-        const retrievedPasswordConfirm = passwordConfirm?.trim();
-        const retrievedPrimaryPhone = primaryPhone?.trim();
-        const retrievedSecondaryPhone = secondaryPhone?.trim();
-        const retrievedProvince = province?.trim();
-        const retrievedDistrict = district?.trim();
-
-        if ((!retrievedFullname) || (retrievedFullname?.split(' ')?.length <= 1)) {
-            setErrors({ ...errors,
-                fullname: 'Nome não completo.'
-            });
-            return false;
-        } 
-
-        if (!retrievedEmail || !retrievedEmail?.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
-            setErrors({ ...errors,
-                email: 'Endereço electrónico inválido.'
-            });
-            return false;
-        }
-
-        if (retrievedPassword !== retrievedPasswordConfirm) {
-            setErrors({ ...errors,
-                password: 'Senhas não iguais.',
-                passwordConfirm: 'Senhas não iguais.'
-            });
-            return false;
-        }
-        else if (retrievedPassword?.length < 6) {
-            setErrors({ ...errors,
-                password: 'Pelo menos 6 caracteres.',
-            });
-            return false;
-        }
-
-        if (!retrievedPrimaryPhone && !retrievedSecondaryPhone) {
-            setErrors({ ...errors,
-                primaryPhone: 'Pelo menos um número de telefone.',
-            });
-            return false;            
-        }
-        else if (
-            !Number.isInteger(parseInt(retrievedPrimaryPhone))  || 
-            retrievedPrimaryPhone?.toString().length !== 9       ||
-            parseInt(retrievedPrimaryPhone.toString()[0]) !== 8 ||
-            [2,3,4,5,6,7].indexOf(parseInt(retrievedPrimaryPhone?.toString()[1])) < 0
-            ) {      
-            setErrors({ ...errors,
-                primaryPhone: 'Número de telefone inválido.',
-            });
-            return false;                   
-        }
-
-        if (retrievedSecondaryPhone && 
-            (
-            !Number.isInteger(parseInt(retrievedSecondaryPhone))  || 
-            retrievedSecondaryPhone?.toString().length !== 9       ||
-            parseInt(retrievedSecondaryPhone?.toString()[0]) !== 8 ||
-            [2,3,4,5,6,7].indexOf(parseInt(retrievedSecondaryPhone?.toString()[1])) < 0   
-            )
-        ){
-            setErrors({ ...errors,
-                secondaryPhone: 'Número de telefone inválido.',
-            });
-            return false;               
-        }
-
-        if (!retrievedProvince) {
-             setErrors({ ...errors,
-                province: 'Indica a província',
-            });
-            return false;                
-        }
-
-        if (!retrievedDistrict) {
-             setErrors({ ...errors,
-                province: 'Indica o distrito',
-            });
-            return false;                
-        }
-
-        return {
-            fullname: retrievedFullname,
-            email: retrievedEmail,
-            password: retrievedPassword,
-            primaryPhone: retrievedPrimaryPhone ? parseInt(retrievedPrimaryPhone) : 0,
-            secondaryPhone: retrievedSecondaryPhone ? parseInt(retrievedSecondaryPhone) : 0,
-            province: retrievedProvince,
-            district: retrievedDistrict,
-        };
-    };
-
-
-
-    const addUser = useCallback(()=>{
-  
-       if (!validateUserData()) {
-            return ;
-       } 
-
-       const userData = validateUserData();
-    
-    //    appRealm.write(()=>{
-    //         const newUser = appRealm.create('User', 
-    //         {
-    //             _id: new Realm.BSON.ObjectId(),
-    //             fullname: userData.fullname, 
-    //             email: userData.email, 
-    //             password: userData.password,
-    //             primaryPhone: userData?.primaryPhone,
-    //             secondaryPhone: userData?.secondaryPhone,
-    //             address: {
-    //             province: userData.province,
-    //             district: userData.district,
-    //             },
-    //             achievement: {
-    //                 registeredFarmers: 0,
-    //                 registeredFarmlands: 0,
-    //                 targetFarmers: 0,
-    //                 targetFarmlands: 0,
-    //             },
-    //             createdAt: new Date(),
-    //         });
-    //         // navigation.navigate('')
-    //         resetState();
-    //         console.log('user:', newUser);
-    //     })
-        // appRealm.close();
-    }, [
-            // appRealm,             
-            fullname,
-            email,
-            password,
-            passwordConfirm,
-            primaryPhone,
-            secondaryPhone,
-            district,
-            province,
-        ])
-
-
+const SignUpComponent = ({
+    showPassword, setShowPassword,
+    emailFailMessage, setEmailFailMessage,
+    passwordFailMessage, setPasswordFailMessage,
+    email, setEmail,
+    password, setPassword,
+    errors, setErrors,
+    showPasswordConfirm, setShowPasswordConfirm,
+    province, setProvince,
+    district, setDistrict,
+    selectedDistricts, setSelectedDistricts,
+    fullname, setFullname,
+    passwordConfirm, setPasswordConfirm,
+    primaryPhone, setPrimaryPhone,
+    secondaryPhone, setSecondaryPhone,
+}) => {
   return (
-
-    <SafeAreaView style={styles.signUpContainer}>
+    <>
+    {/* <SafeAreaView style={styles.signUpContainer}> */}
         <StatusBar barStyle="dark-content" backgroundColor="#005000" />
         <ScrollView>
         <Box mb="5">
@@ -495,10 +316,17 @@ export default function SignUpScreen({ navigation, setIsNewUser }) {
         <Center m="6">
             <Button 
                 title="Criar conta" 
-                onPress={addUser}
+                onPress={
+                    // addUser
+                    ()=>{}
+                }
             />
         </Center>
         </ScrollView>
-    </SafeAreaView>
-  );
+    {/* </SafeAreaView> */}
+    </>
+
+  )
 }
+
+export default SignUpComponent

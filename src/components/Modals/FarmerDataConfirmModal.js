@@ -2,28 +2,68 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import { Modal, Text,  Stack, Box, Center } from 'native-base';
 import { Button } from '@rneui/themed';
 import CustomDivider from '../Divider/CustomDivider';
 import styles from './styles';
 
-export default function FarmerDataConfirmModal(
-    {
-    surname,
-    names,
-    gender,
-    birthDate,
-    birthPlace,
-    address,
-    phone,
-    phone2,
-    idDocument,
-    nuit,
-    setModalVisible,
-    modalVisible,
-    setAddDataModalVisible,
-    }) {
+import Realm from 'realm';
+import { AppContext } from '../../models/realm';
+const { useRealm } = AppContext;
+
+export default function FarmerDataConfirmModal({
+            farmerData,
+            setModalVisible,
+            modalVisible,
+            setAddDataModalVisible,}
+    ) {
+
+    const { 
+        names, 
+        gender, 
+        birthDate, 
+        birthPlace, 
+        address,  
+        contact,
+        idDocument,
+    } = farmerData;
+
+    const appRealm = useRealm();
+
+    const addFarmer = useCallback((farmerData)=>{
+        appRealm.write(()=>{
+            const newFarmer = appRealm.create('Farmer', {
+                _id: new Realm.BSON.ObjectId(),
+                surname: farmerData.names?.surname,
+                otherNames: farmerData.names?.otherNames,
+                gender: farmerData.gender,
+                birthDate: new Date(farmerData.birthDate),
+                address: {
+                    province: farmerData.address?.province,
+                    district: farmerData.address?.district,
+                    adminPost: farmerData.address?.adminPost,
+                    village: farmerData.address?.village,
+                },
+                birthPlace: {
+                    province: farmerData.birthPlace?.province,
+                    district: farmerData.birthPlace?.district,
+                    adminPost: farmerData.birthPlace?.adminPost,
+                    village: farmerData.birthPlace?.village,
+                },
+                contact: {
+                    primaryPhone: farmerData.contact?.primaryPhone,
+                    secondaryPhone: farmerData.contact?.secondaryPhone,
+                },
+                idDocument: {
+                    docType: farmerData.idDocument?.docType,
+                    docNumber: farmerData.idDocument?.docNumber,
+                    nuit: farmerData.idDocument?.nuit,
+                }        
+            })
+            console.log('new farmer: ', newFarmer);
+        })
+    }, [appRealm])
 
   return <>
       <Modal
@@ -49,7 +89,10 @@ export default function FarmerDataConfirmModal(
                         <Text style={styles.keys}>Nome Completo:</Text>
                     </Box>
                     <Box w="60%" style={styles.values}>
-                        <Text>{names}{' '}{surname}</Text>
+                        <Box>
+                            <Text style={styles.values}>{names?.surname} (apelido)</Text>
+                            <Text style={styles.values}>{names?.otherNames} (outros nomes)</Text>
+                        </Box>
                     </Box>
                 </Stack>
                 <CustomDivider
@@ -62,7 +105,7 @@ export default function FarmerDataConfirmModal(
                         <Text style={styles.keys}>Sexo:</Text>
                     </Box>
                     <Box w="60%" style={styles.values}>
-                        <Text>{gender}</Text>
+                        <Text style={styles.values}>{gender}</Text>
                     </Box>
                 </Stack>
                 <CustomDivider
@@ -72,10 +115,10 @@ export default function FarmerDataConfirmModal(
                 />
                 <Stack direction="row" w="100%" my="1">
                     <Box w="40%">
-                        <Text style={styles.keys}>Data de Nascimento:</Text>
+                        <Text style={styles.keys}>Data Nascimento:</Text>
                     </Box>
                     <Box w="60%" style={styles.values}>
-                        <Text>{birthDate?.toLocalDateString()}</Text>
+                        <Text style={styles.values}>{birthDate ? new Date(birthDate).toLocaleDateString() : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
                 <CustomDivider
@@ -88,13 +131,12 @@ export default function FarmerDataConfirmModal(
                         <Text style={styles.keys}>Residência:</Text>
                     </Box>
                     <Box w="60%">
-                        <Text style={styles.values}>[
-                            {address?.province};
-                            {address?.district};
-                            {address?.adminPost};
-                            {address?.village}
-                            ]
-                        </Text>
+                        <Box>
+                            <Text style={styles.values}>{address?.province} (província)</Text>
+                            <Text style={styles.values}>{address?.district} (distrito)</Text>
+                            <Text style={styles.values}>{address?.adminPost} (posto admin.)</Text>
+                            <Text style={styles.values}>{address?.village ? birthPlace?.village (localidade/povoado) : 'Nenhum (localidade/povoado)'}</Text>
+                        </Box>
                     </Box>
                 </Stack>
                 <CustomDivider
@@ -107,17 +149,37 @@ export default function FarmerDataConfirmModal(
                         <Text style={styles.keys}>Telemóveis:</Text>
                     </Box>
                     <Box w="60%">
-                            { phone && phone2 ?
-                                (<Text style={styles.values}>[{phone};{phone2}]</Text>)
-                                :
-                                phone ?
-                                (<Text style={styles.values}>[{phone}]</Text>)
-                                :
-                                phone2 ?
-                                (<Text style={styles.values}>[{phone2}] (alternativo)</Text>)
-                                :
-                                (<Text style={styles.values}>Nenhum</Text>)
-                            }
+                    { contact?.primaryPhone && contact?.secondaryPhone ?
+                        (
+                        <Box>
+                            <Text style={styles.values}>{contact?.primaryPhone} (principal)</Text>
+                            <Text style={styles.values}>{contact?.secondaryPhone} (alternativo)</Text>
+                        </Box>
+                        )
+                        :
+                        contact?.primaryPhone ?
+                        (
+                        <Box>
+                            <Text style={styles.values}>{contact?.primaryPhone} (principal)</Text>
+                            <Text style={styles.values}>Nenhum alternativo</Text>
+                        </Box>
+                        )
+                        :
+                        contact?.secondaryPhone ?
+                        (
+                        <Box>
+                            <Text style={styles.values}>Nenhum principal</Text>
+                            <Text style={styles.values}>{contact?.secondaryPhone} (alternativo)</Text>
+                        </Box>
+                        )
+                        :
+                        (
+                        <Box>
+                            <Text style={styles.values}>Nenhum principal</Text>
+                            <Text style={styles.values}>Nenhum alternativo</Text>
+                        </Box>
+                        )
+                    }
                     </Box>
                 </Stack>
                 <CustomDivider
@@ -127,16 +189,15 @@ export default function FarmerDataConfirmModal(
                 />
                 <Stack direction="row" w="100%" my="1">
                     <Box w="40%">
-                        <Text style={styles.keys}>Local de Nascimento:</Text>
+                        <Text style={styles.keys}>Local Nascimento:</Text>
                     </Box>
                     <Box w="60%">
-                        <Text style={styles.values}>[
-                            {birthPlace?.province};
-                            {birthPlace?.district};
-                            {birthPlace?.adminPost};
-                            {birthPlace?.village}
-                            ]
-                        </Text>
+                        <Box>
+                            <Text style={styles.values}>{birthPlace?.province} (província)</Text>
+                            <Text style={styles.values}>{birthPlace?.district} (distrito)</Text>
+                            <Text style={styles.values}>{birthPlace?.adminPost} (posto admin.)</Text>
+                            <Text style={styles.values}>{birthPlace?.village ? birthPlace?.village (localidade/povoado) : 'Nenhum (localidade/povoado)'}</Text>
+                        </Box>
                     </Box>
                 </Stack>
                 <CustomDivider
@@ -146,28 +207,23 @@ export default function FarmerDataConfirmModal(
                 />
                 <Stack direction="row" w="100%" my="1">
                     <Box w="40%">
-                        <Text style={styles.keys}>Documento de Identificação:</Text>
+                        <Text style={styles.keys}>Doc. Identificação:</Text>
                     </Box>
                     <Box w="60%">
-                            { idDocument?.idNumber ?
-                                (<Text style={styles.values}>{idDocument?.idNumber} ({idDocument?.idType})</Text>)
+                            { idDocument?.docNumber ?
+                                (<Text style={styles.values}>{idDocument?.docNumber} ({idDocument?.docType})</Text>)
                                 :
                                 (<Text style={styles.values}>Nenhum</Text>)
                             }
                     </Box>
                 </Stack>
-                <CustomDivider
-                    marginVertical="1"
-                    thickness={1}
-                    bg="grey"
-                />
                 <Stack direction="row" w="100%" my="1">
                     <Box w="40%">
                         <Text style={styles.keys}>NUIT:</Text>
                     </Box>
                     <Box w="60%">
-                            { nuit ?
-                                (<Text style={styles.values}>{nuit}</Text>)
+                            { idDocument?.nuit ?
+                                (<Text style={styles.values}>{idDocument?.nuit}</Text>)
                                 :
                                 (<Text style={styles.values}>Nenhum</Text>)
                             }
@@ -183,6 +239,7 @@ export default function FarmerDataConfirmModal(
                 <Center>
                     <Button
                         onPress={() => {
+                            addFarmer(farmerData)
                             setModalVisible(false);
                             setAddDataModalVisible(true);
                         }}

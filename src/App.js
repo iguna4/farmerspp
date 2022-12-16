@@ -10,21 +10,41 @@ import AppTab from './navigation/Tabs/AppTab';
 import elementTheme from './elementTheme';
 import nbTheme from './nbTheme';
 
+import SignInScreen from './screens/UsersScreen/SignInScreen';
+import {AppProvider, UserProvider, useUser } from '@realm/react';
+import secrets from '../secrets';
 import { AppContext } from './models/realm';
-const { RealmProvider, useRealm } = AppContext;
+import UsersStackScreen from './navigation/Stacks/UsersStackScreen';
+import SignUpScreen from './screens/UsersScreen/SignUpScreen';
+import Login from './screens/UsersScreen/Login';
+// const { RealmProvider, useRealm } = AppContext;
 
-export default function App() {
+const App = ()=>{
+
+  return (
+    <ApplicationProvider {...eva} theme={eva.light}>
+      {/* <AppProvider id={secrets.appID}>
+        <UserProvider fallback={<SignInScreen />}>
+          <RealmProvider sync={{
+            flexible: true,
+          }}> */}
+            <AppTab />
+          {/* </RealmProvider>
+        </UserProvider>
+      </AppProvider> */}
+    </ApplicationProvider>
+  )
+}
+
+
+export default function AppWrapper() {
   return (
     <SafeAreaProvider>
-      <RealmProvider>
-        <ThemeProvider theme={elementTheme}>
-          <NativeBaseProvider theme={nbTheme}>
-            <ApplicationProvider {...eva} theme={eva.light}>
-              <AppTab />
-            </ApplicationProvider>
-          </NativeBaseProvider>
+      <NativeBaseProvider theme={nbTheme}>
+        <ThemeProvider theme={elementTheme}>   
+            <App />
         </ThemeProvider>
-      </RealmProvider>
+      </NativeBaseProvider>
     </SafeAreaProvider>
   );
 }

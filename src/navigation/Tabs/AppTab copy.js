@@ -7,22 +7,36 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import HomeStackScreen from '../Stacks/HomeStackScreen';
 import FarmersStackScreen from '../Stacks/FarmersStackScreen';
+import UsersStackScreen from '../Stacks/UsersStackScreen';
 import {Icon } from '@rneui/themed';
-import Login from '../../screens/Fallback/Login';
+
 
 import { AppContext } from '../../models/realm';
-const { RealmProvider, useRealm } = AppContext;
-
+import { User } from '../../models/User';
+const { useRealm } = AppContext;
 
 const Tab = createBottomTabNavigator();
 
 
 export default function AppTab() {
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const appRealm = useRealm();
+
+
+
   return (
     <>
     <StatusBar barStyle="dark-content" backgroundColor="#005000" />
-    <RealmProvider>
     <NavigationContainer>
+      {/* {
+        !isSignedIn ?
+        (
+          <>
+            <UsersStackScreen />
+          </>
+        )
+        :
+        ( */}
         <Tab.Navigator
         initialRouteName="HomeStack"
         shifting={true}
@@ -47,8 +61,9 @@ export default function AppTab() {
             component={FarmersStackScreen}
            />
       </Tab.Navigator>
+      {/* )
+    } */}
     </NavigationContainer>
-    </RealmProvider>
     </>
   );
 }

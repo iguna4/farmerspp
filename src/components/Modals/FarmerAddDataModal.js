@@ -5,67 +5,110 @@
 /* eslint-disable prettier/prettier */
 
 import React, {useState} from 'react';
-import { Modal, Text,  Stack, Box, Center } from 'native-base';
+import { Text,  Stack, Box, Center } from 'native-base';
 import { Button, Icon } from '@rneui/themed';
+import { useNavigation } from '@react-navigation/native';
+// import Modal from "react-native-modal";
 
-import styles from './styles';
+// import styles from './styles';
+import { Pressable, View, Modal, StyleSheet } from 'react-native';
+import LottieAddButton from '../Buttons/LottieAddButton';
+import LottieProcessCompletedButton from '../Buttons/LottieProcessCompletedButton';
 
 export default function FarmerAddDataModal({
     addDataModalVisible,
     setAddDataModalVisible,
+    farmerId,
 }) {
+
+    const navigation = useNavigation();
+
   return (
+     <View>
       <Modal
-        isOpen={addDataModalVisible}
-        onClose={() => setAddDataModalVisible(false)}
-        avoidKeyboard
-        justifyContent="center"
-        bottom="4"
-        size="full"
-        _backdropFade="slide"
-    >
-        <Modal.Content>
-            <Modal.CloseButton />
-            <Modal.Header
-                style={{
-                    backgroundColor: '#005000',
+        animationType="slide"
+        transparent={false}
+        visible={addDataModalVisible}
+        onRequestClose={() => {
+          setAddDataModalVisible(!addDataModalVisible);
+        }}
+        statusBarTranslucent={false}
+      >
+        <View 
+            style={{ 
+                flex: 1, 
+                paddingVertical: 50,
+                alignItems: 'center'
+            }}
+            >
+            <LottieProcessCompletedButton />
+            <Text
+            style={{
+                paddingVertical: 10,
+                fontSize: 14,
+                fontFamily: 'JosefinSans-Regular',
+                color: '#005000',
+            }}
+            >O registo do Produtor ocorrido com sucesso!</Text>
+            <View 
+                style={{ 
+                    flex: 1,
+                    justifyContent: 'center',
+                    marginVertical: 20, 
+                    paddingVertical: 20,
                 }}
             >
-                <Text
-                    style={{
-                        fontFamily: 'JosefinSans-Bold',
-                        textAlign: 'center',
-                        color:'white',
-                        fontSize: 18,
-                    }}>
-                        Produtor:
-                </Text>
-            </Modal.Header>
-            <Modal.Body minHeight="350">
-                <Center my="10">
-                    <Text style={{fontFamily: 'JosefinSans-Regular', color: 'grey'}}>Adicionar...</Text>
-                </Center>
-                <Stack direction="row" w="100%" my="5">
-                    <Box w="50%" alignItems="center" py="5">
-                        <Icon
-                            name="photo-camera"
-                            color="#005000"
-                            size={60}
-                        />
-                        <Text style={styles.iconDescription}>Foto</Text>
+                <Stack direction="row" w="100%">
+                    <Box w="50%" alignItems="center">
+                        <Pressable
+                            onPress={()=>{
+                                navigation.navigate('Farmers');
+                                setAddDataModalVisible(false);
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    fontSize: 18,
+                                    color: '#005000',
+                                }}
+                            >
+                            <Icon 
+                                name="arrow-back"
+                                size={15}
+                                color="#005000"
+                            />
+                                Voltar</Text>
+                        </Pressable>
                     </Box>
-                    <Box w="50%" alignItems="center" py="5">
-                        <Icon
-                            name="add-circle"
-                            size={60}
-                            color="#005000"
-                        />
-                        <Text style={styles.iconDescription}>Pomar</Text>
+                    <Box w="50%" alignItems="center">
+                        <Pressable
+                            onPress={()=>{
+                                navigation.navigate('FarmlandForm1');
+                                setAddDataModalVisible(false);
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    fontSize: 18,
+                                    color: '#005000',
+                                }}                            
+                            >
+                              Pomar
+                            <Icon 
+                                name="add"
+                                size={15}
+                                color="#005000"
+                            />
+                              </Text>
+                        </Pressable>
                     </Box>
                 </Stack>
-            </Modal.Body>
+            </View>
+        </View>
 
-        </Modal.Content>
       </Modal>
+    </View>
   );
 }

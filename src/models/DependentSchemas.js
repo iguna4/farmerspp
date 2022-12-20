@@ -23,6 +23,27 @@ export const Address = {
 }
 
 
+// group members
+export const Members = {
+    name: 'Members',
+    embedded: true,
+    properties: {
+        total: { type: 'int?', default: 0},
+        women: { type: 'int?', default: 0},
+    }, 
+}
+
+// group members
+export const Manager = {
+    name: 'Manager',
+    embedded: true,
+    properties: {
+        fullname: { type: 'string'},
+        phone: { type: 'int?', },
+    }, 
+}
+
+
 export const Contact = {
     name: 'Contact',
     embedded: true,
@@ -40,7 +61,7 @@ export const IdDocument= {
     properties: {
         docType: 'string',
         docNumber: 'string?',
-        nuit: 'int?',
+        nuit: { type: 'int?', default: 0},
     },
 };
 

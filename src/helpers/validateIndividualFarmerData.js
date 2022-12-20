@@ -1,6 +1,10 @@
 
-const validateFarmerData = (
-    {   surname, 
+import { capitalize } from "./capitalize";
+
+
+const validateIndividualFarmerData = (
+    {   isSprayingAgent,
+        surname, 
         otherNames, 
         birthDate, 
         gender, 
@@ -17,8 +21,9 @@ const validateFarmerData = (
         docType, docNumber, nuit,  
     }, errors, setErrors,
     ) => {
-    const retrievedSurname = surname?.trim(); 
-    const retrievedOtherNames = otherNames?.trim();
+    const retrievedisSprayingAgent = isSprayingAgent;
+    const retrievedSurname = capitalize(surname?.trim()); 
+    const retrievedOtherNames = capitalize(otherNames?.trim());
     const retrievedBirthDate = birthDate;
     const retrievedGender = gender;
     const retrievedBirthProvince = birthProvince?.trim();
@@ -88,7 +93,7 @@ const validateFarmerData = (
         return false;                   
     }
 
-    if (retrievedSecondaryPhone && 
+    if ((retrievedSecondaryPhone === 0) || retrievedSecondaryPhone && 
         (
         !Number.isInteger(parseInt(retrievedSecondaryPhone))  || 
         retrievedSecondaryPhone?.toString().length !== 9       ||
@@ -158,6 +163,7 @@ const validateFarmerData = (
             surname: retrievedSurname,   
             otherNames: retrievedOtherNames, 
         }, 
+        isSprayingAgent: retrievedisSprayingAgent,
         birthDate: retrievedBirthDate, 
         gender: retrievedGender,
         birthPlace: {
@@ -177,14 +183,13 @@ const validateFarmerData = (
             secondaryPhone: retrievedSecondaryPhone ? parseInt(retrievedSecondaryPhone): 0,
         },
         idDocument: {
-            docType: retrievedDocType ? retrievedDocType : 'NA', 
-            docNumber: retrievedDocNumber ? retrievedDocNumber : 'NA', 
+            docType: retrievedDocType ? retrievedDocType : 'Nenhum', 
+            docNumber: retrievedDocNumber ? retrievedDocNumber : 'Nenhum', 
             nuit: retrievedNuit ? parseInt(retrievedNuit) : 0,
         }
-    }
-        
-        return farmerData;
+    }       
+    return farmerData;
 
 };
 
-export default validateFarmerData;
+export default validateIndividualFarmerData;

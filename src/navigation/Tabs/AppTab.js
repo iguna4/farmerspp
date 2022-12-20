@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, StatusBar } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -11,6 +11,7 @@ import {Icon } from '@rneui/themed';
 import Login from '../../screens/Fallback/Login';
 
 import { AppContext } from '../../models/realm';
+import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 const { RealmProvider, useRealm } = AppContext;
 
 
@@ -18,6 +19,10 @@ const Tab = createBottomTabNavigator();
 
 
 export default function AppTab() {
+
+
+
+
   return (
     <>
     <StatusBar barStyle="dark-content" backgroundColor="#005000" />

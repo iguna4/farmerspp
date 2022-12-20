@@ -2,10 +2,12 @@
 /* eslint-disable prettier/prettier */
 // import Realm from "realm";
 import {  createRealmContext } from "@realm/react";
-import { Achievement, Address, Contact, Density, IdDocument, Name } from "./DependentSchemas";
+import { Achievement, Address, Contact, Density, IdDocument, Members, Name, Manager } from "./DependentSchemas";
 import { Farmer } from "./Farmer";
 import { Farmland } from "./Farmland";
+import { Institution } from "./Institution";
 import { User } from "./User";
+import { Group } from "./Group";
 
 
 
@@ -16,14 +18,18 @@ export const AppContext = createRealmContext({
         Address, 
         Achievement, 
         Farmer, 
-        Name, 
+        Name,  // individual farmer
         Contact, 
         IdDocument, 
-        Farmland,
+        Farmland,  // the farm field (cashew farmfield)
         Density,
+        Institution, // private or public institutions
+        Members,
+        Manager,  // association/cooperative or institutions representatives
+        Group, // assocation or cooperatives
     ],
     deleteRealmIfMigrationNeeded: true,
-    schemaVersion: 1,
+    schemaVersion: 5,
     // onFirstOpen(realm) {
     //     realm.write(()=>{
     //         realm.create('User', User.generate(

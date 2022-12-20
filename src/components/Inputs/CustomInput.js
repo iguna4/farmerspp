@@ -24,6 +24,7 @@ export function CustomInput({
     autoCapitalize,
     keyboardType,
     onFocus,
+    isDisabled,
      ...props
 }) {
     return (
@@ -37,10 +38,11 @@ export function CustomInput({
             secureTextEntry={ secureTextEntry ? true : false}
             InputLeftElement={InputLeftElement}
             InputRightElement={InputRightElement}
+            isDisabled={isDisabled ? isDisabled : false }
             borderColor="#005000"
-            color="#2c2c2c"
+            color="#555555"
             fontFamily="JosefinSans-Regular"
-            fontSize={20}
+            fontSize={18}
             value={value}
             autoCapitalize={autoCapitalize ? autoCapitalize : 'none'}
             keyboardType={keyboardType ? keyboardType : 'default'}

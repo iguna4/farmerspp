@@ -11,7 +11,8 @@ const provinces = [
     'Niassa',
     'Sofala',
     'Tete',
-    'Zembézia',
+    'Zambézia',
+    "País Estrangeiro"
 ];
 
 export default provinces;

@@ -1,3 +1,4 @@
+import { capitalize } from "./capitalize";
 
 const validateData = (
     {   email, 
@@ -34,7 +35,7 @@ const validateData = (
         };
     }
     else {
-        const retrievedFullname = fullname?.trim();
+        const retrievedFullname = capitalize(fullname?.trim());
         const retrievedPasswordConfirm = passwordConfirm?.trim();
         const retrievedPrimaryPhone = primaryPhone?.trim();
         const retrievedSecondaryPhone = secondaryPhone?.trim();
@@ -87,7 +88,7 @@ const validateData = (
             return false;                   
         }
 
-        if (retrievedSecondaryPhone && 
+        if ((retrievedSecondaryPhone === 0) || retrievedSecondaryPhone && 
             (
             !Number.isInteger(parseInt(retrievedSecondaryPhone))  || 
             retrievedSecondaryPhone?.toString().length !== 9       ||

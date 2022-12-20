@@ -13,10 +13,12 @@ const styles = StyleSheet.create({
         color: 'grey',
     },
     iconDescription: {
+        textAlign: 'center',
         fontFamily: 'JosefinSans-Regular',
         color: '#005000',
         fontSize: 12,
     },
+    
 });
 
 export default styles;

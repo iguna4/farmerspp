@@ -10,6 +10,7 @@ export const Farmer = {
     properties: {
         _id: 'objectId',
         names: 'Name',
+        isSprayingAgent: {type: 'bool', default: 'false', },
         gender: 'string',
         birthDate: 'date',
         birthPlace: 'Address',

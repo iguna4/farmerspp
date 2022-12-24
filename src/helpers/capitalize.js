@@ -8,7 +8,7 @@ export const capitalize = (name) => {
             }
             return word?.toUpperCase();
         });
-    console.log('capitalized: ', capitalized.join(' ').trim());
+    // console.log('capitalized: ', capitalized.join(' ').trim());
     return capitalized.join(' ').trim();
 
 }

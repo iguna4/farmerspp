@@ -6,21 +6,17 @@
 const districts = {
     
   Niassa: [
-    "Chimbonila",
+    "Chimbunila",
     "Cuamba",
-    "Cuamba-Município",
     "Lago",
-    "Lichinga-Cidade",
+    "Lichinga (Cidade)",
     "Majune",
     "Mandimba",
-    "Mandimba-Município",
     "Marrupa",
-    "Marrupa-Município",
     "Maúa",
     "Mavago",
     "Mecanhelas",
     "Mecula",
-    "Metangula-Município",
     "Metarica",
     "Muembe",
     "N'gauma",
@@ -46,10 +42,10 @@ const districts = {
     "Mossuril",
     "Muecate",
     "Murrupula",
+    "Nacala",
     "Nacala-a-Velha",
-    "Nacala-Porto",
     "Nacarôa",
-    "Nampula-Cidade",
+    "Nampula (Cidade)",
     "Rapale",
     "Ribáuè",
   ],
@@ -70,7 +66,7 @@ const districts = {
     "Namuno",
     "Nangade",
     "Palma",
-    "Pemba-Cidade",
+    "Pemba (Cidade)",
     "Quissanga",
   ],
 
@@ -96,7 +92,7 @@ const districts = {
     "Namarroi",
     "Nicoadala",
     "Pebane",
-    "Quelimane-Cidade",
+    "Quelimane (Cidade)",
   ],
 
   Tete: [
@@ -112,7 +108,7 @@ const districts = {
     "Marávia",
     "Moatize",
     "Mutarara",
-    "Tete",
+    "Tete (Cidade)",
     "Tsangano",
     "Zumbo",
   ],
@@ -127,11 +123,11 @@ const districts = {
     "Guijá",
     "Limpopo",
     "Mabalane",
-    "Manjacaze",
+    "Mandlakazi",
     "Mapai",
     "Massangena",
     "Massingir",
-    "Xai-Xai",
+    "Xai-Xai (Cidade)",
   ],
 
   Maputo: [
@@ -145,7 +141,7 @@ const districts = {
     "Namaacha",
   ],
 
-  "Maputo-Cidade": [
+  "Maputo (Cidade)": [
     "KaMpfumu",
     "Nlhamankulu",
     "KaMaxakeni",
@@ -157,7 +153,7 @@ const districts = {
 
   Manica: [
     "Bárue",
-    "Chimoio",
+    "Chimoio (Cidade)",
     "Gondola",
     "Guro",
     "Macate",
@@ -174,7 +170,7 @@ const districts = {
     "Funhalouro",
     "Govuro",
     "Homoíne",
-    "Inhambane",
+    "Inhambane (Cidade)",
     "Inharrime",
     "Inhassoro",
     "Jangamo",
@@ -183,12 +179,12 @@ const districts = {
     "Maxixe",
     "Morrumbene",
     "Panda",
-    "Vilanculos",
+    "Vilankulo",
     "Zavala",
   ],
 
   Sofala: [
-    "Beira",
+    "Beira (Cidade)",
     "Búzi",
     "Caia",
     "Chemba",

@@ -3,14 +3,14 @@ import { View, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
 import Realm from 'realm';
-import { AppContext } from '../../models/realm';
+// import { AppContext } from '../../models/realm';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
-const { useRealm, useObject } = AppContext;
+// const { useRealm, useObject } = AppContext;
 
 const FarmlandForm1Screen = ({ route, navigation }) => {
 
     const farmerId = route.params?.farmerId;
-    const appRealm = useRealm()
+    // const appRealm = useRealm()
 
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
@@ -21,7 +21,11 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     useEffect(()=>{
 
 
-    }, [appRealm, farmerId])
+    }, [
+      // appRealm, 
+      farmerId
+    ]
+      )
 
     useEffect(()=>{
         setLoadingActivityIndicator(true);

@@ -3,6 +3,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import HomeScreen from '../../screens/HomeScreen/HomeScreen';
+import FarmlandForm1Screen from '../../screens/FarmlandForm1Screen/FarmlandForm1Screen';
 
 
 const HomeStack = createNativeStackNavigator();
@@ -22,10 +23,15 @@ export default function HomeStackScreen() {
           },
         }}
       >
-        <HomeStack.Screen
+        {/* <HomeStack.Screen
           options={{ title: 'Painel do Extensionista'}}
           name="Home"
           component={HomeScreen}
+        /> */}
+        <HomeStack.Screen
+          options={{ title: 'Registo de Pomar'}}
+          name="FarmlandForm1"
+          component={FarmlandForm1Screen}
         />
       </HomeStack.Navigator>
   );

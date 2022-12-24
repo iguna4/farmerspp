@@ -6,7 +6,7 @@ const provinces = [
     'Inhambane',
     'Manica',
     'Maputo',
-    'Maputo-Cidade',
+    'Maputo (Cidade)',
     'Nampula',
     'Niassa',
     'Sofala',

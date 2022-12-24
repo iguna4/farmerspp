@@ -4,7 +4,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Text,  Stack, Box, Center } from 'native-base';
 import { Button, Icon } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
@@ -18,10 +18,21 @@ import LottieProcessCompletedButton from '../Buttons/LottieProcessCompletedButto
 export default function FarmerAddDataModal({
     addDataModalVisible,
     setAddDataModalVisible,
+    setFarmerType,
     farmerId,
 }) {
 
     const navigation = useNavigation();
+
+    useEffect(()=>{
+        if (addDataModalVisible) {
+            setTimeout(()=>{
+                setAddDataModalVisible(false);
+                setFarmerType('')
+            }, 5000)
+        }
+
+    }, [addDataModalVisible])
 
   return (
      <View>
@@ -30,7 +41,8 @@ export default function FarmerAddDataModal({
         transparent={false}
         visible={addDataModalVisible}
         onRequestClose={() => {
-          setAddDataModalVisible(!addDataModalVisible);
+          setAddDataModalVisible(false);
+          setFarmerType('');
         }}
         statusBarTranslucent={false}
       >
@@ -42,14 +54,6 @@ export default function FarmerAddDataModal({
             }}
             >
             <LottieProcessCompletedButton />
-            <Text
-            style={{
-                paddingVertical: 10,
-                fontSize: 14,
-                fontFamily: 'JosefinSans-Regular',
-                color: '#005000',
-            }}
-            >O registo do Produtor ocorrido com sucesso!</Text>
             <View 
                 style={{ 
                     flex: 1,
@@ -58,11 +62,20 @@ export default function FarmerAddDataModal({
                     paddingVertical: 20,
                 }}
             >
-                <Stack direction="row" w="100%">
+                <Text
+                style={{
+                    paddingVertical: 10,
+                    fontSize: 18,
+                    fontFamily: 'JosefinSans-Regular',
+                    color: '#005000',
+                }}
+                >O registo ocorrido com sucesso!</Text>
+                {/* <Stack direction="row" w="100%">
                     <Box w="50%" alignItems="center">
                         <Pressable
                             onPress={()=>{
-                                navigation.navigate('Farmers');
+                                // navigation.goBack();
+                                navigation.goBack();
                                 setAddDataModalVisible(false);
                             }}
                         >
@@ -84,7 +97,7 @@ export default function FarmerAddDataModal({
                     <Box w="50%" alignItems="center">
                         <Pressable
                             onPress={()=>{
-                                navigation.navigate('FarmlandForm1');
+                                // navigation.goBack();
                                 setAddDataModalVisible(false);
                             }}
                         >
@@ -104,7 +117,7 @@ export default function FarmerAddDataModal({
                               </Text>
                         </Pressable>
                     </Box>
-                </Stack>
+                </Stack> */}
             </View>
         </View>
 

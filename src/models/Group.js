@@ -1,20 +1,21 @@
 /* eslint-disable prettier/prettier */
-import { Realm } from '@realm/react';
-import { Address, Contacts, IdDocument, Name } from './DependentSchemas';
-import { Farmland } from './Farmland';
+// import { Realm } from '@realm/react';
+// import { Address, Contacts, IdDocument, Name } from './DependentSchemas';
+// import { Farmland } from './Farmland';
 
 
 export const Group = {
     name: 'Group',
     primaryKey: '_id',
     properties: {
-        _id: 'objectId',
+        _id: 'string',
         type: 'string',
         name: 'string',
         affiliationYear: 'int',
         address: 'Address',
         members: 'Members',
         manager: 'Manager',
+        registeredMembers: 'Farmer[]',
         licence: 'string?',
         nuit: { type: 'int?', default: 0},
         farmlands: 'Farmland[]',

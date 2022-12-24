@@ -15,6 +15,7 @@ import districts from '../../fakedata/districts';
 import villages from '../../fakedata/villages';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import styles from './styles';
+import IndividualModal from '../../components/Modals/IndividualModal'
 import FarmerDataConfirmModal from '../../components/Modals/FarmerDataConfirmModal';
 import FarmerAddDataModal from '../../components/Modals/FarmerAddDataModal';
 import { fullYears, localeDateService, useDatepickerState } from '../../helpers/dates';
@@ -25,6 +26,9 @@ import { groups, institutions } from '../../fakedata/farmerTypes';
 import validateIndividualFarmerData from '../../helpers/validateIndividualFarmerData';
 import validateInstitutionFarmerData from '../../helpers/validateInstitutionFarmerData';
 import validateGroupFarmerData from '../../helpers/validateGroupFarmerData';
+import TickComponent from '../../components/LottieComponents/TickComponent';
+import GroupModal from '../../components/Modals/GroupModal';
+import InstitutionModal from '../../components/Modals/InstitutionModal';
 
 
 
@@ -101,6 +105,8 @@ export default function FarmerForm1Screen({ route, navigation }) {
     
     const user = route.params.user;
 
+    // console.log('farmerType:', farmerType);
+
     const addFarmer = ()=>{
         let farmerData;
         let retrievedFarmerData;
@@ -130,7 +136,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                 return ;
             }
             retrievedFarmerData = validateIndividualFarmerData(farmerData, errors, setErrors);
-
+           
         }
         else if (farmerType === "Instituição"){
             farmerData = {
@@ -171,10 +177,11 @@ export default function FarmerForm1Screen({ route, navigation }) {
                 return ;
             }
             retrievedFarmerData = validateGroupFarmerData(farmerData, errors, setErrors, farmerType);
-            console.log('grupo: ', JSON.stringify(retrievedFarmerData))
+            // console.log('grupo: ', JSON.stringify(retrievedFarmerData))
         }
         setFarmerData(retrievedFarmerData);
         setModalVisible(true);
+        // setFarmerType('');
     }
 
 
@@ -221,7 +228,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                     value={farmerType}
                     defaultValue="Indivíduo"
                     onChange={(nextValue) => {
-                        setLoadingActivityIndicator(true) // trigger ActivityIndicator
+                        // setLoadingActivityIndicator(true) // trigger ActivityIndicator
                         setFarmerType(nextValue);
                     }}
                 >
@@ -268,7 +275,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
 </Box>      
         {/* Data collecting form  */}
 {
-    loadingActivitiyIndicator && (
+    loadingActivitiyIndicator  && (
         <CustomActivityIndicator 
             loadingActivitiyIndicator={loadingActivitiyIndicator}
             setLoadingActivityIndicator={setLoadingActivityIndicator}
@@ -684,6 +691,8 @@ export default function FarmerForm1Screen({ route, navigation }) {
             </FormControl>
             </Box>
             </Stack>
+{
+    !birthDistrict?.includes('(Cidade)') && (
 
             <Stack direction="row" mx="3" w="100%">
             {
@@ -692,7 +701,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
             <FormControl isRequired my="1" isInvalid={'birthAdminPost' in errors}>
                 <FormControl.Label>Posto Administrativo</FormControl.Label>
                     <Select
-                        selectedValue={birthAdminPost}
+                        selectedValue={birthProvince ? birthAdminPost: ''}
                         accessibilityLabel="Escolha um posto administrativo"
                         placeholder="Escolha um posto administrativo"
                         // defaultValue="Primeiro, Escolha um posto administrativo"
@@ -707,7 +716,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                                     }
                         mt={1}
                         onValueChange={newAdminPost=> {
-                             setErrors((prev)=>({...prev, birthAdminPost: ''}));
+                            setErrors((prev)=>({...prev, birthAdminPost: ''}));
                             setBirthAdminPost(newAdminPost);
                         }}
                     >
@@ -729,8 +738,8 @@ export default function FarmerForm1Screen({ route, navigation }) {
             </Box>
         )}
         {
-            birthProvince !== "País Estrangeiro" && (
-            <Box w="50%" px="1">
+            (birthProvince !== "País Estrangeiro" && !birthAdminPost.includes('Sede')) && (
+                <Box w="50%" px="1">
             <FormControl isInvalid my="1" >
                 <FormControl.Label>Localidade</FormControl.Label>
                     <Select
@@ -744,16 +753,16 @@ export default function FarmerForm1Screen({ route, navigation }) {
                             endIcon: <CheckIcon size="5" />,
                         }}
                         dropdownCloseIcon={birthVillage 
-                                ? <Icon name="close" size={25} color="red" onPress={()=>setBirthVillage('')} /> 
-                                : <Icon size={40} name="arrow-drop-down" color="#005000" />
-                            }
+                            ? <Icon name="close" size={25} color="red" onPress={()=>setBirthVillage('')} /> 
+                            : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                        }
                         mt={1}
                         onValueChange={newVillage => setBirthVillage(newVillage)}
-                    >
+                        >
                     {
                         villages[birthAdminPost]?.map((village, index)=>(
                             <Select.Item key={index} label={village} value={village} />
-                        ))
+                            ))
                     }
                     </Select>
                 <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage>
@@ -761,6 +770,8 @@ export default function FarmerForm1Screen({ route, navigation }) {
             </Box>
         )}
             </Stack>
+    )
+}
             <CustomDivider
                 marginVertical="2"
                 thickness={2}
@@ -1552,21 +1563,90 @@ farmerType === "Instituição" && (
             onPress={()=>addFarmer(farmerType)}
             />)
             :
-            <Box pt="60">
-                <Text style={styles.secondDescription}>
+            <Box >
+                {/* <Text style={styles.secondDescription}>
                     Seleccione o tipo de produtor que pretendes registar!
-                </Text>
+                </Text> */}
+                <Center>
+                    <TickComponent />
+                </Center>
             </Box>
         }
     </Center>
 
     <Center flex={1} px="3">
-        <FarmerDataConfirmModal
+    { 
+    farmerType?.includes('Indiv') && (
+        <IndividualModal
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
             farmerData={farmerData}
             farmerType={farmerType}
+            setFarmerType={setFarmerType}
+
+            setSurname={setSurname}
+            setOtherNames={setOtherNames}
+            setIsSprayingAgent={setIsSprayingAgent}
+            setGender={setGender}
+            setAddressVillage={setAddressVillage}
+            setAddressAdminPost={setAddressAdminPost}
+            setPrimaryPhone={setPrimaryPhone}
+            setSecondaryPhone={setSecondaryPhone}
+            setBirthProvince={setBirthProvince}
+            setBirthDistrict={setBirthDistrict} 
+            setBirthAdminPost={setBirthAdminPost}
+            setBirthVillage={setBirthVillage}
+            setBirthDate={setBirthDate}
+            setDocType={setDocType}
+            setDocNumber={setDocNumber}
+            setNuit={setNuit}
         />
+    )
+    }
+    {
+        farmerType?.includes('Grup') && (
+            <GroupModal 
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                farmerData={farmerData}
+                farmerType={farmerType}
+                setFarmerType={setFarmerType}
+
+                setGroupType={setGroupType}
+                setGroupName={setGroupName}
+                setGroupAffiliationYear={setGroupAffiliationYear} 
+                setGroupAdminPost={setGroupAdminPost}
+                setGroupVillage={setGroupVillage}
+                setGroupManagerName={setGroupManagerName}
+                setGroupManagerPhone={setGroupManagerPhone}
+                setGroupOperatingLicence={setGroupOperatingLicence}
+                setGroupNuit={setGroupNuit}
+                setGroupMembersNumber={setGroupMembersNumber}
+                setGroupWomenNumber={setGroupWomenNumber}
+            
+            />
+        )
+    }
+    {
+        farmerType?.includes('Instit') && (
+            <InstitutionModal
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                farmerData={farmerData}
+                farmerType={farmerType}
+                setFarmerType={setFarmerType}
+                
+                setInstitutionType={setInstitutionType} 
+                setInstitutionName={setInstitutionName}
+                setInstitutionAdminPost={setInstitutionAdminPost}
+                setInstitutionVillage={setInstitutionVillage}
+                setInstitutionManagerName={setInstitutionManagerName}
+                setInstitutionManagerPhone={setInstitutionManagerPhone}
+                setInstitutionNuit={setInstitutionNuit}
+                setIsPrivateInstitution={setIsPrivateInstitution}  
+             />
+        )
+    }
     </Center>
     </Box>
    )

@@ -10,7 +10,7 @@ const CustomActivityIndicator = ({ loadingActivitiyIndicator, setLoadingActivity
         // setLoadingActivityIndicator(true);
         setTimeout(()=>{
             setLoadingActivityIndicator(false);
-        }, 500);
+        }, 100);
     }
 
     if (loadingActivitiyIndicator) {

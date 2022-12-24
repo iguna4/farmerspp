@@ -5,44 +5,54 @@ import {FlatList, InteractionManager, SafeAreaView, Text, View, Animated} from '
 import React, { useEffect, useRef, useState } from 'react';
 import {ListItem, Avatar, Icon } from '@rneui/themed';
 
-import { FloatingButton } from '../../components/Buttons/Buttons';
 import farmersFakeList from '../../fakedata/farmersFakeList';
 import { Box, Center, Pressable, Stack } from 'native-base';
-import styles from './styles';
-import CustomDivider from '../../components/Divider/CustomDivider';
 
-import Realm from 'realm';
-import { AppContext } from '../../models/realm';
+
 import FarmerItem from '../../components/FarmerItem/FarmerItem';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { useFocusEffect } from '@react-navigation/native';
-const { useRealm, useQuery } = AppContext; 
 
-import LottieView from 'lottie-react-native';
 import LottieAddButton from '../../components/Buttons/LottieAddButton';
+import TickComponent from '../../components/LottieComponents/TickComponent';
+// import { realm } from '../../models/realm';
 
+import { realmContext } from '../../models/realm';
+const { useRealm, useQuery } = realmContext; 
 
 
 export default function FarmersCcreen({ route, navigation }) {
 
+  // const farmers = [];
   const farmers = useQuery('Farmer');
-  const appRealm = useRealm();
-  
-  // console.log('farmers: ', farmers)
+  const groups = useQuery('Group');
+  const institutions = useQuery('Institution');
+  // const appRealm = useRealm();
 
-  const keyExtractor = (farmer, index)=>index.toString();
+
+  console.log('---------------------------------------')
+  console.log('farmers: ', farmers);
+  console.log('---------------------------------------')
+  console.log('groups: ', groups)
+  console.log('---------------------------------------')
+  console.log('institution: ', institutions)
+  console.log('---------------------------------------')
+
+
+  const keyExtractor = (item, index)=>index.toString();
 
   useEffect(()=>{
-    const newTitle = farmers?.length <= 1 
-                        ? `Distrito xxx: ${farmers?.length} produtor registado`
-                        : `Distrito xxx: ${farmers?.length} produtores registados`
-    navigation.setOptions({
-      title: newTitle,
-    })
+    // const newTitle = farmers?.length <= 1 
+    //                     ? `${groups?.length} produtor (Distrito)`
+    //                     : `${groups?.length} produtores (Distrito)`
+    // navigation.setOptions({
+    //   title: newTitle,
+    // })
 
-  }, [appRealm, farmers])
+  }, [])
 
-
+  // console.log('farmers: ', farmers);
+  
   const addFarmer = ()=>{
     navigation.navigate('FarmerForm1', { user: {
       name: 'evariste musekwa',
@@ -91,13 +101,7 @@ export default function FarmersCcreen({ route, navigation }) {
         farmers?.length === 0 ?
         (
         <Center 
-          height="90%"
-          // style={{ 
-          //   flex: 1, 
-          //   justifyContent: 'center', 
-          //   alignItems: 'center',
-          //   paddingHorizontal: 40,
-          //   }}
+          height="80%"
         >
           <Text 
             style={{
@@ -111,11 +115,19 @@ export default function FarmersCcreen({ route, navigation }) {
             Serás o primeiro a iniciar o registo de produtores 
             de caju neste distrito!
           </Text>
+          <TickComponent />
+
         </Center>
         )
         :
         (
-          <Box paddingY="5" alignItems="stretch" w="100%" my="3">
+          <Box 
+            // paddingY="5" 
+            alignItems="stretch" 
+            w="100%" 
+            // my="3"
+            >
+            {/* {farmers.map((item)=>(<Text key={item._id}>{item.names.otherNames}{' '}{item.names.surname}</Text>))} */}
             <FlatList
               
               data={farmers}

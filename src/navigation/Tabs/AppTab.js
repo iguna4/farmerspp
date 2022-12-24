@@ -10,9 +10,8 @@ import FarmersStackScreen from '../Stacks/FarmersStackScreen';
 import {Icon } from '@rneui/themed';
 import Login from '../../screens/Fallback/Login';
 
-import { AppContext } from '../../models/realm';
-import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
-const { RealmProvider, useRealm } = AppContext;
+import { realmContext } from '../../models/realm';
+const { RealmProvider} = realmContext;
 
 
 const Tab = createBottomTabNavigator();

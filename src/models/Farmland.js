@@ -1,24 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { Realm } from '@realm/react';
+// import { Realm } from '@realm/react';
 
-// export class Farmland extends Realm.Object {
-
-//     static schema = {
-//         name: 'Farmland',
-//         primaryKey: '_id',
-//         properties: {
-//             _id: 'objectId',
-//             description: 'string?',
-//             consociatedCrops: 'string[]',
-//             density: 'Density?',
-//             farmer: {
-//                 type: 'linkingObjects',
-//                 objectType: 'Farmland',
-//                 property: 'farmlands',
-//             },
-//         }
-//     };
-// };
 
 export const Farmland = {
     name: 'Farmland',
@@ -28,7 +10,11 @@ export const Farmland = {
         description: 'string',
         consociatedCrops: 'string[]',
         density: 'Density',
-        // cashewTrees: ''
+        // farmer: {
+        //         type: 'linkingObjects',
+        //         objectType: 'Farmer',
+        //         property: 'farmlands',
+        //     },
         createdAt: { type: 'date', default: Date()},
     },
 }

@@ -22,14 +22,22 @@ import { useNavigation } from '@react-navigation/native';
 import { realmContext } from '../../models/realm';
 const {useRealm} = realmContext;
 
-export default function FarmerDataConfirmModal({
-            farmerData,
-            setModalVisible,
-            modalVisible,
-            farmerType,
-        }
-    ) {
-    const [addDataModalVisible, setAddDataModalVisible] = useState(false);
+const IndividualModal = (
+    {
+        modalVisible,
+        setModalVisible,
+        farmerData,
+
+        setSurname, setOtherNames, setIsSprayingAgent, setGender,
+        setAddressVillage, setAddressAdminPost, setPrimaryPhone, setSecondaryPhone,
+        setBirthProvince, setBirthDistrict, setBirthAdminPost, setBirthVillage,
+        setBirthDate, setDocType, setDocNumber, setNuit,
+        setFarmerType,
+
+    }
+) => {
+
+   const [addDataModalVisible, setAddDataModalVisible] = useState(false);
     const [farmerId, setFarmerId] = useState(null);
     const navigation = useNavigation();
     const realm = useRealm()
@@ -66,7 +74,24 @@ export default function FarmerDataConfirmModal({
         })
         console.log('newFarmer:', newFarmer);
         setModalVisible(false);
-        setAddDataModalVisible(true)
+        setAddDataModalVisible(true);
+        setSurname(''); 
+        setOtherNames(''); 
+        setIsSprayingAgent(false); 
+        setGender('');
+        setAddressVillage(''); 
+        setAddressAdminPost(''); 
+        setPrimaryPhone(null); 
+        setSecondaryPhone(null);
+        setBirthProvince(''); 
+        setBirthDistrict(''); 
+        setBirthAdminPost(''); 
+        setBirthVillage('');
+        setBirthDate(null); 
+        setDocType(''); 
+        setDocNumber(''); 
+        setNuit(null);
+       
         
     })
 }, [
@@ -75,24 +100,11 @@ export default function FarmerDataConfirmModal({
         // farmerType
     ]);
 
-    useEffect(()=>{
-        if (farmerType === 'Indivíduo'){
-
-        }
-        else if (farmerType === 'Grupo') {
-
-        }
-        else if (farmerType === 'Instituição'){
-
-        }
-
-    }, [farmerType])
 
 
-  return(
-
-      <>
-      <Modal
+  return (
+  <>
+    <Modal
         isOpen={modalVisible}
         onClose={() => setModalVisible(false)}
         avoidKeyboard
@@ -117,14 +129,12 @@ export default function FarmerDataConfirmModal({
                     Confirma dados 
                 </Text>
             </Modal.Header>
-            <Modal.Body minHeight="450">
-                <CustomDivider
-                    marginVertical="1"
-                    thickness={1}
-                    bg="grey"
-                />
- {/* {
-     farmerType === 'Indivíduo' && (
+        <Modal.Body minHeight="450">
+        <CustomDivider
+            marginVertical="1"
+            thickness={1}
+            bg="grey"
+        />
 
          <Box>
         <Stack direction="row" w="100%" my="1">
@@ -316,19 +326,19 @@ export default function FarmerDataConfirmModal({
                             { farmerData?.idDocument?.docNumber ?
                                 (<Text style={styles.values}>{farmerData?.idDocument?.docNumber} ({farmerData?.idDocument?.docType})</Text>)
                                 :
-                                (<Text style={styles.values}>Nenhum</Text>)
+                                (<Text style={styles.values}>Nenhum (Nenhum)</Text>)
                             }
                     </Box>
                 </Stack>
                 <Stack direction="row" w="100%" my="1">
                     <Box w="40%">
-                        <Text style={styles.keys}>NUIT:</Text>
+                        {/* <Text style={styles.keys}>NUIT:</Text> */}
                     </Box>
                     <Box w="60%">
                             { farmerData?.idDocument?.nuit ?
-                                (<Text style={styles.values}>{farmerData?.idDocument?.nuit}</Text>)
+                                (<Text style={styles.values}>{farmerData?.idDocument?.nuit} (NUIT)</Text>)
                                 :
-                                (<Text style={styles.values}>Nenhum</Text>)
+                                (<Text style={styles.values}>Nenhum (NUIT)</Text>)
                             }
                     </Box>
                 </Stack>
@@ -338,269 +348,14 @@ export default function FarmerDataConfirmModal({
                 bg="grey"
                 />
         </Box>
-)} */}
 
-{/* {
-    farmerType === 'Instituição' && (
-    <Box>
-        <Stack direction="row" w="100%" my="1">
-            <Box w="40%">
-                <Text style={styles.keys}>Instituição:</Text>
-            </Box>
-            <Box w="60%" style={styles.values}>
-                <Box>
-                    <Text style={styles.values}>
-                        {farmerData?.name} ({farmerData?.type})
-                    </Text>
-                    <Text style={styles.values}>
-                        {farmerData?.isPrivate ? 'Instituição Privada' : 'Instituição Pública'} 
-                    </Text>
-                </Box>
-            </Box>
-        </Stack>
-
-    <CustomDivider
-        marginVertical="1"
-        thickness={1}
-        bg="grey"
-    />
-
-    <Stack direction="row" w="100%" my="1">
-        <Box w="40%">
-            <Text style={styles.keys}>Documentos:</Text>
-        </Box>
-        <Box w="60%">
-            <Text style={styles.values}>
-                {farmerData?.nuit ? farmerData?.nuit + ' (NUIT)' : 'Nenhum (NUIT)'}
-            </Text>
-        </Box>
-    </Stack>
-
-    <CustomDivider
-        marginVertical="1"
-        thickness={1}
-        bg="grey"
-    />
-
-    <Stack direction="row" w="100%" my="1">
-        <Box w="40%">
-            <Text style={styles.keys}>Contacto:</Text>
-        </Box>
-        <Box w="60%">
-            <Text style={styles.values}>
-                {farmerData.manager?.fullname} (Gerente)
-            </Text>
-            <Text style={styles.values}>
-            {
-                farmerData.manager?.phone ? 
-                farmerData?.manager?.phone + ' (Telefone)' :
-                'Nenhum (Telefone)'
-            }
-            </Text>
-        </Box>
-    </Stack>
-
-        <CustomDivider
-            marginVertical="1"
-            thickness={1}
-            bg="grey"
-        />
-
-
-        <Stack direction="row" w="100%" my="1">
-        <Box w="40%">
-            <Text style={styles.keys}>Endereço:</Text>
-        </Box>
-        <Box w="60%">
-            <Box>
-                <Text style={styles.values}>
-                    {farmerData?.address?.province} (Província)
-                </Text>
-                <Text style={styles.values}>
-                    {farmerData?.address?.district} (Distrito)
-                </Text>
-                <Text style={styles.values}>
-                    {farmerData?.address?.adminPost} (Posto Admin.)
-                </Text>
-                <Text style={styles.values}>
-                    {farmerData?.address?.village ? farmerData.address?.village (localidade/povoado) : 'Nenhum (Localidade/Povoado)'}
-                </Text>
-            </Box>
-        </Box>
-    </Stack>
-
-
-    <CustomDivider
-        marginVertical="1"
-        thickness={1}
-        bg="grey"
-    />
-
-    </Box>
-)} */}
-
-{/* {
-    farmerType === 'Grupo' && (
-        <Box>
-        <Stack direction="row" w="100%" my="1">
-            <Box w="40%">
-                <Text style={styles.keys}>Grupo:</Text>
-            </Box>
-            <Box w="60%" style={styles.values}>
-                <Box>
-                    <Text style={styles.values}>
-                        {farmerData?.name} ({farmerData?.type})
-                    </Text>
-                </Box>
-            </Box>
-        </Stack>
-
-
-        <CustomDivider
-            marginVertical="1"
-            thickness={1}
-            bg="grey"
-        />
-
-    <Stack direction="row" w="100%" my="1">
-        <Box w="40%">
-            <Text style={styles.keys}>Membros</Text>
-        </Box>
-        <Box w="60%">
-            <Box>
-                <Text style={styles.values}>
-                    {farmerData.members?.women} (Mulheres)
-                </Text>
-            </Box>
-            <Box>
-                <Text style={styles.values}>
-                    {farmerData.members?.total - farmerData.members?.women} (Homens)
-                </Text>
-            </Box>
-            <Box>
-                <Text style={styles.values}>________</Text>
-                <Text style={styles.values}>
-                    {farmerData.members?.total} (Total)
-                </Text>
-            </Box>
-        </Box>
-    </Stack>
-
-
-        <CustomDivider
-            marginVertical="1"
-            thickness={1}
-            bg="grey"
-        />
-
-    <Stack direction="row" w="100%" my="1">
-        <Box w="40%">
-            <Text style={styles.keys}>Ano de afiliação:</Text>
-        </Box>
-        <Box w="60%">
-            <Box>
-                <Text style={styles.values}>
-                    {farmerData?.affiliationYear}
-                </Text>
-            </Box>
-        </Box>
-    </Stack>
-
-
-    <CustomDivider
-        marginVertical="1"
-        thickness={1}
-        bg="grey"
-    />
-
-        <Stack direction="row" w="100%" my="1">
-        <Box w="40%">
-            <Text style={styles.keys}>Documentos:</Text>
-        </Box>
-        <Box w="60%">
-            <Box>
-                <Text style={styles.values}>
-                    {farmerData?.licence ? farmerData?.licence + ` (Licença/Alvará)` : 'Nenhum (Licença/Alvará)'} 
-                </Text>
-                <Text style={styles.values}>
-                    {farmerData?.nuit ? farmerData?.nuit + ` (NUIT)` : 'Nenhum (NUIT)'} 
-                </Text>
-            </Box>
-        </Box>
-    </Stack>
-
-
-    <CustomDivider
-        marginVertical="1"
-        thickness={1}
-        bg="grey"
-    />
-
-    <Stack direction="row" w="100%" my="1">
-        <Box w="40%">
-            <Text style={styles.keys}>Contacto:</Text>
-        </Box>
-        <Box w="60%">
-            <Text style={styles.values}>
-                {farmerData.manager?.fullname} (Gerente)
-            </Text>
-            <Text style={styles.values}>
-            {
-                farmerData.manager?.phone ? 
-                farmerData.manager?.phone + ` (Telefone)` : 
-                'Nenhum (Telefone)' 
-            }
-            </Text>
-        </Box>
-    </Stack>
-    <CustomDivider
-        marginVertical="1"
-        thickness={1}
-        bg="grey"
-    />
-
-
-    <CustomDivider
-        marginVertical="1"
-        thickness={1}
-        bg="grey"
-    />
-
-        <Stack direction="row" w="100%" my="1">
-        <Box w="40%">
-            <Text style={styles.keys}>Endereço:</Text>
-        </Box>
-        <Box w="60%">
-            <Box>
-                <Text style={styles.values}>
-                    {farmerData?.address?.province} (Província)
-                </Text>
-                <Text style={styles.values}>
-                    {farmerData?.address?.district} (Distrito)
-                </Text>
-                <Text style={styles.values}>
-                    {farmerData?.address?.adminPost} (Posto Admin.)
-                </Text>
-                <Text style={styles.values}>
-                    {farmerData.address?.village ? farmerData.address?.village (localidade/povoado) : 'Nenhum (Localidade/Povoado)'}
-                </Text>
-            </Box>
-        </Box>
-    </Stack>
-
-        marginVertical="1"
-        thickness={1}
-    <CustomDivider
-        bg="grey"
-    />
-    </Box>
-)} */}
-
-     </Modal.Body>
+        </Modal.Body>
         <Modal.Footer maxHeight="60">
             <Center>
                 <Button
-                        onPress={()=>addFarmer(farmerData, realm)}
+                        onPress={()=>{
+                            addFarmer(farmerData, realm)
+                        }}
                         title="Salvar Dados"
                         buttonStyle={{
                             width: 300,
@@ -615,8 +370,12 @@ export default function FarmerDataConfirmModal({
                 addDataModalVisible={addDataModalVisible}
                 setAddDataModalVisible={setAddDataModalVisible}
                 farmerId={farmerId}
-                />
+                setFarmerType={setFarmerType}
+            />
         </Center>
     </>
-) 
+
+  )
 }
+
+export default IndividualModal;

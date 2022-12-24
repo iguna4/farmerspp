@@ -125,7 +125,11 @@ const validateIndividualFarmerData = (
         return false;
     }
 
-    if (!retrievedBirthAdminPost && birthProvince !== "País Estrangeiro"){
+    if (
+        !retrievedBirthAdminPost 
+        && birthProvince !== "País Estrangeiro" 
+        && !retrievedBirthDistrict?.includes('(Cidade')
+        ){
         setErrors({ ...errors,
             birthAdminPost: 'Posto Administrativo onde o produtor nasceu.',
         });

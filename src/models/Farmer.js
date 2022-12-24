@@ -1,15 +1,16 @@
 /* eslint-disable prettier/prettier */
-import { Realm } from '@realm/react';
-import { Address, Contacts, IdDocument, Name } from './DependentSchemas';
-import { Farmland } from './Farmland';
+// import { Realm } from '@realm/react';
+// import { Address, Contacts, IdDocument, Name } from './DependentSchemas';
+// import { Farmland } from './Farmland';
 
 
 export const Farmer = {
     name: 'Farmer',
     primaryKey: '_id',
     properties: {
-        _id: 'objectId',
+        _id: 'string',
         names: 'Name',
+        ufid: 'string', //ufid: unique farmer id  =>surname:dateOfBirth:cep:8randomNumbers:registrationTimestamp
         isSprayingAgent: {type: 'bool', default: 'false', },
         gender: 'string',
         birthDate: 'date',
@@ -17,8 +18,8 @@ export const Farmer = {
         address: 'Address',
         category: { type: 'string', default: 'não categorizado' },
         contact: 'Contact?',
-        idDocument: 'IdDocument',
-        photo: { type: 'string', default: 'NA' },
+        idDocument: 'IdDocument?',
+        photo: { type: 'string', default: 'https://localhost.picture' },
         farmlands: 'Farmland[]',
         createdAt: { type: 'date', default: Date()},
     },

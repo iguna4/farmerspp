@@ -29,7 +29,7 @@ export default function FarmersStackScreen() {
       >
         <FarmersStack.Screen name="Farmers" component={FarmersScreen} />
         <FarmersStack.Screen name="FarmerForm1" component={FarmerForm1Screen} />
-        <FarmersStack.Screen name="FarmerForm2" component={FarmerForm2Screen} />
+        {/* <FarmersStack.Screen name="FarmerForm2" component={FarmerForm2Screen} /> */}
         <FarmersStack.Screen name="FarmlandForm1" component={FarmlandForm1Screen} />
       </FarmersStack.Navigator>
   );

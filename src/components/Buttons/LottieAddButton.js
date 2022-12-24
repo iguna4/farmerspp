@@ -15,25 +15,18 @@ const LottieAddButton = ({ styles, onPress }) => {
         const newValue = isAddButtonPressed ? 0 : 1; 
         Animated.timing(progress, {
         toValue: newValue,
-        duration: 1000,
+        duration: 2000,
         useNativeDriver: true,
         }).start();
         setTimeout(()=>{
             onPress()
-        }, 800);
+        }, 500);
         setIsAddButtonPressed(!isAddButtonPressed);
     }
 
   return (
     <Pressable  
-    //   style={{ 
-    //     zIndex: 3, 
-    //     width: 100, 
-    //     height: 100, 
-    //     position: 'absolute', 
-    //     bottom: 10, 
-    //   }}
-    style={styles}
+      style={styles}
       onPress={handleAdd}
     >
       <LottieView
@@ -43,8 +36,6 @@ const LottieAddButton = ({ styles, onPress }) => {
     </Pressable>
   )
 }
-
-// PropTypes.
 
 
 export default LottieAddButton

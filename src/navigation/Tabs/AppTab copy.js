@@ -11,16 +11,16 @@ import UsersStackScreen from '../Stacks/UsersStackScreen';
 import {Icon } from '@rneui/themed';
 
 
-import { AppContext } from '../../models/realm';
+// import { AppContext } from '../../models/realm';
 import { User } from '../../models/User';
-const { useRealm } = AppContext;
+// const { useRealm } = AppContext;
 
 const Tab = createBottomTabNavigator();
 
 
 export default function AppTab() {
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const appRealm = useRealm();
+  // const appRealm = useRealm();
 
 
 

@@ -35,7 +35,6 @@ import ErrorAlert from '../../components/Alerts/ErrorAlert';
 
 export default function FarmerForm1Screen({ route, navigation }) {
     const [gender, setGender] = useState('');
-    const [familySize, setFamilySize] = useState('');
 
     // address
     const [selectedAddressAdminPosts, setSelectedAddressAdminPosts] = useState([]);
@@ -49,7 +48,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
     // const [birthCountry, setBirthCountry] = useState('');
 
     // birth village
-    // const [birthVillage, setBirthVillage] = useState('');
+    const [birthVillage, setBirthVillage] = useState('');
 
     // handle modal view
     const [modalVisible, setModalVisible] = useState(false);
@@ -120,13 +119,12 @@ export default function FarmerForm1Screen({ route, navigation }) {
                isSprayingAgent,
                surname,   
                otherNames, 
-               gender,
-               familySize,
                birthDate, 
+               gender,
                birthProvince,
                birthDistrict,
                birthAdminPost,
-            //    birthVillage,
+               birthVillage,
                // userAddressProvince,
                // userAddressDistrict,
                addressAdminPost,
@@ -433,25 +431,36 @@ export default function FarmerForm1Screen({ route, navigation }) {
 
             <Box w="50%" px="1" pt="2">
                 {/* <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Data de Nascimento<Text style={{color: 'red'}}>*</Text></Text> */}
-            <FormControl isRequired isInvalid={'familySize' in errors}>
-                <FormControl.Label>Agregado Familiar</FormControl.Label>
-                    <CustomInput
-                        width="100%"
-                        type="number"
-                        textAlign="center"
-                        placeholder="Agregado familiar"
-                        value={familySize}
-                        keyboardType="numeric"
-                        onChangeText={newSize=>{
-                            setErrors((prev)=>({...prev, familySize: ''}));
-                            setFamilySize(newSize)
-                        }}
-                    />
+            <FormControl isRequired isInvalid={'birthDate' in errors}>
+                <FormControl.Label>Data de Nascimento</FormControl.Label>
+                <Datepicker
+                    placeholder="Nascimento"
+                    min={new Date(1900, 0, 0)}
+                    max={new Date(2010, 0, 0)}
+                    size="large"
+                    placement="top end"
+                    style={styles.datepicker}
+                    date={birthDate}
+
+                    // dateService={formatDateService}
+                    // {...dateFormatPickerState}
+                    dateService={localeDateService}
+                    // {...localePickerState}
+                    accessoryRight={
+                        birthDate 
+                                ? <Icon name="close" size={25} color="red" onPress={()=>setBirthDate(null)} /> 
+                                : <Icon name="date-range" color="#005000" />
+                    }
+                    onSelect={nextDate => {
+                        setErrors(prev=>({...prev, birthDate: null }))
+                        setBirthDate(nextDate)
+                    }}
+                />
                 {
-                'familySize' in errors 
+                'birthDate' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.familySize}</FormControl.ErrorMessage> 
+                _text={{ fontSize: 'xs'}}>{errors?.birthDate}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
                 }
             </FormControl>
@@ -609,34 +618,35 @@ export default function FarmerForm1Screen({ route, navigation }) {
             />
 
             <Center>
-                <Text style={styles.formSectionDescription}>Dados de Nascimento</Text>
+                <Text style={styles.formSectionDescription}>Local de Nascimento</Text>
             </Center>
 
-    <Stack direction="row" mx="3" my="2" w="100%">
-        <Box w="50%" px="1" pt="1">
+            <Stack direction="row" mx="3" w="100%">
+            <Box w="50%" px="1" pt="2">
+                {/* <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Data de Nascimento<Text style={{color: 'red'}}>*</Text></Text> */}
             <FormControl isRequired isInvalid={'birthDate' in errors}>
                 <FormControl.Label>Data de Nascimento</FormControl.Label>
-                    <Datepicker
-                        placeholder="Nascimento"
-                        min={new Date(1900, 0, 0)}
-                        max={new Date(2010, 0, 0)}
-                        size="large"
-                        placement="top end"
-                        style={styles.datepicker}
-                        date={birthDate}
+                <Datepicker
+                    placeholder="Nascimento"
+                    min={new Date(1900, 0, 0)}
+                    max={new Date(2010, 0, 0)}
+                    size="large"
+                    placement="top end"
+                    style={styles.datepicker}
+                    date={birthDate}
 
-                        // dateService={formatDateService}
-                        // {...dateFormatPickerState}
-                        dateService={localeDateService}
-                        // {...localePickerState}
-                        accessoryRight={
-                            birthDate 
-                                    ? <Icon name="close" size={25} color="red" onPress={()=>setBirthDate(null)} /> 
-                                    : <Icon name="date-range" color="#005000" />
-                        }
-                        onSelect={nextDate => {
-                            setErrors(prev=>({...prev, birthDate: null }))
-                            setBirthDate(nextDate)
+                    // dateService={formatDateService}
+                    // {...dateFormatPickerState}
+                    dateService={localeDateService}
+                    // {...localePickerState}
+                    accessoryRight={
+                        birthDate 
+                                ? <Icon name="close" size={25} color="red" onPress={()=>setBirthDate(null)} /> 
+                                : <Icon name="date-range" color="#005000" />
+                    }
+                    onSelect={nextDate => {
+                        setErrors(prev=>({...prev, birthDate: null }))
+                        setBirthDate(nextDate)
                     }}
                 />
                 {
@@ -647,11 +657,11 @@ export default function FarmerForm1Screen({ route, navigation }) {
                 : <FormControl.HelperText></FormControl.HelperText>
                 }
             </FormControl>
-        </Box>    
+            </Box>    
 
 
-        <Box w="50%" px="1">
-            <FormControl isRequired isInvalid={'birthProvince' in errors}>
+            <Box w="50%" px="1">
+            <FormControl isRequired my="3" isInvalid={'birthProvince' in errors}>
                 <FormControl.Label>Província</FormControl.Label>
                     <Select
                         selectedValue={birthProvince}
@@ -662,7 +672,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                             fontSize: 'lg',
                             endIcon: <CheckIcon size="5" />,
                         }}
-                        dropdownCloseIcon={birthProvince 
+                      dropdownCloseIcon={birthProvince 
                                         ? <Icon name="close" size={25} color="red" onPress={()=>setBirthProvince('')} /> 
                                         : <Icon size={40} name="arrow-drop-down" color="#005000" />
                                     }
@@ -688,9 +698,9 @@ export default function FarmerForm1Screen({ route, navigation }) {
             </Box>
             </Stack>
 
-        <Stack direction="row" mx="3" my="2" w="100%">
+        <Stack direction="row" mx="3" w="100%">
             <Box w="50%" px="1">
-            <FormControl isRequired my="1" isInvalid={'birthDistrict' in errors}>
+            <FormControl isRequired my="3" isInvalid={'birthDistrict' in errors}>
                 <FormControl.Label>{birthProvince === "País Estrangeiro" ? 'País' : 'Distrito'}</FormControl.Label>
                     <Select
                         selectedValue={birthDistrict}
@@ -738,11 +748,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
             </FormControl>
             </Box>
             <Box w="50%" px="1">
-{
-    !birthProvince?.includes('Estrangeiro') && (
-
-        
-        <FormControl isRequired my="1" isInvalid={'birthAdminPost' in errors}>
+            <FormControl isRequired my="1" isInvalid={'birthAdminPost' in errors}>
                 <FormControl.Label>Posto Administrativo</FormControl.Label>
                     <Select
                         selectedValue={birthProvince ? birthAdminPost: ''}
@@ -755,44 +761,125 @@ export default function FarmerForm1Screen({ route, navigation }) {
                             endIcon: <CheckIcon size="5" />,
                         }}
                       dropdownCloseIcon={birthAdminPost 
-                        ? <Icon name="close" size={25} color="red" onPress={()=>setBirthAdminPost('')} /> 
-                        : <Icon size={40} name="arrow-drop-down" color="#005000" />
-                    }
-                    mt={1}
-                    onValueChange={newAdminPost=> {
-                        setErrors((prev)=>({...prev, birthAdminPost: ''}));
-                        setBirthAdminPost(newAdminPost);
-                    }}
+                                        ? <Icon name="close" size={25} color="red" onPress={()=>setBirthAdminPost('')} /> 
+                                        : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                                    }
+                        mt={1}
+                        onValueChange={newAdminPost=> {
+                            setErrors((prev)=>({...prev, birthAdminPost: ''}));
+                            setBirthAdminPost(newAdminPost);
+                        }}
                     >
                     {
                         administrativePosts[birthDistrict]?.map((adminPost, index)=>(
                             <Select.Item key={index} label={adminPost} value={adminPost} />
-                            ))
-                        }
+                        ))
+                    }
                     </Select>
                 {
-                    'birthAdminPost' in errors 
-                    ? <FormControl.ErrorMessage 
-                    leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                    _text={{ fontSize: 'xs'}}>{errors?.birthAdminPost}</FormControl.ErrorMessage> 
-                    : <FormControl.HelperText></FormControl.HelperText>
+                'birthAdminPost' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.birthAdminPost}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
                 }
             </FormControl>
         
-    )
-}
-</Box>
+            </Box>
         </Stack>
+        <Stack direction="row" mx="3" w="100%">
 
-        <CustomDivider
-            marginVertical="2"
-            thickness={2}
-            bg="#005000"
-        />
+{/* {
+    !birthDistrict?.includes('(Cidade)') && (
 
-        <Center>
-            <Text style={styles.formSectionDescription}>Documentos de Identificação</Text>
-        </Center>
+            {
+            birthProvince !== "País Estrangeiro" && (
+
+        )}
+        {
+            (birthProvince !== "País Estrangeiro" && !birthAdminPost.includes('Sede')) && ( */}
+            {/* //     <Box w="50%" px="1">
+            // <FormControl isInvalid my="1" >
+            //     <FormControl.Label>Localidade</FormControl.Label>
+            //         <Select */}
+            {/* //             selectedValue={birthVillage}
+            //             accessibilityLabel="Escolha uma localidade"
+            //             placeholder="Escolha uma localidade"
+            //             // defaultValue="Primeiro, Escolha uma localidade"
+            //             _selectedItem={{ */}
+            {/* //                 bg: 'teal.600',
+            //                 fontSize: 'lg',
+            //                 endIcon: <CheckIcon size="5" />,
+            //             }}
+            //             dropdownCloseIcon={birthVillage  */}
+            {/* //                 ? <Icon name="close" size={25} color="red" onPress={()=>setBirthVillage('')} /> 
+            //                 : <Icon size={40} name="arrow-drop-down" color="#005000" />
+            //             }
+            //             mt={1}
+            //             onValueChange={newVillage => setBirthVillage(newVillage)}
+            //             >
+            //         { */}
+            {/* //             villages[birthAdminPost]?.map((village, index)=>(
+            //                 <Select.Item key={index} label={village} value={village} />
+            //                 ))
+            //         }
+            //         </Select>
+            //     <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage>
+            // </FormControl> */}
+            {/* // </Box> */}
+    
+
+            <Box w="50%" px="1" pt="2">
+                {/* <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Data de Nascimento<Text style={{color: 'red'}}>*</Text></Text> */}
+            <FormControl isRequired isInvalid={'birthDate' in errors}>
+                <FormControl.Label>Data de Nascimento</FormControl.Label>
+                <Datepicker
+                    placeholder="Nascimento"
+                    min={new Date(1900, 0, 0)}
+                    max={new Date(2010, 0, 0)}
+                    size="large"
+                    placement="top end"
+                    style={styles.datepicker}
+                    date={birthDate}
+
+                    // dateService={formatDateService}
+                    // {...dateFormatPickerState}
+                    dateService={localeDateService}
+                    // {...localePickerState}
+                    accessoryRight={
+                        birthDate 
+                                ? <Icon name="close" size={25} color="red" onPress={()=>setBirthDate(null)} /> 
+                                : <Icon name="date-range" color="#005000" />
+                    }
+                    onSelect={nextDate => {
+                        setErrors(prev=>({...prev, birthDate: null }))
+                        setBirthDate(nextDate)
+                    }}
+                />
+                {
+                'birthDate' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.birthDate}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+                }
+            </FormControl>
+            </Box>
+
+
+        {/* )} */}
+            </Stack>
+    {/* )
+} */}
+            <CustomDivider
+                marginVertical="2"
+                thickness={2}
+                bg="#005000"
+            />
+
+            <Center>
+                <Text style={styles.formSectionDescription}>Documentos de Identificação</Text>
+            </Center>
 
             <Stack direction="row" mx="3" w="100%">
             <Box w="50%" px="1">
@@ -1600,7 +1687,6 @@ farmerType === "Instituição" && (
             setOtherNames={setOtherNames}
             setIsSprayingAgent={setIsSprayingAgent}
             setGender={setGender}
-            setFamilySize={setFamilySize}
             setAddressVillage={setAddressVillage}
             setAddressAdminPost={setAddressAdminPost}
             setPrimaryPhone={setPrimaryPhone}
@@ -1608,7 +1694,7 @@ farmerType === "Instituição" && (
             setBirthProvince={setBirthProvince}
             setBirthDistrict={setBirthDistrict} 
             setBirthAdminPost={setBirthAdminPost}
-            // setBirthVillage={setBirthVillage}
+            setBirthVillage={setBirthVillage}
             setBirthDate={setBirthDate}
             setDocType={setDocType}
             setDocNumber={setDocNumber}

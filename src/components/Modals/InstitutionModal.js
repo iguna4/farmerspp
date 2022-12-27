@@ -12,7 +12,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import Realm from 'realm';
 
-import FarmerAddDataModal from './FarmerAddDataModal';
+import SuccessModal from './SuccessModal';
 import { generateUUID } from '../../helpers/generateUUID';
 import { generateFormattedDate } from '../../helpers/generateFormattedDate';
 import { generateFormattedAdminPost } from '../../helpers/generateFormattedAdminPost';
@@ -237,7 +237,7 @@ const InstitutionModal = (
         </Modal.Content>
       </Modal>
         <Center flex={1} px="3">
-            <FarmerAddDataModal
+            <SuccessModal
                 addDataModalVisible={addDataModalVisible}
                 setAddDataModalVisible={setAddDataModalVisible}
                 farmerId={farmerId}

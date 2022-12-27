@@ -6,12 +6,13 @@ const validateIndividualFarmerData = (
     {   isSprayingAgent,
         surname, 
         otherNames, 
-        birthDate, 
         gender, 
+        familySize,
+        birthDate, 
         birthProvince,
         birthDistrict,
         birthAdminPost,
-        birthVillage,
+        // birthVillage,
         // addressProvince,
         // addressDistrict,
         addressAdminPost,
@@ -24,12 +25,13 @@ const validateIndividualFarmerData = (
     const retrievedisSprayingAgent = isSprayingAgent;
     const retrievedSurname = capitalize(surname?.trim()); 
     const retrievedOtherNames = capitalize(otherNames?.trim());
-    const retrievedBirthDate = birthDate;
     const retrievedGender = gender;
+    const retrievedFamilySize = familySize;
+    const retrievedBirthDate = birthDate;
     const retrievedBirthProvince = birthProvince?.trim();
     const retrievedBirthDistrict = birthDistrict?.trim();
     const retrievedBirthAdminPost = birthAdminPost?.trim();
-    const retrievedBirthVillage = birthVillage?.trim();
+    // const retrievedBirthVillage = birthVillage?.trim();
     // const retrievedAddressProvince = addressProvince?.trim();
     // const retrievedAddressDistrict = addressDistrict?.trim();
     const retrievedAddressAdminPost = addressAdminPost?.trim();
@@ -64,6 +66,13 @@ const validateIndividualFarmerData = (
         setErrors({ ...errors,
             gender: 'Género do produtor.',
         });
+        return false;
+    }
+
+    if (!retrievedFamilySize || retrievedFamilySize === 0 || retrievedFamilySize > 30) {
+        setErrors({ ...errors, 
+            familySize: 'Agregado familiar'
+        })
         return false;
     }
 
@@ -168,13 +177,14 @@ const validateIndividualFarmerData = (
             otherNames: retrievedOtherNames, 
         }, 
         isSprayingAgent: retrievedisSprayingAgent,
-        birthDate: retrievedBirthDate, 
         gender: retrievedGender,
+        familySize: retrievedFamilySize ? parseInt(retrievedFamilySize) : 0,
+        birthDate: retrievedBirthDate, 
         birthPlace: {
             province: retrievedBirthProvince,
             district: retrievedBirthDistrict,
             adminPost: retrievedBirthAdminPost,
-            village: retrievedBirthVillage,
+            // village: retrievedBirthVillage,
         },
         address: {
             province: "retrievedAddressProvince",

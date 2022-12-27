@@ -12,7 +12,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import Realm from 'realm';
 
-import FarmerAddDataModal from './FarmerAddDataModal';
+import SuccessModal from './SuccessModal';
 import { generateUUID } from '../../helpers/generateUUID';
 import { generateFormattedDate } from '../../helpers/generateFormattedDate';
 import { generateFormattedAdminPost } from '../../helpers/generateFormattedAdminPost';
@@ -28,10 +28,23 @@ const IndividualModal = (
         setModalVisible,
         farmerData,
 
-        setSurname, setOtherNames, setIsSprayingAgent, setGender,
-        setAddressVillage, setAddressAdminPost, setPrimaryPhone, setSecondaryPhone,
-        setBirthProvince, setBirthDistrict, setBirthAdminPost, setBirthVillage,
-        setBirthDate, setDocType, setDocNumber, setNuit,
+        setSurname, 
+        setOtherNames, 
+        setIsSprayingAgent, 
+        setGender,
+        setFamilySize,
+        setAddressVillage, 
+        setAddressAdminPost, 
+        setPrimaryPhone, 
+        setSecondaryPhone,
+        setBirthProvince, 
+        setBirthDistrict, 
+        setBirthAdminPost, 
+        // setBirthVillage,
+        setBirthDate, 
+        setDocType, 
+        setDocNumber, 
+        setNuit,
         setFarmerType,
 
     }
@@ -54,6 +67,7 @@ const IndividualModal = (
     const addFarmer = useCallback((farmerData, realm) =>{
     const {
         names, isSprayingAgent, gender, 
+        familySize,
         birthDate, birthPlace, address,
         contact, idDocument,
     } = farmerData;
@@ -64,6 +78,7 @@ const IndividualModal = (
             names,
             isSprayingAgent,
             gender,
+            familySize,
             birthDate,
             birthPlace,
             address,
@@ -79,6 +94,7 @@ const IndividualModal = (
         setOtherNames(''); 
         setIsSprayingAgent(false); 
         setGender('');
+        setFamilySize('');
         setAddressVillage(''); 
         setAddressAdminPost(''); 
         setPrimaryPhone(null); 
@@ -86,7 +102,7 @@ const IndividualModal = (
         setBirthProvince(''); 
         setBirthDistrict(''); 
         setBirthAdminPost(''); 
-        setBirthVillage('');
+        // setBirthVillage('');
         setBirthDate(null); 
         setDocType(''); 
         setDocNumber(''); 
@@ -180,6 +196,21 @@ const IndividualModal = (
                         <Text style={styles.values}>{farmerData?.gender}</Text>
                     </Box>
                 </Stack>
+
+                <CustomDivider
+                    marginVertical="1"
+                    thickness={1}
+                    bg="grey"
+                />
+                <Stack direction="row" w="100%" my="1">
+                    <Box w="40%">
+                        <Text style={styles.keys}>Agregado Familiar:</Text>
+                    </Box>
+                    <Box w="60%" style={styles.values}>
+                        <Text style={styles.values}>{farmerData?.familySize} (membros)</Text>
+                    </Box>
+                </Stack>
+
                 <CustomDivider
                     marginVertical="1"
                     thickness={1}
@@ -294,23 +325,32 @@ const IndividualModal = (
                         </Text>
                     </Box>
                     <Box w="60%">
+                {
+                    !farmerData?.birthPlace?.province?.includes('Estrangeiro') ?
+                    (
                         <Box>
                             <Text style={styles.values}>
-                                {farmerData?.birthPlace?.province !== "País Estrangeiro" ? farmerData?.birthPlace?.province + " (província)" : "País Estrangeiro"}
+                                {farmerData?.birthPlace?.province + " (província)" }
                             </Text>
                             <Text style={styles.values}>
-                                {farmerData?.birthPlace?.province !== "País Estrangeiro" ? farmerData?.birthPlace?.district + " (distrito)" : farmerData?.birthPlace?.district + " (País)" }
+                                {farmerData?.birthPlace?.district + " (distrito)" }
                             </Text>
                             <Text style={styles.values}>
-                                {farmerData?.birthPlace?.province !== "País Estrangeiro" ? farmerData?.birthPlace?.adminPost + " (posto admin.)" : "Nenhum (Província)"}
-                            </Text>
-                            <Text style={styles.values}>
-                                {
-                                    farmerData?.birthPlace?.province === "País Estrangeiro" ? "Nenhum (Distrito/Localidade)" :
-                                farmerData?.birthPlace?.village ? farmerData?.birthPlace?.village (localidade/povoado) : 'Nenhum (localidade/povoado)'
-                                }
+                                { farmerData?.birthPlace?.adminPost + " (posto admin.)" }
                             </Text>
                         </Box>
+
+                    )
+                    : 
+                    (
+
+                        <Box>
+                            <Text style={styles.values}>
+                                {farmerData?.birthPlace?.district + " (País Estrangeiro)" }
+                            </Text>
+                        </Box>
+                    )
+                }
                     </Box>
                 </Stack>
                 <CustomDivider
@@ -366,7 +406,7 @@ const IndividualModal = (
         </Modal.Content>
       </Modal>
         <Center flex={1} px="3">
-            <FarmerAddDataModal
+            <SuccessModal
                 addDataModalVisible={addDataModalVisible}
                 setAddDataModalVisible={setAddDataModalVisible}
                 farmerId={farmerId}

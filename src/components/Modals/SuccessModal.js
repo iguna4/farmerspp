@@ -15,7 +15,7 @@ import { Pressable, View, Modal, StyleSheet } from 'react-native';
 import LottieAddButton from '../Buttons/LottieAddButton';
 import LottieProcessCompletedButton from '../Buttons/LottieProcessCompletedButton';
 
-export default function FarmerAddDataModal({
+export default function SuccessModal({
     addDataModalVisible,
     setAddDataModalVisible,
     setFarmerType,

@@ -13,6 +13,7 @@ export const Farmer = {
         ufid: 'string', //ufid: unique farmer id  =>surname:dateOfBirth:cep:8randomNumbers:registrationTimestamp
         isSprayingAgent: {type: 'bool', default: 'false', },
         gender: 'string',
+        familySize: 'int',
         birthDate: 'date',
         birthPlace: 'Address',
         address: 'Address',

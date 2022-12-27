@@ -12,7 +12,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import Realm from 'realm';
 
-import FarmerAddDataModal from './FarmerAddDataModal';
+import FarmerAddDataModal from './SuccessModal';
 import { generateUUID } from '../../helpers/generateUUID';
 import { generateFormattedDate } from '../../helpers/generateFormattedDate';
 import { generateFormattedAdminPost } from '../../helpers/generateFormattedAdminPost';
@@ -20,6 +20,7 @@ import { generateFormattedSurname } from '../../helpers/generateFormattedSurname
 import { useNavigation } from '@react-navigation/native';
 
 import { realmContext } from '../../models/realm';
+import SuccessModal from './SuccessModal';
 const {useRealm} = realmContext;
 
 const FarmlandModal = (
@@ -28,10 +29,16 @@ const FarmlandModal = (
         setModalVisible,
         farmlandData,
 
-        setPlantingYear, setDescription,
-        setConsociatedCrops, setClones,
-        setTrees, setDeclaredArea, setDensityLength, setDensityWidth,
-        setPlantTypes, setDensityMode, 
+        setPlantingYear, 
+        setDescription,
+        setConsociatedCrops, 
+        setClones,
+        setTrees, 
+        setDeclaredArea, 
+        setDensityLength, 
+        setDensityWidth,
+        setPlantTypes, 
+        setDensityMode, 
 
     }
 ) => {
@@ -42,12 +49,12 @@ const FarmlandModal = (
     const realm = useRealm()
 
 
-    const addGroup = useCallback((farmlandData, realm)=>{
+    // const addGroup = useCallback((farmlandData, realm)=>{
         
-    }, [        
-        realm, 
-        farmlandData,]
-    )
+    // }, [        
+    //     realm, 
+    //     farmlandData,]
+    // )
 
 
     const addFarmland = useCallback((farmlandData, realm) =>{
@@ -274,14 +281,14 @@ const FarmlandModal = (
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-        <Center flex={1} px="3">
-            {/* <FarmerAddDataModal
+        {/* <Center flex={1} px="3">
+            <SuccessModal
                 addDataModalVisible={addDataModalVisible}
                 setAddDataModalVisible={setAddDataModalVisible}
                 farmerId={farmerId}
                 setFarmerType={setFarmerType}
-            /> */}
-        </Center>
+            />
+        </Center> */}
     </>
 
   )

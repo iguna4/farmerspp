@@ -25,7 +25,7 @@ export const realmContext = createRealmContext({
         Density,
         PlantTypes,
     ],
-    schemaVersion: 2,
+    schemaVersion: 3,
     deleteRealmIfMigrationNeeded: true,
 })
 

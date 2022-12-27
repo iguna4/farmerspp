@@ -18,7 +18,7 @@ import styles from './styles';
 import IndividualModal from '../../components/Modals/IndividualModal'
 import FarmerDataConfirmModal from '../../components/Modals/FarmerDataConfirmModal';
 import FarmerAddDataModal from '../../components/Modals/FarmerAddDataModal';
-import { fullYears, localeDateService, useDatepickerState } from '../../helpers/dates';
+import { fullYears, getFullYears, localeDateService, useDatepickerState } from '../../helpers/dates';
 // import validateFarmerData from '../../helpers/validateFarmerData';
 import countries from '../../fakedata/countries';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
@@ -29,6 +29,7 @@ import validateGroupFarmerData from '../../helpers/validateGroupFarmerData';
 import TickComponent from '../../components/LottieComponents/TickComponent';
 import GroupModal from '../../components/Modals/GroupModal';
 import InstitutionModal from '../../components/Modals/InstitutionModal';
+import ErrorAlert from '../../components/Alerts/ErrorAlert';
 
 
 
@@ -51,6 +52,8 @@ export default function FarmerForm1Screen({ route, navigation }) {
 
     // handle modal view
     const [modalVisible, setModalVisible] = useState(false);
+
+    const [alert, setAlert] = useState(false);
 
 
 
@@ -133,6 +136,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                nuit
            }
             if (!validateIndividualFarmerData(farmerData, errors, setErrors)) {
+                setAlert(true)
                 return ;
             }
             retrievedFarmerData = validateIndividualFarmerData(farmerData, errors, setErrors);
@@ -152,6 +156,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                 isPrivateInstitution,
             }
             if (!validateInstitutionFarmerData(farmerData, errors, setErrors)) {
+                setAlert(true)
                 return ;
             }
             retrievedFarmerData = validateInstitutionFarmerData(farmerData, errors, setErrors);
@@ -174,6 +179,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                 groupManagerPhone,
             }
             if (!validateGroupFarmerData(farmerData, errors, setErrors, farmerType)) {
+                setAlert(true)
                 return ;
             }
             retrievedFarmerData = validateGroupFarmerData(farmerData, errors, setErrors, farmerType);
@@ -205,7 +211,17 @@ export default function FarmerForm1Screen({ route, navigation }) {
         setLoadingActivityIndicator(true);
 
     }, [navigation, farmerType])
+ 
     
+
+    if (alert) {
+        return (
+            <Center flex={1} px="3">
+                <ErrorAlert alert={alert} setAlert={setAlert} />
+            </Center>
+        )
+    }
+        
 
 
   return (
@@ -1289,7 +1305,7 @@ farmerType === "Instituição" && (
                         }}
                     >
                     {
-                        fullYears?.map((year, index)=>(
+                        getFullYears()?.map((year, index)=>(
                             <Select.Item key={index} label={`${year}`} value={year} />
                         ))
                     }

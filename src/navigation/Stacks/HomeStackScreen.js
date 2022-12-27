@@ -23,16 +23,16 @@ export default function HomeStackScreen() {
           },
         }}
       >
-        {/* <HomeStack.Screen
+        <HomeStack.Screen
           options={{ title: 'Painel do Extensionista'}}
           name="Home"
           component={HomeScreen}
-        /> */}
-        <HomeStack.Screen
+        />
+        {/* <HomeStack.Screen
           options={{ title: 'Registo de Pomar'}}
           name="FarmlandForm1"
           component={FarmlandForm1Screen}
-        />
+        /> */}
       </HomeStack.Navigator>
   );
 }

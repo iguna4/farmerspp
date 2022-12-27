@@ -84,8 +84,17 @@ export const Density = {
     embedded: true,
     properties: {
         mode: 'string',
-        x: 'int?',
-        y: 'int?',
+        length: {type: 'int?', default: 0},
+        width: {type: 'int?', default: 0},
+    },
+};
+
+export const PlantTypes = {
+    name: 'PlantTypes',
+    embedded: true,
+    properties: {
+        plantType: 'string[]',
+        clones: 'string[]',
     },
 };
 

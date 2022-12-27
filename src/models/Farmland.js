@@ -6,15 +6,16 @@ export const Farmland = {
     name: 'Farmland',
     primaryKey: '_id',
     properties: {
-        _id: 'objectId',
-        description: 'string',
+        _id: 'string',
+        plantingYear: 'int',
+        description: 'string?',
         consociatedCrops: 'string[]',
         density: 'Density',
-        // farmer: {
-        //         type: 'linkingObjects',
-        //         objectType: 'Farmer',
-        //         property: 'farmlands',
-        //     },
+        trees: 'int',
+        declaredArea: 'int',
+        auditedArea: 'int?',
+        plantTypes: 'PlantTypes',
+        farmer: 'string',
         createdAt: { type: 'date', default: Date()},
     },
 }

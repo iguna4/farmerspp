@@ -23,20 +23,24 @@ const { useRealm, useQuery } = realmContext;
 
 export default function FarmersCcreen({ route, navigation }) {
 
+  const realm = useRealm();
+  realm.write(()=>{
+
+  });
+  
   // const farmers = [];
   const farmers = useQuery('Farmer');
   const groups = useQuery('Group');
   const institutions = useQuery('Institution');
-  // const appRealm = useRealm();
 
 
-  console.log('---------------------------------------')
-  console.log('farmers: ', farmers);
-  console.log('---------------------------------------')
-  console.log('groups: ', groups)
-  console.log('---------------------------------------')
-  console.log('institution: ', institutions)
-  console.log('---------------------------------------')
+  // console.log('---------------------------------------')
+  // console.log('farmers: ', farmers);
+  // console.log('---------------------------------------')
+  // console.log('groups: ', groups)
+  // console.log('---------------------------------------')
+  // console.log('institution: ', institutions)
+  // console.log('---------------------------------------')
 
 
   const keyExtractor = (item, index)=>index.toString();

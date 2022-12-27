@@ -9,13 +9,17 @@ import React, { useCallback, useEffect, useState} from 'react'
 
 import {Button, ListItem, Avatar, FAB, Icon } from '@rneui/themed';
 import Realm from 'realm';
-import { AppContext } from '../../models/realm';
+import { realmContext } from '../../models/realm';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { useFocusEffect } from '@react-navigation/native';
-// const { useRealm } = AppContext;
+const { useRealm, useQuery } = realmContext; 
 
 export default function HomeScreen({ navigation }) {
-  // const appRealm = useRealm();
+  const realm = useRealm();
+
+  realm.write(()=>{
+
+  })
 
   const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
   

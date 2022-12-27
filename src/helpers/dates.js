@@ -33,13 +33,13 @@ export const useDatepickerState = (initialDate = null) => {
   return { date, onSelect: setDate };
 };
 
-const getFullYears = ()=>{
+export const getFullYears = (count=20)=>{
   let years = [];
-  let count = 20;
+  // let count = 20;
   for (let i = 0; i <= count; i++) {
     years[i] = new Date().getFullYear() - i;
   }
   return years;
 }
 
-export const fullYears = getFullYears();
+// export const fullYears = getFullYears();

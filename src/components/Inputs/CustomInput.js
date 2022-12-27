@@ -25,6 +25,7 @@ export function CustomInput({
     keyboardType,
     onFocus,
     isDisabled,
+    textAlign,
      ...props
 }) {
     return (
@@ -44,11 +45,11 @@ export function CustomInput({
             fontFamily="JosefinSans-Regular"
             fontSize={18}
             value={value}
+            textAlign={textAlign}
             autoCapitalize={autoCapitalize ? autoCapitalize : 'none'}
             keyboardType={keyboardType ? keyboardType : 'default'}
             onChangeText={onChangeText}
             onFocus={onFocus}
-            // props={...props}
         />
     );
 }

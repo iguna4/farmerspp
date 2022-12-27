@@ -26,7 +26,8 @@ const FarmerItem = ({ item, route, farmerType }) => {
 
   return (
     <Box 
-      // borderBottomWidth="1"
+      borderBottomWidth="1"
+      borderBottomRadius={10}
       // borderColor="muted.800"
       // _dark={{
       //   borderColor: 'muted.50'
@@ -35,18 +36,26 @@ const FarmerItem = ({ item, route, farmerType }) => {
       // pr={["2", "2"]} 
       // py="4"
       style={{
-        paddingHorizontal: 8,
-        marginVertical: 4,
-        backgroundColor: 'lightgrey',
+        paddingHorizontal: 10,
+        marginVertical: 10,
+        backgroundColor: 'white',
         minHeight: 100,
+        width: '100%',
+        flex: 1,
+        // alignItems: 'center',
 
       }}
     >
-      <Stack direction="column" space={1}>
-        <Stack 
-          direction="row" 
-          space={2}
-        >
+      {/* <Box
+        style={{ width: '100%', }}
+      >
+       */}
+      
+        {/* <Box 
+          // direction="row" 
+          // space={2}
+          style={{ backgroundColor: '#005000', width: '100%'}}
+        > */}
           <Text 
             style={{
               fontSize: 20,
@@ -55,40 +64,120 @@ const FarmerItem = ({ item, route, farmerType }) => {
             }}
           >
             {item.names.otherNames}{' '}{item.names.surname}
-          </Text>
           <Text 
             style={{
-              fontSize: 16,
+              fontSize: 14,
               fontFamily: 'JosefinSans-Italic',
+              color: '#005000',
               paddingTop: 6,
+              
             }}
-          >
-            ({item.category})
+            >
+            {' '}({item.category})
             {/* ({new Date().getFullYear() - new Date(item.birthDate).getFullYear()} anos) */}
+            </Text>
           </Text>
-        </Stack>
+        {/* </Box> */}
+
+    <Stack direction="column" >
         <Stack direction="row">
-            <Box w="50%" >
+          <Box w="80%" style={{ }}>
+        <Stack direction="row">
+            {/* <Box w="80%" > */}
               <Text 
                 style={{
-                fontSize: 14,
-                fontFamily: 'JosefinSans-Bold',
+                fontSize: 15,
+                fontFamily: 'JosefinSans-Italic',
                 // paddingTop: 6,
                 }}
               >
-                Provedor-S-Pulverização:
+                Provedor-S-Pulverização: {'  '}
               </Text>
-            </Box>
-            <Box w="20%" alignItems="start">
               {
                   item.isSprayingAgent ?
                   <Icon name="check-circle" color="green" />
                   :
                   <Icon name="close" color="red" />
               }
+        </Stack>
+            {/* </Box>
+            <Box w="20%">
               
+            </Box> */}
+        <Stack direction="row">
+            <Box w="80%" >
+              <Text 
+                style={{
+                fontSize: 15,
+                fontFamily: 'JosefinSans-Italic',
+                // paddingTop: 6,
+                }}
+              >
+                Tel: {
+                item.contact.primaryPhone ? item.contact.primaryPhone
+                : item.contact.secondaryPhone ? item.contact.secondaryPhone : 'Nenhum'
+              }
+              </Text>
             </Box>
         </Stack>
+        <Stack direction="row" space={4}>
+            <Box w="50%" >
+                {/* <Box w="70%"> */}
+              <Stack direction="row">
+                  <Text 
+                    style={{
+                    fontSize: 15,
+                    fontFamily: 'JosefinSans-Italic',
+                    // paddingTop: 6,
+                    }}
+                  >
+                    Cajueiros: {' '}
+                  </Text> 
+                  <Text style={{ fontSize: 15, paddingTop: 2, }}>{item.farmlands.length}</Text>
+              </Stack>
+            </Box>
+                {/* <Box w="30%">
+                </Box>
+            </Box> */}
+            
+            <Box w="50%">
+                {/* <Box w="70%"> */}
+              <Stack direction="row">
+                  <Text 
+                    style={{
+                    fontSize: 15,
+                    fontFamily: 'JosefinSans-Italic',
+                    // paddingTop: 6,
+                    }}
+                  >
+                    Pomares: {' '}
+                  </Text>
+                  <Text style={{ fontSize: 15, paddingTop: 2,  }}>{item.farmlands.length}</Text>
+              </Stack>
+                {/* </Box>
+                <Box w="30%">
+                </Box> */}
+            </Box>
+        </Stack>
+
+        </Box>
+        <Box w="20%" style={{ }}>
+          <Pressable
+            onPress={()=>navigation.navigate('FarmlandForm1', {
+              farmerId: item._id
+            })}
+          >
+            <Icon name="arrow-right" size={80} color="#005000" />
+          </Pressable>
+        </Box>
+        </Stack>
+      </Stack>
+      {/* </Box> */}
+      <Stack direction="row" w="100%" style={{  }} >
+        <Box w="25%"><Text style={{ fontFamily: 'JosefinSans-Italic'}}>{'user'}</Text></Box>
+         <Box w="25%"></Box>
+        <Box w="25%"></Box>
+        <Box w="25%"><Text style={{ fontFamily: 'JosefinSans-Italic', textAlign: 'right'}}>{new Date(item.createdAt).toLocaleDateString()}</Text></Box>
       </Stack>
     </Box>
     // <View style={{ 

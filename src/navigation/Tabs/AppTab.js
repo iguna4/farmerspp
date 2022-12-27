@@ -19,6 +19,12 @@ const Tab = createBottomTabNavigator();
 
 export default function AppTab() {
 
+  // const realm = useRealm();
+
+  // realm.write(()=>{
+    
+  // })
+
 
 
 

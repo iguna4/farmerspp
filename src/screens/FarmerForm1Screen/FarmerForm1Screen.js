@@ -402,6 +402,8 @@ export default function FarmerForm1Screen({ route, navigation }) {
                       selectedValue={gender}
                       accessibilityLabel="Género"
                       placeholder="Género"
+                    //   style={{ borderWidth: 1, borderColor: '#005000'}}
+                      minHeight={55}
                       _selectedItem={{
                           bg: 'teal.600',
                           fontSize: 'lg',
@@ -476,6 +478,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                         selectedValue={addressAdminPost}
                         accessibilityLabel="Escolha sua província"
                         placeholder="Escolha sua província"
+                        minHeight={55}
                         _selectedItem={{
                             bg: 'teal.600',
                             fontSize: 'lg',
@@ -512,6 +515,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                         selectedValue={addressVillage}
                         accessibilityLabel="Escolha uma localidade"
                         placeholder="Escolha uma localidade"
+                        minHeight={55}
                         // defaultValue="Primeiro, Escolha uma localidade"
                         _selectedItem={{
                             bg: 'teal.600',
@@ -613,14 +617,16 @@ export default function FarmerForm1Screen({ route, navigation }) {
             </Center>
 
     <Stack direction="row" mx="3" my="2" w="100%">
-        <Box w="50%" px="1" pt="1">
+        <Box w="50%" px="1" pt="1" >
             <FormControl isRequired isInvalid={'birthDate' in errors}>
                 <FormControl.Label>Data de Nascimento</FormControl.Label>
                     <Datepicker
+                       
                         placeholder="Nascimento"
                         min={new Date(1900, 0, 0)}
                         max={new Date(2010, 0, 0)}
                         size="large"
+                        // status='control'
                         placement="top end"
                         style={styles.datepicker}
                         date={birthDate}
@@ -657,6 +663,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                         selectedValue={birthProvince}
                         accessibilityLabel="Escolha uma província"
                         placeholder="Escolha uma província"
+                        minHeight={55}
                         _selectedItem={{
                             bg: 'teal.600',
                             fontSize: 'lg',
@@ -696,6 +703,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                         selectedValue={birthDistrict}
                         accessibilityLabel="Escolha um distrito"
                         placeholder="Escolha um distrito"
+                        minHeight={55}
                         // defaultValue="Primeiro, Escolha um distrito"
                         _selectedItem={{
                             bg: 'teal.600',
@@ -748,6 +756,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                         selectedValue={birthProvince ? birthAdminPost: ''}
                         accessibilityLabel="Escolha um posto administrativo"
                         placeholder="Escolha um posto administrativo"
+                        minHeight={55}
                         // defaultValue="Primeiro, Escolha um posto administrativo"
                         _selectedItem={{
                             bg: 'teal.600',
@@ -802,6 +811,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                       selectedValue={docType}
                       accessibilityLabel="Tipo de doc."
                       placeholder="Tipo de documento"
+                      minHeight={55}
                       _selectedItem={{
                           bg: 'teal.600',
                           fontSize: 'lg',
@@ -946,6 +956,7 @@ farmerType === "Instituição" && (
                         selectedValue={institutionType}
                         accessibilityLabel="Tipo de Instituição"
                         placeholder="Escolha uma instituição"
+                        minHeight={55}
                         dropdownCloseIcon={institutionType 
                                             ? <Icon name="close" size={25} color="red" onPress={()=>setInstitutionType('')} /> 
                                             : <Icon size={40} name="arrow-drop-down" color="#005000" />
@@ -1004,6 +1015,7 @@ farmerType === "Instituição" && (
                     selectedValue={institutionAdminPost}
                     accessibilityLabel="posto administrativo"
                     placeholder="Escolha posto administrativo"
+                    minHeight={55}
                     _selectedItem={{
                         bg: 'teal.600',
                         fontSize: 'lg',
@@ -1040,6 +1052,7 @@ farmerType === "Instituição" && (
                     selectedValue={institutionVillage}
                     accessibilityLabel="Escolha uma localidade"
                     placeholder="Escolha uma localidade"
+                    minHeight={55}
                     // defaultValue="Primeiro, Escolha uma localidade"
                     _selectedItem={{
                         bg: 'teal.600',
@@ -1161,6 +1174,7 @@ farmerType === "Instituição" && (
                         selectedValue={groupType}
                         accessibilityLabel="Grupo"
                         placeholder="Tipo de grupo "
+                        minHeight={55}
                         _selectedItem={{
                             bg: 'teal.600',
                             fontSize: 'lg',
@@ -1276,6 +1290,7 @@ farmerType === "Instituição" && (
                         selectedValue={groupAffiliationYear}
                         accessibilityLabel="Escolha o ano"
                         placeholder="Escolha o ano"
+                        minHeight={55}
                         _selectedItem={{
                             bg: 'teal.600',
                             fontSize: 'lg',
@@ -1418,6 +1433,7 @@ farmerType === "Instituição" && (
                     selectedValue={groupAdminPost}
                     accessibilityLabel="posto administrativo"
                     placeholder="Escolha posto administrativo"
+                    minHeight={55}
                     _selectedItem={{
                         bg: 'teal.600',
                         fontSize: 'lg',
@@ -1454,6 +1470,7 @@ farmerType === "Instituição" && (
                     selectedValue={groupVillage}
                     accessibilityLabel="Escolha uma localidade"
                     placeholder="Escolha uma localidade"
+                    minHeight={55}
                     // defaultValue="Primeiro, Escolha uma localidade"
                     _selectedItem={{
                         bg: 'teal.600',

@@ -87,7 +87,6 @@ const IndividualModal = (
             ufid: '4843jf',
 
         })
-        console.log('newFarmer:', newFarmer);
         setModalVisible(false);
         setAddDataModalVisible(true);
         setSurname(''); 

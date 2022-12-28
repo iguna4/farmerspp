@@ -36,8 +36,12 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     datepicker: {
-        // backgroundColor: 'grey',
-        borderRadius: 10,
+        borderWidth: 1,
+        borderRadius: 4,
+        borderColor: '#A8A8A8',
+        minHeight: 55,
+        // backgroundColor: 'ghostwhite',
+        // color: 'grey',
     },
 });
 

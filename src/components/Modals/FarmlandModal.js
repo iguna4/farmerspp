@@ -21,6 +21,8 @@ import { useNavigation } from '@react-navigation/native';
 import SuccessModal from './SuccessModal';
 
 import { realmContext } from '../../models/realm';
+import { addFarmland } from '../../services/addFarmland';
+import { categorizeFarmer } from '../../helpers/categorizeFarmer';
 const {useRealm} = realmContext;
 
 const FarmlandModal = (
@@ -47,8 +49,7 @@ const FarmlandModal = (
     const navigation = useNavigation();
     const realm = useRealm()
 
-
-const addFarmland = useCallback((farmlandData, realm) =>{
+const onAddFarmland = useCallback((farmlandData, realm) =>{
     const {
         plantingYear, 
         description,
@@ -57,10 +58,37 @@ const addFarmland = useCallback((farmlandData, realm) =>{
         trees,
         declaredArea,
         plantTypes,
-        farmerId,
+        ownerId,
+        flag,
     } = farmlandData;
 
-    const farmer = realm.objectForPrimaryKey('Farmer', farmerId);
+    if (!ownerId) {
+        return {
+            status: 'FAILED',
+            code: 404,
+            message: 'Indica o proprietário desta parcela!',
+        };
+    }
+
+
+    let owner;
+    if (flag === 'Indivíduo'){
+        owner = realm.objectForPrimaryKey('Farmer', ownerId);
+    }
+    else if (flag === 'Grupo') {
+        owner = realm.objectForPrimaryKey('Group', ownerId);
+    }
+    else if (flag === 'Instituição'){
+        owner = realm.objectForPrimaryKey('Institution', ownerId);
+    }
+
+    if (!owner) {
+        return {
+            status: 'FAILED',
+            code: 404,
+            message: 'O proprietário desta parcela ainda não foi registado!',
+        };
+    }
 
     realm.write(()=>{
         const newFarmland = realm.create('Farmland', {
@@ -72,28 +100,26 @@ const addFarmland = useCallback((farmlandData, realm) =>{
             trees,
             declaredArea,
             plantTypes,
-            farmer: farmer._id,
+            farmer: owner._id,
         })
-        console.log('newFarmland:', newFarmland);
-    })
-    setModalVisible(false);
-    setAddDataModalVisible(true);
 
-    setPlantingYear('');
-    setDescription('');
-    setConsociatedCrops([]);
-    setClones([]);
-    setTrees('');
-    setDeclaredArea('');
-    setDensityLength('');
-    setDensityWidth('');
-    setPlantTypes([]);
-    setDensityMode('');
-}, [
-        realm, 
-        farmlandData,
-        // farmerType
-    ]);
+
+        if (flag === 'Indivíduo'){            
+            // categorize by 'comercial' | 'familiar' | 'nao-categorizado'
+            owner.category = categorizeFarmer(owner.farmlands);
+        }
+
+        // add the created farmland to the Farmer (owner)'s object
+        owner.farmlands.push(newFarmland);
+
+
+    })
+
+},
+    [
+        realm, farmlandData
+    ]
+)
 
 
 
@@ -263,7 +289,21 @@ const addFarmland = useCallback((farmlandData, realm) =>{
             <Center>
                 <Button
                         onPress={()=>{
-                            addFarmland(farmlandData, realm)
+                            onAddFarmland(farmlandData, realm);
+                            
+                            setModalVisible(false);
+                            setAddDataModalVisible(true);
+
+                            setPlantingYear('');
+                            setDescription('');
+                            setConsociatedCrops([]);
+                            setClones([]);
+                            setTrees('');
+                            setDeclaredArea('');
+                            setDensityLength('');
+                            setDensityWidth('');
+                            setPlantTypes([]);
+                            setDensityMode('');
                         }}
                         title="Salvar Dados"
                         buttonStyle={{

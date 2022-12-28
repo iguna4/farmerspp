@@ -4,7 +4,7 @@ import {ListItem, Icon } from '@rneui/themed';
 
 import { Box, Center, HStack, Pressable, Avatar, Stack, VStack,  } from 'native-base';
 import styles from './styles';
-import CustomDivider from '../../components/Divider/CustomDivider';
+import CustomDivider from '../Divider/CustomDivider';
 import { randomRBG } from '../../helpers/randomRgB';
 import { getInitials } from '../../helpers/getInitials';
 import AlertModal from '../AlertModal';
@@ -13,17 +13,9 @@ import { sumTreesOrAreas } from '../../helpers/sumTreesOrAreas';
 
 
 
-const FarmerItem = ({ item, route, farmerType }) => {
+const GroupItem = ({ item, route }) => {
 
-   const [visible, setVisible] = useState(false);
    const navigation = useNavigation();
-
-  // const handleItem = ()=>{
-  //  return <AlertModal
-  //   visible={visible}
-  //   setVisible={setVisible}
-  //  />
-  // }
 
   return (
     <Box 
@@ -47,39 +39,26 @@ const FarmerItem = ({ item, route, farmerType }) => {
 
       }}
     >
-      {/* <Box
-        style={{ width: '100%', }}
+      <Text 
+        style={{
+          fontSize: 20,
+          fontFamily: 'JosefinSans-Bold',
+          color: '#005000',
+        }}
       >
-       */}
-      
-        {/* <Box 
-          // direction="row" 
-          // space={2}
-          style={{ backgroundColor: '#005000', width: '100%'}}
-        > */}
-          <Text 
-            style={{
-              fontSize: 20,
-              fontFamily: 'JosefinSans-Bold',
-              color: '#005000',
-            }}
-          >
-            {item.names.otherNames}{' '}{item.names.surname}
-          <Text 
-            style={{
-              fontSize: 14,
-              fontFamily: 'JosefinSans-Italic',
-              color: '#005000',
-              paddingTop: 6,
-              
-            }}
-            >
-            {' '}({item.category})
-            {/* ({new Date().getFullYear() - new Date(item.birthDate).getFullYear()} anos) */}
-            </Text>
-          </Text>
-        {/* </Box> */}
-
+        {item.name}
+      <Text 
+        style={{
+          fontSize: 14,
+          fontFamily: 'JosefinSans-Italic',
+          color: '#005000',
+          paddingTop: 6,
+          
+        }}
+        >
+        {' '}({item.type})
+        </Text>
+      </Text>
     <Stack direction="column" >
         <Stack direction="row">
           <Box w="80%" style={{ }}>
@@ -92,14 +71,11 @@ const FarmerItem = ({ item, route, farmerType }) => {
                 // paddingTop: 6,
                 }}
               >
-                Provedor-S-Pulverização: {'  '}
-              </Text>
+                Gerente: {'  '}
               {
-                  item.isSprayingAgent ?
-                  <Icon name="check-circle" color="green" />
-                  :
-                  <Icon name="close" color="red" />
+                item.manager.fullname
               }
+              </Text>
         </Stack>
             {/* </Box>
             <Box w="20%">
@@ -115,8 +91,8 @@ const FarmerItem = ({ item, route, farmerType }) => {
                 }}
               >
                 Tel: {
-                item.contact.primaryPhone ? item.contact.primaryPhone
-                : item.contact.secondaryPhone ? item.contact.secondaryPhone : 'Nenhum'
+                item.manager.phone ? item.manager.phone
+                : 'Nenhum'
               }
               </Text>
             </Box>
@@ -134,7 +110,9 @@ const FarmerItem = ({ item, route, farmerType }) => {
                   >
                     Cajueiros: {' '}
                   </Text> 
-                  <Text style={{ fontSize: 15, paddingTop: 2, }}>{sumTreesOrAreas(item?.farmlands, 'trees')}</Text>
+                  <Text style={{ fontSize: 15, paddingTop: 2, }}>
+                    {sumTreesOrAreas(item?.farmlands, 'trees')}
+                  </Text>
               </Stack>
             </Box>
                 {/* <Box w="30%">
@@ -153,11 +131,10 @@ const FarmerItem = ({ item, route, farmerType }) => {
                   >
                     Parcelas: {' '}
                   </Text>
-                  <Text style={{ fontSize: 15, paddingTop: 2,  }}>{item.farmlands.length}</Text>
+                  <Text style={{ fontSize: 15, paddingTop: 2,  }}>
+                    {item.farmlands.length}
+                  </Text>
               </Stack>
-                {/* </Box>
-                <Box w="30%">
-                </Box> */}
             </Box>
         </Stack>
 
@@ -166,8 +143,8 @@ const FarmerItem = ({ item, route, farmerType }) => {
           <Pressable
             onPress={()=>navigation.navigate('FarmlandForm1', {
               ownerId: item._id,
-              ownerName: item.names?.otherNames + ' ' + item.names?.surname,
-              flag: 'Indivíduo',
+              ownerName: `${item.type} ${item.name}`,
+              flag: 'Grupo',
             })}
           >
             <Icon name="arrow-right" size={80} color="#005000" />
@@ -186,4 +163,4 @@ const FarmerItem = ({ item, route, farmerType }) => {
   )
 }
 
-export default FarmerItem
+export default GroupItem;

@@ -1,5 +1,5 @@
 
 export const plantingTypes = [
-    {key: '1', value: 'sementes policlonais'},
-    {key: '2', value: 'mudas enxertadas'},
+    {key: '1', value: 'Sementes policlonais'},
+    {key: '2', value: 'Mudas enxertadas'},
 ]

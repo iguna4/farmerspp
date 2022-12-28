@@ -47,12 +47,12 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     
     const [farmlandData, setFarmlandData] = useState({});
 
-    // extract farmerId sent from the previous screen
-    const { farmerId, farmerName } = route.params;
+    // extract farmland owner id, name from the previous screen
+    const { ownerId, ownerName, flag } = route.params;
 
     // go back to the previous screen
     // if farmerId is undefined
-    if (!farmerId) {
+    if (!ownerId) {
         navigation.goBack();
         return ;
     }
@@ -67,8 +67,8 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
 
     
     // function called onSubmitting form data
-    const addFarmland = ()=>{
-        
+    const visualizeFarmland = ()=>{
+
         let farmlandData = {
             plantingYear, 
             description, 
@@ -81,8 +81,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             plantTypes,
             clones,
             // farmerId,
-           }
-        
+        }
         // if any required data is not validated
         // a alert message is sent to the user   
         if (!validateFarmlandData(farmlandData, errors, setErrors)) {
@@ -91,13 +90,13 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
         }
         // created the validated data object to be passed to the FarmlandModal component
         let retrievedFarmlandData = validateFarmlandData(farmlandData, errors, setErrors);
-
         // add farmerId property to the object
         // as it's being passed to FarmlandModal component
-        retrievedFarmlandData['farmerId'] = farmerId;
-           
+        retrievedFarmlandData['ownerId'] = ownerId;
+        retrievedFarmlandData['flag'] = flag;
        
         setFarmlandData(retrievedFarmlandData);
+        
         setModalVisible(true);
         // setFarmerType('');
     }
@@ -112,7 +111,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
         
     }, [
         // appRealm, 
-        farmerId
+        ownerId
     ]
     )
     
@@ -150,7 +149,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                   Registo de Parcela
               </Text>          
               <Text style={styles.description}>
-                Produtor: {farmerName?.otherNames + ' ' + farmerName?.surname}
+                Proprietário: {ownerName}
               </Text>  
           </Box>
         </Box>
@@ -174,6 +173,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                                 selectedValue={plantingYear}
                                 accessibilityLabel="Ano de plantio"
                                 placeholder="Escolha o ano"
+                                minHeight={55}
                                 _selectedItem={{
                                     bg: 'teal.600',
                                     fontSize: 'lg',
@@ -261,16 +261,37 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             <FormControl isRequired my="1" isInvalid={'consociatedCrops' in errors}>
                 <FormControl.Label>Culturas consociadas</FormControl.Label>
                 <MultipleSelectList
-                  setSelected={(crop)=>setConsociatedCrops(crop)}
-                  data={crops}
-                  save="value"
-                  // onSelect={()=>alert(selectedCrops)}
-                  // fontFamily='JosefinSans-Regular'
-                  label="Culturas"
-                  boxStyle={{
-                    borderRadius: 10,
-                  }}
-                  placeholder="Culturas consociadas"
+                    setSelected={(crop)=>setConsociatedCrops(crop)}
+                    data={crops}
+                    save="value"
+                    arrowicon={
+                        <Icon 
+                            size={40} 
+                            name="arrow-drop-down" 
+                            color="#005000" 
+                        />
+                    }
+                    closeicon={
+                        <Icon 
+                            name="close" 
+                            size={25} 
+                            color="red" 
+                        />
+                    }
+                    fontFamily='JosefinSans-Regular'
+                    dropdownTextStyles={{
+                        fontSize: 18,
+                    }}
+                    inputStyles={{
+                        fontSize: 16,
+                        color: '#A8A8A8',
+                    }}
+                    boxStyles={{
+                        borderRadius: 4,
+                        minHeight: 55,
+                    }}
+                    label="Culturas"
+                    placeholder="Culturas consociadas"
                 />
                 {
                 'consociatedCrops' in errors 
@@ -482,9 +503,32 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                   placeholder="Tipo de plantas"
                   save="value"
                   label="Tipo de plantas"
-                  boxStyle={{
-                    borderRadius: 10,
-                  }}
+                    arrowicon={
+                        <Icon 
+                            size={40} 
+                            name="arrow-drop-down" 
+                            color="#005000" 
+                        />
+                    }
+                    closeicon={
+                        <Icon 
+                            name="close" 
+                            size={25} 
+                            color="red" 
+                        />
+                    }
+                    fontFamily='JosefinSans-Regular'
+                    dropdownTextStyles={{
+                        fontSize: 18,
+                    }}
+                    inputStyles={{
+                        fontSize: 16,
+                        color: '#A8A8A8',
+                    }}
+                    boxStyles={{
+                        borderRadius: 4,
+                        minHeight: 55,
+                    }}
                 />
                 {
                 'plantTypes' in errors 
@@ -496,7 +540,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             </FormControl>
 
 
-{   plantTypes.some((el)=>el.includes('mudas')) 
+{   plantTypes.some((el)=>el.includes('enxert')) 
     && (
 
         <FormControl isRequired my="1" isInvalid={'clones' in errors}>
@@ -510,9 +554,32 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                   placeholder="clones"
                   save="value"
                   label="Clones"
-                  boxStyle={{
-                    borderRadius: 10,
-                  }}
+                    arrowicon={
+                        <Icon 
+                            size={40} 
+                            name="arrow-drop-down" 
+                            color="#005000" 
+                        />
+                    }
+                    closeicon={
+                        <Icon 
+                            name="close" 
+                            size={25} 
+                            color="red" 
+                        />
+                    }
+                    fontFamily='JosefinSans-Regular'
+                    dropdownTextStyles={{
+                        fontSize: 18,
+                    }}
+                    inputStyles={{
+                        fontSize: 16,
+                        color: '#A8A8A8',
+                    }}
+                    boxStyles={{
+                        borderRadius: 4,
+                        minHeight: 55,
+                    }}
                 />
                 {
                 'clones' in errors 
@@ -529,7 +596,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     <Box w="100%" py="4"> 
         <Button
             title="Pré-visualizar dados"
-            onPress={addFarmland}
+            onPress={visualizeFarmland}
         />
     </Box>
         <FarmlandModal 

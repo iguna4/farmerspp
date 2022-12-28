@@ -17,11 +17,16 @@ import LottieAddButton from '../../components/Buttons/LottieAddButton';
 import TickComponent from '../../components/LottieComponents/TickComponent';
 // import { realm } from '../../models/realm';
 
+import { addFlagToListItem } from '../../helpers/addFlagToListItem'
+
 import { realmContext } from '../../models/realm';
+import GroupItem from '../../components/GroupItem/GrupItem';
+import InstitutionItem from '../../components/InstitutionItem/InstitutionItem';
 const { useRealm, useQuery } = realmContext; 
 
 
 export default function FarmersCcreen({ route, navigation }) {
+  // const [farmersList, setFarmersList] = useState([]);
 
   const realm = useRealm();
   realm.write(()=>{
@@ -33,29 +38,24 @@ export default function FarmersCcreen({ route, navigation }) {
   const groups = useQuery('Group');
   const institutions = useQuery('Institution');
 
+  const individualsList = addFlagToListItem(farmers, 'Indivíduo')
+  const groupsList = addFlagToListItem(groups, 'Grupo')
+  const institutionsList = addFlagToListItem(institutions, 'Instituição')
+  // setFarmersList([...individualsList, ...groupsList, ...institutionsList])
+  const farmersList = [...individualsList, ...groupsList, ...institutionsList]
+  
+  console.log('farmersList:', farmersList)
 
-  // console.log('---------------------------------------')
-  // console.log('farmers: ', farmers);
-  // console.log('---------------------------------------')
-  // console.log('groups: ', groups)
-  // console.log('---------------------------------------')
-  // console.log('institution: ', institutions)
-  // console.log('---------------------------------------')
+  useEffect(()=>{
+
+
+  }, [farmers, groups, institutions, realm])
+
+
 
 
   const keyExtractor = (item, index)=>index.toString();
 
-  useEffect(()=>{
-    // const newTitle = farmers?.length <= 1 
-    //                     ? `${groups?.length} produtor (Distrito)`
-    //                     : `${groups?.length} produtores (Distrito)`
-    // navigation.setOptions({
-    //   title: newTitle,
-    // })
-
-  }, [])
-
-  // console.log('farmers: ', farmers);
   
   const addFarmer = ()=>{
     navigation.navigate('FarmerForm1', { user: {
@@ -134,9 +134,23 @@ export default function FarmersCcreen({ route, navigation }) {
             {/* {farmers.map((item)=>(<Text key={item._id}>{item.names.otherNames}{' '}{item.names.surname}</Text>))} */}
             <FlatList
               
-              data={farmers}
+              data={farmersList}
               keyExtractor={keyExtractor}
-              renderItem={({ item })=><FarmerItem route={route} navigation={navigation} item={item} />}
+              // renderItem={({ item })=><FarmerItem route={route} navigation={navigation} item={item} />}
+              //  renderItem={({ item })=><GroupItem route={route}  item={item} />}
+               renderItem={({ item })=>{
+                  if(item.flag === 'Grupo'){
+                    return <GroupItem route={route}  item={item} />
+                  }
+                  else if (item.flag === 'Indivíduo'){
+                    return <FarmerItem route={route} navigation={navigation} item={item} />
+                  }
+                  else if (item.flag === 'Instituição'){
+                    return <InstitutionItem route={route}  item={item} />
+                  }
+                }
+               }
+
             />
           </Box>
         )

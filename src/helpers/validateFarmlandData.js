@@ -20,8 +20,8 @@ const validateFarmlandData = (
     const retrievedTreesNumber = trees ? parseInt(trees) : '';
     const retrievedDeclaredArea = declaredArea ? parseInt(declaredArea): '';
     const retrievedDensityMode = densityMode?.trim();
-    const retrievedDensityLength = densityLength ? parseInt(densityLength) : '';
-    const retrievedDensityWidth = densityWidth ? parseInt(densityWidth): '';
+    const retrievedDensityLength = densityLength ? parseInt(densityLength) : 0;
+    const retrievedDensityWidth = densityWidth ? parseInt(densityWidth): 0;
     const retrievedPlantTypes = [...plantTypes];
     const retrievedClones = [...clones];
     // const retrievedFarmerId = farmer._id;
@@ -69,13 +69,11 @@ const validateFarmlandData = (
         return false;
     }
 
-    if (
+    if ( retrievedDensityMode === 'Regular' && (
         ( retrievedDensityLength > 20 ||  retrievedDensityWidth > 20 ) 
         ||  
-        ( retrievedDensityLength < 5 ||  retrievedDensityWidth < 5 )
-        ) {   
-            console.log('length:', retrievedDensityLength) 
-            console.log('width:', retrievedDensityWidth)   
+        ( retrievedDensityLength < 5 ||  retrievedDensityWidth < 5 ))
+        ) {      
         setErrors({ ...errors,
             densityMode: 'Comprimento e Largura inválidos.',
         });

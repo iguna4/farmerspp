@@ -30,7 +30,8 @@ export function CustomInput({
 }) {
     return (
         <Input
-            size="lg"
+            size="2xl"
+            h={55}
             placeholder={placeholder}
             w={props?.width}
             Icon={Icon}
@@ -40,7 +41,8 @@ export function CustomInput({
             InputLeftElement={InputLeftElement}
             InputRightElement={InputRightElement}
             isDisabled={isDisabled ? isDisabled : false }
-            borderColor="#005000"
+            // borderColor="#005000"
+            borderWidth={1}
             color="#555555"
             fontFamily="JosefinSans-Regular"
             fontSize={18}

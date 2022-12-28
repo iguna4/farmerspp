@@ -18,9 +18,9 @@ import { generateFormattedDate } from '../../helpers/generateFormattedDate';
 import { generateFormattedAdminPost } from '../../helpers/generateFormattedAdminPost';
 import { generateFormattedSurname } from '../../helpers/generateFormattedSurname';
 import { useNavigation } from '@react-navigation/native';
+import SuccessModal from './SuccessModal';
 
 import { realmContext } from '../../models/realm';
-import SuccessModal from './SuccessModal';
 const {useRealm} = realmContext;
 
 const FarmlandModal = (
@@ -43,21 +43,12 @@ const FarmlandModal = (
     }
 ) => {
 
-   const [addDataModalVisible, setAddDataModalVisible] = useState(false);
-    // const [farmerId, setFarmerId] = useState(null);
+    const [addDataModalVisible, setAddDataModalVisible] = useState(false);
     const navigation = useNavigation();
     const realm = useRealm()
 
 
-    // const addGroup = useCallback((farmlandData, realm)=>{
-        
-    // }, [        
-    //     realm, 
-    //     farmlandData,]
-    // )
-
-
-    const addFarmland = useCallback((farmlandData, realm) =>{
+const addFarmland = useCallback((farmlandData, realm) =>{
     const {
         plantingYear, 
         description,
@@ -66,8 +57,10 @@ const FarmlandModal = (
         trees,
         declaredArea,
         plantTypes,
-        farmer,
+        farmerId,
     } = farmlandData;
+
+    const farmer = realm.objectForPrimaryKey('Farmer', farmerId);
 
     realm.write(()=>{
         const newFarmland = realm.create('Farmland', {
@@ -79,23 +72,23 @@ const FarmlandModal = (
             trees,
             declaredArea,
             plantTypes,
-            farmer,
+            farmer: farmer._id,
         })
         console.log('newFarmland:', newFarmland);
-        setModalVisible(false);
-        setAddDataModalVisible(true);
-
-        setPlantingYear('');
-        setDescription('');
-        setConsociatedCrops([]);
-        setClones([]);
-        setTrees('');
-        setDeclaredArea('');
-        setDensityLength('');
-        setDensityWidth('');
-        setPlantTypes([]);
-        setDensityMode('');
     })
+    setModalVisible(false);
+    setAddDataModalVisible(true);
+
+    setPlantingYear('');
+    setDescription('');
+    setConsociatedCrops([]);
+    setClones([]);
+    setTrees('');
+    setDeclaredArea('');
+    setDensityLength('');
+    setDensityWidth('');
+    setPlantTypes([]);
+    setDensityMode('');
 }, [
         realm, 
         farmlandData,

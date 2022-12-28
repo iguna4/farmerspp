@@ -10,7 +10,7 @@ const validateFarmlandData = (
         densityWidth,
         plantTypes,
         clones,
-        farmer,
+        // farmer,
  
     }, errors, setErrors,
     ) => {
@@ -24,7 +24,7 @@ const validateFarmlandData = (
     const retrievedDensityWidth = densityWidth ? parseInt(densityWidth): '';
     const retrievedPlantTypes = [...plantTypes];
     const retrievedClones = [...clones];
-    const retrievedFarmerId = farmer._id;
+    // const retrievedFarmerId = farmer._id;
 
        
     if (!retrievedPlantingYear){
@@ -114,7 +114,7 @@ const validateFarmlandData = (
             plantTypes: retrievedPlantTypes,
             clones: retrievedClones,
         },
-        farmer: retrievedFarmerId,
+        // farmer: retrievedFarmerId,
     }
         
     return farmlandData;

@@ -164,7 +164,8 @@ const FarmerItem = ({ item, route, farmerType }) => {
         <Box w="20%" style={{ }}>
           <Pressable
             onPress={()=>navigation.navigate('FarmlandForm1', {
-              farmerId: item._id
+              farmerId: item._id,
+              farmerName: item.names,
             })}
           >
             <Icon name="arrow-right" size={80} color="#005000" />

@@ -41,17 +41,25 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     const [plantTypes, setPlantTypes] = useState([]);
     const [clones, setClones] = useState([]);
     const [densityMode, setDensityMode] = useState('')
+    
     const [alert, setAlert] = useState(false);
 
-
+    
     const [farmlandData, setFarmlandData] = useState({});
 
-    const farmerId = route.params?.farmerId;
+    // extract farmerId sent from the previous screen
+    const { farmerId, farmerName } = route.params;
 
-    const realm = useRealm();
+    // go back to the previous screen
+    // if farmerId is undefined
+    if (!farmerId) {
+        navigation.goBack();
+        return ;
+    }
+
+    // const realm = useRealm();
 
     // get user from realm
-    const farmer = realm.objectForPrimaryKey('Farmer', farmerId);
  
     // loading activity indicator
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
@@ -72,13 +80,21 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             densityWidth,
             plantTypes,
             clones,
-            farmer,
+            // farmerId,
            }
+        
+        // if any required data is not validated
+        // a alert message is sent to the user   
         if (!validateFarmlandData(farmlandData, errors, setErrors)) {
             setAlert(true)
             return;
         }
+        // created the validated data object to be passed to the FarmlandModal component
         let retrievedFarmlandData = validateFarmlandData(farmlandData, errors, setErrors);
+
+        // add farmerId property to the object
+        // as it's being passed to FarmlandModal component
+        retrievedFarmlandData['farmerId'] = farmerId;
            
        
         setFarmlandData(retrievedFarmlandData);
@@ -134,7 +150,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                   Registo de Parcela
               </Text>          
               <Text style={styles.description}>
-                Produtor: {farmer?.names?.otherNames + ' ' + farmer?.names?.surname}
+                Produtor: {farmerName?.otherNames + ' ' + farmerName?.surname}
               </Text>  
           </Box>
         </Box>

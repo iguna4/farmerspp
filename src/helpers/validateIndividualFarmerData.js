@@ -124,7 +124,7 @@ const validateIndividualFarmerData = (
 
     if (!retrievedBirthDistrict){
         const errorMessage = 
-            (birthProvince === "País Estrangeiro") 
+            (retrievedBirthProvince === "País Estrangeiro") 
             ? "Indica país onde nasceu."
             : "Indica distrito onde nasceu."
 
@@ -136,8 +136,10 @@ const validateIndividualFarmerData = (
 
     if (
         !retrievedBirthAdminPost 
-        && birthProvince !== "País Estrangeiro" 
-        && !retrievedBirthDistrict?.includes('(Cidade')
+        && retrievedBirthProvince !== "País Estrangeiro" 
+        && !retrievedBirthDistrict?.includes('Cidade')
+        && retrievedBirthProvince !== 'Maputo'
+        && !retrievedBirthProvince?.includes('Cidade')
         ){
         setErrors({ ...errors,
             birthAdminPost: 'Posto Administrativo onde o produtor nasceu.',

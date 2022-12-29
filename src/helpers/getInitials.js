@@ -1,4 +1,4 @@
 
-export const getInitials = (names, surname)=>{
+export const getInitials = (name)=>{
     return names[0]+surname[0]
 }

@@ -13,7 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Realm from 'realm';
 
 import SuccessModal from './SuccessModal';
-import { generateUUID } from '../../helpers/generateUUID';
+import { generateUFID } from '../../helpers/generateUFID';
 import { generateFormattedDate } from '../../helpers/generateFormattedDate';
 import { generateFormattedAdminPost } from '../../helpers/generateFormattedAdminPost';
 import { generateFormattedSurname } from '../../helpers/generateFormattedSurname';
@@ -71,6 +71,9 @@ const IndividualModal = (
         birthDate, birthPlace, address,
         contact, idDocument,
     } = farmerData;
+
+    const ufid = generateUFID({ names, birthDate, birthPlace });
+    console.log('ufid:', ufid);
 
     realm.write(()=>{
         const newFarmer = realm.create('Farmer', {

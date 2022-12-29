@@ -106,6 +106,11 @@ export default function FarmerForm1Screen({ route, navigation }) {
 
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
+    console.log('birthDate-original:', birthDate)
+    console.log('birthDate-object:', new Date(birthDate))
+    console.log('birthDate-valueOf:', new Date(birthDate).valueOf())
+    console.log('birthDate-of-valueof:', new Date(new Date(birthDate).valueOf()))
+
     
     const user = route.params.user;
 
@@ -695,6 +700,8 @@ export default function FarmerForm1Screen({ route, navigation }) {
             </Box>
             </Stack>
 
+{ !birthProvince?.includes('Cidade') && (
+
         <Stack direction="row" mx="3" my="2" w="100%">
             <Box w="50%" px="1">
             <FormControl isRequired my="1" isInvalid={'birthDistrict' in errors}>
@@ -702,7 +709,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                     <Select
                         selectedValue={birthDistrict}
                         accessibilityLabel="Escolha um distrito"
-                        placeholder="Escolha um distrito"
+                        placeholder={birthProvince?.includes('Estrangeiro') ? "Escolha um país" : "Escolha um distrito"}
                         minHeight={55}
                         // defaultValue="Primeiro, Escolha um distrito"
                         _selectedItem={{
@@ -711,12 +718,12 @@ export default function FarmerForm1Screen({ route, navigation }) {
                             endIcon: <CheckIcon size="5" />,
                         }}
                       dropdownCloseIcon={birthDistrict 
-                                        ? <Icon name="close" size={25} color="red" onPress={()=>setBirthDistrict('')} /> 
-                                        : <Icon size={40} name="arrow-drop-down" color="#005000" />
-                                    }
-                        mt={1}
-                        onValueChange={newDistrict => {
-                            // if (birthProvince === "País Estrangeiro") {
+                        ? <Icon name="close" size={25} color="red" onPress={()=>setBirthDistrict('')} /> 
+                        : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                    }
+                    mt={1}
+                    onValueChange={newDistrict => {
+                        // if (birthProvince === "País Estrangeiro") {
                             //     setErrors((prev)=>({...prev, birthCountry: ''}));
                             //     setBirthCountry(newDistrict);
                             // }
@@ -733,8 +740,8 @@ export default function FarmerForm1Screen({ route, navigation }) {
                         :
                         districts[birthProvince]?.map((district, index)=>(
                             <Select.Item key={index} label={district} value={district} />
-                        ))
-                    }
+                            ))
+                        }
                     </Select>
                 {
                 'birthDistrict' in errors 
@@ -746,11 +753,19 @@ export default function FarmerForm1Screen({ route, navigation }) {
             </FormControl>
             </Box>
             <Box w="50%" px="1">
-{
-    !birthProvince?.includes('Estrangeiro') && (
-
         
-        <FormControl isRequired my="1" isInvalid={'birthAdminPost' in errors}>
+        {
+            (
+                !birthProvince?.includes('Estrangeiro') && 
+                !birthDistrict?.includes('Cidade') &&
+                !birthProvince?.includes('Maputo')
+                
+            ) 
+            && 
+            
+            (
+                
+                <FormControl isRequired my="1" isInvalid={'birthAdminPost' in errors}>
                 <FormControl.Label>Posto Administrativo</FormControl.Label>
                     <Select
                         selectedValue={birthProvince ? birthAdminPost: ''}
@@ -763,11 +778,11 @@ export default function FarmerForm1Screen({ route, navigation }) {
                             fontSize: 'lg',
                             endIcon: <CheckIcon size="5" />,
                         }}
-                      dropdownCloseIcon={birthAdminPost 
-                        ? <Icon name="close" size={25} color="red" onPress={()=>setBirthAdminPost('')} /> 
-                        : <Icon size={40} name="arrow-drop-down" color="#005000" />
-                    }
-                    mt={1}
+                        dropdownCloseIcon={birthAdminPost 
+                            ? <Icon name="close" size={25} color="red" onPress={()=>setBirthAdminPost('')} /> 
+                            : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                        }
+                        mt={1}
                     onValueChange={newAdminPost=> {
                         setErrors((prev)=>({...prev, birthAdminPost: ''}));
                         setBirthAdminPost(newAdminPost);
@@ -788,18 +803,20 @@ export default function FarmerForm1Screen({ route, navigation }) {
                 }
             </FormControl>
         
-    )
-}
-</Box>
-        </Stack>
+        )
+    }
+        </Box>
+    </Stack>
+)}
 
-        <CustomDivider
+
+<CustomDivider
             marginVertical="2"
             thickness={2}
             bg="#005000"
-        />
-
-        <Center>
+            />
+            
+            <Center>
             <Text style={styles.formSectionDescription}>Documentos de Identificação</Text>
         </Center>
 

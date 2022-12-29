@@ -41,10 +41,14 @@ export default function FarmersCcreen({ route, navigation }) {
   const individualsList = addFlagToListItem(farmers, 'Indivíduo')
   const groupsList = addFlagToListItem(groups, 'Grupo')
   const institutionsList = addFlagToListItem(institutions, 'Instituição')
-  // setFarmersList([...individualsList, ...groupsList, ...institutionsList])
-  const farmersList = [...individualsList, ...groupsList, ...institutionsList]
   
-  console.log('farmersList:', farmersList)
+  // merge the three arrays of farmers and sort the items by createdAt 
+  const farmersList = 
+        [...individualsList, ...groupsList, ...institutionsList]
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            
+  
+
 
   useEffect(()=>{
 

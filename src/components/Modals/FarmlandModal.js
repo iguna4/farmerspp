@@ -103,14 +103,14 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             farmer: owner._id,
         })
 
+        // add the created farmland to the Farmer (owner)'s object
+        owner.farmlands.push(newFarmland);
 
         if (flag === 'Indivíduo'){            
             // categorize by 'comercial' | 'familiar' | 'nao-categorizado'
             owner.category = categorizeFarmer(owner.farmlands);
         }
 
-        // add the created farmland to the Farmer (owner)'s object
-        owner.farmlands.push(newFarmland);
 
 
     })

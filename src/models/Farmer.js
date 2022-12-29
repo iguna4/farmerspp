@@ -17,7 +17,7 @@ export const Farmer = {
         birthDate: 'date',
         birthPlace: 'Address',
         address: 'Address',
-        category: { type: 'string', default: 'não categorizado' },
+        category: { type: 'string', default: 'Não-categorizado' },
         contact: 'Contact?',
         idDocument: 'IdDocument?',
         photo: { type: 'string', default: 'https://localhost.picture' },

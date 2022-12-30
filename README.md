@@ -1,13 +1,18 @@
 
 # Decision Records
 ==============================
+### Decision structure:
+- Context
+- Alternatives
+- Choices
+- Impacts
 
 ## Decision 1: Write an algorithm that generate a Universal Farmer Identifier (UFID) for each individual farmer
 - Context: 
     Farmers' registration process is prone to duplications. 
     Generating a UFID can help prevent farmers' registration duplications
 - Algorithm:
-    Made of 19 characters: ab.mmddyy.xyxyxy.so
+    Made of 19 characters: "ab.mmddyy.xyxyxy.so"
     ab: the first 2 characters of the farmer's first name;
     mmddyy: the month, day, and year of the farmer's birth;
     xyxyxy: the post code or the code of the farmer's place of birth;

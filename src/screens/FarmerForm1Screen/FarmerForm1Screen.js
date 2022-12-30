@@ -34,6 +34,7 @@ import ErrorAlert from '../../components/Alerts/ErrorAlert';
 
 import { realmContext } from '../../models/realm';
 import DuplicatesAlert from '../../components/Alerts/DuplicatesAlert';
+import { generateUFID } from '../../helpers/generateUFID';
 const { useRealm, useQuery } = realmContext; 
 
 
@@ -111,62 +112,80 @@ export default function FarmerForm1Screen({ route, navigation }) {
 
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
+    // farmers duplicates
+    const [suspectedDuplicates, setSuspectedDuplicates] = useState([]);
+
     
     const user = route.params.user;
     const realm = useRealm();
-    const duplicates = realm.objects('Farmer').filtered(`names.surname == $0`, surname);
-
-    console.log('foundFarmers:', duplicates.length);
-
+    
+    console.log('date:', birthDate);
+    
     // const checkDuplicates = (farmers)=>{
-    //     if (farmers.length > 0) {
-    //         setDuplicateAlert(true);
-    //     }
-    // }
-
-
-
-    const addFarmer = (farmerType, duplicates)=>{
-
-        if (duplicates.length > 0) {
-            setDuplicatesAlert([...duplicates, ...duplicates, ...duplicates])
-            setDuplicatesAlert(true);
-            return ;
-        }
-
-
-
+        //     if (farmers.length > 0) {
+            //         setDuplicateAlert(true);
+            //     }
+            // }
+            
+    if (suspectedDuplicates.length > 0) {
+        setDuplicatesAlert(true);
+        return ;
+    }
+            
+            
+            
+    const addFarmer = (farmerType)=>{
+                
+                
+                
         let farmerData;
         let retrievedFarmerData;
-
+        
         if (farmerType === "Indivíduo"){
             farmerData = {
-               isSprayingAgent,
-               surname,   
-               otherNames, 
-               gender,
-               familySize,
-               birthDate, 
-               birthProvince,
-               birthDistrict,
-               birthAdminPost,
-            //    birthVillage,
-               // userAddressProvince,
-               // userAddressDistrict,
-               addressAdminPost,
-               addressVillage,
-               primaryPhone, 
-               secondaryPhone,
-               docType, 
-               docNumber, 
-               nuit
-           }
+                isSprayingAgent,
+                surname,   
+                otherNames, 
+                gender,
+                familySize,
+                birthDate, 
+                birthProvince,
+                birthDistrict,
+                birthAdminPost,
+                //    birthVillage,
+                // userAddressProvince,
+                // userAddressDistrict,
+                addressAdminPost,
+                addressVillage,
+                primaryPhone, 
+                secondaryPhone,
+                docType, 
+                docNumber, 
+                nuit
+            }
             if (!validateIndividualFarmerData(farmerData, errors, setErrors)) {
-                setAlert(true)
+                setErrorAlert(true)
                 return ;
             }
+            
             retrievedFarmerData = validateIndividualFarmerData(farmerData, errors, setErrors);
-           
+            const { names, birthDate, birthPlace } = retrievedFarmerData;
+            const ufid = generateUFID({ 
+                names: retrievedFarmerData.names, 
+                birthDate: retrievedFarmerData.birthDate, 
+                birthPlace: retrievedFarmerData.birthPlace 
+            });
+
+            console.log('ufid', ufid);
+            const duplicates = realm.objects('Farmer').filtered(`ufid == $0`, ufid);
+             console.log('duplicates:', duplicates.length);
+            if (duplicates.length > 0) {
+                setSuspectedDuplicates(duplicates);
+                // do all the magic here
+
+                return ;
+
+            }
         }
         else if (farmerType === "Instituição"){
             farmerData = {
@@ -1637,7 +1656,7 @@ farmerType === "Instituição" && (
         { farmerType !== '' ? 
             (<Button
             title="Pré-visualizar dados"
-            onPress={()=>addFarmer(farmerType, duplicates)}
+            onPress={()=>addFarmer(farmerType)}
             />)
             :
             <Box >

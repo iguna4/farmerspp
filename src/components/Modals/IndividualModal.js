@@ -74,6 +74,8 @@ const IndividualModal = (
 
     const ufid = generateUFID({ names, birthDate, birthPlace });
   
+    // console.log('ufid:', ufid);
+
     realm.write(()=>{
         const newFarmer = realm.create('Farmer', {
             _id: uuidv4(),

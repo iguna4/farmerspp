@@ -1,6 +1,17 @@
 
 import { capitalize } from "./capitalize";
-
+/**
+ * 
+ * @param {*} farmerData 
+ * @param {*} errors 
+ * @param {*} setErrors 
+ * @returns false if invalid data found, farmerdata if no invalid data found
+ * 
+ * This function sanitizes, and validates all the farmer data before they
+ * are persisted. 
+ * Invalid data trigger errorMessages to the respective input component
+ * in the form.
+ */
 
 const validateIndividualFarmerData = (
     {   isSprayingAgent,
@@ -22,6 +33,8 @@ const validateIndividualFarmerData = (
         docType, docNumber, nuit,  
     }, errors, setErrors,
     ) => {
+
+    // sanitizing recieved data
     const retrievedisSprayingAgent = isSprayingAgent;
     const retrievedSurname = capitalize(surname?.trim()); 
     const retrievedOtherNames = capitalize(otherNames?.trim());
@@ -42,6 +55,8 @@ const validateIndividualFarmerData = (
     const retrievedDocNumber = docNumber;
     const retrievedNuit = nuit; 
        
+    // validating each data and sending back
+    // errorMessages if invalid data is found
     if (!retrievedSurname){
         setErrors({ ...errors,
             surname: 'Apelido do produtor.',
@@ -172,7 +187,9 @@ const validateIndividualFarmerData = (
         });
         return false;
     }
-
+    
+    // binding all the sanitized and validated data within an object
+    // that's returned for persistence's purpose.
     const farmerData = {
         names: {
             surname: retrievedSurname,   

@@ -32,9 +32,10 @@ import InstitutionModal from '../../components/Modals/InstitutionModal';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 
 
+import DuplicatesAlert from '../../components/Alerts/DuplicatesAlert';
+import { generateUFID } from '../../helpers/generateUFID';
 import { realmContext } from '../../models/realm';
-const {useRealm} = realmContext;
-
+const { useRealm, useQuery } = realmContext; 
 
 
 export default function FarmerForm1Screen({ route, navigation }) {
@@ -58,7 +59,8 @@ export default function FarmerForm1Screen({ route, navigation }) {
     // handle modal view
     const [modalVisible, setModalVisible] = useState(false);
 
-    const [alert, setAlert] = useState(false);
+    const [errorAlert, setErrorAlert] = useState(false);
+    const [duplicatesAlert, setDuplicatesAlert] =useState(false);
 
 
 
@@ -109,11 +111,16 @@ export default function FarmerForm1Screen({ route, navigation }) {
 
 
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
+
+    // farmers duplicates
+    const [suspectedDuplicates, setSuspectedDuplicates] = useState([]);
+
     
     const user = route.params.user;
-
-    // console.log('farmerType:', farmerType);
-
+    // const realm = useRealm();
+    
+    console.log('date:', birthDate);
+    
 
     const realm = useRealm();
 
@@ -122,38 +129,71 @@ export default function FarmerForm1Screen({ route, navigation }) {
     console.log('farmers-3333:', farmers)
 
 
-    const addFarmer = ()=>{
+    // const checkDuplicates = (farmers)=>{
+        //     if (farmers.length > 0) {
+            //         setDuplicateAlert(true);
+            //     }
+            // }
+            
+    if (suspectedDuplicates.length > 0) {
+        setDuplicatesAlert(true);
+        return ;
+    }
+            
+            
+            
+    const addFarmer = (farmerType)=>{
+                
+                
+                
         let farmerData;
         let retrievedFarmerData;
-
+        
         if (farmerType === "Indivíduo"){
             farmerData = {
-               isSprayingAgent,
-               surname,   
-               otherNames, 
-               gender,
-               familySize,
-               birthDate, 
-               birthProvince,
-               birthDistrict,
-               birthAdminPost,
-            //    birthVillage,
-               // userAddressProvince,
-               // userAddressDistrict,
-               addressAdminPost,
-               addressVillage,
-               primaryPhone, 
-               secondaryPhone,
-               docType, 
-               docNumber, 
-               nuit
-           }
+                isSprayingAgent,
+                surname,   
+                otherNames, 
+                gender,
+                familySize,
+                birthDate, 
+                birthProvince,
+                birthDistrict,
+                birthAdminPost,
+                //    birthVillage,
+                // userAddressProvince,
+                // userAddressDistrict,
+                addressAdminPost,
+                addressVillage,
+                primaryPhone, 
+                secondaryPhone,
+                docType, 
+                docNumber, 
+                nuit
+            }
             if (!validateIndividualFarmerData(farmerData, errors, setErrors)) {
-                setAlert(true)
+                setErrorAlert(true)
                 return ;
             }
+            
             retrievedFarmerData = validateIndividualFarmerData(farmerData, errors, setErrors);
-           
+            const { names, birthDate, birthPlace } = retrievedFarmerData;
+            const ufid = generateUFID({ 
+                names: retrievedFarmerData.names, 
+                birthDate: retrievedFarmerData.birthDate, 
+                birthPlace: retrievedFarmerData.birthPlace 
+            });
+
+            console.log('ufid', ufid);
+            const duplicates = realm.objects('Farmer').filtered(`ufid == $0`, ufid);
+             console.log('duplicates:', duplicates.length);
+            if (duplicates.length > 0) {
+                setSuspectedDuplicates(duplicates);
+                // do all the magic here
+
+                return ;
+
+            }
         }
         else if (farmerType === "Instituição"){
             farmerData = {
@@ -227,10 +267,22 @@ export default function FarmerForm1Screen({ route, navigation }) {
  
     
 
-    if (alert) {
+    if (errorAlert) {
         return (
             <Center flex={1} px="3">
-                <ErrorAlert alert={alert} setAlert={setAlert} />
+                <ErrorAlert alert={errorAlert} setAlert={setErrorAlert} />
+            </Center>
+        )
+    }
+        
+    if (duplicatesAlert) {
+        return (
+            <Center flex={1} px="3">
+                <DuplicatesAlert 
+                    duplicatesAlert={duplicatesAlert} 
+                    setDuplicatesAlert={setDuplicatesAlert} 
+                    duplicates={duplicates} 
+                />
             </Center>
         )
     }

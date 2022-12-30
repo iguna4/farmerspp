@@ -73,8 +73,7 @@ const IndividualModal = (
     } = farmerData;
 
     const ufid = generateUFID({ names, birthDate, birthPlace });
-    console.log('ufid:', ufid);
-
+  
     realm.write(()=>{
         const newFarmer = realm.create('Farmer', {
             _id: uuidv4(),
@@ -87,7 +86,7 @@ const IndividualModal = (
             address,
             contact,
             idDocument,
-            ufid: '4843jf',
+            ufid,
 
         })
         setModalVisible(false);

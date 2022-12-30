@@ -32,6 +32,10 @@ import InstitutionModal from '../../components/Modals/InstitutionModal';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 
 
+import { realmContext } from '../../models/realm';
+const {useRealm} = realmContext;
+
+
 
 export default function FarmerForm1Screen({ route, navigation }) {
     const [gender, setGender] = useState('');
@@ -105,16 +109,18 @@ export default function FarmerForm1Screen({ route, navigation }) {
 
 
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
-
-    console.log('birthDate-original:', birthDate)
-    console.log('birthDate-object:', new Date(birthDate))
-    console.log('birthDate-valueOf:', new Date(birthDate).valueOf())
-    console.log('birthDate-of-valueof:', new Date(new Date(birthDate).valueOf()))
-
     
     const user = route.params.user;
 
     // console.log('farmerType:', farmerType);
+
+
+    const realm = useRealm();
+
+    const farmers = realm.objects('Farmer');
+
+    console.log('farmers-3333:', farmers)
+
 
     const addFarmer = ()=>{
         let farmerData;

@@ -32,6 +32,10 @@ import InstitutionModal from '../../components/Modals/InstitutionModal';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 
 
+import { realmContext } from '../../models/realm';
+import DuplicatesAlert from '../../components/Alerts/DuplicatesAlert';
+const { useRealm, useQuery } = realmContext; 
+
 
 export default function FarmerForm1Screen({ route, navigation }) {
     const [gender, setGender] = useState('');
@@ -54,7 +58,8 @@ export default function FarmerForm1Screen({ route, navigation }) {
     // handle modal view
     const [modalVisible, setModalVisible] = useState(false);
 
-    const [alert, setAlert] = useState(false);
+    const [errorAlert, setErrorAlert] = useState(false);
+    const [duplicatesAlert, setDuplicatesAlert] =useState(false);
 
 
 
@@ -106,17 +111,31 @@ export default function FarmerForm1Screen({ route, navigation }) {
 
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
-    console.log('birthDate-original:', birthDate)
-    console.log('birthDate-object:', new Date(birthDate))
-    console.log('birthDate-valueOf:', new Date(birthDate).valueOf())
-    console.log('birthDate-of-valueof:', new Date(new Date(birthDate).valueOf()))
-
     
     const user = route.params.user;
+    const realm = useRealm();
+    const duplicates = realm.objects('Farmer').filtered(`names.surname == $0`, surname);
 
-    // console.log('farmerType:', farmerType);
+    console.log('foundFarmers:', duplicates.length);
 
-    const addFarmer = ()=>{
+    // const checkDuplicates = (farmers)=>{
+    //     if (farmers.length > 0) {
+    //         setDuplicateAlert(true);
+    //     }
+    // }
+
+
+
+    const addFarmer = (farmerType, duplicates)=>{
+
+        if (duplicates.length > 0) {
+            setDuplicatesAlert([...duplicates, ...duplicates, ...duplicates])
+            setDuplicatesAlert(true);
+            return ;
+        }
+
+
+
         let farmerData;
         let retrievedFarmerData;
 
@@ -221,10 +240,22 @@ export default function FarmerForm1Screen({ route, navigation }) {
  
     
 
-    if (alert) {
+    if (errorAlert) {
         return (
             <Center flex={1} px="3">
-                <ErrorAlert alert={alert} setAlert={setAlert} />
+                <ErrorAlert alert={errorAlert} setAlert={setErrorAlert} />
+            </Center>
+        )
+    }
+        
+    if (duplicatesAlert) {
+        return (
+            <Center flex={1} px="3">
+                <DuplicatesAlert 
+                    duplicatesAlert={duplicatesAlert} 
+                    setDuplicatesAlert={setDuplicatesAlert} 
+                    duplicates={duplicates} 
+                />
             </Center>
         )
     }
@@ -1606,7 +1637,7 @@ farmerType === "Instituição" && (
         { farmerType !== '' ? 
             (<Button
             title="Pré-visualizar dados"
-            onPress={()=>addFarmer(farmerType)}
+            onPress={()=>addFarmer(farmerType, duplicates)}
             />)
             :
             <Box >

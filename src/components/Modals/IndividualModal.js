@@ -72,6 +72,7 @@ const IndividualModal = (
         contact, idDocument,
     } = farmerData;
 
+    // generate the universally farmer identifier
     const ufid = generateUFID({ names, birthDate, birthPlace });
   
     // console.log('ufid:', ufid);
@@ -111,7 +112,6 @@ const IndividualModal = (
         setDocNumber(''); 
         setNuit(null);
        
-        
     })
 }, [
         realm, 

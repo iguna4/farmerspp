@@ -2,10 +2,10 @@ import React from "react";
 import { Alert, Collapse, Button, VStack, HStack, IconButton, CloseIcon, Box, Text, Center, NativeBaseProvider } from "native-base";
 import { Pressable } from "react-native";
 
-const ErrorAlert = ({ alert, setAlert })=> {
+const ErrorAlert = ({ errorAlert, setErrorAlert })=> {
 //   const [show, setShow] = React.useState(true);
   return <Box w="100%" alignItems="center">
-      <Collapse isOpen={alert}>
+      <Collapse isOpen={errorAlert}>
         <Alert maxW="400" status="error">
           <VStack space={1} flexShrink={1} w="100%">
             <HStack flexShrink={1} space={2} alignItems="center" justifyContent="space-between">
@@ -21,7 +21,7 @@ const ErrorAlert = ({ alert, setAlert })=> {
               borderWidth: 0
             }} icon={<CloseIcon size="3" />} _icon={{
               color: "coolGray.600"
-            }} onPress={() => setAlert(false)} />
+            }} onPress={() => setErrorAlert(false)} />
             </HStack>
             <Box pl="6" _dark={{
             _text: {
@@ -40,7 +40,7 @@ const ErrorAlert = ({ alert, setAlert })=> {
         
         }}
         size={"lg"} 
-        onPress={() => setAlert(false)} 
+        onPress={() => setErrorAlert(false)} 
         mt={8} 
         mx="auto"
     >
@@ -48,7 +48,7 @@ const ErrorAlert = ({ alert, setAlert })=> {
             style={{
                 color: '#005000',
                 fontSize: 18,
-                fontFamily: 'JosefinSans-Bold',
+                fontFamily: 'JosefinSans-Regular',
                 textDecoration: 'underline',
             }}
         

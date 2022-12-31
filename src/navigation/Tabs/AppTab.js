@@ -39,6 +39,7 @@ export default function AppTab() {
         labeled={false}
         screenOptions={({ route })=>({
           headerShown: false,
+          
         })}>
           <Tab.Screen
             options={{

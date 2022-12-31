@@ -46,8 +46,6 @@ export default function FarmersCcreen({ route, navigation }) {
   const farmersList = 
         [...individualsList, ...groupsList, ...institutionsList]
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-            
-  
 
 
   useEffect(()=>{
@@ -71,6 +69,11 @@ export default function FarmersCcreen({ route, navigation }) {
   
   
   const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
+
+
+  
+
+
   
   useFocusEffect(
     React.useCallback(() => {
@@ -81,6 +84,24 @@ export default function FarmersCcreen({ route, navigation }) {
       return () => task.cancel();
     }, [])
   );
+
+    const hideTabBar = (e) => {
+      let offset = 0;
+      const currentOffset = e.nativeEvent.contentOffset.y;
+      // const dif = currentOffset - ;  
+  
+      if (currentOffset < 0) {
+        navigation.setOptions({ showTabBar: false });
+      } else {
+        navigation.setParams({ showTabBar: false });
+      }
+      // console.log('dif=',dif);
+  
+      // this.offset = currentOffset;
+    }      
+  
+
+
 
 
   if (loadingActivitiyIndicator) {
@@ -94,7 +115,7 @@ export default function FarmersCcreen({ route, navigation }) {
     // <SafeAreaView style={{flex: 1}}>
     <Box bg="ghostwhite" minHeight="100%" 
       style={{
-        marginBottom: 20,
+        marginBottom: 50,
       }}
     >
 
@@ -141,7 +162,10 @@ export default function FarmersCcreen({ route, navigation }) {
             >
             {/* {farmers.map((item)=>(<Text key={item._id}>{item.names.otherNames}{' '}{item.names.surname}</Text>))} */}
             <FlatList
-              
+              // onMomentumScrollBegin={()=>onScroll(e)}
+              // onScroll={(e)=>{
+              //   hideTabBar(e)
+              // }}
               data={farmersList}
               keyExtractor={keyExtractor}
               // renderItem={({ item })=><FarmerItem route={route} navigation={navigation} item={item} />}

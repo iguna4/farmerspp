@@ -44,34 +44,16 @@ export default function AppTab() {
         shifting={true}
         labeled={false}
         screenOptions={({ route })=>({
-          // tabBarIcon: ({ focused, color, size }) => {
-          //   let newColor;
-          //   let iconName;
-          
-
-          //   if (route.name === 'HomeStack') {
-          //     iconName = focused
-          //       ? '#005000'
-          //       : 'grey';
-            
-          //   } else if (route.name === 'FarmersStack') {
-          //     iconName = focused
-          //     ? '#005000'
-          //     : 'grey';
-          //   }
-
-          //   // You can return any component that you like here!
-          //   return <Icon name={iconName} size={50} color={'#005000'} />;
-          // },
           headerShown: false,
           tabBarStyle: {
-            position: 'absolute',
-            minHeight: 50,
+            // position: 'absolute',
+            minHeight: 60,
+            marginTop: 0,
             // backgroundColor: 'grey',
           },
-          tabBarActiveTintColor: '#ffffff',
+          // tabBarActiveTintColor: '#ffffff',
           tabBarIconStyle: {
-            color: '#005000',
+            // color: '#005000',
           },
           tabBarActiveBackgroundColor: '#EBEBE4',
           tabBarInactiveBackgroundColor: '#EBEBE4',
@@ -82,13 +64,15 @@ export default function AppTab() {
             fontSize: 16,
             fontFamily: 'JosefinSans-Bold',
           }
-          // keyBoard: true,
           
         })}
         >
           <Tab.Screen
             options={{
-              tabBarIcon: (tabInfo)=><Icon name="home" color={tabInfo.focused ? "#005000": 'grey'} size={40} />,
+              tabBarIcon: (tabInfo)=><Icon 
+                        name="home" 
+                        color={tabInfo.focused ? "#005000": 'grey'}
+                        size={50} />,
               tabBarLabel: 'Painel',
               // tabBarInactiveBackgroundColor
             }}
@@ -97,10 +81,24 @@ export default function AppTab() {
             />
           <Tab.Screen
             options={{
-              tabBarIcon: (tabInfo)=><Icon name="people" color={tabInfo.focused ? "#005000": 'grey'} size={40} />,
+              tabBarIcon: (tabInfo)=><Icon 
+                        name="people" 
+                        color={tabInfo.focused ? "#005000": 'grey'} 
+                        size={50} />,
               tabBarLabel: 'Produtores',
             }}
             name="FarmersStack"
+            component={FarmersStackScreen}
+           />
+          <Tab.Screen
+            options={{
+              tabBarIcon: (tabInfo)=><Icon 
+                        name="search" 
+                        color={tabInfo.focused ? "#005000": 'grey'} 
+                        size={50} />,
+              tabBarLabel: 'Pesquisa',
+            }}
+            name="UsersStack"
             component={FarmersStackScreen}
            />
       </Tab.Navigator>

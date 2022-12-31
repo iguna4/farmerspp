@@ -292,7 +292,10 @@ export default function FarmerForm1Screen({ route, navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        decelerationRate={'normal'}
+        fadingEdgeLength={2}
+      >
         {/* Data collecting form description */}
      <Box >
         <Box bg="#005000" w="100%" px="3" 

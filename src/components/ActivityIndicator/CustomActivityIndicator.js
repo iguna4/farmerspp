@@ -6,15 +6,15 @@ import styles from './style'
 
 const CustomActivityIndicator = ({ loadingActivitiyIndicator, setLoadingActivityIndicator }) => {
     
-    const startLoading = ()=>{
+    // const startLoading = ()=>{
         // setLoadingActivityIndicator(true);
+    // }
+    
+    if (loadingActivitiyIndicator) {
+        // startLoading();
         setTimeout(()=>{
             setLoadingActivityIndicator(false);
-        }, 100);
-    }
-
-    if (loadingActivitiyIndicator) {
-        startLoading();
+        }, 0);
     }
     
     return (

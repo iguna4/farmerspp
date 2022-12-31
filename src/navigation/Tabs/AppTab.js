@@ -17,6 +17,12 @@ const { RealmProvider} = realmContext;
 const Tab = createBottomTabNavigator();
 
 
+const navigationTheme = {
+  colors: {
+    backgroundColor: '#005000',
+  }
+}
+
 export default function AppTab() {
 
   // const realm = useRealm();
@@ -38,20 +44,60 @@ export default function AppTab() {
         shifting={true}
         labeled={false}
         screenOptions={({ route })=>({
-          headerShown: false,
+          // tabBarIcon: ({ focused, color, size }) => {
+          //   let newColor;
+          //   let iconName;
           
-        })}>
+
+          //   if (route.name === 'HomeStack') {
+          //     iconName = focused
+          //       ? '#005000'
+          //       : 'grey';
+            
+          //   } else if (route.name === 'FarmersStack') {
+          //     iconName = focused
+          //     ? '#005000'
+          //     : 'grey';
+          //   }
+
+          //   // You can return any component that you like here!
+          //   return <Icon name={iconName} size={50} color={'#005000'} />;
+          // },
+          headerShown: false,
+          tabBarStyle: {
+            position: 'absolute',
+            minHeight: 50,
+            // backgroundColor: 'grey',
+          },
+          tabBarActiveTintColor: '#ffffff',
+          tabBarIconStyle: {
+            color: '#005000',
+          },
+          tabBarActiveBackgroundColor: '#EBEBE4',
+          tabBarInactiveBackgroundColor: '#EBEBE4',
+          tabBarAllowFontScaling: true,
+          tabBarShowLabel: false,
+          tabBarHideOnKeyboard: 'true',
+          tabBarLabelStyle: {
+            fontSize: 16,
+            fontFamily: 'JosefinSans-Bold',
+          }
+          // keyBoard: true,
+          
+        })}
+        >
           <Tab.Screen
             options={{
-              tabBarIcon: ()=><Icon name="home" color="grey" size={40} />,
+              tabBarIcon: (tabInfo)=><Icon name="home" color={tabInfo.focused ? "#005000": 'grey'} size={40} />,
               tabBarLabel: 'Painel',
+              // tabBarInactiveBackgroundColor
             }}
             name="HomeStack"
             component={HomeStackScreen}
             />
           <Tab.Screen
             options={{
-              tabBarIcon: ()=><Icon name="people" color="grey" size={40} />,
+              tabBarIcon: (tabInfo)=><Icon name="people" color={tabInfo.focused ? "#005000": 'grey'} size={40} />,
               tabBarLabel: 'Produtores',
             }}
             name="FarmersStack"

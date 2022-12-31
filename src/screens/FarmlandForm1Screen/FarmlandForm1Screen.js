@@ -21,6 +21,9 @@ import validateFarmlandData from '../../helpers/validateFarmlandData';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 
 import { realmContext } from '../../models/realm';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faTree } from '@fortawesome/free-solid-svg-icons';
+import TreeComponent from '../../components/LottieComponents/TreeComponent';
 const { useRealm, useQuery } = realmContext; 
 
 // const { useRealm, useObject } = AppContext;
@@ -120,12 +123,12 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     }, [navigation])
     
     
-    if (loadingActivitiyIndicator) {
-        return <CustomActivityIndicator 
-        loadingActivitiyIndicator={loadingActivitiyIndicator}
-        setLoadingActivityIndicator={setLoadingActivityIndicator}
-        />
-    }
+    // if (loadingActivitiyIndicator) {
+    //     return <CustomActivityIndicator 
+    //     loadingActivitiyIndicator={loadingActivitiyIndicator}
+    //     setLoadingActivityIndicator={setLoadingActivityIndicator}
+    //     />
+    // }
     
     
     if (alert) {
@@ -144,16 +147,51 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     >
       <ScrollView>
         <Box>
-          <Box bg="#005000" w="100%" px="3">
-              <Text style={styles.headerText}>
-                  Registo de Parcela
-              </Text>          
-              <Text style={styles.description}>
-                Proprietário: {ownerName}
-              </Text>  
+          <Box bg="#005000" w="100%" px="3" py="6"
+            style={{
+            borderBottomRightRadius: 50,
+            borderBottomLeftRadius: 50,
+            }}
+          >
+            <Stack direction="row">
+                <Box w="80%">
+                    <Text style={styles.headerText}>
+                        Registo de Parcela
+                    </Text>          
+                    <Text style={[styles.description, { paddingVertical: 20,}]}>
+                        Proprietário: {ownerName}
+                    </Text>  
+                </Box>
+                <Center w="20%" 
+                    // alignItems={'center'}
+                    style={{
+                        alignItems: 'center',
+                    }}
+                >
+                    {/* <TreeComponent 
+                         styles={{ 
+                            zIndex: 3, 
+                            width: 50, 
+                            height: 50, 
+                            // position: 'absolute', 
+                            bottom: 50, 
+                          }}
+                    /> */}
+                    <FontAwesomeIcon icon={faTree} size={40} color="#EBEBE4" />
+                </Center>
+            </Stack>
           </Box>
         </Box>
-        
+{
+    loadingActivitiyIndicator && (
+        <CustomActivityIndicator 
+        loadingActivitiyIndicator={loadingActivitiyIndicator}
+        setLoadingActivityIndicator={setLoadingActivityIndicator}
+        />
+    )
+}
+
+
     {/* { alert && (<ErrorAlert alert={alert} setAlert={setAlert} />)} */}
       <Box px="3" my="6">
 
@@ -205,7 +243,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                                 }
                             </Select>
                         {
-                        'plantingYear' in errors 
+                            'plantingYear' in errors 
                         ? <FormControl.ErrorMessage 
                         leftIcon={<Icon name="error-outline" size={16} color="red" />}
                         _text={{ fontSize: 'xs'}}>{errors?.plantingYear}</FormControl.ErrorMessage> 
@@ -228,7 +266,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                         setErrors(prev=>({...prev, description: ''}))
                         setDescription(newDescription)
                     }}
-                />
+                    />
                 {
                 'description' in errors 
                 ? <FormControl.ErrorMessage 
@@ -248,12 +286,12 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                   save="value"
                 />
                 {
-                'description' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.description}</FormControl.ErrorMessage> 
+                    'description' in errors 
+                    ? <FormControl.ErrorMessage 
+                    leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                    _text={{ fontSize: 'xs'}}>{errors?.description}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
-                }
+            }
             </FormControl>
         </Box>  */}
 
@@ -266,16 +304,16 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                     save="value"
                     arrowicon={
                         <Icon 
-                            size={40} 
-                            name="arrow-drop-down" 
-                            color="#005000" 
+                        size={40} 
+                        name="arrow-drop-down" 
+                        color="#005000" 
                         />
                     }
                     closeicon={
                         <Icon 
-                            name="close" 
-                            size={25} 
-                            color="red" 
+                        name="close" 
+                        size={25} 
+                        color="red" 
                         />
                     }
                     fontFamily='JosefinSans-Regular'
@@ -321,7 +359,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                 />
                     
                 {
-                'trees' in errors 
+                    'trees' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.trees}</FormControl.ErrorMessage> 
@@ -358,7 +396,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.declaredArea}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
-                }
+            }
             </FormControl>
           </Box>
         </Stack>  
@@ -411,7 +449,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             </Stack>
         </Radio.Group>
             {
-            'densityMode' in errors 
+                'densityMode' in errors 
             ? <FormControl.ErrorMessage 
             leftIcon={<Icon name="error-outline" size={16} color="red" />}
             _text={{ fontSize: 'xs'}}>{errors?.densityMode}</FormControl.ErrorMessage> 
@@ -421,7 +459,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
 
 
 { densityMode === "Regular" && (
-
+    
     <Stack direction="row" mx="3" w="100%">
         <Box w="45%" px="1">
             <FormControl my="1">
@@ -438,10 +476,10 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                         setErrors(prev=>({...prev, densityMode: ''}))
                         setDensityLength(newNumber)
                     }}
-                />
+                    />
                     
                 {
-                'densityLength' in errors 
+                    'densityLength' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.densityLength}</FormControl.ErrorMessage> 
@@ -455,11 +493,11 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                 alignItems: 'center',
                 paddingTop: 30,
             }}
-        >
+            >
             <Text 
                 style={{ 
                     fontSize: 20,
-                    }}
+                }}
             >
                 X
             </Text>
@@ -482,7 +520,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             />
                 
             {
-            'densityWidth' in errors 
+                'densityWidth' in errors 
             ? <FormControl.ErrorMessage 
             leftIcon={<Icon name="error-outline" size={16} color="red" />}
             _text={{ fontSize: 'xs'}}>{errors?.densityWidth}</FormControl.ErrorMessage> 
@@ -496,9 +534,9 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                 <FormControl.Label>Tipo de plantas</FormControl.Label>
                 <MultipleSelectList
                   setSelected={(type)=>{
-                    setErrors(prev=>({...prev, plantTypes: ''}))
-                    setPlantTypes(type)}
-                }
+                      setErrors(prev=>({...prev, plantTypes: ''}))
+                      setPlantTypes(type)}
+                    }
                   data={plantingTypes}
                   placeholder="Tipo de plantas"
                   save="value"
@@ -508,14 +546,14 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                             size={40} 
                             name="arrow-drop-down" 
                             color="#005000" 
-                        />
-                    }
-                    closeicon={
-                        <Icon 
+                            />
+                        }
+                        closeicon={
+                            <Icon 
                             name="close" 
                             size={25} 
                             color="red" 
-                        />
+                            />
                     }
                     fontFamily='JosefinSans-Regular'
                     dropdownTextStyles={{
@@ -529,9 +567,9 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                         borderRadius: 4,
                         minHeight: 55,
                     }}
-                />
+                    />
                 {
-                'plantTypes' in errors 
+                    'plantTypes' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.plantTypes}</FormControl.ErrorMessage> 
@@ -547,9 +585,9 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                 <FormControl.Label>Clones</FormControl.Label>
                 <MultipleSelectList
                   setSelected={(type)=>{
-                    setErrors(prev=>({...prev, clones: ''}))
-                    setClones(type)}
-                }
+                      setErrors(prev=>({...prev, clones: ''}))
+                      setClones(type)}
+                    }
                   data={cloneList}
                   placeholder="clones"
                   save="value"
@@ -563,12 +601,12 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                     }
                     closeicon={
                         <Icon 
-                            name="close" 
-                            size={25} 
+                        name="close" 
+                        size={25} 
                             color="red" 
-                        />
-                    }
-                    fontFamily='JosefinSans-Regular'
+                            />
+                        }
+                        fontFamily='JosefinSans-Regular'
                     dropdownTextStyles={{
                         fontSize: 18,
                     }}
@@ -580,9 +618,9 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                         borderRadius: 4,
                         minHeight: 55,
                     }}
-                />
+                    />
                 {
-                'clones' in errors 
+                    'clones' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.clones}</FormControl.ErrorMessage> 
@@ -597,13 +635,13 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
         <Button
             title="Pré-visualizar dados"
             onPress={visualizeFarmland}
-        />
+            />
     </Box>
         <FarmlandModal 
             farmlandData={farmlandData}
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
-
+            
             setClones={setClones}
             setDescription={setDescription}
             setDensityMode={setDensityMode}
@@ -614,8 +652,8 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             setPlantingYear={setPlantingYear}
             setTrees={setTrees}
             setDeclaredArea={setDeclaredArea}
-        
-        />
+            
+            />
       </Box>
       </ScrollView>
     </SafeAreaView>

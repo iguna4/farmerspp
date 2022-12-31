@@ -300,11 +300,21 @@ export default function FarmerForm1Screen({ route, navigation }) {
             borderBottomRightRadius: 50,
             borderBottomLeftRadius: 50,
             }}
-        >
+            >
+            <Stack>
+            </Stack>
+
             <Box mb="2">
-                <Text style={styles.headerText}>
-                    Registo
-                </Text>
+                <Stack direction="row">
+                    <Box w="80%">
+                        <Text style={styles.headerText}>
+                            Registo
+                        </Text>
+                    </Box>
+                    <Center w="20%">
+                        <Icon name="person-add" size={60} color="#EBEBE4" />
+                    </Center>
+                </Stack>
                 <Text style={styles.description}>
                     Seleccione o tipo de produtor que pretendes registar
                 </Text>
@@ -314,10 +324,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                     name="myRadioGroup"
                     value={farmerType}
                     defaultValue="Indivíduo"
-                    onChange={(nextValue) => {
-                        // setLoadingActivityIndicator(true) // trigger ActivityIndicator
-                        setFarmerType(nextValue);
-                    }}
+                    onChange={(nextValue) => setFarmerType(nextValue)}
                 >
                 <Stack 
                     direction={{
@@ -330,7 +337,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                     }} 
                     space={4} 
                     w="100%" 
-                >
+                    >
                     <Radio 
                         _text={{
                             fontFamily: 'JosefinSans-Bold',
@@ -355,7 +362,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                         value="Grupo" my="1" mx="1" colorScheme="emerald" size="sm">
                         Grupo
                     </Radio>
-                </Stack>
+                    </Stack>
             </Radio.Group>
         </Box>
         </Box>
@@ -370,8 +377,8 @@ export default function FarmerForm1Screen({ route, navigation }) {
     )
 }
 
-{
-   !loadingActivitiyIndicator && (
+{/* {
+   !loadingActivitiyIndicator && ( */}
 <Box>
 
 {
@@ -1666,7 +1673,7 @@ farmerType === "Instituição" && (
 )}
 
 
-    <Center my="2">
+    <Center mb="15" mt="5">
         { farmerType !== '' ? 
             (<Button
             title="Pré-visualizar dados"
@@ -1760,8 +1767,8 @@ farmerType === "Instituição" && (
     }
     </Center>
     </Box>
-   )
-}
+    {/* )
+ } */}
     </ScrollView>
     </SafeAreaView>
   );

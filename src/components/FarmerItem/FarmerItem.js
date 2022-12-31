@@ -1,6 +1,10 @@
 import {Alert, FlatList, SafeAreaView,  TouchableOpacity, View, Text,} from 'react-native';
 import React, { useState } from 'react';
 import {ListItem, Icon } from '@rneui/themed';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faMugSaucer } from '@fortawesome/free-solid-svg-icons/faMugSaucer'
+
+
 
 import { Box, Center, HStack, Pressable, Avatar, Stack, VStack,  } from 'native-base';
 import styles from './styles';
@@ -10,6 +14,7 @@ import { getInitials } from '../../helpers/getInitials';
 import AlertModal from '../AlertModal';
 import { useNavigation } from '@react-navigation/native';
 import { sumTreesOrAreas } from '../../helpers/sumTreesOrAreas';
+import { faTree } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -26,9 +31,10 @@ const FarmerItem = ({ item, route, farmerType }) => {
   // }
 
   return (
-    <Box 
-      borderBottomWidth="1"
-      borderBottomRadius={10}
+    <View
+      // borderTopWidth="1"
+      // elevation={4}
+      // borderToRadius={30}
       // borderColor="muted.800"
       // _dark={{
       //   borderColor: 'muted.50'
@@ -39,11 +45,21 @@ const FarmerItem = ({ item, route, farmerType }) => {
       style={{
         paddingHorizontal: 10,
         marginVertical: 10,
-        backgroundColor: 'white',
+        backgroundColor: '#EBEBE4',
+        // borderColor: '#005000',
         minHeight: 100,
         width: '100%',
         flex: 1,
         // alignItems: 'center',
+        shadowColor: "#005000",
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
+
+        elevation: 6,
 
       }}
     >
@@ -162,7 +178,10 @@ const FarmerItem = ({ item, route, farmerType }) => {
         </Stack>
 
         </Box>
-        <Box w="20%" style={{ }}>
+        <Box w="20%" style={{ 
+          marginTop: 20,
+
+        }}>
           <Pressable
             onPress={()=>navigation.navigate('FarmlandForm1', {
               ownerId: item._id,
@@ -170,7 +189,8 @@ const FarmerItem = ({ item, route, farmerType }) => {
               flag: 'Indivíduo',
             })}
           >
-            <Icon name="arrow-right" size={80} color="#005000" />
+            {/* <Icon name="add-alert" size={40} color="#555" /> */}
+            <FontAwesomeIcon icon={faTree} size={30} color="#005000" />
           </Pressable>
         </Box>
         </Stack>
@@ -182,7 +202,7 @@ const FarmerItem = ({ item, route, farmerType }) => {
         <Box w="25%"></Box>
         <Box w="25%"><Text style={{ fontFamily: 'JosefinSans-Italic', textAlign: 'right'}}>{new Date(item.createdAt).toLocaleDateString()}</Text></Box>
       </Stack>
-    </Box>
+    </View>
   )
 }
 

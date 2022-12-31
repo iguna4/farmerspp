@@ -92,7 +92,11 @@ export default function FarmersCcreen({ route, navigation }) {
 
   return (
     // <SafeAreaView style={{flex: 1}}>
-    <Box bg="ghostwhite" minHeight="100%">
+    <Box bg="ghostwhite" minHeight="100%" 
+      style={{
+        marginBottom: 20,
+      }}
+    >
 
     <LottieAddButton
       styles={{ 
@@ -100,7 +104,7 @@ export default function FarmersCcreen({ route, navigation }) {
         width: 100, 
         height: 100, 
         position: 'absolute', 
-        bottom: 10, 
+        bottom: 50, 
       }}
       onPress={addFarmer}
     />

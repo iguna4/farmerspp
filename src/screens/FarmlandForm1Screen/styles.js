@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontFamily: 'JosefinSans-Italic',
          color: 'white',
-        fontSize: 16,
+        fontSize: 16, 
     },
     secondDescription: {
         textAlign: 'center',

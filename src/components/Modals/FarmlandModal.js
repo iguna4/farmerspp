@@ -111,8 +111,6 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             owner.category = categorizeFarmer(owner.farmlands);
         }
 
-
-
     })
 
 },
@@ -120,8 +118,6 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
         realm, farmlandData
     ]
 )
-
-
 
   return (
   <>
@@ -209,7 +205,7 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
                 </Box>
                 <Box w="60%" style={styles.values}>
                     <Text style={styles.values}>
-                        {farmlandData?.trees} (cajueiros)
+                        {farmlandData?.trees} (árvores)
                     </Text>
                 </Box>
             </Stack>
@@ -245,12 +241,17 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
                         <Text style={styles.values}>
                             {farmlandData?.density?.mode}
                         </Text>
-                        <Text style={styles.values}>
-                            {farmlandData?.density?.mode === 'Regular' ? farmlandData?.density?.length + ' (comprimento)' : ''}
-                        </Text>
-                        <Text style={styles.values}>
-                            {farmlandData?.density?.mode === 'Regular' ? farmlandData?.density?.width + ' (largura)' : ''}
-                        </Text>
+                        {
+                         farmlandData?.density?.mode === 'Regular' && (
+                        <>
+                            <Text style={styles.values}>
+                                {farmlandData?.density?.length + ' (comprimento)'}
+                            </Text>
+                            <Text style={styles.values}>
+                                {farmlandData?.density?.width + ' (largura)'}
+                            </Text>
+                        </>
+                    )}
                     </Box>
                 </Box>
             </Stack>
@@ -288,28 +289,28 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
         <Modal.Footer maxHeight="60">
             <Center>
                 <Button
-                        onPress={()=>{
-                            onAddFarmland(farmlandData, realm);
-                            
-                            setModalVisible(false);
-                            setAddDataModalVisible(true);
+                    onPress={()=>{
+                        onAddFarmland(farmlandData, realm);
+                        
+                        setModalVisible(false);
+                        // setAddDataModalVisible(true);
 
-                            setPlantingYear('');
-                            setDescription('');
-                            setConsociatedCrops([]);
-                            setClones([]);
-                            setTrees('');
-                            setDeclaredArea('');
-                            setDensityLength('');
-                            setDensityWidth('');
-                            setPlantTypes([]);
-                            setDensityMode('');
-                        }}
-                        title="Salvar Dados"
-                        buttonStyle={{
-                            width: 300,
-                        }}
-                    />
+                        setPlantingYear('');
+                        setDescription('');
+                        setConsociatedCrops([]);
+                        setClones([]);
+                        setTrees('');
+                        setDeclaredArea('');
+                        setDensityLength('');
+                        setDensityWidth('');
+                        setPlantTypes([]);
+                        setDensityMode('');
+                    }}
+                    title="Salvar Dados"
+                    buttonStyle={{
+                        width: 300,
+                    }}
+                />
             </Center>
           </Modal.Footer>
         </Modal.Content>

@@ -6,9 +6,6 @@ export const categorizeFarmer = (farmlands)=> {
     const trees = sumTreesOrAreas(farmlands, 'trees');
     const declaredAreas = sumTreesOrAreas(farmlands, 'declaredAreas');
 
-    console.log('trees:', trees);
-    console.log('areas:', declaredAreas);
-
     if (trees >= 250) {
         return 'Comercial';
     }

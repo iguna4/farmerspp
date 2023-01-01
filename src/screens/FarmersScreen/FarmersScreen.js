@@ -5,6 +5,7 @@ import {FlatList, InteractionManager, SafeAreaView, Text, View, Animated} from '
 import React, { useEffect, useRef, useState } from 'react';
 import {ListItem, Avatar, Icon } from '@rneui/themed';
 
+
 import farmersFakeList from '../../fakedata/farmersFakeList';
 import { Box, Center, Pressable, Stack } from 'native-base';
 
@@ -154,6 +155,68 @@ export default function FarmersCcreen({ route, navigation }) {
         )
         :
         (
+        <View>
+
+          <View
+            style={{
+              // flex: 1,
+              height: "10%",
+              width: '100%',
+              // backgroundColor: '#EBEBE4',
+              // borderBottomLeftRadius: 50,
+              // borderBottomRightRadius: 50,
+              paddingHorizontal: 10,
+              paddingTop: 30,
+
+              borderTopWidth: 0,
+              borderColor: '#EBEBE4',
+              borderBottomWidth: 3,
+              borderLeftWidth: 3,
+              borderRightWidth: 3,
+              
+
+              // shadowColor: "#000",
+              // shadowOffset: {
+              //   width: 0,
+              //   height: 0,
+              // },
+              // shadowOpacity: 0.01,
+              // shadowRadius: 0.65,
+      
+              // elevation: 2,
+
+            }}
+        >
+          <Stack
+            direction="row" w="100%"
+          >
+            <Box w="20%" 
+              style={{ justifyContent: 'center'}}
+            >
+              <Icon 
+                name="arrow-back" 
+                color="#005000"
+                size={40}
+              />
+            </Box>
+
+            <Center w="60%" 
+
+            >
+              {'Ancuabe'}
+            </Center>
+
+            <Box w="20%"
+              style={{ justifyContent: 'center'}}
+            >
+            <Icon 
+                name="search" 
+                color="#005000"
+                size={40}
+              />
+            </Box>
+          </Stack>
+        </View>
           <Box 
             // paddingY="5" 
             alignItems="stretch" 
@@ -170,21 +233,22 @@ export default function FarmersCcreen({ route, navigation }) {
               keyExtractor={keyExtractor}
               // renderItem={({ item })=><FarmerItem route={route} navigation={navigation} item={item} />}
               //  renderItem={({ item })=><GroupItem route={route}  item={item} />}
-               renderItem={({ item })=>{
-                  if(item.flag === 'Grupo'){
-                    return <GroupItem route={route}  item={item} />
-                  }
-                  else if (item.flag === 'Indivíduo'){
+              renderItem={({ item })=>{
+                if(item.flag === 'Grupo'){
+                  return <GroupItem route={route}  item={item} />
+                }
+                else if (item.flag === 'Indivíduo'){
                     return <FarmerItem route={route} navigation={navigation} item={item} />
                   }
                   else if (item.flag === 'Instituição'){
                     return <InstitutionItem route={route}  item={item} />
                   }
                 }
-               }
+              }
 
-            />
+              />
           </Box>
+          </View>
         )
       }
       </Box>

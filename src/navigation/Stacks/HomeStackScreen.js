@@ -12,14 +12,16 @@ export default function HomeStackScreen() {
   return (
       <HomeStack.Navigator
         screenOptions={{
-          headerShown: true,
+          headerShown: false,
           headerStyle: {
-            backgroundColor: '#005000',
+            backgroundColor: '#EBEBE4',
           },
-          headerTintColor: '#ffffff',
+          headerTitleAlign: 'center',
+          headerTintColor: '#005000',
           headerTitleStyle: {
-              fontSize: 16,
+              fontSize: 20,
               fontWeight: 'bold',
+              fontFamily: 'JosefinSans-Italic'
           },
         }}
       >

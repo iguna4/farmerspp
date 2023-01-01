@@ -40,28 +40,28 @@ const IndividualModal = (
         setBirthProvince, 
         setBirthDistrict, 
         setBirthAdminPost, 
-        // setBirthVillage,
         setBirthDate, 
         setDocType, 
         setDocNumber, 
         setNuit,
+        
         setFarmerType,
 
     }
 ) => {
 
    const [addDataModalVisible, setAddDataModalVisible] = useState(false);
-    const [farmerId, setFarmerId] = useState(null);
+    // const [farmerId, setFarmerId] = useState(null);
     const navigation = useNavigation();
     const realm = useRealm()
 
 
-    const addGroup = useCallback((farmerData, realm)=>{
+    // const addGroup = useCallback((farmerData, realm)=>{
         
-    }, [        
-        realm, 
-        farmerData,]
-    )
+    // }, [        
+    //     realm, 
+    //     farmerData,]
+    // )
 
 
     const addFarmer = useCallback((farmerData, realm) =>{
@@ -75,8 +75,6 @@ const IndividualModal = (
     // generate the universally farmer identifier
     const ufid = generateUFID({ names, birthDate, birthPlace });
   
-    // console.log('ufid:', ufid);
-
     realm.write(()=>{
         const newFarmer = realm.create('Farmer', {
             _id: uuidv4(),
@@ -106,7 +104,6 @@ const IndividualModal = (
         setBirthProvince(''); 
         setBirthDistrict(''); 
         setBirthAdminPost(''); 
-        // setBirthVillage('');
         setBirthDate(null); 
         setDocType(''); 
         setDocNumber(''); 
@@ -375,7 +372,7 @@ const IndividualModal = (
                 </Stack>
                 <Stack direction="row" w="100%" my="1">
                     <Box w="40%">
-                        {/* <Text style={styles.keys}>NUIT:</Text> */}
+                        
                     </Box>
                     <Box w="60%">
                             { farmerData?.idDocument?.nuit ?
@@ -412,7 +409,6 @@ const IndividualModal = (
             <SuccessModal
                 addDataModalVisible={addDataModalVisible}
                 setAddDataModalVisible={setAddDataModalVisible}
-                farmerId={farmerId}
                 setFarmerType={setFarmerType}
             />
         </Center>

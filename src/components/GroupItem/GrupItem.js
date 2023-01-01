@@ -10,6 +10,8 @@ import { getInitials } from '../../helpers/getInitials';
 import AlertModal from '../AlertModal';
 import { useNavigation } from '@react-navigation/native';
 import { sumTreesOrAreas } from '../../helpers/sumTreesOrAreas';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faTree } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -18,24 +20,25 @@ const GroupItem = ({ item, route }) => {
    const navigation = useNavigation();
 
   return (
-    <Box 
-      borderBottomWidth="1"
-      borderBottomRadius={10}
-      // borderColor="muted.800"
-      // _dark={{
-      //   borderColor: 'muted.50'
-      // }}
-      // pl={["2", "2"]} 
-      // pr={["2", "2"]} 
-      // py="4"
+    <View
       style={{
-        paddingHorizontal: 10,
+        padding: 10,
         marginVertical: 10,
-        backgroundColor: 'white',
+        // backgroundColor: '#EBEBE4',
+        borderColor: '#005000',
         minHeight: 100,
         width: '100%',
         flex: 1,
         // alignItems: 'center',
+        shadowColor: "#005000",
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
+
+        elevation: 3,
 
       }}
     >
@@ -147,7 +150,7 @@ const GroupItem = ({ item, route }) => {
               flag: 'Grupo',
             })}
           >
-            <Icon name="arrow-right" size={80} color="#005000" />
+            <FontAwesomeIcon icon={faTree} size={30} color="#005000" />
           </Pressable>
         </Box>
         </Stack>
@@ -159,7 +162,7 @@ const GroupItem = ({ item, route }) => {
         <Box w="25%"></Box>
         <Box w="25%"><Text style={{ fontFamily: 'JosefinSans-Italic', textAlign: 'right'}}>{new Date(item.createdAt).toLocaleDateString()}</Text></Box>
       </Stack>
-    </Box>
+    </View>
   )
 }
 

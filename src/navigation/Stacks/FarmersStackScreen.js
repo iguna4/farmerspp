@@ -15,7 +15,7 @@ export default function FarmersStackScreen() {
   return (
       <FarmersStack.Navigator
         screenOptions={{
-          headerShown: true,
+          headerShown: false,
           headerStyle: {
             backgroundColor: '#005000',
           },

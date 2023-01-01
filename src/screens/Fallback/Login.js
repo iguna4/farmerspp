@@ -92,7 +92,7 @@ const Login = () => {
                         fontFamily: 'JosefinSans-BoldItalic', 
                         fontSize: 18, color: '#005000', }}
                     >
-                        Novo Usuário
+                    Usuário Novo
                 </Text>
 
             }
@@ -113,7 +113,7 @@ const Login = () => {
                             fontFamily: 'JosefinSans-Regular',
                         }}
                     >
-                        { isLoggingIn ? "És usuário novo?" : "Já tens uma conta?" }
+                        { isLoggingIn ? "Usuário novo?" : "Já tens uma conta?" }
                     </Text>
                     <Pressable onPress={()=>setIsLoggingIn(prevState => !prevState)}>
                         <Text 

@@ -19,7 +19,6 @@ export default function SuccessModal({
     addDataModalVisible,
     setAddDataModalVisible,
     setFarmerType,
-    farmerId,
 }) {
 
     const navigation = useNavigation();
@@ -69,55 +68,9 @@ export default function SuccessModal({
                     fontFamily: 'JosefinSans-Regular',
                     color: '#005000',
                 }}
-                >O registo ocorrido com sucesso!</Text>
-                {/* <Stack direction="row" w="100%">
-                    <Box w="50%" alignItems="center">
-                        <Pressable
-                            onPress={()=>{
-                                // navigation.goBack();
-                                navigation.goBack();
-                                setAddDataModalVisible(false);
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontFamily: 'JosefinSans-Bold',
-                                    fontSize: 18,
-                                    color: '#005000',
-                                }}
-                            >
-                            <Icon 
-                                name="arrow-back"
-                                size={15}
-                                color="#005000"
-                            />
-                                Voltar</Text>
-                        </Pressable>
-                    </Box>
-                    <Box w="50%" alignItems="center">
-                        <Pressable
-                            onPress={()=>{
-                                // navigation.goBack();
-                                setAddDataModalVisible(false);
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontFamily: 'JosefinSans-Bold',
-                                    fontSize: 18,
-                                    color: '#005000',
-                                }}                            
-                            >
-                              Pomar
-                            <Icon 
-                                name="add"
-                                size={15}
-                                color="#005000"
-                            />
-                              </Text>
-                        </Pressable>
-                    </Box>
-                </Stack> */}
+                >
+                    O registo ocorrido com sucesso!
+                </Text>
             </View>
         </View>
 

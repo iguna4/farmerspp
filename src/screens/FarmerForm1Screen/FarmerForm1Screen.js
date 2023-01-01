@@ -36,6 +36,7 @@ import { realmContext } from '../../models/realm';
 import { generateUFID } from '../../helpers/generateUFID';
 import DuplicatesAlert from '../../components/Alerts/DuplicatesAlert';
 import { detectDuplicates } from '../../helpers/detectDuplicates';
+import FarmerTypeRadioButtons from '../../components/RadioButton/FarmerTypeRadioButtons';
 const {useRealm} = realmContext;
 
 
@@ -53,10 +54,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
     const [birthProvince, setBirthProvince] = useState('');
     const [birthDistrict, setBirthDistrict] = useState('');
     const [birthAdminPost, setBirthAdminPost] = useState('');
-    // const [birthCountry, setBirthCountry] = useState('');
-
-    // birth village
-    // const [birthVillage, setBirthVillage] = useState('');
 
     // handle modal view
     const [modalVisible, setModalVisible] = useState(false);
@@ -64,17 +61,11 @@ export default function FarmerForm1Screen({ route, navigation }) {
     const [errorAlert, setErrorAlert] = useState(false);
     const [duplicatesAlert, setDuplicatesAlert] = useState(false);
 
-
-
-
-    // const dateFormatPickerState = useDatepickerState();
     const localePickerState = useDatepickerState();
     const [birthDate, setBirthDate] = useState(null);
 
     const [docType, setDocType] = useState('');
     const [docNumber, setDocNumber] = useState('');
-
-    // console.log('date:', new Date(date)?.toLocaleDateString())
 
     const [isSprayingAgent, setIsSprayingAgent] = useState(false);
     const [surname, setSurname] = useState('');
@@ -118,19 +109,10 @@ export default function FarmerForm1Screen({ route, navigation }) {
 
     // farmers suspected duplicates
     const [suspectedDuplicates, setSuspectedDuplicates] = useState([]);
-    // const [isRegistrationAllowed, setIsRegistrationAllowed] = useState(false);
 
     const user = route.params.user;
 
-    // console.log('farmerType:', farmerType);
-
-
     const realm = useRealm();
-
-    // const farmers = realm.objects('Farmer');
-
-    // console.log('farmers-3333:', farmers)
-
 
     const addFarmer = (farmerType, realm, isAllowed=false)=>{
         let farmerData;
@@ -147,9 +129,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
                birthProvince,
                birthDistrict,
                birthAdminPost,
-            //    birthVillage,
-               // userAddressProvince,
-               // userAddressDistrict,
                addressAdminPost,
                addressVillage,
                primaryPhone, 
@@ -195,8 +174,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
                 institutionName,
                 institutionAdminPost,
                 institutionVillage,
-                // userAddressProvince,
-                // userAddressDistrict,
                 institutionManagerName,
                 institutionManagerPhone,
                 institutionNuit,
@@ -221,8 +198,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
                 groupNuit,
                 groupAdminPost,
                 groupVillage,
-                // userAddressProvince,
-                // userAddressDistrict,  
                 groupManagerName,
                 groupManagerPhone,
             }
@@ -231,12 +206,10 @@ export default function FarmerForm1Screen({ route, navigation }) {
                 return ;
             }
             retrievedFarmerData = validateGroupFarmerData(farmerData, errors, setErrors, farmerType);
-            // console.log('grupo: ', JSON.stringify(retrievedFarmerData))
             setFarmerData(retrievedFarmerData)
 
         }
         setModalVisible(true);
-        // setFarmerType('');
     }
 
 
@@ -278,7 +251,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
                     suspectedDuplicates={suspectedDuplicates}
                     setFarmerType={setFarmerType}
                     setModalVisible={setModalVisible}
-                    // setIsRegistrationAllowed={setIsRegistrationAllowed}
                     addFarmer={addFarmer}
                     farmerData={farmerData}
                     realm={realm}
@@ -288,8 +260,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
         )
     }
         
-
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -322,52 +292,12 @@ export default function FarmerForm1Screen({ route, navigation }) {
                     Seleccione o tipo de produtor que pretendes registar
                 </Text>
             </Box>
-            <Box mb="8" alignItems={'center'}>
-                <Radio.Group
-                    name="myRadioGroup"
-                    value={farmerType}
-                    defaultValue="Indivíduo"
-                    onChange={(nextValue) => setFarmerType(nextValue)}
-                >
-                <Stack 
-                    direction={{
-                        base: "row",
-                        md: "row"
-                    }} 
-                    alignItems={{
-                        base: "center",
-                        // md: "center"
-                    }} 
-                    space={4} 
-                    w="100%" 
-                    >
-                    <Radio 
-                        _text={{
-                            fontFamily: 'JosefinSans-Bold',
-                            color: 'white'
-                        }}
-                        value="Indivíduo" my="1"  colorScheme="emerald" size="sm">
-                        Indivíduo
-                    </Radio>
-                    <Radio 
-                        _text={{
-                            fontFamily: 'JosefinSans-Bold',
-                            color: 'white'
-                        }}
-                        value="Instituição" my="1" mx="1" colorScheme="emerald" size="sm">
-                        Instituição
-                    </Radio>
-                    <Radio 
-                        _text={{
-                            fontFamily: 'JosefinSans-Bold',
-                            color: 'white'
-                        }}
-                        value="Grupo" my="1" mx="1" colorScheme="emerald" size="sm">
-                        Grupo
-                    </Radio>
-                    </Stack>
-            </Radio.Group>
-        </Box>
+
+            {/* Radio Buttons allowing to choose the farmerType */}
+            <FarmerTypeRadioButtons
+                farmerType={farmerType}
+                setFarmerType={setFarmerType}
+            />
         </Box>
 </Box>      
         {/* Data collecting form  */}
@@ -386,7 +316,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
 
 {
     farmerType === "Indivíduo" && (
-
 
         <Box px="3" my="6">
         <Stack  direction="row" mx="3" w="100%">
@@ -410,7 +339,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
                     checkedIcon={
                         <Icon
                             name="check-box"
-                            // type="material"
                             color="#005000"
                             size={30}
                             iconStyle={{ marginRight: 5 }}
@@ -419,7 +347,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
                     uncheckedIcon={
                         <Icon
                             name="radio-button-unchecked"
-                            // type="material"
                             color="#005000"
                             size={30}
                             iconStyle={{ marginRight: 5 }}
@@ -481,7 +408,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
                       selectedValue={gender}
                       accessibilityLabel="Género"
                       placeholder="Género"
-                    //   style={{ borderWidth: 1, borderColor: '#005000'}}
                       minHeight={55}
                       _selectedItem={{
                           bg: 'teal.600',
@@ -513,7 +439,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
             </Box>
 
             <Box w="50%" px="1" pt="2">
-                {/* <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Data de Nascimento<Text style={{color: 'red'}}>*</Text></Text> */}
             <FormControl isRequired isInvalid={'familySize' in errors}>
                 <FormControl.Label>Agregado Familiar</FormControl.Label>
                     <CustomInput
@@ -595,7 +520,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
                         accessibilityLabel="Escolha uma localidade"
                         placeholder="Escolha uma localidade"
                         minHeight={55}
-                        // defaultValue="Primeiro, Escolha uma localidade"
                         _selectedItem={{
                             bg: 'teal.600',
                             fontSize: 'lg',
@@ -700,18 +624,13 @@ export default function FarmerForm1Screen({ route, navigation }) {
             <FormControl isRequired isInvalid={'birthDate' in errors}>
                 <FormControl.Label>Data de Nascimento</FormControl.Label>
                     <Datepicker
-                       
                         placeholder="Nascimento"
                         min={new Date(1900, 0, 0)}
                         max={new Date(2010, 0, 0)}
                         size="large"
-                        // status='control'
                         placement="top end"
                         style={styles.datepicker}
                         date={birthDate}
-
-                        // dateService={formatDateService}
-                        // {...dateFormatPickerState}
                         dateService={localeDateService}
                         // {...localePickerState}
                         accessoryRight={
@@ -785,7 +704,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
                         accessibilityLabel="Escolha um distrito"
                         placeholder={birthProvince?.includes('Estrangeiro') ? "Escolha um país" : "Escolha um distrito"}
                         minHeight={55}
-                        // defaultValue="Primeiro, Escolha um distrito"
                         _selectedItem={{
                             bg: 'teal.600',
                             fontSize: 'lg',
@@ -797,14 +715,8 @@ export default function FarmerForm1Screen({ route, navigation }) {
                     }
                     mt={1}
                     onValueChange={newDistrict => {
-                        // if (birthProvince === "País Estrangeiro") {
-                            //     setErrors((prev)=>({...prev, birthCountry: ''}));
-                            //     setBirthCountry(newDistrict);
-                            // }
-                            // else {
-                            setErrors((prev)=>({...prev, birthDistrict: ''}));
-                            setBirthDistrict(newDistrict);
-                            // }
+                        setErrors((prev)=>({...prev, birthDistrict: ''}));
+                        setBirthDistrict(newDistrict);
                         }}
                     >
                     {   birthProvince === "País Estrangeiro" 
@@ -836,7 +748,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
                 
             ) 
             && 
-            
             (
                 
                 <FormControl isRequired my="1" isInvalid={'birthAdminPost' in errors}>
@@ -846,7 +757,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
                         accessibilityLabel="Escolha um posto administrativo"
                         placeholder="Escolha um posto administrativo"
                         minHeight={55}
-                        // defaultValue="Primeiro, Escolha um posto administrativo"
                         _selectedItem={{
                             bg: 'teal.600',
                             fontSize: 'lg',
@@ -884,17 +794,21 @@ export default function FarmerForm1Screen({ route, navigation }) {
 )}
 
 
-<CustomDivider
+        <CustomDivider
             marginVertical="2"
             thickness={2}
             bg="#005000"
-            />
+        />
             
-            <Center>
-            <Text style={styles.formSectionDescription}>Documentos de Identificação</Text>
+        <Center>
+            <Text 
+                style={styles.formSectionDescription}
+            >
+                Documentos de Identificação
+            </Text>
         </Center>
 
-            <Stack direction="row" mx="3" w="100%">
+        <Stack direction="row" mx="3" w="100%">
             <Box w="50%" px="1">
             <FormControl my="2" isInvalid={'docType' in errors}>
                 <FormControl.Label>Tipo de documento</FormControl.Label>
@@ -1083,7 +997,6 @@ farmerType === "Instituição" && (
                 <FormControl.Label>Nome da Instituição</FormControl.Label>
                     <CustomInput
                         width="100%"
-                        // type="text"
                         isDisabled={institutionType === '' ? true : false}
                         autoCapitalize="words"
                         placeholder="Nome da Instituição"
@@ -1144,7 +1057,6 @@ farmerType === "Instituição" && (
                     accessibilityLabel="Escolha uma localidade"
                     placeholder="Escolha uma localidade"
                     minHeight={55}
-                    // defaultValue="Primeiro, Escolha uma localidade"
                     _selectedItem={{
                         bg: 'teal.600',
                         fontSize: 'lg',
@@ -1251,8 +1163,6 @@ farmerType === "Instituição" && (
 )}
 
 
-
-
 {
     farmerType === "Grupo" && (
     <Box px="3" my="6">
@@ -1301,7 +1211,6 @@ farmerType === "Instituição" && (
                 <FormControl.Label>Designação do grupo</FormControl.Label>
                     <CustomInput
                         width="100%"
-                        // type="text"
                         isDisabled={groupType === '' ? true : false}
                         autoCapitalize="words"
                         placeholder="Designação do grupo"
@@ -1330,6 +1239,7 @@ farmerType === "Instituição" && (
                 width="100%"
                 type="number"
                 placeholder="Número de membros"
+                textAlign={'center'}
                 keyboardType="numeric"
                 value={groupMembersNumber}
                 onChangeText={groupMembers=>{
@@ -1353,6 +1263,7 @@ farmerType === "Instituição" && (
                     width="100%"
                     type="number"
                     placeholder="Número de mulheres"
+                    textAlign={'center'}
                     isDisabled={groupMembersNumber === '' ? true : false}
                     value={groupWomenNumber}
                     keyboardType="numeric"
@@ -1422,37 +1333,11 @@ farmerType === "Instituição" && (
                 </FormControl>
             </Box>
             <Box w="50%" px="1">
-            {/* <FormControl isRequired my="1">
-                <FormControl.Label>Localidade</FormControl.Label>
-                    <Select
-                        selectedValue={addressVillage}
-                        accessibilityLabel="Escolha uma localidade"
-                        placeholder="Escolha uma localidade"
-                        // defaultValue="Primeiro, Escolha uma localidade"
-                        _selectedItem={{
-                            bg: 'teal.600',
-                            fontSize: 'lg',
-                            endIcon: <CheckIcon size="5" />,
-                        }}
-                        dropdownCloseIcon={addressVillage 
-                                        ? <Icon name="close" size={25} color="red" onPress={()=>setAddressVillage('')} /> 
-                                        : <Icon size={40} name="arrow-drop-down" color="#005000" />
-                                    }
-                        mt={1}
-                        onValueChange={newVillage => setAddressVillage(newVillage)}
-                    >
-                    {
-                        villages[addressAdminPost]?.map((village, index)=>(
-                            <Select.Item key={index} label={village} value={village} />
-                        ))
-                    }
-                    </Select>
-                <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage>
-            </FormControl> */}
-            </Box>
-            </Stack>
 
-        <Stack direction="row" mx="3" w="100%">
+            </Box>
+        </Stack>
+
+    <Stack direction="row" mx="3" w="100%">
         <Box w="50%" px="1" my="2">
         <FormControl  isInvalid={'groupOperatingLicence' in errors}>
             <FormControl.Label>Alvará {groupType ? `da  ${groupType}` : 'do Grupo'}</FormControl.Label>
@@ -1503,9 +1388,6 @@ farmerType === "Instituição" && (
         </Box>
         </Stack>
 
-
-
-
         <CustomDivider
             marginVertical="2"
             thickness={2}
@@ -1513,7 +1395,11 @@ farmerType === "Instituição" && (
         />
 
         <Center>
-            <Text style={styles.formSectionDescription}>Endereço e Contacto</Text>
+            <Text 
+                style={styles.formSectionDescription}
+            >
+                Endereço e Contacto
+            </Text>
         </Center>
 
         <Stack direction="row" mx="3" w="100%">
@@ -1539,7 +1425,8 @@ farmerType === "Instituição" && (
                         setErrors((prev)=>({...prev, groupAdminPost: ''}));
                         setGroupAdminPost(newAdminPost);
                     }}
-                >{
+                >
+                {
                     selectedAddressAdminPosts?.map((adminPost, index)=>(
                         <Select.Item key={index} label={adminPost} value={adminPost} />
                     ))
@@ -1562,7 +1449,6 @@ farmerType === "Instituição" && (
                     accessibilityLabel="Escolha uma localidade"
                     placeholder="Escolha uma localidade"
                     minHeight={55}
-                    // defaultValue="Primeiro, Escolha uma localidade"
                     _selectedItem={{
                         bg: 'teal.600',
                         fontSize: 'lg',
@@ -1644,34 +1530,12 @@ farmerType === "Instituição" && (
         </FormControl>
         </Box>
         <Box w="50%" px="1" my="2">
-            {/* <FormControl isInvalid={'groupMembers' in errors}>
-                <FormControl.Label>Membros {groupType ? `da  ${groupType}` : 'do Grupo'}</FormControl.Label>
-                <CustomInput
-                    width="100%"
-                    type="number"
-                    placeholder="Número de membros"
-                    isDisabled={groupType === '' ? true : false}
-                    value={groupMembers}
-                    keyboardType="numeric"
-                    onChangeText={newGrouMembers=>{
-                        setErrors((prev)=>({...prev, groupMembers: ''}));
-                        setGroupMembers(newGrouMembers)
-                    }}
-                />
-                {
-                'groupMembers' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.groupMembers}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-                }
-            </FormControl> */}
         </Box>
-        </Stack>
+    </Stack>
 
 
 
-        </Box>
+    </Box>
     </Box>
 )}
 
@@ -1684,9 +1548,6 @@ farmerType === "Instituição" && (
             />)
             :
             <Box >
-                {/* <Text style={styles.secondDescription}>
-                    Seleccione o tipo de produtor que pretendes registar!
-                </Text> */}
                 <Center>
                     <TickComponent />
                 </Center>
@@ -1716,7 +1577,6 @@ farmerType === "Instituição" && (
             setBirthProvince={setBirthProvince}
             setBirthDistrict={setBirthDistrict} 
             setBirthAdminPost={setBirthAdminPost}
-            // setBirthVillage={setBirthVillage}
             setBirthDate={setBirthDate}
             setDocType={setDocType}
             setDocNumber={setDocNumber}
@@ -1770,8 +1630,6 @@ farmerType === "Instituição" && (
     }
     </Center>
     </Box>
-    {/* )
- } */}
     </ScrollView>
     </SafeAreaView>
   );

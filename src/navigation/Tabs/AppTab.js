@@ -36,7 +36,7 @@ export default function AppTab() {
 
   return (
     <>
-    <StatusBar barStyle="dark-content" backgroundColor="#005000" />
+    <StatusBar barStyle="dark-content" backgroundColor="ghostwhite" />
     <RealmProvider>
     <NavigationContainer>
         <Tab.Navigator
@@ -99,7 +99,7 @@ export default function AppTab() {
               tabBarLabel: 'Pesquisa',
             }}
             name="UsersStack"
-            component={FarmersStackScreen}
+            component={Login}
            />
       </Tab.Navigator>
     </NavigationContainer>

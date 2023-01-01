@@ -268,24 +268,46 @@ export default function FarmerForm1Screen({ route, navigation }) {
       >
         {/* Data collecting form description */}
      <Box >
-        <Box bg="#005000" w="100%" px="3" 
+        <Box 
+        bg="ghostwhite" 
+        w="100%" 
+        p="3" 
+
         style={{
             borderBottomRightRadius: 50,
             borderBottomLeftRadius: 50,
+            borderBottomWidth: 2,
+            borderLeftWidth: 2,
+            borderRightWidth: 2,
+            borderColor: '#EBEBE4',
             }}
             >
             <Stack>
+                
             </Stack>
 
             <Box mb="2">
                 <Stack direction="row">
+                    <Box>
+                        <Icon 
+                            name="arrow-back" 
+                            color="#005000"
+                            size={40}
+                            onPress={()=>navigation.goBack()}
+                        />
+                    </Box>
+                    <Box>
+
+                    </Box>
+                </Stack>
+                <Stack direction="row">
                     <Box w="80%">
                         <Text style={styles.headerText}>
-                            Registo
+                            Registo de Produtor
                         </Text>
                     </Box>
                     <Center w="20%">
-                        <Icon name="person-add" size={60} color="#EBEBE4" />
+                        <Icon name="person-add" size={40} color="grey" />
                     </Center>
                 </Stack>
                 <Text style={styles.description}>

@@ -86,14 +86,34 @@ const Login = () => {
                     color="#005000"
                 />
                 :
-                <Text 
-                    style={{ 
-                        marginHorizontal: 10, 
-                        fontFamily: 'JosefinSans-BoldItalic', 
-                        fontSize: 18, color: '#005000', }}
+                (
+                    <Box 
+                    bg="ghostwhite" 
+                    w="100%" 
+                    p="10" 
+            
+                    style={{
+                        borderBottomRightRadius: 50,
+                        borderBottomLeftRadius: 50,
+                        borderBottomWidth: 2,
+                        borderLeftWidth: 2,
+                        borderRightWidth: 2,
+                        borderColor: '#EBEBE4',
+                        }}
+                >                
+                    <Text 
+                        style={{ 
+                            marginHorizontal: 10, 
+                            textAlign: 'center',
+                            fontFamily: 'JosefinSans-BoldItalic', 
+                            fontSize: 18, 
+                            color: '#005000', 
+                        }}
                     >
-                    Usuário Novo
-                </Text>
+                        Usuário Novo
+                    </Text>
+                </Box>
+                )
 
             }
             <Stack w="100%" direction="row" my="4">

@@ -147,39 +147,55 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     >
       <ScrollView>
         <Box>
-          <Box bg="#005000" w="100%" px="3" py="6"
-            style={{
-            borderBottomRightRadius: 50,
-            borderBottomLeftRadius: 50,
-            }}
-          >
+          <Box 
+                bg="ghostwhite" 
+                w="100%" 
+                p="3" 
+        
+                style={{
+                    borderBottomRightRadius: 50,
+                    borderBottomLeftRadius: 50,
+                    borderBottomWidth: 2,
+                    borderLeftWidth: 2,
+                    borderRightWidth: 2,
+                    borderColor: '#EBEBE4',
+                    }}
+            >
+            <Stack>
+                
+            </Stack>
+            <Box mb="2">
+            <Stack direction="row">
+                <Box>
+                    <Icon 
+                        name="arrow-back" 
+                        color="#005000"
+                        size={40}
+                        onPress={()=>navigation.goBack()}
+                    />
+                </Box>
+                <Box>
+
+                </Box>
+            </Stack>
             <Stack direction="row">
                 <Box w="80%">
                     <Text style={styles.headerText}>
                         Registo de Parcela
-                    </Text>          
-                    <Text style={[styles.description, { paddingVertical: 20,}]}>
-                        Proprietário: {ownerName}
-                    </Text>  
+                    </Text>
                 </Box>
-                <Center w="20%" 
-                    // alignItems={'center'}
-                    style={{
-                        alignItems: 'center',
-                    }}
-                >
-                    {/* <TreeComponent 
-                         styles={{ 
-                            zIndex: 3, 
-                            width: 50, 
-                            height: 50, 
-                            // position: 'absolute', 
-                            bottom: 50, 
-                          }}
-                    /> */}
-                    <FontAwesomeIcon icon={faTree} size={40} color="#EBEBE4" />
+                <Center w="20%">
+                    <FontAwesomeIcon icon={faTree} size={40} color="grey" />
                 </Center>
             </Stack>
+            <Text style={{
+                fontSize: 16,
+                fontFamily: 'JosefinSans-Regular',
+                color: 'grey',
+            }}>
+                Proprietário: {ownerName}
+            </Text>  
+            </Box>
           </Box>
         </Box>
 {

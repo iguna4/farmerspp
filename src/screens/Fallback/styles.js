@@ -7,7 +7,8 @@ const styles = StyleSheet.create({
     // SignInScreen
     loginContainer: {
         flex: 1,
-        marginVertical: 5,
+        // marginVertical: 5,
+        backgroundColor: 'ghostwhite',
     },
     signInTitle: {
         fontFamily: 'JosefinSans-Bold',

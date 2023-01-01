@@ -13,12 +13,13 @@ const styles = StyleSheet.create({
     headerText: {
         fontFamily: 'JosefinSans-Bold',
         fontSize: 30,
-        color: 'white',
+        color: '#000',
     },
     description: {
         textAlign: 'left',
-        fontFamily: 'JosefinSans-Italic',
-         color: 'white',
+        fontFamily: 'JosefinSans-Regular',
+        paddingVertical: 10,
+        color: 'grey',
         fontSize: 16,
     },
     secondDescription: {

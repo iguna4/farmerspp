@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     description: {
         textAlign: 'left',
         fontFamily: 'JosefinSans-Italic',
-         color: 'white',
-        fontSize: 16, 
+         color: 'grey',
+        fontSize: 18, 
     },
     secondDescription: {
         textAlign: 'center',

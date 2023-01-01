@@ -31,7 +31,8 @@ const FarmerTypeRadioButtons = ({ farmerType, setFarmerType}) =>{
             <Radio 
                 _text={{
                     fontFamily: 'JosefinSans-Bold',
-                    color: 'white'
+                    color: '#005000',
+                    fontSize: 18,
                 }}
                 value="Indivíduo" my="1"  colorScheme="emerald" size="sm">
                 Indivíduo
@@ -39,7 +40,8 @@ const FarmerTypeRadioButtons = ({ farmerType, setFarmerType}) =>{
             <Radio 
                 _text={{
                     fontFamily: 'JosefinSans-Bold',
-                    color: 'white'
+                    color: '#005000',
+                    fontSize: 18,
                 }}
                 value="Instituição" my="1" mx="1" colorScheme="emerald" size="sm">
                 Instituição
@@ -47,7 +49,8 @@ const FarmerTypeRadioButtons = ({ farmerType, setFarmerType}) =>{
             <Radio 
                 _text={{
                     fontFamily: 'JosefinSans-Bold',
-                    color: 'white'
+                    color: '#005000',
+                    fontSize: 18,
                 }}
                 value="Grupo" my="1" mx="1" colorScheme="emerald" size="sm">
                 Grupo

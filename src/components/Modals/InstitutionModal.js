@@ -67,7 +67,6 @@ const InstitutionModal = (
             manager,
             nuit,
         })
-        console.log('institution:', newInstitution);
         setModalVisible(false);
         setAddDataModalVisible(true);
 

@@ -75,7 +75,6 @@ const GroupModal = (
             address,
             nuit,
         })
-        console.log('group:', newGroup);
         setModalVisible(false);
         setAddDataModalVisible(true);
 

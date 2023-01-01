@@ -41,7 +41,11 @@ export default function FarmersCcreen({ route, navigation }) {
 
   const individualsList = addFlagToListItem(farmers, 'Indivíduo')
   const groupsList = addFlagToListItem(groups, 'Grupo')
-  const institutionsList = addFlagToListItem(institutions, 'Instituição')
+  const institutionsList = addFlagToListItem(institutions, 'Instituição');
+
+  // controlling the header on Scrolling
+  const [header, setHeader] = useState(true);
+  
   
   // merge the three arrays of farmers and sort the items by createdAt 
   const farmersList = 
@@ -86,20 +90,7 @@ export default function FarmersCcreen({ route, navigation }) {
     }, [])
   );
 
-    const hideTabBar = (e) => {
-      let offset = 0;
-      const currentOffset = e.nativeEvent.contentOffset.y;
-      // const dif = currentOffset - ;  
-  
-      if (currentOffset < 0) {
-        navigation.setOptions({ showTabBar: false });
-      } else {
-        navigation.setParams({ showTabBar: false });
-      }
-      // console.log('dif=',dif);
-  
-      // this.offset = currentOffset;
-    }      
+   
   
 
 
@@ -113,35 +104,121 @@ export default function FarmersCcreen({ route, navigation }) {
   }
 
   return (
-    // <SafeAreaView style={{flex: 1}}>
-    <Box bg="ghostwhite" minHeight="100%" 
-      style={{
-        marginBottom: 50,
+    <SafeAreaView 
+      style={{    
+        flex: 1,
+        backgroundColor: 'ghostwhite',
       }}
     >
-
-    <LottieAddButton
-      styles={{ 
-        zIndex: 3, 
-        width: 100, 
-        height: 100, 
-        position: 'absolute', 
-        bottom: 50, 
+    <Box 
+    // bg="ghostwhite" 
+      // minHeight="100%" 
+      style={{
+        // flex: 1,
+        marginVertical: 5,
       }}
-      onPress={addFarmer}
-    />
+    >
+      {/* <View> */}
+
+        <View
+          style={{
+            // flex: 1,
+            minHeight: "15%",
+            width: '100%',
+            // backgroundColor: '#EBEBE4',
+            // borderBottomLeftRadius: 50,
+            // borderBottomRightRadius: 50,
+            paddingHorizontal: 15,
+            paddingTop: 30,
+
+            borderTopWidth: 0,
+            borderColor: '#EBEBE4',
+            borderBottomWidth: 3,
+            borderLeftWidth: 3,
+            borderRightWidth: 3,
+
+            display: header ? 'flex' : 'none'
+          }}
+      >
+        <Stack
+          direction="row" w="100%"
+        >
+          <Center w="10%">
+
+          </Center>
+
+          <Box w="70%" 
+
+          >
+            <Center>
+              <Text
+                style={{ 
+                  fontFamily: 'JosefinSans-Bold', 
+                  fontSize: 18, 
+                  color: '#005000', 
+                }}
+              >
+                {'Ancuabe'}
+              </Text>
+
+              <Stack direction="row" space={2} my="2">
+                <Center>
+                  <Text
+                    style={{ fontFamily: 'JosefinSans-Regular', fonSize: 14, }}
+                  >[{'Produtores:'}{' '}{farmersList.length}]</Text>
+                </Center>
+                <Center>
+                  <Text
+                    style={{ fontFamily: 'JosefinSans-Regular', fonSize: 14, }}
+                  >[{'Parcelas:'}{' '}{'20'}]</Text>
+                </Center>
+              </Stack>
+            </Center>
+          </Box>
+
+          <Box w="20%"
+            style={{ justifyContent: 'center'}}
+          >
+          <Icon 
+              name="search" 
+              color="#005000"
+              size={40}
+            />
+          </Box>
+        </Stack>
+      </View>
+      <LottieAddButton
+        styles={{ 
+          zIndex: 3, 
+          width: 100, 
+          height: 100, 
+          position: 'absolute', 
+          bottom: 100, 
+          display: header ? 'flex' : 'none',
+          
+        }}
+        onPress={addFarmer}
+        />
 
       {
-        farmers?.length === 0 ?
-        (
+      (farmers?.length === 0 && groups.length === 0 && institutions.length === 0) 
+      ?
+      (
+      <Box 
+        minH={'100%'}
+      >
         <Center 
-          height="80%"
+          height="60%"
+          style={{
+            // backgroundColor: 'blue',
+            margin: 20,
+          }}
         >
           <Text 
             style={{
-              fontFamily: 'JosefinSans-Italic',
+              fontFamily: 'JosefinSans-Regular',
               fontSize: 18,
-              color: "#005000",
+              // color: "#005000",
               textAlign: 'center',
               lineHeight: 30,
             }}
@@ -152,71 +229,10 @@ export default function FarmersCcreen({ route, navigation }) {
           <TickComponent />
 
         </Center>
-        )
+      </Box>
+    )
         :
         (
-        <View>
-
-          <View
-            style={{
-              // flex: 1,
-              height: "10%",
-              width: '100%',
-              // backgroundColor: '#EBEBE4',
-              // borderBottomLeftRadius: 50,
-              // borderBottomRightRadius: 50,
-              paddingHorizontal: 10,
-              paddingTop: 30,
-
-              borderTopWidth: 0,
-              borderColor: '#EBEBE4',
-              borderBottomWidth: 3,
-              borderLeftWidth: 3,
-              borderRightWidth: 3,
-              
-
-              // shadowColor: "#000",
-              // shadowOffset: {
-              //   width: 0,
-              //   height: 0,
-              // },
-              // shadowOpacity: 0.01,
-              // shadowRadius: 0.65,
-      
-              // elevation: 2,
-
-            }}
-        >
-          <Stack
-            direction="row" w="100%"
-          >
-            <Box w="20%" 
-              style={{ justifyContent: 'center'}}
-            >
-              <Icon 
-                name="arrow-back" 
-                color="#005000"
-                size={40}
-              />
-            </Box>
-
-            <Center w="60%" 
-
-            >
-              {'Ancuabe'}
-            </Center>
-
-            <Box w="20%"
-              style={{ justifyContent: 'center'}}
-            >
-            <Icon 
-                name="search" 
-                color="#005000"
-                size={40}
-              />
-            </Box>
-          </Stack>
-        </View>
           <Box 
             // paddingY="5" 
             alignItems="stretch" 
@@ -226,9 +242,12 @@ export default function FarmersCcreen({ route, navigation }) {
             {/* {farmers.map((item)=>(<Text key={item._id}>{item.names.otherNames}{' '}{item.names.surname}</Text>))} */}
             <FlatList
               // onMomentumScrollBegin={()=>onScroll(e)}
-              // onScroll={(e)=>{
-              //   hideTabBar(e)
-              // }}
+              onScrollBeginDrag={(e)=>{
+                console.log('begin scrolling')
+                setHeader(false)}}
+              onScrollEndDrag={(e)=>{
+                console.log('end scrolling')
+                setHeader(true)}}
               data={farmersList}
               keyExtractor={keyExtractor}
               // renderItem={({ item })=><FarmerItem route={route} navigation={navigation} item={item} />}
@@ -248,10 +267,10 @@ export default function FarmersCcreen({ route, navigation }) {
 
               />
           </Box>
-          </View>
         )
       }
+      {/* </View> */}
       </Box>
-  // </SafeAreaView>
+  </SafeAreaView>
   );
 }

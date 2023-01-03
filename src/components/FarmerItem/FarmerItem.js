@@ -53,6 +53,7 @@ const FarmerItem = ({ item, route, farmerType }) => {
 
       }}
     >
+      <TouchableOpacity>
       <Text 
         style={{
           fontSize: 20,
@@ -93,8 +94,8 @@ const FarmerItem = ({ item, route, farmerType }) => {
             :
             <Icon name="close" color="red" />
           }
-        </Stack>
-        <Stack direction="row">
+      </Stack>
+      <Stack direction="row">
           <Box w="80%" >
             <Text 
               style={{
@@ -109,8 +110,8 @@ const FarmerItem = ({ item, route, farmerType }) => {
               }
             </Text>
           </Box>
-        </Stack>
-        <Stack direction="row" space={4}>
+      </Stack>
+      <Stack direction="row" space={4}>
           <Box w="50%" >
             <Stack direction="row">
                 <Text 
@@ -123,10 +124,10 @@ const FarmerItem = ({ item, route, farmerType }) => {
                   Cajueiros: {' '}
                 </Text> 
                 <Text style={{ fontSize: 15, paddingTop: 2, }}>{sumTreesOrAreas(item?.farmlands, 'trees')}</Text>
-            </Stack>
-            </Box>
-            <Box w="50%">
-              <Stack direction="row">
+          </Stack>
+        </Box>
+          <Box w="50%">
+            <Stack direction="row">
                   <Text 
                     style={{
                     fontSize: 15,
@@ -144,7 +145,7 @@ const FarmerItem = ({ item, route, farmerType }) => {
         </Box>
         <Box w="20%" style={{ 
           marginTop: 20,
-
+          
         }}>
           <Pressable
             onPress={()=>navigation.navigate('FarmlandForm1', {
@@ -152,12 +153,14 @@ const FarmerItem = ({ item, route, farmerType }) => {
               ownerName: item.names?.otherNames + ' ' + item.names?.surname,
               flag: 'Indivíduo',
             })}
-          >
+            >
             <FontAwesomeIcon icon={faTree} size={30} color="#005000" />
           </Pressable>
         </Box>
         </Stack>
       </Stack>
+  </TouchableOpacity>
+
       <Stack direction="row" w="100%" style={{  }} >
         <Box w="25%"><Text style={{ fontFamily: 'JosefinSans-Italic'}}>{'user'}</Text></Box>
          <Box w="25%"></Box>

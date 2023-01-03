@@ -24,6 +24,8 @@ import { realmContext } from '../../models/realm';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 import TreeComponent from '../../components/LottieComponents/TreeComponent';
+import SuccessFarmlandModal from '../../components/Modals/SuccessFarmlandModal';
+import SuccessAlert from '../../components/Alerts/SuccessAlert';
 const { useRealm, useQuery } = realmContext; 
 
 // const { useRealm, useObject } = AppContext;
@@ -31,6 +33,8 @@ const { useRealm, useQuery } = realmContext;
 const FarmlandForm1Screen = ({ route, navigation }) => {
     // handle modal view
     const [modalVisible, setModalVisible] = useState(false);
+    const [isCoordinatesModalVisible, setIsCoordinatesModalVisible] = useState(false);
+    const [loadinButton, setLoadingButton] = useState(false);
 
     const [errors, setErrors] = useState({});
     // const [selectedCrop, setSelectedCrop] = useState('');
@@ -45,10 +49,12 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     const [clones, setClones] = useState([]);
     const [densityMode, setDensityMode] = useState('')
     
-    const [alert, setAlert] = useState(false);
+    const [errorAlert, setErrorAlert] = useState(false);
 
     
     const [farmlandData, setFarmlandData] = useState({});
+    const [farmlandId, setFarmlandId] = useState('');
+
 
     // extract farmland owner id, name from the previous screen
     const { ownerId, ownerName, flag } = route.params;
@@ -59,15 +65,9 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
         navigation.goBack();
         return ;
     }
-
-    // const realm = useRealm();
-
-    // get user from realm
  
     // loading activity indicator
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
-
-
     
     // function called onSubmitting form data
     const visualizeFarmland = ()=>{
@@ -88,7 +88,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
         // if any required data is not validated
         // a alert message is sent to the user   
         if (!validateFarmlandData(farmlandData, errors, setErrors)) {
-            setAlert(true)
+            setErrorAlert(true)
             return;
         }
         // created the validated data object to be passed to the FarmlandModal component
@@ -123,23 +123,13 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     }, [navigation])
     
     
-    // if (loadingActivitiyIndicator) {
-    //     return <CustomActivityIndicator 
-    //     loadingActivitiyIndicator={loadingActivitiyIndicator}
-    //     setLoadingActivityIndicator={setLoadingActivityIndicator}
-    //     />
-    // }
-    
-    
-    if (alert) {
+    if (errorAlert) {
         return (
             <Center flex={1} px="3">
-                <ErrorAlert alert={alert} setAlert={setAlert} />
+                <ErrorAlert errorAlert={errorAlert} setErrorAlert={setErrorAlert} />
             </Center>
         )
     }
-    
-    
     
     return (
     <SafeAreaView 
@@ -207,13 +197,9 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     )
 }
 
-
-    {/* { alert && (<ErrorAlert alert={alert} setAlert={setAlert} />)} */}
-      <Box px="3" my="6">
-
+    <Box px="3" my="6">
         <Box w="100%" alignItems="center">
             <Stack direction="row" mx="3" w="100%">
-
                 <Box w="45%" px="1">
 
                 </Box>
@@ -387,9 +373,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
         <Box w="10%">
 
         </Box>
-
-
-          <Box w="45%" px="1">
+        <Box w="45%" px="1">
             <FormControl isRequired my="2" isInvalid={'declaredArea' in errors}>
                 <FormControl.Label>Área declarada</FormControl.Label>
                 <CustomInput
@@ -417,64 +401,62 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
           </Box>
         </Stack>  
 
-<FormControl isRequired my="2" 
-    isInvalid={'densityMode' in errors}
-    >
-    <FormControl.Label>Compasso</FormControl.Label>
-        <Radio.Group
-            name="Density"
-            value={densityMode}
-            // defaultValue=""
-            onChange={(nextValue) => {
-                // setLoadingActivityIndicator(true) // trigger ActivityIndicator
-                setErrors(prev=>({...prev, densityMode: ''}))
-                setDensityMode(nextValue);
-            }}
-            >
-            <Stack 
-                direction={{
-                    base: "row",
-                    md: "row"
-                }} 
-                alignItems={{
-                    base: "flex-start",
-                    md: "flex-start"
-                }} 
-                space={10} 
-                w="100%" 
+        <FormControl isRequired my="2" isInvalid={'densityMode' in errors}  >
+            <FormControl.Label>Compasso</FormControl.Label>
+                <Radio.Group
+                    name="Density"
+                    value={densityMode}
+                    // defaultValue=""
+                    onChange={(nextValue) => {
+                        // setLoadingActivityIndicator(true) // trigger ActivityIndicator
+                        setErrors(prev=>({...prev, densityMode: ''}))
+                        setDensityMode(nextValue);
+                    }}
                 >
-                <Radio 
-                    _text={{
-                        fontFamily: 'JosefinSans-Bold',
-                        color: 'grey'
-                    }}
-                    value="Regular" my="1" mx="1" colorScheme="emerald" size="sm">
-                    Regular
-                </Radio>
-                <Box w="10%">
-            
-                </Box>
-                <Radio 
-                    _text={{
-                        fontFamily: 'JosefinSans-Bold',
-                        color: 'Irregular'
-                    }}
-                    value="Irregular" my="1" mx="1" colorScheme="emerald" size="sm">
-                    Irregular
-                </Radio>
-            </Stack>
-        </Radio.Group>
-            {
-                'densityMode' in errors 
-            ? <FormControl.ErrorMessage 
-            leftIcon={<Icon name="error-outline" size={16} color="red" />}
-            _text={{ fontSize: 'xs'}}>{errors?.densityMode}</FormControl.ErrorMessage> 
-            : <FormControl.HelperText></FormControl.HelperText>
-            }    
-        </FormControl> 
+                <Stack 
+                    direction={{
+                        base: "row",
+                        md: "row"
+                    }} 
+                    alignItems={{
+                        base: "flex-start",
+                        md: "flex-start"
+                    }} 
+                    space={10} 
+                    w="100%" 
+                    >
+                    <Radio 
+                        _text={{
+                            fontFamily: 'JosefinSans-Bold',
+                            color: 'grey'
+                        }}
+                        value="Regular" my="1" mx="1" colorScheme="emerald" size="sm">
+                        Regular
+                    </Radio>
+                    <Box w="10%">
+                
+                    </Box>
+                    <Radio 
+                        _text={{
+                            fontFamily: 'JosefinSans-Bold',
+                            color: 'Irregular'
+                        }}
+                        value="Irregular" my="1" mx="1" colorScheme="emerald" size="sm">
+                        Irregular
+                    </Radio>
+                </Stack>
+            </Radio.Group>
+                {
+                    'densityMode' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.densityMode}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+                }    
+            </FormControl> 
 
 
-{ densityMode === "Regular" && (
+    { densityMode === "Regular" && (
     
     <Stack direction="row" mx="3" w="100%">
         <Box w="45%" px="1">
@@ -647,12 +629,20 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     }
 
     </Box> 
-    <Box w="100%" py="4"> 
+    <Center w="100%" py="4"> 
         <Button
+            loading={loadinButton ? true : false}
+            type="outline"
             title="Pré-visualizar dados"
-            onPress={visualizeFarmland}
-            />
-    </Box>
+            containerStyle={{
+                width: '100%',
+            }}
+            onPress={()=>{
+                setLoadingButton(true);
+                visualizeFarmland();
+            }}
+        />
+    </Center>
         <FarmlandModal 
             farmlandData={farmlandData}
             modalVisible={modalVisible}
@@ -668,8 +658,20 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             setPlantingYear={setPlantingYear}
             setTrees={setTrees}
             setDeclaredArea={setDeclaredArea}
+
+            setFarmlandId={setFarmlandId}
+            setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}
             
             />
+      </Box>
+      <Box>
+        <SuccessAlert
+            isCoordinatesModalVisible={isCoordinatesModalVisible}
+            setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}
+            farmlandId={farmlandId}
+            flag={'farmland'}
+            
+        />
       </Box>
       </ScrollView>
     </SafeAreaView>

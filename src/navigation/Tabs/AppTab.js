@@ -11,26 +11,17 @@ import {Icon } from '@rneui/themed';
 import Login from '../../screens/Fallback/Login';
 
 import { realmContext } from '../../models/realm';
+import FarmlandAreaAuditScreen from '../../screens/FarmlandAreaAuditScreen/FarmlandAreaAuditScreen';
+
 const { RealmProvider} = realmContext;
 
 
 const Tab = createBottomTabNavigator();
 
 
-const navigationTheme = {
-  colors: {
-    backgroundColor: '#005000',
-  }
-}
+
 
 export default function AppTab() {
-
-  // const realm = useRealm();
-
-  // realm.write(()=>{
-    
-  // })
-
 
 
 
@@ -98,8 +89,8 @@ export default function AppTab() {
                         size={50} />,
               tabBarLabel: 'Pesquisa',
             }}
-            name="UsersStack"
-            component={Login}
+            name="FarmlandAreaAudit"
+            component={FarmlandAreaAuditScreen}
            />
       </Tab.Navigator>
     </NavigationContainer>

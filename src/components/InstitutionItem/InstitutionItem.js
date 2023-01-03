@@ -41,7 +41,10 @@ const InstitutionItem = ({ item, route }) => {
         elevation: 3,
 
       }}
-    >      
+    >   
+    <TouchableOpacity>
+
+
       <Text 
         style={{
           fontSize: 20,
@@ -69,7 +72,7 @@ const InstitutionItem = ({ item, route }) => {
             {/* <Box w="80%" > */}
               <Text 
                 style={{
-                fontSize: 15,
+                  fontSize: 15,
                 fontFamily: 'JosefinSans-Italic',
                 // paddingTop: 6,
                 }}
@@ -109,7 +112,7 @@ const InstitutionItem = ({ item, route }) => {
                     fontSize: 15,
                     fontFamily: 'JosefinSans-Italic',
                     // paddingTop: 6,
-                    }}
+                  }}
                   >
                     Cajueiros: {' '}
                   </Text> 
@@ -155,6 +158,7 @@ const InstitutionItem = ({ item, route }) => {
         </Box>
         </Stack>
       </Stack>
+    </TouchableOpacity>
       {/* </Box> */}
       <Stack direction="row" w="100%" style={{  }} >
         <Box w="25%"><Text style={{ fontFamily: 'JosefinSans-Italic'}}>{'user'}</Text></Box>

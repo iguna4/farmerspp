@@ -42,6 +42,9 @@ const GroupItem = ({ item, route }) => {
 
       }}
     >
+      
+    <TouchableOpacity>
+
       <Text 
         style={{
           fontSize: 20,
@@ -69,7 +72,7 @@ const GroupItem = ({ item, route }) => {
             {/* <Box w="80%" > */}
               <Text 
                 style={{
-                fontSize: 15,
+                  fontSize: 15,
                 fontFamily: 'JosefinSans-Italic',
                 // paddingTop: 6,
                 }}
@@ -82,7 +85,7 @@ const GroupItem = ({ item, route }) => {
         </Stack>
             {/* </Box>
             <Box w="20%">
-              
+            
             </Box> */}
         <Stack direction="row">
             <Box w="80%" >
@@ -94,9 +97,9 @@ const GroupItem = ({ item, route }) => {
                 }}
               >
                 Tel: {
-                item.manager.phone ? item.manager.phone
-                : 'Nenhum'
-              }
+                  item.manager.phone ? item.manager.phone
+                  : 'Nenhum'
+                }
               </Text>
             </Box>
         </Stack>
@@ -106,11 +109,11 @@ const GroupItem = ({ item, route }) => {
               <Stack direction="row">
                   <Text 
                     style={{
-                    fontSize: 15,
-                    fontFamily: 'JosefinSans-Italic',
-                    // paddingTop: 6,
+                      fontSize: 15,
+                      fontFamily: 'JosefinSans-Italic',
+                      // paddingTop: 6,
                     }}
-                  >
+                    >
                     Cajueiros: {' '}
                   </Text> 
                   <Text style={{ fontSize: 15, paddingTop: 2, }}>
@@ -120,7 +123,7 @@ const GroupItem = ({ item, route }) => {
             </Box>
                 {/* <Box w="30%">
                 </Box>
-            </Box> */}
+              </Box> */}
             
             <Box w="50%">
                 {/* <Box w="70%"> */}
@@ -130,7 +133,7 @@ const GroupItem = ({ item, route }) => {
                     fontSize: 15,
                     fontFamily: 'JosefinSans-Italic',
                     // paddingTop: 6,
-                    }}
+                  }}
                   >
                     Parcelas: {' '}
                   </Text>
@@ -155,6 +158,7 @@ const GroupItem = ({ item, route }) => {
         </Box>
         </Stack>
       </Stack>
+  </TouchableOpacity>
       {/* </Box> */}
       <Stack direction="row" w="100%" style={{  }} >
         <Box w="25%"><Text style={{ fontFamily: 'JosefinSans-Italic'}}>{'user'}</Text></Box>

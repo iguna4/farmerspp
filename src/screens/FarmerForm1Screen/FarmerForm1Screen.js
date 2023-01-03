@@ -37,6 +37,7 @@ import { generateUFID } from '../../helpers/generateUFID';
 import DuplicatesAlert from '../../components/Alerts/DuplicatesAlert';
 import { detectDuplicates } from '../../helpers/detectDuplicates';
 import FarmerTypeRadioButtons from '../../components/RadioButton/FarmerTypeRadioButtons';
+import SuccessAlert from '../../components/Alerts/SuccessAlert';
 const {useRealm} = realmContext;
 
 
@@ -105,10 +106,14 @@ export default function FarmerForm1Screen({ route, navigation }) {
 
 
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
-    
+    const [loadinButton, setLoadingButton] = useState(false);
+    const [isCoordinatesModalVisible, setIsCoordinatesModalVisible] = useState(false);
+
 
     // farmers suspected duplicates
     const [suspectedDuplicates, setSuspectedDuplicates] = useState([]);
+
+    const [farmerItem, setFarmerItem] = useState({});
 
     const user = route.params.user;
 
@@ -267,7 +272,9 @@ export default function FarmerForm1Screen({ route, navigation }) {
         fadingEdgeLength={2}
       >
         {/* Data collecting form description */}
-     <Box >
+     <Box 
+        // alignItems={"center"}
+     >
         <Box 
         bg="ghostwhite" 
         w="100%" 
@@ -334,7 +341,9 @@ export default function FarmerForm1Screen({ route, navigation }) {
 
 {/* {
    !loadingActivitiyIndicator && ( */}
-<Box>
+<Box
+    alignItems={'center'}
+>
 
 {
     farmerType === "Indivíduo" && (
@@ -1562,12 +1571,21 @@ farmerType === "Instituição" && (
 )}
 
 
-    <Center mb="15" mt="5">
+    <Center mb="15" w="94%" 
+    // style={{ backgroundColor: 'red'}}
+    >
         { farmerType !== '' ? 
-            (<Button
-            title="Pré-visualizar dados"
-            onPress={()=>addFarmer(farmerType, realm)}
-            />)
+            (
+            <Button
+                loading={loadinButton ? true : false}
+                type="outline"
+                containerStyle={{
+                    width: '100%',
+                }}
+                title="Pré-visualizar dados"
+                onPress={()=>addFarmer(farmerType, realm)}
+            />
+            )
             :
             <Box >
                 <Center>
@@ -1603,6 +1621,9 @@ farmerType === "Instituição" && (
             setDocType={setDocType}
             setDocNumber={setDocNumber}
             setNuit={setNuit}
+
+            setFarmerItem={setFarmerItem}
+            setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}            
         />
     )
     }
@@ -1626,7 +1647,9 @@ farmerType === "Instituição" && (
                 setGroupNuit={setGroupNuit}
                 setGroupMembersNumber={setGroupMembersNumber}
                 setGroupWomenNumber={setGroupWomenNumber}
-            
+
+                setFarmerItem={setFarmerItem}
+                setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}                
             />
         )
     }
@@ -1647,10 +1670,22 @@ farmerType === "Instituição" && (
                 setInstitutionManagerPhone={setInstitutionManagerPhone}
                 setInstitutionNuit={setInstitutionNuit}
                 setIsPrivateInstitution={setIsPrivateInstitution}  
+
+                setFarmerItem={setFarmerItem}
+                setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}                
              />
         )
     }
     </Center>
+    <Box>
+        <SuccessAlert
+            isCoordinatesModalVisible={isCoordinatesModalVisible}
+            setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}
+            farmerItem={farmerItem}
+            flag={'farmer'}
+            
+        />
+      </Box>
     </Box>
     </ScrollView>
     </SafeAreaView>

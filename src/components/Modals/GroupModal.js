@@ -3,8 +3,9 @@
 /* eslint-disable prettier/prettier */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import { Modal, Text,  Stack, Box, Center, Divider } from 'native-base';
-import { Button } from '@rneui/themed';
+import { Text,  Stack, Box, Center, Divider } from 'native-base';
+import { Modal, ScrollView, TouchableOpacity } from 'react-native';
+import { Button, Icon } from '@rneui/themed';
 import CustomDivider from '../Divider/CustomDivider';
 import styles from './styles';
 
@@ -43,11 +44,14 @@ const GroupModal = (
         setGroupMembersNumber,
         setGroupWomenNumber,
 
+        setFarmerItem,
+        setIsCoordinatesModalVisible,
+
     }
 ) => {
 
    const [addDataModalVisible, setAddDataModalVisible] = useState(false);
-    const [farmerId, setFarmerId] = useState(null);
+    // const [farmerId, setFarmerId] = useState(null);
     const navigation = useNavigation();
     const realm = useRealm()
 
@@ -75,20 +79,11 @@ const GroupModal = (
             address,
             nuit,
         })
-        setModalVisible(false);
-        setAddDataModalVisible(true);
-
-        setGroupType('');
-        setGroupName('');
-        setGroupAffiliationYear(''); 
-        setGroupAdminPost('');
-        setGroupVillage('');
-        setGroupManagerName('');
-        setGroupManagerPhone('');
-        setGroupOperatingLicence(''); 
-        setGroupNuit(''); 
-        setGroupMembersNumber('')
-        setGroupWomenNumber('')
+        setFarmerItem({
+            ownerId: newGroup._id,
+            ownerName: newGroup.type + ' ' + newGroup.name,
+            flag: 'Grupo',        
+        });
         
     })
 }, [
@@ -102,38 +97,72 @@ const GroupModal = (
   return (
   <>
     <Modal
-        isOpen={modalVisible}
-        onClose={() => setModalVisible(false)}
-        avoidKeyboard
-        justifyContent="center"
-        bottom="1"
-        top="1"
-        size="full"
-        _backdropFade="slide"
+        visible={modalVisible}
+        animationType="slide"
+        onRequestClose={()=>setModalVisible(false)}
+        // statusBarTranslucent={false}
     >
-        <Modal.Content maxHeight="90%">
-            <Modal.CloseButton />
-            <Modal.Header 
-                style={{ backgroundColor: '#005000'}}>
-                <Text 
-                    style={{
-                        fontFamily: 'JosefinSans-Bold', 
-                        textAlign: 'center', 
-                        color:'white', 
-                        fontSize: 18,
-                    }}
+        <Stack 
+                direction="row" 
+                w="100%"
+                pt="3"
+            >
+            <Box w="20%">
+                <TouchableOpacity
+                    onPress={()=>{
+                        // navigation.goBack();
+                        setModalVisible(false);
+                    }}                            
                 >
-                    Confirma dados 
-                </Text>
-            </Modal.Header>
-        <Modal.Body minHeight="450">
+                    <Icon name='arrow-back-ios' color="#005000" size={30}  />
+                </TouchableOpacity>
+            </Box>
+            <Box w="60%">
+            </Box>
+            <Box w="20%">
+                <Icon 
+                    name="close" 
+                    size={35} 
+                    color="grey" 
+                    onPress={() => setModalVisible(false)}
+                />
+            </Box>
+        </Stack>
+        <ScrollView
+            contentContainerStyle={{
+            flex: 1, 
+            justifyContent: 'center', 
+            }}
+        >
+
+        <Center 
+            style={{ 
+                paddingBottom: 5,    
+                paddingTop: 10,
+                width: '100%',
+                // backgroundColor: '#EBEBE4',           
+            }}
+        >
+            <Text
+                style={{ 
+                    fontFamily: 'JosefinSans-Bold', 
+                    fontSize: 24,
+                    fontWeigth: 'bold',
+                    color: '#000',
+                    paddingTop: 15,
+
+                }}
+            >
+                Confirmar Dados
+            </Text>
+        </Center>
+
+        <Box mx="6">
         <CustomDivider
             marginVertical="1"
             thickness={1}
             bg="grey"
         />
-
-        <Box>
         <Stack direction="row" w="100%" my="1">
             <Box w="40%">
                 <Text style={styles.keys}>Grupo:</Text>
@@ -278,32 +307,43 @@ const GroupModal = (
         thickness={1}
         bg="grey"
     />
+    <Center
+        w="100%"
+    >
+        <Button
+            onPress={()=>{
+                try {
+                    addGroup(farmerData, realm)
+                    setIsCoordinatesModalVisible(true);
+                    setModalVisible(false);
+                } catch (error) {
+                    throw new Error('Failed to register Group', { cause: error})
+                }
+                finally {
+                    setGroupType('');
+                    setGroupName('');
+                    setGroupAffiliationYear(''); 
+                    setGroupAdminPost('');
+                    setGroupVillage('');
+                    setGroupManagerName('');
+                    setGroupManagerPhone('');
+                    setGroupOperatingLicence(''); 
+                    setGroupNuit(''); 
+                    setGroupMembersNumber('')
+                    setGroupWomenNumber('')
+                }
+            }}
+            type="outline"
+            title="Salvar Dados"
+            containerStyle={{
+                width: '100%',
+            }}
+        />
+    </Center>
     </Box>
+    </ScrollView>
 
-        </Modal.Body>
-        <Modal.Footer maxHeight="60">
-            <Center>
-                <Button
-                        onPress={()=>{
-                            addGroup(farmerData, realm)
-                        }}
-                        title="Salvar Dados"
-                        buttonStyle={{
-                            width: 300,
-                        }}
-                    />
-            </Center>
-          </Modal.Footer>
-        </Modal.Content>
       </Modal>
-        <Center flex={1} px="3">
-            <SuccessModal
-                addDataModalVisible={addDataModalVisible}
-                setAddDataModalVisible={setAddDataModalVisible}
-                farmerId={farmerId}
-                setFarmerType={setFarmerType}
-            />
-        </Center>
     </>
 
   )

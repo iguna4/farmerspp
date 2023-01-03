@@ -3,8 +3,9 @@
 /* eslint-disable prettier/prettier */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import { Modal, Text,  Stack, Box, Center, Divider } from 'native-base';
-import { Button } from '@rneui/themed';
+import { Text,  Stack, Box, Center, Divider } from 'native-base';
+import { Button, Icon } from '@rneui/themed';
+import { Modal, ScrollView, TouchableOpacity } from 'react-native';
 import CustomDivider from '../Divider/CustomDivider';
 import styles from './styles';
 
@@ -13,16 +14,13 @@ import { v4 as uuidv4 } from 'uuid';
 import Realm from 'realm';
 
 import FarmerAddDataModal from './SuccessModal';
-import { generateUUID } from '../../helpers/generateUUID';
-import { generateFormattedDate } from '../../helpers/generateFormattedDate';
-import { generateFormattedAdminPost } from '../../helpers/generateFormattedAdminPost';
-import { generateFormattedSurname } from '../../helpers/generateFormattedSurname';
+
 import { useNavigation } from '@react-navigation/native';
-import SuccessModal from './SuccessModal';
+
 
 import { realmContext } from '../../models/realm';
-import { addFarmland } from '../../services/addFarmland';
 import { categorizeFarmer } from '../../helpers/categorizeFarmer';
+
 const {useRealm} = realmContext;
 
 const FarmlandModal = (
@@ -42,10 +40,12 @@ const FarmlandModal = (
         setPlantTypes, 
         setDensityMode, 
 
+        setFarmlandId,
+        setIsCoordinatesModalVisible,
+
     }
 ) => {
 
-    const [addDataModalVisible, setAddDataModalVisible] = useState(false);
     const navigation = useNavigation();
     const realm = useRealm()
 
@@ -103,6 +103,9 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             farmer: owner._id,
         })
 
+        // set the farmlandId
+        setFarmlandId(newFarmland._id);
+
         // add the created farmland to the Farmer (owner)'s object
         owner.farmlands.push(newFarmland);
 
@@ -110,7 +113,7 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             // categorize by 'comercial' | 'familiar' | 'nao-categorizado'
             owner.category = categorizeFarmer(owner.farmlands);
         }
-
+        
     })
 
 },
@@ -122,179 +125,216 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
   return (
   <>
     <Modal
-        isOpen={modalVisible}
-        onClose={() => setModalVisible(false)}
-        avoidKeyboard
-        justifyContent="center"
-        bottom="1"
-        top="1"
-        size="full"
-        _backdropFade="slide"
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+        animationType="slide"
     >
-        <Modal.Content maxHeight="90%">
-            <Modal.CloseButton />
-            <Modal.Header 
-                style={{ backgroundColor: '#005000'}}>
-                <Text 
-                    style={{
-                        fontFamily: 'JosefinSans-Bold', 
-                        textAlign: 'center', 
-                        color:'white', 
-                        fontSize: 18,
-                    }}
+        <Stack 
+                direction="row" 
+                w="100%"
+                pt="3"
+            >
+            <Box w="20%">
+                <TouchableOpacity
+                    onPress={()=>{
+                        // navigation.goBack();
+                        setModalVisible(false);
+                    }}                            
                 >
-                    Confirma dados 
-                </Text>
-            </Modal.Header>
-        <Modal.Body minHeight="450">
+                    <Icon name='arrow-back-ios' color="#005000" size={30}  />
+                </TouchableOpacity>
+            </Box>
+            <Box w="60%">
+                </Box>
+                <Box w="20%">
+                    <Icon 
+                        name="close" 
+                        size={35} 
+                        color="grey" 
+                        onPress={() => setModalVisible(false)}
+                    />
+                </Box>
+            </Stack>
+        <ScrollView
+         contentContainerStyle={{
+            flex: 1, 
+            justifyContent: 'center', 
+         }}
+        >
+
+            <Center 
+            style={{ 
+                paddingBottom: 5,    
+                paddingTop: 10,
+                width: '100%',
+                // backgroundColor: '#EBEBE4',           
+            }}
+        >
+            <Text
+                style={{ 
+                    fontFamily: 'JosefinSans-Bold', 
+                    fontSize: 24,
+                    fontWeigth: 'bold',
+                    color: '#000',
+                    paddingTop: 15,
+
+                }}
+            >
+                Confirmar Dados
+            </Text>
+        </Center>
+
+
+
+
+    <Box mx="6" mt="5" >
         <CustomDivider
             marginVertical="1"
             thickness={1}
             bg="grey"
         />
+        <Stack direction="row" w="100%" my="1">
+            <Box w="40%">
+                <Text style={styles.keys}>Pomar:</Text>
+            </Box>
+            <Box w="60%" style={styles.values}>
+                <Text style={styles.values}>
+                    {farmlandData?.description}
+                </Text>
+            </Box>
+            </Stack>
+            <CustomDivider
+                marginVertical="1"
+                thickness={1}
+                bg="grey"
+            />
+        <Stack direction="row" w="100%" my="1">
+            <Box w="40%">
+                <Text style={styles.keys}>Ano de plantio:</Text>
+            </Box>
+            <Box w="60%" style={styles.values}>
+                <Text style={styles.values}>
+                    {farmlandData?.plantingYear} (ano)
+                </Text>
+            </Box>                    
+        </Stack>
+        <CustomDivider
+            marginVertical="1"
+            thickness={1}
+            bg="grey"
+        />
+        <Stack direction="row" w="100%" my="1">
+            <Box w="40%">
+                <Text style={styles.keys}>Culturas consociadas:</Text>
+            </Box>
+            <Box w="60%" style={styles.values}>
+                <Text style={styles.values}>
+                    {farmlandData?.consociatedCrops?.map(crop=>`${crop}; `)}
+                </Text>
+            </Box>
+        </Stack>
+        <CustomDivider
+            marginVertical="1"
+            thickness={1}
+            bg="grey"
+        />
+        <Stack direction="row" w="100%" my="1">
+            <Box w="40%">
+                <Text style={styles.keys}>Cajueiros:</Text>
+            </Box>
+            <Box w="60%" style={styles.values}>
+                <Text style={styles.values}>
+                    {farmlandData?.trees} (árvores)
+                </Text>
+            </Box>
+        </Stack>
+        <CustomDivider
+            marginVertical="1"
+            thickness={1}
+                bg="grey"
+        />
 
-        <Box>
-            <Stack direction="row" w="100%" my="1">
-                <Box w="40%">
-                    <Text style={styles.keys}>Pomar:</Text>
-                </Box>
-                <Box w="60%" style={styles.values}>
-                    <Text style={styles.values}>
-                        {farmlandData?.description}
-                    </Text>
-                </Box>
-                </Stack>
-                <CustomDivider
-                    marginVertical="1"
-                    thickness={1}
-                    bg="grey"
+        <Stack direction="row" w="100%" my="1">
+            <Box w="40%">
+                <Text style={styles.keys}>Área declarada:</Text>
+            </Box>
+            <Box w="60%" style={styles.values}>
+                <Text style={styles.values}>
+                    {farmlandData?.declaredArea} (hectares)
+                </Text>
+            </Box>
+        </Stack>
+        <CustomDivider
+            marginVertical="1"
+            thickness={1}
+                bg="grey"
                 />
-            <Stack direction="row" w="100%" my="1">
-                <Box w="40%">
-                    <Text style={styles.keys}>Ano de plantio:</Text>
-                </Box>
-                <Box w="60%" style={styles.values}>
-                    <Text style={styles.values}>
-                        {farmlandData?.plantingYear} (ano)
-                    </Text>
-                </Box>                    
-            </Stack>
-            <CustomDivider
-                marginVertical="1"
-                thickness={1}
-                bg="grey"
-            />
-            <Stack direction="row" w="100%" my="1">
-                <Box w="40%">
-                    <Text style={styles.keys}>Culturas consociadas:</Text>
-                </Box>
-                <Box w="60%" style={styles.values}>
-                    <Text style={styles.values}>
-                        {farmlandData?.consociatedCrops?.map(crop=>`${crop}; `)}
-                    </Text>
-                </Box>
-            </Stack>
-            <CustomDivider
-                marginVertical="1"
-                thickness={1}
-                bg="grey"
-            />
-            <Stack direction="row" w="100%" my="1">
-                <Box w="40%">
-                    <Text style={styles.keys}>Cajueiros:</Text>
-                </Box>
-                <Box w="60%" style={styles.values}>
-                    <Text style={styles.values}>
-                        {farmlandData?.trees} (árvores)
-                    </Text>
-                </Box>
-            </Stack>
-            <CustomDivider
-                marginVertical="1"
-                thickness={1}
-                    bg="grey"
-            />
-
-            <Stack direction="row" w="100%" my="1">
-                <Box w="40%">
-                    <Text style={styles.keys}>Área declarada:</Text>
-                </Box>
-                <Box w="60%" style={styles.values}>
-                    <Text style={styles.values}>
-                        {farmlandData?.declaredArea} (hectares)
-                    </Text>
-                </Box>
-            </Stack>
-            <CustomDivider
-                marginVertical="1"
-                thickness={1}
-                    bg="grey"
-            />
 
 
-            <Stack direction="row" w="100%" my="1">
-                <Box w="40%">
-                    <Text style={styles.keys}>Compasso:</Text>
-                </Box>
-                <Box w="60%">
-                    <Box>
+        <Stack direction="row" w="100%" my="1">
+            <Box w="40%">
+                <Text style={styles.keys}>Compasso:</Text>
+            </Box>
+            <Box w="60%">
+                <Box>
+                    <Text style={styles.values}>
+                        {farmlandData?.density?.mode}
+                    </Text>
+                    {
+                        farmlandData?.density?.mode === 'Regular' && (
+                            <>
                         <Text style={styles.values}>
-                            {farmlandData?.density?.mode}
+                            {farmlandData?.density?.length + ' (comprimento)'}
                         </Text>
+                        <Text style={styles.values}>
+                            {farmlandData?.density?.width + ' (largura)'}
+                        </Text>
+                    </>
+                )}
+                </Box>
+            </Box>
+        </Stack>
+        <CustomDivider
+            marginVertical="1"
+            thickness={1}
+            bg="grey"
+            />
+        <Stack direction="row" w="100%" my="1">
+            <Box w="40%">
+                <Text style={styles.keys}>Tipo de plantio:</Text>
+            </Box>
+            <Box w="60%">
+                <Box>
+                    <Text style={styles.values}>
+                        {farmlandData.plantTypes?.plantTypes?.map(p=>`${p}; `)}
+                    </Text>
+                    <Text style={styles.values}>
                         {
-                         farmlandData?.density?.mode === 'Regular' && (
-                        <>
-                            <Text style={styles.values}>
-                                {farmlandData?.density?.length + ' (comprimento)'}
-                            </Text>
-                            <Text style={styles.values}>
-                                {farmlandData?.density?.width + ' (largura)'}
-                            </Text>
-                        </>
-                    )}
-                    </Box>
+                        farmlandData.plantTypes?.plantTypes?.some(el=>el.includes('enxer')) 
+                        ?  farmlandData.plantTypes?.clones?.map(clone=>`${clone}; `) + '(clones)'
+                        : ''}
+                    </Text>
                 </Box>
-            </Stack>
-            <CustomDivider
-                marginVertical="1"
-                thickness={1}
-                bg="grey"
-            />
-            <Stack direction="row" w="100%" my="1">
-                <Box w="40%">
-                    <Text style={styles.keys}>Tipo de plantio:</Text>
-                </Box>
-                <Box w="60%">
-                    <Box>
-                        <Text style={styles.values}>
-                            {farmlandData.plantTypes?.plantTypes?.map(p=>`${p}; `)}
-                        </Text>
-                        <Text style={styles.values}>
-                            {
-                            farmlandData.plantTypes?.plantTypes?.some(el=>el.includes('enxer')) 
-                            ?  farmlandData.plantTypes?.clones?.map(clone=>`${clone}; `) + '(clones)'
-                            : ''}
-                        </Text>
-                    </Box>
-                </Box>
-            </Stack>
-            <CustomDivider
-                marginVertical="1"
-                thickness={1}
-                bg="grey"
-                />
-        </Box>
-
-        </Modal.Body>
-        <Modal.Footer maxHeight="60">
-            <Center>
-                <Button
-                    onPress={()=>{
-                        onAddFarmland(farmlandData, realm);
-                        
+            </Box>
+        </Stack>
+        <CustomDivider
+            marginVertical="1"
+            thickness={1}
+            bg="grey"
+        />
+        <Center
+            w="100%"
+        >
+            <Button
+                onPress={()=>{
+                    try {
+                        onAddFarmland(farmlandData, realm);    
+                        setIsCoordinatesModalVisible(true);
                         setModalVisible(false);
-                        // setAddDataModalVisible(true);
-
+                    } catch (error) {
+                        throw new Error('Failed to register Farmland', { cause: error})
+                    }
+                    finally{
                         setPlantingYear('');
                         setDescription('');
                         setConsociatedCrops([]);
@@ -305,24 +345,21 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
                         setDensityWidth('');
                         setPlantTypes([]);
                         setDensityMode('');
-                    }}
-                    title="Salvar Dados"
-                    buttonStyle={{
-                        width: 300,
-                    }}
-                />
-            </Center>
-          </Modal.Footer>
-        </Modal.Content>
-      </Modal>
-        {/* <Center flex={1} px="3">
-            <SuccessModal
-                addDataModalVisible={addDataModalVisible}
-                setAddDataModalVisible={setAddDataModalVisible}
-                farmerId={farmerId}
-                setFarmerType={setFarmerType}
+                    }
+
+                }}
+                type="outline"
+                title="Salvar Dados"
+                containerStyle={{
+                    width: '100%',
+                }}
             />
-        </Center> */}
+        </Center>
+        </Box>
+
+
+    </ScrollView>
+    </Modal>
     </>
 
   )

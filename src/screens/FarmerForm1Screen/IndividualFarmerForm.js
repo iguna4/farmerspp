@@ -42,7 +42,7 @@ const {useRealm} = realmContext;
 
 
 
-export default function FarmerForm1Screen2({ route, navigation }) {
+export default function IndividualFarmerForm({ route, navigation }) {
     const [gender, setGender] = useState('');
     const [familySize, setFamilySize] = useState('');
 
@@ -115,7 +115,12 @@ export default function FarmerForm1Screen2({ route, navigation }) {
 
     const [farmerItem, setFarmerItem] = useState({});
 
-    const user = route.params.user;
+    // get user
+    const user = route.params?.user ? route.params.user : ({ user: {
+        name: 'evariste musekwa',
+        district: 'Mogovolas',
+        province: 'Nampula',
+      }});
 
     const realm = useRealm();
 

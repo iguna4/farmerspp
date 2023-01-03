@@ -9,6 +9,7 @@ import FarmerForm1Screen from '../../screens/FarmerForm1Screen/FarmerForm1Screen
 import FarmerForm2Screen from '../../screens/FarmerForm2Screen/FarmerForm2Screen';
 import FarmlandForm1Screen from '../../screens/FarmlandForm1Screen/FarmlandForm1Screen';
 import FarmlandAreaAuditScreen from '../../screens/FarmlandAreaAuditScreen/FarmlandAreaAuditScreen';
+import IndividualFarmerForm from '../../screens/FarmerForm1Screen/IndividualFarmerForm';
 
 const FarmersStack = createNativeStackNavigator();
 
@@ -32,6 +33,7 @@ export default function FarmersStackScreen() {
         <FarmersStack.Screen name="FarmerForm1" component={FarmerForm1Screen} />
         <FarmersStack.Screen name="FarmlandForm1" component={FarmlandForm1Screen} />
         <FarmersStack.Screen name="FarmlandAreaAudit" component={FarmlandAreaAuditScreen} />
+        <FarmersStack.Screen name="IndividualFarmer" component={IndividualFarmerForm} />
       </FarmersStack.Navigator>
   );
 }

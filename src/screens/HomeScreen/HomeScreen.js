@@ -95,7 +95,7 @@ export default function HomeScreen({ navigation }) {
           </Box>
           
           <Box w="30%">
-            <Text>Extensionista</Text>
+            <Text>Extensionista---</Text>
           </Box>
         </Stack>
       </View>

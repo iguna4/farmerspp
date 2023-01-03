@@ -12,6 +12,7 @@ import Login from '../../screens/Fallback/Login';
 
 import { realmContext } from '../../models/realm';
 import FarmlandAreaAuditScreen from '../../screens/FarmlandAreaAuditScreen/FarmlandAreaAuditScreen';
+import IndividualFarmerForm from '../../screens/FarmerForm1Screen/IndividualFarmerForm';
 
 const { RealmProvider} = realmContext;
 

@@ -1,14 +1,16 @@
 
-import React, { useState } from "react";
-import { View, Text, SafeAreaView, FlatList, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { View, Text, SafeAreaView, FlatList, ScrollView, TouchableOpacity, PermissionsAndroid } from 'react-native';
 import { Stack, Box, Center } from "native-base";
+import Geolocation from 'react-native-geolocation-service';
+
+
 import LottieAddButton from '../../components/Buttons/LottieAddButton';
-
-
 import { realmContext } from '../../models/realm';
 import { Icon,  } from "@rneui/base";
 import CoordinatesItem from "../../components/CoordinatesItem/CoordinatesItem";
 import CustomDivider from "../../components/Divider/CustomDivider";
+
 
 const {useRealm, useObject, useQuery } = realmContext;
 
@@ -21,9 +23,81 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     
     // console.log('farmland:', JSON.stringify(farmland));
     // console.log('farmer:', JSON.stringify(farmer));
+    const [permissionGranted, setPermissionGranted] = useState(false);
+
+    const requestLocationPermission = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION, {
+                    title: 'Cool Weather App',
+                    message: 'Cool Weather App needs access to use your location',
+                    buttonNegative: 'Ask Me Later',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK'
+                }
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                setPermissionGranted(true)
+                console.log("You can use the app");
+            } else {
+                setPermissionGranted(false)
+                console.log("Location Permission Denied");
+            }
+        } catch (err) {
+        console.log('not granted:', granted);
+          console.warn(err);
+        }
+      };
+
+    // const hasLocationPermission = async() => {
+    //     const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.LOCATION, {
+    //         title: 'Cool Weather App',
+    //         message: 'Cool Weather App needs access to use your location',
+    //         buttonNegative: 'Ask Me Later',
+    //         buttonNegative: 'Cancel',
+    //         buttonPositive: 'OK'
+    //     });
+    //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    //         console.log('You can use the app');
+    //         // setPermissionGranted(true);
+    //         return true;
+    //     } else {
+    //         console.log('Location Permission Denied');
+    //         // setPermissionGranted(false);
+    //         return false;
+    //     }
+    // }
+
+
+    
+
+
+
+    useEffect(()=>{
+        // hasLocationPermission().then(result=>setPermissionGranted(result))
+
+
+        if (permissionGranted) {
+            // console.log('hasLocationPermission:', hasLocationPermission)
+            Geolocation.getCurrentPosition(
+                (position) => {
+                  console.log(position);
+                },
+                (error) => {
+                  // See error code charts below.
+                  console.log('11', error.code, error.message);
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+            );
+          }
+    }, [permissionGranted])
+
 
     const [coordinates, setCoordinates] = useState([])
     const keyExtractor = (item, index)=>index.toString();
+
+
+
 
 
 
@@ -167,7 +241,9 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 
             }}
             onPress={()=>{
-                setCoordinates(prev=>[...prev, prev.length + 1])
+                // setCoordinates(prev=>[...prev, prev.length + 1])
+                requestLocationPermission()
+
             }}
             />
     </SafeAreaView>

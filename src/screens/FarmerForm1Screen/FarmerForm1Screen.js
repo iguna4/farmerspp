@@ -297,9 +297,9 @@ export default function FarmerForm1Screen({ route, navigation }) {
                 <Stack direction="row">
                     <Box>
                         <Icon 
-                            name="arrow-back" 
+                            name="arrow-back-ios" 
                             color="#005000"
-                            size={40}
+                            size={35}
                             onPress={()=>navigation.goBack()}
                         />
                     </Box>

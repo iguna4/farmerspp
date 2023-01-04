@@ -298,7 +298,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                 show={errorAlert}
                 showProgress={false}
                 title="Dados Obrigatórios"
-                message="Os dados obrigatórios devem ser preenchidos!"
+                message="Os campos obrigatórios devem ser preenchidos!"
                 closeOnTouchOutside={true}
                 closeOnHardwareBackPress={false}
                 showCancelButton={false}

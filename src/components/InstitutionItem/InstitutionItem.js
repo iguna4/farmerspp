@@ -15,9 +15,9 @@ import { faTree } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const InstitutionItem = ({ item, route, navigation }) => {
+const InstitutionItem = ({ item, route }) => {
 
-  //  const navigation = useNavigation();
+   const navigation = useNavigation();
 
   return (
     <View

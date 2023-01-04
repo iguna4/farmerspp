@@ -15,10 +15,10 @@ import { faTree } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const GroupItem = ({ item, route, navigation }) => {
+const GroupItem = ({ item, route }) => {
 
-  //  const navigation = useNavigation();
-  console.log('item:', JSON.stringify(item));
+   const navigation = useNavigation();
+  // console.log('item:', JSON.stringify(item));
   return (
     <View
       style={{

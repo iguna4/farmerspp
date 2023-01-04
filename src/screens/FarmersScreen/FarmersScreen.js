@@ -30,9 +30,9 @@ export default function FarmersScreen({ route, navigation }) {
   // const [farmersList, setFarmersList] = useState([]);
 
   const realm = useRealm();
-  realm.write(()=>{
+  // realm.write(()=>{
 
-  });
+  // });
   
   // const farmers = [];
   const farmers = useQuery('Farmer');
@@ -102,6 +102,8 @@ export default function FarmersScreen({ route, navigation }) {
         setLoadingActivityIndicator={setLoadingActivityIndicator}
     />
   }
+
+  console.log('farmersList:', JSON.stringify(farmersList));
 
   return (
     <SafeAreaView 
@@ -225,7 +227,6 @@ export default function FarmersScreen({ route, navigation }) {
             alignItems="stretch" 
             w="100%" 
             >
-            {/* {farmers.map((item)=>(<Text key={item._id}>{item.names.otherNames}{' '}{item.names.surname}</Text>))} */}
             <FlatList
               // onMomentumScrollBegin={()=>onScroll(e)}
               onScrollBeginDrag={(e)=>{
@@ -236,22 +237,20 @@ export default function FarmersScreen({ route, navigation }) {
                 setHeader(true)}}
               data={farmersList}
               keyExtractor={keyExtractor}
-              // renderItem={({ item })=><FarmerItem route={route} navigation={navigation} item={item} />}
-              //  renderItem={({ item })=><GroupItem route={route}  item={item} />}
               renderItem={({ item })=>{
                 if(item.flag === 'Grupo'){
-                  return <GroupItem route={route} navigation={navigation}  item={item} />
+                  return <GroupItem route={route} item={item} />
                 }
                 else if (item.flag === 'Indivíduo'){
                     return <FarmerItem route={route} navigation={navigation} item={item} />
-                  }
-                  else if (item.flag === 'Instituição'){
-                    return <InstitutionItem route={route} navigation={navigation}  item={item} />
-                  }
+                }
+                else if (item.flag === 'Instituição'){
+                    return <InstitutionItem route={route}  item={item} />
                 }
               }
+              }
 
-              />
+             />
           </Box>
         )
       }

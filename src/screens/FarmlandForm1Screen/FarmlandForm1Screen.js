@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { Icon, Button, CheckBox } from '@rneui/themed';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio, Alert  } from 'native-base';
 import { SelectList, MultipleSelectList  } from 'react-native-dropdown-select-list';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 
 import Realm from 'realm';
@@ -123,13 +124,13 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     }, [navigation])
     
     
-    if (errorAlert) {
-        return (
-            <Center flex={1} px="3">
-                <ErrorAlert errorAlert={errorAlert} setErrorAlert={setErrorAlert} />
-            </Center>
-        )
-    }
+    // if (errorAlert) {
+    //     return (
+    //         <Center flex={1} px="3">
+    //             <ErrorAlert errorAlert={errorAlert} setErrorAlert={setErrorAlert} />
+    //         </Center>
+    //     )
+    // }
     
     return (
     <SafeAreaView 
@@ -154,11 +155,32 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             <Stack>
                 
             </Stack>
+
+            <AwesomeAlert
+                show={errorAlert}
+                showProgress={false}
+                title="Dados Obrigatórios"
+                message="Os campos obrigatórios devem ser preenchidos!"
+                closeOnTouchOutside={true}
+                closeOnHardwareBackPress={false}
+                showCancelButton={false}
+                showConfirmButton={true}
+                // cancelText="No, cancel"
+                confirmText="   OK!   "
+                confirmButtonColor="#DD6B55"
+                // onCancelPressed={() => {
+                //     setErrorAlert(false);
+                // }}
+                onConfirmPressed={() => {
+                    setErrorAlert(false);
+                }}
+            />
+
             <Box mb="2">
             <Stack direction="row">
                 <Box>
                     <Icon 
-                        name="arrow-back" 
+                        name="arrow-back-ios" 
                         color="#005000"
                         size={40}
                         onPress={()=>navigation.goBack()}
@@ -631,7 +653,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     </Box> 
     <Center w="100%" py="4"> 
         <Button
-            loading={loadinButton ? true : false}
+            // loading={loadinButton ? true : false}
             type="outline"
             title="Pré-visualizar dados"
             containerStyle={{

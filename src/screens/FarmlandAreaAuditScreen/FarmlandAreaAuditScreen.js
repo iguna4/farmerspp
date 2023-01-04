@@ -137,7 +137,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
           show={confirmGeoAlert}
           showProgress={false}
           title="Geolocalização"
-          message="O seu dispositivo deu a permissão a este aplicativo!"
+          message="Este dispositivo aprovou o pedido de permissão deste aplicativo!"
           closeOnTouchOutside={true}
           closeOnHardwareBackPress={false}
           showCancelButton={false}
@@ -157,19 +157,20 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
           show={rejectGeoAlert}
           showProgress={false}
           title="Geolocalização"
-          message="O seu dispositivo NÃO deu a permissão a este aplicativo!"
+          message="Este dispositivo rejeitou o pedido de permissão deste aplicativo!"
           closeOnTouchOutside={true}
           closeOnHardwareBackPress={false}
           showCancelButton={false}
           showConfirmButton={true}
-        //   cancelText="No, cancel"
-          confirmText="   OK!   "
-          confirmButtonColor="#DD6B55"
-        //   onCancelPressed={() => {
-        //     setGeoAlert(false);
-        //   }}
-          onConfirmPressed={() => {
-            setRejectGeoAlert(false);
+          cancelText="Confirmar a rejeição"
+          confirmText="Aprovar o pedido"
+          cancelButtonColor="#DD6B55"
+          confirmButtonColor="#005000"
+          onCancelPressed={() => {
+            setGeoAlert(false);
+          }}
+          onConfirmPressed={async () => {
+            await requestLocationPermission();
           }}
         />
 
@@ -220,9 +221,9 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     }}
                 >
                     <TouchableOpacity
-                        onPress={()=>{
+                        onPress={async ()=>{
                             if (!permissionGranted){
-                                requestLocationPermission();
+                                await requestLocationPermission();
                                 // return ;
                             }
                             else {
@@ -266,9 +267,23 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 </Box>
             </Stack>
         </Box>
-        <Box>
-            
-        </Box>
+        {     coordinates.length === 0 &&   
+        <Center
+            style={{ minHeight: 300, }}
+        >
+             <Text 
+                style={{ 
+                    fontFamily: 'JosefinSans-Regular',
+                    fontSize: 24,
+                    paddingTop: 30,
+                    textAlign: 'center',
+                    color: '#000',
+                }}
+            >
+                Adicione o primeiro ponto das coordenadas do pomar!
+            </Text>   
+        </Center>
+        }
 
         <FlatList
             data={coordinates}

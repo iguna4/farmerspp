@@ -103,16 +103,20 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             farmer: owner._id,
         })
 
+        console.log('newFarmland: ', JSON.stringify(newFarmland))
         // set the farmlandId
         setFarmlandId(newFarmland._id);
 
         // add the created farmland to the Farmer (owner)'s object
-        owner.farmlands.push(newFarmland);
+        owner.farmlands = [...owner.farmlands, newFarmland._id];
 
+        
         if (flag === 'Indivíduo'){            
             // categorize by 'comercial' | 'familiar' | 'nao-categorizado'
-            owner.category = categorizeFarmer(owner.farmlands);
+            const ownerFarmlands = realm.objects('Farmland').filtered('farmer == $0', owner._id)
+            owner.category = categorizeFarmer(ownerFarmlands);
         }
+        console.log('ownerFarmlands: ', JSON.stringify(owner.farmlands))
         
     })
 
@@ -329,8 +333,8 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
                 onPress={()=>{
                     try {
                         onAddFarmland(farmlandData, realm);    
-                        setIsCoordinatesModalVisible(true);
                         setModalVisible(false);
+                        setIsCoordinatesModalVisible(true);
                     } catch (error) {
                         throw new Error('Failed to register Farmland', { cause: error})
                     }

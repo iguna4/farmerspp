@@ -3,7 +3,7 @@
 // import Realm from "realm";
 import 'react-native-get-random-values';
 import {  createRealmContext } from "@realm/react";
-import { Achievement, PlantTypes, Address, Contact, Density, IdDocument, Members, Name, Manager } from "./DependentSchemas";
+import { Achievement, PlantTypes, Address, Contact, Density, IdDocument, Members, Name, Manager, Coordinates } from "./DependentSchemas";
 import { Farmer } from "./Farmer";
 import { Farmland } from "./Farmland";
 import { Institution } from "./Institution";
@@ -24,6 +24,7 @@ export const realmContext = createRealmContext({
         Farmland, 
         Density,
         PlantTypes,
+        Coordinates,
     ],
     schemaVersion: 3,
     deleteRealmIfMigrationNeeded: true,

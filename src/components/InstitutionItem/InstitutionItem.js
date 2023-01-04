@@ -15,9 +15,9 @@ import { faTree } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const InstitutionItem = ({ item, route }) => {
+const InstitutionItem = ({ item, route, navigation }) => {
 
-   const navigation = useNavigation();
+  //  const navigation = useNavigation();
 
   return (
     <View
@@ -52,7 +52,7 @@ const InstitutionItem = ({ item, route }) => {
           color: '#005000',
         }}
       >
-        {item.type === 'Outro' ? 'Empresa': `${item.type}`}{' '}{item.name}
+        {item?.type === 'Outro' ? 'Empresa': `${item?.type}`}{' '}{item?.name}
       <Text 
         style={{
           fontSize: 14,
@@ -62,33 +62,29 @@ const InstitutionItem = ({ item, route }) => {
           
         }}
         >
-        {' '}({item.isPrivate ? 'Instituição Privada' : 'Instituição Pública'})
+        {' '}({item?.isPrivate ? 'Instituição Privada' : 'Instituição Pública'})
         </Text>
       </Text>
     <Stack direction="column" >
         <Stack direction="row">
           <Box w="80%" style={{ }}>
         <Stack direction="row">
-            {/* <Box w="80%" > */}
-              <Text 
+            <Text 
                 style={{
                   fontSize: 15,
                 fontFamily: 'JosefinSans-Italic',
                 // paddingTop: 6,
                 }}
-              >
+            >
                 Gerente: {'  '}
               {
-                item.manager.fullname
+                item?.manager?.fullname
               }
-              </Text>
+            </Text>
         </Stack>
-            {/* </Box>
-            <Box w="20%">
-              
-            </Box> */}
+
         <Stack direction="row">
-            <Box w="80%" >
+            <Box w="50%" >
               <Text 
                 style={{
                 fontSize: 15,
@@ -97,59 +93,32 @@ const InstitutionItem = ({ item, route }) => {
                 }}
               >
                 Tel: {
-                item.manager.phone ? item.manager.phone
+                item?.manager?.phone ? item?.manager?.phone
                 : 'Nenhum'
               }
               </Text>
             </Box>
-        </Stack>
-        <Stack direction="row" space={4}>
-            <Box w="50%" >
-                {/* <Box w="70%"> */}
-              <Stack direction="row">
-                  <Text 
-                    style={{
-                    fontSize: 15,
-                    fontFamily: 'JosefinSans-Italic',
-                    // paddingTop: 6,
-                  }}
-                  >
-                    Cajueiros: {' '}
-                  </Text> 
-                  <Text style={{ fontSize: 15, paddingTop: 2, }}>
-                    {sumTreesOrAreas(item?.farmlands, 'trees')}
-                  </Text>
-              </Stack>
-            </Box>
-                {/* <Box w="30%">
-                </Box>
-            </Box> */}
-            
             <Box w="50%">
-                {/* <Box w="70%"> */}
-              <Stack direction="row">
-                  <Text 
-                    style={{
-                    fontSize: 15,
-                    fontFamily: 'JosefinSans-Italic',
-                    // paddingTop: 6,
-                    }}
-                  >
-                    Parcelas: {' '}
-                  </Text>
-                  <Text style={{ fontSize: 15, paddingTop: 2,  }}>
-                    {item.farmlands.length}
-                  </Text>
+            <Stack direction="row">
+                <Text 
+                  style={{
+                  fontSize: 15,
+                  fontFamily: 'JosefinSans-Italic',
+                  // paddingTop: 6,
+                  }}
+                >
+                  Parcelas: {' '}
+                </Text>
+                <Text style={{ fontSize: 15, paddingTop: 2,  }}>{item?.farmlands.length}</Text>
               </Stack>
             </Box>
         </Stack>
-
         </Box>
         <Box w="20%" style={{ }}>
           <Pressable
             onPress={()=>navigation.navigate('FarmlandForm1', {
-              ownerId: item._id,
-              ownerName: `${item.type} ${item.name}`,
+              ownerId: item?._id,
+              ownerName: `${item?.type} ${item?.name}`,
               flag: 'Instituição',
             })}
           >
@@ -159,12 +128,14 @@ const InstitutionItem = ({ item, route }) => {
         </Stack>
       </Stack>
     </TouchableOpacity>
-      {/* </Box> */}
-      <Stack direction="row" w="100%" style={{  }} >
-        <Box w="25%"><Text style={{ fontFamily: 'JosefinSans-Italic'}}>{'user'}</Text></Box>
-         <Box w="25%"></Box>
-        <Box w="25%"></Box>
-        <Box w="25%"><Text style={{ fontFamily: 'JosefinSans-Italic', textAlign: 'right'}}>{new Date(item.createdAt).toLocaleDateString()}</Text></Box>
+     <Stack direction="row" w="100%" style={{ paddingTop: 10,  }} >
+        <Box w="100%">
+          <Text 
+            style={{ fontFamily: 'JosefinSans-Italic'}}
+          >
+            Registo: {new Date(item?.createdAt).toLocaleDateString()} por {'user'}
+          </Text>
+        </Box>
       </Stack>
     </View>
   )

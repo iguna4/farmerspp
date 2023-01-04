@@ -96,7 +96,7 @@ const FarmerItem = ({ item, route, farmerType }) => {
           }
       </Stack>
       <Stack direction="row">
-          <Box w="80%" >
+          <Box w="50%" >
             <Text 
               style={{
               fontSize: 15,
@@ -110,8 +110,22 @@ const FarmerItem = ({ item, route, farmerType }) => {
               }
             </Text>
           </Box>
+          <Box w="50%">
+            <Stack direction="row">
+                  <Text 
+                    style={{
+                    fontSize: 15,
+                    fontFamily: 'JosefinSans-Italic',
+                    // paddingTop: 6,
+                    }}
+                  >
+                    Parcelas: {' '}
+                  </Text>
+                  <Text style={{ fontSize: 15, paddingTop: 2,  }}>{item.farmlands.length}</Text>
+              </Stack>
+            </Box>
       </Stack>
-      <Stack direction="row" space={4}>
+      {/* <Stack direction="row" space={4}>
           <Box w="50%" >
             <Stack direction="row">
                 <Text 
@@ -140,7 +154,7 @@ const FarmerItem = ({ item, route, farmerType }) => {
                   <Text style={{ fontSize: 15, paddingTop: 2,  }}>{item.farmlands.length}</Text>
               </Stack>
             </Box>
-        </Stack>
+        </Stack> */}
 
         </Box>
         <Box w="20%" style={{ 
@@ -160,12 +174,15 @@ const FarmerItem = ({ item, route, farmerType }) => {
         </Stack>
       </Stack>
   </TouchableOpacity>
-
-      <Stack direction="row" w="100%" style={{  }} >
-        <Box w="25%"><Text style={{ fontFamily: 'JosefinSans-Italic'}}>{'user'}</Text></Box>
-         <Box w="25%"></Box>
-        <Box w="25%"></Box>
-        <Box w="25%"><Text style={{ fontFamily: 'JosefinSans-Italic', textAlign: 'right'}}>{new Date(item.createdAt).toLocaleDateString()}</Text></Box>
+  
+  <Stack direction="row" w="100%" style={{ paddingTop: 10,  }} >
+        <Box w="100%">
+          <Text 
+            style={{ fontFamily: 'JosefinSans-Italic'}}
+          >
+            Registo: {new Date(item.createdAt).toLocaleDateString()} por {'user'}
+          </Text>
+        </Box>
       </Stack>
     </View>
   )

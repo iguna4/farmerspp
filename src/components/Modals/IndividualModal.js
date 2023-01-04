@@ -418,8 +418,8 @@ const IndividualModal = (
                 onPress={()=>{
                     try {
                         addFarmer(farmerData, realm)
-                        setIsCoordinatesModalVisible(true);
                         setModalVisible(false);
+                        setIsCoordinatesModalVisible(true);
                     } catch (error) {
                         throw new Error('Failed to register IndividualFarmer', { cause: error})
                     }

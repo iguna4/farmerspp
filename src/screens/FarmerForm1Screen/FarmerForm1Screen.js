@@ -7,6 +7,7 @@ import React, {useState, useEffect} from 'react';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
 import { Icon, Button, CheckBox } from '@rneui/themed';
 import { Datepicker  } from '@ui-kitten/components';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 import { CustomInput } from '../../components/Inputs/CustomInput';
 import administrativePosts from '../../fakedata/administrativePosts';
@@ -185,7 +186,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                 isPrivateInstitution,
             }
             if (!validateInstitutionFarmerData(farmerData, errors, setErrors)) {
-                setAlert(true)
+                setErrorAlert(true)
                 return ;
             }
             retrievedFarmerData = validateInstitutionFarmerData(farmerData, errors, setErrors);
@@ -207,7 +208,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                 groupManagerPhone,
             }
             if (!validateGroupFarmerData(farmerData, errors, setErrors, farmerType)) {
-                setAlert(true)
+                setErrorAlert(true)
                 return ;
             }
             retrievedFarmerData = validateGroupFarmerData(farmerData, errors, setErrors, farmerType);
@@ -240,13 +241,13 @@ export default function FarmerForm1Screen({ route, navigation }) {
     }, [navigation, farmerType])
  
 
-    if (errorAlert) {
-        return (
-            <Center flex={1} px="3">
-                <ErrorAlert errorAlert={errorAlert} setErrorAlert={setErrorAlert} />
-            </Center>
-        )
-    }
+    // if (errorAlert) {
+    //     return (
+    //         <Center flex={1} px="3">
+    //             <ErrorAlert errorAlert={errorAlert} setErrorAlert={setErrorAlert} />
+    //         </Center>
+    //     )
+    // }
 
     if (duplicatesAlert) {
         return (
@@ -292,6 +293,26 @@ export default function FarmerForm1Screen({ route, navigation }) {
             <Stack>
                 
             </Stack>
+
+            <AwesomeAlert
+                show={errorAlert}
+                showProgress={false}
+                title="Dados Obrigatórios"
+                message="Os dados obrigatórios devem ser preenchidos!"
+                closeOnTouchOutside={true}
+                closeOnHardwareBackPress={false}
+                showCancelButton={false}
+                showConfirmButton={true}
+                // cancelText="No, cancel"
+                confirmText="   OK!   "
+                confirmButtonColor="#DD6B55"
+                // onCancelPressed={() => {
+                //     setErrorAlert(false);
+                // }}
+                onConfirmPressed={() => {
+                    setErrorAlert(false);
+                }}
+            />
 
             <Box mb="2">
                 <Stack direction="row">

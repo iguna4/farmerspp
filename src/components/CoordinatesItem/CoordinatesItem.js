@@ -1,17 +1,43 @@
 
-import React from "react";
-import { View, Text, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useCallback, useState } from "react";
+import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Pressable } from 'react-native';
 import { Stack, Box, Center } from "native-base";
 import { Icon,  } from "@rneui/base";
 import CustomDivider from "../Divider/CustomDivider";
 
-const CoordinatesItem = ({ coordinates }) =>{
+import { realmContext } from '../../models/realm';
+const {useRealm, useObject, useQuery } = realmContext;
+
+
+const CoordinatesItem = ({ point, farmlandId }) =>{
+
+    const realm = useRealm();
+    // const farmlandId = route.params?.farmlandId;
+    // const [point, setPoint] = useState({
+    //     position: 0,
+    //     latitude: 0,
+    //     longitude: 0,
+    // })
+
+    const [onPressed, setOnPressed] = useState(false);
+
+    const addLocationPoint = useCallback((farmlandId, point, realm)=>{
+        let farmland;
+
+        realm.write(()=>{
+            farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
+            farmland.extremeCoordinates = [...farmland.extremeCoordinates, point];
+            console.log('updatedFarmland:', JSON.stringify(farmland));
+        })
+        
+    }, [realm, point, farmlandId]);
 
 
     return (
     <Center>
 
     <View 
+        // disabled={true}
         style={{
             // flex: 1,
             padding: 10,
@@ -32,38 +58,61 @@ const CoordinatesItem = ({ coordinates }) =>{
             shadowRadius: 4.65,
     
             elevation: 3,
+            opacity: onPressed ? 0.7 : 1,
         }}
         >
         <Stack direction="row" w="100%" >
-            <Box w="10%">
-
+            <Box w="20%" 
+                style={{ 
+                    // backgroundColor: '#005000', 
+                    flex: 1, 
+                    justifyContent: 'center', 
+                    alignItems: 'center',
+                }}
+            >
+                <Text style={{ 
+                    color: '#000', 
+                    fontFamily: 'JosefinSans-Bold',
+                    fontSize: 20,
+                    }}
+                >
+                    P{point?.position}
+                </Text>
             </Box>
-            <Box w="20%">
-                <Text>X{coordinates}:</Text>
-                <Text>Y{coordinates}:</Text>
+            <Box w="60%">
+                <Stack direction="row">
+                    <Box>
+                        <Text style={{ color: '#000', fontFamily: 'JosefinSans-Regular'}}>Latitude:{'  '}</Text>
+                        <Text style={{ color: '#000', fontFamily: 'JosefinSans-Regular'}}>Longitude:{'  '}</Text>
+                    </Box>
+                    <Box>
+                        <Text style={{ color: '#000', fontFamily: 'JosefinSans-Regular'}}>{point?.latitude}</Text>
+                        <Text style={{ color: '#000', fontFamily: 'JosefinSans-Regular'}}>{point?.longitude}</Text>
+                    </Box>
+                </Stack>
             </Box>
-            <Box w="40%">
-                <Text>Latitude:</Text>
-                <Text>Longitude:</Text>
+            <Box w="20%" alignItems={'center'}>
+            <Box w="50%" 
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}
+            >
+                <Pressable
+                    onPress={()=>{
+                        // console.log('point:', point)
+                        if (!onPressed){
+                            addLocationPoint(farmlandId, point, realm);
+                            setOnPressed(true);
+                        }
+                    }}
+                >
+                    <Icon 
+                        name="add-location" 
+                        size={40} 
+                        color="#005000" 
+                        />
+                </Pressable>
             </Box>
-            <Box w="20%">
-                <Icon 
-                    name="add-location-alt" 
-                    size={40} 
-                    color="#005000" 
-                    />
-            </Box>
-            <Box w="10%">
-
-            </Box>
-            {/* <Text>Item {coordinates}</Text> */}
-        </Stack>
-        {/* <CustomDivider 
-            marginVertical={2}
-            thickness={2}
-            bg={'#005000'}
-            orientation={'horizontal'}
-        /> */}
+        </Box>
+    </Stack>
     </View>
     </Center>
     )

@@ -90,8 +90,8 @@ export default function AppTab() {
                         size={50} />,
               tabBarLabel: 'Pesquisa',
             }}
-            name="FarmlandAreaAudit"
-            component={FarmlandAreaAuditScreen}
+            name="Login"
+            component={Login}
            />
       </Tab.Navigator>
     </NavigationContainer>

@@ -18,7 +18,7 @@ export const Group = {
         registeredMembers: 'Farmer[]',
         licence: 'string?',
         nuit: { type: 'int?', default: 0},
-        farmlands: 'Farmland[]',
+        farmlands: 'string[]',
         createdAt: { 
             type: 'date', default: Date()
         },

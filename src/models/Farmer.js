@@ -21,7 +21,8 @@ export const Farmer = {
         contact: 'Contact?',
         idDocument: 'IdDocument?',
         photo: { type: 'string', default: 'https://localhost.picture' },
-        farmlands: 'Farmland[]',
+        // farmlands: 'Farmland[]',
+        farmlands: 'string[]',
         createdAt: { type: 'date', default: Date()},
     },
 }

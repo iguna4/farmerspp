@@ -14,6 +14,8 @@ export const Farmland = {
         trees: 'int',
         declaredArea: 'int',
         auditedArea: 'int?',
+        extremeCoordinates: 'Coordinates[]',
+        middleCoordinates: 'Coordinates?',
         plantTypes: 'PlantTypes',
         farmer: 'string',
         createdAt: { type: 'date', default: Date()},

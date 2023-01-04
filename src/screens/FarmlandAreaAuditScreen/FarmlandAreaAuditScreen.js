@@ -1,22 +1,69 @@
 
-import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, FlatList, ScrollView, TouchableOpacity, PermissionsAndroid } from 'react-native';
+import React, { useCallback, useEffect, useState } from "react";
+import { View, Text, SafeAreaView, FlatList, ScrollView, TouchableOpacity, PermissionsAndroid, Alert } from 'react-native';
 import { Stack, Box, Center } from "native-base";
 import Geolocation from 'react-native-geolocation-service';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 
 import LottieAddButton from '../../components/Buttons/LottieAddButton';
-import { realmContext } from '../../models/realm';
 import { Icon,  } from "@rneui/base";
 import CoordinatesItem from "../../components/CoordinatesItem/CoordinatesItem";
 import CustomDivider from "../../components/Divider/CustomDivider";
+import GeoPin from "../../components/LottieComponents/GeoPin";
 
 
+import { realmContext } from '../../models/realm';
 const {useRealm, useObject, useQuery } = realmContext;
 
 
 const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     
+    const realm = useRealm();
+    const farmlandId = route.params?.farmlandId;
+    const [point, setPoint] = useState({
+        position: 0,
+        latitude: 0,
+        longitude: 0,
+    })
+    const [confirmGeoAlert, setConfirmGeoAlert] = useState(false);
+    const [rejectGeoAlert, setRejectGeoAlert] = useState(false);
+    
+
+    const addLocationPoint = useCallback((farmlandId, point, realm)=>{
+        let farmland;
+
+        realm.write(()=>{
+  
+            // try {   
+                // try {
+                farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
+                farmland.extremeCoordinates = [...farmland.extremeCoordinates, point];
+                console.log('updatedFarmland:', farmland);
+      
+                // } catch (error) {
+                //     throw new Error("Couldn't fetch farmland", {cause: error })
+                // }
+                // try {
+                //     owner = realm.objectForPrimaryKey('Farmer', farmland.farmer); 
+                //     if (!owner){
+                //         owner = realm.objectForPrimaryKey('Institution', farmland.farmer); 
+                //     }
+                //     else{
+                //         owner = realm.objectForPrimaryKey('Group', farmland.farmer); 
+                //     }
+                //     console.log('owner:', owner)
+                // } catch (error) {
+                //     throw new Error("Couldn't fetch farmer", {cause: error })
+                // }
+
+            // } catch (error) {
+                // throw new Error("Couldn't fetch the farmer ou farmland", { cause: error});
+            // }    
+       
+        })
+        
+    }, [realm, point, farmlandId]);
     // const  { farmlandId } = route.params;
     // const farmland = useObject('Farmland', farmlandId);
     // const farmer = useObject('Farmer', farmland?.farmer);
@@ -24,23 +71,28 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     // console.log('farmland:', JSON.stringify(farmland));
     // console.log('farmer:', JSON.stringify(farmer));
     const [permissionGranted, setPermissionGranted] = useState(false);
+    const [coordinates, setCoordinates] = useState([]);
 
     const requestLocationPermission = async () => {
         try {
             const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION, {
-                    title: 'Cool Weather App',
-                    message: 'Cool Weather App needs access to use your location',
-                    buttonNegative: 'Ask Me Later',
-                    buttonNegative: 'Cancel',
+                PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION, 
+                // PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                    title: 'Connect Caju App',
+                    message: 'Connect Caju App pede a permissão para usar a sua localização',
+                    buttonNegative: 'Mais tarde',
+                    buttonNegative: 'Cancelar',
                     buttonPositive: 'OK'
                 }
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 setPermissionGranted(true)
+                setConfirmGeoAlert(true);
                 console.log("You can use the app");
             } else {
                 setPermissionGranted(false)
+                setRejectGeoAlert(true);
                 console.log("Location Permission Denied");
             }
         } catch (err) {
@@ -49,59 +101,10 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         }
       };
 
-    // const hasLocationPermission = async() => {
-    //     const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.LOCATION, {
-    //         title: 'Cool Weather App',
-    //         message: 'Cool Weather App needs access to use your location',
-    //         buttonNegative: 'Ask Me Later',
-    //         buttonNegative: 'Cancel',
-    //         buttonPositive: 'OK'
-    //     });
-    //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //         console.log('You can use the app');
-    //         // setPermissionGranted(true);
-    //         return true;
-    //     } else {
-    //         console.log('Location Permission Denied');
-    //         // setPermissionGranted(false);
-    //         return false;
-    //     }
-    // }
 
-
-    
-
-
-
-    useEffect(()=>{
-        // hasLocationPermission().then(result=>setPermissionGranted(result))
-
-
-        if (permissionGranted) {
-            // console.log('hasLocationPermission:', hasLocationPermission)
-            Geolocation.getCurrentPosition(
-                (position) => {
-                  console.log(position);
-                },
-                (error) => {
-                  // See error code charts below.
-                  console.log('11', error.code, error.message);
-                },
-                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-            );
-          }
-    }, [permissionGranted])
-
-
-    const [coordinates, setCoordinates] = useState([])
     const keyExtractor = (item, index)=>index.toString();
 
-
-
-
-
-
-    console.log('coordinates:', JSON.stringify(coordinates))
+    // console.log('coordinates:', JSON.stringify(coordinates))
 
     return (
         <SafeAreaView
@@ -118,7 +121,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             <Box w="20%">
                 <TouchableOpacity
                     onPress={()=>{
-                        navigation.navigate("FarmersStack");
+                        navigation.navigate("Farmers");
                         // setModalVisible(false);
                     }}                            
                 >
@@ -130,11 +133,52 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             <Box w="20%">
             </Box>
         </Stack>
-            <Box
+        <AwesomeAlert
+          show={confirmGeoAlert}
+          showProgress={false}
+          title="Geolocalização"
+          message="O seu dispositivo deu a permissão a este aplicativo!"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={false}
+          showConfirmButton={true}
+        //   cancelText="No, cancel"
+          confirmText="   OK!   "
+          confirmButtonColor="#005000"
+        //   onCancelPressed={() => {
+        //     setGeoAlert(false);
+        //   }}
+          onConfirmPressed={() => {
+            setConfirmGeoAlert(false);
+          }}
+        />
+        
+        <AwesomeAlert
+          show={rejectGeoAlert}
+          showProgress={false}
+          title="Geolocalização"
+          message="O seu dispositivo NÃO deu a permissão a este aplicativo!"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={false}
+          showConfirmButton={true}
+        //   cancelText="No, cancel"
+          confirmText="   OK!   "
+          confirmButtonColor="#DD6B55"
+        //   onCancelPressed={() => {
+        //     setGeoAlert(false);
+        //   }}
+          onConfirmPressed={() => {
+            setRejectGeoAlert(false);
+          }}
+        />
+
+        
+        <Box
                 bg="ghostwhite" 
                 w="100%" 
                 px="3" 
-        
+                
                 style={{
                     borderBottomRightRadius: 50,
                     borderBottomLeftRadius: 50,
@@ -144,11 +188,11 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     borderColor: '#EBEBE4',
                 }}
             >
-                <Box
-                    py="5"
-                    px="3"
-                    w="100%"
-                    >
+            <Stack direction="row"
+                py="5"
+                px="3"
+            >
+                <Box  w="80%">
                     <Text
                         style={{
                             fontFamily: 'JosefinSans-Bold',
@@ -164,27 +208,74 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                             fontSize: 16,
                             color: 'grey',
                         }}
-                        >
+                    >
                     Captura os pontos extremos da área com cajueiros
                     </Text>
                 </Box>
+                <Box w="20%"
+                    alignItems={'center'}
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center'
+                    }}
+                >
+                    <TouchableOpacity
+                        onPress={()=>{
+                            if (!permissionGranted){
+                                requestLocationPermission();
+                                // return ;
+                            }
+                            else {
+
+                                
+                            Geolocation.getCurrentPosition(
+                                (position) => {
+                                    const number = coordinates.length + 1;
+                                    setPoint({
+                                        latitude: position.coords.latitude,
+                                        longitude: position.coords.longitude,
+                                        position: number,
+                                    });
+                                    setCoordinates(prev=>([...prev, {
+                                        latitude: position.coords.latitude,
+                                        longitude: position.coords.longitude,
+                                        position: number,
+                                    }]));
+                                    // addLocationPoint(farmlandId, point, realm);
+                                },
+                                (error) => {
+                                  Alert.alert('Falha', 'Tenta novamente!', {
+                                    cause: error,
+                                  })
+                                },
+                                { 
+                                    enableHighAccuracy: true, 
+                                    accuracy: 'high',
+                                    timeout: 15000, 
+                                    maximumAge: 10000, 
+                                    distanceFilter: 1,  
+                                }
+                            );
+                            }
+
+                            // setLocationInfo({});
+                        }}
+                    >
+                        <GeoPin />
+                    </TouchableOpacity>
                 </Box>
-        {/* <Box 
-            w="100%"
-            style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                // backgroundColor: 'red',
-            }}
-        > */}
+            </Stack>
+        </Box>
+        <Box>
+            
+        </Box>
 
         <FlatList
             data={coordinates}
             keyExtractor={keyExtractor}
             renderItem={({ item })=>{
-                return <CoordinatesItem key={item} coordinates={item} />
-            }
-        }
+                return <CoordinatesItem point={item} farmlandId={farmlandId} />
+            }}
         />
     <Center
         style={{
@@ -230,22 +321,6 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     )}    
 
     </Center>
-        <LottieAddButton
-            styles={{ 
-                zIndex: 7, 
-                width: 100, 
-                height: 100, 
-                position: 'absolute', 
-                left: 10,
-                top: 400, 
-                
-            }}
-            onPress={()=>{
-                // setCoordinates(prev=>[...prev, prev.length + 1])
-                requestLocationPermission()
-
-            }}
-            />
     </SafeAreaView>
     )
 }

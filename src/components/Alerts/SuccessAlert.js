@@ -33,7 +33,7 @@ function SuccessAlert({
                     <Box w="20%">
                         <TouchableOpacity
                             onPress={()=>{
-                                navigation.goBack();
+                                navigation.navigate('Farmers');
                                 setIsCoordinatesModalVisible(false);
                             }}                            
                         >
@@ -81,6 +81,7 @@ function SuccessAlert({
                 navigation.navigate('FarmlandAreaAudit', {
                     farmlandId,
                 })
+                setIsCoordinatesModalVisible(false);
             }}
         >
         <Box
@@ -111,7 +112,11 @@ function SuccessAlert({
 {  farmerItem?.ownerId &&  
             ( 
             <TouchableOpacity
-                onPress={()=>navigation.navigate('FarmlandForm1', farmerItem)}                
+                onPress={()=>{
+                    navigation.navigate('FarmlandForm1', farmerItem);
+                    setIsCoordinatesModalVisible(false);
+                }}    
+                           
             >
             <Box
                 alignItems={'center'}

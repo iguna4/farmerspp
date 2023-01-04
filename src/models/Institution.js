@@ -15,7 +15,7 @@ export const Institution = {
         address: 'Address',
         manager: 'Manager',
         nuit: { type: 'int?', default: 0},
-        farmlands: 'Farmland[]',
+        farmlands: 'string[]',
         createdAt: { type: 'date', default: Date()},
     },
 }

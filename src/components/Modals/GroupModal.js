@@ -314,8 +314,8 @@ const GroupModal = (
             onPress={()=>{
                 try {
                     addGroup(farmerData, realm)
-                    setIsCoordinatesModalVisible(true);
                     setModalVisible(false);
+                    setIsCoordinatesModalVisible(true);
                 } catch (error) {
                     throw new Error('Failed to register Group', { cause: error})
                 }

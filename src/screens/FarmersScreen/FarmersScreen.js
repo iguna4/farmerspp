@@ -26,7 +26,7 @@ import InstitutionItem from '../../components/InstitutionItem/InstitutionItem';
 const { useRealm, useQuery } = realmContext; 
 
 
-export default function FarmersCcreen({ route, navigation }) {
+export default function FarmersScreen({ route, navigation }) {
   // const [farmersList, setFarmersList] = useState([]);
 
   const realm = useRealm();
@@ -48,21 +48,34 @@ export default function FarmersCcreen({ route, navigation }) {
   
   
   // merge the three arrays of farmers and sort the items by createdAt 
-  const farmersList = 
-        [...individualsList, ...groupsList, ...institutionsList]
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+  let farmersList = [];
+  let farmlandsList = [];
 
+  if (individualsList.length > 0){
+    farmersList = farmersList.concat(individualsList)
+  }
+  if (groupsList.length > 0){
+    farmersList = farmersList.concat(groupsList);
+  }
+  if (institutionsList.length > 0){
+    farmersList = farmersList.concat(institutionsList);
+  }
+  if (farmersList.length > 0){
+    farmersList = farmersList
+        ?.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt));
+  }
+  
+  // concatenate all farmlands
+  const farmlandIds = farmersList
+        ?.filter((farmer) =>farmer?.farmlands?.length > 0)
+        ?.map(({ farmlands }) => {
+          farmlandsList = [...farmlandsList, ...farmlands ]
+        });
 
   useEffect(()=>{
-
-
-  }, [farmers, groups, institutions, realm])
-
-
-
+  }, [farmers, groups, institutions, realm, farmersList]);
 
   const keyExtractor = (item, index)=>index.toString();
-
   
   const addFarmer = ()=>{
     navigation.navigate('FarmerForm1', { user: {
@@ -72,29 +85,16 @@ export default function FarmersCcreen({ route, navigation }) {
     }});
   }
   
-  
   const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
-
-  
-
-
-  
   useFocusEffect(
     React.useCallback(() => {
       const task = InteractionManager.runAfterInteractions(() => {
         setLoadingActivityIndicator(true);
-        // Expensive task
       });
       return () => task.cancel();
     }, [])
   );
-
-   
-  
-
-
-
 
   if (loadingActivitiyIndicator) {
     return <CustomActivityIndicator 
@@ -111,23 +111,14 @@ export default function FarmersCcreen({ route, navigation }) {
       }}
     >
     <Box 
-    // bg="ghostwhite" 
-      // minHeight="100%" 
       style={{
-        // flex: 1,
         marginVertical: 5,
       }}
     >
-      {/* <View> */}
-
-        <View
+      <View
           style={{
-            // flex: 1,
             minHeight: "15%",
             width: '100%',
-            // backgroundColor: '#EBEBE4',
-            // borderBottomLeftRadius: 50,
-            // borderBottomRightRadius: 50,
             paddingHorizontal: 15,
             paddingTop: 30,
 
@@ -170,7 +161,7 @@ export default function FarmersCcreen({ route, navigation }) {
                 <Center>
                   <Text
                     style={{ fontFamily: 'JosefinSans-Regular', fonSize: 14, }}
-                  >[{'Parcelas:'}{' '}{'20'}]</Text>
+                  >[{'Parcelas:'}{' '}{farmlandsList.length}]</Text>
                 </Center>
               </Stack>
             </Center>
@@ -193,9 +184,8 @@ export default function FarmersCcreen({ route, navigation }) {
           width: 100, 
           height: 100, 
           position: 'absolute', 
-          bottom: 100, 
-          display: header ? 'flex' : 'none',
-          
+          top: 400, 
+         
         }}
         onPress={addFarmer}
         />
@@ -210,7 +200,6 @@ export default function FarmersCcreen({ route, navigation }) {
         <Center 
           height="60%"
           style={{
-            // backgroundColor: 'blue',
             margin: 20,
           }}
         >
@@ -218,7 +207,6 @@ export default function FarmersCcreen({ route, navigation }) {
             style={{
               fontFamily: 'JosefinSans-Regular',
               fontSize: 18,
-              // color: "#005000",
               textAlign: 'center',
               lineHeight: 30,
             }}
@@ -234,10 +222,8 @@ export default function FarmersCcreen({ route, navigation }) {
         :
         (
           <Box 
-            // paddingY="5" 
             alignItems="stretch" 
             w="100%" 
-            // my="3"
             >
             {/* {farmers.map((item)=>(<Text key={item._id}>{item.names.otherNames}{' '}{item.names.surname}</Text>))} */}
             <FlatList
@@ -254,13 +240,13 @@ export default function FarmersCcreen({ route, navigation }) {
               //  renderItem={({ item })=><GroupItem route={route}  item={item} />}
               renderItem={({ item })=>{
                 if(item.flag === 'Grupo'){
-                  return <GroupItem route={route}  item={item} />
+                  return <GroupItem route={route} navigation={navigation}  item={item} />
                 }
                 else if (item.flag === 'Indivíduo'){
                     return <FarmerItem route={route} navigation={navigation} item={item} />
                   }
                   else if (item.flag === 'Instituição'){
-                    return <InstitutionItem route={route}  item={item} />
+                    return <InstitutionItem route={route} navigation={navigation}  item={item} />
                   }
                 }
               }

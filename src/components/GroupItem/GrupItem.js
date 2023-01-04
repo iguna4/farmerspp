@@ -15,10 +15,10 @@ import { faTree } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const GroupItem = ({ item, route }) => {
+const GroupItem = ({ item, route, navigation }) => {
 
-   const navigation = useNavigation();
-
+  //  const navigation = useNavigation();
+  console.log('item:', JSON.stringify(item));
   return (
     <View
       style={{
@@ -52,7 +52,7 @@ const GroupItem = ({ item, route }) => {
           color: '#005000',
         }}
       >
-        {item.name}
+        {item?.name}
       <Text 
         style={{
           fontSize: 14,
@@ -62,7 +62,7 @@ const GroupItem = ({ item, route }) => {
           
         }}
         >
-        {' '}({item.type})
+        {' '}({item?.type})
         </Text>
       </Text>
     <Stack direction="column" >
@@ -79,7 +79,7 @@ const GroupItem = ({ item, route }) => {
               >
                 Gerente: {'  '}
               {
-                item.manager.fullname
+                item?.manager?.fullname
               }
               </Text>
         </Stack>
@@ -88,7 +88,7 @@ const GroupItem = ({ item, route }) => {
             
             </Box> */}
         <Stack direction="row">
-            <Box w="80%" >
+            <Box w="50%" >
               <Text 
                 style={{
                 fontSize: 15,
@@ -97,53 +97,26 @@ const GroupItem = ({ item, route }) => {
                 }}
               >
                 Tel: {
-                  item.manager.phone ? item.manager.phone
+                  item?.manager?.phone ? item?.manager?.phone
                   : 'Nenhum'
                 }
               </Text>
             </Box>
-        </Stack>
-        <Stack direction="row" space={4}>
-            <Box w="50%" >
-                {/* <Box w="70%"> */}
-              <Stack direction="row">
-                  <Text 
-                    style={{
-                      fontSize: 15,
-                      fontFamily: 'JosefinSans-Italic',
-                      // paddingTop: 6,
-                    }}
-                    >
-                    Cajueiros: {' '}
-                  </Text> 
-                  <Text style={{ fontSize: 15, paddingTop: 2, }}>
-                    {sumTreesOrAreas(item?.farmlands, 'trees')}
-                  </Text>
-              </Stack>
-            </Box>
-                {/* <Box w="30%">
-                </Box>
-              </Box> */}
-            
             <Box w="50%">
-                {/* <Box w="70%"> */}
-              <Stack direction="row">
+            <Stack direction="row">
                   <Text 
                     style={{
                     fontSize: 15,
                     fontFamily: 'JosefinSans-Italic',
                     // paddingTop: 6,
-                  }}
+                    }}
                   >
                     Parcelas: {' '}
                   </Text>
-                  <Text style={{ fontSize: 15, paddingTop: 2,  }}>
-                    {item.farmlands.length}
-                  </Text>
+                  <Text style={{ fontSize: 15, paddingTop: 2,  }}>{item?.farmlands.length}</Text>
               </Stack>
             </Box>
         </Stack>
-
         </Box>
         <Box w="20%" style={{ }}>
           <Pressable
@@ -159,12 +132,14 @@ const GroupItem = ({ item, route }) => {
         </Stack>
       </Stack>
   </TouchableOpacity>
-      {/* </Box> */}
-      <Stack direction="row" w="100%" style={{  }} >
-        <Box w="25%"><Text style={{ fontFamily: 'JosefinSans-Italic'}}>{'user'}</Text></Box>
-         <Box w="25%"></Box>
-        <Box w="25%"></Box>
-        <Box w="25%"><Text style={{ fontFamily: 'JosefinSans-Italic', textAlign: 'right'}}>{new Date(item.createdAt).toLocaleDateString()}</Text></Box>
+  <Stack direction="row" w="100%" style={{ paddingTop: 10,  }}>
+        <Box w="100%">
+          <Text 
+            style={{ fontFamily: 'JosefinSans-Italic'}}
+          >
+            Registo: {new Date(item.createdAt).toLocaleDateString()} por {'user'}
+          </Text>
+        </Box>
       </Stack>
     </View>
   )

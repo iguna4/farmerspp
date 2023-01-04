@@ -72,8 +72,8 @@ const InstitutionModal = (
             nuit,
         })
         setFarmerItem({
-            ownerId: newInstitution._id,
-            ownerName: `${newInstitution.type} ${newInstitution.name}`,
+            ownerId: newInstitution?._id,
+            ownerName: `${newInstitution?.type} ${newInstitution?.name}`,
             flag: 'Instituição',            
         });        
     })
@@ -199,11 +199,11 @@ const InstitutionModal = (
         </Box>
         <Box w="60%">
             <Text style={styles.values}>
-                {farmerData.manager?.fullname} (Gerente)
+                {farmerData?.manager?.fullname} (Gerente)
             </Text>
             <Text style={styles.values}>
             {
-                farmerData.manager?.phone ? 
+                farmerData?.manager?.phone ? 
                 farmerData?.manager?.phone + ' (Telefone)' :
                 'Nenhum (Telefone)'
             }
@@ -254,8 +254,8 @@ const InstitutionModal = (
             onPress={()=>{
                 try {
                     addInstitution(farmerData, realm)
-                    setIsCoordinatesModalVisible(true);
                     setModalVisible(false);
+                    setIsCoordinatesModalVisible(true);
                     
                 } catch (error) {
                     throw new Error('Failed to register Institution', { cause: error})

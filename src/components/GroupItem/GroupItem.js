@@ -43,7 +43,13 @@ const GroupItem = ({ item, route }) => {
       }}
     >
       
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={()=>{
+        navigation.navigate('Group', {
+          ownerId: item._id,
+        })
+      }}    
+    >
 
       <Text 
         style={{

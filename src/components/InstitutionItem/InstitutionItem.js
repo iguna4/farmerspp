@@ -42,7 +42,13 @@ const InstitutionItem = ({ item, route }) => {
 
       }}
     >   
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={()=>{
+        navigation.navigate('Institution', {
+          ownerId: item._id,
+        })
+      }}  
+    >
 
 
       <Text 

@@ -5,7 +5,7 @@ export const crops =[
     {key: '4', value: 'Amendoim'},
     {key: '5', value: 'Ananas'},
     {key: '6', value: 'Batata doce'},
-    {key: '7', value: 'Batata renoo'},
+    {key: '7', value: 'Batata reno'},
     {key: '8', value: 'Soja'},
     {key: '9', value: 'Mandioca'},
 ]

@@ -104,7 +104,7 @@ export default function FarmersScreen({ route, navigation }) {
     />
   }
 
-  console.log('farmersList:', JSON.stringify(farmersList));
+  // console.log('farmersList:', JSON.stringify(farmersList));
 
   return (
     <SafeAreaView 

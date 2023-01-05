@@ -53,7 +53,13 @@ const FarmerItem = ({ item, route, farmerType }) => {
 
       }}
     >
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={()=>{
+          navigation.navigate('Farmer', {
+            ownerId: item._id,
+          })
+        }}
+      >
       <Text 
         style={{
           fontSize: 20,

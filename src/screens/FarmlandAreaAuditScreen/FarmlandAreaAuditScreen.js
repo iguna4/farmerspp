@@ -14,7 +14,9 @@ import GeoPin from "../../components/LottieComponents/GeoPin";
 
 
 import { realmContext } from '../../models/realm';
+import { updateCoordinates } from "../../helpers/updateCoordinates";
 const {useRealm, useObject, useQuery } = realmContext;
+
 
 
 const FarmlandAreaAuditScreen = ({ route, navigation })=>{
@@ -30,40 +32,17 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     const [rejectGeoAlert, setRejectGeoAlert] = useState(false);
     
 
-    const addLocationPoint = useCallback((farmlandId, point, realm)=>{
-        let farmland;
+    // const addLocationPoint = useCallback((farmlandId, point, realm)=>{
+    //     let farmland;
 
-        realm.write(()=>{
-  
-            // try {   
-                // try {
-                farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
-                farmland.extremeCoordinates = [...farmland.extremeCoordinates, point];
-                console.log('updatedFarmland:', farmland);
-      
-                // } catch (error) {
-                //     throw new Error("Couldn't fetch farmland", {cause: error })
-                // }
-                // try {
-                //     owner = realm.objectForPrimaryKey('Farmer', farmland.farmer); 
-                //     if (!owner){
-                //         owner = realm.objectForPrimaryKey('Institution', farmland.farmer); 
-                //     }
-                //     else{
-                //         owner = realm.objectForPrimaryKey('Group', farmland.farmer); 
-                //     }
-                //     console.log('owner:', owner)
-                // } catch (error) {
-                //     throw new Error("Couldn't fetch farmer", {cause: error })
-                // }
-
-            // } catch (error) {
-                // throw new Error("Couldn't fetch the farmer ou farmland", { cause: error});
-            // }    
-       
-        })
+    //     realm.write(()=>{
+    //         farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
+    //         farmland.extremeCoordinates = updateCoordinates(farmland.extremeCoordinates, point)
+    //         console.log('updatedFarmland:', farmland);     
+    //     })
         
-    }, [realm, point, farmlandId]);
+    // }, [realm, point, farmlandId]);
+
     // const  { farmlandId } = route.params;
     // const farmland = useObject('Farmland', farmlandId);
     // const farmer = useObject('Farmer', farmland?.farmer);
@@ -72,6 +51,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     // console.log('farmer:', JSON.stringify(farmer));
     const [permissionGranted, setPermissionGranted] = useState(false);
     const [coordinates, setCoordinates] = useState([]);
+
 
     const requestLocationPermission = async () => {
         try {
@@ -82,7 +62,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     title: 'Connect Caju App',
                     message: 'Connect Caju App pede a permissão para usar a sua localização',
                     buttonNegative: 'Mais tarde',
-                    buttonNegative: 'Cancelar',
+                    // buttonNegative: 'Cancelar',
                     buttonPositive: 'OK'
                 }
             );
@@ -160,17 +140,18 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
           message="Este dispositivo rejeitou o pedido de permissão deste aplicativo!"
           closeOnTouchOutside={true}
           closeOnHardwareBackPress={false}
-          showCancelButton={false}
+          showCancelButton={true}
           showConfirmButton={true}
           cancelText="Confirmar a rejeição"
           confirmText="Aprovar o pedido"
           cancelButtonColor="#DD6B55"
           confirmButtonColor="#005000"
           onCancelPressed={() => {
-            setGeoAlert(false);
+            setRejectGeoAlert(false);
           }}
           onConfirmPressed={async () => {
             await requestLocationPermission();
+            setRejectGeoAlert(false);
           }}
         />
 

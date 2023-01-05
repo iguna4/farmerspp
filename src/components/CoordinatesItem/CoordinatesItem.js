@@ -3,10 +3,14 @@ import React, { useCallback, useState } from "react";
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Pressable } from 'react-native';
 import { Stack, Box, Center } from "native-base";
 import { Icon,  } from "@rneui/base";
+import AwesomeAlert from 'react-native-awesome-alerts';
+
 import CustomDivider from "../Divider/CustomDivider";
 
 import { realmContext } from '../../models/realm';
+import { updateCoordinates } from "../../helpers/updateCoordinates";
 const {useRealm, useObject, useQuery } = realmContext;
+
 
 
 const CoordinatesItem = ({ point, farmlandId }) =>{
@@ -20,13 +24,15 @@ const CoordinatesItem = ({ point, farmlandId }) =>{
     // })
 
     const [onPressed, setOnPressed] = useState(false);
+    const [optionsAlert, setOptionsAlert] = useState(false);
 
-    const addLocationPoint = useCallback((farmlandId, point, realm)=>{
+    const addLocationPoint = useCallback((farmlandId, point, realm, position=-1)=>{
         let farmland;
 
         realm.write(()=>{
             farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
-            farmland.extremeCoordinates = [...farmland.extremeCoordinates, point];
+            farmland.extremeCoordinates = updateCoordinates(farmland.extremeCoordinates, point)
+            // [...farmland.extremeCoordinates, point];
             console.log('updatedFarmland:', JSON.stringify(farmland));
         })
         
@@ -61,6 +67,41 @@ const CoordinatesItem = ({ point, farmlandId }) =>{
             opacity: onPressed ? 0.7 : 1,
         }}
         >
+        <AwesomeAlert
+          show={optionsAlert}
+          showProgress={false}
+          title="Actualização das coordenadas"
+          message="Apagar ou capturar novamente as coordenadas deste ponto!"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={true}
+          showCancelButton={true}
+          showConfirmButton={true}
+          cancelText="Apagar coordenadas"
+          confirmText="Capturar novamente"
+          cancelButtonColor="#DD6B55"
+          confirmButtonColor="#005000"
+          onCancelPressed={() => {
+            setOptionsAlert(false);
+          }}
+          onConfirmPressed={async () => {
+            addLocationPoint(farmlandId, point, realm, point.position)
+            setOptionsAlert(false);
+          }}
+        />
+
+    <Pressable
+        onPress={()=>{
+            // console.log('point:', point)
+            if (!onPressed){
+                addLocationPoint(farmlandId, point, realm);
+                setOnPressed(true);
+            }
+        }}
+        onLongPress={()=>{
+            setOptionsAlert(true);
+        }}
+
+    >
         <Stack direction="row" w="100%" >
             <Box w="20%" 
                 style={{ 
@@ -69,12 +110,12 @@ const CoordinatesItem = ({ point, farmlandId }) =>{
                     justifyContent: 'center', 
                     alignItems: 'center',
                 }}
-            >
+                >
                 <Text style={{ 
                     color: '#000', 
                     fontFamily: 'JosefinSans-Bold',
                     fontSize: 20,
-                    }}
+                }}
                 >
                     P{point?.position}
                 </Text>
@@ -94,7 +135,7 @@ const CoordinatesItem = ({ point, farmlandId }) =>{
             <Box w="20%" alignItems={'center'}>
             <Box w="50%" 
                 style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}
-            >
+                >
                 <Pressable
                     onPress={()=>{
                         // console.log('point:', point)
@@ -103,7 +144,7 @@ const CoordinatesItem = ({ point, farmlandId }) =>{
                             setOnPressed(true);
                         }
                     }}
-                >
+                    >
                     <Icon 
                         name="add-location" 
                         size={40} 
@@ -113,6 +154,7 @@ const CoordinatesItem = ({ point, farmlandId }) =>{
             </Box>
         </Box>
     </Stack>
+    </Pressable>
     </View>
     </Center>
     )

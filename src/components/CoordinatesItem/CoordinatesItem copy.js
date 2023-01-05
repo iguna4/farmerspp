@@ -16,6 +16,12 @@ const {useRealm, useObject, useQuery } = realmContext;
 const CoordinatesItem = ({ item, farmlandId }) =>{
 
     const realm = useRealm();
+    // const farmlandId = route.params?.farmlandId;
+    // const [point, setPoint] = useState({
+    //     position: 0,
+    //     latitude: 0,
+    //     longitude: 0,
+    // })
 
     const [onPressed, setOnPressed] = useState(false);
     const [optionsAlert, setOptionsAlert] = useState(false);

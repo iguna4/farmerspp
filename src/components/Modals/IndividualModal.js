@@ -141,6 +141,8 @@ const IndividualModal = (
             contentContainerStyle={{
                 flex: 1, 
                 justifyContent: 'center', 
+                minHeight: '100%',
+                paddingVertical: 15,
             }}
          >
             

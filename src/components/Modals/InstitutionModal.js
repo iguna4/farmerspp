@@ -126,8 +126,10 @@ const InstitutionModal = (
         </Stack>
     <ScrollView
         contentContainerStyle={{
-        flex: 1, 
-        justifyContent: 'center', 
+            flex: 1, 
+            justifyContent: 'center', 
+            minHeight: '100%',
+            paddingVertical: 15,
         }}
     >
 

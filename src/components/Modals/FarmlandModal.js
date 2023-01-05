@@ -103,7 +103,7 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             farmer: owner._id,
         })
 
-        console.log('newFarmland: ', JSON.stringify(newFarmland))
+        // console.log('newFarmland: ', JSON.stringify(newFarmland))
         // set the farmlandId
         setFarmlandId(newFarmland._id);
 
@@ -160,10 +160,12 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
                 </Box>
             </Stack>
         <ScrollView
-         contentContainerStyle={{
-            flex: 1, 
-            justifyContent: 'center', 
-         }}
+            contentContainerStyle={{
+                flex: 1, 
+                justifyContent: 'center', 
+                minHeight: '100%',
+                paddingVertical: 15,
+            }}
         >
 
             <Center 

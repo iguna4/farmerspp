@@ -21,8 +21,9 @@ import TickComponent from '../../components/LottieComponents/TickComponent';
 import { addFlagToListItem } from '../../helpers/addFlagToListItem'
 
 import { realmContext } from '../../models/realm';
-import GroupItem from '../../components/GroupItem/GrupItem';
+import GroupItem from '../../components/GroupItem/GroupItem';
 import InstitutionItem from '../../components/InstitutionItem/InstitutionItem';
+import GroupItem2 from '../../components/GroupItem/GroupItem2';
 const { useRealm, useQuery } = realmContext; 
 
 

@@ -6,6 +6,9 @@ import React, {useCallback, useEffect, useState} from 'react';
 import { Text,  Stack, Box, Center, Divider } from 'native-base';
 import { Modal, ScrollView, TouchableOpacity } from 'react-native';
 import { Button, Icon } from '@rneui/themed';
+import AwesomeAlert from 'react-native-awesome-alerts';
+
+
 import CustomDivider from '../Divider/CustomDivider';
 import styles from './styles';
 
@@ -41,13 +44,14 @@ const InstitutionModal = (
         setIsPrivateInstitution,
 
         setFarmerItem,
+        farmerItem,
         setIsCoordinatesModalVisible,
 
     }
 ) => {
 
    const [addDataModalVisible, setAddDataModalVisible] = useState(false);
-    // const [farmerId, setFarmerId] = useState(null);
+    const [successAlert, setSuccessAlert] = useState(false);
     const navigation = useNavigation();
     const realm = useRealm()
 
@@ -75,7 +79,8 @@ const InstitutionModal = (
             ownerId: newInstitution?._id,
             ownerName: `${newInstitution?.type} ${newInstitution?.name}`,
             flag: 'Instituição',            
-        });        
+        });  
+
     })
 }, [
         realm, 
@@ -147,7 +152,25 @@ const InstitutionModal = (
                 Confirmar Dados
             </Text>
         </Center>
-
+        <AwesomeAlert
+          show={successAlert}
+          showProgress={false}
+          title="Registo Sucedido"
+          message="Foi registado com sucesso!"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={false}
+          showConfirmButton={true}
+        //   cancelText="No, cancel"
+          confirmText="   OK!   "
+          confirmButtonColor="#005000"
+        //   onCancelPressed={() => {
+        //     setGeoAlert(false);
+        //   }}
+          onConfirmPressed={() => {
+            setSuccessAlert(false);
+          }}
+        />
     <Box mx="6">
         <CustomDivider
             marginVertical="1"
@@ -256,6 +279,7 @@ const InstitutionModal = (
                     addInstitution(farmerData, realm)
                     setModalVisible(false);
                     setIsCoordinatesModalVisible(true);
+                    // setSuccessAlert(true);
                     
                 } catch (error) {
                     throw new Error('Failed to register Institution', { cause: error})

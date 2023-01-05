@@ -1693,6 +1693,7 @@ farmerType === "Instituição" && (
                 setIsPrivateInstitution={setIsPrivateInstitution}  
 
                 setFarmerItem={setFarmerItem}
+                farmerItem={farmerItem}
                 setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}                
              />
         )

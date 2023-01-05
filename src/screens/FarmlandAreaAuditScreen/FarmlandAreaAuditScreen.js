@@ -176,19 +176,19 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
 
         
         <Box
-                bg="ghostwhite" 
-                w="100%" 
-                px="3" 
-                
-                style={{
-                    borderBottomRightRadius: 50,
-                    borderBottomLeftRadius: 50,
-                    borderBottomWidth: 2,
-                    borderLeftWidth: 2,
-                    borderRightWidth: 2,
-                    borderColor: '#EBEBE4',
-                }}
-            >
+            bg="ghostwhite" 
+            w="100%" 
+            px="3" 
+            
+            style={{
+                borderBottomRightRadius: 50,
+                borderBottomLeftRadius: 50,
+                borderBottomWidth: 2,
+                borderLeftWidth: 2,
+                borderRightWidth: 2,
+                borderColor: '#EBEBE4',
+            }}
+        >
             <Stack direction="row"
                 py="5"
                 px="3"
@@ -220,7 +220,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                         justifyContent: 'center'
                     }}
                 >
-                    <TouchableOpacity
+{   coordinates.length > 0 &&
+                 <TouchableOpacity
                         onPress={async ()=>{
                             if (!permissionGranted){
                                 await requestLocationPermission();
@@ -264,6 +265,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     >
                         <GeoPin />
                     </TouchableOpacity>
+            }
                 </Box>
             </Stack>
         </Box>
@@ -271,6 +273,51 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         <Center
             style={{ minHeight: 300, }}
         >
+                                <TouchableOpacity
+                        onPress={async ()=>{
+                            if (!permissionGranted){
+                                await requestLocationPermission();
+                                // return ;
+                            }
+                            else {
+
+                                
+                            Geolocation.getCurrentPosition(
+                                (position) => {
+                                    const number = coordinates.length + 1;
+                                    setPoint({
+                                        latitude: position.coords.latitude,
+                                        longitude: position.coords.longitude,
+                                        position: number,
+                                    });
+                                    setCoordinates(prev=>([...prev, {
+                                        latitude: position.coords.latitude,
+                                        longitude: position.coords.longitude,
+                                        position: number,
+                                    }]));
+                                    // addLocationPoint(farmlandId, point, realm);
+                                },
+                                (error) => {
+                                  Alert.alert('Falha', 'Tenta novamente!', {
+                                    cause: error,
+                                  })
+                                },
+                                { 
+                                    enableHighAccuracy: true, 
+                                    accuracy: 'high',
+                                    timeout: 15000, 
+                                    maximumAge: 10000, 
+                                    distanceFilter: 1,  
+                                }
+                            );
+                            }
+
+                            // setLocationInfo({});
+                        }}
+                    >
+                        <GeoPin />
+                    </TouchableOpacity>
+
              <Text 
                 style={{ 
                     fontFamily: 'JosefinSans-Regular',

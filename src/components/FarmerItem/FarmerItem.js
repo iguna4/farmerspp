@@ -36,11 +36,11 @@ const FarmerItem = ({ item, route, farmerType }) => {
         padding: 10,
         marginVertical: 10,
         // backgroundColor: '#EBEBE4',
-        borderColor: '#005000',
         minHeight: 100,
         width: '100%',
         flex: 1,
         // alignItems: 'center',
+        borderColor: '#005000',
         shadowColor: "#005000",
         shadowOffset: {
           width: 0,

@@ -1,17 +1,20 @@
 import React from 'react';
-import { View, Text, ScrollView, SafeAreaView } from 'react-native';
-import { Box, Stack, Center } from 'native-base';
+import { View, Text, ScrollView, SafeAreaView, FlatList, Pressable } from 'react-native';
+import { Box, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
 import { Divider, Icon } from '@rneui/base';
+import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 
 
 import { realmContext } from '../../models/realm';
 import CustomDivider from '../../components/Divider/CustomDivider';
+import PersonalData from '../../components/PersonalData/PersonalData';
+import FarmlandData from '../../components/FarmlandData/FarmlandData';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const FarmerScreen = ({ route, navigation }) =>{
-
     const ownerId = route.params.ownerId;
     const farmer = useObject('Farmer', ownerId);
+    const farmlands = useQuery('Farmland').filtered('farmer == $0', ownerId);
 
     return (
         <SafeAreaView 
@@ -42,11 +45,15 @@ const FarmerScreen = ({ route, navigation }) =>{
           <Center w="10%"
             style={{ justifyContent: 'center'}}
           >
-          <Icon 
-              name="arrow-back-ios" 
-              color="#005000"
-              size={35}
-            />
+            <Pressable
+                onPress={()=>navigation.navigate('Farmers')}
+            >
+                <Icon 
+                    name="arrow-back-ios" 
+                    color="#005000"
+                    size={35}
+                    />
+            </Pressable>
           </Center>
 
           <Box w="70%" 
@@ -92,16 +99,21 @@ const FarmerScreen = ({ route, navigation }) =>{
         </Stack>
       </View>
       <ScrollView
-        style={{ padding: 10, }}
+            contentContainerStyle={{
+                // minHeight: '100%',
+                paddingVertical: 15,
+                padding: 5,
+                marginBottom: 20,
+            }}
       >
-        <View
+
+        {/* <View
             style={{ 
                 minHeight: 300, 
                 width: '100%', 
                 background: '#005000',
-                padding: 5,
             }}
-        >
+        > */}
             <Box w="100%"
                 style={{
                     backgroundColor: '#005000',
@@ -128,199 +140,46 @@ const FarmerScreen = ({ route, navigation }) =>{
                     fontSize: 12,
                     fontFamily: 'JosefinSans-Bold',
                     textAlign: 'center',
-                          
+                    
                 }}                
                 >
                     ({farmer.category})</Text>
             </Box>
-            <Stack w="100%" direction="row">
-                <Box w="40%" py="4">
-                    <Text
-                        style={{
-                            color: '#000',
-                            fontSize: 18,
-                            fontFamily: 'JosefinSans-Bold',
+    
+    {/* 
+        Personal Data Child Component
+    */}
+    <View
+        style={{ flex: 1, justifyContent: 'center', }}
+    >
+        <PersonalData farmer={farmer} />
+    </View>
 
-                        }}
-                    >
-                    Nascimento:</Text>
-                </Box>
-                <Box w="60%" py="4">
-                    <Text
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}                    
-                    >
-                        {new Date(farmer.birthDate).toLocaleDateString()}{' '}({new Date().getFullYear() - new Date(farmer.birthDate).getFullYear()} anos)
-                    </Text>
-                    <CustomDivider />
-{
-            !farmer?.birthPlace?.province?.includes('Estrangeiro') ?
-            (
-                <Box>
-                    <Text                         
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                        }} >
-                        {farmer?.birthPlace?.province + " (província)" }
-                    </Text>
-                    <Text                         
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                        }} >
-                        {farmer?.birthPlace?.district + " (distrito)" }
-                    </Text>
-                    <Text                         
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                        }} >
-                        { farmer?.birthPlace?.adminPost + " (posto admin.)" }
-                    </Text>
-                </Box>
+    <Box 
+        alignItems="stretch" 
+        w="100%" 
+        style={{
+            flex: 1,
+            paddingVertical: 5,
+            marginBottom: 100,
+        }}
+    >
+        <Text style={{
+            fontSize: 18,
+            color: '#000',
+            textAlign: 'center',
+            fontFamily: 'JosefinSans-Bold',
+            paddingVertical: 5,
+        }}>Parcelas de Cajueiros</Text>
 
-            )
-            : 
-            (
-                
-            <Box>
-                <Text 
-                    style={{
-                        color: 'grey',
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                    }}
-                >
-                    {farmer?.birthPlace?.district + " (País Estrangeiro)" }
-                </Text>
-            </Box>
-            )
-}
-                </Box>
-            </Stack>
-            <CustomDivider />
-            <Stack w="100%" direction="row">
-                <Box w="40%" py="4">
-                <Text
-                    style={{
-                        color: '#000',
-                        fontSize: 18,
-                        fontFamily: 'JosefinSans-Bold',
-
-                    }}
-                    >
-                    Endereço:
-                </Text>
-                </Box>
-                <Box w="60%" py="4">
-                    <Box>
-                        <Text                     
-                            style={{
-                                color: 'grey',
-                                fontSize: 14,
-                                fontFamily: 'JosefinSans-Regular',
-                            }}
-                        >
-                            {farmer?.address?.province} (província)
-                        </Text>
-                        <Text 
-                            style={{
-                                color: 'grey',
-                                fontSize: 14,
-                                fontFamily: 'JosefinSans-Regular',
-                            }}                        
-                        >
-                            {farmer?.address?.district} (distrito)
-                        </Text>
-                        <Text 
-                            style={{
-                                color: 'grey',
-                                fontSize: 14,
-                                fontFamily: 'JosefinSans-Regular',
-                            }}                        
-                        >
-                            {farmer?.address?.adminPost} (posto admin.)
-                        </Text>
-                        <Text 
-                            style={{
-                                color: 'grey',
-                                fontSize: 14,
-                                fontFamily: 'JosefinSans-Regular',
-                            }}                        
-                        >
-                            {farmer?.address?.village ? farmer?.birthPlace?.village (localidade/povoado) : 'Nenhum (localidade/povoado)'}
-                        </Text>
-                    </Box>
-                </Box>
-            </Stack>
-            <CustomDivider />
-
-            <Stack w="100%" direction="row">
-            <Box w="40%" py="4">
-                <Text
-                    style={{
-                        color: '#000',
-                        fontSize: 18,
-                        fontFamily: 'JosefinSans-Bold',
-
-                    }}
-                    >
-                    Contacto:
-                </Text>
-                </Box>
-                <Box w="60%" py="4">
-                    <Box>
-                        <Text                     
-                            style={{
-                                color: 'grey',
-                                fontSize: 14,
-                                fontFamily: 'JosefinSans-Regular',
-                            }}
-                        >
-                            {farmer?.address?.province} (província)
-                        </Text>
-                        <Text 
-                            style={{
-                                color: 'grey',
-                                fontSize: 14,
-                                fontFamily: 'JosefinSans-Regular',
-                            }}                        
-                        >
-                            {farmer?.address?.district} (distrito)
-                        </Text>
-                        <Text 
-                            style={{
-                                color: 'grey',
-                                fontSize: 14,
-                                fontFamily: 'JosefinSans-Regular',
-                            }}                        
-                        >
-                            {farmer?.address?.adminPost} (posto admin.)
-                        </Text>
-                        <Text 
-                            style={{
-                                color: 'grey',
-                                fontSize: 14,
-                                fontFamily: 'JosefinSans-Regular',
-                            }}                        
-                        >
-                            {farmer?.address?.village ? farmer?.birthPlace?.village (localidade/povoado) : 'Nenhum (localidade/povoado)'}
-                        </Text>
-                    </Box>
-                </Box>
-            </Stack>
-
-        </View>
-      </ScrollView>
-
-        </SafeAreaView>
+        {
+            farmlands?.map((farmland)=>
+            (<FarmlandData key={farmland._id} farmland={farmland} />))
+        }
+        </Box>
+        {/* </View> */}
+        </ScrollView>
+</SafeAreaView>
     )
 }
 

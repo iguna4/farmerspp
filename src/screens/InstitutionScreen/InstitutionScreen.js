@@ -11,6 +11,8 @@ import PersonalData from '../../components/PersonalData/PersonalData';
 import FarmlandData from '../../components/FarmlandData/FarmlandData';
 import GroupData from '../../components/GroupData/GroupData';
 import InstitutionData from '../../components/InstitutionData/InstitutionData';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faTree } from '@fortawesome/free-solid-svg-icons';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const InstitutionScreen = ({ route, navigation }) =>{
@@ -37,7 +39,7 @@ const InstitutionScreen = ({ route, navigation }) =>{
             // height: "10%",
             width: '100%',
             paddingHorizontal: 15,
-            paddingTop: 30,
+            paddingTop: 10,
 
             borderTopWidth: 0,
             borderColor: '#EBEBE4',
@@ -177,7 +179,38 @@ const InstitutionScreen = ({ route, navigation }) =>{
             textAlign: 'center',
             fontFamily: 'JosefinSans-Bold',
             paddingVertical: 5,
-        }}>Parcelas de Cajueiros</Text>
+        }}>
+          Parcelas de Cajueiros
+        </Text>
+
+        { farmlands?.length === 0 &&
+          <Box
+            alignItems={'center'}
+            style={{ justifyContent: 'center'}}
+          >
+            <Text
+              style={{ fontSize: 16, fontFamily: 'JosefinSans-Regular', textAlign: 'center', color: 'red', }}
+            >
+              Nenhuma registada
+            </Text>
+
+            <Box  style={{
+              minHeight: 150,
+              justifyContent: 'center',
+
+             }}>
+              <Pressable
+                onPress={()=>navigation.navigate('FarmlandForm1', {
+                  ownerId: farmer?._id,
+                  ownerName: `${farmer?.type} ${farmer?.name}`,
+                  flag: 'Instituição',
+                })}
+              >
+                <FontAwesomeIcon icon={faTree} size={35} color="#005000" />
+              </Pressable>
+            </Box>            
+          </Box>
+        }
 
         {
             farmlands?.map((farmland)=>

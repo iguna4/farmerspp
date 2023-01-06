@@ -3,7 +3,7 @@ export const institutions = [
     "Escola Primária (EP1)",
     "Escola Primária (EP2)",
     "Escola Primária (EPC)",
-    "Escola Secondária",
+    "Escola Secundária",
     "Prisão",
     "Outro",
 ];

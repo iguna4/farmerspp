@@ -44,9 +44,6 @@ export default function FarmersScreen({ route, navigation }) {
   const individualsList = addFlagToListItem(farmers, 'Indivíduo')
   const groupsList = addFlagToListItem(groups, 'Grupo')
   const institutionsList = addFlagToListItem(institutions, 'Instituição');
-
-  // controlling the header on Scrolling
-  const [header, setHeader] = useState(true);
   
   
   // merge the three arrays of farmers and sort the items by createdAt 
@@ -116,15 +113,16 @@ export default function FarmersScreen({ route, navigation }) {
     >
     <Box 
       style={{
-        marginVertical: 5,
+        // marginVertical: 5,
+        // marginBottom: 20,
       }}
     >
       <View
           style={{
-            minHeight: "15%",
+            minHeight: "10%",
             width: '100%',
             paddingHorizontal: 15,
-            paddingTop: 30,
+            paddingTop: 10,
 
             borderTopWidth: 0,
             borderColor: '#EBEBE4',
@@ -132,7 +130,6 @@ export default function FarmersScreen({ route, navigation }) {
             borderLeftWidth: 3,
             borderRightWidth: 3,
 
-            display: header ? 'flex' : 'none'
           }}
       >
         <Stack
@@ -228,15 +225,11 @@ export default function FarmersScreen({ route, navigation }) {
           <Box 
             alignItems="stretch" 
             w="100%" 
+            style={{
+              marginBottom: 80,
+            }}
             >
             <FlatList
-              // onMomentumScrollBegin={()=>onScroll(e)}
-              onScrollBeginDrag={(e)=>{
-                console.log('begin scrolling')
-                setHeader(false)}}
-              onScrollEndDrag={(e)=>{
-                console.log('end scrolling')
-                setHeader(true)}}
               data={farmersList}
               keyExtractor={keyExtractor}
               renderItem={({ item })=>{

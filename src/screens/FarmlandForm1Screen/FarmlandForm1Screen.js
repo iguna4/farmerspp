@@ -178,22 +178,33 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
 
             <Box mb="2">
             <Stack direction="row">
-                <Box>
+            <Box w="10%">
                     <Icon 
                         name="arrow-back-ios" 
                         color="#005000"
-                        size={40}
+                        size={35}
                         onPress={()=>navigation.goBack()}
                     />
                 </Box>
-                <Box>
+                <Box w="80%" alignItems={'center'} pt="1">
+                    <Text 
+                        style={{ 
+                            textAlign: 'center', 
+                            fontFamily: 'JosefinSans-Bold', 
+                            fontSize: 24, 
+                            color: '#005000',  }}
+                    >
+                        Parcela
+                    </Text>
+                </Box>
+                <Box w="10%">
 
                 </Box>
             </Stack>
             <Stack direction="row">
                 <Box w="80%">
                     <Text style={styles.headerText}>
-                        Registo de Parcela
+                        Registo
                     </Text>
                 </Box>
                 <Center w="20%">

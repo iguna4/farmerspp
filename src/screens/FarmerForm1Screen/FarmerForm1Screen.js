@@ -33,15 +33,15 @@ import InstitutionModal from '../../components/Modals/InstitutionModal';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 
 
-import { realmContext } from '../../models/realm';
 import { generateUFID } from '../../helpers/generateUFID';
 import DuplicatesAlert from '../../components/Alerts/DuplicatesAlert';
 import { detectDuplicates } from '../../helpers/detectDuplicates';
 import FarmerTypeRadioButtons from '../../components/RadioButton/FarmerTypeRadioButtons';
 import SuccessAlert from '../../components/Alerts/SuccessAlert';
+
+
+import { realmContext } from '../../models/realm';
 const {useRealm} = realmContext;
-
-
 
 export default function FarmerForm1Screen({ route, navigation }) {
     const [gender, setGender] = useState('');
@@ -316,7 +316,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
 
             <Box mb="2">
                 <Stack direction="row">
-                    <Box>
+                    <Box w="10%">
                         <Icon 
                             name="arrow-back-ios" 
                             color="#005000"
@@ -324,14 +324,26 @@ export default function FarmerForm1Screen({ route, navigation }) {
                             onPress={()=>navigation.goBack()}
                         />
                     </Box>
-                    <Box>
+                    <Box w="80%" alignItems={'center'} pt="1">
+                        <Text 
+                            style={{ 
+                                textAlign: 'center', 
+                                fontFamily: 'JosefinSans-Bold', 
+                                fontSize: 24, 
+                                color: '#005000',  
+                            }}
+                        >
+                            Produtor
+                        </Text>
+                    </Box>
+                    <Box w="10%">
 
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="80%">
                         <Text style={styles.headerText}>
-                            Registo de Produtor
+                            Registo
                         </Text>
                     </Box>
                     <Center w="20%">

@@ -88,7 +88,6 @@ const IndividualModal = (
             contact,
             idDocument,
             ufid,
-
         })
         setFarmerItem({
             ownerId: newFarmer._id,

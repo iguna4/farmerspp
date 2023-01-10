@@ -19,5 +19,6 @@ export const Farmland = {
         plantTypes: 'PlantTypes',
         farmer: 'string',
         createdAt: { type: 'date', default: Date()},
+        district: 'string?'
     },
 }

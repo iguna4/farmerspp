@@ -37,6 +37,7 @@
     "react-native-get-random-values": "^1.8.0",
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.1.2",
+    "react-native-radio-buttons-group": "^2.3.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.18.2",
     "react-native-splash-screen": "^3.3.0",

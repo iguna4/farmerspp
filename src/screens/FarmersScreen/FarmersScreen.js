@@ -72,6 +72,18 @@ export default function FarmersScreen({ route, navigation }) {
         });
 
   useEffect(()=>{
+    /**
+     *  const subscribedFarmers = realm.objects('Farmer').filtered(`district ==${user?.district}`);
+     *  const updateSubscriptions = async () =>{
+     *    await realm.subscriptions.update(mutableSubs => {
+     *      mutableSubs.add(subscribedFarmers, {name: farmerSubscriptionName});
+     * }); 
+     * };
+     * updateSubscriptions();
+     * 
+     */
+
+
   }, [farmers, groups, institutions, realm, farmersList]);
 
   const keyExtractor = (item, index)=>index.toString();

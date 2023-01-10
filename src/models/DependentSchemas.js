@@ -66,11 +66,14 @@ export const IdDocument= {
 };
 
 
+
 export const Achievement = {
    
         name: 'Achievement',
         embedded: true,
         properties: {
+            month: 'string',
+            year: { type: 'int', default: 2023 },
             registeredFarmers: { type: 'int',  default: 0},
             registeredFarmlands: { type: 'int', default: 0},
             targetFarmers: { type: 'int',  default: 0},

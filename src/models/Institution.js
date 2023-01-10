@@ -17,6 +17,7 @@ export const Institution = {
         nuit: { type: 'int?', default: 0},
         farmlands: 'string[]',
         createdAt: { type: 'date', default: Date()},
+        district: 'string?',
     },
 }
 

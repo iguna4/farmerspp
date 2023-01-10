@@ -16,14 +16,9 @@ import IndividualFarmerForm from '../../screens/FarmerForm1Screen/IndividualFarm
 
 const { RealmProvider} = realmContext;
 
-
 const Tab = createBottomTabNavigator();
 
-
-
-
 export default function AppTab() {
-
 
 
   return (

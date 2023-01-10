@@ -1,6 +1,6 @@
 import { capitalize } from "./capitalize";
 
-const validateData = (
+const validateUserData = (
     {   email, 
         password, 
         passwordConfirm, 
@@ -128,4 +128,4 @@ const validateData = (
     }     
 };
 
-export default validateData;
+export default validateUserData;

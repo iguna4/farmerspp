@@ -24,6 +24,7 @@ export const Farmer = {
         // farmlands: 'Farmland[]',
         farmlands: 'string[]',
         createdAt: { type: 'date', default: Date()},
+        district: 'string?',
     },
 }
 

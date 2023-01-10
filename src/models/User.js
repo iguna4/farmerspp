@@ -9,14 +9,11 @@ export const User = {
         fullname: 'string',
         email: 'string',
         password: 'string',
-        primaryPhone: 'int',
-        secondaryPhone: 'int',
-        address: {
-            type: 'object', objectType: 'Address'
-        },
-        achievement: {
-            type: 'object?', objectType: 'Achievement' 
-        },
+        primaryPhone: 'int?',
+        secondaryPhone: 'int?',
+        province: 'string?',
+        district: 'string?',
+        achievement: 'Achievement[]',
         createdAt: { type: 'date', default: Date() },
     }
 }

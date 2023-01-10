@@ -22,6 +22,7 @@ export const Group = {
         createdAt: { 
             type: 'date', default: Date()
         },
+        district: 'string?',
     },
 }
 

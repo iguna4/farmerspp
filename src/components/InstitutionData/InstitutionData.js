@@ -45,9 +45,19 @@ const InstitutionData = ({ farmer })=>{
                         
 
                     }}
-                    >
-                    Dados do Grupo
+                >
+                    Dados da Instituição
                 </Text>
+                <Text
+                    style={{ 
+                        fontSize: 14, 
+                        color: 'ghostwhite',
+                        fontFamily: 'JosefinSans-Bold',
+                        textAlign: 'right',
+                    }}
+                >
+                    {farmer?.isPrivate ? 'Privada' : 'Pública'}
+                </Text>                
             </View>
         </CollapseHeader>
         <CollapseBody>
@@ -61,7 +71,7 @@ const InstitutionData = ({ farmer })=>{
                             
                         }}
                         >
-                    Grupo:</Text>
+                    Instituição:</Text>
             </Box>
             <Box w="65%" py="4">
                 <Text 
@@ -170,12 +180,21 @@ const InstitutionData = ({ farmer })=>{
                 >Documentos:</Text>
             </Box>
             <Box w="65%" py="4">
-            <Text style={{
-                color: 'grey',
-                fontSize: 14,
-                fontFamily: 'JosefinSans-Regular',
-            }}>
-                {farmer?.nuit ? farmer?.nuit + ` (NUIT)` : 'Nenhum (NUIT)'} 
+                <Text style={{
+                    color: 'grey',
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                }}
+                >
+                    {farmer?.nuit ? farmer?.nuit + ` (NUIT)` : 'Nenhum (NUIT)'} 
+                </Text>
+                <Text style={{
+                    color: 'grey',
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                }}
+                >
+                    {farmer?.licence ? farmer?.licence + ` (Alvará/Licença)` : 'Nenhum (Alvará/Licença)'} 
                 </Text>
             </Box>
         </Stack>

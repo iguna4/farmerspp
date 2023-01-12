@@ -1,8 +1,8 @@
 import {Alert, FlatList, SafeAreaView,  TouchableOpacity, View, Text,} from 'react-native';
 import React, { useState } from 'react';
-import {ListItem, Icon } from '@rneui/themed';
+import {ListItem, Icon, Avatar } from '@rneui/themed';
 
-import { Box, Center, HStack, Pressable, Avatar, Stack, VStack,  } from 'native-base';
+import { Box, Center, HStack, Pressable, Stack, VStack,  } from 'native-base';
 import styles from './styles';
 import CustomDivider from '../Divider/CustomDivider';
 import { randomRBG } from '../../helpers/randomRgB';
@@ -13,9 +13,9 @@ import { sumTreesOrAreas } from '../../helpers/sumTreesOrAreas';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 
+const uri =  `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
-
-const GroupItem = ({ item, route }) => {
+const GroupItem = ({ item, route, requestCameraPermission }) => {
 
    const navigation = useNavigation();
   // console.log('item:', JSON.stringify(item));
@@ -42,7 +42,34 @@ const GroupItem = ({ item, route }) => {
 
       }}
     >
-      
+      <Stack direction="row" w="100%">
+      <Center w="20%" m="2">
+      <Pressable
+        onPress={()=>{}}
+      >
+
+        <View
+        style={{
+          position: 'absolute',
+          top: 25,
+          left: -10,
+          zIndex: 2,
+        }}
+        >
+        
+          <Icon name="add-a-photo" size={20} color="#005000" />
+        </View>
+        <Avatar 
+            size={80}
+            rounded
+            title={getInitials(item?.manager?.fullname)}
+            containerStyle={{ backgroundColor: "grey" }}
+            source={{ uri }}
+        />
+        </Pressable>
+      </Center>
+
+      <Box w="80%">
     <TouchableOpacity
       onPress={()=>{
         navigation.navigate('Group', {
@@ -83,7 +110,7 @@ const GroupItem = ({ item, route }) => {
                 // paddingTop: 6,
                 }}
               >
-                Gerente: {'  '}
+               {item?.type?.includes('Grupo') ? 'Representante: ' : 'Presidente: '} 
               {
                 item?.manager?.fullname
               }
@@ -92,12 +119,12 @@ const GroupItem = ({ item, route }) => {
             {/* </Box>
             <Box w="20%">
             
-            </Box> */}
+          </Box> */}
         <Stack direction="row">
             <Box w="50%" >
               <Text 
                 style={{
-                fontSize: 15,
+                  fontSize: 15,
                 fontFamily: 'JosefinSans-Italic',
                 // paddingTop: 6,
                 }}
@@ -112,10 +139,10 @@ const GroupItem = ({ item, route }) => {
             <Stack direction="row">
                   <Text 
                     style={{
-                    fontSize: 15,
+                      fontSize: 15,
                     fontFamily: 'JosefinSans-Italic',
                     // paddingTop: 6,
-                    }}
+                  }}
                   >
                     Parcelas: {' '}
                   </Text>
@@ -138,6 +165,9 @@ const GroupItem = ({ item, route }) => {
         </Stack>
       </Stack>
   </TouchableOpacity>
+  </Box>
+  </Stack>
+
   <Stack direction="row" w="100%" style={{ paddingTop: 10,  }}>
         <Box w="100%">
           <Text 

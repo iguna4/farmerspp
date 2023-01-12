@@ -13,6 +13,7 @@ import IndividualFarmerForm from '../../screens/FarmerForm1Screen/IndividualFarm
 import FarmerScreen from '../../screens/FarmerScreen/FarmerScreen';
 import InstitutionScreen from '../../screens/InstitutionScreen/InstitutionScreen';
 import GroupScreen from '../../screens/GroupScreen/GroupScreen';
+import CameraDeviceModal from '../../components/Modals/CameraDeviceModal';
 
 const FarmersStack = createNativeStackNavigator();
 
@@ -36,10 +37,14 @@ export default function FarmersStackScreen() {
         <FarmersStack.Screen name="FarmerForm1" component={FarmerForm1Screen} />
         <FarmersStack.Screen name="FarmlandForm1" component={FarmlandForm1Screen} />
         <FarmersStack.Screen name="FarmlandAreaAudit" component={FarmlandAreaAuditScreen} />
-        <FarmersStack.Screen name="IndividualFarmer" component={IndividualFarmerForm} />
+        {/* <FarmersStack.Screen name="IndividualFarmerForm" component={IndividualFarmerForm} /> */}
+        {/* <FarmersStack.Screen name="InstitutionalFarmer" component={IndividualFarmerForm} /> */}
+        {/* <FarmersStack.Screen name="GroupFarmer" component={IndividualFarmerForm} /> */}
+
         <FarmersStack.Screen name="Farmer" component={FarmerScreen} />
         <FarmersStack.Screen name="Group" component={GroupScreen} />
         <FarmersStack.Screen name="Institution" component={InstitutionScreen} />
+        <FarmersStack.Screen name="CameraDevice" component={CameraDeviceModal} />
 
       </FarmersStack.Navigator>
   );

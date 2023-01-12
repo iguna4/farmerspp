@@ -14,6 +14,7 @@ const validateInstitutionFarmerData = (
         institutionManagerPhone,
         institutionNuit,  
         isPrivateInstitution,
+        institutionLicence,
     }, errors, setErrors,
     ) => {
     const retrievedInstitutionType = institutionType?.trim(); 
@@ -26,7 +27,8 @@ const validateInstitutionFarmerData = (
     const retrievedInstitutionManagerPhone = institutionManagerPhone;
     const retrievedInstitutionNuit = institutionNuit; 
     const retrievedIsPrivateInstitution = isPrivateInstitution;
-       
+    const retrievedInstitutionLicence = institutionLicence?.trim();   
+
     if (!retrievedInstitutionType){
         setErrors({ ...errors,
             institutionType: 'Indica tipo de instituição .',
@@ -95,6 +97,7 @@ const validateInstitutionFarmerData = (
             phone: retrievedInstitutionManagerPhone ? parseInt(retrievedInstitutionManagerPhone): 0,
         },
         nuit: retrievedInstitutionNuit ? parseInt(retrievedInstitutionNuit): 0,
+        licence: retrievedInstitutionLicence ? retrievedInstitutionLicence : '',
     }
         
         return farmerData;

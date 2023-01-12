@@ -18,6 +18,7 @@ export const Group = {
         registeredMembers: 'Farmer[]',
         licence: 'string?',
         nuit: { type: 'int?', default: 0},
+        image: { type: 'string', default: 'https://localhost.picture' },
         farmlands: 'string[]',
         createdAt: { 
             type: 'date', default: Date()

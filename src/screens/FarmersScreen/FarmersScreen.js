@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import {FlatList, InteractionManager, SafeAreaView, Text, View, Animated} from 'react-native';
+import {FlatList, InteractionManager, SafeAreaView, Text, View, PermissionsAndroid, Animated} from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import {ListItem, Avatar, Icon } from '@rneui/themed';
 
@@ -23,8 +23,19 @@ import { addFlagToListItem } from '../../helpers/addFlagToListItem'
 import GroupItem from '../../components/GroupItem/GroupItem';
 import InstitutionItem from '../../components/InstitutionItem/InstitutionItem';
 import GroupItem2 from '../../components/GroupItem/GroupItem2';
+import CustomDivider  from '../../components/Divider/CustomDivider'
+import {
+    Menu,
+    MenuProvider,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+    renderers
+   } from "react-native-popup-menu";
+import { Camera, useCameraDevices } from "react-native-vision-camera";
 
 import { realmContext } from '../../models/realm';
+import PopupMenu from '../../components/PopupMenu/PopupMenu';
 const { useRealm, useQuery } = realmContext; 
 
 
@@ -44,6 +55,11 @@ export default function FarmersScreen({ route, navigation }) {
   const individualsList = addFlagToListItem(farmers, 'Indivíduo')
   const groupsList = addFlagToListItem(groups, 'Grupo')
   const institutionsList = addFlagToListItem(institutions, 'Instituição');
+
+  // useCameraDevice
+  const devices = useCameraDevices();
+  const device = devices.back;
+  const [isCameraActive, setIsCamerActive] = useState(false);
   
   
   // merge the three arrays of farmers and sort the items by createdAt 
@@ -87,6 +103,34 @@ export default function FarmersScreen({ route, navigation }) {
   }, [farmers, groups, institutions, realm, farmersList]);
 
   const keyExtractor = (item, index)=>index.toString();
+
+  const requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Cool Photo App Camera Permission",
+          message:
+            "Cool Photo App needs access to your camera " +
+            "so you can take awesome pictures.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+
+        console.log("You can use the camera");
+        return navigation.navigate('CameraDevice');
+        // return ;
+
+      } else {
+        console.log("Camera permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
   
   const addFarmer = ()=>{
     navigation.navigate('FarmerForm1', { user: {
@@ -179,18 +223,19 @@ export default function FarmersScreen({ route, navigation }) {
               </Stack>
             </Center>
           </Box>
-
           <Box w="20%"
             style={{ justifyContent: 'center'}}
           >
-          <Icon 
-              name="search" 
-              color="#005000"
-              size={40}
-            />
+            <Icon 
+                name="search" 
+                color="#005000"
+                size={40}
+              />
           </Box>
         </Stack>
       </View>
+      {/* <Box> */}
+      {/* </Box> */}
       <LottieAddButton
         styles={{ 
           zIndex: 3, 
@@ -208,10 +253,10 @@ export default function FarmersScreen({ route, navigation }) {
       ?
       (
       <Box 
-        minH={'100%'}
+        // minH={'100%'}
       >
         <Center 
-          height="60%"
+          // height="100%"
           style={{
             margin: 20,
           }}
@@ -229,6 +274,7 @@ export default function FarmersScreen({ route, navigation }) {
           </Text>
           <TickComponent />
 
+            {/* <PopupMenu /> */}
         </Center>
       </Box>
     )
@@ -246,13 +292,13 @@ export default function FarmersScreen({ route, navigation }) {
               keyExtractor={keyExtractor}
               renderItem={({ item })=>{
                 if(item.flag === 'Grupo'){
-                  return <GroupItem route={route} item={item} />
+                  return <GroupItem requestCameraPermission={requestCameraPermission} route={route} item={item} />
                 }
                 else if (item.flag === 'Indivíduo'){
-                    return <FarmerItem route={route} navigation={navigation} item={item} />
+                    return <FarmerItem requestCameraPermission={requestCameraPermission} route={route} navigation={navigation} item={item} />
                 }
                 else if (item.flag === 'Instituição'){
-                    return <InstitutionItem route={route}  item={item} />
+                    return <InstitutionItem requestCameraPermission={requestCameraPermission} route={route}  item={item} />
                 }
               }
               }
@@ -263,6 +309,11 @@ export default function FarmersScreen({ route, navigation }) {
       }
       {/* </View> */}
       </Box>
+    
+
+      {/* <PopupMenu /> */}
+  
+
   </SafeAreaView>
   );
 }

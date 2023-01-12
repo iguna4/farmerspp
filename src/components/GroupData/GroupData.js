@@ -48,6 +48,16 @@ const GroupData = ({ farmer })=>{
                     >
                     Dados do Grupo
                 </Text>
+                <Text
+                    style={{ 
+                        fontSize: 14, 
+                        color: 'ghostwhite',
+                        fontFamily: 'JosefinSans-Bold',
+                        textAlign: 'right',
+                    }}
+                >
+                    {farmer?.members?.total} membros
+                </Text>
             </View>
         </CollapseHeader>
         <CollapseBody>
@@ -122,7 +132,9 @@ const GroupData = ({ farmer })=>{
                         
                     }}
                     >
-                    Afiliação:
+                        {
+                    farmer?.type?.includes('Grupo') ? 'Criação:' : 'Legalização:'
+                        }
                 </Text>
                 </Box>
                 <Box w="65%" py="4">
@@ -161,7 +173,7 @@ const GroupData = ({ farmer })=>{
                         fontFamily: 'JosefinSans-Regular',
                     }}
                     >
-                        {farmer?.manager?.fullname} (Gerente)
+                        {farmer?.manager?.fullname} ({farmer?.type?.includes('Grupo') ? 'Representante:' : 'Presidente:'})
                     </Text>
                     <Text style={{
                         color: 'grey',
@@ -233,19 +245,21 @@ const GroupData = ({ farmer })=>{
                 >Documentos:</Text>
             </Box>
             <Box w="65%" py="4">
-            <Text style={{
-                color: 'grey',
-                fontSize: 14,
-                fontFamily: 'JosefinSans-Regular',
-            }}>
-                {farmer?.licence ? farmer?.licence + ` (Licença/Alvará)` : 'Nenhum (Licença/Alvará)'} 
-            </Text>
-            <Text style={{
-                color: 'grey',
-                fontSize: 14,
-                fontFamily: 'JosefinSans-Regular',
-            }}>
-                {farmer?.nuit ? farmer?.nuit + ` (NUIT)` : 'Nenhum (NUIT)'} 
+                <Text style={{
+                    color: 'grey',
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                    }}
+                >
+                    {farmer?.nuit ? farmer?.nuit + ` (NUIT)` : 'Nenhum (NUIT)'} 
+                </Text>
+                <Text style={{
+                    color: 'grey',
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                    }}
+                >
+                    {farmer?.licence ? farmer?.licence + ` (Licença/Alvará)` : 'Nenhum (Licença/Alvará)'} 
                 </Text>
             </Box>
         </Stack>

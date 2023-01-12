@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, SafeAreaView, FlatList, Pressable } from 'react-native';
+import { View, Text, ScrollView, StyleSheet,  SafeAreaView, Image, FlatList, Pressable, TouchableOpacity } from 'react-native';
 import { Box, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
 import { Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
@@ -14,6 +14,9 @@ import InstitutionData from '../../components/InstitutionData/InstitutionData';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 const { useRealm, useQuery, useObject } = realmContext; 
+
+
+const uri = `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
 const InstitutionScreen = ({ route, navigation }) =>{
     const ownerId = route.params.ownerId;
@@ -125,42 +128,64 @@ const InstitutionScreen = ({ route, navigation }) =>{
                 background: '#005000',
             }}
         > */}
-            <Box w="100%"
-                style={{
-                    backgroundColor: '#005000',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
+          <Box w="100%"
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
             >
-                <Text 
+              {/* <View> */}
+              <View
                 style={{
-                        
-                    color: 'ghostwhite',
-                    fontSize: 24,
-                    fontFamily: 'JosefinSans-Bold',
-                    textAlign: 'center',
-                          
+                  position: 'absolute',
+                  top: 225,
+                  left: 60,
+                  zIndex: 2,
                 }}
                 >
-                    {farmer?.name}
+                <TouchableOpacity>
+                  <Icon name="add-a-photo" size={30} color="#005000" />
+                </TouchableOpacity>
+              </View>
+            <Image 
+              resizeMethod='auto'
+              style={[styles.stretch, { borderWidth: 3, borderColor: '#005000', backgroundColor: 'lightgrey', }]}
+              source={{ uri }}          
+            />
+              {/* </View> */}
+                <Text 
+                style={{
+                  
+                  color: '#005000',
+                  fontSize: 24,
+                  fontFamily: 'JosefinSans-Bold',
+                  textAlign: 'center',
+                  
+                }}
+                >
+                    {farmer?.manager.fullname}
                 </Text>
                 <Text
                 style={{
-                        
-                    color: 'ghostwhite',
-                    fontSize: 12,
-                    fontFamily: 'JosefinSans-Bold',
-                    textAlign: 'center',
-                    
+                  
+                  color: '#005000',
+                  fontSize: 12,
+                  fontFamily: 'JosefinSans-Bold',
+                  textAlign: 'center',
+                  
                 }}                
                 >
-                    ({farmer?.type})</Text>
+                    (Responsável)</Text>
             </Box>
     
     {/* 
         Personal Data Child Component
     */}
-    <View>
+    <View
+      style={{
+        marginTop: 40,
+      }}
+    >
         <InstitutionData farmer={farmer} />
     </View>
 
@@ -178,49 +203,62 @@ const InstitutionScreen = ({ route, navigation }) =>{
             color: '#000',
             textAlign: 'center',
             fontFamily: 'JosefinSans-Bold',
-            paddingVertical: 5,
+            // paddingVertical: 5,
         }}>
           Parcelas de Cajueiros
         </Text>
+        <Text
+          style={{
+              fontSize: 14,
+              color: 'grey',
+              textAlign: 'center',
+              fontFamily: 'JosefinSans-Regular',
+              paddingBottom: 5,
+          }}
+        >
+          ({farmlands?.length} parcelas)
+        </Text>
+        <Stack direction="row" w="100%" px="3">
+            <Box w="90%">
 
-        { farmlands?.length === 0 &&
-          <Box
-            alignItems={'center'}
-            style={{ justifyContent: 'center'}}
-          >
-            <Text
-              style={{ fontSize: 16, fontFamily: 'JosefinSans-Regular', textAlign: 'center', color: 'red', }}
-            >
-              Nenhuma registada
-            </Text>
+            </Box>
+            <Box w="10%">
 
-            <Box  style={{
-              minHeight: 150,
-              justifyContent: 'center',
-
-             }}>
-              <Pressable
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row'
+                }}
                 onPress={()=>navigation.navigate('FarmlandForm1', {
-                  ownerId: farmer?._id,
-                  ownerName: `${farmer?.type} ${farmer?.name}`,
+                  ownerId: farmer._id,
+                  ownerName: `${farmer.type} ${farmer.name}`,
                   flag: 'Instituição',
                 })}
               >
-                <FontAwesomeIcon icon={faTree} size={35} color="#005000" />
-              </Pressable>
+                <Icon name="add-circle" color="red" size={40} />
+
+              </TouchableOpacity>
             </Box>            
-          </Box>
-        }
+        </Stack>
+
+        
 
         {
             farmlands?.map((farmland)=>
             (<FarmlandData key={farmland._id} farmland={farmland} />))
         }
         </Box>
-        {/* </View> */}
+
         </ScrollView>
 </SafeAreaView>
     )
 }
+
+const styles = StyleSheet.create({
+  stretch: {
+    width: 300,
+    height: 300,
+    borderRadius: 200,
+  }
+})
 
 export default InstitutionScreen;

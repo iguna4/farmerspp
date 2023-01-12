@@ -1,12 +1,12 @@
-import {Alert, FlatList, SafeAreaView,  TouchableOpacity, View, Text,} from 'react-native';
+import {Alert, FlatList, SafeAreaView,  TouchableOpacity, View, Text, PermissionsAndroid,} from 'react-native';
 import React, { useState } from 'react';
-import {ListItem, Icon } from '@rneui/themed';
+import {ListItem, Icon, Avatar } from '@rneui/themed';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faMugSaucer } from '@fortawesome/free-solid-svg-icons/faMugSaucer'
 
 
 
-import { Box, Center, HStack, Pressable, Avatar, Stack, VStack,  } from 'native-base';
+import { Box, Center, HStack, Pressable, Stack, VStack,  } from 'native-base';
 import styles from './styles';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import { randomRBG } from '../../helpers/randomRgB';
@@ -16,19 +16,15 @@ import { useNavigation } from '@react-navigation/native';
 import { sumTreesOrAreas } from '../../helpers/sumTreesOrAreas';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 
+const uri =  `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
 
-const FarmerItem = ({ item, route, farmerType }) => {
+const FarmerItem = ({ item, route, farmerType, requestCameraPermission }) => {
 
    const [visible, setVisible] = useState(false);
    const navigation = useNavigation();
 
-  // const handleItem = ()=>{
-  //  return <AlertModal
-  //   visible={visible}
-  //   setVisible={setVisible}
-  //  />
-  // }
+
 
   return (
     <View
@@ -53,20 +49,49 @@ const FarmerItem = ({ item, route, farmerType }) => {
 
       }}
     >
+      <Stack direction="row" w="100%">
+      <Center w="20%" m="2">
+        <Pressable
+          onPress={requestCameraPermission}
+        >
+
+        <View
+          style={{
+            position: 'absolute',
+            top: 25,
+            left: -10,
+            zIndex: 2,
+          }}
+          >
+          
+            <Icon name="add-a-photo" size={20} color="#005000" />
+          </View>
+        <Avatar 
+            size={80}
+            rounded
+            title={getInitials(item?.names?.surname)}
+            containerStyle={{ backgroundColor: "grey" }}
+            source={{ uri }}
+        />
+        </Pressable>
+      </Center>
+
+      <Box w="80%">
+
       <TouchableOpacity
         onPress={()=>{
           navigation.navigate('Farmer', {
             ownerId: item._id,
           })
         }}
-      >
+        >
       <Text 
         style={{
           fontSize: 20,
           fontFamily: 'JosefinSans-Bold',
           color: '#005000',
         }}
-      >
+        >
         {item.names.otherNames}{' '}{item.names.surname}
       <Text 
         style={{
@@ -76,22 +101,24 @@ const FarmerItem = ({ item, route, farmerType }) => {
           paddingTop: 6,
           
         }}
-      >
+        >
         {' '}({item.category})
       </Text>
     </Text>
 
     <Stack direction="column" >
+
+
         <Stack direction="row">
           <Box w="80%" style={{ }}>
         <Stack direction="row">
           <Text 
             style={{
-            fontSize: 15,
-            fontFamily: 'JosefinSans-Italic',
+              fontSize: 15,
+              fontFamily: 'JosefinSans-Italic',
             // paddingTop: 6,
             }}
-          >
+            >
             Provedor-S-Pulverização: {'  '}
           </Text>
           {
@@ -113,7 +140,7 @@ const FarmerItem = ({ item, route, farmerType }) => {
               Tel: {
               item.contact.primaryPhone ? item.contact.primaryPhone
               : item.contact.secondaryPhone ? item.contact.secondaryPhone : 'Nenhum'
-              }
+            }
             </Text>
           </Box>
           <Box w="50%">
@@ -123,7 +150,7 @@ const FarmerItem = ({ item, route, farmerType }) => {
                     fontSize: 15,
                     fontFamily: 'JosefinSans-Italic',
                     // paddingTop: 6,
-                    }}
+                  }}
                   >
                     Parcelas: {' '}
                   </Text>
@@ -131,36 +158,6 @@ const FarmerItem = ({ item, route, farmerType }) => {
               </Stack>
             </Box>
       </Stack>
-      {/* <Stack direction="row" space={4}>
-          <Box w="50%" >
-            <Stack direction="row">
-                <Text 
-                  style={{
-                  fontSize: 15,
-                  fontFamily: 'JosefinSans-Italic',
-                  // paddingTop: 6,
-                  }}
-                >
-                  Cajueiros: {' '}
-                </Text> 
-                <Text style={{ fontSize: 15, paddingTop: 2, }}>{sumTreesOrAreas(item?.farmlands, 'trees')}</Text>
-          </Stack>
-        </Box>
-          <Box w="50%">
-            <Stack direction="row">
-                  <Text 
-                    style={{
-                    fontSize: 15,
-                    fontFamily: 'JosefinSans-Italic',
-                    // paddingTop: 6,
-                    }}
-                  >
-                    Parcelas: {' '}
-                  </Text>
-                  <Text style={{ fontSize: 15, paddingTop: 2,  }}>{item.farmlands.length}</Text>
-              </Stack>
-            </Box>
-        </Stack> */}
 
         </Box>
         <Box w="20%" style={{ 
@@ -179,18 +176,20 @@ const FarmerItem = ({ item, route, farmerType }) => {
         </Box>
         </Stack>
       </Stack>
-  </TouchableOpacity>
+    </TouchableOpacity>
+  </Box>
+  </Stack>
   
   <Stack direction="row" w="100%" style={{ paddingTop: 10,  }} >
-        <Box w="100%">
-          <Text 
-            style={{ fontFamily: 'JosefinSans-Italic'}}
+      <Box w="100%">
+        <Text 
+          style={{ fontFamily: 'JosefinSans-Italic'}}
           >
-            Registo: {new Date(item.createdAt).toLocaleDateString()} por {'user'}
-          </Text>
-        </Box>
-      </Stack>
-    </View>
+          Registo: {new Date(item.createdAt).toLocaleDateString()} por {'user'}
+        </Text>
+      </Box>
+  </Stack>
+  </View>
   )
 }
 

@@ -218,7 +218,7 @@ const GroupModal = (
 
     <Stack direction="row" w="100%" my="1">
         <Box w="40%">
-            <Text style={styles.keys}>Ano de afiliação:</Text>
+            <Text style={styles.keys}>Ano de {farmerData?.type?.includes('Grupo') ? "criação" : "legalização"}</Text>
         </Box>
         <Box w="60%">
             <Box>
@@ -243,10 +243,10 @@ const GroupModal = (
         <Box w="60%">
             <Box>
                 <Text style={styles.values}>
-                    {farmerData?.licence ? farmerData?.licence + ` (Licença/Alvará)` : 'Nenhum (Licença/Alvará)'} 
+                    {farmerData?.nuit ? farmerData?.nuit + ` (NUIT)` : 'Nenhum (NUIT)'} 
                 </Text>
                 <Text style={styles.values}>
-                    {farmerData?.nuit ? farmerData?.nuit + ` (NUIT)` : 'Nenhum (NUIT)'} 
+                    {farmerData?.licence ? farmerData?.licence + ` (Licença/Alvará)` : 'Nenhum (Licença/Alvará)'} 
                 </Text>
             </Box>
         </Box>
@@ -265,7 +265,7 @@ const GroupModal = (
         </Box>
         <Box w="60%">
             <Text style={styles.values}>
-                {farmerData.manager?.fullname} (Gerente)
+                {farmerData.manager?.fullname} ({farmerData?.type?.includes('Grupo') ? "Representante" : "Presidente"})
             </Text>
             <Text style={styles.values}>
             {

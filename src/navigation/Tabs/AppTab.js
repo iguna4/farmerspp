@@ -13,6 +13,9 @@ import Login from '../../screens/Fallback/Login';
 import { realmContext } from '../../models/realm';
 import FarmlandAreaAuditScreen from '../../screens/FarmlandAreaAuditScreen/FarmlandAreaAuditScreen';
 import IndividualFarmerForm from '../../screens/FarmerForm1Screen/IndividualFarmerForm';
+import PopupMenu from '../../components/PopupMenu/PopupMenu';
+import Wrapper from '../../components/PopupMenu/PopupMenu';
+import MenuWrapper from '../../components/PopupMenu/PopupMenu';
 
 const { RealmProvider} = realmContext;
 
@@ -85,7 +88,7 @@ export default function AppTab() {
                         size={50} />,
               tabBarLabel: 'Pesquisa',
             }}
-            name="Login"
+            name="popup"
             component={Login}
            />
       </Tab.Navigator>

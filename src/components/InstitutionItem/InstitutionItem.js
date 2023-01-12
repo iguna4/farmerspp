@@ -1,8 +1,8 @@
 import {Alert, FlatList, SafeAreaView,  TouchableOpacity, View, Text,} from 'react-native';
 import React, { useState } from 'react';
-import {ListItem, Icon } from '@rneui/themed';
+import {ListItem, Icon, Avatar } from '@rneui/themed';
 
-import { Box, Center, HStack, Pressable, Avatar, Stack, VStack,  } from 'native-base';
+import { Box, Center, HStack, Pressable, Stack, VStack,  } from 'native-base';
 import styles from './styles';
 import CustomDivider from '../Divider/CustomDivider';
 import { randomRBG } from '../../helpers/randomRgB';
@@ -13,9 +13,9 @@ import { sumTreesOrAreas } from '../../helpers/sumTreesOrAreas';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 
+const uri =  `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
-
-const InstitutionItem = ({ item, route }) => {
+const InstitutionItem = ({ item, route, requestCameraPermission }) => {
 
    const navigation = useNavigation();
 
@@ -42,13 +42,42 @@ const InstitutionItem = ({ item, route }) => {
 
       }}
     >   
+
+    <Stack direction="row" w="100%">
+    <Center w="20%" m="2">
+      <Pressable
+        onPress={()=>{}}
+      >
+
+      <View
+      style={{
+        position: 'absolute',
+        top: 25,
+        left: -10,
+        zIndex: 2,
+      }}
+      >
+        
+        <Icon name="add-a-photo" size={20} color="#005000" />
+        </View>
+      <Avatar 
+        size={80}
+        rounded
+        title={getInitials(item?.manager?.fullname)}
+        containerStyle={{ backgroundColor: "grey" }}
+        source={{ uri }}
+        />
+      </Pressable>
+    </Center>
+    <Box w="80%">
+
     <TouchableOpacity
       onPress={()=>{
         navigation.navigate('Institution', {
           ownerId: item._id,
         })
       }}  
-    >
+      >
 
 
       <Text 
@@ -78,11 +107,11 @@ const InstitutionItem = ({ item, route }) => {
             <Text 
                 style={{
                   fontSize: 15,
-                fontFamily: 'JosefinSans-Italic',
-                // paddingTop: 6,
+                  fontFamily: 'JosefinSans-Italic',
+                  // paddingTop: 6,
                 }}
-            >
-                Gerente: {'  '}
+                >
+                Responsável: {' '}
               {
                 item?.manager?.fullname
               }
@@ -93,24 +122,24 @@ const InstitutionItem = ({ item, route }) => {
             <Box w="50%" >
               <Text 
                 style={{
-                fontSize: 15,
-                fontFamily: 'JosefinSans-Italic',
+                  fontSize: 15,
+                  fontFamily: 'JosefinSans-Italic',
                 // paddingTop: 6,
                 }}
-              >
+                >
                 Tel: {
-                item?.manager?.phone ? item?.manager?.phone
-                : 'Nenhum'
-              }
+                  item?.manager?.phone ? item?.manager?.phone
+                  : 'Nenhum'
+                }
               </Text>
             </Box>
             <Box w="50%">
             <Stack direction="row">
                 <Text 
                   style={{
-                  fontSize: 15,
-                  fontFamily: 'JosefinSans-Italic',
-                  // paddingTop: 6,
+                    fontSize: 15,
+                    fontFamily: 'JosefinSans-Italic',
+                    // paddingTop: 6,
                   }}
                 >
                   Parcelas: {' '}
@@ -127,13 +156,16 @@ const InstitutionItem = ({ item, route }) => {
               ownerName: `${item?.type} ${item?.name}`,
               flag: 'Instituição',
             })}
-          >
+            >
             <FontAwesomeIcon icon={faTree} size={30} color="#005000" />
           </Pressable>
         </Box>
         </Stack>
       </Stack>
     </TouchableOpacity>
+    </Box>
+    </Stack>
+
      <Stack direction="row" w="100%" style={{ paddingTop: 10,  }} >
         <Box w="100%">
           <Text 

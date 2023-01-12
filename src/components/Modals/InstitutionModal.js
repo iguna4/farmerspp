@@ -42,6 +42,8 @@ const InstitutionModal = (
         setInstitutionManagerPhone,
         setInstitutionNuit, 
         setIsPrivateInstitution,
+        setInstitutionLicence,
+
 
         setFarmerItem,
         farmerItem,
@@ -208,6 +210,9 @@ const InstitutionModal = (
         <Box w="60%">
             <Text style={styles.values}>
                 {farmerData?.nuit ? farmerData?.nuit + ' (NUIT)' : 'Nenhum (NUIT)'}
+            </Text>
+            <Text style={styles.values}>
+                {farmerData?.licence ? farmerData?.licence + ' (Alvará/Licença)' : 'Nenhum (Alvará/Licença)'}
             </Text>
         </Box>
     </Stack>

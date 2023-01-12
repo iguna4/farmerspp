@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         fontFamily: 'JosefinSans-Regular',
         paddingVertical: 10,
         color: 'grey',
-        fontSize: 16,
+        fontSize: 18,
     },
     secondDescription: {
         textAlign: 'center',

@@ -311,14 +311,14 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             </Box>
             <Box w="60%">
                 <Box>
+                    <Box style={styles.values}>
+                        {farmlandData.plantTypes?.plantTypes?.map(p=><Text key={p} style={styles.values}>{p}</Text>)}
+                    </Box>
                     <Text style={styles.values}>
-                        {farmlandData.plantTypes?.plantTypes?.map(p=>`${p}; `)}
-                    </Text>
-                    <Text style={styles.values}>
-                        {
+                        [ {
                         farmlandData.plantTypes?.plantTypes?.some(el=>el.includes('enxer')) 
-                        ?  farmlandData.plantTypes?.clones?.map(clone=>`${clone}; `) + '(clones)'
-                        : ''}
+                        ?  farmlandData.plantTypes?.clones?.map(clone=><Text key={clone} style={styles.values}>{clone}</Text>) + 'Clones desconhecidos'
+                        : ''} ]
                     </Text>
                 </Box>
             </Box>

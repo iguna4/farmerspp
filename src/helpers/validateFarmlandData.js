@@ -86,15 +86,15 @@ const validateFarmlandData = (
         });
         return false;               
     }
-    else if (
-            retrievedPlantTypes.some(el=>el.includes('enxert')) 
-        &&  retrievedClones?.length === 0
-        ){
-        setErrors({ ...errors,
-            plantTypes: 'Selecciona clones.',
-        });
-        return false;
-    }
+    // else if (
+    //         retrievedPlantTypes.some(el=>el.includes('enxert')) 
+    //     &&  retrievedClones?.length === 0
+    //     ){
+    //     setErrors({ ...errors,
+    //         plantTypes: 'Selecciona clones.',
+    //     });
+    //     return false;
+    // }
 
 
     const farmlandData = {

@@ -612,7 +612,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
 {   plantTypes.some((el)=>el.includes('enxert')) 
     && (
 
-        <FormControl isRequired my="1" isInvalid={'clones' in errors}>
+        <FormControl my="1" >
                 <FormControl.Label>Clones</FormControl.Label>
                 <MultipleSelectList
                   setSelected={(type)=>{
@@ -650,13 +650,15 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                         minHeight: 55,
                     }}
                     />
-                {
-                    'clones' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.clones}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-                }
+                
+                    {/* 'clones' in errors  */}
+                {/* ? <FormControl.ErrorMessage  */}
+                 {/* leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                 _text={{ fontSize: 'xs'}}>
+                     {errors?.clones}
+                     </FormControl.ErrorMessage>  */}
+                <FormControl.HelperText></FormControl.HelperText>
+                
             </FormControl>
     )        
     }

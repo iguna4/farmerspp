@@ -80,7 +80,7 @@ export default function GroupFarmerForm({
                         }}
                         mt={1}
                         dropdownCloseIcon={groupType 
-                                            ? <Icon name="close" size={25} color="red" onPress={()=>setGroupType('')} /> 
+                                            ? <Icon name="close" size={25} color="grey" onPress={()=>setGroupType('')} /> 
                                             : <Icon size={40} name="arrow-drop-down" color="#005000" />
                                         }
                         onValueChange={newGroupType => {
@@ -199,7 +199,7 @@ export default function GroupFarmerForm({
                                         ? <Icon 
                                             name="close" 
                                             size={25} 
-                                            color="red" 
+                                            color="grey" 
                                             onPress={()=>setGroupAffiliationYear('')} 
                                         /> 
                                         : <Icon 
@@ -314,7 +314,7 @@ export default function GroupFarmerForm({
                         endIcon: <CheckIcon size="5" />,
                     }}
                     dropdownCloseIcon={groupAdminPost 
-                                    ? <Icon name="close" size={25} color="red" onPress={()=>setGroupAdminPost('')} /> 
+                                    ? <Icon name="close" size={25} color="grey" onPress={()=>setGroupAdminPost('')} /> 
                                     : <Icon size={40} name="arrow-drop-down" color="#005000" />
                                 }
                     mt={1}
@@ -352,7 +352,7 @@ export default function GroupFarmerForm({
                         endIcon: <CheckIcon size="5" />
                     }}
                     dropdownCloseIcon={groupVillage
-                                    ? <Icon name="close" size={25} color="red" onPress={()=>setGroupVillage('')} /> 
+                                    ? <Icon name="close" size={25} color="grey" onPress={()=>setGroupVillage('')} /> 
                                     : <Icon size={40} name="arrow-drop-down" color="#005000" />
                                 }
                     mt={1}

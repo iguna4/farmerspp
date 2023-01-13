@@ -78,7 +78,7 @@ const FarmlandData = ({ farmland })=>{
         >
 
         <Stack w="100%" direction="row">
-                <Box w="35%" py="4">
+                <Box w="30%" py="4">
                     <Text
                         style={{
                             color: '#000',
@@ -89,7 +89,7 @@ const FarmlandData = ({ farmland })=>{
                         >
                     Descrição:</Text>
                 </Box>
-                <Box w="65%" py="4">
+                <Box w="70%" py="4">
                     <Text
                         style={{
                             color: 'grey',
@@ -112,7 +112,7 @@ const FarmlandData = ({ farmland })=>{
             </Stack>
             <CustomDivider />
             <Stack w="100%" direction="row">
-                <Box w="35%" py="4">
+                <Box w="30%" py="4">
                 <Text
                     style={{
                         color: '#000',
@@ -124,7 +124,7 @@ const FarmlandData = ({ farmland })=>{
                     Cajueiros:
                 </Text>
                 </Box>
-                <Box w="65%" py="4">
+                <Box w="70%" py="4">
                     <Box>
                         <Text                     
                             style={{
@@ -183,7 +183,7 @@ const FarmlandData = ({ farmland })=>{
             <CustomDivider />
 
             <Stack w="100%" direction="row">
-                <Box w="35%" py="4">
+                <Box w="30%" py="4">
                 <Text
                     style={{
                         color: '#000',
@@ -195,7 +195,7 @@ const FarmlandData = ({ farmland })=>{
                     Área:
                 </Text>
                 </Box>
-                <Box w="65%" py="4">
+                <Box w="70%" py="4">
                     <Box>
                         <Text                     
                             style={{
@@ -239,8 +239,32 @@ const FarmlandData = ({ farmland })=>{
                                     fontFamily: 'JosefinSans-Regular',
                                 }}                        
                                 >
-                                Posição: {point.position} (lat:{point.latitude + ' | ' + 'long:' + point.longitude})
+                                Posição {point.position}:
                             </Text>
+                            <Box
+                                style={{
+                                    marginLeft: 14,
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        color: 'grey',
+                                        fontSize: 14,
+                                        fontFamily: 'JosefinSans-Regular',
+                                    }}                            
+                                >
+                                    latitude:   {point.latitude}
+                                </Text>
+                                <Text
+                                    style={{
+                                        color: 'grey',
+                                        fontSize: 14,
+                                        fontFamily: 'JosefinSans-Regular',
+                                    }}                            
+                                >
+                                    longitude: {point.longitude}
+                                </Text>
+                            </Box>
                         </Box>)
                         ))                 
                         :
@@ -308,7 +332,7 @@ const FarmlandData = ({ farmland })=>{
             <CustomDivider />
 
             <Stack w="100%" direction="row">
-                <Box w="35%" py="4">
+                <Box w="30%" py="4">
                 <Text
                     style={{
                         color: '#000',
@@ -320,7 +344,7 @@ const FarmlandData = ({ farmland })=>{
                     Culturas consociadas:
                 </Text>
                 </Box>
-                <Box w="65%" py="4">
+                <Box w="70%" py="4">
                     <Box>
                         <Text
                             style={{

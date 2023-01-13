@@ -256,7 +256,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                                         ? <Icon 
                                             name="close" 
                                             size={25} 
-                                            color="red" 
+                                            color="grey" 
                                             onPress={()=>setPlantingYear('')} 
                                         /> 
                                         : <Icon 

@@ -5,12 +5,15 @@ import { Divider, Icon, Avatar } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 
 
-import { realmContext } from '../../models/realm';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import PersonalData from '../../components/PersonalData/PersonalData';
 import FarmlandData from '../../components/FarmlandData/FarmlandData';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
+import { getInitials } from '../../helpers/getInitials'
+
+
+import { realmContext } from '../../models/realm';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const uri = `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
@@ -73,7 +76,7 @@ const FarmerScreen = ({ route, navigation }) =>{
                   color: '#005000', 
                 }}
               >
-                Produtor
+                Produtor Singular
               </Text>
 
               <Stack direction="row" space={2} my="2">
@@ -141,6 +144,7 @@ const FarmerScreen = ({ route, navigation }) =>{
               </TouchableOpacity>
             </View>
             <Image 
+              alt={getInitials(farmer?.names?.surname)}
               resizeMethod='auto'
               style={[styles.stretch, { borderWidth: 3, borderColor: '#005000', backgroundColor: 'lightgrey', }]}
               source={{ uri }}  

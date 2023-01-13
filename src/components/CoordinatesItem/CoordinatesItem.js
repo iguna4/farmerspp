@@ -87,10 +87,10 @@ const CoordinatesItem = ({ item, farmlandId }) =>{
           }}
         />
 
-    <Pressable
-        onPress={()=>{
+        <Pressable
+            onPress={()=>{
             // console.log('point:', point)
-            if (!onPressed){
+                if (!onPressed){
                 // addLocationPoint(farmlandId, point, realm);
                 // setOnPressed(true);
             }
@@ -105,7 +105,6 @@ const CoordinatesItem = ({ item, farmlandId }) =>{
         <Stack direction="row" w="100%" >
             <Box w="20%" 
                 style={{ 
-                    // backgroundColor: '#005000', 
                     flex: 1, 
                     justifyContent: 'center', 
                     alignItems: 'center',
@@ -123,12 +122,40 @@ const CoordinatesItem = ({ item, farmlandId }) =>{
             <Box w="60%">
                 <Stack direction="row">
                     <Box>
-                        <Text style={{ color: '#000', fontFamily: 'JosefinSans-Regular'}}>Latitude:{'  '}</Text>
-                        <Text style={{ color: '#000', fontFamily: 'JosefinSans-Regular'}}>Longitude:{'  '}</Text>
+                        <Text 
+                            style={{ 
+                                color: '#000', 
+                                fontFamily: 'JosefinSans-Regular',
+                            }}
+                        >
+                            Latitude:{'  '}
+                        </Text>
+                        <Text 
+                            style={{ 
+                                color: '#000', 
+                                fontFamily: 'JosefinSans-Regular',
+                            }}
+                        >
+                            Longitude:{'  '}
+                        </Text>
                     </Box>
                     <Box>
-                        <Text style={{ color: '#000', fontFamily: 'JosefinSans-Regular'}}>{item?.latitude}</Text>
-                        <Text style={{ color: '#000', fontFamily: 'JosefinSans-Regular'}}>{item?.longitude}</Text>
+                        <Text 
+                            style={{ 
+                                color: '#000', 
+                                fontFamily: 'JosefinSans-Regular',
+                            }}
+                        >
+                            {item?.latitude}
+                        </Text>
+                        <Text 
+                            style={{ 
+                                color: '#000', 
+                                fontFamily: 'JosefinSans-Regular',
+                            }}
+                        >
+                            {item?.longitude}
+                        </Text>
                     </Box>
                 </Stack>
             </Box>

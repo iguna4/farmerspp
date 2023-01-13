@@ -165,6 +165,7 @@ export default function FarmersScreen({ route, navigation }) {
       style={{    
         flex: 1,
         backgroundColor: 'ghostwhite',
+        paddingBottom: 60,
       }}
     >
     <Box 
@@ -178,7 +179,7 @@ export default function FarmersScreen({ route, navigation }) {
             minHeight: "10%",
             width: '100%',
             paddingHorizontal: 15,
-            paddingTop: 10,
+            paddingTop: 5,
 
             borderTopWidth: 0,
             borderColor: '#EBEBE4',
@@ -195,9 +196,7 @@ export default function FarmersScreen({ route, navigation }) {
 
           </Center>
 
-          <Box w="70%" 
-
-          >
+          <Box w="70%">
             <Center>
               <Text
                 style={{ 
@@ -209,7 +208,7 @@ export default function FarmersScreen({ route, navigation }) {
                 {'Ancuabe'}
               </Text>
 
-              <Stack direction="row" space={2} my="2">
+              <Stack direction="row" space={2} my="1">
                 <Center>
                   <Text
                     style={{ fontFamily: 'JosefinSans-Regular', fonSize: 14, }}
@@ -234,8 +233,8 @@ export default function FarmersScreen({ route, navigation }) {
           </Box>
         </Stack>
       </View>
-      {/* <Box> */}
-      {/* </Box> */}
+
+
       <LottieAddButton
         styles={{ 
           zIndex: 3, 
@@ -307,7 +306,7 @@ export default function FarmersScreen({ route, navigation }) {
           </Box>
         )
       }
-      {/* </View> */}
+
       </Box>
     
 

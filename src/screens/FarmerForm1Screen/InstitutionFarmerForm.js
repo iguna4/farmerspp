@@ -115,7 +115,7 @@ export default function InstitutionFarmerForm({
                         placeholder="Escolha uma instituição"
                         minHeight={55}
                         dropdownCloseIcon={institutionType 
-                                            ? <Icon name="close" size={25} color="red" onPress={()=>setInstitutionType('')} /> 
+                                            ? <Icon name="close" size={25} color="grey" onPress={()=>setInstitutionType('')} /> 
                                             : <Icon size={40} name="arrow-drop-down" color="#005000" />
                                         }
                         _selectedItem={{
@@ -185,7 +185,7 @@ export default function InstitutionFarmerForm({
                         endIcon: <CheckIcon size="5" />,
                     }}
                     dropdownCloseIcon={institutionAdminPost 
-                                    ? <Icon name="close" size={25} color="red" onPress={()=>setInstitutionAdminPost('')} /> 
+                                    ? <Icon name="close" size={25} color="grey" onPress={()=>setInstitutionAdminPost('')} /> 
                                     : <Icon size={40} name="arrow-drop-down" color="#005000" />
                                 }
                     mt={1}
@@ -222,7 +222,7 @@ export default function InstitutionFarmerForm({
                         endIcon: <CheckIcon size="5" />,
                     }}
                     dropdownCloseIcon={institutionVillage 
-                                    ? <Icon name="close" size={25} color="red" onPress={()=>setInstitutionVillage('')} /> 
+                                    ? <Icon name="close" size={25} color="grey" onPress={()=>setInstitutionVillage('')} /> 
                                     : <Icon size={40} name="arrow-drop-down" color="#005000" />
                                 }
                     mt={1}

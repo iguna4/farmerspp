@@ -44,7 +44,7 @@ const FarmerTypeRadioButtons = ({ farmerType, setFarmerType}) =>{
                     fontSize: 18,
                 }}
                 value="Instituição" my="1" mx="1" colorScheme="emerald" size="sm">
-                Instituicional
+                Institucional
             </Radio>
             <Radio 
                 _text={{

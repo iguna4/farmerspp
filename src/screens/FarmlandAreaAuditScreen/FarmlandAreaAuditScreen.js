@@ -29,11 +29,12 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     const [confirmGeoAlert, setConfirmGeoAlert] = useState(false);
     const [rejectGeoAlert, setRejectGeoAlert] = useState(false);
     const [optionsAlert, setOptionsAlert] = useState(false);
+    const [failedGeoLocationRequest, setFailedGeoLocationRequest] = useState(false);
     const [permissionGranted, setPermissionGranted] = useState(false);
     const [flag, setFlag] = useState(false);
 
     const farmland = useObject('Farmland', farmlandId);
-    const { extremeCoordinates } = farmland;
+    // const { extremeCoordinates } = farmland;
 
     const requestLocationPermission = async () => {
         try {
@@ -41,8 +42,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION, 
                 // PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
                 {
-                    title: 'Connect Caju App',
-                    message: 'Connect Caju App pede a permissão para usar a sua localização',
+                    title: 'ConnectCaju',
+                    message: 'ConnectCaju pede a permissão para usar a sua localização',
                     buttonNegative: 'Mais tarde',
                     buttonPositive: 'OK'
                 }
@@ -59,25 +60,31 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             } catch (err) {
                 console.log('not granted:', granted);
                 console.warn(err);
+                setFailedGeoLocationRequest(true);
             }
         };
+
+    // let farmland;
         
-    const addCoordinates = useCallback((realm, farmlandId, point)=>{
+    const addCoordinates = (farmland, point)=>{
         realm.write(()=>{
-            let farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
-            farmland.extremeCoordinates = [...farmland.extremeCoordinates, point];
+
+            farmland.extremeCoordinates?.push(point);
+            console.log('extremeCoordinates:', JSON.stringify(farmland.extremeCoordinates))
+        
         })
 
-    }, [farmlandId, point, realm]);
+    };
+    // const addCoordinates = useCallback((realm, farmlandId, extremeCoordinates)=>{
+    //     realm.write(()=>{
+    //         let farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
+    //         farmland.extremeCoordinates = extremeCoordinates;
+    //         // console.log('Farmland:', JSON.stringify(farmland))
+        
+    //     })
 
-    // useEffect(()=>{
-    //     if (flag) {
-    //         setOptionsAlert(false);
-    //     }
+    // }, [farmlandId, point, realm]);
 
-    // }, [flag])
-
- 
 
     const keyExtractor = (item, index)=>index.toString();
 
@@ -107,6 +114,24 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             <Box w="20%">
             </Box>
         </Stack>
+
+        <AwesomeAlert
+          show={failedGeoLocationRequest}
+          showProgress={false}
+          title="Geolocalização"
+          message="Não foi possível processar o pedido de acesso à localização do dispositivo. Tente mais tarde!"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={false}
+          showConfirmButton={true}
+          confirmText="   OK!   "
+          confirmButtonColor="#DD6B55"
+          onConfirmPressed={() => {
+            setFailedGeoLocationRequest(false);
+          }}
+        />
+
+
         <AwesomeAlert
           show={confirmGeoAlert}
           showProgress={false}
@@ -204,7 +229,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                             color: 'grey',
                         }}
                     >
-                    Captura os pontos extremos da área com cajueiros
+                        Captura os pontos extremos da área com cajueiros
                     </Text>
                 </Box>
                 <Box w="20%"
@@ -214,7 +239,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                         justifyContent: 'center'
                     }}
                 >
-        {   extremeCoordinates.length > 0 &&
+        {   farmland?.extremeCoordinates.length > 0 &&
                  <TouchableOpacity
                         onPress={async ()=>{
                             if (!permissionGranted){
@@ -225,15 +250,18 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                                 Geolocation.getCurrentPosition(
                                     (position) => {
                                         // get the exact position to the point
-                                        const number = getPosition(extremeCoordinates);
-                                        console.log('positionNumber: ', number);
-                                        setPoint({
+                                        const number = getPosition(farmland?.extremeCoordinates);
+                                        let newCoordinates = [...farmland?.extremeCoordinates, {
+                                            latitude: position.coords.latitude,
+                                            longitude: position.coords.longitude,
+                                            position: number,
+                                        }]
+                                        // console.log('extremeCoordinates:', JSON.stringify(newCoordinates));
+                                        addCoordinates(farmland, {
                                             latitude: position.coords.latitude,
                                             longitude: position.coords.longitude,
                                             position: number,
                                         });
-                                        
-                                        // setOptionsAlert(true);
                                     },
                                     (error) => {
                                     Alert.alert('Falha', 'Tenta novamente!', {
@@ -257,7 +285,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 </Box>
             </Stack>
         </Box>
-    {    extremeCoordinates.length === 0 &&   
+    {    farmland?.extremeCoordinates.length === 0 &&   
         <Center
             style={{ minHeight: 300, }}
         >
@@ -270,14 +298,19 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
        
                     Geolocation.getCurrentPosition(
                         (position) => {
-                            const number = getPosition(extremeCoordinates);
-                            console.log('positionNumber: ', number);
-                            setPoint({
+                            const number = getPosition(farmland?.extremeCoordinates);
+                            let newCoordinates = [...farmland?.extremeCoordinates, {
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude,
+                                position: number,
+                            }]
+                            // console.log('extremeCoordinates:', JSON.stringify(newCoordinates));
+
+                            addCoordinates(farmland, {
                                 latitude: position.coords.latitude,
                                 longitude: position.coords.longitude,
                                 position: number,
                             });
-                            // setOptionsAlert(true);
                         },
                         (error) => {
                             Alert.alert('Falha', 'Tenta novamente!', {
@@ -307,13 +340,13 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     color: '#000',
                 }}
             >
-                Adicione o primeiro ponto das coordenadas do pomar!
+                Adicione o primeiro ponto das coordenadas da parcela!
             </Text>   
         </Center>
     }
 
     <FlatList
-        data={extremeCoordinates}
+        data={farmland?.extremeCoordinates}
         keyExtractor={keyExtractor}
         renderItem={({ item })=>{
             return <CoordinatesItem item={item} farmlandId={farmlandId}  />
@@ -326,7 +359,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     >
 
 {        
-    extremeCoordinates.length > 2 && 
+    farmland?.extremeCoordinates.length > 2 && 
     (
 
         <TouchableOpacity

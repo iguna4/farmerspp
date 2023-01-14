@@ -15,6 +15,7 @@ import { faTree } from '@fortawesome/free-solid-svg-icons';
 import { getInitials } from '../../helpers/getInitials'
 
 import { realmContext } from '../../models/realm';
+import COLORS from '../../consts/colors';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 
@@ -34,7 +35,7 @@ const InstitutionScreen = ({ route, navigation }) =>{
         <SafeAreaView 
             style={{ 
                 minHeight: '100%', 
-                backgroundColor: 'ghostwhite',
+                backgroundColor: COLORS.ghostwhite,
 
             }}
         >
@@ -65,7 +66,7 @@ const InstitutionScreen = ({ route, navigation }) =>{
 
           <Icon 
               name="arrow-back-ios" 
-              color="#005000"
+              color={COLORS.main}
               size={35}
               
               />
@@ -80,7 +81,7 @@ const InstitutionScreen = ({ route, navigation }) =>{
                 style={{ 
                   fontFamily: 'JosefinSans-Bold', 
                   fontSize: 20, 
-                  color: '#005000', 
+                  color: COLORS.main, 
                 }}
               >
                 Produtor Institucional
@@ -89,13 +90,19 @@ const InstitutionScreen = ({ route, navigation }) =>{
               <Stack direction="row" space={2} my="2">
                 <Center>
                   <Text
-                    style={{ fontFamily: 'JosefinSans-Regular', fonSize: 14, }}
+                    style={{ 
+                      fontFamily: 'JosefinSans-Regular', 
+                      fonSize: 14, 
+                    }}
                   >
                   </Text>
                 </Center>
                 <Center>
                   <Text
-                    style={{ fontFamily: 'JosefinSans-Regular', fonSize: 14, }}
+                    style={{ 
+                      fontFamily: 'JosefinSans-Regular', 
+                      fonSize: 14, 
+                    }}
                   >
                     </Text>
                 </Center>
@@ -140,26 +147,32 @@ const InstitutionScreen = ({ route, navigation }) =>{
               <View
                 style={{
                   position: 'absolute',
-                  top: 225,
-                  left: 60,
+                  top: 180,
+                  left: 120,
                   zIndex: 2,
                 }}
                 >
                 <TouchableOpacity>
-                  <Icon name="add-a-photo" size={30} color="#005000" />
+                  <Icon name="add-a-photo" size={30} color={COLORS.main} />
                 </TouchableOpacity>
               </View>
-            <Image 
+              <Icon name="account-circle" size={245} color={COLORS.grey} />
+            {/* <Image 
               alt={getInitials(farmer?.manager?.fullname)}
               resizeMethod='auto'
-              style={[styles.stretch, { borderWidth: 3, borderColor: '#005000', backgroundColor: 'lightgrey', }]}
+              style={[
+                styles.stretch, 
+                { borderWidth: 3, 
+                  borderColor: COLORS.main, 
+                  backgroundColor: 'lightgrey', 
+                }]}
               source={{ uri }}          
-            />
+            /> */}
               {/* </View> */}
                 <Text 
                 style={{
                   
-                  color: '#005000',
+                  color: COLORS.main,
                   fontSize: 24,
                   fontFamily: 'JosefinSans-Bold',
                   textAlign: 'center',
@@ -171,7 +184,7 @@ const InstitutionScreen = ({ route, navigation }) =>{
                 <Text
                 style={{
                   
-                  color: '#005000',
+                  color: COLORS.main,
                   fontSize: 12,
                   fontFamily: 'JosefinSans-Bold',
                   textAlign: 'center',
@@ -203,7 +216,7 @@ const InstitutionScreen = ({ route, navigation }) =>{
     >
         <Text style={{
             fontSize: 18,
-            color: '#000',
+            color: COLORS.black,
             textAlign: 'center',
             fontFamily: 'JosefinSans-Bold',
             // paddingVertical: 5,
@@ -213,7 +226,7 @@ const InstitutionScreen = ({ route, navigation }) =>{
         <Text
           style={{
               fontSize: 14,
-              color: 'grey',
+              color: COLORS.grey,
               textAlign: 'center',
               fontFamily: 'JosefinSans-Regular',
               paddingBottom: 5,
@@ -237,7 +250,7 @@ const InstitutionScreen = ({ route, navigation }) =>{
                   flag: 'Instituição',
                 })}
               >
-                <Icon name="add-circle" color="red" size={40} />
+                <Icon name="add-circle" color={COLORS.second} size={40} />
 
               </TouchableOpacity>
             </Box>            

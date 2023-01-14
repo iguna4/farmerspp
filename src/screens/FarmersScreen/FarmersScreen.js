@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import {FlatList, InteractionManager, SafeAreaView, Text, View, PermissionsAndroid, Animated} from 'react-native';
+import {FlatList, InteractionManager, Image, SafeAreaView, Text, View, PermissionsAndroid, Animated} from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import {ListItem, Avatar, Icon } from '@rneui/themed';
 
@@ -194,7 +194,11 @@ export default function FarmersScreen({ route, navigation }) {
           direction="row" w="100%"
         >
           <Center w="10%">
-
+            <Image
+                  style={{ width: 40, height: 40, borderRadius: 100, }}
+                  source={require('../../../assets/images/iamLogo2.png')}
+                  // resizeMode={FastImage.resizeMode.contain}
+            />
           </Center>
 
           <Box w="70%">

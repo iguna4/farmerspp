@@ -3,6 +3,7 @@ import { Center, Alert, Stack, Box } from "native-base";
 import React, { useState } from "react";
 import { Icon, CheckBox } from '@rneui/themed';
 import { Button, Text, View, Modal, Pressable, TouchableOpacity } from "react-native";
+import COLORS from "../../consts/colors";
 // import Modal from "react-native-modal";
 
 function SuccessAlert({ 
@@ -40,9 +41,9 @@ function SuccessAlert({
                                 setIsCoordinatesModalVisible(false);
                             }}                            
                         >
-                            <Icon name='arrow-back-ios' color="#005000" size={30}  />
+                            <Icon name='arrow-back-ios' color={COLORS.main} size={30}  />
                             <Text
-                            style={{ fontSize: 20, color: '#005000', fontFamily: 'JosefinSans-Bold', }}
+                            style={{ fontSize: 20, color: COLORS.main, fontFamily: 'JosefinSans-Bold', }}
                             >Voltar</Text>
                         </TouchableOpacity>
                     </Box>
@@ -58,7 +59,7 @@ function SuccessAlert({
                     w="100%"
                 >
                     <Box alignItems={'center'}>
-                        <Icon name="check-circle" size={200} color="#005000" />
+                        <Icon name="check-circle" size={200} color={COLORS.main} />
                     </Box>
                     <Box 
                         w="100%" 
@@ -69,7 +70,7 @@ function SuccessAlert({
                             style={{ 
                                 fontFamily: 'JosefinSans-Bold', 
                                 textAlign: 'center',
-                                color: '#005000', 
+                                color: COLORS.main, 
                                 fontSize: 40, 
                                 paddingHorizontal: 30,
                             }}
@@ -95,7 +96,7 @@ function SuccessAlert({
             style={{
 
                 borderWidth: 2,
-                borderColor: '#005000',
+                borderColor: COLORS.main,
                 borderRadius: 30,
                 width: 300,
                 height: 60,
@@ -107,7 +108,7 @@ function SuccessAlert({
                 style={{ 
                     fontSize: 30, 
                     fontFamily: 'JosefinSans-Bold', 
-                    color: '#005000'
+                    color: COLORS.main,
                 }}
             >
                 Auditar Área
@@ -129,7 +130,7 @@ function SuccessAlert({
                 style={{
 
                     borderWidth: 2,
-                    borderColor: '#005000',
+                    borderColor: COLORS.main,
                     borderRadius: 30,
                     width: 300,
                     height: 60,
@@ -141,7 +142,7 @@ function SuccessAlert({
                     style={{ 
                         fontSize: 30, 
                         fontFamily: 'JosefinSans-Bold', 
-                        color: '#005000'
+                        color: COLORS.main,
                     }}
                 >
                     Registar Parcela

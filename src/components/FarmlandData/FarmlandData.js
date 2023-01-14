@@ -8,6 +8,7 @@ import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion
 import { realmContext } from '../../models/realm';
 import CustomDivider from '../Divider/CustomDivider';
 import { useNavigation } from '@react-navigation/native';
+import COLORS from '../../consts/colors';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 
@@ -36,7 +37,7 @@ const FarmlandData = ({ farmland })=>{
             style={{                     
                 minHeight: 100,
                 paddingTop: 24,
-                backgroundColor: '#005060',
+                backgroundColor: COLORS.second,
                 paddingHorizontal: 10,
                 // marginVertical: 5,
                 
@@ -51,7 +52,7 @@ const FarmlandData = ({ farmland })=>{
                 <Text
                     style={{ 
                         fontSize: 18, 
-                        color: 'ghostwhite',
+                        color: COLORS.ghostwhite,
                         fontFamily: 'JosefinSans-Bold',
 
                     }}
@@ -61,7 +62,7 @@ const FarmlandData = ({ farmland })=>{
                 <Text
                     style={{ 
                         fontSize: 14, 
-                        color: 'ghostwhite',
+                        color: COLORS.ghostwhite,
                         fontFamily: 'JosefinSans-Bold',
                         textAlign: 'right',
                     }}
@@ -81,7 +82,7 @@ const FarmlandData = ({ farmland })=>{
                 <Box w="30%" py="4">
                     <Text
                         style={{
-                            color: '#000',
+                            color: COLORS.black,
                             fontSize: 18,
                             fontFamily: 'JosefinSans-Bold',
                             
@@ -92,7 +93,7 @@ const FarmlandData = ({ farmland })=>{
                 <Box w="70%" py="4">
                     <Text
                         style={{
-                            color: 'grey',
+                            color: COLORS.grey,
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
@@ -101,7 +102,7 @@ const FarmlandData = ({ farmland })=>{
                     </Text>
                     <Text
                         style={{
-                            color: 'grey',
+                            color: COLORS.grey,
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
@@ -115,7 +116,7 @@ const FarmlandData = ({ farmland })=>{
                 <Box w="30%" py="4">
                 <Text
                     style={{
-                        color: '#000',
+                        color: COLORS.black,
                         fontSize: 18,
                         fontFamily: 'JosefinSans-Bold',
                         
@@ -128,7 +129,7 @@ const FarmlandData = ({ farmland })=>{
                     <Box>
                         <Text                     
                             style={{
-                                color: 'grey',
+                                color: COLORS.grey,
                                 fontSize: 14,
                                 fontFamily: 'JosefinSans-Regular',
                             }}
@@ -137,7 +138,7 @@ const FarmlandData = ({ farmland })=>{
                         </Text>
                         <Text 
                             style={{
-                                color: 'grey',
+                                color: COLORS.grey,
                                 fontSize: 14,
                                 fontFamily: 'JosefinSans-Regular',
                             }}                        
@@ -146,7 +147,7 @@ const FarmlandData = ({ farmland })=>{
                         </Text>
                         <Text 
                             style={{
-                                color: 'grey',
+                                color: COLORS.grey,
                                 fontSize: 14,
                                 fontFamily: 'JosefinSans-Regular',
                             }}                        
@@ -158,7 +159,7 @@ const FarmlandData = ({ farmland })=>{
                     <Box>
                         {farmland.plantTypes?.plantTypes?.map(p=>
                         (<Text key={p}                             style={{
-                                color: 'grey',
+                                color: COLORS.grey,
                                 fontSize: 14,
                                 fontFamily: 'JosefinSans-Regular',
                             }}>
@@ -167,7 +168,7 @@ const FarmlandData = ({ farmland })=>{
                     </Box>
                     <Text 
                         style={{
-                            color: 'grey',
+                            color: COLORS.grey,
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}
@@ -186,7 +187,7 @@ const FarmlandData = ({ farmland })=>{
                 <Box w="30%" py="4">
                 <Text
                     style={{
-                        color: '#000',
+                        color: COLORS.black,
                         fontSize: 18,
                         fontFamily: 'JosefinSans-Bold',
                         
@@ -199,7 +200,7 @@ const FarmlandData = ({ farmland })=>{
                     <Box>
                         <Text                     
                             style={{
-                                color: 'grey',
+                                color: COLORS.grey,
                                 fontSize: 14,
                                 fontFamily: 'JosefinSans-Regular',
                             }}
@@ -209,7 +210,7 @@ const FarmlandData = ({ farmland })=>{
     {     farmland.auditedArea ?
                    <Text 
                             style={{
-                                color: 'grey',
+                                color: COLORS.grey,
                                 fontSize: 14,
                                 fontFamily: 'JosefinSans-Regular',
                             }}                        
@@ -219,7 +220,7 @@ const FarmlandData = ({ farmland })=>{
                         :
                         <Text 
                         style={{
-                            color: 'grey',
+                            color: COLORS.grey,
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}                        
@@ -234,7 +235,7 @@ const FarmlandData = ({ farmland })=>{
                         <Box key={point.position + index}>
                             <Text 
                                 style={{
-                                    color: 'grey',
+                                    color: COLORS.grey,
                                     fontSize: 14,
                                     fontFamily: 'JosefinSans-Regular',
                                 }}                        
@@ -248,7 +249,7 @@ const FarmlandData = ({ farmland })=>{
                             >
                                 <Text
                                     style={{
-                                        color: 'grey',
+                                        color: COLORS.grey,
                                         fontSize: 14,
                                         fontFamily: 'JosefinSans-Regular',
                                     }}                            
@@ -257,7 +258,7 @@ const FarmlandData = ({ farmland })=>{
                                 </Text>
                                 <Text
                                     style={{
-                                        color: 'grey',
+                                        color: COLORS.grey,
                                         fontSize: 14,
                                         fontFamily: 'JosefinSans-Regular',
                                     }}                            
@@ -270,7 +271,7 @@ const FarmlandData = ({ farmland })=>{
                         :
                         <Text 
                             style={{
-                                color: 'grey',
+                                color: COLORS.grey,
                                 fontSize: 14,
                                 fontFamily: 'JosefinSans-Regular',
                             }}                        
@@ -309,7 +310,7 @@ const FarmlandData = ({ farmland })=>{
                                         icon={{ 
                                             name: "pencil", 
                                             type: "font-awesome", 
-                                            color: farmland?.auditedArea ? 'grey': 'red', 
+                                            color: farmland?.auditedArea ? COLORS.grey: 'red', 
                                         }}
                                     />
                                     <Text

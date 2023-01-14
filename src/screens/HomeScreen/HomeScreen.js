@@ -19,15 +19,25 @@ import { useFocusEffect } from '@react-navigation/native';
 import ImageSliderBox from '../../components/ImageSliderBox/ImageSliderBox';
 import { months } from '../../helpers/dates';
 import CustomDivider from '../../components/Divider/CustomDivider'
+import {
+  Menu,
+  MenuProvider,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+  renderers
+ } from "react-native-popup-menu";
 
 
 import { realmContext } from '../../models/realm';
+import PopupMenu from '../../components/PopupMenu/PopupMenu';
 const { useRealm, useQuery } = realmContext; 
 
 
 export default function HomeScreen({ navigation }) {
   const realm = useRealm();
   const [isPerformanceButtonActive, setIsPerformanceButtonActive] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   realm.write(()=>{
 
@@ -67,39 +77,28 @@ export default function HomeScreen({ navigation }) {
       <View
         style={{
           width: '100%',
-          height: "23%",
           borderBottomWidth: 1,
           borderRightWidth: 1,
           borderLeftWidth: 1,
           borderColor: '#EBEBE4',
           backgroundColor: '#EBEBE4',
-          // justifyContent: 'center',
           borderBottomLeftRadius: 50,
           borderBottomRightRadius: 50,
-          marginBottom: 20,
+          marginBottom: 50,
         
-          shadowColor: COLORS.main,
-          shadowOffset: {
-              // width: 1,
-              // height: 1,
-            },
-          // shadowOpacity: 1,
-          // shadowRadius: 0.65,
-          
-          // elevation: 1,          
+          shadowColor: COLORS.main,       
         }}
       >
         <Box
           style={{
-            padding: 15,
+            paddingHorizontal: 15,
           }}
         >
-          <Stack direction="row" w="100%">
-            <Center w="30%">
+        <Stack direction="row" w="100%" pb="4">
+        <Box w="30%" alignItems={'center'}>
               <Image
-                style={{ width: 70, height: 70, borderRadius: 100, }}
+                style={{ width: 50, height: 50, borderRadius: 100, }}
                 source={require('../../../assets/images/iamLogo2.png')}
-                // resizeMode={FastImage.resizeMode.contain}
               />
               <Text
                 style={{
@@ -108,53 +107,42 @@ export default function HomeScreen({ navigation }) {
                   fontFamily: 'JosefinSans-Bold',
                 }}
               >IAM, IP</Text>
-            </Center>
-            <Box w="70%" style={{
-              // flexDirection:'row',
-              // width: '70%',
-            }}>
+          </Box>
+          <Box w="40%"  >
+          </Box>
+          <Box w="30%" alignItems={'center'}>
+            <TouchableOpacity
+              onPress={()=>{
+                setIsOpen(prev=>!prev);
+              }}
+            >
+              <Icon name="account-circle" color={COLORS.main} size={50}  />
               <Text
                 style={{
-                  fontSize: 24,
+                  color: COLORS.grey,
                   fontFamily: 'JosefinSans-Bold',
-                  color: COLORS.main,
-                  textAlign: 'right',
-                  
+                  fontSize: 18,
                 }}
-                >
-                  ConnectCaju
-                </Text>
-                <Text
-                  style={{
-                      fontSize: 16,
-                      fontFamily: 'JosefinSans-Bold',
-                      color: COLORS.main,
-                      textAlign: 'right',
-                    }}
-                >Ancuabe</Text>
+                >Carlos</Text>
+            </TouchableOpacity>
+          </Box>
+        </Stack>
+
+          <Stack direction="row" w="100%">
+            <Center w="30%">
+            </Center>
+            <Box w="70%">
               </Box>
           </Stack>
           </Box>
       </View>
 
-      <View
+{    !isOpen &&
+  <View
         style={{
-          // height: '7%',
-          paddingHorizontal: 10,
+          padding: 10,
         }}
       >
-        <Text
-          style={{
-            textAlign: 'right',
-            color: COLORS.grey,
-            fontFamily: 'JosefinSans-Bold',
-            fontSize: 18,
-            paddingBottom: 15,
-          }}
-        >
-          Carlos Eduardo Langa
-        </Text>
-
 
         <View 
           style={{ 
@@ -596,7 +584,108 @@ export default function HomeScreen({ navigation }) {
        </View>
 
       </View>
+      
+    }
+  
 
+
+      <MenuProvider
+        style={{
+          position: 'absolute',
+          top: 40,
+          left: 30,
+          zIndex: 4,
+        }}
+      >
+        <Menu
+        renderer={renderers.SlideInMenu}
+          opened={isOpen}
+          onBackdropPress={() =>{}}
+          onSelect={()=>{}}
+        >
+          <MenuTrigger
+            
+            customStyles={{
+              triggerWrapper: {
+                position: 'absolute', 
+                top: -30, 
+                left: -20,
+                zIndex: 6,
+              },
+            }}
+          >
+             {/* <Icon
+              onPress={()=>setIsOpen(true)}
+             name="add-circle" color="#005000" size={80} /> */}
+          </MenuTrigger>
+          <MenuOptions>
+          <View 
+            style={{
+              flex: 1,
+              backgroundColor: 'ghostwhite',
+              height: "80%",
+              width: '100%',
+              paddingBottom: 30,
+              zIndex: 4,
+            }}
+            >
+            <Stack direction="row" w="100%">
+              <Box w="80%">
+
+
+              </Box>
+              <Box w="20%" style={{
+                marginTop: 20,
+                paddingRight: 20,
+              }}>
+
+                <Icon 
+                  onPress={()=>{
+                    setIsOpen(false)}
+                  }
+                  name="close" size={35} color={COLORS.main} />
+              </Box>
+              </Stack>
+
+
+            <MenuOption 
+              customStyles={{
+                optionWrapper: {
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  height: 45,
+                },
+              }}
+              onSelect={() => {
+                console.log('sessao terminada!')
+              }} 
+              >
+            <Box
+              style={{
+                paddingVertical: 5,
+              }}
+             >
+              <Stack direction="row" space={4}  ml="7">
+                <Icon name="logout" size={30} color="red" />
+                <Text 
+                  style={{
+                    color: 'red', 
+                    fontSize: 18, 
+                    fontFamily: 'JosefinSans-Bold'
+                  }}
+                  >
+                    Terminar Sessão
+                  </Text>
+              </Stack>
+            </Box>            
+            </MenuOption>
+
+
+            </View>
+          </MenuOptions>
+        </Menu>
+      </MenuProvider>
     </SafeAreaView>
   )
 }

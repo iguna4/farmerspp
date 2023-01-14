@@ -1,6 +1,7 @@
 import React from "react";
 import { Alert, Collapse, Button, VStack, HStack, IconButton, CloseIcon, Box, Text, Center, NativeBaseProvider } from "native-base";
 import { Pressable } from "react-native";
+import COLORS from "../../consts/colors";
 
 const ErrorAlert = ({ errorAlert, setErrorAlert })=> {
 //   const [show, setShow] = React.useState(true);
@@ -46,7 +47,7 @@ const ErrorAlert = ({ errorAlert, setErrorAlert })=> {
     >
         <Text
             style={{
-                color: '#005000',
+                color: COLORS.main,
                 fontSize: 18,
                 fontFamily: 'JosefinSans-Regular',
                 textDecoration: 'underline',

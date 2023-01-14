@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Pressable, View, Modal, StyleSheet } from 'react-native';
 import LottieAddButton from '../Buttons/LottieAddButton';
 import LottieProcessCompletedButton from '../Buttons/LottieProcessCompletedButton';
+import COLORS from '../../consts/colors';
 
 export default function SuccessModal({
     addDataModalVisible,
@@ -52,7 +53,8 @@ export default function SuccessModal({
                 alignItems: 'center'
             }}
             >
-            <LottieProcessCompletedButton />
+            {/* <LottieProcessCompletedButton /> */}
+            <Icon name="check-circle" size={100} color={COLORS.main} />
             <View 
                 style={{ 
                     flex: 1,
@@ -66,7 +68,7 @@ export default function SuccessModal({
                     paddingVertical: 10,
                     fontSize: 18,
                     fontFamily: 'JosefinSans-Regular',
-                    color: '#005000',
+                    color: COLORS.main,
                 }}
                 >
                     O registo ocorrido com sucesso!

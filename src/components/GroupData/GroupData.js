@@ -7,6 +7,7 @@ import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion
 
 import { realmContext } from '../../models/realm';
 import CustomDivider from '../../components/Divider/CustomDivider';
+import COLORS from '../../consts/colors';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const GroupData = ({ farmer })=>{
@@ -25,7 +26,7 @@ const GroupData = ({ farmer })=>{
             style={{                     
                 minHeight: 100,
                 paddingTop: 24,
-                backgroundColor: '#005040',
+                backgroundColor: COLORS.main,
                 paddingHorizontal: 10,
                 marginVertical: 10,
                 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box,  Stack, Radio,  } from 'native-base';
+import COLORS from '../../consts/colors';
 
 
 
@@ -31,7 +32,7 @@ const FarmerTypeRadioButtons = ({ farmerType, setFarmerType}) =>{
             <Radio 
                 _text={{
                     fontFamily: 'JosefinSans-Bold',
-                    color: '#005000',
+                    color: COLORS.main,
                     fontSize: 18,
                 }}
                 value="Indivíduo" my="1"  colorScheme="emerald" size="sm">
@@ -40,7 +41,7 @@ const FarmerTypeRadioButtons = ({ farmerType, setFarmerType}) =>{
             <Radio 
                 _text={{
                     fontFamily: 'JosefinSans-Bold',
-                    color: '#005000',
+                    color: COLORS.main,
                     fontSize: 18,
                 }}
                 value="Instituição" my="1" mx="1" colorScheme="emerald" size="sm">
@@ -49,10 +50,11 @@ const FarmerTypeRadioButtons = ({ farmerType, setFarmerType}) =>{
             <Radio 
                 _text={{
                     fontFamily: 'JosefinSans-Bold',
-                    color: '#005000',
+                    color: COLORS.main,
                     fontSize: 18,
                 }}
-                value="Grupo" my="1" mx="1" colorScheme="emerald" size="sm">
+                value="Grupo" 
+                my="1" mx="1" colorScheme="emerald" size="sm">
                 Grupo
             </Radio>
             </Stack>

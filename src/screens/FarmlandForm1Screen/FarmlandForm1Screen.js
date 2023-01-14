@@ -27,6 +27,7 @@ import { faTree } from '@fortawesome/free-solid-svg-icons';
 import TreeComponent from '../../components/LottieComponents/TreeComponent';
 import SuccessFarmlandModal from '../../components/Modals/SuccessFarmlandModal';
 import SuccessAlert from '../../components/Alerts/SuccessAlert';
+import COLORS from '../../consts/colors';
 const { useRealm, useQuery } = realmContext; 
 
 // const { useRealm, useObject } = AppContext;
@@ -181,7 +182,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             <Box w="10%">
                     <Icon 
                         name="arrow-back-ios" 
-                        color="#005000"
+                        color={COLORS.main}
                         size={35}
                         onPress={()=>navigation.goBack()}
                     />
@@ -192,7 +193,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                             textAlign: 'center', 
                             fontFamily: 'JosefinSans-Bold', 
                             fontSize: 24, 
-                            color: '#005000',  }}
+                            color: COLORS.main,  }}
                     >
                         Parcela
                     </Text>
@@ -262,7 +263,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                                         : <Icon 
                                             size={40} 
                                             name="arrow-drop-down" 
-                                            color="#005000" 
+                                            color={COLORS.main} 
                                         />
                                     }
                                 mt={1}
@@ -341,7 +342,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                         <Icon 
                         size={40} 
                         name="arrow-drop-down" 
-                        color="#005000" 
+                        color={COLORS.main} 
                         />
                     }
                     closeicon={
@@ -577,7 +578,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                         <Icon 
                             size={40} 
                             name="arrow-drop-down" 
-                            color="#005000" 
+                            color={COLORS.main} 
                             />
                         }
                         closeicon={
@@ -628,7 +629,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                         <Icon 
                             size={40} 
                             name="arrow-drop-down" 
-                            color="#005000" 
+                            color={COLORS.main} 
                         />
                     }
                     closeicon={

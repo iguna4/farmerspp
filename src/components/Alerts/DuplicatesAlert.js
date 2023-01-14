@@ -4,6 +4,7 @@ import { Alert, Collapse, Button, VStack, HStack, IconButton, CloseIcon, Box, Ce
 import { FlatList, Pressable, ScrollView, View, Text} from "react-native";
 import { Icon, CheckBox } from '@rneui/themed';
 import DuplicatesAlertItem from "./DuplicatesAlertItem";
+import COLORS from "../../consts/colors";
 
 
 const DuplicatesAlert = ({ 
@@ -110,7 +111,7 @@ const DuplicatesAlert = ({
               >
               <Text
                   style={{
-                      color: '#005000',
+                      color: COLORS.main,
                       fontSize: 18,
                       fontFamily: 'JosefinSans-Regular',
                       textDecoration: 'underline',

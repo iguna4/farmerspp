@@ -27,11 +27,12 @@ import { useNavigation } from "@react-navigation/native";
           position: 'absolute',
           top: 40,
           left: 30,
+          zIndex: 4,
         }}
       >
         <Menu
         renderer={renderers.SlideInMenu}
-          opened={isOpen}
+          opened={true}
           onBackdropPress={() =>{}}
           onSelect={()=>{}}
         >
@@ -46,9 +47,9 @@ import { useNavigation } from "@react-navigation/native";
               },
             }}
           >
-             <Icon
+             {/* <Icon
               onPress={()=>setIsOpen(true)}
-             name="add-circle" color="#005000" size={80} />
+             name="add-circle" color="#005000" size={80} /> */}
           </MenuTrigger>
           <MenuOptions>
           <View 
@@ -58,6 +59,7 @@ import { useNavigation } from "@react-navigation/native";
               height: "80%",
               width: '100%',
               paddingBottom: 30,
+              zIndex: 4,
             }}
             >
             <Stack direction="row" w="100%">

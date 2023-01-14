@@ -44,6 +44,7 @@ import { realmContext } from '../../models/realm';
 import IndividualFarmerForm from './IndividualFarmerForm';
 import InstitutionFarmerForm from './InstitutionFarmerForm';
 import GroupFarmerForm from './GroupFarmerForm';
+import COLORS from '../../consts/colors';
 const {useRealm} = realmContext;
 
 export default function FarmerForm1Screen({ route, navigation }) {
@@ -323,7 +324,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                     <Box w="10%">
                         <Icon 
                             name="arrow-back-ios" 
-                            color="#005000"
+                            color={COLORS.main}
                             size={35}
                             onPress={()=>navigation.goBack()}
                         />
@@ -334,7 +335,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                                 textAlign: 'center', 
                                 fontFamily: 'JosefinSans-Bold', 
                                 fontSize: 24, 
-                                color: '#005000',  
+                                color: COLORS.main,  
                             }}
                         >
                             Produtor

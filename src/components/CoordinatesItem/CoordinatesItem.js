@@ -9,6 +9,7 @@ import CustomDivider from "../Divider/CustomDivider";
 
 import { realmContext } from '../../models/realm';
 import { updateCoordinates } from "../../helpers/updateCoordinates";
+import COLORS from "../../consts/colors";
 const {useRealm, useObject, useQuery } = realmContext;
 
 let FLAG = false;
@@ -150,7 +151,7 @@ const CoordinatesItem = ({ item, farmland }) =>{
                     <Icon 
                         name={item.icon} 
                         size={25} 
-                        color={item.icon === 'check-circle' ? '#005000' : 'red'} 
+                        color={item.icon === 'check-circle' ? COLORS.main : 'red'} 
                         />
                 </TouchableOpacity>
             </Box>

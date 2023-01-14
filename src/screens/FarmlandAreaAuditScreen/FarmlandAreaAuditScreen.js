@@ -18,6 +18,7 @@ import { Farmland } from "../../models/Farmland";
 import { positions } from "../../fakedata/positions";
 
 import { realmContext } from '../../models/realm';
+import COLORS from "../../consts/colors";
 const {useRealm, useObject, useQuery } = realmContext;
 
 
@@ -117,7 +118,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         <SafeAreaView
             style={{ 
                 flex: 1, 
-                backgroundColor: 'ghostwhite',
+                backgroundColor: COLORS.ghostwhite,
             }}
         >
         <Stack
@@ -133,7 +134,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                         navigation.navigate("Farmers");
                     }}                            
                 >
-                <Icon name='arrow-back-ios' color="#005000" size={30}  />
+                <Icon name='arrow-back-ios' color={COLORS.main} size={30}  />
                 </TouchableOpacity>
             </Box>
             <Center w="60%">
@@ -142,7 +143,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                         textAlign: 'center', 
                         fontFamily: 'JosefinSans-Bold', 
                         fontSize: 24, 
-                        color: '#005000',  
+                        color: COLORS.main,  
                     }}
                 >
                     Geolocalização
@@ -179,7 +180,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
           showCancelButton={false}
           showConfirmButton={true}
           confirmText="   OK!   "
-          confirmButtonColor="#005000"
+          confirmButtonColor={COLORS.main}
           onConfirmPressed={() => {
             setConfirmGeoAlert(false);
           }}
@@ -197,7 +198,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
           cancelText="Confirmar a rejeição"
           confirmText="Aprovar o pedido"
           cancelButtonColor="#DD6B55"
-          confirmButtonColor="#005000"
+          confirmButtonColor={COLORS.main}
           onCancelPressed={() => {
             setRejectGeoAlert(false);
           }}
@@ -230,7 +231,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                         style={{
                             fontFamily: 'JosefinSans-Bold',
                             fontSize: 26,
-                            color: '#000',
+                            color: COLORS.black,
                         }}
                     >
                         Área da Parcela
@@ -239,7 +240,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                         style={{
                             fontFamily: 'JosefinSans-Regular',
                             fontSize: 16,
-                            color: 'grey',
+                            color: COLORS.grey,
                         }}
                     >
                         Captura os pontos extremos da área com cajueiros
@@ -345,7 +346,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     fontSize: 24,
                     paddingTop: 30,
                     textAlign: 'center',
-                    color: '#000',
+                    color: COLORS.black,
                 }
             }
             >
@@ -383,7 +384,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             style={{
                 
                 borderWidth: 2,
-                borderColor: '#005000',
+                borderColor: COLORS.main,
                 borderRadius: 30,
                 width: 300,
                 height: 60,
@@ -395,7 +396,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 style={{ 
                     fontSize: 30, 
                     fontFamily: 'JosefinSans-Bold', 
-                    color: '#005000'
+                    color: COLORS.main,
                 }}
                 >
                 Calcular Área

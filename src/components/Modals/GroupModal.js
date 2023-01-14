@@ -21,6 +21,7 @@ import { generateFormattedSurname } from '../../helpers/generateFormattedSurname
 import { useNavigation } from '@react-navigation/native';
 
 import { realmContext } from '../../models/realm';
+import COLORS from '../../consts/colors';
 const {useRealm} = realmContext;
 
 const GroupModal = (
@@ -117,7 +118,7 @@ const GroupModal = (
                         setModalVisible(false);
                     }}                            
                 >
-                    <Icon name='arrow-back-ios' color="#005000" size={30}  />
+                    <Icon name='arrow-back-ios' color={COLORS.main} size={30}  />
                 </TouchableOpacity>
             </Box>
             <Box w="60%">

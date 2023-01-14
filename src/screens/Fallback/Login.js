@@ -1,4 +1,4 @@
-import { Pressable, SafeAreaView, Text, View } from 'react-native';
+import { Pressable, SafeAreaView, Text, View, Image, } from 'react-native';
 import React, {useEffect, useState, useCallback} from 'react';
 import styles from './styles';
 import { Button, Icon } from '@rneui/themed';
@@ -182,13 +182,75 @@ const Login = () => {
 
   return (
     <SafeAreaView style={styles.loginContainer}>
+
+<View
+        style={{
+          width: '100%',
+        //   height: "20%",
+          borderBottomWidth: 1,
+          borderRightWidth: 1,
+          borderLeftWidth: 1,
+          borderColor: '#EBEBE4',
+          backgroundColor: '#EBEBE4',
+          // justifyContent: 'center',
+          borderBottomLeftRadius: 50,
+          borderBottomRightRadius: 50,
+        //   marginBottom: 20,
+        
+          shadowColor: COLORS.main,
+          shadowOffset: {
+              // width: 1,
+              // height: 1,
+            },
+          // shadowOpacity: 1,
+          // shadowRadius: 0.65,
+          
+          // elevation: 1,          
+        }}
+      >
+        <Box
+          style={{
+            // padding: 15,
+          }}
+        >
+          {/* <Stack direction="row" w="100%"> */}
+            <Center w="100%" py="3">
+              <Image
+                style={{ width: 60, height: 60, borderRadius: 100,  }}
+                source={require('../../../assets/images/iamLogo2.png')}
+                // resizeMode={FastImage.resizeMode.contain}
+              />
+              <Text
+                style={{
+                  color: COLORS.main,
+                  fontSize: 16,
+                  fontFamily: 'JosefinSans-Bold',
+                  paddingTop: 6,
+                }}
+              >
+                Instituto de Amêndoas de Moçambique, IP
+              </Text>
+              <Text
+                style={{
+                  color: COLORS.main,
+                  fontSize: 18,
+                  fontFamily: 'JosefinSans-Bold',
+                }}
+              >
+                IAM, IP
+              </Text>
+            </Center>
+          </Box>
+      </View>
+
+
         <ScrollView>
         { isLoggingIn &&        
-            <Center mt={isLoggingIn ? '1/4' : '3'}>
-                <Text style={styles.signInTitle}>Connect Caju - 2023</Text>
+            <Center mt={'3'}>
+                <Text style={styles.signInTitle}>ConnectCaju - 2023</Text>
             </Center>
         }
-        <Box my="5" alignItems="center">
+        <Box my="5" pl="4">
             { ('errorMessage' in errors && errors?.errorMessage && isLoggingIn) ?
                 <Box backgroundColor='error.100'  w="80" height="10">
                     <Text style={styles.signInErrorMessage}>{errors.errorMessage}</Text>
@@ -201,32 +263,19 @@ const Login = () => {
                 />
                 :
                 (
-                    <Box 
-                    bg="ghostwhite" 
-                    w="100%" 
-                    p="10" 
-            
+                    // <Box>
+                    <Text
                     style={{
-                        borderBottomRightRadius: 50,
-                        borderBottomLeftRadius: 50,
-                        borderBottomWidth: 2,
-                        borderLeftWidth: 2,
-                        borderRightWidth: 2,
-                        borderColor: '#EBEBE4',
-                        }}
-                >                
-                    <Text 
-                        style={{ 
-                            marginHorizontal: 10, 
-                            textAlign: 'center',
-                            fontFamily: 'JosefinSans-BoldItalic', 
-                            fontSize: 18, 
-                            color: COLORS.main, 
-                        }}
+                        textAlign: 'left',
+                        fontSize: 18,
+                        color: COLORS.black,
+                        fontFamily: 'JosefinSans-Bold',
+
+                    }}
                     >
-                        Usuário Novo
+                        Novo usuário
                     </Text>
-                </Box>
+                    // </Box>
                 )
 
             }
@@ -471,7 +520,7 @@ const Login = () => {
         }
         {
             !isLoggingIn && (
-            <Stack direction="row" w="100%">
+            <Stack direction="row" w="100%" space={1}>
             <Box w="50%">
                 <FormControl isRequired my="3" isInvalid={'province' in errors}>
                     <FormControl.Label>Província</FormControl.Label>

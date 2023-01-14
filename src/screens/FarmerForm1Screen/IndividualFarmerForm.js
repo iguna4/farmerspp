@@ -38,6 +38,7 @@ import DuplicatesAlert from '../../components/Alerts/DuplicatesAlert';
 import { detectDuplicates } from '../../helpers/detectDuplicates';
 import FarmerTypeRadioButtons from '../../components/RadioButton/FarmerTypeRadioButtons';
 import SuccessAlert from '../../components/Alerts/SuccessAlert';
+import COLORS from '../../consts/colors';
 const {useRealm} = realmContext;
 
 
@@ -68,19 +69,19 @@ export default function IndividualFarmerForm({
                     center
                     fontFamily = 'JosefinSans-Italic'
                     containerStyle={{
-                        backgroundColor: 'ghostwhite',
+                        backgroundColor: COLORS.ghostwhite,
                     }}
                     textStyle={{
                         
                         fontWeight: '100',
-                        color: '#005000',
+                        color: COLORS.main,
                     }}
                     title="É Provedor de Serviços de Pulverização?"
                     checked={isSprayingAgent}
                     checkedIcon={
                         <Icon
                             name="check-box"
-                            color="#005000"
+                            color={COLORS.main}
                             size={30}
                             iconStyle={{ marginRight: 5 }}
                         />
@@ -88,7 +89,7 @@ export default function IndividualFarmerForm({
                     uncheckedIcon={
                         <Icon
                             name="radio-button-unchecked"
-                            color="#005000"
+                            color={COLORS.main}
                             size={30}
                             iconStyle={{ marginRight: 5 }}
                         />
@@ -208,7 +209,7 @@ export default function IndividualFarmerForm({
             <CustomDivider
                 marginVertical="2"
                 thickness={2}
-                bg="#005000"
+                bg={COLORS.main}
             />
 
             <Center>
@@ -353,7 +354,7 @@ export default function IndividualFarmerForm({
             <CustomDivider
                 marginVertical="2"
                 thickness={2}
-                bg="#005000"
+                bg={COLORS.main}
             />
 
             <Center>
@@ -538,7 +539,7 @@ export default function IndividualFarmerForm({
         <CustomDivider
             marginVertical="2"
             thickness={2}
-            bg="#005000"
+            bg={COLORS.main}
         />
             
         <Center>

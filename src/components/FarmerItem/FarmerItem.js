@@ -15,6 +15,7 @@ import AlertModal from '../AlertModal';
 import { useNavigation } from '@react-navigation/native';
 import { sumTreesOrAreas } from '../../helpers/sumTreesOrAreas';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
+import COLORS from '../../consts/colors';
 
 const uri =  `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
@@ -36,8 +37,8 @@ const FarmerItem = ({ item, route, farmerType, requestCameraPermission }) => {
         width: '100%',
         flex: 1,
         // alignItems: 'center',
-        borderColor: '#005000',
-        shadowColor: "#005000",
+        borderColor: COLORS.main,
+        shadowColor: COLORS.main,
         shadowOffset: {
           width: 0,
           height: 3,
@@ -64,13 +65,13 @@ const FarmerItem = ({ item, route, farmerType, requestCameraPermission }) => {
           }}
           >
           
-            <Icon name="add-a-photo" size={20} color="#005000" />
+            <Icon name="add-a-photo" size={20} color={COLORS.main} />
           </View>
         <Avatar 
             size={80}
             rounded
             title={getInitials(item?.names?.surname)}
-            containerStyle={{ backgroundColor: "grey" }}
+            containerStyle={{ backgroundColor: COLORS.grey }}
             source={{ uri }}
         />
         </Pressable>
@@ -89,7 +90,7 @@ const FarmerItem = ({ item, route, farmerType, requestCameraPermission }) => {
         style={{
           fontSize: 20,
           fontFamily: 'JosefinSans-Bold',
-          color: '#005000',
+          color: COLORS.main,
         }}
         >
         {item.names.otherNames}{' '}{item.names.surname}
@@ -97,7 +98,7 @@ const FarmerItem = ({ item, route, farmerType, requestCameraPermission }) => {
         style={{
           fontSize: 14,
           fontFamily: 'JosefinSans-Italic',
-          color: '#005000',
+          color: COLORS.main,
           paddingTop: 6,
           
         }}
@@ -171,7 +172,7 @@ const FarmerItem = ({ item, route, farmerType, requestCameraPermission }) => {
               flag: 'Indivíduo',
             })}
             >
-            <FontAwesomeIcon icon={faTree} size={30} color="#005000" />
+            <FontAwesomeIcon icon={faTree} size={30} color={COLORS.main} />
           </Pressable>
         </Box>
         </Stack>

@@ -105,7 +105,10 @@ const GroupModal = (
         <Stack 
                 direction="row" 
                 w="100%"
-                pt="3"
+                // pt="3"
+                style={{
+                    backgroundColor: '#EBEBE4',
+                }}
             >
             <Box w="20%">
                 <TouchableOpacity

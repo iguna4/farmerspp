@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { sumTreesOrAreas } from '../../helpers/sumTreesOrAreas';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
+import COLORS from '../../consts/colors';
 
 const uri =  `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
@@ -25,12 +26,12 @@ const InstitutionItem = ({ item, route, requestCameraPermission }) => {
         padding: 10,
         marginVertical: 10,
         // backgroundColor: '#EBEBE4',
-        borderColor: '#005000',
+        borderColor: COLORS.main,
         minHeight: 100,
         width: '100%',
         flex: 1,
         // alignItems: 'center',
-        shadowColor: "#005000",
+        shadowColor: COLORS.main,
         shadowOffset: {
           width: 0,
           height: 3,
@@ -58,13 +59,13 @@ const InstitutionItem = ({ item, route, requestCameraPermission }) => {
       }}
       >
         
-        <Icon name="add-a-photo" size={20} color="#005000" />
+        <Icon name="add-a-photo" size={20} color={COLORS.main} />
         </View>
       <Avatar 
         size={80}
         rounded
         title={getInitials(item?.manager?.fullname)}
-        containerStyle={{ backgroundColor: "grey" }}
+        containerStyle={{ backgroundColor: COLORS.grey }}
         source={{ uri }}
         />
       </Pressable>
@@ -84,7 +85,7 @@ const InstitutionItem = ({ item, route, requestCameraPermission }) => {
         style={{
           fontSize: 20,
           fontFamily: 'JosefinSans-Bold',
-          color: '#005000',
+          color: COLORS.main,
         }}
       >
         {item?.type === 'Outro' ? 'Empresa': `${item?.type}`}{' '}{item?.name}
@@ -92,7 +93,7 @@ const InstitutionItem = ({ item, route, requestCameraPermission }) => {
         style={{
           fontSize: 14,
           fontFamily: 'JosefinSans-Italic',
-          color: '#005000',
+          color: COLORS.main,
           paddingTop: 6,
           
         }}
@@ -157,7 +158,7 @@ const InstitutionItem = ({ item, route, requestCameraPermission }) => {
               flag: 'Instituição',
             })}
             >
-            <FontAwesomeIcon icon={faTree} size={30} color="#005000" />
+            <FontAwesomeIcon icon={faTree} size={30} color={COLORS.main} />
           </Pressable>
         </Box>
         </Stack>

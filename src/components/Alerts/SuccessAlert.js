@@ -26,18 +26,24 @@ function SuccessAlert({
             <View style={{ 
                 flex: 1, 
                 marginTop: 40,
-                alignItems: 'center' 
+                alignItems: 'center' ,
+                marginHorizontal: 10,
                 }}
             >
                 <Stack direction="row">
-                    <Box w="20%">
+                    <Box w="20%"
+                    >
                         <TouchableOpacity
+                        style={{ flexDirection: 'row' }}
                             onPress={()=>{
                                 navigation.navigate('Farmers');
                                 setIsCoordinatesModalVisible(false);
                             }}                            
                         >
                             <Icon name='arrow-back-ios' color="#005000" size={30}  />
+                            <Text
+                            style={{ fontSize: 20, color: '#005000', fontFamily: 'JosefinSans-Bold', }}
+                            >Voltar</Text>
                         </TouchableOpacity>
                     </Box>
                     <Box w="80%">

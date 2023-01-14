@@ -139,7 +139,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
       <ScrollView>
         <Box>
           <Box 
-                bg="ghostwhite" 
+                bg="#EBEBE4" 
                 w="100%" 
                 p="3" 
         
@@ -331,7 +331,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
         </Box>  */}
 
         <Box w="100%" alignItems="center">
-            <FormControl isRequired my="1" isInvalid={'consociatedCrops' in errors}>
+            <FormControl my="1">
                 <FormControl.Label>Culturas consociadas</FormControl.Label>
                 <MultipleSelectList
                     setSelected={(crop)=>setConsociatedCrops(crop)}
@@ -367,11 +367,12 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                     placeholder="Culturas consociadas"
                 />
                 {
-                'consociatedCrops' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.consociatedCrops}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
+                // 'consociatedCrops' in errors 
+                // ? <FormControl.ErrorMessage 
+                // leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                // _text={{ fontSize: 'xs'}}>{errors?.consociatedCrops}</FormControl.ErrorMessage> 
+                // : 
+                <FormControl.HelperText></FormControl.HelperText>
                 }
             </FormControl>
 

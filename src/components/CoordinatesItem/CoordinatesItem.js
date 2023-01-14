@@ -1,5 +1,5 @@
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Pressable } from 'react-native';
 import { Stack, Box, Center } from "native-base";
 import { Icon,  } from "@rneui/base";
@@ -11,46 +11,40 @@ import { realmContext } from '../../models/realm';
 import { updateCoordinates } from "../../helpers/updateCoordinates";
 const {useRealm, useObject, useQuery } = realmContext;
 
+let FLAG = false;
 
 
-const CoordinatesItem = ({ item, farmlandId }) =>{
+const CoordinatesItem = ({ item, farmland }) =>{
 
     const realm = useRealm();
 
-    const [onPressed, setOnPressed] = useState(false);
-    const [optionsAlert, setOptionsAlert] = useState(false);
+    const [deleteAlert, setDeleteAlert] = useState(false);
 
-    // const addLocationPoint = useCallback((farmlandId, point, realm, position=-1, flag)=>{
-    //     let farmland;
+    const onDeletePoint = ()=>{       
+        if(item.icon === 'delete-forever') {
+            realm.write(()=>{
+                farmland.extremeCoordinates.pop();
+            })
+        }
+    }
 
-    //     realm.write(()=>{
-    //         farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
-    //         const newCoordinates = updateCoordinates(farmland.extremeCoordinates, point, position, flag);
-    //         farmland.extremeCoordinates = [...newCoordinates];
-    //         // [...farmland.extremeCoordinates, point];
-    //         // setCoordinates(newCoordinates);
-    //         console.log('updatedFarmland:', JSON.stringify(farmland));
-    //     })
-        
-    // }, [realm, point, farmlandId]);
-
+    if (FLAG) {
+        onDeletePoint();
+        FLAG = false;
+        return ;
+    }
 
     return (
     <Center>
 
     <View 
-        // disabled={true}
         style={{
-            // flex: 1,
             padding: 10,
             marginVertical: 10,
             marginHorizontal: 10,
-            // backgroundColor: '#EBEBE4',
             borderColor: '#005000',
-            // minHeight: 100,
             width: '98%',
             flex: 1,
-            // alignItems: 'center',
             shadowColor: "#005000",
             shadowOffset: {
               width: 0,
@@ -58,50 +52,32 @@ const CoordinatesItem = ({ item, farmlandId }) =>{
             },
             shadowOpacity: 0.27,
             shadowRadius: 4.65,
-    
             elevation: 3,
-            opacity: onPressed ? 0.7 : 1,
+            opacity: 1,
         }}
         >
         <AwesomeAlert
-          show={optionsAlert}
+          show={deleteAlert}
           showProgress={false}
-          title="Actualização das coordenadas"
-          message="Capturar novamente as coordenadas neste ponto!"
+          title={`Coordenadas do Ponto`}
+          message={`Apagar as coordenados deste ponto!`}
           closeOnTouchOutside={true}
           closeOnHardwareBackPress={true}
-          showCancelButton={false}
+          showCancelButton={true}
           showConfirmButton={true}
-        //   cancelText="Apagar coordenadas"
-          confirmText="Capturar novamente"
-        //   cancelButtonColor="#DD6B55"
-          confirmButtonColor="#005000"
-        //   onCancelPressed={() => {
-        //     addLocationPoint(farmlandId, point, realm, point.position, 'delete');
-        //     setOptionsAlert(false);
-        //   }}
-          onConfirmPressed={async () => {
-            // console.log('point.position:', item.position);
-            // addLocationPoint(farmlandId, item, realm, item.position)
-            // setOptionsAlert(false);
+          cancelText="Não Apagar"
+          confirmText="   Apagar   "
+          cancelButtonColor="#005000"
+          confirmButtonColor="#DD6B55"
+          onCancelPressed={() => {
+            setDeleteAlert(false);
+          }}
+          onConfirmPressed={() => {
+            setDeleteAlert(false);
+            FLAG = true            
           }}
         />
 
-        <Pressable
-            onPress={()=>{
-            // console.log('point:', point)
-                if (!onPressed){
-                // addLocationPoint(farmlandId, point, realm);
-                // setOnPressed(true);
-            }
-        }}
-        onLongPress={()=>{
-            if (onPressed){
-                // setOptionsAlert(true);
-            }
-        }}
-
-    >
         <Stack direction="row" w="100%" >
             <Box w="20%" 
                 style={{ 
@@ -163,22 +139,23 @@ const CoordinatesItem = ({ item, farmlandId }) =>{
             <Box w="50%" 
                 style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}
                 >
-                <Pressable
+                <TouchableOpacity
+                    disabled={item?.icon === 'check-circle' ? true : false }
                     onPress={()=>{
-                        // addLocationPoint(farmlandId, point, realm, position=-1, 'delete');
-                        // setOnPressed(true);
+                        if (item.icon === 'delete-forever'){
+                            setDeleteAlert(true);
+                        }
                     }}
-                    >
+                >
                     <Icon 
-                        name="delete-forever" 
-                        size={35} 
-                        color="red" 
+                        name={item.icon} 
+                        size={25} 
+                        color={item.icon === 'check-circle' ? '#005000' : 'red'} 
                         />
-                </Pressable>
+                </TouchableOpacity>
             </Box>
         </Box>
     </Stack>
-    </Pressable>
     </View>
     </Center>
     )

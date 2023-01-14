@@ -43,7 +43,7 @@ const App = ()=>{
 
   return (
     <>
-    <StatusBar barStyle="dark-content" backgroundColor="ghostwhite" />
+    {/* <StatusBar barStyle="dark-content" backgroundColor="#EBEBE4" /> */}
     <ApplicationProvider {...eva} theme={eva.light}>
       <AppProvider id={secrets.appID}>
         {/* <UserProvider  */}

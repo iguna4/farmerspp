@@ -44,7 +44,7 @@ const GroupScreen = ({ route, navigation }) =>{
             width: '100%',
             paddingHorizontal: 15,
             paddingTop: 10,
-
+            backgroundColor: '#EBEBE4',
             borderTopWidth: 0,
             borderColor: '#EBEBE4',
             borderBottomWidth: 3,
@@ -56,18 +56,18 @@ const GroupScreen = ({ route, navigation }) =>{
           direction="row" w="100%"
         >
           <Center w="10%"
-            style={{ justifyContent: 'center'}}
+            // style={{ justifyContent: 'center'}}
           >
-        <Pressable
-            onPress={()=>navigation.navigate('Farmers')}
-        >
+`          <Pressable
+              onPress={()=>navigation.navigate('Farmers')}
+          >
 
-          <Icon 
-              name="arrow-back-ios" 
-              color="#005000"
-              size={35}
-              />
-        </Pressable>
+            <Icon 
+                name="arrow-back-ios" 
+                color="#005000"
+                size={35}
+                />
+          </Pressable>`
           </Center>
 
           <Box w="70%" 

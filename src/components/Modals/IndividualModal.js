@@ -4,7 +4,7 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import { Text,  Stack, Box, Center, Divider } from 'native-base';
-import { Modal, ScrollView, TouchableOpacity } from 'react-native';
+import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
 import { Button, Icon } from '@rneui/themed';
 import CustomDivider from '../Divider/CustomDivider';
 import styles from './styles';
@@ -113,7 +113,10 @@ const IndividualModal = (
             <Stack 
                 direction="row" 
                 w="100%"
-                pt="3"
+                // pt="3"
+                style={{
+                    backgroundColor: '#EBEBE4',
+                }}
             >
             <Box w="20%">
                 <TouchableOpacity
@@ -144,13 +147,23 @@ const IndividualModal = (
                 paddingVertical: 15,
             }}
          >
+            {/* <View
+            style={{  paddingTop: 100, }}
+            > */}
+
             
-            
+
+        <Box 
+            mx="6"
+            mt="200"
+            pb="200"
+        >
          <Center 
             style={{ 
-                paddingBottom: 5,    
-                paddingTop: 10,
+                // paddingBottom: 25,    
+                // paddingTop: 50,
                 width: '100%',
+                // height: 300,
                 // backgroundColor: '#EBEBE4',         
             }}
         >
@@ -161,17 +174,12 @@ const IndividualModal = (
                     fontWeigth: 'bold',
                     color: '#000',
                     paddingTop: 15,
-
+                    
                 }}
-            >
+                >
                 Confirmar Dados
             </Text>
         </Center>
-
-        <Box 
-            mx="6"
-            pb="6"
-        >
         <CustomDivider
             marginVertical="1"
             thickness={1}
@@ -303,7 +311,7 @@ const IndividualModal = (
                 :
                 farmerData?.contact?.primaryPhone ?
                 (
-                <Box>
+                    <Box>
                     <Text style={styles.values}>
                         {farmerData?.contact?.primaryPhone} (principal)
                     </Text>
@@ -365,9 +373,9 @@ const IndividualModal = (
                     </Text>
                 </Box>
 
-            )
-            : 
-            (
+)
+: 
+(
                 
                 <Box>
                     <Text style={styles.values}>
@@ -414,7 +422,7 @@ const IndividualModal = (
             />
         <Center
             w="100%"
-        >
+            >
             <Button
                 onPress={()=>{
                     try {
@@ -451,15 +459,16 @@ const IndividualModal = (
             />
         </Center>
         </Box>
+    {/* </View> */}
     </ScrollView>
     </Modal>
     {/* <Center flex={1} px="3">
         <SuccessModal
-            addDataModalVisible={addDataModalVisible}
-            setAddDataModalVisible={setAddDataModalVisible}
-            setFarmerType={setFarmerType}
+        addDataModalVisible={addDataModalVisible}
+        setAddDataModalVisible={setAddDataModalVisible}
+        setFarmerType={setFarmerType}
             />
-    </Center> */}
+        </Center> */}
     </>
 
   )

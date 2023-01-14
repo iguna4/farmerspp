@@ -14,6 +14,7 @@ import districts from '../../fakedata/districts';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 import { realmContext } from '../../models/realm';
+import COLORS from '../../consts/colors';
 const {useRealm} = realmContext;
 
 const Login = () => {
@@ -196,7 +197,7 @@ const Login = () => {
                 <Icon 
                     name='lock-open'
                     size={40}
-                    color="#005000"
+                    color={COLORS.main}
                 />
                 :
                 (
@@ -220,7 +221,7 @@ const Login = () => {
                             textAlign: 'center',
                             fontFamily: 'JosefinSans-BoldItalic', 
                             fontSize: 18, 
-                            color: '#005000', 
+                            color: COLORS.main, 
                         }}
                     >
                         Usuário Novo
@@ -311,7 +312,7 @@ const Login = () => {
                     InputRightElement={
                         <Icon
                         name={showPassword ? 'visibility' : 'visibility-off'}
-                        color="grey"
+                        color={COLORS.grey}
                         size={30}
                         style={{ paddingRight: 3, }}
                         type="material"
@@ -375,7 +376,7 @@ const Login = () => {
                     InputRightElement={
                         <Icon
                             name={showPasswordConfirm ? 'visibility' : 'visibility-off'}
-                            color="grey"
+                            color={COLORS.grey}
                             size={30}
                             type="material"
                             onPress={()=>setShowPasswordConfirm(prev=>!prev)}
@@ -413,7 +414,7 @@ const Login = () => {
                     InputLeftElement={
                         <Icon
                             name="phone"
-                            color="grey"
+                            color={COLORS.grey}
                             size={30}
                             type="material"
                             onPress={()=>setShowPasswordConfirm(prev=>!prev)}
@@ -447,7 +448,7 @@ const Login = () => {
                     InputLeftElement={
                         <Icon
                             name="phone"
-                            color="grey"
+                            color={COLORS.grey}
                             size={30}
                             type="material"
                             onPress={()=>setShowPasswordConfirm(prev=>!prev)}
@@ -602,7 +603,7 @@ const Login = () => {
                     style={{ 
                         textAlign: 'center',
                         fontSize: 16,
-                        color: '#005000',
+                        color: COLORS.main,
                         fontFamily: 'JosefinSans-Regular',
                         textDecoration: 'underline',
                     }}
@@ -618,7 +619,7 @@ const Login = () => {
                     style={{ 
                         textAlign: 'center',
                         fontSize: 16,
-                        color: '#005000',
+                        color: COLORS.main,
                         fontFamily: 'JosefinSans-Regular',
                         textDecoration: 'underline',
                     }}

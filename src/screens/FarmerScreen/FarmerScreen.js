@@ -40,7 +40,7 @@ const FarmerScreen = ({ route, navigation }) =>{
             width: '100%',
             paddingHorizontal: 15,
             paddingTop: 10,
-
+            backgroundColor: '#EBEBE4',
             borderTopWidth: 0,
             borderColor: '#EBEBE4',
             borderBottomWidth: 3,
@@ -52,7 +52,7 @@ const FarmerScreen = ({ route, navigation }) =>{
           direction="row" w="100%"
         >
           <Center w="10%"
-            style={{ justifyContent: 'center'}}
+            // style={{ justifyContent: 'center'}}
           >
             <Pressable
                 onPress={()=>navigation.navigate('Farmers')}

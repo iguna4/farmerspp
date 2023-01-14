@@ -13,29 +13,36 @@ import CustomDivider from "../../components/Divider/CustomDivider";
 import GeoPin from "../../components/LottieComponents/GeoPin";
 
 
-import { realmContext } from '../../models/realm';
-import { getPosition, updateCoordinates } from "../../helpers/updateCoordinates";
+import { getPosition, sortCoordinatesByPositions, updateCoordinates } from "../../helpers/updateCoordinates";
 import { Farmland } from "../../models/Farmland";
 import { positions } from "../../fakedata/positions";
-const {useRealm, useObject, useQuery } = realmContext;
 
+import { realmContext } from '../../models/realm';
+const {useRealm, useObject, useQuery } = realmContext;
 
 
 const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     
     const realm = useRealm();
     const farmlandId = route.params?.farmlandId;
-    const [point, setPoint] = useState({})
     const [confirmGeoAlert, setConfirmGeoAlert] = useState(false);
     const [rejectGeoAlert, setRejectGeoAlert] = useState(false);
-    const [optionsAlert, setOptionsAlert] = useState(false);
     const [failedGeoLocationRequest, setFailedGeoLocationRequest] = useState(false);
     const [permissionGranted, setPermissionGranted] = useState(false);
-    const [flag, setFlag] = useState(false);
 
     const farmland = useObject('Farmland', farmlandId);
-    // const { extremeCoordinates } = farmland;
+    // let owner;
+    // if (!owner) {
+    //     owner = useObject('Farmer', farmlandId?.farmer);
+    // }
+    // else if (!owner) {
+    //     owner = useObject('Group', farmlandId?.farmer);
+    // }
+    // else if(!owner) {
+    //     owner = useObject('Farmer', farmlandId?.farmer);
+    // }
 
+    // request the permission to use the device position coordinates
     const requestLocationPermission = async () => {
         try {
             const granted = await PermissionsAndroid.request(
@@ -63,28 +70,46 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 setFailedGeoLocationRequest(true);
             }
         };
-
-    // let farmland;
         
-    const addCoordinates = (farmland, point)=>{
+    // persist the acquired coordinates
+    const saveCoordinates = (farmland, point)=>{
         realm.write(()=>{
-
-            farmland.extremeCoordinates?.push(point);
-            console.log('extremeCoordinates:', JSON.stringify(farmland.extremeCoordinates))
-        
+            farmland.extremeCoordinates?.push(point);        
         })
-
     };
-    // const addCoordinates = useCallback((realm, farmlandId, extremeCoordinates)=>{
-    //     realm.write(()=>{
-    //         let farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
-    //         farmland.extremeCoordinates = extremeCoordinates;
-    //         // console.log('Farmland:', JSON.stringify(farmland))
-        
-    //     })
 
-    // }, [farmlandId, point, realm]);
+    // get the current coordinates of device position  
+    const getGeolocation = async ()=>{
+        if (!permissionGranted){
+            await requestLocationPermission();
+        }
+        else { 
+            Geolocation.getCurrentPosition(
+                (position) => {
+                    // get the exact position to the point
+                    const number = getPosition(farmland?.extremeCoordinates);
 
+                    saveCoordinates(farmland, {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        position: number,
+                    });
+                },
+                (error) => {
+                Alert.alert('Falha', 'Tenta novamente!', {
+                    cause: error,
+                })
+                },
+                { 
+                    enableHighAccuracy: true, 
+                    accuracy: 'high',
+                    timeout: 15000, 
+                    maximumAge: 10000, 
+                    distanceFilter: 100,  
+                }
+            );
+        }
+    }
 
     const keyExtractor = (item, index)=>index.toString();
 
@@ -99,6 +124,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             direction="row" 
             w="100%"
             pt="3"
+            bg="#EBEBE4"
+
         >
             <Box w="20%">
                 <TouchableOpacity
@@ -109,8 +136,18 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 <Icon name='arrow-back-ios' color="#005000" size={30}  />
                 </TouchableOpacity>
             </Box>
-            <Box w="60%">
-            </Box>
+            <Center w="60%">
+                <Text
+                    style={{ 
+                        textAlign: 'center', 
+                        fontFamily: 'JosefinSans-Bold', 
+                        fontSize: 24, 
+                        color: '#005000',  
+                    }}
+                >
+                    Geolocalização
+                </Text>
+            </Center>
             <Box w="20%">
             </Box>
         </Stack>
@@ -170,32 +207,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
           }}
         />
 
-
-    <AwesomeAlert
-        show={optionsAlert}
-        showProgress={false}
-        title={`${positions[point?.position]} ponto`}
-        message={`Captura do ${positions[point?.position]} ponto das coordenadas!`}
-        closeOnTouchOutside={true}
-        closeOnHardwareBackPress={false}
-        showCancelButton={true}
-        showConfirmButton={true}
-        cancelText="Cancelar"
-        confirmText="Concordar"
-        cancelButtonColor="#DD6B55"
-        confirmButtonColor="#005000"
-        onCancelPressed={() => {
-            setOptionsAlert(false);
-            // setFlag(true)
-        }}
-        onConfirmPressed={() => {
-            setOptionsAlert(false);
-            // setFlag(true);
-            addCoordinates(realm, farmlandId, point);
-        }}
-    />
         <Box
-            bg="ghostwhite" 
+            bg="#EBEBE4" 
             w="100%" 
             px="3" 
             
@@ -241,43 +254,41 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 >
         {   farmland?.extremeCoordinates.length > 0 &&
                  <TouchableOpacity
-                        onPress={async ()=>{
-                            if (!permissionGranted){
-                                await requestLocationPermission();
-                                // return ;
-                            }
-                            else { 
-                                Geolocation.getCurrentPosition(
-                                    (position) => {
-                                        // get the exact position to the point
-                                        const number = getPosition(farmland?.extremeCoordinates);
-                                        let newCoordinates = [...farmland?.extremeCoordinates, {
-                                            latitude: position.coords.latitude,
-                                            longitude: position.coords.longitude,
-                                            position: number,
-                                        }]
-                                        // console.log('extremeCoordinates:', JSON.stringify(newCoordinates));
-                                        addCoordinates(farmland, {
-                                            latitude: position.coords.latitude,
-                                            longitude: position.coords.longitude,
-                                            position: number,
-                                        });
-                                    },
-                                    (error) => {
-                                    Alert.alert('Falha', 'Tenta novamente!', {
-                                        cause: error,
-                                    })
-                                    },
-                                    { 
-                                        enableHighAccuracy: true, 
-                                        accuracy: 'high',
-                                        timeout: 15000, 
-                                        maximumAge: 10000, 
-                                        distanceFilter: 1,  
-                                    }
-                                );
-                            }
-                        }}
+                        onPress={async ()=> await getGeolocation()
+                            // async ()=>{
+                            //     if (!permissionGranted){
+                            //         await requestLocationPermission();
+                            //         // return ;
+                            //     }
+                            //     else { 
+                            //         Geolocation.getCurrentPosition(
+                            //             (position) => {
+                            //                 // get the exact position to the point
+                            //                 const number = getPosition(farmland?.extremeCoordinates);
+
+                            //                 // console.log('extremeCoordinates:', JSON.stringify(newCoordinates));
+                            //                 saveCoordinates(farmland, {
+                            //                     latitude: position.coords.latitude,
+                            //                     longitude: position.coords.longitude,
+                            //                     position: number,
+                            //                 });
+                            //             },
+                            //             (error) => {
+                            //             Alert.alert('Falha', 'Tenta novamente!', {
+                            //                 cause: error,
+                            //             })
+                            //             },
+                            //             { 
+                            //                 enableHighAccuracy: true, 
+                            //                 accuracy: 'high',
+                            //                 timeout: 15000, 
+                            //                 maximumAge: 10000, 
+                            //                 distanceFilter: 1,  
+                            //             }
+                            //         );
+                            //     }
+                            // }
+                        }
                     >
                         <GeoPin />
                     </TouchableOpacity>
@@ -290,43 +301,40 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             style={{ minHeight: 300, }}
         >
         <TouchableOpacity
-            onPress={async ()=>{
-                if (!permissionGranted){
-                    await requestLocationPermission();
-                }
-                else {
+            onPress={ async ()=> await getGeolocation()
+                // async ()=>{
+                //     if (!permissionGranted){
+                //         await requestLocationPermission();
+                //     }
+                //     else {
        
-                    Geolocation.getCurrentPosition(
-                        (position) => {
-                            const number = getPosition(farmland?.extremeCoordinates);
-                            let newCoordinates = [...farmland?.extremeCoordinates, {
-                                latitude: position.coords.latitude,
-                                longitude: position.coords.longitude,
-                                position: number,
-                            }]
-                            // console.log('extremeCoordinates:', JSON.stringify(newCoordinates));
+                //         Geolocation.getCurrentPosition(
+                //             (position) => {
+                //                 const number = getPosition(farmland?.extremeCoordinates);
+                //                 // console.log('extremeCoordinates:', JSON.stringify(newCoordinates));
 
-                            addCoordinates(farmland, {
-                                latitude: position.coords.latitude,
-                                longitude: position.coords.longitude,
-                                position: number,
-                            });
-                        },
-                        (error) => {
-                            Alert.alert('Falha', 'Tenta novamente!', {
-                            cause: error,
-                            })
-                        },
-                        { 
-                            enableHighAccuracy: true, 
-                            accuracy: 'high',
-                            timeout: 15000, 
-                            maximumAge: 10000, 
-                            distanceFilter: 1,  
-                        }
-                    );
-                }
-            }}
+                //                 saveCoordinates(farmland, {
+                //                     latitude: position.coords.latitude,
+                //                     longitude: position.coords.longitude,
+                //                     position: number,
+                //                 });
+                //             },
+                //             (error) => {
+                //                 Alert.alert('Falha', 'Tenta novamente!', {
+                //                 cause: error,
+                //                 })
+                //             },
+                //             { 
+                //                 enableHighAccuracy: true, 
+                //                 accuracy: 'high',
+                //                 timeout: 15000, 
+                //                 maximumAge: 10000, 
+                //                 distanceFilter: 1,  
+                //             }
+                //         );
+                //     }
+                // }
+            }
         >
             <GeoPin />
         </TouchableOpacity>
@@ -338,7 +346,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     paddingTop: 30,
                     textAlign: 'center',
                     color: '#000',
-                }}
+                }
+            }
             >
                 Adicione o primeiro ponto das coordenadas da parcela!
             </Text>   
@@ -346,10 +355,10 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     }
 
     <FlatList
-        data={farmland?.extremeCoordinates}
+        data={sortCoordinatesByPositions(farmland?.extremeCoordinates)}
         keyExtractor={keyExtractor}
         renderItem={({ item })=>{
-            return <CoordinatesItem item={item} farmlandId={farmlandId}  />
+            return <CoordinatesItem item={item} farmland={farmland}  />
         }}
     />
     <Center

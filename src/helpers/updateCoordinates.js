@@ -11,45 +11,30 @@ export const getPosition = (coordinates) =>{
 } 
 
 // sort coordinates by their position
-const sortCoordinates = (coordinates)=>{
-    return coordinates.sort((a, b)=>a.position - b.position);
-}
+export const sortCoordinatesByPositions = (coordinates)=>{
+    let toBeSorted = [...coordinates];
+    let length = toBeSorted.length;
 
-// update/delete coordinates by their position
-export const updateCoordinates = (extremeCoordinates, point, position=-1, flag="update")=>{
-    
-    let updatedCoordinates = [...extremeCoordinates];
-    // console.log('existingCoordinates:', JSON.stringify(updatedCoordinates));
-    if (flag === 'update'){
-        // console.log('position:', position)
-        // check to find it the position already exists
-        let foundPoint = updatedCoordinates.find((p)=>p?.position == position);
-
-
-        // update the coordinates if that position already exists
-        if (foundPoint) {
-            updatedCoordinates = updatedCoordinates.map((p)=>{
-                if (p.position == foundPoint.position) {
-                    // console.log('here the point: ', point)
-                    p = Object.assign({}, point);
+    return toBeSorted
+            .map((coords)=>{
+                if (coords.position == length) {
+                    coords['icon'] = 'delete-forever';
+                    return coords;
                 }
-                return p;
+                else {
+                    coords['icon'] = 'check-circle';
+                    return coords;
+                }
             })
-        }
-        else {
-            // just assign the same coordinates if the position was not found
-            updatedCoordinates = [...updatedCoordinates, point];
-        }
-
-        // console.log('updatedCoordinates:', JSON.stringify(updatedCoordinates));
-        // return a sorted array of coordinates
-    }
-    else if (flag === 'delete') {
-        updatedCoordinates = updatedCoordinates.filter((coords)=>coords.position != position);
-        // console.log('deletingCoordinates:', JSON.stringify(updatedCoordinates));
-        // delete coordinates
-        // return 
-    }
-    return sortCoordinates(updatedCoordinates);
+            .sort((a, b)=>(b?.position - a?.position));
 }
 
+export const calculateAuditedArea = (coordinates)=>{
+    let extremeCoordinates = [...coordinates];
+    //To do:
+    // 1. extract all the coordinates with their respective positions;
+    // 2. apply the formula used to calculate the area from the coordinates;
+    // 3. return the result as a real number  
+
+    return ;
+}

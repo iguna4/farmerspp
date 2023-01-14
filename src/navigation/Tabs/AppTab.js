@@ -16,6 +16,7 @@ import IndividualFarmerForm from '../../screens/FarmerForm1Screen/IndividualFarm
 import PopupMenu from '../../components/PopupMenu/PopupMenu';
 import Wrapper from '../../components/PopupMenu/PopupMenu';
 import MenuWrapper from '../../components/PopupMenu/PopupMenu';
+import COLORS from '../../consts/colors';
 
 const { RealmProvider} = realmContext;
 
@@ -26,7 +27,7 @@ export default function AppTab() {
 
   return (
     <>
-    <StatusBar barStyle="dark-content" backgroundColor="ghostwhite" />
+    <StatusBar barStyle="dark-content" backgroundColor="#EBEBE4" />
     <RealmProvider>
     <NavigationContainer>
         <Tab.Navigator
@@ -61,7 +62,7 @@ export default function AppTab() {
             options={{
               tabBarIcon: (tabInfo)=><Icon 
                         name="home" 
-                        color={tabInfo.focused ? "#005000": 'grey'}
+                        color={tabInfo.focused ? COLORS.main: COLORS.grey}
                         size={50} />,
               tabBarLabel: 'Painel',
               // tabBarInactiveBackgroundColor
@@ -73,7 +74,7 @@ export default function AppTab() {
             options={{
               tabBarIcon: (tabInfo)=><Icon 
                         name="people" 
-                        color={tabInfo.focused ? "#005000": 'grey'} 
+                        color={tabInfo.focused ? COLORS.main: COLORS.grey} 
                         size={50} />,
               tabBarLabel: 'Produtores',
             }}
@@ -84,7 +85,7 @@ export default function AppTab() {
             options={{
               tabBarIcon: (tabInfo)=><Icon 
                         name="search" 
-                        color={tabInfo.focused ? "#005000": 'grey'} 
+                        color={tabInfo.focused ? COLORS.main: COLORS.grey} 
                         size={50} />,
               tabBarLabel: 'Pesquisa',
             }}

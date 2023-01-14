@@ -136,7 +136,9 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
         <Stack 
                 direction="row" 
                 w="100%"
-                pt="3"
+                // pt="3"
+                bg="#EBEBE4"
+                
             >
             <Box w="20%">
                 <TouchableOpacity
@@ -235,7 +237,11 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             </Box>
             <Box w="60%" style={styles.values}>
                 <Text style={styles.values}>
-                    {farmlandData?.consociatedCrops?.map(crop=>`${crop}; `)}
+                {
+                farmlandData?.consociatedCrops?.length > 0 
+                ? farmlandData?.consociatedCrops?.map(crop=>`${crop}; `)
+                : 'Nenhuma'
+                }
                 </Text>
             </Box>
         </Stack>

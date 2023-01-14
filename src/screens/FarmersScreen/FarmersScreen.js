@@ -36,6 +36,7 @@ import { Camera, useCameraDevices } from "react-native-vision-camera";
 
 import { realmContext } from '../../models/realm';
 import PopupMenu from '../../components/PopupMenu/PopupMenu';
+import COLORS from '../../consts/colors';
 const { useRealm, useQuery } = realmContext; 
 
 
@@ -180,7 +181,7 @@ export default function FarmersScreen({ route, navigation }) {
             width: '100%',
             paddingHorizontal: 15,
             paddingTop: 5,
-
+            backgroundColor: '#EBEBE4',
             borderTopWidth: 0,
             borderColor: '#EBEBE4',
             borderBottomWidth: 3,
@@ -202,7 +203,7 @@ export default function FarmersScreen({ route, navigation }) {
                 style={{ 
                   fontFamily: 'JosefinSans-Bold', 
                   fontSize: 18, 
-                  color: '#005000', 
+                  color: COLORS.main, 
                 }}
               >
                 {'Ancuabe'}
@@ -211,7 +212,10 @@ export default function FarmersScreen({ route, navigation }) {
               <Stack direction="row" space={2} my="1">
                 <Center>
                   <Text
-                    style={{ fontFamily: 'JosefinSans-Regular', fonSize: 14, }}
+                    style={{ 
+                      fontFamily: 'JosefinSans-Regular', 
+                      fonSize: 14, 
+                    }}
                   >[{'Produtores:'}{' '}{farmersList.length}]</Text>
                 </Center>
                 <Center>
@@ -227,7 +231,7 @@ export default function FarmersScreen({ route, navigation }) {
           >
             <Icon 
                 name="search" 
-                color="#005000"
+                color={COLORS.main}
                 size={40}
               />
           </Box>

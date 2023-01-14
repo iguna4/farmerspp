@@ -281,7 +281,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
         // alignItems={"center"}
      >
         <Box 
-        bg="ghostwhite" 
+        bg="#EBEBE4" 
         w="100%" 
         p="3" 
 

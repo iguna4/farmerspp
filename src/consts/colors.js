@@ -1,8 +1,12 @@
 /* eslint-disable prettier/prettier */
 const COLORS = {
-    main: '#0050000',
-    gray: 'gray',
+    main: '#008000',
+    second: '#005000',
+    third: '#003000',
     grey: 'grey',
+    lightgrey: 'lightgrey',
+    ghostwhite: 'ghostwhite',
+    black: '#000',
 };
 
 

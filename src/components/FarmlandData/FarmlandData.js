@@ -292,6 +292,11 @@ const FarmlandData = ({ farmland })=>{
                                 }}                    
                             >
                                 <TouchableOpacity
+                                    style={{
+                                        borderWidth: 2,
+                                        borderRadius: 40,
+                                        borderColor: COLORS.danger
+                                    }}
                                     disabled={farmland?.auditedArea ? true : false}
                                     onPress={
                                         ()=>navigation.navigate('FarmlandAreaAudit', {
@@ -310,13 +315,13 @@ const FarmlandData = ({ farmland })=>{
                                         icon={{ 
                                             name: "pencil", 
                                             type: "font-awesome", 
-                                            color: farmland?.auditedArea ? COLORS.grey: 'red', 
+                                            color: farmland?.auditedArea ? COLORS.grey: COLORS.danger, 
                                         }}
                                     />
                                     <Text
                                         style={{ 
                                             textAlign: 'center',
-                                            color: farmland?.auditedArea ? 'grey': 'red',
+                                            color: farmland?.auditedArea ? COLORS.grey: COLORS.danger,
                                             padding: 4,
                                             
                                         }}

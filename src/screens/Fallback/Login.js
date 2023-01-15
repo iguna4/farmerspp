@@ -1,5 +1,8 @@
-import { Pressable, SafeAreaView, Text, View, Image, } from 'react-native';
-import React, {useEffect, useState, useCallback} from 'react';
+import { 
+    Pressable, SafeAreaView, Text, View, Image, 
+    StyleSheet, Animated, Easing, ImageBackground, 
+} from 'react-native';
+import React, {useEffect, useState, useCallback, useRef } from 'react';
 import styles from './styles';
 import { Button, Icon } from '@rneui/themed';
 import { Box, Stack, FormControl, Center, Select, CheckIcon, ScrollView } from 'native-base';
@@ -13,9 +16,11 @@ import validateUserData from '../../helpers/validateUserData';
 import districts from '../../fakedata/districts';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
+
 import { realmContext } from '../../models/realm';
 import COLORS from '../../consts/colors';
 const {useRealm} = realmContext;
+
 
 const Login = () => {
     const [isLoggingIn, setIsLoggingIn] = useState(true);
@@ -687,4 +692,24 @@ const Login = () => {
   )
 }
 
-export default Login
+
+// const styles = StyleSheet.create({    
+    
+//     background: {
+//         position: 'absolute',
+//         width: 1200,
+//         height: 1200,
+//         top: 0,
+//         opacity: 0.2,
+//         transform: [
+//           {
+//             translateX: 0,
+//           },
+//           {
+//             translateY: 0,
+//           },
+//         ],      
+//       }, 
+//   });
+
+export default Login;

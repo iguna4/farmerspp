@@ -52,29 +52,13 @@ const FarmerItem = ({ item, route, farmerType, requestCameraPermission }) => {
     >
       <Stack direction="row" w="100%">
       <Center w="20%" m="2">
-        <Pressable
-          onPress={requestCameraPermission}
-        >
-
-        <View
-          style={{
-            position: 'absolute',
-            top: 25,
-            left: -10,
-            zIndex: 2,
-          }}
-          >
-          
-            <Icon name="add-a-photo" size={20} color={COLORS.main} />
-          </View>
         <Avatar 
             size={80}
             rounded
             title={getInitials(item?.names?.surname)}
             containerStyle={{ backgroundColor: COLORS.grey }}
-            source={{ uri }}
+            source={{ uri: item?.image ? item?.image : 'htt://localhost/not-set-yet' }}
         />
-        </Pressable>
       </Center>
 
       <Box w="80%">

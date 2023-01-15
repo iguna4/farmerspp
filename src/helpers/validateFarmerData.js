@@ -108,11 +108,11 @@ const validateFarmerData = (
         return false;
     }
 
-    if (!retrievedBirthDistrict){
+    if (!retrievedBirthDistrict && !retrievedBirthProvince?.includes('Cidade')){
         const errorMessage = 
             (birthProvince === "País Estrangeiro") 
             ? "Indica país onde nasceu."
-            : "Indica distrito onde nasceu."
+            : "Indica distrito onde nasceu!"
 
         setErrors({ ...errors,
             birthDistrict: errorMessage,
@@ -120,9 +120,9 @@ const validateFarmerData = (
         return false;
     }
 
-    if (!retrievedBirthAdminPost && birthProvince !== "País Estrangeiro"){
+    if (!retrievedBirthAdminPost && !retrievedBirthProvince?.includes('Cidade') && birthProvince !== "País Estrangeiro"){
         setErrors({ ...errors,
-            birthAdminPost: 'Posto Administrativo onde o produtor nasceu.',
+            birthAdminPost: 'Posto Administrativo onde nasceu.',
         });
         return false;
     }

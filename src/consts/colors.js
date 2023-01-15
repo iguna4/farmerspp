@@ -7,6 +7,7 @@ const COLORS = {
     lightgrey: 'lightgrey',
     ghostwhite: 'ghostwhite',
     black: '#000',
+    danger: '#DD6B55',
 };
 
 

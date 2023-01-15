@@ -1,29 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, SafeAreaView, TouchableOpacity, Image, FlatList, Pressable } from 'react-native';
 import { Box, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
 import { Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 
 
-import CustomDivider from '../../components/Divider/CustomDivider';
-import PersonalData from '../../components/PersonalData/PersonalData';
 import FarmlandData from '../../components/FarmlandData/FarmlandData';
 import GroupData from '../../components/GroupData/GroupData';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faTree } from '@fortawesome/free-solid-svg-icons';
-import { getInitials } from '../../helpers/getInitials'
-
 
 import { realmContext } from '../../models/realm';
 import COLORS from '../../consts/colors';
+import PhotoModal from '../../components/Modals/PhotoModal';
+import AwesomeAlert from 'react-native-awesome-alerts';
 const { useRealm, useQuery, useObject } = realmContext; 
 
-const uri = `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
+// const uri = `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
 const GroupScreen = ({ route, navigation }) =>{
     const ownerId = route.params.ownerId;
+    const realm = useRealm();
     const farmer = useObject('Group', ownerId);
     const farmlands = useQuery('Farmland').filtered('farmer == $0', ownerId);
+    const [isAddPhoto, setIsAddPhoto] = useState(false);
+    const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
 
     const keyExtractor = (item, index)=>index.toString();
 
@@ -39,6 +38,28 @@ const GroupScreen = ({ route, navigation }) =>{
             }}
         >
 
+      <AwesomeAlert
+        show={isAddPhoto}
+        showProgress={false}
+        title="Fotografia"
+        message="Pretendes carregar uma nova fotografia?"
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={true}
+        showCancelButton={true}
+        showConfirmButton={true}
+        cancelText="   Não   "
+        confirmText="   Sim!   "
+        confirmButtonColor={COLORS.main}
+        cancelButtonColor={COLORS.grey}
+        onCancelPressed={() => {
+            setIsAddPhoto(false);
+        }}
+        onConfirmPressed={() => {
+          setIsAddPhoto(false);
+          setIsPhotoModalVisible(true);
+        }}
+      />
+
       <View
           style={{
             // height: "10%",
@@ -53,6 +74,8 @@ const GroupScreen = ({ route, navigation }) =>{
             borderRightWidth: 3,
           }}
       >
+
+
         <Stack
           direction="row" w="100%"
         >
@@ -117,7 +140,6 @@ const GroupScreen = ({ route, navigation }) =>{
             contentContainerStyle={{
                 paddingVertical: 15,
                 padding: 5,
-                marginBottom: 20,
             }}
       >
 
@@ -125,40 +147,61 @@ const GroupScreen = ({ route, navigation }) =>{
             style={{
               justifyContent: 'center',
               alignItems: 'center',
+              marginTop: 60,
+              borderRadius: 5,
+              borderColor: COLORS.main,
+              shadowColor: COLORS.main,
+              shadowOffset: {
+                width: 0,
+                height: 1,
+              },
+              shadowOpacity: 0.27,
+              shadowRadius: 1.65,
+      
+              elevation: 1,
             }}
             >
               {/* <View> */}
             <TouchableOpacity
               onPress={()=>{
-                console.log('pressed Image');
+                setIsAddPhoto(true);
               }}
-            >
-            <View
               style={{
-                position: 'absolute',
-                top: 180,
-                left: 40,
-                zIndex: 2,
+                position: 'relative',
+                top: -50,
               }}
             >
-                <Icon name="add-a-photo" size={30} color={COLORS.main} />
-            </View>
-            <Icon name="account-circle" size={245} color={COLORS.grey} />
-            </TouchableOpacity>            {/* <Image 
-              alt={getInitials(farmer?.manager?.fullname)}
-              resizeMethod='auto'
-              style={[styles.stretch, { borderWidth: 3, borderColor: '#005000', backgroundColor: 'lightgrey', }]}
-              source={{ uri }}               
-            /> */}
-              {/* </View> */}
-                <Text 
+{            
+     farmer?.image &&   
+     ( <>
+          <Image 
+            source={{ uri: farmer?.image }}
+            style={styles.images}
+          />
+            
+      </>
+     )        
+          }
+
+
+{            
+     !farmer?.image &&   
+     ( <>
+        <Icon name="account-circle" size={245} color={COLORS.grey} />
+      </>
+     )        
+          }
+            </TouchableOpacity>            
+    
+            <Text 
                 style={{
                   
                   color: COLORS.main,
                   fontSize: 24,
                   fontFamily: 'JosefinSans-Bold',
                   textAlign: 'center',
-                  
+                  position: 'relative',
+                  top: -50,
                 }}
                 >
                     {farmer?.manager.fullname}
@@ -170,12 +213,14 @@ const GroupScreen = ({ route, navigation }) =>{
                   fontSize: 12,
                   fontFamily: 'JosefinSans-Bold',
                   textAlign: 'center',
-                  
+                  position: 'relative',
+                  top: -50,
                 }}                
                 >
-                    ({farmer.type.includes('Grupo') ? 'Representante' : 'Presidente'})</Text>
-            </Box>
-
+                    (Responsável)</Text>
+    
+    
+    </Box>
     {/* 
         Personal Data Child Component
     */}
@@ -247,18 +292,29 @@ const GroupScreen = ({ route, navigation }) =>{
             (<FarmlandData key={farmland._id} farmland={farmland} />))
         }
         </Box>
-
+        <PhotoModal 
+          realm={realm}
+          farmer={farmer}
+          famerType={'Grupo'}
+          isPhotoModalVisible={isPhotoModalVisible}
+          setIsPhotoModalVisible={setIsPhotoModalVisible}
+        />
         </ScrollView>
 </SafeAreaView>
     )
 }
 
-// const styles = StyleSheet.create({
-//   stretch: {
-//     width: 300,
-//     height: 300,
-//     borderRadius: 200,
-//   }
-// })
+const styles = StyleSheet.create({
+
+  images: {
+    width: 250,
+    height: 250,
+    borderColor: COLORS.main,
+    borderWidth: 2,
+    marginHorizontal: 3,
+    borderRadius: 120,
+  },
+
+});
 
 export default GroupScreen;

@@ -16,7 +16,7 @@ export const Institution = {
         manager: 'Manager',
         nuit: { type: 'int?', default: 0},
         licence: {type: 'string?', default: ''},
-        image: { type: 'string', default: 'https://localhost.picture' },
+        image: { type: 'string', default: '' },
         farmlands: 'string[]',
         createdAt: { type: 'date', default: Date()},
         district: 'string?',

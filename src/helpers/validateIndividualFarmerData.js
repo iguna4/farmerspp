@@ -137,7 +137,7 @@ const validateIndividualFarmerData = (
         return false;
     }
 
-    if (!retrievedBirthDistrict){
+    if (!retrievedBirthDistrict && !retrievedBirthProvince?.includes('Cidade')){
         const errorMessage = 
             (retrievedBirthProvince === "País Estrangeiro") 
             ? "Indica país onde nasceu."

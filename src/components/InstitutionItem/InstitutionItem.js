@@ -46,29 +46,14 @@ const InstitutionItem = ({ item, route, requestCameraPermission }) => {
 
     <Stack direction="row" w="100%">
     <Center w="20%" m="2">
-      <Pressable
-        onPress={()=>{}}
-      >
 
-      <View
-      style={{
-        position: 'absolute',
-        top: 25,
-        left: -10,
-        zIndex: 2,
-      }}
-      >
-        
-        <Icon name="add-a-photo" size={20} color={COLORS.main} />
-        </View>
-      <Avatar 
-        size={80}
-        rounded
-        title={getInitials(item?.manager?.fullname)}
-        containerStyle={{ backgroundColor: COLORS.grey }}
-        source={{ uri }}
+    <Avatar 
+            size={80}
+            rounded
+            title={getInitials(item?.manager?.fullname)}
+            containerStyle={{ backgroundColor: COLORS.grey }}
+            source={{ uri: item?.image ? item?.image : 'htt://localhost/not-set-yet' }}
         />
-      </Pressable>
     </Center>
     <Box w="80%">
 

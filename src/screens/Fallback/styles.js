@@ -52,6 +52,21 @@ const styles = StyleSheet.create({
         fontFamily: 'JosefinSans-Italic',
         fontSize: 16,
     },
+    background: {
+        position: 'absolute',
+        width: 1200,
+        height: 1600,
+        top: 0,
+        opacity: 1,
+        transform: [
+          {
+            translateX: 0,
+          },
+          {
+            translateY: 0,
+          },
+        ],      
+      }, 
 });
 
 export default styles;

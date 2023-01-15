@@ -1,35 +1,58 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, SafeAreaView, FlatList, Pressable, StyleSheet } from 'react-native';
-import { Box, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
+import { Box, Stack, Center, } from 'native-base';
 import { Divider, Icon, Avatar } from '@rneui/base';
-import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 
 
-
-import CustomDivider from '../../components/Divider/CustomDivider';
 import PersonalData from '../../components/PersonalData/PersonalData';
 import FarmlandData from '../../components/FarmlandData/FarmlandData';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faTree } from '@fortawesome/free-solid-svg-icons';
-import { getInitials } from '../../helpers/getInitials'
 
 
 import { realmContext } from '../../models/realm';
 import COLORS from '../../consts/colors';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import PhotoModal from '../../components/Modals/PhotoModal';
 const { useRealm, useQuery, useObject } = realmContext; 
 
-const uri = `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
 
 const FarmerScreen = ({ route, navigation }) =>{
     const ownerId = route.params.ownerId;
+    const realm = useRealm();
     const farmer = useObject('Farmer', ownerId);
     const farmlands = useQuery('Farmland').filtered('farmer == $0', ownerId);
-    const [image, setImage] = useState(null);
     const [fileData, setFileData] = useState(null);
     const [fileUri, setFileUri] = useState(null);
+    const [isAddPhoto, setIsAddPhoto] = useState(false);
+    const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
+
+
+    const launchNativeCamera = () => {
+      let options = {
+        includeBase64: true,
+        storageOptions: {
+          skipBackup: true,
+          path: 'images',
+        },
+      };
+      launchCamera(options, (response) => {
+        console.log('Response = ', response);
+  
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.errorCode) {
+          console.log('ImagePicker Error: ', response.errorMessage);
+        } else {
+          const source = { uri: response.uri };
+          console.log('response', JSON.stringify(response));
+          setFileData(response.assets[0].base64);
+          setFileUri(response.assets[0].uri)
+        }
+      });
+  
+    };
 
     const launchNativeImageLibrary = () => {
       let options = {
@@ -49,6 +72,11 @@ const FarmerScreen = ({ route, navigation }) =>{
         } else {
           const source = { uri: response.assets.uri };
           // console.log('response', JSON.stringify(response));
+          realm.write(()=>{
+
+            farmer.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
+
+          })
           setFileData(response.assets[0].base64);
           setFileUri(response.assets[0].uri)
         }
@@ -68,6 +96,27 @@ const FarmerScreen = ({ route, navigation }) =>{
 
             }}
         >
+          <AwesomeAlert
+            show={isAddPhoto}
+            showProgress={false}
+            title="Fotografia"
+            message="Pretendes carregar uma nova fotografia?"
+            closeOnTouchOutside={true}
+            closeOnHardwareBackPress={true}
+            showCancelButton={true}
+            showConfirmButton={true}
+            cancelText="   Não   "
+            confirmText="   Sim!   "
+            confirmButtonColor={COLORS.main}
+            cancelButtonColor={COLORS.grey}
+            onCancelPressed={() => {
+                setIsAddPhoto(false);
+            }}
+            onConfirmPressed={() => {
+              setIsAddPhoto(false);
+              setIsPhotoModalVisible(true);
+            }}
+          />
 
       <View
           style={{
@@ -83,6 +132,8 @@ const FarmerScreen = ({ route, navigation }) =>{
             borderRightWidth: 3,
           }}
       >
+
+
         <Stack
           direction="row" w="100%"
         >
@@ -134,101 +185,92 @@ const FarmerScreen = ({ route, navigation }) =>{
           <Box w="20%"
             style={{ justifyContent: 'center'}}
           >
-          {/* <Icon 
-              name="search" 
-              color="#005000"
-              size={40}
-            /> */}
+
           </Box>
         </Stack>
       </View>
       <ScrollView
-            contentContainerStyle={{
-                // minHeight: '100%',
-                paddingVertical: 15,
-                padding: 5,
-                marginBottom: 20,
-            }}
+        contentContainerStyle={{
+            paddingVertical: 15,
+            padding: 5,
+            // marginBottom: 60,
+        }}
       >
 
-        {/* <View
-            style={{ 
-                minHeight: 300, 
-                width: '100%', 
-                background: '#005000',
+        <Box w="100%"
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 60,
+            borderRadius: 5,
+            borderColor: COLORS.main,
+            shadowColor: COLORS.main,
+            shadowOffset: {
+              width: 0,
+              height: 1,
+            },
+            shadowOpacity: 0.27,
+            shadowRadius: 1.65,
+    
+            elevation: 1,
+
+          }}
+        >
+          <TouchableOpacity
+            onPress={()=>{
+              setIsAddPhoto(true);
             }}
-        > */}
-            <Box w="100%"
-                style={{
-                  // backgroundColor: 'lightgrey',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-            >
-              {/* <View> */}
-            <TouchableOpacity
-              onPress={()=>{
-                launchNativeImageLibrary();
-              }}
-            >
-{            
-     fileData &&   
-     ( <>
-          <Image 
-            source={{ uri: 'data:image/jpeg;base64,' + fileData }}
-            style={styles.images}
-          />
-            
-      </>
-     )        
-          }
-
-
-{            
-     !fileData &&   
-     ( <>
-     <View
-              style={{
-                position: 'absolute',
-                top: 180,
-                left: 40,
-                zIndex: 2,
-              }}
-              >
-
-                <Icon name="add-a-photo" size={30} color={COLORS.main} />
-            </View>
+            style={{
+              position: 'relative',
+              top: -50,
+            }}
+          >
+        {            
+          farmer?.image &&   
+          ( 
+          <>
+            <Image 
+              source={{ uri: farmer?.image }}
+              style={styles.images}
+            />
+          </>
+          )        
+        }
+        {            
+          !farmer?.image &&   
+          ( 
+          <>
             <Icon name="account-circle" size={245} color={COLORS.grey} />
-            
-      </>
-     )        
-          }
-            </TouchableOpacity>
+         </>
+        )        
+       }
+      </TouchableOpacity>
 
-                <Text 
-                style={{
-                  
-                  color: COLORS.main,
-                  fontSize: 24,
-                  fontFamily: 'JosefinSans-Bold',
-                  textAlign: 'center',
-                  
-                }}
-                >
-                    {farmer.names.otherNames}{' '}{farmer.names.surname}
-                </Text>
-                <Text
-                style={{
-                  
-                  color: COLORS.main,
-                  fontSize: 12,
-                  fontFamily: 'JosefinSans-Bold',
-                  textAlign: 'center',
-                  
-                }}                
-                >
-                    ({farmer.category})</Text>
-            </Box>
+      <Text 
+        style={{  
+          color: COLORS.main,
+          fontSize: 24,
+          fontFamily: 'JosefinSans-Bold',
+          textAlign: 'center',
+          position: 'relative',
+          top: -50,
+        }}
+      >
+        {farmer.names.otherNames}{' '}{farmer.names.surname}
+      </Text>
+      <Text
+        style={{  
+          color: COLORS.main,
+          fontSize: 12,
+          fontFamily: 'JosefinSans-Bold',
+          textAlign: 'center',
+          position: 'relative',
+          top: -50,
+        }}                
+      >
+        ({farmer.category})
+      </Text>
+    </Box>
     
     {/* 
         Personal Data Child Component
@@ -297,7 +339,13 @@ const FarmerScreen = ({ route, navigation }) =>{
             (<FarmlandData key={farmland._id} farmland={farmland} />))
         }
         </Box>
- 
+        <PhotoModal 
+          realm={realm}
+          farmer={farmer}
+          farmerType={'Indivíduo'}
+          isPhotoModalVisible={isPhotoModalVisible}
+          setIsPhotoModalVisible={setIsPhotoModalVisible}
+        />
         </ScrollView>
 </SafeAreaView>
     )
@@ -308,10 +356,10 @@ const styles = StyleSheet.create({
   images: {
     width: 250,
     height: 250,
-    borderColor: 'black',
-    borderWidth: 1,
+    borderColor: COLORS.main,
+    borderWidth: 2,
     marginHorizontal: 3,
-    borderRadius: 100,
+    borderRadius: 120,
   },
 
 });

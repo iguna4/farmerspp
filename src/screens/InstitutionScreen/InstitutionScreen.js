@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet,  SafeAreaView, Image, FlatList, Pressable, TouchableOpacity } from 'react-native';
 import { Box, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
 import { Divider, Icon } from '@rneui/base';
@@ -16,15 +16,20 @@ import { getInitials } from '../../helpers/getInitials'
 
 import { realmContext } from '../../models/realm';
 import COLORS from '../../consts/colors';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import PhotoModal from '../../components/Modals/PhotoModal';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 
-const uri = `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
+// const uri = `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
 const InstitutionScreen = ({ route, navigation }) =>{
     const ownerId = route.params.ownerId;
+    const realm = useRealm();
     const farmer = useObject('Institution', ownerId);
     const farmlands = useQuery('Farmland').filtered('farmer == $0', ownerId);
+    const [isAddPhoto, setIsAddPhoto] = useState(false);
+    const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
 
     const keyExtractor = (item, index)=>index.toString();
 
@@ -54,6 +59,30 @@ const InstitutionScreen = ({ route, navigation }) =>{
             borderRightWidth: 3,
           }}
       >
+      <AwesomeAlert
+        show={isAddPhoto}
+        showProgress={false}
+        title="Fotografia"
+        message="Pretendes carregar uma nova fotografia?"
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={true}
+        showCancelButton={true}
+        showConfirmButton={true}
+        cancelText="   Não   "
+        confirmText="   Sim!   "
+        confirmButtonColor={COLORS.main}
+        cancelButtonColor={COLORS.grey}
+        onCancelPressed={() => {
+            setIsAddPhoto(false);
+        }}
+        onConfirmPressed={() => {
+          setIsAddPhoto(false);
+          setIsPhotoModalVisible(true);
+        }}
+      />
+
+
+
         <Stack
           direction="row" w="100%"
         >
@@ -123,55 +152,59 @@ const InstitutionScreen = ({ route, navigation }) =>{
       </View>
       <ScrollView
             contentContainerStyle={{
-                // minHeight: '100%',
                 paddingVertical: 15,
                 padding: 5,
-                marginBottom: 20,
             }}
       >
-
-        {/* <View
-            style={{ 
-                minHeight: 300, 
-                width: '100%', 
-                background: '#005000',
-            }}
-        > */}
-          <Box w="100%"
+         <Box w="100%"
             style={{
               justifyContent: 'center',
               alignItems: 'center',
+              marginTop: 60,
+              borderRadius: 5,
+              borderColor: COLORS.main,
+              shadowColor: COLORS.main,
+              shadowOffset: {
+                width: 0,
+                height: 1,
+              },
+              shadowOpacity: 0.27,
+              shadowRadius: 1.65,
+      
+              elevation: 1,
             }}
             >
               {/* <View> */}
             <TouchableOpacity
               onPress={()=>{
-                console.log('pressed Image');
+                setIsAddPhoto(true);
+              }}
+              style={{
+                position: 'relative',
+                top: -50,
               }}
             >
-              <View
-                style={{
-                  position: 'absolute',
-                  top: 180,
-                  left: 40,
-                  zIndex: 2,
-                }}
-              >
-                <Icon name="add-a-photo" size={30} color={COLORS.main} />
-              </View>
-              <Icon name="account-circle" size={245} color={COLORS.grey} />
-            </TouchableOpacity>            {/* <Image 
-              alt={getInitials(farmer?.manager?.fullname)}
-              resizeMethod='auto'
-              style={[
-                styles.stretch, 
-                { borderWidth: 3, 
-                  borderColor: COLORS.main, 
-                  backgroundColor: 'lightgrey', 
-                }]}
-              source={{ uri }}          
-            /> */}
-              {/* </View> */}
+{            
+     farmer?.image  &&   
+     ( <>
+          <Image 
+            source={{ uri: farmer?.image }}
+            style={styles.images}
+          />
+      </>
+     )        
+  }
+
+
+{            
+     !farmer?.image &&   
+     ( <>
+        <Icon name="account-circle" size={245} color={COLORS.grey} /> 
+      </>
+     )        
+  }
+          </TouchableOpacity>            
+            
                 <Text 
                 style={{
                   
@@ -179,7 +212,8 @@ const InstitutionScreen = ({ route, navigation }) =>{
                   fontSize: 24,
                   fontFamily: 'JosefinSans-Bold',
                   textAlign: 'center',
-                  
+                  position: 'relative',
+                  top: -50,        
                 }}
                 >
                     {farmer?.manager.fullname}
@@ -191,7 +225,8 @@ const InstitutionScreen = ({ route, navigation }) =>{
                   fontSize: 12,
                   fontFamily: 'JosefinSans-Bold',
                   textAlign: 'center',
-                  
+                  position: 'relative',
+                  top: -50,              
                 }}                
                 >
                     (Responsável)</Text>
@@ -266,18 +301,29 @@ const InstitutionScreen = ({ route, navigation }) =>{
             (<FarmlandData key={farmland._id} farmland={farmland} />))
         }
         </Box>
-
+        <PhotoModal 
+          realm={realm}
+          farmer={farmer}
+          famerType={'Instituição'}
+          isPhotoModalVisible={isPhotoModalVisible}
+          setIsPhotoModalVisible={setIsPhotoModalVisible}
+        />
         </ScrollView>
 </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
-  stretch: {
-    width: 300,
-    height: 300,
-    borderRadius: 200,
-  }
-})
+
+  images: {
+    width: 250,
+    height: 250,
+    borderColor: COLORS.main,
+    borderWidth: 2,
+    marginHorizontal: 3,
+    borderRadius: 120,
+  },
+
+});
 
 export default InstitutionScreen;

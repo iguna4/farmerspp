@@ -20,7 +20,7 @@ export const Farmer = {
         category: { type: 'string', default: 'Não-categorizado' },
         contact: 'Contact?',
         idDocument: 'IdDocument?',
-        imagem: { type: 'string', default: 'https://localhost.picture' },
+        image: { type: 'string', default: '' },
         // farmlands: 'Farmland[]',
         farmlands: 'string[]',
         createdAt: { type: 'date', default: Date()},

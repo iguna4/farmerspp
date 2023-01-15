@@ -2,6 +2,7 @@
 import { View, Text, ActivityIndicator } from 'react-native'
 import React from 'react'
 import styles from './style'
+import COLORS from '../../consts/colors';
 
 
 const CustomActivityIndicator = ({ loadingActivitiyIndicator, setLoadingActivityIndicator }) => {
@@ -23,12 +24,17 @@ const CustomActivityIndicator = ({ loadingActivitiyIndicator, setLoadingActivity
             //visibility of Overlay Loading Spinner
             visible={loadingActivitiyIndicator}
             //Text with the Spinner
-            textContent={'Connect Caju...'}
+            // textContent={'Connect Caju...'}
             //Text style of the Spinner Text
             textStyle={styles.spinnerTextStyle}
-            size="large"
-            color="#005000"
+            
+            size={'large'} 
+            color={COLORS.main} 
+  
           />
+          <Text style={{
+            textAlign: 'center', fontSize: 12, color: COLORS.main, fontFamily: 'JosefinSans-Regular',
+          }}>ConnectCaju...</Text>
     </View>
   )
 }

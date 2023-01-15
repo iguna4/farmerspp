@@ -62,6 +62,22 @@ const InstitutionData = ({ farmer })=>{
             </View>
         </CollapseHeader>
         <CollapseBody>
+        <View
+            style={{
+                marginBottom: 40,
+                padding: 10,
+                borderColor: COLORS.main,
+                shadowColor: COLORS.main,
+                shadowOffset: {
+                    width: 0,
+                    height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+                elevation: 3,
+            }}
+        >
+
         <Stack w="100%" direction="row">
                 <Box w="35%" py="4">
                     <Text
@@ -134,7 +150,7 @@ const InstitutionData = ({ farmer })=>{
                         fontFamily: 'JosefinSans-Bold',
                         
                     }}
-                >Endereço:</Text>
+                    >Endereço:</Text>
             </Box>
             <Box w="65%" py="4">
             <Text style={{
@@ -201,6 +217,7 @@ const InstitutionData = ({ farmer })=>{
         </Stack>
         <CustomDivider />
 
+        </View>
         </CollapseBody>
     </Collapse>  
         </>

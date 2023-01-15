@@ -50,6 +50,22 @@ const PersonalData = ({ farmer })=>{
             </View>
         </CollapseHeader>
         <CollapseBody>
+        <View
+            style={{
+                marginBottom: 40,
+                padding: 10,
+                borderColor: COLORS.main,
+                shadowColor: COLORS.main,
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+                elevation: 3,
+            }}
+        >
+
         <Stack w="100%" direction="row">
                 <Box w="35%" py="4">
                     <Text
@@ -203,7 +219,7 @@ const PersonalData = ({ farmer })=>{
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}  
-                    >
+                        >
                         {farmer?.contact?.primaryPhone} (principal)
                     </Text>
                     <Text 
@@ -212,7 +228,7 @@ const PersonalData = ({ farmer })=>{
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
-                    >
+                        >
                         {farmer?.contact?.secondaryPhone} (alternativo)
                     </Text>
                 </Box>
@@ -274,7 +290,7 @@ const PersonalData = ({ farmer })=>{
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
-                    >
+                        >
                         Nenhum (principal)
                     </Text>
                     <Text 
@@ -301,7 +317,7 @@ const PersonalData = ({ farmer })=>{
                         fontFamily: 'JosefinSans-Bold',
                         
                     }}
-                >Doc. Identificação:</Text>
+                    >Doc. Identificação:</Text>
             </Box>
             <Box w="65%" py="4">
             { farmer?.idDocument?.docNumber ?
@@ -338,13 +354,14 @@ const PersonalData = ({ farmer })=>{
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}
-                >Nenhum (NUIT)</Text>)
-            }
+                    >Nenhum (NUIT)</Text>)
+                }
             </Box>
         </Stack>
         <CustomDivider />
 
 
+        </View>
         </CollapseBody>
     </Collapse>  
         </>

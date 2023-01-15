@@ -62,6 +62,22 @@ const GroupData = ({ farmer })=>{
             </View>
         </CollapseHeader>
         <CollapseBody>
+        <View
+            style={{
+                marginBottom: 40,
+                padding: 10,
+                borderColor: COLORS.main,
+                shadowColor: COLORS.main,
+                shadowOffset: {
+                    width: 0,
+                    height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+                elevation: 3,
+            }}
+        >
+
         <Stack w="100%" direction="row">
                 <Box w="35%" py="4">
                     <Text
@@ -134,7 +150,7 @@ const GroupData = ({ farmer })=>{
                     }}
                     >
                         {
-                    farmer?.type?.includes('Grupo') ? 'Criação:' : 'Legalização:'
+                            farmer?.type?.includes('Grupo') ? 'Criação:' : 'Legalização:'
                         }
                 </Text>
                 </Box>
@@ -199,7 +215,7 @@ const GroupData = ({ farmer })=>{
                         fontFamily: 'JosefinSans-Bold',
                         
                     }}
-                >Endereço:</Text>
+                    >Endereço:</Text>
             </Box>
             <Box w="65%" py="4">
             <Text style={{
@@ -243,7 +259,7 @@ const GroupData = ({ farmer })=>{
                         fontFamily: 'JosefinSans-Bold',
                         
                     }}
-                >Documentos:</Text>
+                    >Documentos:</Text>
             </Box>
             <Box w="65%" py="4">
                 <Text style={{
@@ -251,20 +267,21 @@ const GroupData = ({ farmer })=>{
                     fontSize: 14,
                     fontFamily: 'JosefinSans-Regular',
                     }}
-                >
+                    >
                     {farmer?.nuit ? farmer?.nuit + ` (NUIT)` : 'Nenhum (NUIT)'} 
                 </Text>
                 <Text style={{
                     color: 'grey',
                     fontSize: 14,
                     fontFamily: 'JosefinSans-Regular',
-                    }}
+                }}
                 >
                     {farmer?.licence ? farmer?.licence + ` (Licença/Alvará)` : 'Nenhum (Licença/Alvará)'} 
                 </Text>
             </Box>
         </Stack>
         <CustomDivider />
+        </View>
 
         </CollapseBody>
     </Collapse>  

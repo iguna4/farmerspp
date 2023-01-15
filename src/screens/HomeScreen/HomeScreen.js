@@ -322,7 +322,7 @@ export default function HomeScreen({ navigation }) {
                   color: COLORS.grey,
                 }}              
                 >
-                20%
+                27.11 %
               </Text>
             </Center>
             </Box>
@@ -335,7 +335,7 @@ export default function HomeScreen({ navigation }) {
                   color: COLORS.grey,
                 }}              
                 >
-                12000
+                32744
               </Text>
             </Center>
             </Box>
@@ -361,7 +361,7 @@ export default function HomeScreen({ navigation }) {
                   color: COLORS.grey,
                 }}              
                 >
-                20%
+                15.56 %
               </Text>
             </Center>
             </Box>
@@ -374,7 +374,7 @@ export default function HomeScreen({ navigation }) {
                   color: COLORS.grey,
                 }}              
                 >
-                12000
+                9800
               </Text>
             </Center>
             </Box>
@@ -399,7 +399,7 @@ export default function HomeScreen({ navigation }) {
                   color: COLORS.grey,
                 }}              
                 >
-                20%
+                29.90 %
               </Text>
             </Center>
             </Box>
@@ -412,7 +412,7 @@ export default function HomeScreen({ navigation }) {
                   color: COLORS.grey,
                 }}              
                 >
-                12000
+                850
               </Text>
             </Center>
             </Box>
@@ -483,7 +483,7 @@ export default function HomeScreen({ navigation }) {
               color: COLORS.grey,
             }}              
             >
-            20%
+            19.35 %
           </Text>
         </Center>
         </Box>
@@ -496,7 +496,7 @@ export default function HomeScreen({ navigation }) {
               color: COLORS.grey,
             }}              
             >
-            12000
+            42000
           </Text>
         </Center>
         </Box>
@@ -522,7 +522,7 @@ export default function HomeScreen({ navigation }) {
               color: COLORS.grey,
             }}              
             >
-            20%
+            20.78 %
           </Text>
         </Center>
         </Box>
@@ -535,7 +535,7 @@ export default function HomeScreen({ navigation }) {
               color: COLORS.grey,
             }}              
             >
-            12000
+            9170
           </Text>
         </Center>
         </Box>
@@ -560,7 +560,7 @@ export default function HomeScreen({ navigation }) {
               color: COLORS.grey,
             }}              
             >
-            20%
+            5.89 %
           </Text>
         </Center>
         </Box>
@@ -573,7 +573,7 @@ export default function HomeScreen({ navigation }) {
               color: COLORS.grey,
             }}              
             >
-            12000
+            230
           </Text>
         </Center>
         </Box>

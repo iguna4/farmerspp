@@ -75,6 +75,16 @@ const FarmlandData = ({ farmland })=>{
         <View
             style={{
                 marginBottom: 40,
+                padding: 10,
+                borderColor: COLORS.main,
+                shadowColor: COLORS.main,
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+                elevation: 3,
             }}
         >
 
@@ -295,7 +305,8 @@ const FarmlandData = ({ farmland })=>{
                                     style={{
                                         borderWidth: 2,
                                         borderRadius: 40,
-                                        borderColor: COLORS.danger
+                                        borderColor: COLORS.danger,
+                                        padding: 1,
                                     }}
                                     disabled={farmland?.auditedArea ? true : false}
                                     onPress={
@@ -309,15 +320,7 @@ const FarmlandData = ({ farmland })=>{
                                             flexDirection: 'row',
                                         }}
                                     >
-                                    <Avatar 
-                                        size={24}
-
-                                        icon={{ 
-                                            name: "pencil", 
-                                            type: "font-awesome", 
-                                            color: farmland?.auditedArea ? COLORS.grey: COLORS.danger, 
-                                        }}
-                                    />
+                                    <Icon name="edit" size={20} color={farmland?.auditedArea ? COLORS.grey: COLORS.danger} />
                                     <Text
                                         style={{ 
                                             textAlign: 'center',

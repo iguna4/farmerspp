@@ -25,12 +25,10 @@ const GroupItem = ({ item, route, requestCameraPermission }) => {
       style={{
         padding: 10,
         marginVertical: 10,
-        // backgroundColor: '#EBEBE4',
-        borderColor: COLORS.main,
         minHeight: 100,
         width: '100%',
         flex: 1,
-        // alignItems: 'center',
+        borderColor: COLORS.main,
         shadowColor: COLORS.main,
         shadowOffset: {
           width: 0,

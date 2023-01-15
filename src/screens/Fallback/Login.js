@@ -197,7 +197,7 @@ const Login = () => {
           borderLeftWidth: 1,
           borderColor: '#EBEBE4',
           backgroundColor: '#EBEBE4',
-          // justifyContent: 'center',
+        //   alignItems: 'center',
           borderBottomLeftRadius: 50,
           borderBottomRightRadius: 50,
         //   marginBottom: 20,
@@ -249,7 +249,12 @@ const Login = () => {
       </View>
 
 
-        <ScrollView>
+        <ScrollView
+            contentContainerStyle={{
+
+                alignItems: 'center',
+            }}
+        >
         { isLoggingIn &&        
             <Center mt={'3'}>
                 <Text style={styles.signInTitle}>ConnectCaju - 2023</Text>
@@ -307,10 +312,27 @@ const Login = () => {
                 }}
             />
 
+        <View
+            style={{
+                width: '95%',
+                marginBottom: 20,
+                paddingTop: 30,
+                // borderRadius: 10,
+                borderColor: COLORS.main,
+                shadowColor: COLORS.main,
+                shadowOffset: {
+                    width: 0,
+                    height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+                elevation: 3,
+            }}
+        >
 
         <Stack space={1} w="90%" mx="auto">
             {
-            !isLoggingIn &&  (
+                !isLoggingIn &&  (
                 <FormControl isRequired my="3" isInvalid={'fullname' in errors}>
                     <FormControl.Label>Nome Completo</FormControl.Label>
                     <CustomInput
@@ -429,20 +451,20 @@ const Login = () => {
                     }
                     InputRightElement={
                         <Icon
-                            name={showPasswordConfirm ? 'visibility' : 'visibility-off'}
-                            color={COLORS.grey}
-                            size={30}
-                            type="material"
-                            onPress={()=>setShowPasswordConfirm(prev=>!prev)}
+                        name={showPasswordConfirm ? 'visibility' : 'visibility-off'}
+                        color={COLORS.grey}
+                        size={30}
+                        type="material"
+                        onPress={()=>setShowPasswordConfirm(prev=>!prev)}
                         />
                     }
                 />
             {
-            'passwordConfirm' in errors 
-            ? <FormControl.ErrorMessage 
+                'passwordConfirm' in errors 
+                ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.passwordConfirm}</FormControl.ErrorMessage> 
-            : <FormControl.HelperText></FormControl.HelperText>
+                : <FormControl.HelperText></FormControl.HelperText>
             }
             </FormControl>
             </Box>
@@ -450,7 +472,7 @@ const Login = () => {
         )}
         {
             !isLoggingIn && (
-            <Stack direction="row" w="100%" space={1}>
+                <Stack direction="row" w="100%" space={1}>
             <Box w="50%" >
             <FormControl isRequired my="3" isInvalid={'primaryPhone' in errors}>
                 <FormControl.Label>Telemóvel</FormControl.Label>
@@ -467,20 +489,20 @@ const Login = () => {
                     }
                     InputLeftElement={
                         <Icon
-                            name="phone"
-                            color={COLORS.grey}
-                            size={30}
+                        name="phone"
+                        color={COLORS.grey}
+                        size={30}
                             type="material"
                             onPress={()=>setShowPasswordConfirm(prev=>!prev)}
+                            />
+                        }
                         />
-                    }
-                />
             {
-            'primaryPhone' in errors 
-            ? <FormControl.ErrorMessage 
+                'primaryPhone' in errors 
+                ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.primaryPhone}</FormControl.ErrorMessage> 
-            : <FormControl.HelperText></FormControl.HelperText>
+                : <FormControl.HelperText></FormControl.HelperText>
             }
                 {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
             </FormControl>
@@ -501,21 +523,21 @@ const Login = () => {
                     }
                     InputLeftElement={
                         <Icon
-                            name="phone"
+                        name="phone"
                             color={COLORS.grey}
                             size={30}
                             type="material"
                             onPress={()=>setShowPasswordConfirm(prev=>!prev)}
-                        />
-                    }
+                            />
+                        }
                 />
             {
             'secondaryPhone' in errors 
             ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.secondaryPhone}</FormControl.ErrorMessage> 
+            leftIcon={<Icon name="error-outline" size={16} color="red" />}
+            _text={{ fontSize: 'xs'}}>{errors?.secondaryPhone}</FormControl.ErrorMessage> 
             : <FormControl.HelperText></FormControl.HelperText>
-            }
+        }
                 {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
             </FormControl>
             </Box>
@@ -525,7 +547,7 @@ const Login = () => {
         }
         {
             !isLoggingIn && (
-            <Stack direction="row" w="100%" space={1}>
+                <Stack direction="row" w="100%" space={1}>
             <Box w="50%">
                 <FormControl isRequired my="3" isInvalid={'province' in errors}>
                     <FormControl.Label>Província</FormControl.Label>
@@ -555,10 +577,10 @@ const Login = () => {
                     {
                     'province' in errors 
                     ? <FormControl.ErrorMessage 
-                        leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                        _text={{ fontSize: 'xs'}}>{errors?.province}</FormControl.ErrorMessage> 
+                    leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                    _text={{ fontSize: 'xs'}}>{errors?.province}</FormControl.ErrorMessage> 
                     : <FormControl.HelperText></FormControl.HelperText>
-                    }
+                }
                     {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
                 </FormControl>
             </Box>
@@ -585,15 +607,15 @@ const Login = () => {
                         selectedDistricts?.map((district, index)=>(
                             <Select.Item key={index} label={district} value={district} />
                             ))
-                    }
+                        }
                     </Select>
                     {
-                    'district' in errors 
-                    ? <FormControl.ErrorMessage 
+                        'district' in errors 
+                        ? <FormControl.ErrorMessage 
                         leftIcon={<Icon name="error-outline" size={16} color="red" />}
                         _text={{ fontSize: 'xs'}}>{errors?.district}</FormControl.ErrorMessage> 
                     : <FormControl.HelperText></FormControl.HelperText>
-                    }
+                }
                 {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
             </FormControl>
             </Box>
@@ -603,29 +625,29 @@ const Login = () => {
         }
         <Center w="100%"
             py="2"
-        >
+            >
 { isLoggingIn &&
           <Button 
-                title={"Entrar"} 
-                onPress={onPressSignIn} 
-                type="outline"
-                containerStyle={{
-                    width: '100%',
+          title={"Entrar"} 
+          onPress={onPressSignIn} 
+          type="outline"
+          containerStyle={{
+              width: '100%',
                 }}
-            />
-            
+                />
+                
 }
 
 { !isLoggingIn &&
           <Button 
-                title={"Registar-se"} 
-                onPress={onLogin} 
-                type="outline"
+          title={"Registar-se"} 
+          onPress={onLogin} 
+          type="outline"
                 containerStyle={{
                     width: '100%',
                 }}
-            />
-            
+                />
+                
 }
 
 
@@ -636,7 +658,7 @@ const Login = () => {
             <Box 
                 w="50%" 
                 alignItems="center"
-            >
+                >
 
             </Box>
             <Box 
@@ -648,7 +670,7 @@ const Login = () => {
                     style={{ 
                         fontFamily: 'JosefinSans-Regular',
                     }}
-                >
+                    >
                     { isLoggingIn ? "Usuário novo?" : "Já tens uma conta?" }
                 </Text> */}
 {    isLoggingIn &&
@@ -687,6 +709,7 @@ const Login = () => {
             </Box>
             </Stack>
         
+        </View>
         </ScrollView>
     </SafeAreaView>
   )

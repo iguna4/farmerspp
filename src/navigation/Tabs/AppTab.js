@@ -17,6 +17,7 @@ import PopupMenu from '../../components/PopupMenu/PopupMenu';
 import Wrapper from '../../components/PopupMenu/PopupMenu';
 import MenuWrapper from '../../components/PopupMenu/PopupMenu';
 import COLORS from '../../consts/colors';
+import SearchScreen from '../../screens/SearchScreen/SearchScreen';
 
 const { RealmProvider} = realmContext;
 
@@ -89,8 +90,8 @@ export default function AppTab() {
                         size={50} />,
               tabBarLabel: 'Pesquisa',
             }}
-            name="popup"
-            component={Login}
+            name="Search"
+            component={SearchScreen}
            />
       </Tab.Navigator>
     </NavigationContainer>

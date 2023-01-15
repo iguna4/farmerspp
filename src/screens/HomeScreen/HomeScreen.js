@@ -647,6 +647,55 @@ export default function HomeScreen({ navigation }) {
               </Box>
               </Stack>
 
+              <Center style={{
+                width: "80%",
+                marginLeft: 35,
+                marginVertical: 6,
+              }}>
+                <CustomDivider thickness={1} my={2}  bg={COLORS.main} />
+              </Center>
+
+              <MenuOption 
+              customStyles={{
+                optionWrapper: {
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  height: 45,
+                },
+              }}
+              onSelect={() => {
+                console.log('perfil do Usuário!')
+              }} 
+              >
+            <Box
+              style={{
+                paddingVertical: 5,
+              }}
+             >
+              <Stack direction="row" space={4}  ml="7">
+                <Icon name="account-circle" size={30} color={COLORS.grey} />
+                <Text 
+                  style={{
+                    color: COLORS.grey, 
+                    fontSize: 18, 
+                    fontFamily: 'JosefinSans-Bold'
+                  }}
+                  >
+                    Perfil do Usuário
+                  </Text>
+              </Stack>
+            </Box>            
+            </MenuOption>
+            
+
+            <Center style={{
+              width: "80%",
+              marginLeft: 35,
+              marginVertical: 6,
+            }}>
+              <CustomDivider thickness={1} my={2}  bg={COLORS.main} />
+            </Center>
 
             <MenuOption 
               customStyles={{
@@ -667,10 +716,10 @@ export default function HomeScreen({ navigation }) {
               }}
              >
               <Stack direction="row" space={4}  ml="7">
-                <Icon name="logout" size={30} color="red" />
+                <Icon name="logout" size={30} color={COLORS.grey} />
                 <Text 
                   style={{
-                    color: 'red', 
+                    color: COLORS.grey, 
                     fontSize: 18, 
                     fontFamily: 'JosefinSans-Bold'
                   }}
@@ -681,7 +730,13 @@ export default function HomeScreen({ navigation }) {
             </Box>            
             </MenuOption>
 
-
+            <Center style={{
+              width: "80%",
+              marginLeft: 35,
+              marginVertical: 6,
+            }}>
+              <CustomDivider thickness={1} my={2}  bg={COLORS.main} />
+            </Center>
             </View>
           </MenuOptions>
         </Menu>

@@ -128,20 +128,23 @@ const GroupScreen = ({ route, navigation }) =>{
             }}
             >
               {/* <View> */}
+            <TouchableOpacity
+              onPress={()=>{
+                console.log('pressed Image');
+              }}
+            >
             <View
               style={{
                 position: 'absolute',
                 top: 180,
-                left: 120,
+                left: 40,
                 zIndex: 2,
               }}
             >
-              <TouchableOpacity>
                 <Icon name="add-a-photo" size={30} color={COLORS.main} />
-              </TouchableOpacity>
             </View>
             <Icon name="account-circle" size={245} color={COLORS.grey} />
-            {/* <Image 
+            </TouchableOpacity>            {/* <Image 
               alt={getInitials(farmer?.manager?.fullname)}
               resizeMethod='auto'
               style={[styles.stretch, { borderWidth: 3, borderColor: '#005000', backgroundColor: 'lightgrey', }]}

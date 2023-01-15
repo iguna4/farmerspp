@@ -1,8 +1,11 @@
-import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, FlatList, Pressable, Image, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Image, SafeAreaView, FlatList, Pressable, StyleSheet } from 'react-native';
 import { Box, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
 import { Divider, Icon, Avatar } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+
+
 
 
 import CustomDivider from '../../components/Divider/CustomDivider';
@@ -24,7 +27,38 @@ const FarmerScreen = ({ route, navigation }) =>{
     const ownerId = route.params.ownerId;
     const farmer = useObject('Farmer', ownerId);
     const farmlands = useQuery('Farmland').filtered('farmer == $0', ownerId);
+    const [image, setImage] = useState(null);
+    const [fileData, setFileData] = useState(null);
+    const [fileUri, setFileUri] = useState(null);
 
+    const launchNativeImageLibrary = () => {
+      let options = {
+        includeBase64: true,
+        storageOptions: {
+          skipBackup: true,
+          path: 'images',
+        },
+      };
+      launchImageLibrary(options, (response) => {
+        // console.log('Response = ', response);
+  
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.errorCode) {
+          console.log('ImagePicker Error: ', response.error);
+        } else {
+          const source = { uri: response.assets.uri };
+          // console.log('response', JSON.stringify(response));
+          setFileData(response.assets[0].base64);
+          setFileUri(response.assets[0].uri)
+        }
+      });
+  
+    }
+
+    console.log('fileData:', fileData);
+    console.log('---------------------------');
+    console.log('fileUrl:', fileUri);
 
     return (
         <SafeAreaView 
@@ -132,26 +166,45 @@ const FarmerScreen = ({ route, navigation }) =>{
                 }}
             >
               {/* <View> */}
-            <View
+            <TouchableOpacity
+              onPress={()=>{
+                launchNativeImageLibrary();
+              }}
+            >
+{            
+     fileData &&   
+     ( <>
+          <Image 
+            source={{ uri: 'data:image/jpeg;base64,' + fileData }}
+            style={styles.images}
+          />
+            
+      </>
+     )        
+          }
+
+
+{            
+     !fileData &&   
+     ( <>
+     <View
               style={{
                 position: 'absolute',
                 top: 180,
-                left: 120,
+                left: 40,
                 zIndex: 2,
               }}
-            >
-              <TouchableOpacity>
+              >
+
                 <Icon name="add-a-photo" size={30} color={COLORS.main} />
-              </TouchableOpacity>
             </View>
             <Icon name="account-circle" size={245} color={COLORS.grey} />
-            {/* <Image 
-              alt={getInitials(farmer?.names?.surname)}
-              resizeMethod='auto'
-              style={[styles.stretch, { borderWidth: 3, borderColor: '#005000', backgroundColor: 'lightgrey', }]}
-              source={{ uri }}  
-            /> */}
-              {/* </View> */}
+            
+      </>
+     )        
+          }
+            </TouchableOpacity>
+
                 <Text 
                 style={{
                   
@@ -250,12 +303,17 @@ const FarmerScreen = ({ route, navigation }) =>{
     )
 };
 
-// const styles = StyleSheet.create({
-//   stretch: {
-//     width: 300,
-//     height: 300,
-//     borderRadius: 200,
-//   }
-// })
+const styles = StyleSheet.create({
+
+  images: {
+    width: 250,
+    height: 250,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginHorizontal: 3,
+    borderRadius: 100,
+  },
+
+});
 
 export default FarmerScreen;

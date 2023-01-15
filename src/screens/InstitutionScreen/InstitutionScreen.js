@@ -144,20 +144,23 @@ const InstitutionScreen = ({ route, navigation }) =>{
             }}
             >
               {/* <View> */}
+            <TouchableOpacity
+              onPress={()=>{
+                console.log('pressed Image');
+              }}
+            >
               <View
                 style={{
                   position: 'absolute',
                   top: 180,
-                  left: 120,
+                  left: 40,
                   zIndex: 2,
                 }}
-                >
-                <TouchableOpacity>
-                  <Icon name="add-a-photo" size={30} color={COLORS.main} />
-                </TouchableOpacity>
+              >
+                <Icon name="add-a-photo" size={30} color={COLORS.main} />
               </View>
               <Icon name="account-circle" size={245} color={COLORS.grey} />
-            {/* <Image 
+            </TouchableOpacity>            {/* <Image 
               alt={getInitials(farmer?.manager?.fullname)}
               resizeMethod='auto'
               style={[

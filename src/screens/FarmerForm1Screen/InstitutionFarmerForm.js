@@ -10,34 +10,11 @@ import { Datepicker  } from '@ui-kitten/components';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 import { CustomInput } from '../../components/Inputs/CustomInput';
-import administrativePosts from '../../fakedata/administrativePosts';
-import provinces from '../../fakedata/provinces';
-import districts from '../../fakedata/districts';
+
 import villages from '../../fakedata/villages';
-import CustomDivider from '../../components/Divider/CustomDivider';
-import styles from './styles';
-import IndividualModal from '../../components/Modals/IndividualModal'
-// import FarmerDataConfirmModal from '../../components/Modals/FarmerDataConfirmModal';
-// import FarmerAddDataModal from '../../components/Modals/FarmerAddDataModal';
-import { fullYears, getFullYears, localeDateService, useDatepickerState } from '../../helpers/dates';
-// import validateFarmerData from '../../helpers/validateFarmerData';
-import countries from '../../fakedata/countries';
+
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { groups, institutions, privateInstitutions, publicInstitutions } from '../../fakedata/farmerTypes';
-import validateIndividualFarmerData from '../../helpers/validateIndividualFarmerData';
-import validateInstitutionFarmerData from '../../helpers/validateInstitutionFarmerData';
-import validateGroupFarmerData from '../../helpers/validateGroupFarmerData';
-import TickComponent from '../../components/LottieComponents/TickComponent';
-import GroupModal from '../../components/Modals/GroupModal';
-import InstitutionModal from '../../components/Modals/InstitutionModal';
-import ErrorAlert from '../../components/Alerts/ErrorAlert';
-
-
-import { generateUFID } from '../../helpers/generateUFID';
-import DuplicatesAlert from '../../components/Alerts/DuplicatesAlert';
-import { detectDuplicates } from '../../helpers/detectDuplicates';
-import FarmerTypeRadioButtons from '../../components/RadioButton/FarmerTypeRadioButtons';
-import SuccessAlert from '../../components/Alerts/SuccessAlert';
 
 
 import { realmContext } from '../../models/realm';
@@ -56,10 +33,6 @@ export default function InstitutionFarmerForm({
 
  }) {
 
-    // handle modal view
-    // const [modalVisible, setModalVisible] = useState(false);
-
-    // const [duplicatesAlert, setDuplicatesAlert] = useState(false);
        
   return (
  <Box px="3" my="6">
@@ -116,7 +89,7 @@ export default function InstitutionFarmerForm({
                         minHeight={55}
                         dropdownCloseIcon={institutionType 
                                             ? <Icon name="close" size={25} color="grey" onPress={()=>setInstitutionType('')} /> 
-                                            : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                                            : <Icon size={25} name="arrow-drop-down" color="#005000" />
                                         }
                         _selectedItem={{
                             bg: 'teal.600',
@@ -153,7 +126,7 @@ export default function InstitutionFarmerForm({
             </Box>
             <Box w="50%" px="1">
             <FormControl isRequired my="4">
-                <FormControl.Label>Nome da Instituição</FormControl.Label>
+                <FormControl.Label>Designação</FormControl.Label>
                     <CustomInput
                         width="100%"
                         isDisabled={institutionType === '' ? true : false}
@@ -173,7 +146,7 @@ export default function InstitutionFarmerForm({
         <Stack direction="row" mx="3" w="100%">
         <Box w="50%" px="1">
             <FormControl isRequired my="2" isInvalid={'institutionAdminPost' in errors}>
-                <FormControl.Label>Posto Administrativo</FormControl.Label>
+                <FormControl.Label>Posto Adm.</FormControl.Label>
                 <Select
                     selectedValue={institutionAdminPost}
                     accessibilityLabel="posto administrativo"
@@ -186,7 +159,7 @@ export default function InstitutionFarmerForm({
                     }}
                     dropdownCloseIcon={institutionAdminPost 
                                     ? <Icon name="close" size={25} color="grey" onPress={()=>setInstitutionAdminPost('')} /> 
-                                    : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                                    : <Icon size={25} name="arrow-drop-down" color="#005000" />
                                 }
                     mt={1}
                     onValueChange={newAdminPost => {
@@ -223,7 +196,7 @@ export default function InstitutionFarmerForm({
                     }}
                     dropdownCloseIcon={institutionVillage 
                                     ? <Icon name="close" size={25} color="grey" onPress={()=>setInstitutionVillage('')} /> 
-                                    : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                                    : <Icon size={25} name="arrow-drop-down" color="#005000" />
                                 }
                     mt={1}
                     onValueChange={newVillage => setInstitutionVillage(newVillage)}
@@ -240,7 +213,7 @@ export default function InstitutionFarmerForm({
         </Stack>
 
         <FormControl isRequired my="1" isInvalid={'institutionManagerName' in errors}>
-            <FormControl.Label>Nome Completo do Representante</FormControl.Label>
+            <FormControl.Label>Nome do Representante</FormControl.Label>
             <CustomInput
                 width="100%"
                 type="text"
@@ -264,7 +237,7 @@ export default function InstitutionFarmerForm({
         <Stack direction="row" mx="3" w="100%">
         <Box w="50%" px="1" my="2">
         <FormControl  isInvalid={'institutionManagerPhone' in errors}>
-            <FormControl.Label>Telemóvel do Representante</FormControl.Label>
+            <FormControl.Label>Tel. do Representante</FormControl.Label>
             <CustomInput
                 width="100%"
                 type="telephoneNumber"
@@ -279,7 +252,7 @@ export default function InstitutionFarmerForm({
                     <Icon
                         name="phone"
                         color="grey"
-                        size={30}
+                        size={25}
                         type="material"
                     />
                 }
@@ -347,27 +320,7 @@ export default function InstitutionFarmerForm({
         </FormControl>
         </Box>
         <Box w="50%" px="1" my="2">
-            {/* <FormControl isInvalid={'institutionNuit' in errors}>
-                <FormControl.Label>NUIT da Instituição</FormControl.Label>
-                <CustomInput
-                width="100%"
-                type="number"
-                placeholder="NUIT"
-                    value={institutionNuit}
-                    keyboardType="numeric"
-                    onChangeText={newNuit=>{
-                        setErrors((prev)=>({...prev, institutionNuit: ''}));
-                        setInstitutionNuit(newNuit)
-                    }}
-                    />
-                {
-                    'institutionNuit' in errors 
-                    ? <FormControl.ErrorMessage 
-                    leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                    _text={{ fontSize: 'xs'}}>{errors?.institutionNuit}</FormControl.ErrorMessage> 
-                    : <FormControl.HelperText></FormControl.HelperText>
-                }
-            </FormControl> */}
+
         </Box>
         </Stack>
     )

@@ -73,20 +73,14 @@ const FarmerScreen = ({ route, navigation }) =>{
           const source = { uri: response.assets.uri };
           // console.log('response', JSON.stringify(response));
           realm.write(()=>{
-
             farmer.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
-
           })
           setFileData(response.assets[0].base64);
           setFileUri(response.assets[0].uri)
         }
-      });
-  
+      });  
     }
 
-    console.log('fileData:', fileData);
-    console.log('---------------------------');
-    console.log('fileUrl:', fileUri);
 
     return (
         <SafeAreaView 
@@ -106,7 +100,7 @@ const FarmerScreen = ({ route, navigation }) =>{
             showCancelButton={true}
             showConfirmButton={true}
             cancelText="   Não   "
-            confirmText="   Sim!   "
+            confirmText="   Sim   "
             confirmButtonColor={COLORS.main}
             cancelButtonColor={COLORS.grey}
             onCancelPressed={() => {
@@ -158,7 +152,7 @@ const FarmerScreen = ({ route, navigation }) =>{
               <Text
                 style={{ 
                   fontFamily: 'JosefinSans-Bold', 
-                  fontSize: 20, 
+                  fontSize: 16, 
                   color: COLORS.main, 
                 }}
               >

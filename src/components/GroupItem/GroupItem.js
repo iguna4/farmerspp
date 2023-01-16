@@ -16,7 +16,7 @@ import COLORS from '../../consts/colors';
 
 const uri =  `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
-const GroupItem = ({ item, route, requestCameraPermission }) => {
+const GroupItem = ({ item, route }) => {
 
    const navigation = useNavigation();
   // console.log('item:', JSON.stringify(item));
@@ -42,10 +42,10 @@ const GroupItem = ({ item, route, requestCameraPermission }) => {
       }}
     >
       <Stack direction="row" w="100%">
-      <Center w="20%" m="2">
+      <Center w="15%" m="2">
 
       <Avatar 
-            size={80}
+            size={60}
             rounded
             title={getInitials(item?.manager?.fullname)}
             containerStyle={{ backgroundColor: COLORS.grey }}
@@ -53,7 +53,7 @@ const GroupItem = ({ item, route, requestCameraPermission }) => {
         />
       </Center>
 
-      <Box w="80%">
+      <Box w="85%">
     <TouchableOpacity
       onPress={()=>{
         navigation.navigate('Group', {
@@ -84,7 +84,7 @@ const GroupItem = ({ item, route, requestCameraPermission }) => {
       </Text>
     <Stack direction="column" >
         <Stack direction="row">
-          <Box w="80%" style={{ }}>
+          <Box w="100%" style={{ }}>
         <Stack direction="row">
             {/* <Box w="80%" > */}
               <Text 
@@ -135,7 +135,7 @@ const GroupItem = ({ item, route, requestCameraPermission }) => {
             </Box>
         </Stack>
         </Box>
-        <Box w="20%" style={{ }}>
+        {/* <Box w="20%" style={{ }}>
           <Pressable
             onPress={()=>navigation.navigate('FarmlandForm1', {
               ownerId: item._id,
@@ -145,7 +145,7 @@ const GroupItem = ({ item, route, requestCameraPermission }) => {
           >
             <FontAwesomeIcon icon={faTree} size={30} color={COLORS.main} />
           </Pressable>
-        </Box>
+        </Box> */}
         </Stack>
       </Stack>
   </TouchableOpacity>
@@ -155,7 +155,9 @@ const GroupItem = ({ item, route, requestCameraPermission }) => {
   <Stack direction="row" w="100%" style={{ paddingTop: 10,  }}>
         <Box w="100%">
           <Text 
-            style={{ fontFamily: 'JosefinSans-Italic'}}
+            style={{ 
+              textAlign: 'right',
+              fontFamily: 'JosefinSans-Italic'}}
           >
             Registo: {new Date(item.createdAt).toLocaleDateString()} por {'user'}
           </Text>

@@ -4,9 +4,6 @@ import COLORS from '../../consts/colors';
 
 
 
-
-
-
 const FarmerTypeRadioButtons = ({ farmerType, setFarmerType}) =>{
 
     return (
@@ -20,20 +17,20 @@ const FarmerTypeRadioButtons = ({ farmerType, setFarmerType}) =>{
         <Stack 
             direction={{
                 base: "row",
-                md: "row"
+                md: "column"
             }} 
             alignItems={{
                 base: "center",
-                // md: "center"
+                md: "center"
             }} 
-            space={4} 
+            space={2} 
             w="100%" 
             >
             <Radio 
                 _text={{
                     fontFamily: 'JosefinSans-Bold',
                     color: COLORS.main,
-                    fontSize: 18,
+                    fontSize: 14,
                 }}
                 value="Indivíduo" my="1"  colorScheme="emerald" size="sm">
                 Singular
@@ -42,19 +39,19 @@ const FarmerTypeRadioButtons = ({ farmerType, setFarmerType}) =>{
                 _text={{
                     fontFamily: 'JosefinSans-Bold',
                     color: COLORS.main,
-                    fontSize: 18,
+                    fontSize: 14,
                 }}
-                value="Instituição" my="1" mx="1" colorScheme="emerald" size="sm">
+                value="Instituição" my="1" mx="0" colorScheme="emerald" size="sm">
                 Institucional
             </Radio>
             <Radio 
                 _text={{
                     fontFamily: 'JosefinSans-Bold',
                     color: COLORS.main,
-                    fontSize: 18,
+                    fontSize: 14,
                 }}
                 value="Grupo" 
-                my="1" mx="1" colorScheme="emerald" size="sm">
+                my="1" mx="0" colorScheme="emerald" size="sm">
                 Grupo
             </Radio>
             </Stack>

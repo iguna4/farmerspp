@@ -4,51 +4,28 @@
 import {FlatList, InteractionManager, Image, SafeAreaView, Text, View, PermissionsAndroid, Animated} from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import {ListItem, Avatar, Icon } from '@rneui/themed';
-
-
-import farmersFakeList from '../../fakedata/farmersFakeList';
 import { Box, Center, Pressable, Stack } from 'native-base';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 import FarmerItem from '../../components/FarmerItem/FarmerItem';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
-import { useFocusEffect } from '@react-navigation/native';
-
 import LottieAddButton from '../../components/Buttons/LottieAddButton';
 import TickComponent from '../../components/LottieComponents/TickComponent';
-// import { realm } from '../../models/realm';
-
 import { addFlagToListItem } from '../../helpers/addFlagToListItem'
-
 import GroupItem from '../../components/GroupItem/GroupItem';
 import InstitutionItem from '../../components/InstitutionItem/InstitutionItem';
-import GroupItem2 from '../../components/GroupItem/GroupItem2';
-import CustomDivider  from '../../components/Divider/CustomDivider'
-import {
-    Menu,
-    MenuProvider,
-    MenuOptions,
-    MenuOption,
-    MenuTrigger,
-    renderers
-   } from "react-native-popup-menu";
-import { Camera, useCameraDevices } from "react-native-vision-camera";
+import COLORS from '../../consts/colors';
+
 
 import { realmContext } from '../../models/realm';
-import PopupMenu from '../../components/PopupMenu/PopupMenu';
-import COLORS from '../../consts/colors';
 const { useRealm, useQuery } = realmContext; 
 
 
 export default function FarmersScreen({ route, navigation }) {
-  // const [farmersList, setFarmersList] = useState([]);
 
   const realm = useRealm();
-  // realm.write(()=>{
 
-  // });
-  
-  // const farmers = [];
   const farmers = useQuery('Farmer');
   const groups = useQuery('Group');
   const institutions = useQuery('Institution');
@@ -57,11 +34,7 @@ export default function FarmersScreen({ route, navigation }) {
   const groupsList = addFlagToListItem(groups, 'Grupo')
   const institutionsList = addFlagToListItem(institutions, 'Instituição');
 
-  // useCameraDevice
-  const devices = useCameraDevices();
-  const device = devices.back;
-  const [isCameraActive, setIsCamerActive] = useState(false);
-  
+ 
   
   // merge the three arrays of farmers and sort the items by createdAt 
   let farmersList = [];
@@ -105,33 +78,6 @@ export default function FarmersScreen({ route, navigation }) {
 
   const keyExtractor = (item, index)=>index.toString();
 
-  const requestCameraPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.CAMERA,
-        {
-          title: "Cool Photo App Camera Permission",
-          message:
-            "Cool Photo App needs access to your camera " +
-            "so you can take awesome pictures.",
-          buttonNeutral: "Ask Me Later",
-          buttonNegative: "Cancel",
-          buttonPositive: "OK"
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-
-        console.log("You can use the camera");
-        return navigation.navigate('CameraDevice');
-        // return ;
-
-      } else {
-        console.log("Camera permission denied");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
   
   const addFarmer = ()=>{
     navigation.navigate('FarmerForm1', { user: {
@@ -158,8 +104,6 @@ export default function FarmersScreen({ route, navigation }) {
         setLoadingActivityIndicator={setLoadingActivityIndicator}
     />
   }
-
-  // console.log('farmersList:', JSON.stringify(farmersList));
 
   return (
     <SafeAreaView 
@@ -280,8 +224,6 @@ export default function FarmersScreen({ route, navigation }) {
             de caju neste distrito!
           </Text>
           <TickComponent />
-
-            {/* <PopupMenu /> */}
         </Center>
       </Box>
     )
@@ -299,13 +241,13 @@ export default function FarmersScreen({ route, navigation }) {
               keyExtractor={keyExtractor}
               renderItem={({ item })=>{
                 if(item.flag === 'Grupo'){
-                  return <GroupItem requestCameraPermission={requestCameraPermission} route={route} item={item} />
+                  return <GroupItem  route={route} item={item} />
                 }
                 else if (item.flag === 'Indivíduo'){
-                    return <FarmerItem requestCameraPermission={requestCameraPermission} route={route} navigation={navigation} item={item} />
+                    return <FarmerItem  route={route} navigation={navigation} item={item} />
                 }
                 else if (item.flag === 'Instituição'){
-                    return <InstitutionItem requestCameraPermission={requestCameraPermission} route={route}  item={item} />
+                    return <InstitutionItem  route={route}  item={item} />
                 }
               }
               }
@@ -316,11 +258,6 @@ export default function FarmersScreen({ route, navigation }) {
       }
 
       </Box>
-    
-
-      {/* <PopupMenu /> */}
-  
-
   </SafeAreaView>
   );
 }

@@ -6,32 +6,19 @@ import { Text, SafeAreaView, ScrollView, TextInput, View } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
 import { Icon, Button, CheckBox } from '@rneui/themed';
-import { Datepicker  } from '@ui-kitten/components';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
-import { CustomInput } from '../../components/Inputs/CustomInput';
 import administrativePosts from '../../fakedata/administrativePosts';
-import provinces from '../../fakedata/provinces';
-import districts from '../../fakedata/districts';
-import villages from '../../fakedata/villages';
-import CustomDivider from '../../components/Divider/CustomDivider';
 import styles from './styles';
 import IndividualModal from '../../components/Modals/IndividualModal'
-// import FarmerDataConfirmModal from '../../components/Modals/FarmerDataConfirmModal';
-// import FarmerAddDataModal from '../../components/Modals/FarmerAddDataModal';
 import { fullYears, getFullYears, localeDateService, useDatepickerState } from '../../helpers/dates';
-// import validateFarmerData from '../../helpers/validateFarmerData';
-import countries from '../../fakedata/countries';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
-import { groups, institutions } from '../../fakedata/farmerTypes';
 import validateIndividualFarmerData from '../../helpers/validateIndividualFarmerData';
 import validateInstitutionFarmerData from '../../helpers/validateInstitutionFarmerData';
 import validateGroupFarmerData from '../../helpers/validateGroupFarmerData';
 import TickComponent from '../../components/LottieComponents/TickComponent';
 import GroupModal from '../../components/Modals/GroupModal';
 import InstitutionModal from '../../components/Modals/InstitutionModal';
-import ErrorAlert from '../../components/Alerts/ErrorAlert';
-
 
 import { generateUFID } from '../../helpers/generateUFID';
 import DuplicatesAlert from '../../components/Alerts/DuplicatesAlert';
@@ -40,12 +27,15 @@ import FarmerTypeRadioButtons from '../../components/RadioButton/FarmerTypeRadio
 import SuccessAlert from '../../components/Alerts/SuccessAlert';
 
 
-import { realmContext } from '../../models/realm';
 import IndividualFarmerForm from './IndividualFarmerForm';
 import InstitutionFarmerForm from './InstitutionFarmerForm';
 import GroupFarmerForm from './GroupFarmerForm';
 import COLORS from '../../consts/colors';
+
+
+import { realmContext } from '../../models/realm';
 const {useRealm} = realmContext;
+
 
 export default function FarmerForm1Screen({ route, navigation }) {
     const [gender, setGender] = useState('');
@@ -334,7 +324,7 @@ export default function FarmerForm1Screen({ route, navigation }) {
                             style={{ 
                                 textAlign: 'center', 
                                 fontFamily: 'JosefinSans-Bold', 
-                                fontSize: 24, 
+                                fontSize: 18, 
                                 color: COLORS.main,  
                             }}
                         >

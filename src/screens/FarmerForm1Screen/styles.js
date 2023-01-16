@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontFamily: 'JosefinSans-Bold',
-        fontSize: 30,
+        fontSize: 20,
         color: '#000',
     },
     description: {
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         fontFamily: 'JosefinSans-Regular',
         paddingVertical: 10,
         color: 'grey',
-        fontSize: 18,
+        fontSize: 14,
     },
     secondDescription: {
         textAlign: 'center',

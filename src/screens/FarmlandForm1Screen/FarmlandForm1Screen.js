@@ -192,7 +192,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                         style={{ 
                             textAlign: 'center', 
                             fontFamily: 'JosefinSans-Bold', 
-                            fontSize: 24, 
+                            fontSize: 18, 
                             color: COLORS.main,  }}
                     >
                         Parcela

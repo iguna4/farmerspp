@@ -17,10 +17,10 @@ import { sumTreesOrAreas } from '../../helpers/sumTreesOrAreas';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 import COLORS from '../../consts/colors';
 
-const uri =  `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
+// const uri =  `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
 
-const FarmerItem = ({ item, route, farmerType, requestCameraPermission }) => {
+const FarmerItem = ({ item, route, farmerType }) => {
 
    const [visible, setVisible] = useState(false);
    const navigation = useNavigation();
@@ -51,9 +51,9 @@ const FarmerItem = ({ item, route, farmerType, requestCameraPermission }) => {
       }}
     >
       <Stack direction="row" w="100%">
-      <Center w="20%" m="2">
+      <Center w="15%" m="2">
         <Avatar 
-            size={80}
+            size={60}
             rounded
             title={getInitials(item?.names?.surname)}
             containerStyle={{ backgroundColor: COLORS.grey }}
@@ -61,7 +61,7 @@ const FarmerItem = ({ item, route, farmerType, requestCameraPermission }) => {
         />
       </Center>
 
-      <Box w="80%">
+      <Box w="85%">
 
       <TouchableOpacity
         onPress={()=>{
@@ -95,7 +95,7 @@ const FarmerItem = ({ item, route, farmerType, requestCameraPermission }) => {
 
 
         <Stack direction="row">
-          <Box w="80%" style={{ }}>
+          <Box w="100%" style={{ }}>
         <Stack direction="row">
           <Text 
             style={{
@@ -145,7 +145,7 @@ const FarmerItem = ({ item, route, farmerType, requestCameraPermission }) => {
       </Stack>
 
         </Box>
-        <Box w="20%" style={{ 
+        {/* <Box w="20%" style={{ 
           marginTop: 20,
           
         }}>
@@ -158,7 +158,7 @@ const FarmerItem = ({ item, route, farmerType, requestCameraPermission }) => {
             >
             <FontAwesomeIcon icon={faTree} size={30} color={COLORS.main} />
           </Pressable>
-        </Box>
+        </Box> */}
         </Stack>
       </Stack>
     </TouchableOpacity>
@@ -168,7 +168,9 @@ const FarmerItem = ({ item, route, farmerType, requestCameraPermission }) => {
   <Stack direction="row" w="100%" style={{ paddingTop: 10,  }} >
       <Box w="100%">
         <Text 
-          style={{ fontFamily: 'JosefinSans-Italic'}}
+          style={{ 
+            textAlign: 'right',
+            fontFamily: 'JosefinSans-Italic'}}
           >
           Registo: {new Date(item.createdAt).toLocaleDateString()} por {'user'}
         </Text>

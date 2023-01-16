@@ -15,42 +15,25 @@ import districts from '../../fakedata/districts';
 import villages from '../../fakedata/villages';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import styles from './styles';
-import IndividualModal from '../../components/Modals/IndividualModal'
-// import FarmerDataConfirmModal from '../../components/Modals/FarmerDataConfirmModal';
-// import FarmerAddDataModal from '../../components/Modals/FarmerAddDataModal';
-import { fullYears, getFullYears, localeDateService, useDatepickerState } from '../../helpers/dates';
-// import validateFarmerData from '../../helpers/validateFarmerData';
+import { localeDateService } from '../../helpers/dates';
 import countries from '../../fakedata/countries';
-import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
-import { groups, institutions } from '../../fakedata/farmerTypes';
-import validateIndividualFarmerData from '../../helpers/validateIndividualFarmerData';
-import validateInstitutionFarmerData from '../../helpers/validateInstitutionFarmerData';
-import validateGroupFarmerData from '../../helpers/validateGroupFarmerData';
-import TickComponent from '../../components/LottieComponents/TickComponent';
-import GroupModal from '../../components/Modals/GroupModal';
-import InstitutionModal from '../../components/Modals/InstitutionModal';
-import ErrorAlert from '../../components/Alerts/ErrorAlert';
+import COLORS from '../../consts/colors';
+
 
 
 import { realmContext } from '../../models/realm';
-import { generateUFID } from '../../helpers/generateUFID';
-import DuplicatesAlert from '../../components/Alerts/DuplicatesAlert';
-import { detectDuplicates } from '../../helpers/detectDuplicates';
-import FarmerTypeRadioButtons from '../../components/RadioButton/FarmerTypeRadioButtons';
-import SuccessAlert from '../../components/Alerts/SuccessAlert';
-import COLORS from '../../consts/colors';
 const {useRealm} = realmContext;
 
 
 
 export default function IndividualFarmerForm({ 
     route, navigation,
-    gender, setGender, familySize, setFamilySize, selectedAddressAdminPosts, setSelectedAddressAdminPosts,
-    addressVillage, setAddressVillage, addressAdminPost, setAddressAdminPost,
-    birthProvince, setBirthProvince, birthDistrict, setBirthDistrict, birthAdminPost, setBirthAdminPost,
-    birthDate, setBirthDate, errorAlert, setErrorAlert, 
-    setModalVisible, setDuplicatesAlert, docType, setDocType, docNumber, setDocNumber,
-    isSprayingAgent, setIsSprayingAgent, 
+    gender, setGender, familySize, setFamilySize, selectedAddressAdminPosts, 
+    addressVillage, setAddressVillage, addressAdminPost, 
+    setAddressAdminPost, birthProvince, setBirthProvince, 
+    birthDistrict, setBirthDistrict, birthAdminPost, setBirthAdminPost,
+    birthDate, setBirthDate, docType, setDocType, 
+    docNumber, setDocNumber, isSprayingAgent, setIsSprayingAgent, 
     surname, setSurname, otherNames, setOtherNames,
     primaryPhone, setPrimaryPhone, secondaryPhone, setSecondaryPhone,
     nuit, setNuit, errors, setErrors, 
@@ -105,7 +88,7 @@ export default function IndividualFarmerForm({
                     width="100%"
                     type="text"
                     autoCapitalize="words"
-                    placeholder="Nome completo"
+                    placeholder="Apelido"
                     value={surname}
                     onChangeText={newSurname=>{
                         setErrors(prev=>({...prev, surname: ''}))
@@ -126,7 +109,7 @@ export default function IndividualFarmerForm({
                     width="100%"
                     type="text"
                     autoCapitalize="words"
-                    placeholder="Nome completo"
+                    placeholder="Outros nomes"
                     value={otherNames}
                     onChangeText={newNames=>{
                         setErrors(prev=>({...prev, otherNames: ''}))
@@ -159,7 +142,7 @@ export default function IndividualFarmerForm({
                       mt={1}
                      dropdownCloseIcon={gender 
                                         ? <Icon name="close" size={25} color="grey" onPress={()=>setGender('')} /> 
-                                        : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                                        : <Icon size={25} name="arrow-drop-down" color="#005000" />
                                     }
                       onValueChange={newGender => {
                         setErrors((prev)=>({...prev, gender: ''}));
@@ -187,7 +170,7 @@ export default function IndividualFarmerForm({
                         width="100%"
                         type="number"
                         textAlign="center"
-                        placeholder="Agregado familiar"
+                        placeholder="Agregado"
                         value={familySize}
                         keyboardType="numeric"
                         onChangeText={newSize=>{
@@ -219,7 +202,7 @@ export default function IndividualFarmerForm({
             <Stack direction="row" mx="3" w="100%">
             <Box w="50%" px="1">
                 <FormControl isRequired my="3" isInvalid={'addressAdminPost' in errors}>
-                    <FormControl.Label>Posto Administrativo</FormControl.Label>
+                    <FormControl.Label>Posto Adm.</FormControl.Label>
                     <Select
                         selectedValue={addressAdminPost}
                         accessibilityLabel="Escolha sua província"
@@ -232,7 +215,7 @@ export default function IndividualFarmerForm({
                         }}
                       dropdownCloseIcon={addressAdminPost 
                                         ? <Icon name="close" size={25} color="grey" onPress={()=>setAddressAdminPost('')} /> 
-                                        : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                                        : <Icon size={25} name="arrow-drop-down" color="#005000" />
                                     }
                         mt={1}
                         onValueChange={newAdminPost => {
@@ -269,7 +252,7 @@ export default function IndividualFarmerForm({
                         }}
                         dropdownCloseIcon={addressVillage 
                                         ? <Icon name="close" size={25} color="grey" onPress={()=>setAddressVillage('')} /> 
-                                        : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                                        : <Icon size={25} name="arrow-drop-down" color="#005000" />
                                     }
                         mt={1}
                         onValueChange={newVillage => setAddressVillage(newVillage)}
@@ -303,7 +286,7 @@ export default function IndividualFarmerForm({
                         <Icon
                             name="phone"
                             color="grey"
-                            size={30}
+                            size={25}
                             type="material"
                         />
                     }
@@ -319,7 +302,7 @@ export default function IndividualFarmerForm({
             </Box>
             <Box w="50%" px="1">
             <FormControl my="1" isInvalid={'secondaryPhone' in errors}>
-                <FormControl.Label>Telemóvel Alternativo</FormControl.Label>
+                <FormControl.Label>Tel. Alternativo</FormControl.Label>
                 <CustomInput
                     width="100%"
                     type="telephoneNumber"
@@ -335,7 +318,7 @@ export default function IndividualFarmerForm({
                         <Icon
                             name="phone"
                             color="grey"
-                            size={30}
+                            size={25}
                             type="material"
                         />
                     }
@@ -364,22 +347,37 @@ export default function IndividualFarmerForm({
     <Stack direction="row" mx="3" my="2" w="100%">
         <Box w="50%" px="1" pt="1" >
             <FormControl isRequired isInvalid={'birthDate' in errors}>
-                <FormControl.Label>Data de Nascimento</FormControl.Label>
+                <FormControl.Label>Data</FormControl.Label>
                     <Datepicker
-                        placeholder="Nascimento"
+                        placeholder="Nascim."
                         min={new Date(1900, 0, 0)}
                         max={new Date(2010, 0, 0)}
                         size="large"
-                        placement="top end"
+                        // placement="right"
                         style={styles.datepicker}
                         date={birthDate}
                         dateService={localeDateService}
                         // {...localePickerState}
+                        accessoryLeft={
+                            !birthDate 
+                                &&  <Icon 
+                                        name="date-range" 
+                                        size={25}
+                                        color={COLORS.main} 
+                                    />
+                        }
+
                         accessoryRight={
                             birthDate 
-                                    ? <Icon name="close" size={25} color="grey" onPress={()=>setBirthDate(null)} /> 
-                                    : <Icon name="date-range" color="#005000" />
+                                && <Icon 
+                                        name="close" 
+                                        size={25} 
+                                        color={COLORS.grey} 
+                                        onPress={()=>setBirthDate(null)} 
+                                    /> 
+                                    
                         }
+
                         onSelect={nextDate => {
                             setErrors(prev=>({...prev, birthDate: null }))
                             setBirthDate(nextDate)
@@ -411,7 +409,7 @@ export default function IndividualFarmerForm({
                         }}
                         dropdownCloseIcon={birthProvince 
                                         ? <Icon name="close" size={25} color="grey" onPress={()=>setBirthProvince('')} /> 
-                                        : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                                        : <Icon size={25} name="arrow-drop-down" color="#005000" />
                                     }
                         mt={1}
                         onValueChange={newProvince => {
@@ -453,7 +451,7 @@ export default function IndividualFarmerForm({
                         }}
                       dropdownCloseIcon={birthDistrict 
                         ? <Icon name="close" size={25} color="grey" onPress={()=>setBirthDistrict('')} /> 
-                        : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                        : <Icon size={25} name="arrow-drop-down" color="#005000" />
                     }
                     mt={1}
                     onValueChange={newDistrict => {
@@ -493,7 +491,7 @@ export default function IndividualFarmerForm({
             (
                 
                 <FormControl isRequired my="1" isInvalid={'birthAdminPost' in errors}>
-                <FormControl.Label>Posto Administrativo</FormControl.Label>
+                <FormControl.Label>Posto Adm.</FormControl.Label>
                     <Select
                         selectedValue={birthProvince ? birthAdminPost: ''}
                         accessibilityLabel="Escolha um posto administrativo"
@@ -506,7 +504,7 @@ export default function IndividualFarmerForm({
                         }}
                         dropdownCloseIcon={birthAdminPost 
                             ? <Icon name="close" size={25} color="grey" onPress={()=>setBirthAdminPost('')} /> 
-                            : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                            : <Icon size={25} name="arrow-drop-down" color="#005000" />
                         }
                         mt={1}
                     onValueChange={newAdminPost=> {
@@ -553,7 +551,7 @@ export default function IndividualFarmerForm({
         <Stack direction="row" mx="3" w="100%">
             <Box w="50%" px="1">
             <FormControl my="2" isInvalid={'docType' in errors}>
-                <FormControl.Label>Tipo de documento</FormControl.Label>
+                <FormControl.Label>Tipo</FormControl.Label>
                   <Select
                       selectedValue={docType}
                       accessibilityLabel="Tipo de doc."
@@ -566,7 +564,7 @@ export default function IndividualFarmerForm({
                       }}
                       dropdownCloseIcon={docType 
                                         ? <Icon name="close" size={25} color="grey" onPress={()=>setDocType('')} /> 
-                                        : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                                        : <Icon size={25} name="arrow-drop-down" color="#005000" />
                                     }
                       mt={1}
                       onValueChange={newDocType => {
@@ -593,7 +591,7 @@ export default function IndividualFarmerForm({
             </Box>
             <Box w="50%" px="1">
             <FormControl my="3" isInvalid={'docNumber' in errors}>
-                <FormControl.Label>Número do Documento</FormControl.Label>
+                <FormControl.Label>Número</FormControl.Label>
                 <CustomInput
                     width="100%"
                     type="text"

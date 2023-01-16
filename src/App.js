@@ -13,20 +13,17 @@ import { ApplicationProvider, Layout,  } from '@ui-kitten/components';
 import AppTab from './navigation/Tabs/AppTab';
 import elementTheme from './elementTheme';
 import nbTheme from './nbTheme';
-
-// import SignInScreen from './screens/UsersScreen/SignInScreen';
-// import secrets from '../secrets';
-// import { AppContext } from './models/realm';
-// import UsersStackScreen from './navigation/Stacks/UsersStackScreen';
-// import SignUpScreen from './screens/UsersScreen/SignUpScreen';
-// import Login from './screens/UsersScreen/Login';
-
 import Realm from 'realm';
 import {AppProvider, UserProvider, useUser } from '@realm/react';
-import { realmContext } from './models/realm';
-import { secrets } from './secrets';
+
+
+import secrets from '../secrets';
 import Login from './screens/Fallback/Login';
+
+
+import { realmContext } from './models/realm';
 const { RealmProvider} = realmContext;
+
 
 const App = ()=>{
 
@@ -34,18 +31,11 @@ const App = ()=>{
     SplashScreen.hide(); //hides the splash screen on app load.
   }, []);
 
-  // app configuration
-  // const app = new Realm.App({
-  //   id: secrets.appID,
-  // });
-
-  // console.log('app object: ', JSON.stringify(app))
 
   return (
     <>
-    {/* <StatusBar barStyle="dark-content" backgroundColor="#EBEBE4" /> */}
     <ApplicationProvider {...eva} theme={eva.light}>
-      <AppProvider id={secrets.appID}>
+      {/* <AppProvider id={secrets.appID}> */}
         {/* <UserProvider  */}
         {/* // fallback={<Login />} */}
         {/* > */}
@@ -61,7 +51,7 @@ const App = ()=>{
             <AppTab />
           {/* </RealmProvider> */}
         {/* </UserProvider> */}
-      </AppProvider>
+      {/* </AppProvider> */}
     </ApplicationProvider>
     </>
   )

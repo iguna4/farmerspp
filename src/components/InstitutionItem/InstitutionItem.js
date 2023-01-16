@@ -4,19 +4,14 @@ import {ListItem, Icon, Avatar } from '@rneui/themed';
 
 import { Box, Center, HStack, Pressable, Stack, VStack,  } from 'native-base';
 import styles from './styles';
-import CustomDivider from '../Divider/CustomDivider';
-import { randomRBG } from '../../helpers/randomRgB';
 import { getInitials } from '../../helpers/getInitials';
-import AlertModal from '../AlertModal';
 import { useNavigation } from '@react-navigation/native';
-import { sumTreesOrAreas } from '../../helpers/sumTreesOrAreas';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 import COLORS from '../../consts/colors';
 
-const uri =  `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
-const InstitutionItem = ({ item, route, requestCameraPermission }) => {
+const InstitutionItem = ({ item, route }) => {
 
    const navigation = useNavigation();
 
@@ -45,17 +40,17 @@ const InstitutionItem = ({ item, route, requestCameraPermission }) => {
     >   
 
     <Stack direction="row" w="100%">
-    <Center w="20%" m="2">
+    <Center w="15%" m="2">
 
     <Avatar 
-            size={80}
+            size={60}
             rounded
             title={getInitials(item?.manager?.fullname)}
             containerStyle={{ backgroundColor: COLORS.grey }}
             source={{ uri: item?.image ? item?.image : 'htt://localhost/not-set-yet' }}
         />
     </Center>
-    <Box w="80%">
+    <Box w="85%">
 
     <TouchableOpacity
       onPress={()=>{
@@ -88,7 +83,7 @@ const InstitutionItem = ({ item, route, requestCameraPermission }) => {
       </Text>
     <Stack direction="column" >
         <Stack direction="row">
-          <Box w="80%" style={{ }}>
+          <Box w="100%" style={{ }}>
         <Stack direction="row">
             <Text 
                 style={{
@@ -135,7 +130,7 @@ const InstitutionItem = ({ item, route, requestCameraPermission }) => {
             </Box>
         </Stack>
         </Box>
-        <Box w="20%" style={{ }}>
+        {/* <Box w="20%" style={{ }}>
           <Pressable
             onPress={()=>navigation.navigate('FarmlandForm1', {
               ownerId: item?._id,
@@ -145,7 +140,7 @@ const InstitutionItem = ({ item, route, requestCameraPermission }) => {
             >
             <FontAwesomeIcon icon={faTree} size={30} color={COLORS.main} />
           </Pressable>
-        </Box>
+        </Box> */}
         </Stack>
       </Stack>
     </TouchableOpacity>
@@ -155,7 +150,9 @@ const InstitutionItem = ({ item, route, requestCameraPermission }) => {
      <Stack direction="row" w="100%" style={{ paddingTop: 10,  }} >
         <Box w="100%">
           <Text 
-            style={{ fontFamily: 'JosefinSans-Italic'}}
+            style={{ 
+              textAlign: 'right',
+              fontFamily: 'JosefinSans-Italic'}}
           >
             Registo: {new Date(item?.createdAt).toLocaleDateString()} por {'user'}
           </Text>

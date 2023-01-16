@@ -95,7 +95,7 @@ export default function HomeScreen({ navigation }) {
           }}
         >
         <Stack direction="row" w="100%" pb="4">
-        <Box w="30%" alignItems={'center'}>
+        <Box w="40%" alignItems={'center'}>
               <Image
                 style={{ width: 50, height: 50, borderRadius: 100, }}
                 source={require('../../../assets/images/iamLogo2.png')}
@@ -103,14 +103,14 @@ export default function HomeScreen({ navigation }) {
               <Text
                 style={{
                   color: COLORS.main,
-                  fontSize: 24,
+                  fontSize: 18,
                   fontFamily: 'JosefinSans-Bold',
                 }}
               >IAM, IP</Text>
           </Box>
-          <Box w="40%"  >
+          <Box w="20%"  >
           </Box>
-          <Box w="30%" alignItems={'center'}>
+          <Box w="40%" alignItems={'center'}>
             <TouchableOpacity
               onPress={()=>{
                 setIsOpen(prev=>!prev);
@@ -149,7 +149,6 @@ export default function HomeScreen({ navigation }) {
             width: '100%',
             borderTopLeftRadius: 10,
             borderTopRightRadius: 10,
-          
             shadowColor: COLORS.main,
             shadowOffset: {
                 width: 1,
@@ -157,9 +156,7 @@ export default function HomeScreen({ navigation }) {
               },
             shadowOpacity: 1,
             shadowRadius: 0.65,
-            
             elevation: 2,
-          
           }}
           >
           
@@ -167,13 +164,15 @@ export default function HomeScreen({ navigation }) {
             style={{
               backgroundColor: COLORS.main,
               width: '100%',
-              paddingHorizontal: 10,
-              justifyContent: 'center',
+              paddingHorizontal: 5,
+              alignItems: 'center',
               borderTopLeftRadius: 10,
               borderTopRightRadius: 10,
             }}
           >
-              <Box pb="2">
+              <Box pb="2"
+                alignItems={'center'}
+              >
                 <Text
                   style={{
                     color: 'white',
@@ -186,8 +185,8 @@ export default function HomeScreen({ navigation }) {
                   </Text>
               </Box>
 
-            <Stack direction="row">
-              <Box w="50%"
+            <Stack direction="row" w="90%" space={4}>
+              <Box w="50%" alignItems={'center'}
                 style={{
 
                 }}
@@ -197,8 +196,8 @@ export default function HomeScreen({ navigation }) {
                     setIsPerformanceButtonActive(prev=>!prev);
                   }}                
                   style={{
-                    backgroundColor: isPerformanceButtonActive ? COLORS.main : COLORS.ghostwhite,
-                    width: '50%',
+                    backgroundColor: isPerformanceButtonActive ? COLORS.second : COLORS.ghostwhite,
+                    width: '100%',
                     borderTopRightRadius: 10,
                     borderTopLeftRadius: 10,
                     borderTopWidth: 1,
@@ -206,13 +205,14 @@ export default function HomeScreen({ navigation }) {
                     borderRightWidth: 1,
                     borderColor: COLORS.ghostwhite,
                     paddingTop: 5,
+                    position: 'relative',
+                    bottom: isPerformanceButtonActive ? -2 : -2,
                   }}
                   >
-
                 <Text
                     style={{
-                      color: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.main,
-                      fontSize: 16,
+                      color: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
+                      fontSize: 14,
                       fontFamily: 'JosefinSans-Bold',
                       paddingBottom: 5,
                       textAlign: 'center',
@@ -223,8 +223,9 @@ export default function HomeScreen({ navigation }) {
                   </TouchableOpacity>
               </Box>
               <Box w="50%"
+                alignItems={'center'}
                 style={{
-                  alignItems: 'flex-end',
+                  // alignItems: 'flex-end',
                 }}
                 >
                 <TouchableOpacity  
@@ -232,22 +233,27 @@ export default function HomeScreen({ navigation }) {
                     setIsPerformanceButtonActive(prev=>!prev);
                   }}            
                   style={{
-                    backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.main,
-                    width: '50%',
+                    backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.second,
+                    width: '100%',
                     borderTopRightRadius: 10,
                     borderTopLeftRadius: 10,
                     borderTopWidth: 1,
                     borderLeftWidth: 1,
                     borderRightWidth: 1,
+
                     borderColor: COLORS.ghostwhite,
                     paddingTop: 5,
+                    position: 'relative',
+                    bottom: isPerformanceButtonActive ? -2 : -2,
+
+
                   }}
                   >
 
                 <Text
                     style={{
-                      color: isPerformanceButtonActive ? COLORS.main : COLORS.ghostwhite,
-                      fontSize: 16,
+                      color: isPerformanceButtonActive ? COLORS.danger : COLORS.ghostwhite,
+                      fontSize: 14,
                       fontFamily: 'JosefinSans-Bold',
                       paddingBottom: 5,
                       textAlign: 'center',
@@ -306,7 +312,7 @@ export default function HomeScreen({ navigation }) {
             <CustomDivider />
             <Text style={{
               textAlign: 'center',
-              color: COLORS.main,
+              color: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
               fontFamily: 'JosefinSans-Bold',
               paddingTop: 10,
             }}>
@@ -315,28 +321,52 @@ export default function HomeScreen({ navigation }) {
           
           <Stack w="100%" direction="row" space={4} py="2">
             <Box w="50%" alignItems={'center'} >
-            <Center>
+            <Center w="100%">
+              <Center w="50%"
+                style={{
+                  backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
+                  borderRadius: 30,
+                  paddingVertical: 5,
+
+                }}
+              >
+
               <Text
                 style={{
                   fontFamily: 'JosefinSans-Regular',
-                  color: COLORS.grey,
-                }}              
+                  color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
+                  // borderWidth: 1,
+                }}             
                 >
                 27.11 %
               </Text>
+              </Center>
             </Center>
             </Box>
 
             <Box w="50%" alignItems={'center'}>
-            <Center>
+            <Center w="100%">
+              <Center w="50%"
+                style={{
+                  backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
+                  borderRadius: 30,
+                  paddingVertical: 5,
+
+                }}
+              >
               <Text
                 style={{
                   fontFamily: 'JosefinSans-Regular',
-                  color: COLORS.grey,
-                }}              
+                  color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
+                  // borderWidth: 1,
+                  // padding: 5,
+                  // borderRadius: 30,
+                  // backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
+                }}             
                 >
                 32744
               </Text>
+            </Center>
             </Center>
             </Box>
           </Stack>
@@ -345,7 +375,7 @@ export default function HomeScreen({ navigation }) {
           <CustomDivider />
             <Text style={{
               textAlign: 'center',
-              color: COLORS.main,
+              color: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
               fontFamily: 'JosefinSans-Bold',
               paddingTop: 10,
             }}>
@@ -354,28 +384,54 @@ export default function HomeScreen({ navigation }) {
           
           <Stack w="100%" direction="row" space={4} py="2">
             <Box w="50%" alignItems={'center'} >
-            <Center>
+            <Center w="100%">
+              <Center w="50%"
+                style={{
+                  backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
+                  borderRadius: 30,
+                  paddingVertical: 5,
+
+                }}
+              >
               <Text
                 style={{
                   fontFamily: 'JosefinSans-Regular',
-                  color: COLORS.grey,
+                  color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
+                  // borderWidth: 1,
+                  // padding: 5,
+                  // borderRadius: 30,
+                  // backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
                 }}              
                 >
                 15.56 %
               </Text>
             </Center>
+            </Center>
             </Box>
 
             <Box w="50%" alignItems={'center'}>
-            <Center>
+            <Center w="100%">
+              <Center w="50%"
+                style={{
+                  backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
+                  borderRadius: 30,
+                  paddingVertical: 5,
+
+                }}
+              >
               <Text
                 style={{
                   fontFamily: 'JosefinSans-Regular',
-                  color: COLORS.grey,
-                }}              
+                  color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
+                  // borderWidth: 1,
+                  // padding: 5,
+                  // borderRadius: 30,
+                  // backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
+                }}             
                 >
                 9800
               </Text>
+            </Center>
             </Center>
             </Box>
           </Stack>
@@ -383,7 +439,7 @@ export default function HomeScreen({ navigation }) {
           <CustomDivider />
             <Text style={{
               textAlign: 'center',
-              color: COLORS.main,
+              color: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
               fontFamily: 'JosefinSans-Bold',
               paddingTop: 10,
             }}>
@@ -392,28 +448,54 @@ export default function HomeScreen({ navigation }) {
           
           <Stack w="100%" direction="row" space={4} py="2">
             <Box w="50%" alignItems={'center'} >
-            <Center>
+            <Center w="100%">
+              <Center w="50%"
+                style={{
+                  backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
+                  borderRadius: 30,
+                  paddingVertical: 5,
+
+                }}
+              >
               <Text
                 style={{
                   fontFamily: 'JosefinSans-Regular',
-                  color: COLORS.grey,
+                  color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
+                  // borderWidth: 1,
+                  // padding: 5,
+                  // borderRadius: 30,
+                  // backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
                 }}              
                 >
                 29.90 %
               </Text>
+              </Center>
             </Center>
             </Box>
 
             <Box w="50%" alignItems={'center'}>
-            <Center>
+            <Center w="100%">
+              <Center w="50%"
+                style={{
+                  backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
+                  borderRadius: 30,
+                  paddingVertical: 5,
+
+                }}
+              >
               <Text
                 style={{
                   fontFamily: 'JosefinSans-Regular',
-                  color: COLORS.grey,
+                  color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
+                  // borderWidth: 1,
+                  // padding: 5,
+                  // borderRadius: 30,
+                  // backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
                 }}              
                 >
                 850
               </Text>
+            </Center>
             </Center>
             </Box>
           </Stack>
@@ -467,7 +549,7 @@ export default function HomeScreen({ navigation }) {
         <CustomDivider />
         <Text style={{
           textAlign: 'center',
-          color: COLORS.main,
+          color: isPerformanceButtonActive ? COLORS.danger : COLORS.main,
           fontFamily: 'JosefinSans-Bold',
           paddingTop: 10,
         }}>
@@ -476,28 +558,46 @@ export default function HomeScreen({ navigation }) {
       
       <Stack w="100%" direction="row" space={4} py="2">
         <Box w="50%" alignItems={'center'} >
-        <Center>
+        <Center w="100%">
+          <Center w="50%"
+            style={{
+              backgroundColor: isPerformanceButtonActive ? COLORS.danger : COLORS.main,
+              borderRadius: 30,
+              paddingVertical: 5,
+
+            }}
+          >
           <Text
             style={{
               fontFamily: 'JosefinSans-Regular',
-              color: COLORS.grey,
+              color: COLORS.ghostwhite,
             }}              
             >
             19.35 %
           </Text>
+          </Center>
         </Center>
         </Box>
 
         <Box w="50%" alignItems={'center'}>
-        <Center>
+        <Center w="100%">
+          <Center w="50%"
+            style={{
+              backgroundColor: isPerformanceButtonActive ? COLORS.danger : COLORS.main,
+              borderRadius: 30,
+              paddingVertical: 5,
+
+            }}
+          >
           <Text
             style={{
               fontFamily: 'JosefinSans-Regular',
-              color: COLORS.grey,
-            }}              
+              color: COLORS.ghostwhite,
+            }}
             >
             42000
           </Text>
+        </Center>
         </Center>
         </Box>
       </Stack>
@@ -506,7 +606,7 @@ export default function HomeScreen({ navigation }) {
       <CustomDivider />
         <Text style={{
           textAlign: 'center',
-          color: COLORS.main,
+          color: isPerformanceButtonActive ? COLORS.danger : COLORS.main,
           fontFamily: 'JosefinSans-Bold',
           paddingTop: 10,
         }}>
@@ -515,28 +615,46 @@ export default function HomeScreen({ navigation }) {
       
       <Stack w="100%" direction="row" space={4} py="2">
         <Box w="50%" alignItems={'center'} >
-        <Center>
+        <Center w="100%">
+          <Center w="50%"
+            style={{
+              backgroundColor: isPerformanceButtonActive ? COLORS.danger : COLORS.main,
+              borderRadius: 30,
+              paddingVertical: 5,
+
+            }}
+          >
           <Text
             style={{
               fontFamily: 'JosefinSans-Regular',
-              color: COLORS.grey,
-            }}              
+              color: COLORS.ghostwhite,
+            }}
             >
             20.78 %
           </Text>
+          </Center>
         </Center>
         </Box>
 
         <Box w="50%" alignItems={'center'}>
-        <Center>
+        <Center w="100%">
+          <Center w="50%"
+            style={{
+              backgroundColor: isPerformanceButtonActive ? COLORS.danger : COLORS.main,
+              borderRadius: 30,
+              paddingVertical: 5,
+
+            }}
+          >
           <Text
             style={{
               fontFamily: 'JosefinSans-Regular',
-              color: COLORS.grey,
-            }}              
+              color: COLORS.ghostwhite,
+            }}
             >
             9170
           </Text>
+        </Center>
         </Center>
         </Box>
       </Stack>
@@ -544,7 +662,7 @@ export default function HomeScreen({ navigation }) {
       <CustomDivider />
         <Text style={{
           textAlign: 'center',
-          color: COLORS.main,
+          color: isPerformanceButtonActive ? COLORS.danger : COLORS.main,
           fontFamily: 'JosefinSans-Bold',
           paddingTop: 10,
         }}>
@@ -553,28 +671,45 @@ export default function HomeScreen({ navigation }) {
       
       <Stack w="100%" direction="row" space={4} py="2">
         <Box w="50%" alignItems={'center'} >
-        <Center>
+        <Center w="100%">
+          <Center w="50%"
+            style={{
+              backgroundColor: isPerformanceButtonActive ? COLORS.danger : COLORS.main,
+              borderRadius: 30,
+              paddingVertical: 5,
+
+            }}
+          >
           <Text
             style={{
               fontFamily: 'JosefinSans-Regular',
-              color: COLORS.grey,
-            }}              
+              color: COLORS.ghostwhite,
+            }}
             >
             5.89 %
           </Text>
         </Center>
+        </Center>
         </Box>
 
         <Box w="50%" alignItems={'center'}>
-        <Center>
+        <Center w="100%">
+          <Center w="50%"
+            style={{
+              backgroundColor: isPerformanceButtonActive ? COLORS.danger : COLORS.main,
+              borderRadius: 30,
+              paddingVertical: 5,
+            }}
+          >
           <Text
             style={{
               fontFamily: 'JosefinSans-Regular',
-              color: COLORS.grey,
-            }}              
+              color: COLORS.ghostwhite,
+            }}
             >
             230
           </Text>
+        </Center>
         </Center>
         </Box>
       </Stack>

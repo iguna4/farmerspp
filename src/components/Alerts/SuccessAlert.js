@@ -26,7 +26,7 @@ function SuccessAlert({
         >
             <View style={{ 
                 flex: 1, 
-                marginTop: 40,
+                marginTop: 25,
                 alignItems: 'center' ,
                 marginHorizontal: 10,
                 }}
@@ -42,9 +42,6 @@ function SuccessAlert({
                             }}                            
                         >
                             <Icon name='arrow-back-ios' color={COLORS.main} size={30}  />
-                            <Text
-                            style={{ fontSize: 20, color: COLORS.main, fontFamily: 'JosefinSans-Bold', }}
-                            >Voltar</Text>
                         </TouchableOpacity>
                     </Box>
                     <Box w="80%">
@@ -54,12 +51,12 @@ function SuccessAlert({
                 <Stack 
                     direction="column" 
                     space={10} 
-                    py="6"
+                    // py="6"
                     mh="10"
                     w="100%"
                 >
                     <Box alignItems={'center'}>
-                        <Icon name="check-circle" size={200} color={COLORS.main} />
+                        <Icon name="check-circle" size={150} color={COLORS.main} />
                     </Box>
                     <Box 
                         w="100%" 
@@ -71,7 +68,7 @@ function SuccessAlert({
                                 fontFamily: 'JosefinSans-Bold', 
                                 textAlign: 'center',
                                 color: COLORS.main, 
-                                fontSize: 40, 
+                                fontSize: 24, 
                                 paddingHorizontal: 30,
                             }}
                         >
@@ -92,23 +89,24 @@ function SuccessAlert({
             }}
         >
         <Box
-            alignItems={'center'}
+            // alignItems={'center'}
             style={{
 
                 borderWidth: 2,
                 borderColor: COLORS.main,
                 borderRadius: 30,
                 width: 300,
-                height: 60,
+                maxHeight: 60,
                 justifyContent: 'center',
                 
             }}
         >
             <Text
                 style={{ 
-                    fontSize: 30, 
+                    fontSize: 24, 
                     fontFamily: 'JosefinSans-Bold', 
                     color: COLORS.main,
+                    textAlign: 'center',
                 }}
             >
                 Auditar Área
@@ -126,23 +124,24 @@ function SuccessAlert({
                            
             >
             <Box
-                alignItems={'center'}
+                // alignItems={'center'}
                 style={{
 
                     borderWidth: 2,
                     borderColor: COLORS.main,
                     borderRadius: 30,
                     width: 300,
-                    height: 60,
+                    maxHeight: 60,
                     justifyContent: 'center',
                     
                 }}
             >
                 <Text
                     style={{ 
-                        fontSize: 30, 
+                        fontSize: 24, 
                         fontFamily: 'JosefinSans-Bold', 
                         color: COLORS.main,
+                        textAlign: 'center',
                     }}
                 >
                     Registar Parcela

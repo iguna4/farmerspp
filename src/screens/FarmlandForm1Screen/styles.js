@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontFamily: 'JosefinSans-Bold',
-        fontSize: 24,
+        fontSize: 20,
         color: 'white',
     },
     description: {

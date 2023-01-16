@@ -6,38 +6,15 @@ import { Text, SafeAreaView, ScrollView, TextInput, View } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
 import { Icon, Button, CheckBox } from '@rneui/themed';
-import { Datepicker  } from '@ui-kitten/components';
-import AwesomeAlert from 'react-native-awesome-alerts';
 
 import { CustomInput } from '../../components/Inputs/CustomInput';
-import administrativePosts from '../../fakedata/administrativePosts';
-import provinces from '../../fakedata/provinces';
-import districts from '../../fakedata/districts';
 import villages from '../../fakedata/villages';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import styles from './styles';
-import IndividualModal from '../../components/Modals/IndividualModal'
-// import FarmerDataConfirmModal from '../../components/Modals/FarmerDataConfirmModal';
-// import FarmerAddDataModal from '../../components/Modals/FarmerAddDataModal';
+
 import { fullYears, getFullYears, localeDateService, useDatepickerState } from '../../helpers/dates';
-// import validateFarmerData from '../../helpers/validateFarmerData';
-import countries from '../../fakedata/countries';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { groups, institutions } from '../../fakedata/farmerTypes';
-import validateIndividualFarmerData from '../../helpers/validateIndividualFarmerData';
-import validateInstitutionFarmerData from '../../helpers/validateInstitutionFarmerData';
-import validateGroupFarmerData from '../../helpers/validateGroupFarmerData';
-import TickComponent from '../../components/LottieComponents/TickComponent';
-import GroupModal from '../../components/Modals/GroupModal';
-import InstitutionModal from '../../components/Modals/InstitutionModal';
-import ErrorAlert from '../../components/Alerts/ErrorAlert';
-
-
-import { generateUFID } from '../../helpers/generateUFID';
-import DuplicatesAlert from '../../components/Alerts/DuplicatesAlert';
-import { detectDuplicates } from '../../helpers/detectDuplicates';
-import FarmerTypeRadioButtons from '../../components/RadioButton/FarmerTypeRadioButtons';
-import SuccessAlert from '../../components/Alerts/SuccessAlert';
 
 
 import { realmContext } from '../../models/realm';
@@ -52,13 +29,9 @@ export default function GroupFarmerForm({
     groupAffiliationYear, setGroupAffiliationYear, 
     groupMembersNumber, setGroupMembersNumber, groupWomenNumber, setGroupWomenNumber,
     errors, setErrors, 
-    selectedAddressAdminPosts, setSelectedAddressAdminPosts, addressAdminPost
+    selectedAddressAdminPosts, addressAdminPost
 
 }) {
-
-    // const [duplicatesAlert, setDuplicatesAlert] = useState(false);
-
-    // const [suspectedDuplicates, setSuspectedDuplicates] = useState([]);
         
   return (
 
@@ -81,7 +54,7 @@ export default function GroupFarmerForm({
                         mt={1}
                         dropdownCloseIcon={groupType 
                                             ? <Icon name="close" size={25} color="grey" onPress={()=>setGroupType('')} /> 
-                                            : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                                            : <Icon size={25} name="arrow-drop-down" color="#005000" />
                                         }
                         onValueChange={newGroupType => {
                             setErrors((prev)=>({...prev, groupType: ''}));
@@ -105,7 +78,7 @@ export default function GroupFarmerForm({
             </Box>
             <Box w="50%" px="1">
             <FormControl isRequired my="4" isInvalid={'groupName' in errors}>
-                <FormControl.Label>Designação do grupo</FormControl.Label>
+                <FormControl.Label>Designação</FormControl.Label>
                     <CustomInput
                         width="100%"
                         isDisabled={groupType === '' ? true : false}
@@ -203,7 +176,7 @@ export default function GroupFarmerForm({
                                             onPress={()=>setGroupAffiliationYear('')} 
                                         /> 
                                         : <Icon 
-                                            size={40} 
+                                            size={25} 
                                             name="arrow-drop-down" 
                                             color="#005000" 
                                         />
@@ -302,7 +275,7 @@ export default function GroupFarmerForm({
         <Stack direction="row" mx="3" w="100%">
         <Box w="50%" px="1">
             <FormControl isRequired my="2" isInvalid={'groupAdminPost' in errors}>
-                <FormControl.Label>Posto Administrativo</FormControl.Label>
+                <FormControl.Label>Posto Adm.</FormControl.Label>
                 <Select
                     selectedValue={groupAdminPost}
                     accessibilityLabel="posto administrativo"
@@ -315,7 +288,7 @@ export default function GroupFarmerForm({
                     }}
                     dropdownCloseIcon={groupAdminPost 
                                     ? <Icon name="close" size={25} color="grey" onPress={()=>setGroupAdminPost('')} /> 
-                                    : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                                    : <Icon size={25} name="arrow-drop-down" color="#005000" />
                                 }
                     mt={1}
                     onValueChange={newAdminPost => {
@@ -353,7 +326,7 @@ export default function GroupFarmerForm({
                     }}
                     dropdownCloseIcon={groupVillage
                                     ? <Icon name="close" size={25} color="grey" onPress={()=>setGroupVillage('')} /> 
-                                    : <Icon size={40} name="arrow-drop-down" color="#005000" />
+                                    : <Icon size={25} name="arrow-drop-down" color="#005000" />
                                 }
                     mt={1}
                     onValueChange={newVillage => setGroupVillage(newVillage)}
@@ -397,7 +370,7 @@ export default function GroupFarmerForm({
         <Stack direction="row" mx="3" w="100%">
         <Box w="50%" px="1" my="2">
         <FormControl  isInvalid={'groupManagerPhone' in errors}>
-            <FormControl.Label>Telemóvel do {groupType?.includes('Grupo') ? "Representante" : "Presidente"}</FormControl.Label>
+            <FormControl.Label>Tel. do {groupType?.includes('Grupo') ? "Representante" : "Presidente"}</FormControl.Label>
             <CustomInput
                 width="100%"
                 type="telephoneNumber"
@@ -412,7 +385,7 @@ export default function GroupFarmerForm({
                     <Icon
                         name="phone"
                         color="grey"
-                        size={30}
+                        size={25}
                         type="material"
                     />
                 }

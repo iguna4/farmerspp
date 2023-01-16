@@ -101,7 +101,7 @@ const GroupScreen = ({ route, navigation }) =>{
               <Text
                 style={{ 
                   fontFamily: 'JosefinSans-Bold', 
-                  fontSize: 20, 
+                  fontSize: 16, 
                   color: COLORS.main, 
                 }}
               >

@@ -142,7 +142,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     style={{ 
                         textAlign: 'center', 
                         fontFamily: 'JosefinSans-Bold', 
-                        fontSize: 24, 
+                        fontSize: 18, 
                         color: COLORS.main,  
                     }}
                 >
@@ -230,7 +230,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     <Text
                         style={{
                             fontFamily: 'JosefinSans-Bold',
-                            fontSize: 26,
+                            fontSize: 20,
                             color: COLORS.black,
                         }}
                     >
@@ -239,7 +239,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     <Text
                         style={{
                             fontFamily: 'JosefinSans-Regular',
-                            fontSize: 16,
+                            fontSize: 14,
                             color: COLORS.grey,
                         }}
                     >
@@ -256,39 +256,6 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         {   farmland?.extremeCoordinates.length > 0 &&
                  <TouchableOpacity
                         onPress={async ()=> await getGeolocation()
-                            // async ()=>{
-                            //     if (!permissionGranted){
-                            //         await requestLocationPermission();
-                            //         // return ;
-                            //     }
-                            //     else { 
-                            //         Geolocation.getCurrentPosition(
-                            //             (position) => {
-                            //                 // get the exact position to the point
-                            //                 const number = getPosition(farmland?.extremeCoordinates);
-
-                            //                 // console.log('extremeCoordinates:', JSON.stringify(newCoordinates));
-                            //                 saveCoordinates(farmland, {
-                            //                     latitude: position.coords.latitude,
-                            //                     longitude: position.coords.longitude,
-                            //                     position: number,
-                            //                 });
-                            //             },
-                            //             (error) => {
-                            //             Alert.alert('Falha', 'Tenta novamente!', {
-                            //                 cause: error,
-                            //             })
-                            //             },
-                            //             { 
-                            //                 enableHighAccuracy: true, 
-                            //                 accuracy: 'high',
-                            //                 timeout: 15000, 
-                            //                 maximumAge: 10000, 
-                            //                 distanceFilter: 1,  
-                            //             }
-                            //         );
-                            //     }
-                            // }
                         }
                     >
                         <GeoPin />
@@ -303,38 +270,6 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         >
         <TouchableOpacity
             onPress={ async ()=> await getGeolocation()
-                // async ()=>{
-                //     if (!permissionGranted){
-                //         await requestLocationPermission();
-                //     }
-                //     else {
-       
-                //         Geolocation.getCurrentPosition(
-                //             (position) => {
-                //                 const number = getPosition(farmland?.extremeCoordinates);
-                //                 // console.log('extremeCoordinates:', JSON.stringify(newCoordinates));
-
-                //                 saveCoordinates(farmland, {
-                //                     latitude: position.coords.latitude,
-                //                     longitude: position.coords.longitude,
-                //                     position: number,
-                //                 });
-                //             },
-                //             (error) => {
-                //                 Alert.alert('Falha', 'Tenta novamente!', {
-                //                 cause: error,
-                //                 })
-                //             },
-                //             { 
-                //                 enableHighAccuracy: true, 
-                //                 accuracy: 'high',
-                //                 timeout: 15000, 
-                //                 maximumAge: 10000, 
-                //                 distanceFilter: 1,  
-                //             }
-                //         );
-                //     }
-                // }
             }
         >
             <GeoPin />
@@ -343,8 +278,9 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
              <Text 
                 style={{ 
                     fontFamily: 'JosefinSans-Regular',
-                    fontSize: 24,
-                    paddingTop: 30,
+                    fontSize: 20,
+                    padding: 10,
+                    // paddingHorizontal: 10,
                     textAlign: 'center',
                     color: COLORS.black,
                 }
@@ -380,7 +316,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             }}
             >
         <Box
-            alignItems={'center'}
+            // alignItems={'center'}
             style={{
                 
                 borderWidth: 2,
@@ -394,9 +330,10 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             >
             <Text
                 style={{ 
-                    fontSize: 30, 
+                    fontSize: 24, 
                     fontFamily: 'JosefinSans-Bold', 
                     color: COLORS.main,
+                    textAlign: 'center',
                 }}
                 >
                 Calcular Área

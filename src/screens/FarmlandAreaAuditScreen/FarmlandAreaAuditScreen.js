@@ -32,27 +32,18 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     const [permissionGranted, setPermissionGranted] = useState(false);
 
     const farmland = useObject('Farmland', farmlandId);
-    // let owner;
-    // if (!owner) {
-    //     owner = useObject('Farmer', farmlandId?.farmer);
-    // }
-    // else if (!owner) {
-    //     owner = useObject('Group', farmlandId?.farmer);
-    // }
-    // else if(!owner) {
-    //     owner = useObject('Farmer', farmlandId?.farmer);
-    // }
 
     // request the permission to use the device position coordinates
     const requestLocationPermission = async () => {
         try {
             const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION, 
-                // PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                // PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION, 
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
                 {
-                    title: 'ConnectCaju',
-                    message: 'ConnectCaju pede a permissão para usar a sua localização',
-                    buttonNegative: 'Mais tarde',
+                    title: 'Geolocalização',
+                    message: 'Pode o ConnectCaju obter accesso a sua localização?',
+                    buttonNeutral: 'Mais tarde',
+                    buttonNegative: 'Cancelar',
                     buttonPositive: 'OK'
                 }
                 );
@@ -62,7 +53,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     console.log("You can use the app");
                 } else {
                     setPermissionGranted(false)
-                    setRejectGeoAlert(true);
+                    // setRejectGeoAlert(true);
                     console.log("Location Permission Denied");
                 }
             } catch (err) {
@@ -82,7 +73,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     // get the current coordinates of device position  
     const getGeolocation = async ()=>{
         if (!permissionGranted){
-            await requestLocationPermission();
+            requestLocationPermission();
         }
         else { 
             Geolocation.getCurrentPosition(
@@ -110,7 +101,10 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 }
             );
         }
-    }
+        setPermissionGranted(false);
+
+        }
+    
 
     const keyExtractor = (item, index)=>index.toString();
 
@@ -190,20 +184,22 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
           show={rejectGeoAlert}
           showProgress={false}
           title="Geolocalização"
-          message="Este dispositivo rejeitou o pedido de permissão deste aplicativo!"
+          message="O seu dispositivo rejeitou o pedido do ConnectCaju?"
           closeOnTouchOutside={true}
           closeOnHardwareBackPress={false}
           showCancelButton={true}
           showConfirmButton={true}
-          cancelText="Confirmar a rejeição"
-          confirmText="Aprovar o pedido"
+          cancelText="Sim"
+          confirmText="Não"
           cancelButtonColor="#DD6B55"
           confirmButtonColor={COLORS.main}
           onCancelPressed={() => {
             setRejectGeoAlert(false);
+            setPermissionGranted(true);
           }}
-          onConfirmPressed={async () => {
-            await requestLocationPermission();
+          onConfirmPressed={() => {
+            // requestLocationPermission();
+            setPermissionGranted(true);
             setRejectGeoAlert(false);
           }}
         />

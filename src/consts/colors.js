@@ -8,7 +8,7 @@ const COLORS = {
     ghostwhite: 'ghostwhite',
     black: '#000',
     danger: '#DD6B55',
-    lightdanger: '#992F00',
+    lightdanger: '#00AA99',
 };
 
 

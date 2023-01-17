@@ -95,8 +95,8 @@ const FarmerScreen = ({ route, navigation }) =>{
             showProgress={false}
             title="Fotografia"
             message="Pretendes carregar uma nova fotografia?"
-            closeOnTouchOutside={true}
-            closeOnHardwareBackPress={true}
+            closeOnTouchOutside={false}
+            closeOnHardwareBackPress={false}
             showCancelButton={true}
             showConfirmButton={true}
             cancelText="   Não   "
@@ -305,11 +305,13 @@ const FarmerScreen = ({ route, navigation }) =>{
           }}
         >({farmlands?.length} parcelas)</Text>
 
-        <Stack direction="row" w="100%" px="3">
-            <Box w="90%">
+          <Stack direction="row" w="100%">
+          <Box w="70%">
 
-            </Box>
-            <Box w="10%">
+          </Box>
+          <Box w="30%" 
+              alignItems={'center'}
+            >
 
               <TouchableOpacity
                 style={{

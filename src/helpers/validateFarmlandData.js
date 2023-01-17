@@ -109,7 +109,7 @@ const validateFarmlandData = (
         trees: retrievedTreesNumber,
         declaredArea: retrievedDeclaredArea,
         plantTypes: {
-            plantTypes: retrievedPlantTypes,
+            plantType: retrievedPlantTypes,
             clones: retrievedClones,
         },
         // farmer: retrievedFarmerId,

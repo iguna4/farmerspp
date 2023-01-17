@@ -303,7 +303,7 @@ export default function InstitutionFarmerForm({
                 width="100%"
                 type="text"
                 placeholder="Alvará"
-                keyboardType="numeric"
+                // keyboardType="numeric"
                 value={institutionLicence}
                 onChangeText={newLicence=>{
                     setErrors((prev)=>({...prev, institutionLicence: ''}))                        

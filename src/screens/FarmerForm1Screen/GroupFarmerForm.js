@@ -213,9 +213,9 @@ export default function GroupFarmerForm({
             <FormControl.Label>Alvará</FormControl.Label>
             <CustomInput
                 width="100%"
-                type="telephoneNumber"
+                // type="telephoneNumber"
                 placeholder={groupType ? `Alvará da ${groupType}` : `Alvará do grupo`}
-                keyboardType="numeric"
+                // keyboardType="numeric"
                 isDisabled={groupType === '' ? true : false}
                 value={groupOperatingLicence}
                 onChangeText={newOperatingLicence=>{

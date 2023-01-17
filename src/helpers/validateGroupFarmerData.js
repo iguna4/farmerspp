@@ -13,8 +13,8 @@ const validateGroupFarmerData = (
         groupNuit,
         groupAdminPost,
         groupVillage,
-        // userAddressProvince,
-        // userAddressDistrict,  
+        groupProvince,
+        groupDistrict, 
         groupManagerName,
         groupManagerPhone, 
     }, errors, setErrors,
@@ -26,8 +26,8 @@ const validateGroupFarmerData = (
     const retrievedGroupAffiliationYear = parseInt(groupAffiliationYear);
     const retrievedGroupOperatingLicence = groupOperatingLicence?.trim();
     const retrievedgroupNuit = parseInt(groupNuit); 
-    // const retrievedAddressProvince = userAddressProvince?.trim();
-    // const retrievedAddressDistrict = userAddressDistrict?.trim();
+    const retrievedGroupProvince = groupProvince?.trim();
+    const retrievedGroupDistrict = groupDistrict?.trim();
     const retrievedGroupAdminPost = groupAdminPost?.trim();
     const retrievedGroupVillage = groupVillage?.trim();
     const retrievedGroupManagerName = capitalize(groupManagerName.trim());
@@ -106,8 +106,8 @@ const validateGroupFarmerData = (
         type: retrievedGroupType,
         name: retrievedGroupName,
         address: {
-            province: "user-retrievedGroupProvince",
-            district: "user-retrievedGroupDistrict",
+            province: retrievedGroupProvince,
+            district: retrievedGroupDistrict,
             adminPost: retrievedGroupAdminPost,
             village: retrievedGroupVillage,
         },

@@ -272,11 +272,13 @@ const InstitutionScreen = ({ route, navigation }) =>{
         >
           ({farmlands?.length} parcelas)
         </Text>
-        <Stack direction="row" w="100%" px="3">
-            <Box w="90%">
+        <Stack direction="row" w="100%">
+            <Box w="70%">
 
             </Box>
-            <Box w="10%">
+            <Box w="30%" 
+              alignItems={'center'}
+            >
 
               <TouchableOpacity
                 style={{
@@ -288,7 +290,7 @@ const InstitutionScreen = ({ route, navigation }) =>{
                   flag: 'Instituição',
                 })}
               >
-                <Icon name="add-circle" color={COLORS.second} size={40} />
+                <Icon name="add-circle" color={COLORS.second} size={50} />
 
               </TouchableOpacity>
             </Box>            

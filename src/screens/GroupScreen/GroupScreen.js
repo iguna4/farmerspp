@@ -262,11 +262,13 @@ const GroupScreen = ({ route, navigation }) =>{
           ({farmlands?.length} parcelas)
         </Text>
 
-        <Stack direction="row" w="100%" px="3">
-            <Box w="90%">
+        <Stack direction="row" w="100%">
+            <Box w="70%">
 
             </Box>
-            <Box w="10%">
+            <Box w="30%" 
+              alignItems={'center'}
+            >
 
               <TouchableOpacity
                 style={{

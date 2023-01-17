@@ -24,8 +24,8 @@ const validateIndividualFarmerData = (
         birthDistrict,
         birthAdminPost,
         // birthVillage,
-        // addressProvince,
-        // addressDistrict,
+        addressProvince,
+        addressDistrict,
         addressAdminPost,
         addressVillage,
         primaryPhone,
@@ -45,8 +45,8 @@ const validateIndividualFarmerData = (
     const retrievedBirthDistrict = birthDistrict?.trim();
     const retrievedBirthAdminPost = birthAdminPost?.trim();
     // const retrievedBirthVillage = birthVillage?.trim();
-    // const retrievedAddressProvince = addressProvince?.trim();
-    // const retrievedAddressDistrict = addressDistrict?.trim();
+    const retrievedAddressProvince = addressProvince?.trim();
+    const retrievedAddressDistrict = addressDistrict?.trim();
     const retrievedAddressAdminPost = addressAdminPost?.trim();
     const retrievedAddressVillage = addressVillage?.trim();
     const retrievedPrimaryPhone = primaryPhone;
@@ -206,8 +206,8 @@ const validateIndividualFarmerData = (
             // village: retrievedBirthVillage,
         },
         address: {
-            province: "retrievedAddressProvince",
-            district: "retrievedAddressDistrict",
+            province: retrievedAddressProvince,
+            district: retrievedAddressDistrict,
             adminPost: retrievedAddressAdminPost,
             village: retrievedAddressVillage,
         },

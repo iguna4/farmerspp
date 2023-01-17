@@ -8,8 +8,8 @@ const validateInstitutionFarmerData = (
         institutionName, 
         institutionAdminPost,
         institutionVillage,
-        // userAddressProvince,
-        // userAddressDistrict,
+        institutionProvince,
+        institutionDistrict,
         institutionManagerName,
         institutionManagerPhone,
         institutionNuit,  
@@ -21,8 +21,8 @@ const validateInstitutionFarmerData = (
     const retrievedInstitutionName = capitalize(institutionName?.trim());
     const retrievedInstitutionAdminPost = institutionAdminPost?.trim();
     const retrievedInstitutionVillage = institutionVillage?.trim();
-    // const retrievedAddressProvince = userAddressProvince?.trim();
-    // const retrievedAddressDistrict = userAddressDistrict?.trim();
+    const retrievedInstitutionProvince = institutionProvince?.trim();
+    const retrievedInstitutionDistrict = institutionDistrict?.trim();
     const retrievedInstitutionManagerName = capitalize(institutionManagerName?.trim());
     const retrievedInstitutionManagerPhone = institutionManagerPhone;
     const retrievedInstitutionNuit = institutionNuit; 
@@ -87,8 +87,8 @@ const validateInstitutionFarmerData = (
         name: retrievedInstitutionName,
         isPrivate: retrievedIsPrivateInstitution,
         address: {
-            province: "retrievedAddressProvince",
-            district: "retrievedAddressDistrict",
+            province: retrievedInstitutionProvince,
+            district: retrievedInstitutionDistrict,
             adminPost: retrievedInstitutionAdminPost,
             village: retrievedInstitutionVillage,
         },

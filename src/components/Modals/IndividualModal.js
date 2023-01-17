@@ -104,7 +104,9 @@ const IndividualModal = (
 
 
   return (
-  <>
+  <View
+  style={{ flex: 1, }}
+  >
     <Modal
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
@@ -142,9 +144,9 @@ const IndividualModal = (
          <ScrollView
             contentContainerStyle={{
                 flex: 1, 
-                justifyContent: 'center', 
-                minHeight: '100%',
-                paddingVertical: 15,
+                // justifyContent: 'center', 
+                minHeight: '180%',
+                paddingVertical: 10,
             }}
          >
             {/* <View
@@ -462,14 +464,8 @@ const IndividualModal = (
     {/* </View> */}
     </ScrollView>
     </Modal>
-    {/* <Center flex={1} px="3">
-        <SuccessModal
-        addDataModalVisible={addDataModalVisible}
-        setAddDataModalVisible={setAddDataModalVisible}
-        setFarmerType={setFarmerType}
-            />
-        </Center> */}
-    </>
+
+    </View>
 
   )
 }

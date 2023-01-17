@@ -16,7 +16,6 @@ import {Button, ListItem, Avatar, FAB, Icon } from '@rneui/themed';
 import Realm from 'realm';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { useFocusEffect } from '@react-navigation/native';
-import ImageSliderBox from '../../components/ImageSliderBox/ImageSliderBox';
 import { months } from '../../helpers/dates';
 import CustomDivider from '../../components/Divider/CustomDivider'
 import {
@@ -30,7 +29,6 @@ import {
 
 
 import { realmContext } from '../../models/realm';
-import PopupMenu from '../../components/PopupMenu/PopupMenu';
 const { useRealm, useQuery } = realmContext; 
 
 

@@ -79,22 +79,22 @@ const GroupData = ({ farmer })=>{
         >
 
         <Stack w="100%" direction="row">
-                <Box w="35%" py="4">
+                <Box w="30%" py="4">
                     <Text
                         style={{
                             color: '#000',
-                            fontSize: 18,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Bold',
                             
                         }}
                         >
                     Grupo:</Text>
             </Box>
-            <Box w="65%" py="4">
+            <Box w="70%" py="4">
                 <Text 
                     style={{
                         color: 'grey',
-                        fontSize: 14,
+                        fontSize: 13,
                         fontFamily: 'JosefinSans-Regular',
                     }}
                 >
@@ -104,47 +104,46 @@ const GroupData = ({ farmer })=>{
                 <Text 
                     style={{
                         color: 'grey',
-                        fontSize: 14,
+                        fontSize: 13,
                         fontFamily: 'JosefinSans-Regular',
                     }}
                 >
-                    {farmer?.members?.women} (Mulheres)
+                    Mulheres ({farmer?.members?.women})
                 </Text>
                 </Box>
                 <Box>
                     <Text 
                         style={{
                             color: 'grey',
-                            fontSize: 14,
+                            fontSize: 13,
                             fontFamily: 'JosefinSans-Regular',
                         }}        
                     >
-                        {farmer?.members?.total - farmer?.members?.women} (Homens)
+                    Homens ({farmer?.members?.total - farmer?.members?.women})
                     </Text>
                 </Box>
-                <Box>
+                <Box >
                     <Text 
-                    
-                    >________</Text>
+                    >_______________</Text>
                     <Text 
                         style={{
                             color: 'grey',
-                            fontSize: 14,
+                            fontSize: 13,
                             fontFamily: 'JosefinSans-Regular',
                         }}
                     >
-                        {farmer?.members?.total} (Total)
+                     Total ({farmer?.members?.total})
                     </Text>
                 </Box>
             </Box>
         </Stack>
         <CustomDivider />
         <Stack w="100%" direction="row">
-                <Box w="35%" py="4">
+                <Box w="30%" py="4">
                 <Text
                     style={{
                         color: '#000',
-                        fontSize: 18,
+                        fontSize: 14,
                         fontFamily: 'JosefinSans-Bold',
                         
                     }}
@@ -154,11 +153,11 @@ const GroupData = ({ farmer })=>{
                         }
                 </Text>
                 </Box>
-                <Box w="65%" py="4">
+                <Box w="70%" py="4">
                     <Text 
                         style={{
                             color: 'grey',
-                            fontSize: 14,
+                            fontSize: 13,
                             fontFamily: 'JosefinSans-Regular',
                         }}                        
                         >
@@ -171,11 +170,11 @@ const GroupData = ({ farmer })=>{
             <CustomDivider />
 
             <Stack w="100%" direction="row">
-            <Box w="35%" py="4">
+            <Box w="30%" py="4">
                 <Text
                     style={{
                         color: '#000',
-                        fontSize: 18,
+                        fontSize: 14,
                         fontFamily: 'JosefinSans-Bold',
                         
                     }}
@@ -183,100 +182,138 @@ const GroupData = ({ farmer })=>{
                     Contacto:
                 </Text>
                 </Box>
-                <Box w="65%" py="4">
+                <Box w="70%" py="4">
                     <Text style={{
                         color: 'grey',
-                        fontSize: 14,
+                        fontSize: 13,
                         fontFamily: 'JosefinSans-Regular',
                     }}
                     >
-                        {farmer?.manager?.fullname} ({farmer?.type?.includes('Grupo') ? 'Representante:' : 'Presidente:'})
+                        {farmer?.type?.includes('Grupo') ? 'Representante:' : 'Presidente:'}
+                    </Text>
+                    <Text
+                        style={{      
+                            color: 'grey',
+                            fontSize: 13,
+                            paddingLeft: 10,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}
+                    >
+
+                        {farmer?.manager?.fullname} 
                     </Text>
                     <Text style={{
                         color: 'grey',
-                        fontSize: 14,
+                        fontSize: 13,
                         fontFamily: 'JosefinSans-Regular',
-                    }}>
-                        {
-                            farmer?.manager?.phone ? 
-                            farmer?.manager?.phone + ` (Telefone)` : 
-                            'Nenhum (Telefone)' 
-                        }
+                    }}
+                    >
+                        Telefone {farmer?.manager?.phone ? farmer?.manager?.phone : '(nenhum)'}
                     </Text>
+{ (farmer?.manager?.phone && farmer?.manager?.phone !== 0) &&
+                   <Text
+                        style={{      
+                            color: 'grey',
+                            fontSize: 13,
+                            paddingLeft: 10,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}
+                    >
+                        {farmer?.manager?.phone}
+                    </Text>
+}
                 </Box>
         </Stack>
         <CustomDivider />
         <Stack direction="row" w="100%" >
-            <Box w="35%" py="4">
+            <Box w="30%" py="4">
                 <Text 
                     style={{
                         color: '#000',
-                        fontSize: 18,
+                        fontSize: 14,
                         fontFamily: 'JosefinSans-Bold',
                         
                     }}
                     >Endereço:</Text>
             </Box>
-            <Box w="65%" py="4">
-            <Text style={{
-                color: 'grey',
-                fontSize: 14,
-                fontFamily: 'JosefinSans-Regular',
-            }}>
-                    {farmer?.address?.province} (Província)
-                </Text>
-                <Text style={{
-                    color: 'grey',
-                    fontSize: 14,
-                    fontFamily: 'JosefinSans-Regular',
-                }}>
-                    {farmer?.address?.district} (Distrito)
-                </Text>
-                <Text style={{
-                    color: 'grey',
-                    fontSize: 14,
-                    fontFamily: 'JosefinSans-Regular',
-                }}>
-                    {farmer?.address?.adminPost} (Posto Admin.)
-                </Text>
-                <Text style={{
-                    color: 'grey',
-                    fontSize: 14,
-                    fontFamily: 'JosefinSans-Regular',
-                }}>
-                    {farmer?.address?.village ? farmer?.address?.village (localidade/povoado) : 'Nenhum (Localidade/Povoado)'}
-                </Text>
-            </Box>
+            <Box w="70%" >
+                    {/* <Box> */}
+{   farmer?.address?.province &&
+                      <Text                     
+                            style={{
+                                color: 'grey',
+                                fontSize: 13,
+                                fontFamily: 'JosefinSans-Regular',
+                            }}
+                        >
+                            {farmer?.address?.province} 
+                        </Text>
+    }
+{   farmer?.address?.district &&
+                     <Text 
+                            style={{
+                                color: 'grey',
+                                fontSize: 13,
+                                fontFamily: 'JosefinSans-Regular',
+                            }}                        
+                            >
+                            {farmer?.address?.district}
+                        </Text>
+}
+{   farmer?.address?.adminPost &&
+                     <Text 
+                            style={{
+                                color: 'grey',
+                                fontSize: 13,
+                                fontFamily: 'JosefinSans-Regular',
+                            }}                        
+                            >
+                            {farmer?.address?.adminPost}
+                        </Text>
+}
+{   farmer?.address?.village &&
+                     <Text 
+                            style={{
+                                color: 'grey',
+                                fontSize: 13,
+                                fontFamily: 'JosefinSans-Regular',
+                            }}                        
+                        >
+                            {farmer?.address?.village}
+                        </Text>
+}
+                    {/* </Box> */}
+                </Box>
         </Stack>
         <CustomDivider />
 
         <Stack direction="row" w="100%" >
-            <Box w="35%" py="4">
+            <Box w="30%" py="4">
                 <Text 
                     style={{
                         color: '#000',
-                        fontSize: 18,
+                        fontSize: 14,
                         fontFamily: 'JosefinSans-Bold',
                         
                     }}
                     >Documentos:</Text>
             </Box>
-            <Box w="65%" py="4">
+            <Box w="70%" py="4">
                 <Text style={{
                     color: 'grey',
-                    fontSize: 14,
-                    fontFamily: 'JosefinSans-Regular',
-                    }}
-                    >
-                    {farmer?.nuit ? farmer?.nuit + ` (NUIT)` : 'Nenhum (NUIT)'} 
-                </Text>
-                <Text style={{
-                    color: 'grey',
-                    fontSize: 14,
+                    fontSize: 13,
                     fontFamily: 'JosefinSans-Regular',
                 }}
                 >
-                    {farmer?.licence ? farmer?.licence + ` (Licença/Alvará)` : 'Nenhum (Licença/Alvará)'} 
+                    NUIT ({farmer?.nuit ? farmer?.nuit : 'nenhum'})
+                </Text>
+                <Text style={{
+                    color: 'grey',
+                    fontSize: 13,
+                    fontFamily: 'JosefinSans-Regular',
+                }}
+                >
+                    Alvará/Licença ({farmer?.licence ? farmer?.licence : 'nenhum'}) 
                 </Text>
             </Box>
         </Stack>

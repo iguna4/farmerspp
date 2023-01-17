@@ -220,7 +220,7 @@ function PhotoModal({
                                         fontFamily: 'JosefinSans-Regular', 
                                         color: COLORS.main, 
                                     }}
-                                >Tirar foto</Text>
+                                >Câmera</Text>
                             </Box>
                             <Box w="50%">
                             <TouchableOpacity
@@ -241,7 +241,7 @@ function PhotoModal({
                                         fontFamily: 'JosefinSans-Regular', 
                                         color: COLORS.main, 
                                     }}
-                                    >Carregar foto</Text>
+                                    >Galeria</Text>
                             </Box>
                         </Stack>
                     </Box>

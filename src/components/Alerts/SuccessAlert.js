@@ -27,19 +27,22 @@ function SuccessAlert({
             <View style={{ 
                 flex: 1, 
                 marginTop: 25,
+                height: '100%',
                 alignItems: 'center' ,
                 marginHorizontal: 10,
                 }}
             >
-                <Stack direction="row">
+                <Box w="100%">
+
+                <Stack direction="row" w="100%">
                     <Box w="20%"
                     >
                         <TouchableOpacity
                         style={{ flexDirection: 'row' }}
-                            onPress={()=>{
-                                navigation.navigate('Farmers');
-                                setIsCoordinatesModalVisible(false);
-                            }}                            
+                        onPress={()=>{
+                            navigation.navigate('Farmers');
+                            setIsCoordinatesModalVisible(false);
+                        }}                            
                         >
                             <Icon name='arrow-back-ios' color={COLORS.main} size={30}  />
                         </TouchableOpacity>
@@ -48,13 +51,16 @@ function SuccessAlert({
 
                     </Box>
                 </Stack>
+                </Box>
+                <Box w="100%" h="40%">
+
                 <Stack 
                     direction="column" 
                     space={10} 
                     // py="6"
                     mh="10"
                     w="100%"
-                >
+                    >
                     <Box alignItems={'center'}>
                         <Icon name="check-circle" size={150} color={COLORS.main} />
                     </Box>
@@ -62,7 +68,7 @@ function SuccessAlert({
                         w="100%" 
                         alignItems={'center'} 
                         // ph="40"
-                    >
+                        >
                         <Text
                             style={{ 
                                 fontFamily: 'JosefinSans-Bold', 
@@ -71,13 +77,14 @@ function SuccessAlert({
                                 fontSize: 24, 
                                 paddingHorizontal: 30,
                             }}
-                        >
+                            >
                             Registo ocorrido com successo!
                         </Text>
                     </Box>
                 </Stack>
+                </Box>
                 <Center
-                    pt="10"
+                    h="40%"
                 >
 {  farmlandId &&  ( 
         <TouchableOpacity

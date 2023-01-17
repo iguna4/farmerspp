@@ -66,85 +66,93 @@ const PersonalData = ({ farmer })=>{
             }}
         >
 
-        <Stack w="100%" direction="row">
-                <Box w="35%" py="4">
+        <Stack w="100%" direction="row" py="4">
+                <Box w="30%">
                     <Text
                         style={{
                             color: '#000',
-                            fontSize: 18,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Bold',
                             
                         }}
                         >
                     Nascimento:</Text>
                 </Box>
-                <Box w="65%" py="4">
+                <Box w="70%">
                     <Text
                         style={{
                             color: 'grey',
-                            fontSize: 14,
+                            fontSize: 13,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
+                        Data
+                    </Text>
+                    <Text                         
+                        style={{
+                            color: 'grey',
+                            fontSize: 13,
+                            paddingLeft: 10,
+                            fontFamily: 'JosefinSans-Regular',
+                        }} >
                         {new Date(farmer.birthDate).toLocaleDateString()}{' '}({new Date().getFullYear() - new Date(farmer.birthDate).getFullYear()} anos)
                     </Text>
-                    <CustomDivider />
-{
-            !farmer?.birthPlace?.province?.includes('Estrangeiro') ?
-            (
                 <Box>
-                    <Text                         
+                <Text
                         style={{
                             color: 'grey',
-                            fontSize: 14,
+                            fontSize: 13,
                             fontFamily: 'JosefinSans-Regular',
-                        }} >
-                        {farmer?.birthPlace?.province + " (província)" }
-                    </Text>
-                    <Text                         
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                        }} >
-                        {farmer?.birthPlace?.district + " (distrito)" }
-                    </Text>
-                    <Text                         
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                        }} >
-                        { farmer?.birthPlace?.adminPost + " (posto admin.)" }
-                    </Text>
-                </Box>
+                        }}                    
+                        >
+                    Lugar
+                </Text>  
 
-            )
-            : 
-            (
-                
-            <Box>
-                <Text 
-                    style={{
-                        color: 'grey',
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                    }}
-                >
-                    {farmer?.birthPlace?.district + " (País Estrangeiro)" }
-                </Text>
-            </Box>
-            )
+        <Box>
+{   farmer?.birthPlace?.province &&
+                 <Text                         
+                        style={{
+                            color: 'grey',
+                            fontSize: 13,
+                            paddingLeft: 10,
+                            fontFamily: 'JosefinSans-Regular',
+                        }} >
+                        {farmer?.birthPlace?.province}
+                    </Text>
 }
+{   farmer?.birthPlace?.district &&                 
+                    <Text                         
+                        style={{
+                            color: 'grey',
+                            fontSize: 14,
+                            paddingLeft: 10,
+                            fontFamily: 'JosefinSans-Regular',
+                        }} >
+                        {farmer?.birthPlace?.district}
+                    </Text>
+}
+{   farmer?.birthPlace?.adminPost &&                 
+                    <Text                         
+                        style={{
+                            color: 'grey',
+                            fontSize: 14,
+                            paddingLeft: 10,
+                            fontFamily: 'JosefinSans-Regular',
+                        }} >
+                        { farmer?.birthPlace?.adminPost}
+                    </Text>
+}
+                </Box>
+            </Box>
                 </Box>
             </Stack>
             <CustomDivider />
-            <Stack w="100%" direction="row">
-                <Box w="35%" py="4">
+            <Stack w="100%" direction="row" py="4">
+                <Box w="30%" >
                 <Text
                     style={{
                         color: '#000',
-                        fontSize: 18,
+                        fontSize: 14,
                         fontFamily: 'JosefinSans-Bold',
                         
                     }}
@@ -152,56 +160,64 @@ const PersonalData = ({ farmer })=>{
                     Endereço:
                 </Text>
                 </Box>
-                <Box w="65%" py="4">
-                    <Box>
-                        <Text                     
+                <Box w="70%" >
+                    {/* <Box> */}
+{   farmer?.address?.province &&
+                      <Text                     
                             style={{
                                 color: 'grey',
-                                fontSize: 14,
+                                fontSize: 13,
                                 fontFamily: 'JosefinSans-Regular',
                             }}
                         >
-                            {farmer?.address?.province} (província)
+                            {farmer?.address?.province} 
                         </Text>
-                        <Text 
+    }
+{   farmer?.address?.district &&
+                     <Text 
                             style={{
                                 color: 'grey',
-                                fontSize: 14,
+                                fontSize: 13,
                                 fontFamily: 'JosefinSans-Regular',
                             }}                        
                             >
-                            {farmer?.address?.district} (distrito)
+                            {farmer?.address?.district}
                         </Text>
-                        <Text 
+}
+{   farmer?.address?.adminPost &&
+                     <Text 
                             style={{
                                 color: 'grey',
-                                fontSize: 14,
+                                fontSize: 13,
                                 fontFamily: 'JosefinSans-Regular',
                             }}                        
                             >
-                            {farmer?.address?.adminPost} (posto admin.)
+                            {farmer?.address?.adminPost}
                         </Text>
-                        <Text 
+}
+{   farmer?.address?.village &&
+                     <Text 
                             style={{
                                 color: 'grey',
-                                fontSize: 14,
+                                fontSize: 13,
                                 fontFamily: 'JosefinSans-Regular',
                             }}                        
                         >
-                            {farmer?.address?.village ? farmer?.birthPlace?.village (localidade/povoado) : 'Nenhum (localidade/povoado)'}
+                            {farmer?.address?.village}
                         </Text>
-                    </Box>
+}
+                    {/* </Box> */}
                 </Box>
             </Stack>
 
             <CustomDivider />
 
-            <Stack w="100%" direction="row">
-            <Box w="35%" py="4">
+            <Stack w="100%" direction="row" py="4">
+            <Box w="30%" >
                 <Text
                     style={{
                         color: '#000',
-                        fontSize: 18,
+                        fontSize: 14,
                         fontFamily: 'JosefinSans-Bold',
                         
                     }}
@@ -209,157 +225,98 @@ const PersonalData = ({ farmer })=>{
                     Contacto:
                 </Text>
                 </Box>
-                <Box w="65%" py="4">
-                { farmer?.contact?.primaryPhone && farmer?.contact?.secondaryPhone ?
-                (
-                    <Box>
-                    <Text 
+                <Box w="70%">
+
+                <Text 
+                    style={{
+                        color: 'grey',
+                        fontSize: 13,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                >
+                    Telefone {!(farmer?.contact?.primaryPhone || farmer?.contact?.secondaryPhone) && '(nenhum).'}    
+                </Text>            
+{ farmer?.contact?.primaryPhone !== 0  &&
+                   <Text 
                         style={{
                             color: 'grey',
-                            fontSize: 14,
+                            fontSize: 13,
+                            paddingLeft: 10,
                             fontFamily: 'JosefinSans-Regular',
                         }}  
                         >
                         {farmer?.contact?.primaryPhone} (principal)
                     </Text>
-                    <Text 
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}                    
-                        >
-                        {farmer?.contact?.secondaryPhone} (alternativo)
-                    </Text>
-                </Box>
-                )
-                :
-                farmer?.contact?.primaryPhone ?
-                (
-                <Box>
-                    <Text 
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}                    
-                    >
-                        {farmer?.contact?.primaryPhone} (principal)
-                    </Text>
-                    <Text 
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}                    
-                    >
-                        Nenhum (alternativo)
-                    </Text>
-                </Box>
-                )
-                :
-                farmer?.contact?.secondaryPhone ?
-                (
-                    <Box>
-                    <Text 
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}                    
-                        >
-                        Nenhum (principal)
-                    </Text>
-                    <Text 
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}                    
-                        >
-                        {farmer?.contact?.secondaryPhone} (alternativo)
-                    </Text>
-                </Box>
-                )
-                :
-                (
-                    <Box>
-                    <Text 
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}                    
-                        >
-                        Nenhum (principal)
-                    </Text>
-                    <Text 
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}                    
-                    >
-                        Nenhum (alternativo)
-                    </Text>
-                </Box>
-                )
-            }
+}
+{
+ farmer?.contact?.secondaryPhone !== 0 &&
+ <Text 
+      style={{
+          color: 'grey',
+          fontSize: 13,
+          paddingLeft: 10,
+          fontFamily: 'JosefinSans-Regular',
+      }}  
+      >
+      {farmer?.contact?.secondaryPhone} (alternativo)
+  </Text>    
+}
+
                 </Box>
         </Stack>
         <CustomDivider />
-        <Stack direction="row" w="100%" >
-            <Box w="35%" py="4">
+        <Stack direction="row" w="100%" py="4">
+            <Box w="30%" >
                 <Text 
                     style={{
                         color: '#000',
-                        fontSize: 18,
+                        fontSize: 14,
                         fontFamily: 'JosefinSans-Bold',
                         
                     }}
                     >Doc. Identificação:</Text>
             </Box>
-            <Box w="65%" py="4">
-            { farmer?.idDocument?.docNumber ?
-                (<Text 
-                    style={{
-                        color: 'grey',
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                    }}
-                >
-                    {farmer?.idDocument?.docNumber} ({farmer?.idDocument?.docType})</Text>)
-                :
-                (<Text 
-                    style={{
-                        color: 'grey',
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                    }}    
-                >Nenhum (Nenhum)</Text>)
-            }
+            <Box w="70%">
+{
+   farmer?.idDocument?.docType !== 'Nenhum' && 
+        <Text 
+                style={{
+                    color: 'grey',
+                    fontSize: 13,
+                    fontFamily: 'JosefinSans-Regular',
+                }}
+            >
+                {farmer?.idDocument?.docType} ({farmer?.idDocument?.docNumber })
+            </Text>
+}
+{
+   farmer?.idDocument?.nuit !== 0 && 
+        <Text 
+                style={{
+                    color: 'grey',
+                    fontSize: 13,
+                    fontFamily: 'JosefinSans-Regular',
+                }}
+            >
+                NUIT ({farmer?.idDocument?.nuit })
+            </Text>
+}
+{
+       !(farmer?.idDocument?.docType && farmer?.idDocument?.nuit) && 
+       <Text 
+               style={{
+                   color: 'grey',
+                   fontSize: 13,
+                   fontFamily: 'JosefinSans-Regular',
+               }}
+           >
+               Nenhum
+           </Text>
+}
 
-            { farmer?.idDocument?.nuit ?
-                (<Text 
-                    style={{
-                        color: 'grey',
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                    }}
-                >{farmer?.idDocument?.nuit} (NUIT)</Text>)
-                :
-                (<Text 
-                    style={{
-                        color: 'grey',
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                    }}
-                    >Nenhum (NUIT)</Text>)
-                }
             </Box>
         </Stack>
         <CustomDivider />
-
 
         </View>
         </CollapseBody>

@@ -21,6 +21,13 @@ import COLORS from '../../consts/colors';
 import { realmContext } from '../../models/realm';
 const { useRealm, useQuery } = realmContext; 
 
+// Fake user
+const user = {
+  name: 'Carlos Daniel',
+  district: 'Mogovolas',
+  province: 'Nampula',
+};
+
 
 export default function FarmersScreen({ route, navigation }) {
 
@@ -80,11 +87,7 @@ export default function FarmersScreen({ route, navigation }) {
 
   
   const addFarmer = ()=>{
-    navigation.navigate('FarmerForm1', { user: {
-      name: 'evariste musekwa',
-      district: 'Mogovolas',
-      province: 'Nampula',
-    }});
+    navigation.navigate('FarmerForm1', { user });
   }
   
   const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
@@ -154,7 +157,7 @@ export default function FarmersScreen({ route, navigation }) {
                   color: COLORS.main, 
                 }}
               >
-                {'Ancuabe'}
+                {user.district}
               </Text>
 
               <Stack direction="row" space={2} my="1">

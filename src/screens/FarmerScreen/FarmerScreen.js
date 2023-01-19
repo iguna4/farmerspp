@@ -323,7 +323,7 @@ const FarmerScreen = ({ route, navigation }) =>{
                   flag: 'Indivíduo',
                 })}
               >
-                <Icon name="add-circle" color={COLORS.second}size={40} />
+                <Icon name="add-circle" color={COLORS.second}size={60} />
 
               </TouchableOpacity>
             </Box>            

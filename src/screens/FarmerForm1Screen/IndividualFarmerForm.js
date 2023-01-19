@@ -568,7 +568,11 @@ export default function IndividualFarmerForm({
                                     }
                       mt={1}
                       onValueChange={newDocType => {
-                        setErrors((prev)=>({...prev, docType: ''}));
+                        setErrors((prev)=>({
+                            ...prev, 
+                            docType: '',
+                            docNumber: '',
+                        }));
                         setDocType(newDocType);
                       }}
                   >

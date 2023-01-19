@@ -290,7 +290,7 @@ const InstitutionScreen = ({ route, navigation }) =>{
                   flag: 'Instituição',
                 })}
               >
-                <Icon name="add-circle" color={COLORS.second} size={50} />
+                <Icon name="add-circle" color={COLORS.second} size={60} />
 
               </TouchableOpacity>
             </Box>            

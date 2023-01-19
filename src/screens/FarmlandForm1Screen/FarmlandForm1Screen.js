@@ -394,14 +394,14 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             <Stack direction="row" mx="3" w="100%">
             <Box w="32%" px="1">
             <FormControl isRequired my="2" isInvalid={'totalArea' in errors}>
-                <FormControl.Label>Total</FormControl.Label>
+                <FormControl.Label>Total (ha)</FormControl.Label>
                 <CustomInput
                     width="100%"
                     // type="text"
                     keyboardType="numeric"
                     textAlign="center"
                     // autoCapitalize="words"
-                    placeholder="Área"
+                    placeholder="Hectares"
                     value={totalArea}
                     onChangeText={newNumber=>{
                         setErrors(prev=>({...prev, totalArea: ''}))
@@ -426,14 +426,14 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
 
             <Box w="32%" px="1">
             <FormControl isRequired my="2" isInvalid={'usedArea' in errors}>
-                <FormControl.Label>Aproveitada</FormControl.Label>
+                <FormControl.Label>Aproveitada (ha) </FormControl.Label>
                 <CustomInput
                     width="100%"
                     // type="text"
                     keyboardType="numeric"
                     textAlign="center"
                     // autoCapitalize="words"
-                    placeholder="Área"
+                    placeholder="Hectares"
                     value={usedArea}
                     onChangeText={newNumber=>{
                         setErrors(prev=>({...prev, usedArea: ''}))
@@ -458,7 +458,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
 
             <Box w="32%" px="1">
             <FormControl isRequired my="2" isInvalid={'trees' in errors}>
-                <FormControl.Label>Cajueiros</FormControl.Label>
+                <FormControl.Label>N° de Cajueiros</FormControl.Label>
                 <CustomInput
                     width="100%"
                     // type="text"

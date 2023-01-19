@@ -280,7 +280,7 @@ const GroupScreen = ({ route, navigation }) =>{
                   flag: 'Grupo',
                 })}
               >
-                <Icon name="add-circle" color={COLORS.second} size={40} />
+                <Icon name="add-circle" color={COLORS.second} size={60} />
 
               </TouchableOpacity>
             </Box>            

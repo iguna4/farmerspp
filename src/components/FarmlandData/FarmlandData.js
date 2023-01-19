@@ -273,15 +273,6 @@ const FarmlandData = ({ farmland })=>{
                         </Text>))
                     }
                     </Box>
-                    <Text                     
-                        style={{
-                            color: COLORS.grey,
-                            fontSize: 13,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}
-                    >
-                        
-                    </Text> 
                 </Box>
             </Stack>
 
@@ -311,7 +302,16 @@ const FarmlandData = ({ farmland })=>{
                                 fontFamily: 'JosefinSans-Regular',
                             }}
                             >
-                            {farmland.declaredArea} hectares declarados.
+                            {farmland.totalArea} hectares (total).
+                        </Text>
+                        <Text                     
+                            style={{
+                                color: COLORS.grey,
+                                fontSize: 13,
+                                fontFamily: 'JosefinSans-Regular',
+                            }}
+                            >
+                            {farmland.usedArea} hectares (aproveitada).
                         </Text>
                         <Text                     
                             style={{

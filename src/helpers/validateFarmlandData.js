@@ -4,7 +4,9 @@ const validateFarmlandData = (
         description, 
         consociatedCrops, 
         trees,
-        declaredArea,
+        // declaredArea,
+        usedArea,
+        totalArea,
         densityMode,
         densityLength,
         densityWidth,
@@ -18,7 +20,8 @@ const validateFarmlandData = (
     const retrievedFarmlandDescription = description?.trim();
     const retrievedConsociatedCrops = [...consociatedCrops];
     const retrievedTreesNumber = trees ? parseInt(trees) : '';
-    const retrievedDeclaredArea = declaredArea ? parseFloat(declaredArea): '';
+    const retrievedUsedArea = usedArea ? parseFloat(usedArea): '';
+    const retrievedTotalArea = totalArea ? parseFloat(totalArea): '';
     const retrievedDensityMode = densityMode?.trim();
     const retrievedDensityLength = densityLength ? parseInt(densityLength) : 0;
     const retrievedDensityWidth = densityWidth ? parseInt(densityWidth): 0;
@@ -34,13 +37,20 @@ const validateFarmlandData = (
         return false;
     }
 
+    if (retrievedConsociatedCrops.length === 0) { 
+        setErrors({ ...errors,
+            consociatedCrops: 'Cultura consociada.',
+        });
+        return false;
+    }
+
     if (!retrievedFarmlandDescription) { 
         setErrors({ ...errors,
             description: 'Descreva a localização deste pomar.',
         });
         return false;
     }
-
+   
     if (!retrievedTreesNumber){
         setErrors({ ...errors,
             trees: 'Indica número de cajueiros.',
@@ -48,9 +58,16 @@ const validateFarmlandData = (
         return false;
     }
 
-    if (!retrievedDeclaredArea){
+    if (!retrievedUsedArea){
         setErrors({ ...errors,
-            declaredArea: 'Área declarada.',
+            declaredArea: 'Área aproveitada.',
+        });
+        return false;
+    }
+
+    if (!retrievedTotalArea){
+        setErrors({ ...errors,
+            declaredArea: 'Área total.',
         });
         return false;
     }
@@ -82,19 +99,19 @@ const validateFarmlandData = (
 
     if (retrievedPlantTypes?.length === 0 ){
         setErrors({ ...errors,
-            plantTypes: 'Selecciona o tipo de plantio.',
+            plantTypes: 'Selecciona o tipo de plantas.',
         });
         return false;               
     }
-    // else if (
-    //         retrievedPlantTypes.some(el=>el.includes('enxert')) 
-    //     &&  retrievedClones?.length === 0
-    //     ){
-    //     setErrors({ ...errors,
-    //         plantTypes: 'Selecciona clones.',
-    //     });
-    //     return false;
-    // }
+    else if (
+            retrievedPlantTypes.some(el=>el.includes('enxert')) 
+        &&  retrievedClones?.length === 0
+        ){
+        setErrors({ ...errors,
+            clones: 'Selecciona clones.',
+        });
+        return false;
+    }
 
 
     const farmlandData = {
@@ -107,7 +124,8 @@ const validateFarmlandData = (
             width: retrievedDensityWidth,
         },
         trees: retrievedTreesNumber,
-        declaredArea: retrievedDeclaredArea,
+        usedArea: retrievedUsedArea,
+        totalArea: retrievedTotalArea,
         plantTypes: {
             plantType: retrievedPlantTypes,
             clones: retrievedClones,

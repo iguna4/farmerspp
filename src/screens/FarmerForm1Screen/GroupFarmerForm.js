@@ -78,7 +78,7 @@ export default function GroupFarmerForm({
             </Box>
             <Box w="50%" px="1">
             <FormControl isRequired my="4" isInvalid={'groupName' in errors}>
-                <FormControl.Label>Designação</FormControl.Label>
+                <FormControl.Label>Nome</FormControl.Label>
                     <CustomInput
                         width="100%"
                         isDisabled={groupType === '' ? true : false}
@@ -210,7 +210,7 @@ export default function GroupFarmerForm({
     <Stack direction="row" mx="3" w="100%">
         <Box w="50%" px="1" my="2">
         <FormControl  isInvalid={'groupOperatingLicence' in errors}>
-            <FormControl.Label>Alvará</FormControl.Label>
+            <FormControl.Label>N°. de Alvará</FormControl.Label>
             <CustomInput
                 width="100%"
                 // type="telephoneNumber"

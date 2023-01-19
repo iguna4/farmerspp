@@ -38,7 +38,7 @@ const validateInstitutionFarmerData = (
 
     if (!retrievedInstitutionName){
         setErrors({ ...errors,
-            institutionName: 'Indica designação da instituição.',
+            institutionName: 'Indica nome da instituição.',
         });
         return false;
     }
@@ -77,7 +77,7 @@ const validateInstitutionFarmerData = (
         )
         ){
         setErrors({ ...errors,
-            nuit: 'NUIT inválido.',
+            institutionNuit: 'NUIT inválido.',
         });
         return false;
     }

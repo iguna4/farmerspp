@@ -125,8 +125,8 @@ export default function InstitutionFarmerForm({
                 </FormControl>
             </Box>
             <Box w="50%" px="1">
-            <FormControl isRequired my="4">
-                <FormControl.Label>Designação</FormControl.Label>
+            <FormControl isRequired my="4" isInvalid={'institutionName' in errors}>
+                <FormControl.Label>Nome</FormControl.Label>
                     <CustomInput
                         width="100%"
                         isDisabled={institutionType === '' ? true : false}
@@ -138,7 +138,13 @@ export default function InstitutionFarmerForm({
                             setInstitutionName(newInstitutionName)
                         }}
                     />
-                <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage>
+                               {
+                'institutionName' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.institutionName}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+                }
             </FormControl>
             </Box>
         </Stack>
@@ -163,7 +169,7 @@ export default function InstitutionFarmerForm({
                                 }
                     mt={1}
                     onValueChange={newAdminPost => {
-                        setErrors((prev)=>({...prev, institutiondminPost: ''}));
+                        setErrors((prev)=>({...prev, institutionAdminPost: ''}));
                         setInstitutionAdminPost(newAdminPost);
                     }}
                 >{
@@ -298,7 +304,7 @@ export default function InstitutionFarmerForm({
         <Stack direction="row" mx="3" w="100%">
         <Box w="50%" px="1" my="2">
         <FormControl  isInvalid={'institutionManagerPhone' in errors}>
-            <FormControl.Label>Alvará</FormControl.Label>
+            <FormControl.Label>N°. de Alvará</FormControl.Label>
             <CustomInput
                 width="100%"
                 type="text"

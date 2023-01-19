@@ -45,11 +45,13 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     const [plantingYear, setPlantingYear] = useState('');
     const [trees, setTrees] = useState('');
     const [declaredArea, setDeclaredArea] = useState('')
+    const [totalArea, setTotalArea] = useState('');
+    const [usedArea, setUsedArea] = useState('');
     const [densityWidth, setDensityWidth] = useState('');
     const [densityLength, setDensityLength] = useState('');
     const [plantTypes, setPlantTypes] = useState([]);
     const [clones, setClones] = useState([]);
-    const [densityMode, setDensityMode] = useState('')
+    const [densityMode, setDensityMode] = useState('');
     
     const [errorAlert, setErrorAlert] = useState(false);
 
@@ -78,8 +80,10 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             plantingYear, 
             description, 
             consociatedCrops, 
+            totalArea,
+            usedArea,
             trees,
-            declaredArea,
+            // declaredArea,
             densityMode,
             densityLength,
             densityWidth,
@@ -124,14 +128,6 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
         setLoadingActivityIndicator(true);
     }, [navigation])
     
-    
-    // if (errorAlert) {
-    //     return (
-    //         <Center flex={1} px="3">
-    //             <ErrorAlert errorAlert={errorAlert} setErrorAlert={setErrorAlert} />
-    //         </Center>
-    //     )
-    // }
     
     return (
     <SafeAreaView 
@@ -332,10 +328,13 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
         </Box>  */}
 
         <Box w="100%" alignItems="center">
-            <FormControl my="1">
+            <FormControl my="1" isRequired isInvalid={'consociatedCrops' in errors}>
                 <FormControl.Label>Culturas consociadas</FormControl.Label>
                 <MultipleSelectList
-                    setSelected={(crop)=>setConsociatedCrops(crop)}
+                    setSelected={(crop)=>{
+                        setErrors(prev=>({...prev, consociatedCrops: ''}))
+                        setConsociatedCrops(crop)}
+                    }
                     data={crops}
                     save="value"
                     arrowicon={
@@ -368,14 +367,127 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                     placeholder="Culturas consociadas"
                 />
                 {
-                // 'consociatedCrops' in errors 
-                // ? <FormControl.ErrorMessage 
-                // leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                // _text={{ fontSize: 'xs'}}>{errors?.consociatedCrops}</FormControl.ErrorMessage> 
-                // : 
+                'consociatedCrops' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={14} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.consociatedCrops}</FormControl.ErrorMessage> 
+                : 
                 <FormControl.HelperText></FormControl.HelperText>
                 }
             </FormControl>
+
+            <Box
+                style={{
+                    // alignItems: 'left',
+                }}
+            >
+                <Text style={{
+                    textAlign: 'left',
+                    fontSize: 16,
+                    fontFamily: 'JosefinSans-Bold',
+                    color: COLORS.main,
+                }}>
+                    Área Declarada
+                </Text>
+            </Box>
+
+            <Stack direction="row" mx="3" w="100%">
+            <Box w="32%" px="1">
+            <FormControl isRequired my="2" isInvalid={'totalArea' in errors}>
+                <FormControl.Label>Total</FormControl.Label>
+                <CustomInput
+                    width="100%"
+                    // type="text"
+                    keyboardType="numeric"
+                    textAlign="center"
+                    // autoCapitalize="words"
+                    placeholder="Área"
+                    value={totalArea}
+                    onChangeText={newNumber=>{
+                        setErrors(prev=>({...prev, totalArea: ''}))
+                        setTotalArea(newNumber)
+                    }}
+                />
+                    
+                {
+                    'totalArea' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.totalArea}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+                }
+            </FormControl>
+            </Box>
+
+
+            <Box w="2%" px="1">
+
+            </Box>
+
+            <Box w="32%" px="1">
+            <FormControl isRequired my="2" isInvalid={'usedArea' in errors}>
+                <FormControl.Label>Aproveitada</FormControl.Label>
+                <CustomInput
+                    width="100%"
+                    // type="text"
+                    keyboardType="numeric"
+                    textAlign="center"
+                    // autoCapitalize="words"
+                    placeholder="Área"
+                    value={usedArea}
+                    onChangeText={newNumber=>{
+                        setErrors(prev=>({...prev, usedArea: ''}))
+                        setUsedArea(newNumber)
+                    }}
+                />
+                    
+                {
+                    'usedArea' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.usedArea}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+                }
+            </FormControl>
+            </Box>
+
+
+            <Box w="2%" px="1">
+
+            </Box>
+
+            <Box w="32%" px="1">
+            <FormControl isRequired my="2" isInvalid={'trees' in errors}>
+                <FormControl.Label>Cajueiros</FormControl.Label>
+                <CustomInput
+                    width="100%"
+                    // type="text"
+                    keyboardType="numeric"
+                    textAlign="center"
+                    // autoCapitalize="words"
+                    placeholder="Cajueiros"
+                    value={trees}
+                    onChangeText={newNumber=>{
+                        setErrors(prev=>({...prev, trees: ''}))
+                        setTrees(newNumber)
+                    }}
+                />
+                    
+                {
+                    'trees' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.trees}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+                }
+            </FormControl>
+            </Box>
+
+        </Stack>  
+
+
+{/* 
+
 
         <Stack direction="row" mx="3" w="100%">
             <Box w="45%" px="1">
@@ -434,7 +546,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             }
             </FormControl>
           </Box>
-        </Stack>  
+        </Stack>   */}
 
         <FormControl isRequired my="2" isInvalid={'densityMode' in errors}  >
             <FormControl.Label>Compasso</FormControl.Label>
@@ -614,7 +726,7 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
 {   plantTypes.some((el)=>el.includes('enxert')) 
     && (
 
-        <FormControl my="1" >
+        <FormControl my="1" isRequired isInvalid={'clones' in errors} >
                 <FormControl.Label>Clones</FormControl.Label>
                 <MultipleSelectList
                   setSelected={(type)=>{
@@ -652,15 +764,13 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                         minHeight: 55,
                     }}
                     />
-                
-                    {/* 'clones' in errors  */}
-                {/* ? <FormControl.ErrorMessage  */}
-                 {/* leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                 _text={{ fontSize: 'xs'}}>
-                     {errors?.clones}
-                     </FormControl.ErrorMessage>  */}
-                <FormControl.HelperText></FormControl.HelperText>
-                
+                {
+                    'clones' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.clones}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+                }     
             </FormControl>
     )        
     }
@@ -668,7 +778,6 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     </Box> 
     <Center w="100%" py="4"> 
         <Button
-            // loading={loadinButton ? true : false}
             type="outline"
             title="Pré-visualizar dados"
             containerStyle={{
@@ -694,7 +803,9 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             setPlantTypes={setPlantTypes}
             setPlantingYear={setPlantingYear}
             setTrees={setTrees}
-            setDeclaredArea={setDeclaredArea}
+            // setDeclaredArea={setDeclaredArea}
+            setUsedArea={setUsedArea}
+            setTotalArea={setTotalArea}
 
             setFarmlandId={setFarmlandId}
             setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}

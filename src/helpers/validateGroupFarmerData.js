@@ -25,7 +25,7 @@ const validateGroupFarmerData = (
     const retrievedGroupWomenNumber = parseInt(groupWomenNumber);
     const retrievedGroupAffiliationYear = parseInt(groupAffiliationYear);
     const retrievedGroupOperatingLicence = groupOperatingLicence?.trim();
-    const retrievedgroupNuit = parseInt(groupNuit); 
+    const retrievedGroupNuit = parseInt(groupNuit); 
     const retrievedGroupProvince = groupProvince?.trim();
     const retrievedGroupDistrict = groupDistrict?.trim();
     const retrievedGroupAdminPost = groupAdminPost?.trim();
@@ -42,7 +42,7 @@ const validateGroupFarmerData = (
 
     if (!retrievedGroupName){
         setErrors({ ...errors,
-            groupName: 'Indica designação de grupo.',
+            groupName: 'Indica nome de grupo.',
         });
         return false;
     }
@@ -70,6 +70,17 @@ const validateGroupFarmerData = (
     if (!retrievedGroupAffiliationYear){
         setErrors({ ...errors,
             groupAffiliationYear: 'Indica ano de afiliação.',
+        });
+        return false;
+    }
+    if (retrievedGroupNuit &&
+        (
+        !Number.isInteger(parseInt(retrievedGroupNuit))  || 
+        retrievedGroupNuit?.toString().length !== 9   
+        )
+        ){
+        setErrors({ ...errors,
+            groupNuit: 'NUIT inválido.',
         });
         return false;
     }
@@ -121,7 +132,7 @@ const validateGroupFarmerData = (
             phone: retrievedGroupManagerPhone ? parseInt(retrievedGroupManagerPhone) : 0,
         },
         licence: retrievedGroupOperatingLicence,
-        nuit: retrievedgroupNuit ? parseInt(retrievedgroupNuit) : 0,
+        nuit: retrievedGroupNuit ? parseInt(retrievedGroupNuit) : 0,
     }
         return farmerData;
 

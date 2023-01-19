@@ -45,7 +45,7 @@ export function CustomInput({
             borderWidth={1}
             color="#555555"
             fontFamily="JosefinSans-Regular"
-            fontSize={18}
+            fontSize={16}
             value={value}
             textAlign={textAlign}
             autoCapitalize={autoCapitalize ? autoCapitalize : 'none'}

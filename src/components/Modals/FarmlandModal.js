@@ -34,7 +34,9 @@ const FarmlandModal = (
         setConsociatedCrops, 
         setClones,
         setTrees, 
-        setDeclaredArea, 
+        // setDeclaredArea, 
+        setUsedArea,
+        setTotalArea,
         setDensityLength, 
         setDensityWidth,
         setPlantTypes, 
@@ -56,7 +58,9 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
         consociatedCrops,
         density,
         trees,
-        declaredArea,
+        // declaredArea,
+        usedArea,
+        totalArea,
         plantTypes,
         ownerId,
         flag,
@@ -98,7 +102,9 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             consociatedCrops,
             density,
             trees,
-            declaredArea,
+            // declaredArea,
+            usedArea,
+            totalArea,
             plantTypes,
             farmer: owner._id,
         })
@@ -236,13 +242,16 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
                 <Text style={styles.keys}>Culturas consociadas:</Text>
             </Box>
             <Box w="60%" style={styles.values}>
-                <Text style={styles.values}>
                 {
                 farmlandData?.consociatedCrops?.length > 0 
-                ? farmlandData?.consociatedCrops?.map(crop=>`${crop}; `)
-                : 'Nenhuma'
-                }
-                </Text>
+                && farmlandData?.consociatedCrops?.map(crop=>{
+                    return (
+                        <Text key={crop} style={styles.values}>
+                            {crop}
+                        </Text>
+                    )                
+                })
+            }
             </Box>
         </Stack>
         <CustomDivider
@@ -256,7 +265,7 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             </Box>
             <Box w="60%" style={styles.values}>
                 <Text style={styles.values}>
-                    {farmlandData?.trees} (árvores)
+                    {farmlandData?.trees} árvores
                 </Text>
             </Box>
         </Stack>
@@ -268,11 +277,14 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
 
         <Stack direction="row" w="100%" my="1">
             <Box w="40%">
-                <Text style={styles.keys}>Área declarada:</Text>
+                <Text style={styles.keys}>Área:</Text>
             </Box>
             <Box w="60%" style={styles.values}>
                 <Text style={styles.values}>
-                    {farmlandData?.declaredArea} (hectares)
+                    {farmlandData?.totalArea} hectares (total)
+                </Text>
+                <Text style={styles.values}>
+                    {farmlandData?.usedArea} hectares (aproveitada)
                 </Text>
             </Box>
         </Stack>
@@ -281,7 +293,6 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             thickness={1}
                 bg="grey"
                 />
-
 
         <Stack direction="row" w="100%" my="1">
             <Box w="40%">
@@ -313,19 +324,26 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             />
         <Stack direction="row" w="100%" my="1">
             <Box w="40%">
-                <Text style={styles.keys}>Tipo de plantio:</Text>
+                <Text style={styles.keys}>Tipo de plantas:</Text>
             </Box>
             <Box w="60%">
                 <Box>
                     <Box style={styles.values}>
-                        {farmlandData.plantTypes?.plantTypes?.map(p=><Text key={p} style={styles.values}>{p}</Text>)}
+                        {farmlandData.plantTypes?.plantType?.map(p=><Text key={p} style={styles.values}>{p}</Text>)}
                     </Box>
-                    <Text style={styles.values}>
-                        [ {
-                        farmlandData.plantTypes?.plantTypes?.some(el=>el.includes('enxer')) 
-                        ?  farmlandData.plantTypes?.clones?.map(clone=><Text key={clone} style={styles.values}>{clone}</Text>) + 'Clones desconhecidos'
-                        : ''} ]
-                    </Text>
+{ farmlandData.plantTypes?.plantType?.some(el=>el.includes('enxer')) &&
+                <Box>
+            {
+                farmlandData.plantTypes?.clones?.map(
+                    clone=>(
+                        <Text key={clone} style={[styles.values, { paddingLeft: 10, }]}>
+                            - {clone}
+                        </Text>
+                        )
+                )
+            }
+                </Box>
+}
                 </Box>
             </Box>
         </Stack>
@@ -352,7 +370,8 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
                         setConsociatedCrops([]);
                         setClones([]);
                         setTrees('');
-                        setDeclaredArea('');
+                        setUsedArea('');
+                        setTotalArea('');
                         setDensityLength('');
                         setDensityWidth('');
                         setPlantTypes([]);

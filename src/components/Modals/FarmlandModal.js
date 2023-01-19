@@ -58,7 +58,6 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
         consociatedCrops,
         density,
         trees,
-        // declaredArea,
         usedArea,
         totalArea,
         plantTypes,
@@ -102,7 +101,6 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             consociatedCrops,
             density,
             trees,
-            // declaredArea,
             usedArea,
             totalArea,
             plantTypes,
@@ -110,7 +108,6 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             user: user.name,
         })
 
-        // console.log('newFarmland: ', JSON.stringify(newFarmland))
         // set the farmlandId
         setFarmlandId(newFarmland._id);
 
@@ -122,9 +119,7 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             // categorize by 'comercial' | 'familiar' | 'nao-categorizado'
             const ownerFarmlands = realm.objects('Farmland').filtered('farmer == $0', owner._id)
             owner.category = categorizeFarmer(ownerFarmlands);
-        }
-        console.log('ownerFarmlands: ', JSON.stringify(owner.farmlands))
-        
+        }        
     })
 
 },

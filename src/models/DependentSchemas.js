@@ -76,8 +76,8 @@ export const Achievement = {
             year: { type: 'int', default: 2023 },
             registeredFarmers: { type: 'int',  default: 0},
             registeredFarmlands: { type: 'int', default: 0},
-            targetFarmers: { type: 'int',  default: 0},
-            targetFarmlands: { type: 'int', default: 0},
+            farmersRegistrationGoal: { type: 'int',  default: 0},
+            farmlandsRegistrationGoal: { type: 'int', default: 0},
         },
 };
 

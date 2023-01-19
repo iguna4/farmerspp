@@ -24,6 +24,7 @@ export const Group = {
             type: 'date', default: Date()
         },
         district: 'string?',
+        user: 'string?',
     },
 }
 

@@ -26,6 +26,7 @@ import {
   MenuTrigger,
   renderers
  } from "react-native-popup-menu";
+import { user } from '../../fakedata/user';
 
 
 import { realmContext } from '../../models/realm';
@@ -121,7 +122,7 @@ export default function HomeScreen({ navigation }) {
                   fontFamily: 'JosefinSans-Bold',
                   fontSize: 18,
                 }}
-                >Carlos</Text>
+                >{user.name?.split(' ')[0]}</Text>
             </TouchableOpacity>
           </Box>
         </Stack>
@@ -314,7 +315,7 @@ export default function HomeScreen({ navigation }) {
               fontFamily: 'JosefinSans-Bold',
               paddingTop: 10,
             }}>
-                Provincial (Cabo Delgado)
+                Provincial ({user.province})
             </Text>            
           
           <Stack w="100%" direction="row" space={4} py="2">
@@ -377,7 +378,7 @@ export default function HomeScreen({ navigation }) {
               fontFamily: 'JosefinSans-Bold',
               paddingTop: 10,
             }}>
-                Distrital (Ancuabe)
+                Distrital ({user.district})
             </Text>            
           
           <Stack w="100%" direction="row" space={4} py="2">
@@ -441,7 +442,7 @@ export default function HomeScreen({ navigation }) {
               fontFamily: 'JosefinSans-Bold',
               paddingTop: 10,
             }}>
-                Individual (Carlos Eduardo Langa)
+                Individual ({user.name})
             </Text>            
           
           <Stack w="100%" direction="row" space={4} py="2">
@@ -551,7 +552,7 @@ export default function HomeScreen({ navigation }) {
           fontFamily: 'JosefinSans-Bold',
           paddingTop: 10,
         }}>
-            Provincial (Cabo Delgado)
+            Provincial ({user.province})
         </Text>            
       
       <Stack w="100%" direction="row" space={4} py="2">
@@ -608,7 +609,7 @@ export default function HomeScreen({ navigation }) {
           fontFamily: 'JosefinSans-Bold',
           paddingTop: 10,
         }}>
-            Distrital (Ancuabe)
+            Distrital ({user.district})
         </Text>            
       
       <Stack w="100%" direction="row" space={4} py="2">
@@ -664,7 +665,7 @@ export default function HomeScreen({ navigation }) {
           fontFamily: 'JosefinSans-Bold',
           paddingTop: 10,
         }}>
-            Individual (Carlos Eduardo Langa)
+            Individual ({user.name})
         </Text>            
       
       <Stack w="100%" direction="row" space={4} py="2">

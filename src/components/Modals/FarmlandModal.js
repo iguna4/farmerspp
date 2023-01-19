@@ -16,11 +16,11 @@ import Realm from 'realm';
 import FarmerAddDataModal from './SuccessModal';
 
 import { useNavigation } from '@react-navigation/native';
+import { categorizeFarmer } from '../../helpers/categorizeFarmer';
+import { user } from '../../fakedata/user';
 
 
 import { realmContext } from '../../models/realm';
-import { categorizeFarmer } from '../../helpers/categorizeFarmer';
-
 const {useRealm} = realmContext;
 
 const FarmlandModal = (
@@ -107,6 +107,7 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             totalArea,
             plantTypes,
             farmer: owner._id,
+            user: user.name,
         })
 
         // console.log('newFarmland: ', JSON.stringify(newFarmland))

@@ -22,6 +22,8 @@ import { generateFormattedDate } from '../../helpers/generateFormattedDate';
 import { generateFormattedAdminPost } from '../../helpers/generateFormattedAdminPost';
 import { generateFormattedSurname } from '../../helpers/generateFormattedSurname';
 import { useNavigation } from '@react-navigation/native';
+import { user } from '../../fakedata/user';
+
 
 import { realmContext } from '../../models/realm';
 const {useRealm} = realmContext;
@@ -76,6 +78,7 @@ const InstitutionModal = (
             address,
             manager,
             nuit,
+            user: user.name,
         })
         setFarmerItem({
             ownerId: newInstitution?._id,

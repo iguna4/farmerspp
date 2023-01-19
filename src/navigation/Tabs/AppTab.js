@@ -1,21 +1,15 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect, useState } from 'react';
-import { Text, StatusBar } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import React from 'react';
+import { StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 
 import HomeStackScreen from '../Stacks/HomeStackScreen';
 import FarmersStackScreen from '../Stacks/FarmersStackScreen';
-import {Icon } from '@rneui/themed';
-import Login from '../../screens/Fallback/Login';
+import { Icon } from '@rneui/themed';
 
 import { realmContext } from '../../models/realm';
-import FarmlandAreaAuditScreen from '../../screens/FarmlandAreaAuditScreen/FarmlandAreaAuditScreen';
-import IndividualFarmerForm from '../../screens/FarmerForm1Screen/IndividualFarmerForm';
-import PopupMenu from '../../components/PopupMenu/PopupMenu';
-import Wrapper from '../../components/PopupMenu/PopupMenu';
-import MenuWrapper from '../../components/PopupMenu/PopupMenu';
 import COLORS from '../../consts/colors';
 import SearchScreen from '../../screens/SearchScreen/SearchScreen';
 

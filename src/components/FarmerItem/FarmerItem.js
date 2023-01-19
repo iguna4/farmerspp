@@ -16,7 +16,9 @@ import { useNavigation } from '@react-navigation/native';
 import { sumTreesOrAreas } from '../../helpers/sumTreesOrAreas';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 import COLORS from '../../consts/colors';
+import { months } from '../../helpers/dates'
 
+import { user } from '../../fakedata/user';
 // const uri =  `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
 
@@ -165,14 +167,19 @@ const FarmerItem = ({ item, route, farmerType }) => {
   </Box>
   </Stack>
   
-  <Stack direction="row" w="100%" style={{ paddingTop: 10,  }} >
+  <Stack direction="row" w="100%" style={{ paddingTop: 5,  }} >
       <Box w="100%">
         <Text 
           style={{ 
             textAlign: 'right',
-            fontFamily: 'JosefinSans-Italic'}}
+            color: COLORS.grey,
+            fontFamily: 'JosefinSans-Italic',
+            fontSize: 12,
+          }}
           >
-          Registo: {new Date(item.createdAt).toLocaleDateString()} por {'user'}
+          Registo:{' '}                 
+          {new Date(item.createdAt).getDate()}/{months[new Date(item.createdAt).getMonth()]}/{new Date(item.createdAt).getFullYear()}
+          {' '} por {item.user}
         </Text>
       </Box>
   </Stack>

@@ -16,17 +16,11 @@ import { addFlagToListItem } from '../../helpers/addFlagToListItem'
 import GroupItem from '../../components/GroupItem/GroupItem';
 import InstitutionItem from '../../components/InstitutionItem/InstitutionItem';
 import COLORS from '../../consts/colors';
-
+import { user } from '../../fakedata/user';
 
 import { realmContext } from '../../models/realm';
 const { useRealm, useQuery } = realmContext; 
 
-// Fake user
-const user = {
-  name: 'Carlos Daniel',
-  district: 'Mogovolas',
-  province: 'Nampula',
-};
 
 
 export default function FarmersScreen({ route, navigation }) {

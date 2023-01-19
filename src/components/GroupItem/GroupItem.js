@@ -13,6 +13,7 @@ import { sumTreesOrAreas } from '../../helpers/sumTreesOrAreas';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 import COLORS from '../../consts/colors';
+import { months } from '../../helpers/dates';
 
 const uri =  `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
@@ -152,17 +153,22 @@ const GroupItem = ({ item, route }) => {
   </Box>
   </Stack>
 
-  <Stack direction="row" w="100%" style={{ paddingTop: 10,  }}>
-        <Box w="100%">
-          <Text 
-            style={{ 
-              textAlign: 'right',
-              fontFamily: 'JosefinSans-Italic'}}
+  <Stack direction="row" w="100%" style={{ paddingTop: 5,  }} >
+      <Box w="100%">
+        <Text 
+          style={{ 
+            textAlign: 'right',
+            color: COLORS.grey,
+            fontFamily: 'JosefinSans-Italic',
+            fontSize: 12,
+          }}
           >
-            Registo: {new Date(item.createdAt).toLocaleDateString()} por {'user'}
-          </Text>
-        </Box>
-      </Stack>
+          Registo:{' '}                 
+          {new Date(item.createdAt).getDate()}/{months[new Date(item.createdAt).getMonth()]}/{new Date(item.createdAt).getFullYear()}
+          {' '} por {item.user}
+        </Text>
+      </Box>
+  </Stack>
     </View>
   )
 }

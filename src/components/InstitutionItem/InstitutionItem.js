@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 import COLORS from '../../consts/colors';
+import { months } from '../../helpers/dates';
 
 
 const InstitutionItem = ({ item, route }) => {
@@ -130,34 +131,28 @@ const InstitutionItem = ({ item, route }) => {
             </Box>
         </Stack>
         </Box>
-        {/* <Box w="20%" style={{ }}>
-          <Pressable
-            onPress={()=>navigation.navigate('FarmlandForm1', {
-              ownerId: item?._id,
-              ownerName: `${item?.type} ${item?.name}`,
-              flag: 'Instituição',
-            })}
-            >
-            <FontAwesomeIcon icon={faTree} size={30} color={COLORS.main} />
-          </Pressable>
-        </Box> */}
         </Stack>
       </Stack>
     </TouchableOpacity>
     </Box>
     </Stack>
 
-     <Stack direction="row" w="100%" style={{ paddingTop: 10,  }} >
-        <Box w="100%">
-          <Text 
-            style={{ 
-              textAlign: 'right',
-              fontFamily: 'JosefinSans-Italic'}}
+    <Stack direction="row" w="100%" style={{ paddingTop: 5,  }} >
+      <Box w="100%">
+        <Text 
+          style={{ 
+            textAlign: 'right',
+            color: COLORS.grey,
+            fontFamily: 'JosefinSans-Italic',
+            fontSize: 12,
+          }}
           >
-            Registo: {new Date(item?.createdAt).toLocaleDateString()} por {'user'}
-          </Text>
-        </Box>
-      </Stack>
+          Registo:{' '}                 
+          {new Date(item.createdAt).getDate()}/{months[new Date(item.createdAt).getMonth()]}/{new Date(item.createdAt).getFullYear()}
+          {' '} por {item.user}
+        </Text>
+      </Box>
+  </Stack>
     </View>
   )
 }

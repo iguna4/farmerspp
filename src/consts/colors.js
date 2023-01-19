@@ -9,6 +9,7 @@ const COLORS = {
     black: '#000',
     danger: '#DD6B55',
     lightdanger: '#00AA99',
+    red: 'red',
 };
 
 

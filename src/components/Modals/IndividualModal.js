@@ -15,6 +15,8 @@ import Realm from 'realm';
 
 import { generateUFID } from '../../helpers/generateUFID';
 import { useNavigation } from '@react-navigation/native';
+import { user } from '../../fakedata/user';
+
 
 import { realmContext } from '../../models/realm';
 const {useRealm} = realmContext;
@@ -88,6 +90,7 @@ const IndividualModal = (
             contact,
             idDocument,
             ufid,
+            user: user.name,
         })
         setFarmerItem({
             ownerId: newFarmer._id,

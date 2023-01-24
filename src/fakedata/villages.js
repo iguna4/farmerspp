@@ -47,5 +47,315 @@ const villages = {
 
 
 
+     // Zambezia
+    "Molócuè (Sede)": [
+        'Alto Molócuè (Município)',
+        'Alto Molócuè (Sede)',
+        'Caiaia',
+        'Chapala',
+        'Ecole',
+        'Nacuaca',
+        'Nimala',
+        'Nivava',
+        'Novanana',
+        'Mutala',
+    ],
+
+    'Nauela': [
+        'Nauela',
+        'Muhiua',
+        'Cololo',
+    ],
+
+    "Chinde (Sede)": [
+        'Chinde (Vila)',
+        'Matilde',
+        'Mucuandaia',
+        'Pambane',
+    ],
+    'Micaune': [
+        'Micaune (Sede)',
+        'Arijuane',
+        'Magaza',
+        'Mitange',
+        'Nhamatamanga',
+    ],
+    "Derre (Sede)": [
+        "Derre (Sede)",
+    ] ,
+    "Machindo": [
+        "Machindo (Sede)",
+    ],
+    "Guerissa": [
+        'Guerissa (Sede)',
+        'Nabui',
+    ],
+    "Alto Ligonha": [
+        "Alto Ligonha",
+        "Mirali",
+        "Muiane",
+        "Namireco",
+        "Namihaly",
+        "Namithathary",
+    ],
+    "Gilé (Sede)": [
+        "Gilé (Sede)",
+        "Khayane",
+        "Mamala",
+        "Nanhope",
+        "Moneia",
+        "Naheche",
+        "Uapé",
+        "Intxotcha",
+        "Pury",
+    ],
+    "Gurué (Sede)": [
+        "Gurué (Sede)",
+    ],
+    "Lioma": [
+        "Lioma (Sede)",
+        "Magige",
+        "Mualijane",
+        "Nintulo",
+        "Tetete",
+    ],
+    "Mepuagiua": [
+        "Mepuagiua (Sede)",
+        "Incize",
+        "Mugaveia",
+        "Nicoropale",
+        "Nipive",
+        "Vehiua",
+    ],
+    "Ile (Sede)": [
+        "Ile (Sede)",
+        "Mugulama",
+        "Namanda",
+        "Nampevo",
+        "Nipiode",
+        "Phalane",
+    ],
+    // "Namigonha": [
+    //     "Namigonha"
+    // ],
+    "Socone": [
+        "Mualacamue",
+        "Coruane",
+    ],
+    "Gonhane": [
+        "Gonhane",
+    ],
+    "Mucupia": [
+        "Mucupia (Sede)",
+        "Chirimane",
+        "Ilova",
+        "Bingagira",
+    ],
+    "Luabo (Sede)": [
+        "Luabo (Sede)",
+        "Rovuma",
+        "Samora Machel",
+    ],
+    "Chimbazo": [
+        "25 de Setembro",
+        "Chissamba",
+        "Maginge",
+        "Nzama",
+    ],
+    "Lugela (Sede)": [
+        "Mobede",
+        "Mussengane",
+        "Nagobo",
+        "Puthine",
+        "Laba",
+    ],
+    "Muabanama": [
+        "Muabanama (Sede)",
+        "Comone",
+        "M'pemula",
+    ],
+    "Munhamade": [
+        "Munhamade",
+        "Alto Lugela",
+        "Cuba",
+        "Mulide",
+        "Tenede",
+    ],
+    "Tucuane": [
+        "Tucuane",
+        "Ebide",
+        "Mabu",
+    ],
+    "Maganja da Costa": [
+        "Maganja da Costa (Vila)",
+        "Bala",
+        "Cabuir",
+        "Cariua",
+        "Muzo",
+    ],
+    "Nante": [
+        "Nante (Sede)",
+        "Alto Mutola",
+        "Moneia",
+        "Muoloa",
+        "Nomiua",
+    ],
+    "Milange (Sede)": [
+        "Milange (Vila)",
+        "Milange (Sede)",
+        "Chitambo",
+        "Vulalo",
+        "Liciro",
+        "Tengua",
+    ],
+    "Majaua": [
+        "Majauia (Sede)",
+        "Dachudua",
+        "Dalimba",
+    ],
+    "Mongue": [
+        "Mongue (Sede)",
+        "Dulanha",
+        "Sabelua",
+    ],
+    "Mocuba": [
+        "Mocuba (Cidade)",
+        "Munhiba", 
+    ],
+    "Mugeba": [
+        "Mugeba (Sede)",
+        "Muaquiua",
+    ],
+    "Namanjavira": [
+        "Namanjavira (Sede)",
+        "Alto Benfica",
+    ],
+    "Bajone": [
+        "Nacuda",
+        "Missal",
+        "Naico",
+    ],
+    "Mocubela (Sede)": [
+        "Mocubela (Sede)",
+        "Maneia",
+    ],
+    "Molumbo (Sede)": [
+        "Molumbo (Sede)",
+        "Capitão Mor",
+    ],
+    "Corromana": [
+        "Corromana (Sede)",
+        "Nangoma",
+    ],
+    "Mopeia (Sede)": [
+        "Mopeia (Sede)",
+        "N'zanza",
+        "Rovuma",
+        "Sambalendo",
+    ],
+    "Campo": [
+        "Campo (Sede)",
+        "Catale",
+        "Lua Lua",
+        "Mungane",
+    ],
+    "Morrumbala (Sede)": [
+        "Morrumbala (Vila)",
+        "Morrumbala (Sede)",
+        "Borroma",
+        "Mepinha",
+        "Muandiua",
+        "Sabe",
+    ],
+    "Chire": [
+        "Chire (Sede)",
+        "Chilomo",
+        "Gorro",
+    ],
+    "Megaza": [
+        "Megaza (Sede)",
+        "Pinda",
+    ],
+    "Mulevala (Sede)": [
+        "Namigonha",
+        "M'bauane",
+        "Jajo",
+    ],
+    "Chiraco": [
+        "Chiraco (Sede)",
+        "Inturro",
+        "Mucata",
+    ],
+    "Namacurra (Sede)": [
+        "Malei",
+        "Namacurra (Sede)",
+        "Muebele",
+        "Mutange",
+        "Pida",
+    ],
+    "Macuse": [
+        "Macuse (Sede)",
+        "Furquia",
+        "Mbaua",
+        "Mexixine",
+    ],
+    "Namarroi (Sede)": [
+        "Namarroi (Sede)",
+        "Lipali",
+        "Marrea",
+        "Mudine",
+        "Muemue",
+    ],
+    "Regone": [
+        "Regone (Sede)",
+        "Mutatala",
+        "Nemone",
+    ],
+    "Nicoadala (Sede)": [
+        "Nicoadala (Sede)",
+        "Munhonha",
+        "Namacata",
+        "Nhafuba",
+    ],
+    "Pebane (Sede)": [
+        "Quichanga",
+        "Magiga",
+        "Nicadine",
+        "Ratata/Impaca",
+    ],
+    "Mulela": [
+        "Mulela (Sede)",
+        "Alto Maganha",
+        "Malema",
+        "Mucocoro",
+        "Namanla",
+    ],
+    "Naburi": [
+        "Naburi (Sede)",
+        "Etaga/Mihecue",
+        "Namahipe",
+        "Tomeia",
+        "Txalalane"
+    ],
+    "Maquival": [
+        "Maquival (Sede)",
+        "Longe",
+        "Madal",
+        "Marrongane",
+        "Nangoela",
+        "Zalala",
+    ],
+    "Urbano": [
+        "Quelimane (Cidade)"
+    ]
+
+
+
+
+
+
+    
+
+
 
 };

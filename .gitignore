@@ -23,7 +23,7 @@ DerivedData
 ios/.xcode.env.local
 
 # secrets
-secrets.js
+# secrets.js
 
 
 # Android/IntelliJ

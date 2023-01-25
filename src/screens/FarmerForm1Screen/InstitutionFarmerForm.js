@@ -27,7 +27,7 @@ export default function InstitutionFarmerForm({
     institutionAdminPost, setInstitutionAdminPost, institutionVillage, setInstitutionVillage, 
     institutionNuit, setInstitutionNuit, isPrivateInstitution, setIsPrivateInstitution,
     institutionLicence, setInstitutionLicence,
-    errors, setErrors, addressAdminPost,
+    errors, setErrors,
 
     selectedAddressAdminPosts, setSelectedAddressAdminPosts, 
 
@@ -208,7 +208,7 @@ export default function InstitutionFarmerForm({
                     onValueChange={newVillage => setInstitutionVillage(newVillage)}
                 >
                 {
-                    villages[addressAdminPost]?.map((village, index)=>(
+                    villages[institutionAdminPost]?.map((village, index)=>(
                         <Select.Item key={index} label={village} value={village} />
                     ))
                 }

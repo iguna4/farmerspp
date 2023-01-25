@@ -29,7 +29,7 @@ export default function GroupFarmerForm({
     groupAffiliationYear, setGroupAffiliationYear, 
     groupMembersNumber, setGroupMembersNumber, groupWomenNumber, setGroupWomenNumber,
     errors, setErrors, 
-    selectedAddressAdminPosts, addressAdminPost
+    selectedAddressAdminPosts,
 
 }) {
         
@@ -332,7 +332,7 @@ export default function GroupFarmerForm({
                     onValueChange={newVillage => setGroupVillage(newVillage)}
                 >
                 {
-                    villages[addressAdminPost]?.map((village, index)=>(
+                    villages[groupAdminPost]?.map((village, index)=>(
                         <Select.Item key={index} label={village} value={village} />
                     ))
                 }

@@ -1073,14 +1073,6 @@ const villages = {
     "Urbano": [
         "Quelimane (Cidade)"
     ]
-
-
-
-
-
-
-    
-
-
-
 };
+
+export default villages;

@@ -8,21 +8,29 @@ const administrativePosts = {
   Chimbunila: [
     "Chimbunila (Sede)", 
     "Lione",
+    "Mussa",
   ],
   Cuamba: [
     "Cuamba (Sede)", 
     "Etatara", 
-    "Lurio",
+    "Lurio (de Cuamba)",
+    "Mepica",
   ],
   Lago: [
     "Cobue", 
     "Lunho", 
     "Maniamba", 
-    "Metangula (Sede)",
+    "Meluluca",
+    // "Metangula (Sede)",
   ],
-  "Lichinga (Cidade)": [
+  "Lichinga": [
     "Lichinga (Sede)", 
     "Meponda",
+    "Chiuaula",
+    "Lulumile",
+    "Sanjala",
+    "Massengere",
+    "Lussanhando",
   ],
   Majune: [
     "Malanga (Sede)", 
@@ -32,11 +40,13 @@ const administrativePosts = {
   Mandimba: [
     "Mindimba (Sede)", 
     "Mitande",
+    "Lissiete",
   ],
   Marrupa: [
     "Marangira", 
     "Murrupa (Sede)", 
     "Nungo",
+    "Tumpue",
   ],
   Maúa: [
     "Maiaca",
@@ -57,6 +67,7 @@ const administrativePosts = {
   Metarica: [
     "Metarica (Sede)", 
     "Mucumua",
+    "Namicunde",
   ],
   Muembe: [
     "Chiconono", 
@@ -189,7 +200,7 @@ const administrativePosts = {
   ],
   Eráti: [
     "Alua", 
-    "Namapa (Sede)", 
+    "Namapa", 
     "Namiroa",
   ],
   "Ilha de Moçambique": [
@@ -211,7 +222,7 @@ const administrativePosts = {
   Malema: [
     "Malema (Sede)", 
     "Mutuali",
-    // "Chihulo", 
+    "Chihulo", 
   ],
   Meconta: [
     "7 de Abril",
@@ -227,7 +238,7 @@ const administrativePosts = {
   ],
   Memba: [
     "Chipene", 
-    "Lurio", 
+    "Lurio (de Memba)", 
     "Mazua",
     "Memba (Sede)", 
   ],
@@ -239,11 +250,12 @@ const administrativePosts = {
     "Calipo", 
     "Iuluti", 
     "Muatua", 
-    "Nametil (Sede)", 
+    "Nametil", 
     "Nanhupo-Rio",
   ],
   Moma: [
     "Chalaua", 
+    "Macone",
     "Moma (Sede)", 
   ],
   Monapo: [
@@ -280,15 +292,19 @@ const administrativePosts = {
     "Nacarôa (Sede)", 
     "Saua-Saua",
   ],
-  "Nampula (Cidade)": [
+  "Nampula": [
     "Anchilo",
-    "Central (Sede)",
-    "Muatala",
-    "Namicopo",
-    "Napipine",
-    "Natikire",
-    "Muhala",
+    "Nampula (Cidade)",
   ],
+
+  // "Nampula (Cidade)": [
+  //   "Central (Sede)",
+  //   "Muatala",
+  //   "Namicopo",
+  //   "Napipine",
+  //   "Natikire",
+  //   "Muhala",
+  // ],
   Rapale: [
     "Mutivasse", 
     "Namaita",

@@ -270,7 +270,7 @@ const InstitutionModal = (
                     {farmerData?.address?.adminPost} (Posto Admin.)
                 </Text>
                 <Text style={styles.values}>
-                    {farmerData?.address?.village ? farmerData.address?.village (localidade/povoado) : 'Nenhum (Localidade/Povoado)'}
+                    {farmerData?.address?.village ? farmerData.address?.village + ' (localidade/povoado)' : 'Nenhum (Localidade/Povoado)'}
                 </Text>
             </Box>
         </Box>

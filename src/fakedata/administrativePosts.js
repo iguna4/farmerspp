@@ -160,6 +160,7 @@ const administrativePosts = {
     "Palma (Sede)", 
     "Pundanhar", 
     "Quionga",
+    "Quitunda",
   ],
   "Pemba (Cidade)": [
     "Alto Gingone",

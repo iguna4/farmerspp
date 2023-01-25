@@ -2,6 +2,249 @@
 
 const villages = {
 
+    // Cabo Delgado
+    "Ancuabe (Sede)": [
+        "Ancuabe (Sede)",
+        "Gihote",
+        "Nacuale",
+    ],
+    "Metoro": [
+        "Metoro (Sede)",
+        "Salaue",
+    ],
+    "Mesa": [
+        "Teule",
+        "Campine",
+        "Minheuene",
+        "Nanjua",
+    ],
+    "Balama (Sede)": [
+        "Ntete",
+        "Muripa",
+    ],
+    "Kuekue": [
+        "Tauame",
+        "Jamira",
+    ],
+    "Impiri": [
+        "Sivaca",
+        "Namara",
+    ],
+    "Mavala": [
+        "Mpaca", 
+    ],
+    "Chiúre (Sede)": [
+        "Chiúre (Sede)",
+        "Milamba",
+        "Jonga"
+    ],
+    "Katapua": [
+        "Katapua (Sede)",
+        "Meculane",
+    ],
+    "Ocua": [
+        "Ocua (Sede)",
+        "Marera",
+        "Samora Machel",
+    ],
+    "Chiúre Velho": [
+        "Mocolene",
+        "Mugipala",
+    ],
+    "Mazeze": [
+        "Mazeze (Sede)",
+        "Morrocue",
+        "Javaro",
+    ],
+    "Namogelia": [
+        "Namogelia (Sede)",
+        "Bilibiza",
+    ],
+    "Macomia (Sede)": [
+        "Macomia (Sede)",
+        "Nacate",
+        "Nguida",
+    ],
+    "Mucojo": [
+        "Mucojo (Sede)",
+        "Pangane",
+        "Naunde",
+        "Manica",
+    ],
+    "Quiterajo": [
+        "Quiterajo (Sede)",
+        "Ilala",
+    ],
+    "Chai": [
+        "Chai (Sede)",
+        "Nkoe",
+    ],
+    "Mecufi (Sede)": [
+        "Muaria",
+        "Sembene",
+        "Natuco",
+    ],
+    "Murrebue": [
+        "Maueia",
+        "Muitua",
+    ],
+    "Meluco (Sede)": [
+        "Meluco (Sede)",
+        "Mitepo",
+        "Miinhamba",
+        "Ravia",
+    ],
+    "Muaguide": [
+        "Muaguide (Sede)",
+        "Citate",
+        "Iba",
+        "Mitambo",
+    ],
+    "Metuge (Sede)": [
+        "Metuge (Sede)",
+        "Nacuta",
+        "Messanja",
+    ],
+    "Mieze": [
+        "Mieze (Sede)",
+        "Nanila",
+    ],
+    "Mocimboa da Praia (Sede)": [
+        "Mocimboa da Praia (Sede)",
+        "Quelimane",
+    ],
+    "Diaca": [
+        "Diaca (Sede)",
+        "Nnango",
+    ],
+    "Mbau": [
+        "Mbau (Sede)",
+        "Marere",
+    ],
+    "Montepuez (Sede)": [
+        "Montepuez (Sede)",
+        "Mirage",
+        "Nacate",
+    ],
+    "Mapupulo": [
+        "Mapupulo (Sede)",
+        "Massingir",
+        "Mputo",
+    ],
+    "Namanhumir": [
+        "Namanhumir (Sede)",
+        "Mpupene",
+    ],
+    "Mirate": [
+        "Mirate (Sede)",
+        "Mararange",
+        "Unidade",
+        "Chipembe",
+    ],
+    "Nairoto": [
+        "Nairoto (Sede)",
+        "Nacololo",
+    ],
+    "Mueda (Sede)": [
+        "Mueda (Sede)",
+        "Mpeme",
+        "Miula",
+    ],
+    "Imbuo": [
+        "Imbuo (Sede)",
+        "Namaua",
+    ],
+    "N'gapa": [
+        "N'gapa (Sede)",
+        "Nachitenge",
+        "Nonge",
+        "Chipingo",
+    ],
+    "Chapa": [
+        "Chapa (Sede)",
+        "Nanhala",
+        "Lipelua",
+    ],
+    "Negomano": [
+        "Negomano (Sede)",
+        "Navara"
+    ],
+    "Namuno (Sede)": [
+        "Namuno (Sede)",
+        "Milipone",
+        "Mahussiine",
+        "Nicuita",
+        "Nicane",
+    ],
+    "Ncumpe": [
+        "Ncumpe (Sede)",
+        "Nassupia",
+        "Pambara",
+    ],
+    "Machoca": [
+        "Machoca (Sede)",
+        "Phomé",
+        "Muchermele",
+    ],
+    "Meloco": [
+        "Meloco (Sede)",
+        "Muatuca",
+    ],
+    "Hucula": [
+        "Hucula (Sede)",
+        "Mavo",
+    ],
+    "Papai": [
+        "Papai (Sede)",
+        "Luli",
+    ],
+    "Nangade (Sede)": [
+        "Nangade (Sede)",
+        "Litingina",
+    ],
+    "Ntamba": [
+        "Itanda",
+        "Mualela",
+        "Nambedo",
+    ],
+    "Palma (Sede)": [
+        "Palma (Sede)",
+    ],
+    "Quitunda": [
+        "Quitunda (Sede)",
+        "Mute",
+    ],
+    "Pundanhar": [
+        "Pundanhar (Sede)",
+        "Nhica de Rovuma",
+    ],
+    "Quionga": [
+        "Quionga (Sede)",
+        "Quirinde",
+    ],
+    "Olumbi": [
+        "Olumbi (Sede)",
+        "Quissengue",
+    ],
+    "Bilibiza": [
+        "Bilibiza (Sede)",
+        "Tororo",
+        "Ntapuate",
+    ],
+    "Quissanga (Sede)": [
+        "Quissanga (Sede)",
+    ],
+    "Mahate": [
+        "Mahate (Sede)",
+        "Cagembe",
+        "Namaluco",
+    ],
+    
+
+
+
+
+
     // Niassa
     Chimbonila: [
         'Cachule',

@@ -139,16 +139,34 @@ const FarmlandData = ({ farmland })=>{
         <CustomDivider />
 
         <Stack w="100%" direction="column" py="4">
-            <Text
-                style={{
-                    color: COLORS.black,
-                    fontSize: 16,
-                    fontFamily: 'JosefinSans-Bold',
-                    
-                }}
-            >
-                Cajueiros
-            </Text>
+
+            <Stack w="100%" direction="row" >
+            <Box w="50%">
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Bold',
+                        
+                    }}
+                    >
+                    Cajueiros
+                </Text>
+            </Box>
+            <Box w="25%"></Box>
+            <Box w="25%">
+                <TouchableOpacity
+                    style={{
+                    }}
+                    onPress={
+                        ()=>{}
+                    }
+                >
+                    <Icon name="checkroom" size={30} color={COLORS.main} />
+                </TouchableOpacity>
+            </Box>
+        </Stack>
+
             <Stack w="100%" direction="row">
                 <Box w="30%">
                 <Text
@@ -314,16 +332,36 @@ const FarmlandData = ({ farmland })=>{
 
     <CustomDivider />
     <Stack w="100%" direction="column" py="4">
-        <Text
-            style={{
-                color: '#000',
-                fontSize: 16,
-                fontFamily: 'JosefinSans-Bold',
-                
-            }}
-            >
-            Culturas consociadas:
-        </Text>
+
+        <Stack w="100%" direction="row" >
+            <Box w="50%">
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Bold',
+                        
+                    }}
+                    >
+                    Culturas consociadas
+                </Text>
+            </Box>
+            <Box w="25%"></Box>
+            <Box w="25%">
+                <TouchableOpacity
+                    style={{
+                    }}
+                    onPress={
+                        ()=>{
+                            
+                        }
+                    }
+                >
+                    <Icon name="add-circle-outline" size={30} color={COLORS.main} />
+                </TouchableOpacity>
+            </Box>
+        </Stack>
+
 
         <Stack w="100%" direction="row">
             <Box w="30%" >
@@ -378,16 +416,35 @@ const FarmlandData = ({ farmland })=>{
     <CustomDivider />
         
     <Stack w="100%" direction="column" py="4">
-        <Text
-            style={{
-                color: COLORS.black,
-                fontSize: 16,
-                fontFamily: 'JosefinSans-Bold',
-                
-            }}
-            >
-            Área
-        </Text>
+        <Stack w="100%" direction="row" >
+            <Box w="50%">
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Bold',
+                        
+                    }}
+                    >
+                    Área
+                </Text>
+            </Box>
+            <Box w="25%"></Box>
+            <Box w="25%">
+                <TouchableOpacity
+                    style={{
+                    }}
+                    onPress={
+                        ()=>{
+                            
+                        }
+                    }
+                >
+                    <Icon name="edit-road" size={30} color={COLORS.main} />
+                </TouchableOpacity>
+            </Box>
+        </Stack>
+
        <Stack w="100%" direction="row">
             <Box w="30%">
                 <Text
@@ -485,14 +542,13 @@ const FarmlandData = ({ farmland })=>{
                         // flexDirection: 'row',
                         // padding: 1,
                     }}
-                    disabled={farmland?.auditedArea ? true : false}
                     onPress={
                         ()=>navigation.navigate('FarmlandAreaAudit', {
                             farmlandId: farmland._id,
                         })
                     }
                 >
-                    <Icon name="add-location-alt" size={30} color={farmland?.auditedArea ? COLORS.grey: COLORS.main} />
+                    <Icon name="add-location-alt" size={30} color={COLORS.main} />
                 </TouchableOpacity>
             </Box>
         </Stack>

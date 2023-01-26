@@ -8,6 +8,7 @@ import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion
 import { realmContext } from '../../models/realm';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import COLORS from '../../consts/colors';
+import { TouchableOpacity } from 'react-native';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const PersonalData = ({ farmer })=>{
@@ -78,6 +79,8 @@ const PersonalData = ({ farmer })=>{
             >
                 Nascimento
             </Text>
+
+
         <Stack w="100%" direction="row">
                 <Box w="30%">
                     <Text
@@ -187,16 +190,37 @@ const PersonalData = ({ farmer })=>{
     <CustomDivider />
 
     <Stack w="100%" direction="column" py="4">
-        <Text
-            style={{
-                color: '#000',
-                fontSize: 16,
-                fontFamily: 'JosefinSans-Bold',
-                
-            }}
-        >
-            Endereço
-        </Text>
+
+        <Stack w="100%" direction="row" >
+            <Box w="50%">
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Bold',
+                        
+                    }}
+                    >
+                    Endereço
+                </Text>
+            </Box>
+            <Box w="25%"></Box>
+            <Box w="25%">
+                <TouchableOpacity
+                    style={{
+                    }}
+                    onPress={
+                        ()=>{
+                            
+                        }
+                    }
+                >
+                    <Icon name="home" size={30} color={COLORS.main} />
+                </TouchableOpacity>
+            </Box>
+        </Stack>
+
+
 
         <Stack w="100%" direction="row">
             <Box w="30%">
@@ -306,16 +330,34 @@ const PersonalData = ({ farmer })=>{
     <CustomDivider />
 
     <Stack w="100%" direction="column" py="4">
-        <Text
-            style={{
-                color: '#000',
-                fontSize: 16,
-                fontFamily: 'JosefinSans-Bold',
-                
-            }}
-        >
-            Contacto
-        </Text>
+        <Stack w="100%" direction="row" >
+                <Box w="50%">
+                    <Text
+                        style={{
+                            color: COLORS.black,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                            
+                        }}
+                        >
+                        Contacto
+                    </Text>
+                </Box>
+                <Box w="25%"></Box>
+                <Box w="25%">
+                    <TouchableOpacity
+                        style={{
+                        }}
+                        onPress={
+                            ()=>{
+                                
+                            }
+                        }
+                    >
+                        <Icon name="contacts" size={30} color={COLORS.main} />
+                    </TouchableOpacity>
+                </Box>
+            </Stack>
 
         <Stack w="100%" direction="row">
             <Box w="30%">
@@ -373,16 +415,35 @@ const PersonalData = ({ farmer })=>{
     <CustomDivider />
 
     <Stack w="100%" direction="column" py="4">
-        <Text
-            style={{
-                color: '#000',
-                fontSize: 16,
-                fontFamily: 'JosefinSans-Bold',
-                
-            }}
-        >
-            Documentos de Identificação:
-        </Text>
+
+        <Stack w="100%" direction="row" >
+            <Box w="70%">
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Bold',
+                        
+                    }}
+                    >
+                    Documentos de Identificação
+                </Text>
+            </Box>
+            <Box w="5%"></Box>
+            <Box w="25%">
+                <TouchableOpacity
+                    style={{
+                    }}
+                    onPress={
+                        ()=>{
+                            
+                        }
+                    }
+                >
+                    <Icon name="file-present" size={30} color={COLORS.main} />
+                </TouchableOpacity>
+            </Box>
+        </Stack>
 
         <Stack w="100%" direction="row">
             <Box w="30%">

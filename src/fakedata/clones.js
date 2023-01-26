@@ -1,6 +1,6 @@
 
 const clones = [
-"desconhecido",
+"Desconhecido",
 " 1.3",
 "1.5R",
 "1.7VM",

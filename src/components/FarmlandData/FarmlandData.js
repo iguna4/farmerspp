@@ -85,27 +85,40 @@ const FarmlandData = ({ farmland })=>{
                 shadowOpacity: 0.27,
                 shadowRadius: 4.65,
                 elevation: 3,
+                paddingLeft: 20,
             }}
         >
 
+        <Stack w="100%" direction="column" py="4">
+            <Text
+                style={{
+                    color: COLORS.black,
+                    fontSize: 16,
+                    fontFamily: 'JosefinSans-Bold',
+                    
+                }}
+            >
+                Descrição
+            </Text>
+
         <Stack w="100%" direction="row">
-                <Box w="30%" py="4">
+                <Box w="30%" >
                     <Text
                         style={{
-                            color: COLORS.black,
-                            fontSize: 15,
+                            color: COLORS.grey,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Bold',
                             
                         }}
                         >
-                    Descrição:
+                    {/* Descrição: */}
                 </Text>
                 </Box>
-                <Box w="70%" py="4">
+                <Box w="70%">
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 13,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
@@ -114,7 +127,7 @@ const FarmlandData = ({ farmland })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 13,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
@@ -122,273 +135,441 @@ const FarmlandData = ({ farmland })=>{
                     </Text>
                 </Box>
             </Stack>
+        </Stack>
+        <CustomDivider />
 
-
-            <CustomDivider />
+        <Stack w="100%" direction="column" py="4">
+            <Text
+                style={{
+                    color: COLORS.black,
+                    fontSize: 16,
+                    fontFamily: 'JosefinSans-Bold',
+                    
+                }}
+            >
+                Cajueiros
+            </Text>
             <Stack w="100%" direction="row">
-                <Box w="30%" py="4">
+                <Box w="30%">
                 <Text
                     style={{
-                        color: COLORS.black,
+                        color: COLORS.grey,
                         fontSize: 14,
-                        fontFamily: 'JosefinSans-Bold',
+                        fontFamily: 'JosefinSans-Regular',
                         
                     }}
                     >
-                    Cajueiros:
+                    Árvores
                 </Text>
                 </Box>
-                <Box w="70%" py="4">
-                    <Box>
-                        <Text 
+                <Box w="70%">
+                    <Text 
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}                        
+                        >
+                        {farmland.trees}
+                    </Text>
+                </Box>
+        </Stack>
+
+        <Stack w="100%" direction="row">
+                <Box w="30%">
+                <Text
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                        
+                    }}
+                    >
+                    Idade
+                </Text>
+                </Box>
+                <Box w="70%">
+                    <Text 
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}                        
+                        >
+                        {new Date().getFullYear() - farmland.plantingYear} anos
+                    </Text>
+                </Box>
+        </Stack>
+
+        <Stack w="100%" direction="row">
+                <Box w="30%">
+                <Text
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                        
+                    }}
+                    >
+                    Compasso
+                </Text>
+                </Box>
+                <Box w="70%">
+                    <Text 
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}                        
+                        >
+                        {farmland.density.mode} {farmland.density.mode === 'Regular' ? ( '( ' + farmland.density?.length + ' x ' + farmland.density?.width + ' )' ) : ''}
+                    </Text>
+                </Box>
+        </Stack>
+
+
+        <Stack w="100%" direction="row">
+                <Box w="30%">
+                <Text
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                        
+                    }}
+                    >
+                    Tipo de plantas
+                </Text>
+                </Box>
+                <Box w="70%">
+
+                { 
+                (
+                    farmland.plantTypes?.plantType.length > 0 &&
+                    
+                    farmland.plantTypes?.plantType?.map(plant=>{
+                        return (
+                            <Text
                             style={{
                                 color: COLORS.grey,
-                                fontSize: 13,
-                                fontFamily: 'JosefinSans-Regular',
-                            }}                        
-                            >
-                            {farmland.trees} árvores.
-                        </Text>
-                        <Text                     
-                            style={{
-                                color: COLORS.grey,
-                                fontSize: 13,
+                                fontSize: 14,
                                 fontFamily: 'JosefinSans-Regular',
                             }}
-                            >
-                            {new Date().getFullYear() - farmland.plantingYear} anos de idade.
-                        </Text>
-                        <Text 
+                            key={plant}>
+                                - {plant}
+                            </Text>
+                        )
+                    })
+                    )
+                    }
+                    {
+                        (
+                            farmland.plantTypes?.plantType.length === 0 &&
+                            <Text
                             style={{
                                 color: COLORS.grey,
-                                fontSize: 13,
+                                fontSize: 14,
                                 fontFamily: 'JosefinSans-Regular',
-                            }}                        
-                            >
-                            Compasso {farmland.density.mode} {farmland.density.mode === 'Regular' ? (farmland.density?.length + ' x ' + farmland.density?.width) : ''}
-                        </Text>
-                        {
-                            farmland.plantTypes?.plantTypes?.map(plant=>{
-                                return (
-                                    <Text key={plant}>
-                                        {plant}
-                                    </Text>
-                                )
-                            })
-                        }
-                    </Box>
-                    <Box>
-                    <Box>
+                            }}>
+                                (Desconhecido)
+                            </Text>
+                        )
+                    }
+                </Box>
+        </Stack>
+    {
+        farmland.plantTypes?.plantType?.some(el=>el.includes('enxer')) &&
+
+        <Stack w="100%" direction="row">
+        <Box w="30%">
+        <Text
+            style={{
+                color: COLORS.grey,
+                fontSize: 14,
+                fontFamily: 'JosefinSans-Regular',
+                
+            }}
+            >
+            Clones
+        </Text>
+        </Box>
+        <Box w="70%">
+            {
+            farmland.plantTypes?.clones?.map(c=>
+                (<Text key={c}                
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 13,
+                        fontFamily: 'JosefinSans-Regular',
+                        // paddingLeft: 10,
+                    }}>
+                    {c === 'Desconhecido' ? '(Desconhecido)' : `- ${c}`}
+                </Text>))
+            }
+        </Box>
+        </Stack>
+
+    }
+        </Stack>
+
+    <CustomDivider />
+    <Stack w="100%" direction="column" py="4">
+        <Text
+            style={{
+                color: '#000',
+                fontSize: 16,
+                fontFamily: 'JosefinSans-Bold',
+                
+            }}
+            >
+            Culturas consociadas:
+        </Text>
+
+        <Stack w="100%" direction="row">
+            <Box w="30%" >
+            <Text
+                style={{
+                    color: '#000',
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                    
+                }}
+                >
+                {/* Culturas consociadas: */}
+            </Text>
+            </Box>
+            <Box w="70%">
+            {          
+                (
+                    farmland.consociatedCrops.length === 0
+                    ||
+                    farmland.consociatedCrops.some((crop)=>crop === 'Nenhuma')   
+                ) &&      
                         <Text
                             style={{
-                                color: COLORS.grey,
+                                color: 'grey',
                                 fontSize: 13,
                                 fontFamily: 'JosefinSans-Regular',
                             }}
                         >
-                            Tipo de planta {farmland.plantTypes?.plantType.length == 0 && '(desconhecido)'}
-                        </Text> 
-                        {
-                        farmland.plantTypes?.plantType.length > 0 
-                        && farmland.plantTypes?.plantType?.map(p=>
-                        (<Text key={p}                             
-                            style={{
-                                color: COLORS.grey,
-                                fontSize: 13,
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingLeft: 10,
-                            }}>
-                            - {p}
-                        </Text>))
-                    }
-                    </Box>
-{   farmland.plantTypes?.plantType?.some(el=>el.includes('enxer')) &&
-                <Box>
+                            (Nenhuma)
+                        </Text>
+            }
 
-                    <Text 
-                        style={{
-                            color: COLORS.grey,
-                            fontSize: 13,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}
-                    >
-                        clones {farmland.plantTypes?.clones.length === 0 && '(desconhecido)'}
-                    </Text>
-                    {
-                        farmland.plantTypes?.clones.length > 0 
-                        && farmland.plantTypes?.clones?.map(c=>
-                            (<Text key={c}                
-                                style={{
-                                    color: COLORS.grey,
-                                    fontSize: 13,
-                                    fontFamily: 'JosefinSans-Regular',
-                                    paddingLeft: 10,
-                                }}>
-                                - {c}
-                            </Text>))
-                    }
-                    </Box>
-}                
-                </Box>
-                </Box>
-            </Stack>
-
-            <CustomDivider />
-
-            <Stack w="100%" direction="row">
-                <Box w="30%" py="4">
+{
+    (
+        farmland.consociatedCrops.length > 0
+  
+    ) && 
+    farmland.consociatedCrops?.map(c=>
+        (<Text key={c}                             
+            style={{
+                color: COLORS.grey,
+                fontSize: 14,
+                fontFamily: 'JosefinSans-Regular',
+                // paddingLeft: 10,
+            }}>
+            - {c}
+        </Text>))
+}
+            </Box>
+        </Stack>
+    </Stack>
+    <CustomDivider />
+        
+    <Stack w="100%" direction="column" py="4">
+        <Text
+            style={{
+                color: COLORS.black,
+                fontSize: 16,
+                fontFamily: 'JosefinSans-Bold',
+                
+            }}
+            >
+            Área
+        </Text>
+       <Stack w="100%" direction="row">
+            <Box w="30%">
                 <Text
                     style={{
-                        color: '#000',
+                        color: COLORS.grey,
                         fontSize: 14,
-                        fontFamily: 'JosefinSans-Bold',
-                        
+                        fontFamily: 'JosefinSans-Regular',
                     }}
                     >
-                    Culturas consociadas:
+                    Total declarada
                 </Text>
-                </Box>
-                <Box w="70%" py="4">
-                    <Text
-                        style={{
-                            color: 'grey',
-                            fontSize: 13,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}
+            </Box>
+            <Box w="70%">
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 13,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}
                     >
-                        Outras culturas {farmland.consociatedCrops.length === 0 && '(nenhuma consociação).'}
-                    </Text>
-                    <Box>
-                    {
-                        farmland.consociatedCrops?.length > 0 
-                        && farmland.consociatedCrops?.map(c=>
-                        (<Text key={c}                             
-                            style={{
-                                color: COLORS.grey,
-                                fontSize: 13,
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingLeft: 10,
-                            }}>
-                            - {c}
-                        </Text>))
-                    }
-                    </Box>
-                </Box>
-            </Stack>
+                    {farmland.totalArea} hectares
+                </Text>
+            </Box>
+        </Stack>
+        <Stack w="100%" direction="row">
+            <Box w="30%">
+                <Text
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}
+                    >
+                    Aproveitada declarada
+                </Text>
+            </Box>
+            <Box w="70%">
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}
+                    >
+                    {farmland.usedArea} hectares
+                </Text>
+            </Box>
+        </Stack>
+        <Stack w="100%" direction="row">
+            <Box w="30%">
+                <Text
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}
+                    >
+                    Auditada
+                </Text>
+            </Box>
+            <Box w="70%">
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}
+                    >
+                    {farmland.auditedArea ? `${farmland.auditedArea} hectares` : '(Desconhecida)'}
+                </Text>
+            </Box>
+        </Stack>
+    </Stack>
 
-
-
-            <CustomDivider />
-
-            <Stack w="100%" direction="row">
-                <Box w="30%" py="4">
+    <CustomDivider />
+     
+    <Stack w="100%" direction="column" py="4">
+        <Stack w="100%" direction="row" >
+            <Box w="50%">
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 14,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         
                     }}
                     >
-                    Área:
+                    Coordenadas
                 </Text>
+            </Box>
+            <Box w="25%"></Box>
+            <Box w="25%">
+                <TouchableOpacity
+                    style={{
+                        // flexDirection: 'row',
+                        // padding: 1,
+                    }}
+                    disabled={farmland?.auditedArea ? true : false}
+                    onPress={
+                        ()=>navigation.navigate('FarmlandAreaAudit', {
+                            farmlandId: farmland._id,
+                        })
+                    }
+                >
+                    <Icon name="add-location-alt" size={30} color={farmland?.auditedArea ? COLORS.grey: COLORS.main} />
+                </TouchableOpacity>
+            </Box>
+        </Stack>
+{
+    farmland.extremeCoordinates.length > 0 &&
+    farmland.extremeCoordinates?.map((coords)=>{
+        return (
+           <Stack key={coords.position} w="100%" direction="row">
+                <Box w="30%">
+                    <Text
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}
+                        >
+                        Ponto {coords.position} 
+                    </Text>
                 </Box>
-                <Box w="70%" py="4">
-                    <Box>
-                        <Text                     
-                            style={{
-                                color: COLORS.grey,
-                                fontSize: 13,
-                                fontFamily: 'JosefinSans-Regular',
-                            }}
-                            >
-                            {farmland.totalArea} hectares (total).
-                        </Text>
-                        <Text                     
-                            style={{
-                                color: COLORS.grey,
-                                fontSize: 13,
-                                fontFamily: 'JosefinSans-Regular',
-                            }}
-                            >
-                            {farmland.usedArea} hectares (aproveitada).
-                        </Text>
-                        <Text                     
-                            style={{
-                                color: COLORS.grey,
-                                fontSize: 13,
-                                fontFamily: 'JosefinSans-Regular',
-                            }}
-                            >
-                            {farmland.auditedArea ? `${farmland.auditedArea} hectares auditados.` : 'Área ainda não auditada.'}
-                        </Text>
-                        <Text                     
-                            style={{
-                                color: COLORS.grey,
-                                fontSize: 13,
-                                fontFamily: 'JosefinSans-Regular',
-                            }}
-                            >
-                            Coordenadas {farmland.extremeCoordinates.length === 0 && 'ainda não capturadas.'}
-                        </Text>
-                        <Box>
-                        {
-                        farmland.extremeCoordinates?.length > 0 
-                        && farmland.extremeCoordinates?.map(c=>
-                            (<Text key={c.position}                
-                                style={{
-                                    color: COLORS.grey,
-                                    fontSize: 13,
-                                    fontFamily: 'JosefinSans-Regular',
-                                    paddingLeft: 10,
-                                }}>
-                                - Ponto{`${c.position} [ ${c.latitude} | ${c.longitude} ]`}
-                            </Text>))
-                        }    
-                        </Box>
-
-                        <Stack w="80%" direction="row" mt="3">
-                            {/* <Center mt="3" w="100%"> */}
-                                <TouchableOpacity
-                                    style={{
-                                        borderWidth: 2,
-                                        borderRadius: 40,
-                                        // padding: 4,
-                                        // margin: 4,
-                                        // width: 100,
-                                        flexDirection: 'row',
-                                        borderColor: COLORS.danger,
-                                        backgroundColor: COLORS.danger,
-                                        padding: 1,
-                                    }}
-                                    disabled={farmland?.auditedArea ? true : false}
-                                    onPress={
-                                        ()=>navigation.navigate('FarmlandAreaAudit', {
-                                            farmlandId: farmland._id,
-                                        })
-                                    }
-                                >
-                                    <Icon name="add-location-alt" size={20} color={farmland?.auditedArea ? COLORS.grey: COLORS.ghostwhite} />
-                                    <Text
-                                        style={{ 
-                                            textAlign: 'center',
-                                            color: farmland?.auditedArea ? COLORS.grey: COLORS.ghostwhite,
-                                            // padding: 4,
-                                            fontSize: 12,
-                                            
-                                        }}
-                                        >Auditar Área
-                                    </Text>
-                                </TouchableOpacity>
-                            {/* </Center> */}
-                        </Stack>
-                    </Box>
+                <Box w="70%">
+                    <Text                     
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}
+                        >
+                        Latitude: {coords.latitude}
+                    </Text>
+                    <Text                     
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}
+                        >
+                        Longitude: {coords.longitude}
+                    </Text>
                 </Box>
             </Stack>
+        )
+    })
+}
+{
+    farmland.extremeCoordinates.length === 0 &&
+    (
+        <Stack  w="100%" direction="row">
+        <Box w="30%">
+            <Text
+                style={{
+                    color: COLORS.grey,
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                }}
+                >
+                {/*  */}
+            </Text>
+        </Box>
+        <Box w="70%">
+            <Text                     
+                style={{
+                    color: COLORS.grey,
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                }}
+                >
+                (Nenhumas)
+            </Text>
+        </Box>
+    </Stack>
+    )
 
+}
 
-            </View>
-        </CollapseBody>
+</Stack>
+</View>
+</CollapseBody>
     </Collapse>  
         </View>
     )

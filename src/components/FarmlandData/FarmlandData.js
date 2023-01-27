@@ -162,7 +162,12 @@ const FarmlandData = ({ farmland })=>{
                         ()=>{}
                     }
                 >
-                    <Icon name="checkroom" size={30} color={COLORS.main} />
+                    <Icon 
+                        // name="checkroom" 
+                        name="edit"
+                        size={20} 
+                        color={COLORS.main} 
+                    />
                 </TouchableOpacity>
             </Box>
         </Stack>
@@ -357,7 +362,12 @@ const FarmlandData = ({ farmland })=>{
                         }
                     }
                 >
-                    <Icon name="add-circle-outline" size={30} color={COLORS.main} />
+                    <Icon 
+                        // name="add-circle-outline" 
+                        name="edit"
+                        size={20} 
+                        color={COLORS.main} 
+                    />
                 </TouchableOpacity>
             </Box>
         </Stack>
@@ -440,7 +450,12 @@ const FarmlandData = ({ farmland })=>{
                         }
                     }
                 >
-                    <Icon name="edit-road" size={30} color={COLORS.main} />
+                    <Icon 
+                        // name="edit-road" 
+                        name="edit"
+                        size={20} 
+                        color={COLORS.main} 
+                    />
                 </TouchableOpacity>
             </Box>
         </Stack>
@@ -548,7 +563,10 @@ const FarmlandData = ({ farmland })=>{
                         })
                     }
                 >
-                    <Icon name="add-location-alt" size={30} color={COLORS.main} />
+                    <Icon 
+                        name="add-location-alt" 
+                        size={30} color={COLORS.main} 
+                    />
                 </TouchableOpacity>
             </Box>
         </Stack>

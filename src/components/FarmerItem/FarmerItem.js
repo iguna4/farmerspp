@@ -1,25 +1,12 @@
-import {Alert, FlatList, SafeAreaView,  TouchableOpacity, View, Text, PermissionsAndroid,} from 'react-native';
+import {TouchableOpacity, View, Text,} from 'react-native';
 import React, { useState } from 'react';
-import {ListItem, Icon, Avatar } from '@rneui/themed';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faMugSaucer } from '@fortawesome/free-solid-svg-icons/faMugSaucer'
+import {Icon, Avatar } from '@rneui/themed';
 
-
-
-import { Box, Center, HStack, Pressable, Stack, VStack,  } from 'native-base';
-import styles from './styles';
-import CustomDivider from '../../components/Divider/CustomDivider';
-import { randomRBG } from '../../helpers/randomRgB';
+import { Box, Center, Stack,  } from 'native-base';
 import { getInitials } from '../../helpers/getInitials';
-import AlertModal from '../AlertModal';
 import { useNavigation } from '@react-navigation/native';
-import { sumTreesOrAreas } from '../../helpers/sumTreesOrAreas';
-import { faTree } from '@fortawesome/free-solid-svg-icons';
 import COLORS from '../../consts/colors';
 import { months } from '../../helpers/dates'
-
-import { user } from '../../fakedata/user';
-// const uri =  `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
 
 const FarmerItem = ({ item, route, farmerType }) => {

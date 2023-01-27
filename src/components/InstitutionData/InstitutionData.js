@@ -153,7 +153,12 @@ const InstitutionData = ({ farmer })=>{
                             }
                         }
                     >
-                        <Icon name="contacts" size={30} color={COLORS.main} />
+                        <Icon 
+                            // name="contacts" 
+                            name="edit"
+                            size={20} 
+                            color={COLORS.main} 
+                        />
                     </TouchableOpacity>
                 </Box>
             </Stack>
@@ -248,7 +253,12 @@ const InstitutionData = ({ farmer })=>{
                         }
                     }
                 >
-                    <Icon name="home" size={30} color={COLORS.main} />
+                    <Icon 
+                        // name="home" 
+                        name="edit"
+                        size={20} 
+                        color={COLORS.main} 
+                    />
                 </TouchableOpacity>
             </Box>
         </Stack>
@@ -386,7 +396,12 @@ const InstitutionData = ({ farmer })=>{
                         }
                     }
                 >
-                    <Icon name="file-present" size={30} color={COLORS.main} />
+                    <Icon 
+                        // name="file-present" 
+                        name="edit"
+                        size={20} 
+                        color={COLORS.main} 
+                    />
                 </TouchableOpacity>
             </Box>
         </Stack>

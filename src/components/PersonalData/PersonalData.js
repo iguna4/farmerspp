@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, SafeAreaView, FlatList } from 'react-native';
 import { Box, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
 import { Divider, Icon } from '@rneui/base';
@@ -9,9 +9,12 @@ import { realmContext } from '../../models/realm';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import COLORS from '../../consts/colors';
 import { TouchableOpacity } from 'react-native';
+import EditData from '../Edit/EditData';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const PersonalData = ({ farmer })=>{
+
+    const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 
     return (
         <>
@@ -211,11 +214,16 @@ const PersonalData = ({ farmer })=>{
                     }}
                     onPress={
                         ()=>{
-                            
+                            setIsOverlayVisible(!isOverlayVisible);
                         }
                     }
                 >
-                    <Icon name="home" size={30} color={COLORS.main} />
+                    <Icon 
+                        // name="home" 
+                        name="edit" 
+                        size={20} 
+                        color={COLORS.main} 
+                    />
                 </TouchableOpacity>
             </Box>
         </Stack>
@@ -354,7 +362,12 @@ const PersonalData = ({ farmer })=>{
                             }
                         }
                     >
-                        <Icon name="contacts" size={30} color={COLORS.main} />
+                        <Icon 
+                            // name="contacts" 
+                            name="edit"
+                            size={20} 
+                            color={COLORS.main} 
+                        />
                     </TouchableOpacity>
                 </Box>
             </Stack>
@@ -440,7 +453,12 @@ const PersonalData = ({ farmer })=>{
                         }
                     }
                 >
-                    <Icon name="file-present" size={30} color={COLORS.main} />
+                    <Icon 
+                        // name="file-present" 
+                        name="edit"
+                        size={20} 
+                        color={COLORS.main} 
+                    />
                 </TouchableOpacity>
             </Box>
         </Stack>
@@ -523,6 +541,16 @@ const PersonalData = ({ farmer })=>{
     </Stack>
     </Stack>
     </View>
+    {
+        isOverlayVisible && 
+        (
+        <EditData 
+            isOverlayVisible={isOverlayVisible}
+            setIsOverlayVisible={setIsOverlayVisible}
+            ownerName={farmer.names?.otherNames + ' ' + farmer.names?.surname}
+        />
+        )
+    }
     </CollapseBody>
     </Collapse>  
         </>

@@ -10,10 +10,9 @@ export const User = {
         email: 'string',
         password: 'string',
         primaryPhone: 'int?',
-        secondaryPhone: 'int?',
         province: 'string?',
         district: 'string?',
-        achievement: 'Achievement[]',
+        lastLoginAt: {type: 'date', default: Date() },
         createdAt: { type: 'date', default: Date() },
     }
 }

@@ -23,5 +23,6 @@ export const Farmland = {
         createdAt: { type: 'date', default: Date()},
         district: 'string?',
         user: 'string?',
+        owner_id: 'string?',
     },
 }

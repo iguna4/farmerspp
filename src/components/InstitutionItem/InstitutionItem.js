@@ -1,13 +1,10 @@
-import {Alert, FlatList, SafeAreaView,  TouchableOpacity, View, Text,} from 'react-native';
-import React, { useState } from 'react';
-import {ListItem, Icon, Avatar } from '@rneui/themed';
+import {TouchableOpacity, View, Text,} from 'react-native';
+import React from 'react';
+import {Avatar } from '@rneui/themed';
 
-import { Box, Center, HStack, Pressable, Stack, VStack,  } from 'native-base';
-import styles from './styles';
+import { Box, Center, Stack,  } from 'native-base';
 import { getInitials } from '../../helpers/getInitials';
 import { useNavigation } from '@react-navigation/native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faTree } from '@fortawesome/free-solid-svg-icons';
 import COLORS from '../../consts/colors';
 import { months } from '../../helpers/dates';
 

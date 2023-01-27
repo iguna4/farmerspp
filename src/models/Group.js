@@ -25,6 +25,7 @@ export const Group = {
         },
         district: 'string?',
         user: 'string?',
+        owner_id: 'string?',
     },
 }
 

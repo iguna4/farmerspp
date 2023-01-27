@@ -21,11 +21,11 @@ export const Farmer = {
         contact: 'Contact?',
         idDocument: 'IdDocument?',
         image: { type: 'string', default: '' },
-        // farmlands: 'Farmland[]',
         farmlands: 'string[]',
         createdAt: { type: 'date', default: Date()},
         district: 'string?',
         user: 'string?',
+        owner_id: 'string?',
     },
 }
 

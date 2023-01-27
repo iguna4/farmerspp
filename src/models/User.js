@@ -6,6 +6,7 @@ export const User = {
     primaryKey: '_id',
     properties: {
         _id: 'objectId',
+        userId: 'string?',
         name: 'string',
         email: 'string',
         password: 'string',

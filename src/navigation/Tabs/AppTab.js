@@ -23,7 +23,7 @@ export default function AppTab() {
   return (
     <>
     <StatusBar barStyle="dark-content" backgroundColor="#EBEBE4" />
-    <RealmProvider>
+    {/* <RealmProvider> */}
     <NavigationContainer>
         <Tab.Navigator
         initialRouteName="HomeStack"
@@ -89,7 +89,7 @@ export default function AppTab() {
            />
       </Tab.Navigator>
     </NavigationContainer>
-    </RealmProvider>
+    {/* </RealmProvider> */}
     </>
   );
 }

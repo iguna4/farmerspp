@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, StyleSheet, } from 'react-native';
 import { Overlay, Icon, Button } from "@rneui/base";
 import COLORS from "../../consts/colors";
+import CustomActivityIndicator from "../ActivityIndicator/CustomActivityIndicator";
 
 const EditData = ({  
     isOverlayVisible, 
@@ -21,6 +22,7 @@ const EditData = ({
             backgroundColor: 'ghostwhite', 
             width: '90%',
             borderRadius: 10,
+            paddingBottom: 50,
         }}
         isVisible={isOverlayVisible} 
         onBackdropPress={toggleOverlay}
@@ -28,7 +30,6 @@ const EditData = ({
         <View
             style={{ 
                 width: '100%', 
-                // height: 40, 
                 backgroundColor: COLORS.main, 
             }}
         >
@@ -43,10 +44,20 @@ const EditData = ({
                 }}
             >{ownerName}</Text>
         </View>
-        <Text style={styles.textPrimary}>Ainda Nao Implementado</Text>
+        <View
+            style={{
+                minHeight: '70%',
+                justifyContent: 'center',
+            }}
+        >
+        <CustomActivityIndicator />
         <Text style={styles.textSecondary}>
-            Desenvolvimento em curso... Tente mais tarde!
+            Desenvolvimento em curso...
         </Text>
+        <Text style={styles.textSecondary}>
+            Tente mais tarde!
+        </Text>
+    </View>
         <Button
             title="Salvar"
             titleStyle={{

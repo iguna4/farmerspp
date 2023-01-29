@@ -22,6 +22,7 @@ import Login from './screens/Fallback/Login';
 
 
 import { realmContext } from './models/realm';
+import CustomActivityIndicator from './components/ActivityIndicator/CustomActivityIndicator';
 const { RealmProvider} = realmContext;
 
 
@@ -36,20 +37,20 @@ const App = ()=>{
     <>
     <ApplicationProvider {...eva} theme={eva.light}>
       {/* <AppProvider id={secrets.appID}> */}
-        {/* <UserProvider  */}
-        {/* // fallback={<Login />} */}
-        {/* > */}
-          {/* <RealmProvider 
-            sync={{
-              flexible: true,
-              onError: (_, error)=>{
-                console.log('Error:', error);
-              }
-            }}
-            fallback={<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><Text>Loading..</Text></View>}
-          > */}
+        {/* <UserProvider 
+          fallback={<Login />}
+        > */}
+          <RealmProvider 
+            // sync={{
+            //   flexible: true,
+            //   onError: (_, error)=>{
+            //     console.log('Error:', error);
+            //   }
+            // }}
+            // fallback={<CustomActivityIndicator />}
+          >
             <AppTab />
-          {/* </RealmProvider> */}
+          </RealmProvider>
         {/* </UserProvider> */}
       {/* </AppProvider> */}
     </ApplicationProvider>

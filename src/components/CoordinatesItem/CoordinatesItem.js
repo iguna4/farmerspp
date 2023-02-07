@@ -7,7 +7,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 
 import CustomDivider from "../Divider/CustomDivider";
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 import { updateCoordinates } from "../../helpers/updateCoordinates";
 import COLORS from "../../consts/colors";
 const {useRealm, useObject, useQuery } = realmContext;

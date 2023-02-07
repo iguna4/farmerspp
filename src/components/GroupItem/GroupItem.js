@@ -12,8 +12,8 @@ import { months } from '../../helpers/dates';
 const GroupItem = ({ item, route }) => {
 
    const navigation = useNavigation();
-  // console.log('item:', JSON.stringify(item));
-  return (
+   
+   return (
     <View
       style={{
         padding: 10,
@@ -128,19 +128,8 @@ const GroupItem = ({ item, route }) => {
             </Box>
         </Stack>
         </Box>
-        {/* <Box w="20%" style={{ }}>
-          <Pressable
-            onPress={()=>navigation.navigate('FarmlandForm1', {
-              ownerId: item._id,
-              ownerName: `${item.type} ${item.name}`,
-              flag: 'Grupo',
-            })}
-          >
-            <FontAwesomeIcon icon={faTree} size={30} color={COLORS.main} />
-          </Pressable>
-        </Box> */}
-        </Stack>
       </Stack>
+    </Stack>
   </TouchableOpacity>
   </Box>
   </Stack>

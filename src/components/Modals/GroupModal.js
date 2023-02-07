@@ -19,10 +19,10 @@ import { generateFormattedDate } from '../../helpers/generateFormattedDate';
 import { generateFormattedAdminPost } from '../../helpers/generateFormattedAdminPost';
 import { generateFormattedSurname } from '../../helpers/generateFormattedSurname';
 import { useNavigation } from '@react-navigation/native';
-import { user } from '../../fakedata/user';
+import { user } from '../../consts/user';
 
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 import COLORS from '../../consts/colors';
 const {useRealm} = realmContext;
 

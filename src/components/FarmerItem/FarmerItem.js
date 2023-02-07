@@ -21,11 +21,9 @@ const FarmerItem = ({ item, route, farmerType }) => {
       style={{
         padding: 10,
         marginVertical: 10,
-        // backgroundColor: '#EBEBE4',
         minHeight: 100,
         width: '100%',
         flex: 1,
-        // alignItems: 'center',
         borderColor: COLORS.main,
         shadowColor: COLORS.main,
         shadowOffset: {
@@ -90,7 +88,6 @@ const FarmerItem = ({ item, route, farmerType }) => {
             style={{
               fontSize: 15,
               fontFamily: 'JosefinSans-Italic',
-            // paddingTop: 6,
             }}
             >
             Provedor-S-Pulverização: {'  '}
@@ -108,7 +105,6 @@ const FarmerItem = ({ item, route, farmerType }) => {
               style={{
               fontSize: 15,
               fontFamily: 'JosefinSans-Italic',
-              // paddingTop: 6,
               }}
             >
               Tel: {
@@ -123,7 +119,6 @@ const FarmerItem = ({ item, route, farmerType }) => {
                     style={{
                     fontSize: 15,
                     fontFamily: 'JosefinSans-Italic',
-                    // paddingTop: 6,
                   }}
                   >
                     Parcelas: {' '}
@@ -133,23 +128,9 @@ const FarmerItem = ({ item, route, farmerType }) => {
             </Box>
       </Stack>
 
-        </Box>
-        {/* <Box w="20%" style={{ 
-          marginTop: 20,
-          
-        }}>
-          <Pressable
-            onPress={()=>navigation.navigate('FarmlandForm1', {
-              ownerId: item._id,
-              ownerName: item.names?.otherNames + ' ' + item.names?.surname,
-              flag: 'Indivíduo',
-            })}
-            >
-            <FontAwesomeIcon icon={faTree} size={30} color={COLORS.main} />
-          </Pressable>
-        </Box> */}
-        </Stack>
-      </Stack>
+      </Box>
+    </Stack>
+    </Stack>
     </TouchableOpacity>
   </Box>
   </Stack>

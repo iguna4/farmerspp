@@ -13,11 +13,11 @@ import Realm from 'realm';
 import { useApp, useUser } from '@realm/react';
 
 import validateUserData from '../../helpers/validateUserData';
-import districts from '../../fakedata/districts';
+import districts from '../../consts/districts';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 import COLORS from '../../consts/colors';
 const {useRealm} = realmContext;
 

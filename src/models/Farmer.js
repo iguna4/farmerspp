@@ -1,8 +1,7 @@
-/* eslint-disable prettier/prettier */
-// import { Realm } from '@realm/react';
-// import { Address, Contacts, IdDocument, Name } from './DependentSchemas';
-// import { Farmland } from './Farmland';
-
+/**
+ *  Farmer schema for each individual farmer that owns
+ *  cashew farmland
+ */
 
 export const Farmer = {
     name: 'Farmer',

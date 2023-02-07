@@ -6,7 +6,7 @@ import { Icon, CheckBox } from '@rneui/themed';
 import DuplicatesAlertItem from "./DuplicatesAlertItem";
 import COLORS from "../../consts/colors";
 
-import { user } from "../../fakedata/user";
+import { user } from "../../consts/user";
 
 
 const DuplicatesAlert = ({ 

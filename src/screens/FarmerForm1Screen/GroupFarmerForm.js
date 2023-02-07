@@ -8,16 +8,16 @@ import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'nat
 import { Icon, Button, CheckBox } from '@rneui/themed';
 
 import { CustomInput } from '../../components/Inputs/CustomInput';
-import villages from '../../fakedata/villages';
+import villages from '../../consts/villages';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import styles from './styles';
 
 import { fullYears, getFullYears, localeDateService, useDatepickerState } from '../../helpers/dates';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
-import { groups, institutions } from '../../fakedata/farmerTypes';
+import { groups, institutions } from '../../consts/farmerTypes';
 
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 const {useRealm} = realmContext;
 
 export default function GroupFarmerForm({ 

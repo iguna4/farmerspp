@@ -1,9 +1,6 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable prettier/prettier */
 
-import React, {useCallback, useEffect, useState} from 'react';
-import { Text,  Stack, Box, Center, Divider } from 'native-base';
+import React, {useCallback, useState} from 'react';
+import { Text,  Stack, Box, Center } from 'native-base';
 import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
 import { Button, Icon } from '@rneui/themed';
 import CustomDivider from '../Divider/CustomDivider';
@@ -11,14 +8,13 @@ import styles from './styles';
 
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import Realm from 'realm';
 
 import { generateUFID } from '../../helpers/generateUFID';
 import { useNavigation } from '@react-navigation/native';
-import { user } from '../../fakedata/user';
+import { user } from '../../consts/user';
 
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 const {useRealm} = realmContext;
 
 const IndividualModal = (
@@ -52,18 +48,7 @@ const IndividualModal = (
     }
 ) => {
 
-   const [addDataModalVisible, setAddDataModalVisible] = useState(false);
-    // const [farmerId, setFarmerId] = useState(null);
-    const navigation = useNavigation();
     const realm = useRealm()
-
-
-    // const addGroup = useCallback((farmerData, realm)=>{
-        
-    // }, [        
-    //     realm, 
-    //     farmerData,]
-    // )
 
 
     const addFarmer = useCallback((farmerData, realm) =>{
@@ -101,7 +86,6 @@ const IndividualModal = (
 }, [
         realm, 
         farmerData,
-        // farmerType
     ]);
 
 
@@ -118,7 +102,6 @@ const IndividualModal = (
             <Stack 
                 direction="row" 
                 w="100%"
-                // pt="3"
                 style={{
                     backgroundColor: '#EBEBE4',
                 }}
@@ -126,7 +109,6 @@ const IndividualModal = (
             <Box w="20%">
                 <TouchableOpacity
                     onPress={()=>{
-                        // navigation.goBack();
                         setModalVisible(false);
                     }}                            
                 >
@@ -147,17 +129,10 @@ const IndividualModal = (
          <ScrollView
             contentContainerStyle={{
                 flex: 1, 
-                // justifyContent: 'center', 
                 minHeight: '180%',
                 paddingVertical: 10,
             }}
          >
-            {/* <View
-            style={{  paddingTop: 100, }}
-            > */}
-
-            
-
         <Box 
             mx="6"
             mt="200"
@@ -165,11 +140,7 @@ const IndividualModal = (
         >
          <Center 
             style={{ 
-                // paddingBottom: 25,    
-                // paddingTop: 50,
                 width: '100%',
-                // height: 300,
-                // backgroundColor: '#EBEBE4',         
             }}
         >
             <Text

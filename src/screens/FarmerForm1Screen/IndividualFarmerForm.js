@@ -9,19 +9,19 @@ import { Icon, Button, CheckBox } from '@rneui/themed';
 import { Datepicker  } from '@ui-kitten/components';
 
 import { CustomInput } from '../../components/Inputs/CustomInput';
-import administrativePosts from '../../fakedata/administrativePosts';
-import provinces from '../../fakedata/provinces';
-import districts from '../../fakedata/districts';
-import villages from '../../fakedata/villages';
+import administrativePosts from '../../consts/administrativePosts';
+import provinces from '../../consts/provinces';
+import districts from '../../consts/districts';
+import villages from '../../consts/villages';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import styles from './styles';
 import { localeDateService } from '../../helpers/dates';
-import countries from '../../fakedata/countries';
+import countries from '../../consts/countries';
 import COLORS from '../../consts/colors';
 
 
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 const {useRealm} = realmContext;
 
 

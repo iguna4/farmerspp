@@ -10,7 +10,7 @@ import PersonalData from '../../components/PersonalData/PersonalData';
 import FarmlandData from '../../components/FarmlandData/FarmlandData';
 
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 import COLORS from '../../consts/colors';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import PhotoModal from '../../components/Modals/PhotoModal';

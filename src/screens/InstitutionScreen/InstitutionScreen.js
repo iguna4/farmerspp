@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 import { getInitials } from '../../helpers/getInitials'
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 import COLORS from '../../consts/colors';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import PhotoModal from '../../components/Modals/PhotoModal';

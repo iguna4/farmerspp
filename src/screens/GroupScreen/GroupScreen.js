@@ -8,7 +8,7 @@ import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion
 import FarmlandData from '../../components/FarmlandData/FarmlandData';
 import GroupData from '../../components/GroupData/GroupData';
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 import COLORS from '../../consts/colors';
 import PhotoModal from '../../components/Modals/PhotoModal';
 import AwesomeAlert from 'react-native-awesome-alerts';

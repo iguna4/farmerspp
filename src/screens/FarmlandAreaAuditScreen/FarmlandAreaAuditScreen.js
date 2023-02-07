@@ -17,7 +17,7 @@ import { getPosition, sortCoordinatesByPositions, updateCoordinates } from "../.
 import { Farmland } from "../../models/Farmland";
 import { positions } from "../../fakedata/positions";
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 import COLORS from "../../consts/colors";
 const {useRealm, useObject, useQuery } = realmContext;
 

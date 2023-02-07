@@ -1,3 +1,7 @@
+/**
+ *  Achievement schema for user performance reports
+ *  
+ */
 
 export const Achievement = {
    

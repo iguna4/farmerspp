@@ -16,9 +16,9 @@ import { addFlagToListItem } from '../../helpers/addFlagToListItem'
 import GroupItem from '../../components/GroupItem/GroupItem';
 import InstitutionItem from '../../components/InstitutionItem/InstitutionItem';
 import COLORS from '../../consts/colors';
-import { user } from '../../fakedata/user';
+import { user } from '../../consts/user';
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 const { useRealm, useQuery } = realmContext; 
 
 

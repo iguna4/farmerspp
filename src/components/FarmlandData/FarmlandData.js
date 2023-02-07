@@ -5,7 +5,7 @@ import { Avatar, Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 import CustomDivider from '../Divider/CustomDivider';
 import { useNavigation } from '@react-navigation/native';
 import COLORS from '../../consts/colors';

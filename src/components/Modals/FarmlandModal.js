@@ -17,10 +17,10 @@ import FarmerAddDataModal from './SuccessModal';
 
 import { useNavigation } from '@react-navigation/native';
 import { categorizeFarmer } from '../../helpers/categorizeFarmer';
-import { user } from '../../fakedata/user';
+import { user } from '../../consts/user';
 
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 const {useRealm} = realmContext;
 
 const FarmlandModal = (

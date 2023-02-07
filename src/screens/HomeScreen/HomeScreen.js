@@ -26,10 +26,10 @@ import {
   MenuTrigger,
   renderers
  } from "react-native-popup-menu";
-import { user } from '../../fakedata/user';
+import { user } from '../../consts/user';
 
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 const { useRealm, useQuery } = realmContext; 
 
 

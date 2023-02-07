@@ -1,5 +1,5 @@
 
-import { ceps } from '../fakedata/ceps';
+import { ceps } from '../consts/ceps';
 
 export const generateUFID = ({ names, birthDate, birthPlace })=>{
     const fNameInitials = names.otherNames?.slice(0,2).toLowerCase();

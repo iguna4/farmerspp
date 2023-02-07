@@ -1,6 +1,6 @@
-/* eslint-disable prettier/prettier */
-// import { Realm } from '@realm/react';
-
+/**
+ *  Farmland schema for each farmland that is to be registered
+ */
 
 export const Farmland = {
     name: 'Farmland',

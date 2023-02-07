@@ -1,8 +1,7 @@
-/* eslint-disable prettier/prettier */
-// import { Realm } from '@realm/react';
-// import { Address, Contacts, IdDocument, Name } from './DependentSchemas';
-// import { Farmland } from './Farmland';
-
+/**
+ *  Group schema for those groups of individuals who
+ *  own common cashew farmlands
+ */
 
 export const Group = {
     name: 'Group',
@@ -17,7 +16,7 @@ export const Group = {
         manager: 'Manager',
         registeredMembers: 'Farmer[]',
         licence: 'string?',
-        nuit: { type: 'int?', default: 0},
+        nuit: { type: 'int?', default: 0}, 
         image: { type: 'string', default: '' },
         farmlands: 'string[]',
         createdAt: { 

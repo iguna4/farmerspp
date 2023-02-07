@@ -1,5 +1,6 @@
-/* eslint-disable prettier/prettier */
-// import { Realm } from '@realm/react';
+/**
+ *  User schema (custom user data)
+ */
 
 export const User = {
     name: 'User',

@@ -9,7 +9,7 @@ import HomeStackScreen from '../Stacks/HomeStackScreen';
 import FarmersStackScreen from '../Stacks/FarmersStackScreen';
 import { Icon } from '@rneui/themed';
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 import COLORS from '../../consts/colors';
 import SearchScreen from '../../screens/SearchScreen/SearchScreen';
 
@@ -17,13 +17,12 @@ const { RealmProvider} = realmContext;
 
 const Tab = createBottomTabNavigator();
 
-export default function AppTab() {
+export default function AppTabs() {
 
 
   return (
     <>
     <StatusBar barStyle="dark-content" backgroundColor="#EBEBE4" />
-    {/* <RealmProvider> */}
     <NavigationContainer>
         <Tab.Navigator
         initialRouteName="HomeStack"
@@ -32,14 +31,10 @@ export default function AppTab() {
         screenOptions={({ route })=>({
           headerShown: false,
           tabBarStyle: {
-            // position: 'absolute',
             minHeight: 60,
             marginTop: 0,
-            // backgroundColor: 'grey',
           },
-          // tabBarActiveTintColor: '#ffffff',
           tabBarIconStyle: {
-            // color: '#005000',
           },
           tabBarActiveBackgroundColor: '#EBEBE4',
           tabBarInactiveBackgroundColor: '#EBEBE4',
@@ -60,7 +55,6 @@ export default function AppTab() {
                         color={tabInfo.focused ? COLORS.main: COLORS.grey}
                         size={50} />,
               tabBarLabel: 'Painel',
-              // tabBarInactiveBackgroundColor
             }}
             name="HomeStack"
             component={HomeStackScreen}
@@ -89,7 +83,6 @@ export default function AppTab() {
            />
       </Tab.Navigator>
     </NavigationContainer>
-    {/* </RealmProvider> */}
     </>
   );
 }

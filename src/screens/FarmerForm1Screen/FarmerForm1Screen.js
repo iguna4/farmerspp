@@ -8,7 +8,7 @@ import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'nat
 import { Icon, Button, CheckBox } from '@rneui/themed';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
-import administrativePosts from '../../fakedata/administrativePosts';
+import administrativePosts from '../../consts/administrativePosts';
 import styles from './styles';
 import IndividualModal from '../../components/Modals/IndividualModal'
 import { fullYears, getFullYears, localeDateService, useDatepickerState } from '../../helpers/dates';
@@ -33,7 +33,7 @@ import GroupFarmerForm from './GroupFarmerForm';
 import COLORS from '../../consts/colors';
 
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 const {useRealm} = realmContext;
 
 

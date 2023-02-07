@@ -1,6 +1,9 @@
-/* eslint-disable prettier/prettier */
-// import { Realm } from '@realm/react';
+/**
+ *  This file contains embbeded schemas:
+ *  The project has 9 embbeded schemas that are found in this file
+ */
 
+// Embedded Name schema
 export const Name = {
     name: 'Name',
     embedded: true,
@@ -10,7 +13,7 @@ export const Name = {
     },
 };
 
-// address for each users and farmers
+// Embedded Address schema 
 export const Address = {
     name: 'Address',
     embedded: true,
@@ -22,8 +25,7 @@ export const Address = {
     }, 
 }
 
-
-// group members
+// Embedded Members schema 
 export const Members = {
     name: 'Members',
     embedded: true,
@@ -33,7 +35,7 @@ export const Members = {
     }, 
 }
 
-// group members
+// Embedded Manager schema
 export const Manager = {
     name: 'Manager',
     embedded: true,
@@ -43,7 +45,7 @@ export const Manager = {
     }, 
 }
 
-
+// Embedded Contact schema
 export const Contact = {
     name: 'Contact',
     embedded: true,
@@ -54,7 +56,7 @@ export const Contact = {
     },
 };
 
-
+// Embedded IdDocument schema
 export const IdDocument= {
     name: 'IdDocument',
     embedded: true,
@@ -65,9 +67,7 @@ export const IdDocument= {
     },
 };
 
-
-
-
+// Embedded Density schema
 export const Density = {
     name: 'Density',
     embedded: true,
@@ -78,6 +78,7 @@ export const Density = {
     },
 };
 
+// Embedded PlantTypes schema
 export const PlantTypes = {
     name: 'PlantTypes',
     embedded: true,
@@ -87,7 +88,7 @@ export const PlantTypes = {
     },
 };
 
-
+// Embedded Coordinates schema
 export const Coordinates = {
     name: 'Coordinates', 
     embedded: true,

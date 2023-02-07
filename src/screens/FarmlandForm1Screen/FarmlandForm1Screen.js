@@ -13,15 +13,15 @@ import Realm from 'realm';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import styles from '../FarmerForm1Screen/styles';
 import { CustomInput } from '../../components/Inputs/CustomInput';
-import { crops } from '../../fakedata/crops';
-import cloneList from '../../fakedata/clones';
+import { crops } from '../../consts/crops';
+import cloneList from '../../consts/clones';
 import { fullYears, getFullYears } from '../../helpers/dates';
-import { plantingTypes } from '../../fakedata/plantingTypes';
+import { plantingTypes } from '../../consts/plantingTypes';
 import FarmlandModal from '../../components/Modals/FarmlandModal'
 import validateFarmlandData from '../../helpers/validateFarmlandData';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 import TreeComponent from '../../components/LottieComponents/TreeComponent';

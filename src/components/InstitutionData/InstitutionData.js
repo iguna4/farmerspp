@@ -5,7 +5,7 @@ import { Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 
 
-import { realmContext } from '../../models/realm';
+import { realmContext } from '../../models/realmContext';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import COLORS from '../../consts/colors';
 import { TouchableOpacity } from 'react-native';

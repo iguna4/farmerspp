@@ -1,8 +1,7 @@
-/* eslint-disable prettier/prettier */
-// import { Realm } from '@realm/react';
-// import { Address, Contacts, IdDocument, Name } from './DependentSchemas';
-// import { Farmland } from './Farmland';
-
+/**
+ *  Institution schema for those institutions that 
+ *  own cashew farmlands
+ */
 
 export const Institution = {
     name: 'Institution',

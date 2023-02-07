@@ -108,7 +108,6 @@ function PhotoModal({
                 flex: 1, 
                 marginTop: 40,
                 alignItems: 'center' ,
-                // justifyContent: 'center',
                 marginHorizontal: 10,
                 }}
             >
@@ -138,9 +137,6 @@ function PhotoModal({
                             }}                            
                         >
                             <Icon name='arrow-back-ios' color={COLORS.main} size={30}  />
-                            {/* <Text
-                            style={{ fontSize: 20, color: COLORS.main, fontFamily: 'JosefinSans-Bold', }}
-                        >Voltar</Text> */}
                         </TouchableOpacity>
                     </Box>
                     <Box w="80%">
@@ -158,13 +154,8 @@ function PhotoModal({
                     w="100%"
                     style={{ 
                         backgroundColor: COLORS.lightgrey, 
-                        // borderWidth: 1,
                         borderColor: COLORS.lightgrey,
                         borderRadius: 10,
-
-                        // borderRadius: 10,
-                        // borderTopLeftRadius: 10,
-            
                         borderColor: COLORS.main,
                         shadowColor: COLORS.main,
                         shadowOffset: {
@@ -173,7 +164,6 @@ function PhotoModal({
                         },
                         shadowOpacity: 0.27,
                         shadowRadius: 1.65,
-                
                         elevation: 3,
                     }}
                 >
@@ -200,18 +190,18 @@ function PhotoModal({
                         w="100%" 
                         alignItems={'center'} 
                     >
-                        <Stack direction="row" w="100%">
-                            <Box w="50%">
+                    <Stack direction="row" w="100%">
+                        <Box w="50%">
                                 <TouchableOpacity
                                     onPress={()=>{
                                         launchNativeCamera();
                                     }}
-                                    >
+                                >
                                     <Icon 
                                         name="photo-camera" 
                                         size={100}  
                                         color={COLORS.main}
-                                        />
+                                    />
                                 </TouchableOpacity>
                                 <Text
                                     style={{ 
@@ -220,9 +210,11 @@ function PhotoModal({
                                         fontFamily: 'JosefinSans-Regular', 
                                         color: COLORS.main, 
                                     }}
-                                >Câmera</Text>
-                            </Box>
-                            <Box w="50%">
+                                >
+                                    Câmera
+                                </Text>
+                        </Box>
+                        <Box w="50%">
                             <TouchableOpacity
                                 onPress={()=>{
                                     launchNativeImageLibrary()
@@ -241,7 +233,9 @@ function PhotoModal({
                                         fontFamily: 'JosefinSans-Regular', 
                                         color: COLORS.main, 
                                     }}
-                                    >Galeria</Text>
+                                >
+                                    Galeria
+                                </Text>
                             </Box>
                         </Stack>
                     </Box>

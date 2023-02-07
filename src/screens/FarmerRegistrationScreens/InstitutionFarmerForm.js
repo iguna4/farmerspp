@@ -10,9 +10,7 @@ import { Datepicker  } from '@ui-kitten/components';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 import { CustomInput } from '../../components/Inputs/CustomInput';
-
 import villages from '../../consts/villages';
-
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { groups, institutions, privateInstitutions, publicInstitutions } from '../../consts/farmerTypes';
 

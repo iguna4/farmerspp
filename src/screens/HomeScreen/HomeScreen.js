@@ -1,19 +1,12 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable prettier/prettier */
-/* eslint-disable semi */
-/* eslint-disable prettier/prettier */
 
 import { 
-  View, Text, InteractionManager, StyleSheet, 
-  ImageBackground, SafeAreaView, Image, Animated, Easing, ScrollView, TouchableOpacity } from 'react-native'
-import React, { useCallback, useEffect, useState, useRef} from 'react'
-import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
-import FastImage from 'react-native-fast-image';
+  View, Text, InteractionManager, 
+  SafeAreaView, Image, TouchableOpacity } from 'react-native'
+import React, { useCallback, useState} from 'react'
+import { Box, Stack, Center,  } from 'native-base';
 import COLORS from '../../consts/colors';
 
-import {Button, ListItem, Avatar, FAB, Icon } from '@rneui/themed';
-import Realm from 'realm';
+import {Icon } from '@rneui/themed';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { useFocusEffect } from '@react-navigation/native';
 import { months } from '../../helpers/dates';
@@ -30,10 +23,10 @@ import { user } from '../../consts/user';
 
 
 import { realmContext } from '../../models/realmContext';
-const { useRealm, useQuery } = realmContext; 
+const { useRealm } = realmContext; 
 
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen() {
   const realm = useRealm();
   const [isPerformanceButtonActive, setIsPerformanceButtonActive] = useState(false)
   const [isOpen, setIsOpen] = useState(false);

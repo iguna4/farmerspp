@@ -19,8 +19,6 @@ import { localeDateService } from '../../helpers/dates';
 import countries from '../../consts/countries';
 import COLORS from '../../consts/colors';
 
-
-
 import { realmContext } from '../../models/realmContext';
 const {useRealm} = realmContext;
 

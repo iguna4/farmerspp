@@ -3,32 +3,16 @@ import { View, Text, ScrollView, TouchableOpacity, Image, SafeAreaView, FlatList
 import { Box, Stack, Center, } from 'native-base';
 import { Divider, Icon, Avatar } from '@rneui/base';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-
-
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 import PersonalData from '../../components/PersonalData/PersonalData';
 import FarmlandData from '../../components/FarmlandData/FarmlandData';
-
+import styles from './styles';
+import COLORS from '../../consts/colors';
+import PhotoModal from '../../components/Modals/PhotoModal';
 
 import { realmContext } from '../../models/realmContext';
-import COLORS from '../../consts/colors';
-import AwesomeAlert from 'react-native-awesome-alerts';
-import PhotoModal from '../../components/Modals/PhotoModal';
 const { useRealm, useQuery, useObject } = realmContext; 
-
-
-const styles = StyleSheet.create({
-
-  images: {
-    width: 250,
-    height: 250,
-    borderColor: COLORS.main,
-    borderWidth: 2,
-    marginHorizontal: 3,
-    borderRadius: 120,
-  },
-
-});
 
 
 export default function FarmerScreen ({ route, navigation }) {

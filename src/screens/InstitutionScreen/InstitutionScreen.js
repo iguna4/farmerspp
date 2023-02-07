@@ -1,29 +1,20 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet,  SafeAreaView, Image, FlatList, Pressable, TouchableOpacity } from 'react-native';
-import { Box, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
-import { Divider, Icon } from '@rneui/base';
-import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
+import { View, Text, ScrollView, StyleSheet,  SafeAreaView, Image, Pressable, TouchableOpacity } from 'react-native';
+import { Box, Stack, Center } from 'native-base';
+import { Icon } from '@rneui/base';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
-
-import CustomDivider from '../../components/Divider/CustomDivider';
-import PersonalData from '../../components/PersonalData/PersonalData';
+import styles from './styles';
 import FarmlandData from '../../components/FarmlandData/FarmlandData';
-import GroupData from '../../components/GroupData/GroupData';
 import InstitutionData from '../../components/InstitutionData/InstitutionData';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faTree } from '@fortawesome/free-solid-svg-icons';
-import { getInitials } from '../../helpers/getInitials'
+import COLORS from '../../consts/colors';
+import PhotoModal from '../../components/Modals/PhotoModal';
 
 import { realmContext } from '../../models/realmContext';
-import COLORS from '../../consts/colors';
-import AwesomeAlert from 'react-native-awesome-alerts';
-import PhotoModal from '../../components/Modals/PhotoModal';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 
-// const uri = `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
-
-const InstitutionScreen = ({ route, navigation }) =>{
+export default function InstitutionScreen ({ route, navigation }) {
     const ownerId = route.params.ownerId;
     const realm = useRealm();
     const farmer = useObject('Institution', ownerId);
@@ -32,8 +23,6 @@ const InstitutionScreen = ({ route, navigation }) =>{
     const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
 
     const keyExtractor = (item, index)=>index.toString();
-
-    // console.log('farmlands: ', JSON.stringify(farmlands));
 
 
     return (
@@ -315,17 +304,3 @@ const InstitutionScreen = ({ route, navigation }) =>{
     )
 }
 
-const styles = StyleSheet.create({
-
-  images: {
-    width: 250,
-    height: 250,
-    borderColor: COLORS.main,
-    borderWidth: 2,
-    marginHorizontal: 3,
-    borderRadius: 120,
-  },
-
-});
-
-export default InstitutionScreen;

@@ -3,16 +3,14 @@ import React from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
+import { Icon } from '@rneui/themed';
 
 import HomeStackScreen from '../Stacks/HomeStackScreen';
 import FarmersStackScreen from '../Stacks/FarmersStackScreen';
-import { Icon } from '@rneui/themed';
-
-import { realmContext } from '../../models/realmContext';
 import COLORS from '../../consts/colors';
 import SearchScreen from '../../screens/SearchScreen/SearchScreen';
 
+import { realmContext } from '../../models/realmContext';
 const { RealmProvider} = realmContext;
 
 const Tab = createBottomTabNavigator();
@@ -28,7 +26,7 @@ export default function AppTabs() {
         initialRouteName="HomeStack"
         shifting={true}
         labeled={false}
-        screenOptions={({ route })=>({
+        screenOptions={()=>({
           headerShown: false,
           tabBarStyle: {
             minHeight: 60,

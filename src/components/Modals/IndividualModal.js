@@ -256,7 +256,7 @@ const IndividualModal = (
                         {farmerData?.address?.adminPost} (posto admin.)
                     </Text>
                     <Text style={styles.values}>
-                        {farmerData?.address?.village ? farmerData?.address?.village + ' (localidade/povoado)' : 'Nenhum (localidade/povoado)'}
+                        {farmerData?.address?.village ? farmerData?.address?.village + ' (localidade)' : 'Nenhum (localidade)'}
                     </Text>
                 </Box>
             </Box>

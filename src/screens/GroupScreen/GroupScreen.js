@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, SafeAreaView, TouchableOpacity, Image, FlatList, Pressable } from 'react-native';
-import { Box, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
-import { Divider, Icon } from '@rneui/base';
-import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
-
+import { View, Text, ScrollView, StyleSheet, SafeAreaView, TouchableOpacity, Image, Pressable } from 'react-native';
+import { Box, Stack, Center } from 'native-base';
+import { Icon } from '@rneui/base';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 import FarmlandData from '../../components/FarmlandData/FarmlandData';
 import GroupData from '../../components/GroupData/GroupData';
-
-import { realmContext } from '../../models/realmContext';
 import COLORS from '../../consts/colors';
 import PhotoModal from '../../components/Modals/PhotoModal';
-import AwesomeAlert from 'react-native-awesome-alerts';
+import styles from './styles';
+
+import { realmContext } from '../../models/realmContext';
 const { useRealm, useQuery, useObject } = realmContext; 
 
-// const uri = `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`;
 
-const GroupScreen = ({ route, navigation }) =>{
+
+export default function GroupScreen ({ route, navigation }) {
     const ownerId = route.params.ownerId;
     const realm = useRealm();
     const farmer = useObject('Group', ownerId);
@@ -25,9 +24,6 @@ const GroupScreen = ({ route, navigation }) =>{
     const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
 
     const keyExtractor = (item, index)=>index.toString();
-
-    // console.log('farmlands: ', JSON.stringify(farmlands));
-
 
     return (
         <SafeAreaView 
@@ -62,7 +58,6 @@ const GroupScreen = ({ route, navigation }) =>{
 
       <View
           style={{
-            // height: "10%",
             width: '100%',
             paddingHorizontal: 15,
             paddingTop: 10,
@@ -79,10 +74,8 @@ const GroupScreen = ({ route, navigation }) =>{
         <Stack
           direction="row" w="100%"
         >
-          <Center w="10%"
-            // style={{ justifyContent: 'center'}}
-          >
-`          <Pressable
+          <Center w="10%">
+          <Pressable
               onPress={()=>navigation.navigate('Farmers')}
           >
 
@@ -128,11 +121,6 @@ const GroupScreen = ({ route, navigation }) =>{
           <Box w="20%"
             style={{ justifyContent: 'center'}}
           >
-          {/* <Icon 
-              name="search" 
-              color="#005000"
-              size={40}
-            /> */}
           </Box>
         </Stack>
       </View>
@@ -161,7 +149,6 @@ const GroupScreen = ({ route, navigation }) =>{
               elevation: 1,
             }}
             >
-              {/* <View> */}
             <TouchableOpacity
               onPress={()=>{
                 setIsAddPhoto(true);
@@ -195,7 +182,6 @@ const GroupScreen = ({ route, navigation }) =>{
     
             <Text 
                 style={{
-                  
                   color: COLORS.main,
                   fontSize: 24,
                   fontFamily: 'JosefinSans-Bold',
@@ -246,7 +232,6 @@ const GroupScreen = ({ route, navigation }) =>{
             color: COLORS.black,
             textAlign: 'center',
             fontFamily: 'JosefinSans-Bold',
-            // paddingVertical: 5,
         }}>
           Parcelas de Cajueiros
         </Text>
@@ -306,17 +291,4 @@ const GroupScreen = ({ route, navigation }) =>{
     )
 }
 
-const styles = StyleSheet.create({
 
-  images: {
-    width: 250,
-    height: 250,
-    borderColor: COLORS.main,
-    borderWidth: 2,
-    marginHorizontal: 3,
-    borderRadius: 120,
-  },
-
-});
-
-export default GroupScreen;

@@ -4,7 +4,6 @@ import { StatusBar } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import { ThemeProvider } from '@rneui/themed';
-
 import {NativeBaseProvider } from 'native-base';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider,  } from '@ui-kitten/components';
@@ -13,12 +12,13 @@ import { ApplicationProvider,  } from '@ui-kitten/components';
 import AppTabs from './navigation/Tabs/AppTabs';
 import elementTheme from './elementTheme';
 import nbTheme from './nbTheme';
+import WelcomeScreen from './screens/Fallback/WelcomeScreen';
+import CustomActivityIndicator from './components/ActivityIndicator/CustomActivityIndicator';
+
 
 import { secrets } from './secrets';
 import { AppProvider, UserProvider } from '@realm/react';
 import { realmContext } from './models/realmContext';
-import WelcomeScreen from './screens/Fallback/WelcomeScreen';
-import CustomActivityIndicator from './components/ActivityIndicator/CustomActivityIndicator';
 const { RealmProvider} = realmContext;
 
 

@@ -305,7 +305,7 @@ const GroupModal = (
                     {farmerData?.address?.adminPost} (Posto Admin.)
                 </Text>
                 <Text style={styles.values}>
-                    {farmerData.address?.village ? farmerData.address?.village + ' (localidade/povoado)' : 'Nenhum (Localidade/Povoado)'}
+                    {farmerData.address?.village ? farmerData.address?.village + ' (localidade)' : 'Nenhum (Localidade)'}
                 </Text>
             </Box>
         </Box>

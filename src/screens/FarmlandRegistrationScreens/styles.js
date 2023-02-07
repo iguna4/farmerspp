@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { StyleSheet } from 'react-native';
+import COLORS from '../../consts/colors';
 
 const styles = StyleSheet.create({
     container: {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
     headerText: {
         fontFamily: 'JosefinSans-Bold',
         fontSize: 20,
-        color: 'white',
+        color: COLORS.black,
     },
     description: {
         textAlign: 'left',

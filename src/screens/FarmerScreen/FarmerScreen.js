@@ -17,8 +17,21 @@ import PhotoModal from '../../components/Modals/PhotoModal';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 
+const styles = StyleSheet.create({
 
-const FarmerScreen = ({ route, navigation }) =>{
+  images: {
+    width: 250,
+    height: 250,
+    borderColor: COLORS.main,
+    borderWidth: 2,
+    marginHorizontal: 3,
+    borderRadius: 120,
+  },
+
+});
+
+
+export default function FarmerScreen ({ route, navigation }) {
     const ownerId = route.params.ownerId;
     const realm = useRealm();
     const farmer = useObject('Farmer', ownerId);
@@ -347,17 +360,3 @@ const FarmerScreen = ({ route, navigation }) =>{
     )
 };
 
-const styles = StyleSheet.create({
-
-  images: {
-    width: 250,
-    height: 250,
-    borderColor: COLORS.main,
-    borderWidth: 2,
-    marginHorizontal: 3,
-    borderRadius: 120,
-  },
-
-});
-
-export default FarmerScreen;

@@ -5,8 +5,8 @@ import React from 'react';
 import {createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import FarmersScreen from '../../screens/FarmersScreen/FarmersScreen';
-import FarmerForm1Screen from '../../screens/FarmerForm1Screen/FarmerForm1Screen';
-import FarmlandForm1Screen from '../../screens/FarmlandForm1Screen/FarmlandForm1Screen';
+import FarmerRegistration from '../../screens/FarmerRegistrationScreens/FarmerRegistration';
+import FarmlandRegistration from '../../screens/FarmlandRegistrationScreens/FarmlandRegistration';
 import FarmlandAreaAuditScreen from '../../screens/FarmlandAreaAuditScreen/FarmlandAreaAuditScreen';
 import FarmerScreen from '../../screens/FarmerScreen/FarmerScreen';
 import InstitutionScreen from '../../screens/InstitutionScreen/InstitutionScreen';
@@ -31,8 +31,8 @@ export default function FarmersStackScreen() {
         }}
       >
         <FarmersStack.Screen name="Farmers" component={FarmersScreen} />
-        <FarmersStack.Screen name="FarmerForm1" component={FarmerForm1Screen} />
-        <FarmersStack.Screen name="FarmlandForm1" component={FarmlandForm1Screen} />
+        <FarmersStack.Screen name="FarmerForm1" component={FarmerRegistration} />
+        <FarmersStack.Screen name="FarmlandForm1" component={FarmlandRegistration} />
         <FarmersStack.Screen name="FarmlandAreaAudit" component={FarmlandAreaAuditScreen} />
         {/* <FarmersStack.Screen name="IndividualFarmerForm" component={IndividualFarmerForm} /> */}
         {/* <FarmersStack.Screen name="InstitutionalFarmer" component={IndividualFarmerForm} /> */}

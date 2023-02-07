@@ -11,7 +11,7 @@ export const User = {
         name: 'string',
         email: 'string',
         password: 'string',
-        primaryPhone: 'int?',
+        phone: 'int?',
         province: 'string?',
         district: 'string?',
         lastLoginAt: {type: 'date', default: Date() },

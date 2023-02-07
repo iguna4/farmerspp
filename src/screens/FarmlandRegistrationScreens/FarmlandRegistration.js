@@ -1,50 +1,38 @@
 
-// import {  } from 'react-native-safe-area-context';
-import { View, Text, ScrollView, SafeAreaView,   } from 'react-native'
+import { Text, ScrollView, SafeAreaView,   } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Icon, Button, CheckBox } from '@rneui/themed';
-import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio, Alert  } from 'native-base';
-import { SelectList, MultipleSelectList  } from 'react-native-dropdown-select-list';
+import { Icon, Button } from '@rneui/themed';
+import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio  } from 'native-base';
+import { MultipleSelectList  } from 'react-native-dropdown-select-list';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
-
-import Realm from 'realm';
-// import { AppContext } from '../../models/realm';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
-import styles from '../FarmerForm1Screen/styles';
+import styles from './styles';
 import { CustomInput } from '../../components/Inputs/CustomInput';
 import { crops } from '../../consts/crops';
 import cloneList from '../../consts/clones';
-import { fullYears, getFullYears } from '../../helpers/dates';
+import { getFullYears } from '../../helpers/dates';
 import { plantingTypes } from '../../consts/plantingTypes';
 import FarmlandModal from '../../components/Modals/FarmlandModal'
 import validateFarmlandData from '../../helpers/validateFarmlandData';
-import ErrorAlert from '../../components/Alerts/ErrorAlert';
 
-import { realmContext } from '../../models/realmContext';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
-import TreeComponent from '../../components/LottieComponents/TreeComponent';
-import SuccessFarmlandModal from '../../components/Modals/SuccessFarmlandModal';
 import SuccessAlert from '../../components/Alerts/SuccessAlert';
 import COLORS from '../../consts/colors';
-const { useRealm, useQuery } = realmContext; 
 
-// const { useRealm, useObject } = AppContext;
 
-const FarmlandForm1Screen = ({ route, navigation }) => {
-    // handle modal view
+export default function FarmlandRegistration ({ route, navigation }) {
+
     const [modalVisible, setModalVisible] = useState(false);
     const [isCoordinatesModalVisible, setIsCoordinatesModalVisible] = useState(false);
-    const [loadinButton, setLoadingButton] = useState(false);
+    const [loadingButton, setLoadingButton] = useState(false);
 
     const [errors, setErrors] = useState({});
-    // const [selectedCrop, setSelectedCrop] = useState('');
     const [consociatedCrops, setConsociatedCrops] = useState([]);
     const [description, setDescription] = useState('');
     const [plantingYear, setPlantingYear] = useState('');
     const [trees, setTrees] = useState('');
-    const [declaredArea, setDeclaredArea] = useState('')
     const [totalArea, setTotalArea] = useState('');
     const [usedArea, setUsedArea] = useState('');
     const [densityWidth, setDensityWidth] = useState('');
@@ -83,13 +71,11 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             totalArea,
             usedArea,
             trees,
-            // declaredArea,
             densityMode,
             densityLength,
             densityWidth,
             plantTypes,
             clones,
-            // farmerId,
         }
         // if any required data is not validated
         // a alert message is sent to the user   
@@ -107,22 +93,12 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
         setFarmlandData(retrievedFarmlandData);
         
         setModalVisible(true);
-        // setFarmerType('');
     }
     
     useEffect(()=>{
         
-    }, [alert])
+    }, [alert, ownerId])
     
-    
-    useEffect(()=>{
-        
-        
-    }, [
-        // appRealm, 
-        ownerId
-    ]
-    )
     
     useEffect(()=>{
         setLoadingActivityIndicator(true);
@@ -162,12 +138,8 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                 closeOnHardwareBackPress={false}
                 showCancelButton={false}
                 showConfirmButton={true}
-                // cancelText="No, cancel"
                 confirmText="   OK!   "
                 confirmButtonColor="#DD6B55"
-                // onCancelPressed={() => {
-                //     setErrorAlert(false);
-                // }}
                 onConfirmPressed={() => {
                     setErrorAlert(false);
                 }}
@@ -308,24 +280,6 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
                 }
             </FormControl>
         </Box>
-
-        {/* <Box w="100%" alignItems="center">
-            <FormControl isRequired my="1" isInvalid={'description' in errors}>
-                <FormControl.Label> Culturas consociadas</FormControl.Label>
-                <SelectList
-                  setSelected={(crop)=>setSelectedCrop(crop)}
-                  data={crops}
-                  save="value"
-                />
-                {
-                    'description' in errors 
-                    ? <FormControl.ErrorMessage 
-                    leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                    _text={{ fontSize: 'xs'}}>{errors?.description}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-            }
-            </FormControl>
-        </Box>  */}
 
         <Box w="100%" alignItems="center">
             <FormControl my="1" isRequired isInvalid={'consociatedCrops' in errors}>
@@ -484,69 +438,6 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
             </Box>
 
         </Stack>  
-
-
-{/* 
-
-
-        <Stack direction="row" mx="3" w="100%">
-            <Box w="45%" px="1">
-            <FormControl isRequired my="2" isInvalid={'trees' in errors}>
-                <FormControl.Label>Cajueiros</FormControl.Label>
-                <CustomInput
-                    width="100%"
-                    // type="text"
-                    keyboardType="numeric"
-                    textAlign="center"
-                    // autoCapitalize="words"
-                    placeholder="Número de cajueiros"
-                    value={trees}
-                    onChangeText={newNumber=>{
-                        setErrors(prev=>({...prev, trees: ''}))
-                        setTrees(newNumber)
-                    }}
-                />
-                    
-                {
-                    'trees' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.trees}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-                }
-            </FormControl>
-            </Box>
-
-        <Box w="10%">
-
-        </Box>
-        <Box w="45%" px="1">
-            <FormControl isRequired my="2" isInvalid={'declaredArea' in errors}>
-                <FormControl.Label>Área declarada</FormControl.Label>
-                <CustomInput
-                    width="100%"
-                    // type="text"
-                    textAlign="center"
-                    keyboardType="numeric"
-                    // autoCapitalize="words"
-                    placeholder="Área declarada"
-                    value={declaredArea}
-                    onChangeText={newNumber=>{
-                        setErrors(prev=>({...prev, declaredArea: ''}))
-                        setDeclaredArea(newNumber)
-                    }}
-                />
-                    
-                {
-                'declaredArea' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.declaredArea}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-            }
-            </FormControl>
-          </Box>
-        </Stack>   */}
 
         <FormControl isRequired my="2" isInvalid={'densityMode' in errors}  >
             <FormControl.Label>Compasso</FormControl.Label>
@@ -825,5 +716,3 @@ const FarmlandForm1Screen = ({ route, navigation }) => {
     </SafeAreaView>
   )
 }
-
-export default FarmlandForm1Screen

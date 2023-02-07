@@ -1,8 +1,7 @@
 import { 
     Pressable, SafeAreaView, Text, View, Image, 
-    StyleSheet, Animated, Easing, ImageBackground, 
 } from 'react-native';
-import React, {useEffect, useState, useCallback, useRef } from 'react';
+import React, {useEffect, useState, useCallback } from 'react';
 import styles from './styles';
 import { Button, Icon } from '@rneui/themed';
 import { Box, Stack, FormControl, Center, Select, CheckIcon, ScrollView } from 'native-base';
@@ -10,25 +9,23 @@ import { Box, Stack, FormControl, Center, Select, CheckIcon, ScrollView } from '
 import { CustomInput } from '../../components/Inputs/CustomInput';
 
 import Realm from 'realm';
-import { useApp, useUser } from '@realm/react';
+import { useApp } from '@realm/react';
 
 import validateUserData from '../../helpers/validateUserData';
 import districts from '../../consts/districts';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 
-import { realmContext } from '../../models/realmContext';
 import COLORS from '../../consts/colors';
-const {useRealm} = realmContext;
 
 
-const Login = () => {
+export default function WelcomeScreen () {
     const [isLoggingIn, setIsLoggingIn] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
     // const [emailFailMessage, setEmailFailMessage] = useState('');
     // const [passwordFailMessage, setPasswordFailMessage] = useState('');
     
-    const [fullname, setFullname] = useState('');
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -40,140 +37,75 @@ const Login = () => {
     const [district, setDistrict] = useState('');
     const [selectedDistricts, setSelectedDistricts] = useState([]);
     
-    const [primaryPhone, setPrimaryPhone] = useState(null);
-    const [secondaryPhone, setSecondaryPhone] = useState(null);
+    const [phone, setPhone] = useState(null);
 
-    const [userData, setUserData] = useState({});
     const [errorAlert, setErrorAlert] = useState(false);
-    const [signInErrorAlert, setSignInErrorAlert] = useState(false);
-    const [signUpErrorAlert, setSignUpErrorAlert] = useState(false);
+    const [userData, setUserData] = useState({});
 
-    const [loginData, setLoginData] = useState({});
-    
 
     const app = useApp();
 
-    // const realm = useRealm();
+    const onSignIn = useCallback(async (userData)=>{
 
-    const signIn = useCallback(async ()=>{
-
-        // const userData = {
-        //     email, password,
-        // }
-    
-        // if (!validateUserData(userData, isLoggingIn, errors, setErrors)) {
-        //     setErrorAlert(true);
-        //     return ;
-        // }
-        // setUserData(validateUserData(userData, isLoggingIn, errors, setErrors));
-
-        // setEmail('');
-        // setPassword('');
-
-        const creds = Realm.Credentials.emailPassword(email, password);
-        console.log('credentials:', creds);
-        await app.login(creds);
+        const creds = Realm.Credentials.emailPassword(newEmail, newPassword);
+        try {
+            await app.logIn(creds);
+        } catch (error) {
+            setErrorAlert(true);
+            throw new Error('Failed to sign in the user');
+        }
     }, [app, email, password]);
 
-    const onPressSignIn = useCallback(async ()=>{
 
-        try {
-            await signIn();
-        } catch (error) {
-            console.log('could not sign in!', { cause: error });
-            setSignInErrorAlert(true);
-        }
-    }, [signIn]);
-
-    const onPressSignUp = useCallback(async ()=>{
-        try {
-            await app.emailPasswordAuth.registerUser({ email, password});
-            await signIn();
-        } catch (error) {
-            setSignUpErrorAlert(true);
-        }
-    }, [app, signIn, email, password]);
-
-    const addUser = useCallback(
-        (
-        userData, 
-        // realm
-        )=>{
-
+    const onSignUp = useCallback(async (userData)=>{
         const {
-            fullname,
+            name,
             email,
             password,
-            primaryPhone,
-            secondaryPhone,
+            phone,
             province,
             district,
         } = userData;
-      
-    }, [
-        // realm, 
-        userData
-    ]);
 
-    
+        try {
+            await app.emailPasswordAuth.registerUser({ email, password});
+            await onSignIn(email, password);
+
+            // save user custom data to the atlas mongodb database
+            // add name, phone, province and district to custom data
+
+        } catch (error) {
+            setErrorAlert(true);
+            throw new Error('Failed to sign up the user');
+        }
+    }, [app, onSignIn, email, password]);
+   
 
 
 
-    const onLogin = useCallback(async ()=>{
-       
-        // if (isLoggingIn) {
-            // const userData = {
-            //     email, password,
-            // }
+    const onSubmitUserData = useCallback(async ()=>{
+
             if (!validateUserData(userData, isLoggingIn, errors, setErrors)) {
                 setErrorAlert(true);
                 return ;
             }
-            setUserData(validateUserData(userData, isLoggingIn, errors, setErrors));
-            try {
-                await signIn();
-            } catch (error) {
-            setSignInErrorAlert(true);
-            }
 
+            setUserData(validateUserData(userData, isLoggingIn, errors, setErrors));
+
+            try {
+                if (isLoggingIn) {
+                    await onSignIn(userData);
+                }
+                else {
+                    await onSignUp(userData);
+                }
+            } catch (error) {
+                throw new Error('Failed to process user request!');
+            }
 
             setEmail('');
             setPassword('');
-
-            // save the new user
-            // addUser(
-            //     userData, 
-            //     // realm
-            //     );
-        // }
-        // else {
-        //     const userData = {
-        //         fullname, 
-        //         email, 
-        //         password, 
-        //         passwordConfirm, 
-        //         primaryPhone, 
-        //         secondaryPhone,
-        //         district,
-        //         province,
-        //     }
-        //     if (!validateUserData(userData, isLoggingIn, errors, setErrors)) {
-        //         setErrorAlert(true);
-        //         return ;
-        //     }
-        //     setUserData(validateUserData(userData, isLoggingIn, errors, setErrors));
-        //     setFullname('');
-        //     setEmail('');
-        //     setPassword('');
-        //     setPasswordConfirm('');
-        //     setPrimaryPhone(null);
-        //     setSecondaryPhone(null);
-        //     setProvince('');
-        //     setDistrict('')
-        // }
     }, []);
-
-    console.log('userData:', JSON.stringify(userData));
 
     useEffect(()=>{
 
@@ -191,39 +123,24 @@ const Login = () => {
 <View
         style={{
           width: '100%',
-        //   height: "20%",
           borderBottomWidth: 1,
           borderRightWidth: 1,
           borderLeftWidth: 1,
           borderColor: '#EBEBE4',
           backgroundColor: '#EBEBE4',
-        //   alignItems: 'center',
           borderBottomLeftRadius: 50,
           borderBottomRightRadius: 50,
-        //   marginBottom: 20,
-        
           shadowColor: COLORS.main,
           shadowOffset: {
-              // width: 1,
-              // height: 1,
-            },
-          // shadowOpacity: 1,
-          // shadowRadius: 0.65,
-          
-          // elevation: 1,          
+
+            },       
         }}
       >
-        <Box
-          style={{
-            // padding: 15,
-          }}
-        >
-          {/* <Stack direction="row" w="100%"> */}
+        <Box>
             <Center w="100%" py="3">
               <Image
                 style={{ width: 60, height: 60, borderRadius: 100,  }}
                 source={require('../../../assets/images/iamLogo2.png')}
-                // resizeMode={FastImage.resizeMode.contain}
               />
               <Text
                 style={{
@@ -273,7 +190,6 @@ const Login = () => {
                 />
                 :
                 (
-                    // <Box>
                     <Text
                     style={{
                         textAlign: 'left',
@@ -285,7 +201,6 @@ const Login = () => {
                     >
                         Novo usuário
                     </Text>
-                    // </Box>
                 )
 
             }
@@ -301,12 +216,8 @@ const Login = () => {
                 closeOnHardwareBackPress={false}
                 showCancelButton={false}
                 showConfirmButton={true}
-                // cancelText="No, cancel"
                 confirmText="   OK!   "
                 confirmButtonColor="#DD6B55"
-                // onCancelPressed={() => {
-                //     setErrorAlert(false);
-                // }}
                 onConfirmPressed={() => {
                     setErrorAlert(false);
                 }}
@@ -317,40 +228,30 @@ const Login = () => {
                 width: '95%',
                 marginBottom: 20,
                 paddingTop: 30,
-                // borderRadius: 10,
-                borderColor: COLORS.main,
-                shadowColor: COLORS.main,
-                shadowOffset: {
-                    width: 0,
-                    height: 3,
-                },
-                shadowOpacity: 0.27,
-                shadowRadius: 4.65,
-                elevation: 3,
             }}
         >
 
         <Stack space={1} w="90%" mx="auto">
             {
                 !isLoggingIn &&  (
-                <FormControl isRequired my="3" isInvalid={'fullname' in errors}>
+                <FormControl isRequired my="3" isInvalid={'name' in errors}>
                     <FormControl.Label>Nome Completo</FormControl.Label>
                     <CustomInput
                         width="100%"
                         placeholder="Nome completo"
-                        value={fullname}
+                        value={name}
                         type="text"
                         autoCapitalize="words"
-                        onChangeText={(newFullname)=>{
-                            setErrors(prev=>({...prev, fullname: ''}))
-                            setFullname(newFullname)}
+                        onChangeText={(newName)=>{
+                            setErrors(prev=>({...prev, name: ''}))
+                            setName(newName)}
                         }
                     />
                 {
                 'fullname' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.fullname}</FormControl.ErrorMessage> 
+                _text={{ fontSize: 'xs'}}>{errors?.name}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
                 }
             </FormControl>
@@ -410,7 +311,6 @@ const Login = () => {
                     placeholder="Senha"
                     secureTextEntry={!showPassword ? true : false}
                     value={password}
-                    // onChangeText={(text)=>setPassword(text)}
                     onChangeText={(newPassword)=>{
                         setErrors(prev=>({...prev, password: '', passwordConfirm: ''}))   
                         setPassword(newPassword)}
@@ -472,20 +372,19 @@ const Login = () => {
         )}
         {
             !isLoggingIn && (
-                <Stack direction="row" w="100%" space={1}>
-            <Box w="50%" >
-            <FormControl isRequired my="3" isInvalid={'primaryPhone' in errors}>
+        <Stack direction="row" w="100%" space={1}>
+            <Box w="100%" >
+            <FormControl isRequired my="3" isInvalid={'phone' in errors}>
                 <FormControl.Label>Telemóvel</FormControl.Label>
                 <CustomInput
                     width="100%"
                     type="telephoneNumber"
                     placeholder="Telemóvel"
                     keyboardType="numeric"
-                    value={primaryPhone}
-                    // onChangeText={(newPrimaryPhone)=>setPrimaryPhone(newPrimaryPhone)}
-                    onChangeText={(newPrimaryPhone)=>{
-                        setErrors(prev=>({...prev, primaryPhone: ''}))
-                        setPrimaryPhone(newPrimaryPhone)}
+                    value={phone}
+                    onChangeText={(newPhone)=>{
+                        setErrors(prev=>({...prev, phone: ''}))
+                        setPhone(newPhone)}
                     }
                     InputLeftElement={
                         <Icon
@@ -498,47 +397,12 @@ const Login = () => {
                         }
                         />
             {
-                'primaryPhone' in errors 
+                'phone' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.primaryPhone}</FormControl.ErrorMessage> 
+                _text={{ fontSize: 'xs'}}>{errors?.phone}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
             }
-                {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
-            </FormControl>
-            </Box>
-            <Box w="50%" >
-            <FormControl my="3" isInvalid={'secondaryPhone' in errors}>
-                <FormControl.Label>Telemóvel Alternativo</FormControl.Label>
-                <CustomInput
-                    width="100%"
-                    type="number"
-                    placeholder="Telemóvel"
-                    keyboardType="numeric"
-                    value={secondaryPhone}
-                    // onChangeText={(newSecondaryPhone)=>setSecondaryPhone(newSecondaryPhone)}
-                    onChangeText={(newSecondaryPhone)=>{
-                        setErrors(prev=>({...prev, secondaryPhone: ''}))
-                        setSecondaryPhone(newSecondaryPhone)}
-                    }
-                    InputLeftElement={
-                        <Icon
-                        name="phone"
-                            color={COLORS.grey}
-                            size={30}
-                            type="material"
-                            onPress={()=>setShowPasswordConfirm(prev=>!prev)}
-                            />
-                        }
-                />
-            {
-            'secondaryPhone' in errors 
-            ? <FormControl.ErrorMessage 
-            leftIcon={<Icon name="error-outline" size={16} color="red" />}
-            _text={{ fontSize: 'xs'}}>{errors?.secondaryPhone}</FormControl.ErrorMessage> 
-            : <FormControl.HelperText></FormControl.HelperText>
-        }
-                {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
             </FormControl>
             </Box>
             </Stack>
@@ -552,7 +416,6 @@ const Login = () => {
                 <FormControl isRequired my="3" isInvalid={'province' in errors}>
                     <FormControl.Label>Província</FormControl.Label>
                     <Select
-                        // selectedValue={selectedProvince}
                         selectedValue={province}
                         accessibilityLabel="Escolha sua província"
                         placeholder="Escolha sua província"
@@ -562,7 +425,6 @@ const Login = () => {
                             endIcon: <CheckIcon size="5" />,
                         }}
                         mt={1}
-                        // onValueChange={itemValue => setSelectedProvince(itemValue)}
                         onValueChange={(newProvince)=>{
                             setErrors(prev=>({...prev, province: ''}));
                             setDistrict('');
@@ -581,14 +443,12 @@ const Login = () => {
                     _text={{ fontSize: 'xs'}}>{errors?.province}</FormControl.ErrorMessage> 
                     : <FormControl.HelperText></FormControl.HelperText>
                 }
-                    {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
                 </FormControl>
             </Box>
             <Box w="50%">
             <FormControl isRequired my="3" isInvalid={'district' in errors}>
                 <FormControl.Label>Distrito</FormControl.Label>
                     <Select
-                        // selectedValue={selectedDistrict}
                         selectedValue={district}
                         accessibilityLabel="Escolha seu distrito"
                         placeholder="Escolha seu distrito"
@@ -598,7 +458,6 @@ const Login = () => {
                             endIcon: <CheckIcon size="5" />,
                         }}
                         mt={1}
-                        // onValueChange={itemValue => setSelectedDistrict(itemValue)}
                         onValueChange={(newDistrict)=>{
                             setErrors(prev=>({...prev, district: ''}))
                             setDistrict(newDistrict)}
@@ -616,7 +475,6 @@ const Login = () => {
                         _text={{ fontSize: 'xs'}}>{errors?.district}</FormControl.ErrorMessage> 
                     : <FormControl.HelperText></FormControl.HelperText>
                 }
-                {/* <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage> */}
             </FormControl>
             </Box>
             </Stack>
@@ -626,31 +484,15 @@ const Login = () => {
         <Center w="100%"
             py="2"
             >
-{ isLoggingIn &&
           <Button 
-          title={"Entrar"} 
-          onPress={onPressSignIn} 
-          type="outline"
-          containerStyle={{
-              width: '100%',
-                }}
-                />
-                
-}
-
-{ !isLoggingIn &&
-          <Button 
-          title={"Registar-se"} 
-          onPress={onLogin} 
+          title={isLoggingIn ? " Entrar" : "Registar-se"} 
+          onPress={onSubmitUserData} 
           type="outline"
                 containerStyle={{
                     width: '100%',
                 }}
                 />
                 
-}
-
-
         </Center>
         </Stack>
 
@@ -666,13 +508,7 @@ const Login = () => {
                 w="50%" 
                 alignItems="center"
             >
-                {/* <Text 
-                    style={{ 
-                        fontFamily: 'JosefinSans-Regular',
-                    }}
-                    >
-                    { isLoggingIn ? "Usuário novo?" : "Já tens uma conta?" }
-                </Text> */}
+
 {    isLoggingIn &&
             <Pressable onPress={()=>setIsLoggingIn(prevState => !prevState)}>
                 <Text 
@@ -713,26 +549,5 @@ const Login = () => {
         </ScrollView>
     </SafeAreaView>
   )
-}
+};
 
-
-// const styles = StyleSheet.create({    
-    
-//     background: {
-//         position: 'absolute',
-//         width: 1200,
-//         height: 1200,
-//         top: 0,
-//         opacity: 0.2,
-//         transform: [
-//           {
-//             translateX: 0,
-//           },
-//           {
-//             translateY: 0,
-//           },
-//         ],      
-//       }, 
-//   });
-
-export default Login;

@@ -4,9 +4,8 @@ const validateUserData = (
     {   email, 
         password, 
         passwordConfirm, 
-        fullname, 
-        primaryPhone,
-        secondaryPhone,
+        name, 
+        phone,
         district,
         province  
     }, isLoggingIn, errors, setErrors,
@@ -35,16 +34,15 @@ const validateUserData = (
         };
     }
     else {
-        const retrievedFullname = capitalize(fullname?.trim());
+        const retrievedName = capitalize(name?.trim());
         const retrievedPasswordConfirm = passwordConfirm?.trim();
-        const retrievedPrimaryPhone = primaryPhone?.trim();
-        const retrievedSecondaryPhone = secondaryPhone?.trim();
+        const retrievedPhone = phone?.trim();
         const retrievedProvince = province?.trim();
         const retrievedDistrict = district?.trim();
 
-        if ((!retrievedFullname) || (retrievedFullname?.split(' ')?.length <= 1)) {
+        if ((!retrievedName) || (retrievedName?.split(' ')?.length <= 1)) {
             setErrors({ ...errors,
-                fullname: 'Nome não completo.'
+                name: 'Nome não completo.'
             });
             return false;
         } 
@@ -70,36 +68,22 @@ const validateUserData = (
             return false;
         }
 
-        if (!retrievedPrimaryPhone && !retrievedSecondaryPhone) {
+        if (!retrievedPhone || retrievedPhone === 0) {
             setErrors({ ...errors,
-                primaryPhone: 'Pelo menos um número de telefone.',
+                primaryPhone: 'Número de telefone.',
             });
             return false;            
         }
-        else if ( retrievedPrimaryPhone &&
-            (!Number.isInteger(parseInt(retrievedPrimaryPhone))  || 
-            retrievedPrimaryPhone?.toString().length !== 9       ||
-            parseInt(retrievedPrimaryPhone.toString()[0]) !== 8 ||
-            [2,3,4,5,6,7].indexOf(parseInt(retrievedPrimaryPhone?.toString()[1])) < 0)
+        else if ( retrievedPhone &&
+            (!Number.isInteger(parseInt(retrievedPhone))  || 
+            retrievedPhone?.toString().length !== 9       ||
+            parseInt(retrievedPhone.toString()[0]) !== 8 ||
+            [2,3,4,5,6,7].indexOf(parseInt(retrievedPhone?.toString()[1])) < 0)
             ) {      
             setErrors({ ...errors,
                 primaryPhone: 'Número de telefone inválido.',
             });
             return false;                   
-        }
-
-        if ((retrievedSecondaryPhone === 0) || retrievedSecondaryPhone && 
-            (
-            !Number.isInteger(parseInt(retrievedSecondaryPhone))  || 
-            retrievedSecondaryPhone?.toString().length !== 9       ||
-            parseInt(retrievedSecondaryPhone?.toString()[0]) !== 8 ||
-            [2,3,4,5,6,7].indexOf(parseInt(retrievedSecondaryPhone?.toString()[1])) < 0   
-            )
-        ){
-            setErrors({ ...errors,
-                secondaryPhone: 'Número de telefone inválido.',
-            });
-            return false;               
         }
 
         if (!retrievedProvince) {
@@ -117,11 +101,10 @@ const validateUserData = (
         }
 
         return {
-            fullname: retrievedFullname,
+            name: retrievedName,
             email: retrievedEmail,
             password: retrievedPassword,
-            primaryPhone: retrievedPrimaryPhone ? parseInt(retrievedPrimaryPhone) : 0,
-            secondaryPhone: retrievedSecondaryPhone ? parseInt(retrievedSecondaryPhone) : 0,
+            primaryPhone: retrievedPhone ? parseInt(retrievedPhone) : 0,
             province: retrievedProvince,
             district: retrievedDistrict,
         };     

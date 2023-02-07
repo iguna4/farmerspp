@@ -37,7 +37,7 @@ import { realmContext } from '../../models/realmContext';
 const {useRealm} = realmContext;
 
 
-export default function FarmerForm1Screen({ route, navigation }) {
+export default function FarmerRegistration({ route, navigation }) {
     const [gender, setGender] = useState('');
     const [familySize, setFamilySize] = useState('');
 
@@ -242,14 +242,6 @@ export default function FarmerForm1Screen({ route, navigation }) {
     }, [navigation, farmerType])
  
 
-    // if (errorAlert) {
-    //     return (
-    //         <Center flex={1} px="3">
-    //             <ErrorAlert errorAlert={errorAlert} setErrorAlert={setErrorAlert} />
-    //         </Center>
-    //     )
-    // }
-
     if (duplicatesAlert) {
         return (
             <Center flex={1} px="3">
@@ -273,10 +265,9 @@ export default function FarmerForm1Screen({ route, navigation }) {
         decelerationRate={'normal'}
         fadingEdgeLength={2}
       >
+
         {/* Data collecting form description */}
-     <Box 
-        // alignItems={"center"}
-     >
+     <Box>
         <Box 
         bg="#EBEBE4" 
         w="100%" 
@@ -304,12 +295,8 @@ export default function FarmerForm1Screen({ route, navigation }) {
                 closeOnHardwareBackPress={false}
                 showCancelButton={false}
                 showConfirmButton={true}
-                // cancelText="No, cancel"
                 confirmText="   OK!   "
                 confirmButtonColor="#DD6B55"
-                // onCancelPressed={() => {
-                //     setErrorAlert(false);
-                // }}
                 onConfirmPressed={() => {
                     setErrorAlert(false);
                 }}

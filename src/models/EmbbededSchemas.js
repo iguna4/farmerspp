@@ -19,7 +19,7 @@ export const Address = {
     embedded: true,
     properties: {
         province: 'string',
-        district: 'string',
+        district: { type: 'string', default: 'NA'},
         adminPost: { type: 'string', default: 'NA'},
         village: { type: 'string', default: 'NA'},
     }, 
@@ -61,7 +61,7 @@ export const IdDocument= {
     name: 'IdDocument',
     embedded: true,
     properties: {
-        docType: 'string',
+        docType: 'string?',
         docNumber: 'string?',
         nuit: { type: 'int?', default: 0},
     },
@@ -94,8 +94,8 @@ export const Coordinates = {
     embedded: true,
     properties: {
         position: 'int?',
-        latitude: 'double',
-        longitude: 'double'
+        latitude: 'double?',
+        longitude: 'double?'
     },
 };
 

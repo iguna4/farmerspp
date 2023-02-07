@@ -9,7 +9,7 @@ export const Farmer = {
     properties: {
         _id: 'string',
         names: 'Name',
-        ufid: 'string', //ufid: unique farmer id  =>surname:dateOfBirth:cep:8randomNumbers:registrationTimestamp
+        ufid: 'string', //ufid: unique farmer id  => <Firstname first 2 characters>.<birthDate in milliseconds>.<birthPlace CEP>.<Lastname first 2 characters>
         isSprayingAgent: {type: 'bool', default: 'false', },
         gender: 'string',
         familySize: 'int',

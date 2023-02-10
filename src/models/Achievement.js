@@ -9,12 +9,12 @@ export const Achievement = {
     embedded: true,
     properties: {
         month: 'string',
-        year: { type: 'int', default: 2023 },
+        year: { type: 'int', default: ()=> new Date().getFullYear() },
         registeredFarmers: { type: 'int',  default: 0},
         registeredFarmlands: { type: 'int', default: 0},
         farmersRegistrationGoal: { type: 'int',  default: 0},
         farmlandsRegistrationGoal: { type: 'int', default: 0},
-        user: 'string?',
-        owner_id: 'string?',
+        userDistrict: 'string?',
+        userId: 'string?',
     },
 };

@@ -37,23 +37,23 @@ export default function App() {
           <ApplicationProvider {...eva} theme={eva.light}>
 
 
-            {/* <AppProvider id={secrets.appID}>
+            <AppProvider id={secrets.appID} baseUrl={secrets.baseUrl}>
               <UserProvider 
                 fallback={<WelcomeScreen />}
-              > */}
+              >
                 <RealmProvider 
-                  // sync={{
-                  //   flexible: true,
-                  //   onError: (_, error)=>{
-                  //     console.log('Error:', error);
-                  //   }
-                  // }}
-                  // fallback={<CustomActivityIndicator />}
+                  sync={{
+                    flexible: true,
+                    onError: (_, error)=>{
+                      console.log('Error:', error);
+                    }
+                  }}
+                  fallback={<CustomActivityIndicator />}
                 >
                   <AppTabs />
                 </RealmProvider>
-              {/* </UserProvider>
-            </AppProvider> */}
+              </UserProvider>
+            </AppProvider>
 
 
           </ApplicationProvider>

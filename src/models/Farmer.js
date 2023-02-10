@@ -22,9 +22,9 @@ export const Farmer = {
         image: { type: 'string', default: '' },
         farmlands: 'string[]',
         createdAt: { type: 'date', default: Date()},
-        district: 'string?',
-        user: 'string?',
-        owner_id: 'string?',
+        userDistrict: 'string?',
+        userId: 'string?',
+        // user: 'string?',
     },
 }
 

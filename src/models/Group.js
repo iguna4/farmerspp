@@ -14,7 +14,7 @@ export const Group = {
         address: 'Address',
         members: 'Members',
         manager: 'Manager',
-        registeredMembers: 'Farmer[]',
+        registeredMembers: 'string[]',
         licence: 'string?',
         nuit: { type: 'int?', default: 0}, 
         image: { type: 'string', default: '' },
@@ -22,9 +22,9 @@ export const Group = {
         createdAt: { 
             type: 'date', default: Date()
         },
-        district: 'string?',
-        user: 'string?',
-        owner_id: 'string?',
+        userDistrict: 'string?',
+        userId: 'string?',
+        // user: 'string?',
     },
 }
 

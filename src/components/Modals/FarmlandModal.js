@@ -105,7 +105,8 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             totalArea,
             plantTypes,
             farmer: owner._id,
-            user: user.name,
+            userDistrict: 'Mogovolas',
+            userId: 'userId',
         })
 
         // set the farmlandId

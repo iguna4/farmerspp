@@ -1,51 +1,54 @@
 import { capitalize } from "./capitalize";
 
 const validateUserData = (
-    {   email, 
+    {   
+        name, 
+        email, 
         password, 
         passwordConfirm, 
-        name, 
         phone,
-        district,
-        province  
-    }, isLoggingIn, errors, setErrors,
+        userDistrict,
+        userProvince  
+    }, errors, setErrors,
     ) => {
-    const retrievedEmail = email.trim();
-    const retrievedPassword = password.trim();
-   
-    if (isLoggingIn) {
-        
-        if (!retrievedEmail || !retrievedEmail.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
-            setErrors({ ...errors,
-                errorMessage: 'Credenciais inválidas!',
-            });
-            return false;
-        }
-        else if ('savedPassword' && 'savedPassword' !== retrievedPassword) { // compare the provided pass with the saved one
-            setErrors({ ...errors,
-                errorMessage: 'Credenciais inválidas!',
-            });
-            return false;
-        }
-        
-        return {
-            email: retrievedEmail,
-            password: retrievedPassword,
-        };
-    }
-    else {
-        const retrievedName = capitalize(name?.trim());
-        const retrievedPasswordConfirm = passwordConfirm?.trim();
-        const retrievedPhone = phone?.trim();
-        const retrievedProvince = province?.trim();
-        const retrievedDistrict = district?.trim();
 
+    const retrievedName = capitalize(name?.trim());
+    const retrievedEmail = email.trim();
+    const retrievedPassword = password?.trim();
+    const retrievedPasswordConfirm = passwordConfirm?.trim();
+    const retrievedPhone = phone?.trim();
+    const retrievedUserDistrict = userDistrict?.trim();
+    const retrievedUserProvince = userProvince?.trim();
+   
+    // if (isLoggingIn) {
+        
         if ((!retrievedName) || (retrievedName?.split(' ')?.length <= 1)) {
             setErrors({ ...errors,
                 name: 'Nome não completo.'
             });
             return false;
         } 
+
+        // if (!retrievedEmail || !retrievedEmail.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
+        //     setErrors({ ...errors,
+        //         errorMessage: 'Credenciais inválidas!',
+        //     });
+        //     return false;
+        // }
+        // else if ('savedPassword' && 'savedPassword' !== retrievedPassword) { // compare the provided pass with the saved one
+        //     setErrors({ ...errors,
+        //         errorMessage: 'Credenciais inválidas!',
+        //     });
+        //     return false;
+        // }
+        
+        // return {
+        //     email: retrievedEmail,
+        //     password: retrievedPassword,
+        // };
+    // }
+    // else {
+
 
         if (!retrievedEmail || !retrievedEmail?.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
             setErrors({ ...errors,
@@ -54,7 +57,7 @@ const validateUserData = (
             return false;
         }
 
-        if (retrievedPassword !== retrievedPasswordConfirm) {
+        if (!(retrievedPassword.includes(retrievedPasswordConfirm) && retrievedPasswordConfirm.includes(retrievedPassword))) {
             setErrors({ ...errors,
                 password: 'Senhas não iguais.',
                 passwordConfirm: 'Senhas não iguais.'
@@ -68,9 +71,11 @@ const validateUserData = (
             return false;
         }
 
+        console.log('tel:', retrievedPhone);
+
         if (!retrievedPhone || retrievedPhone === 0) {
             setErrors({ ...errors,
-                primaryPhone: 'Número de telefone.',
+                phone: 'Número de telefone.',
             });
             return false;            
         }
@@ -81,21 +86,21 @@ const validateUserData = (
             [2,3,4,5,6,7].indexOf(parseInt(retrievedPhone?.toString()[1])) < 0)
             ) {      
             setErrors({ ...errors,
-                primaryPhone: 'Número de telefone inválido.',
+                phone: 'Número de telefone inválido.',
             });
             return false;                   
         }
 
-        if (!retrievedProvince) {
+        if (!retrievedUserProvince) {
              setErrors({ ...errors,
-                province: 'Indica a província',
+                userProvince: 'Indica a província',
             });
             return false;                
         }
 
-        if (!retrievedDistrict) {
+        if (!retrievedUserDistrict) {
              setErrors({ ...errors,
-                province: 'Indica o distrito',
+                userDistrict: 'Indica o distrito',
             });
             return false;                
         }
@@ -104,11 +109,11 @@ const validateUserData = (
             name: retrievedName,
             email: retrievedEmail,
             password: retrievedPassword,
-            primaryPhone: retrievedPhone ? parseInt(retrievedPhone) : 0,
-            province: retrievedProvince,
-            district: retrievedDistrict,
+            phone: retrievedPhone ? parseInt(retrievedPhone) : 0,
+            userProvince: retrievedUserProvince,
+            userDistrict: retrievedUserDistrict,
         };     
-    }     
+    // }     
 };
 
 export default validateUserData;

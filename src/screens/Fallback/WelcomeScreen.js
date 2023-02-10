@@ -2,21 +2,20 @@ import {
     Pressable, SafeAreaView, Text, View, Image, 
 } from 'react-native';
 import React, {useEffect, useState, useCallback } from 'react';
-import styles from './styles';
 import { Button, Icon } from '@rneui/themed';
 import { Box, Stack, FormControl, Center, Select, CheckIcon, ScrollView } from 'native-base';
-
-import { CustomInput } from '../../components/Inputs/CustomInput';
-
-import Realm from 'realm';
-import { useApp } from '@realm/react';
-
-import validateUserData from '../../helpers/validateUserData';
-import districts from '../../consts/districts';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 
+import styles from './styles';
+import { CustomInput } from '../../components/Inputs/CustomInput';
+import validateUserData from '../../helpers/validateUserData';
+import districts from '../../consts/districts';
 import COLORS from '../../consts/colors';
+
+
+import { Realm, useApp } from '@realm/react';
+import { secrets } from '../../secrets';
 
 
 export default function WelcomeScreen () {
@@ -33,52 +32,124 @@ export default function WelcomeScreen () {
     
     const [errors, setErrors] = useState({});
     
-    const [province, setProvince] = useState('');
-    const [district, setDistrict] = useState('');
+    const [userProvince, setUserProvince] = useState('');
+    const [userDistrict, setUserDistrict] = useState('');
     const [selectedDistricts, setSelectedDistricts] = useState([]);
     
     const [phone, setPhone] = useState(null);
 
     const [errorAlert, setErrorAlert] = useState(false);
+    const [invalidDataAlert, setInvalidDataAlert] = useState(false);
     const [userData, setUserData] = useState({});
 
 
     const app = useApp();
 
-    const onSignIn = useCallback(async (userData)=>{
-
-        const creds = Realm.Credentials.emailPassword(newEmail, newPassword);
+    const signIn = useCallback(async () => {
+        const creds = Realm.Credentials.emailPassword(email, password);
+        await app.logIn(creds);
+      }, [app, email, password]);
+    
+      // on user log in
+    const onSignIn = useCallback(async () => {
         try {
-            await app.logIn(creds);
+          await signIn();
         } catch (error) {
             setErrorAlert(true);
-            throw new Error('Failed to sign in the user');
+            console.log('Failed to sign up the user', { cause: error });
         }
-    }, [app, email, password]);
+    }, [signIn]);
 
+    // on user registration
+    const onSignUp = useCallback(async () => {
 
-    const onSignUp = useCallback(async (userData)=>{
-        const {
-            name,
-            email,
-            password,
+        const userData = {
+            name, 
+            email, 
+            password, 
+            passwordConfirm, 
             phone,
-            province,
-            district,
-        } = userData;
+            userDistrict,
+            userProvince, 
+        };
+
+        if (!validateUserData(userData, errors, setErrors)) {
+            setInvalidDataAlert(true);
+            return ;
+        }
 
         try {
-            await app.emailPasswordAuth.registerUser({ email, password});
-            await onSignIn(email, password);
-
-            // save user custom data to the atlas mongodb database
-            // add name, phone, province and district to custom data
+            await app.emailPasswordAuth.registerUser({email, password});
+        //   await signIn();
+            const creds = Realm.Credentials.emailPassword(email, password);
+            const newUser = await app.logIn(creds);
+            const mongo = newUser.mongoClient(secrets.clusterName);
+            const collection = mongo.db(secrets.databaseName).collection(secrets.userCollectionName);
+            
+            // const filter = {
+            //     userId: newUser.id,
+            // };
+            
+            const userData = {
+                    userId: newUser.id,
+                    name: name,
+                    email: email,
+                    password: password,
+                    phone: phone,
+                    userProvince: userProvince,
+                    userDistrict: userDistrict,
+            };
+            console.log('userId:', newUser.id);
+            const result = await collection.insertOne(userData);
+            console.log('custom user data: ', result);
 
         } catch (error) {
-            setErrorAlert(true);
-            throw new Error('Failed to sign up the user');
+            setErrorAlert(true)
+            console.log('Failed to sign up the user', { cause: error });
         }
-    }, [app, onSignIn, email, password]);
+    }, [signIn, app, email, password]);
+
+    // const onSignIn = useCallback(async (newEmail, newPassword)=>{
+    //     // const { email, password } = userData;
+
+    //     const creds = Realm.Credentials.emailPassword(newEmail, newPassword);
+    //     try {
+    //         await app.logIn(creds);
+    //     } catch (error) {
+    //         await onSignUp(newEmail, newPassword);
+    //         // throw new Error('Failed to sign in the user');
+    //     }
+    // }, [app, email, password]);
+
+
+    // const onSignUp = useCallback(async (newEmail, newPassword)=>{
+    //     const {
+    //         name,
+    //         email,
+    //         password,
+    //         phone,
+    //         province,
+    //         district,
+    //     } = userData;
+
+    //     console.log('user credentials:', JSON.stringify({email: newEmail, password: newPassword}));
+
+    //     try {
+    //         await app.emailPasswordAuth.registerUser({ newEmail, newPassword });
+    //         try {
+    //             await onSignIn(newEmail, newPassword);               
+    //         } catch (error) {
+    //             // console.log('Failed to sign in after registration', { cause: error });
+    //             throw new Error('Failed to sign in after user registration', { cause: error });   
+    //         }
+    //         // save user custom data to the atlas mongodb database
+    //         // add name, phone, province and district to custom data
+
+    //     } catch (error) {
+    //         // setErrorAlert(true);
+    //         throw new Error('Failed to sign up the user');
+    //     }
+    // }, [app, onSignIn, email, password]);
    
 
 
@@ -109,119 +180,149 @@ export default function WelcomeScreen () {
 
     useEffect(()=>{
 
-        if (province) {
-            setSelectedDistricts(districts[province]);
-
+        if (userProvince) {
+            setSelectedDistricts(districts[userProvince]);
         }
 
-    }, [province, errors, isLoggingIn]);
+    }, [userProvince, errors, isLoggingIn]);
 
 
   return (
+    <>
+    {/* <StatusBar barStyle="dark-content" backgroundColor="#EBEBE4" /> */}
     <SafeAreaView style={styles.loginContainer}>
 
-<View
-        style={{
-          width: '100%',
-          borderBottomWidth: 1,
-          borderRightWidth: 1,
-          borderLeftWidth: 1,
-          borderColor: '#EBEBE4',
-          backgroundColor: '#EBEBE4',
-          borderBottomLeftRadius: 50,
-          borderBottomRightRadius: 50,
-          shadowColor: COLORS.main,
-          shadowOffset: {
+        <View
+                style={{
+                width: '100%',
+                borderBottomWidth: 1,
+                borderRightWidth: 1,
+                borderLeftWidth: 1,
+                borderColor: '#EBEBE4',
+                backgroundColor: '#EBEBE4',
+                borderBottomLeftRadius: 50,
+                borderBottomRightRadius: 50,
+                shadowColor: COLORS.main,
+                shadowOffset: {
 
-            },       
-        }}
-      >
-        <Box>
-            <Center w="100%" py="3">
-              <Image
-                style={{ width: 60, height: 60, borderRadius: 100,  }}
-                source={require('../../../assets/images/iamLogo2.png')}
-              />
-              <Text
-                style={{
-                  color: COLORS.main,
-                  fontSize: 16,
-                  fontFamily: 'JosefinSans-Bold',
-                  paddingTop: 6,
+                    },       
                 }}
-              >
-                Instituto de Amêndoas de Moçambique, IP
-              </Text>
-              <Text
-                style={{
-                  color: COLORS.main,
-                  fontSize: 18,
-                  fontFamily: 'JosefinSans-Bold',
-                }}
-              >
-                IAM, IP
-              </Text>
-            </Center>
-          </Box>
+            >
+            <Box>
+                <Center w="100%" py="3">
+                <Image
+                    style={{ width: 60, height: 60, borderRadius: 100,  }}
+                    source={require('../../../assets/images/iamLogo2.png')}
+                    />
+                <Text
+                    style={{
+                        color: COLORS.main,
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 6,
+                    }}
+                    >
+                    Instituto de Amêndoas de Moçambique, IP
+                </Text>
+                <Text
+                    style={{
+                    color: COLORS.main,
+                    fontSize: 18,
+                    fontFamily: 'JosefinSans-Bold',
+                    }}
+                >
+                    IAM, IP
+                </Text>
+                </Center>
+        </Box>
       </View>
 
 
-        <ScrollView
+    <ScrollView
             contentContainerStyle={{
 
                 alignItems: 'center',
             }}
-        >
-        { isLoggingIn &&        
-            <Center mt={'3'}>
-                <Text style={styles.signInTitle}>ConnectCaju - 2023</Text>
-            </Center>
-        }
+    >
+    { isLoggingIn &&        
+        <Center mt={'3'}>
+            <Text style={styles.signInTitle}>ConnectCaju - 2023</Text>
+        </Center>
+    }
         <Box my="5" pl="4">
-            { ('errorMessage' in errors && errors?.errorMessage && isLoggingIn) ?
-                <Box backgroundColor='error.100'  w="80" height="10">
-                    <Text style={styles.signInErrorMessage}>{errors.errorMessage}</Text>
-                </Box>
-                : isLoggingIn ?
-                <Icon 
-                    name='lock-open'
-                    size={40}
-                    color={COLORS.main}
+        { ('errorMessage' in errors && errors?.errorMessage && isLoggingIn) ?
+            <Box backgroundColor='error.100'  w="80" height="10">
+                <Text style={styles.signInErrorMessage}>{errors.errorMessage}</Text>
+            </Box>
+            : isLoggingIn ?
+            <Icon 
+                name='lock-open'
+                size={40}
+                color={COLORS.main}
                 />
-                :
-                (
-                    <Text
-                    style={{
-                        textAlign: 'left',
-                        fontSize: 18,
-                        color: COLORS.black,
-                        fontFamily: 'JosefinSans-Bold',
-
-                    }}
-                    >
-                        Novo usuário
-                    </Text>
-                )
-
-            }
+            :
+            (
+                <Text
+                style={{
+                    textAlign: 'left',
+                    fontSize: 18,
+                    color: COLORS.black,
+                    fontFamily: 'JosefinSans-Bold',
+                    
+                }}
+                >
+                    Novo usuário
+                </Text>
+            )
+            
+        }
 
        </Box>
 
+       <AwesomeAlert 
+            show={invalidDataAlert}
+            showProgress={false}
+            title="Dados Inválidos"
+            message={"Alguns dados são inválidos!"}
+            closeOnTouchOutside={false}
+            closeOnHardwareBackPress={false}
+            showCancelButton={false}
+            showConfirmButton={true}
+            // cancelText="   Sim   "
+            confirmText="   Ok!   "
+            // cancelButtonColor="#DD6B55"
+            confirmButtonColor="#DD6B55"
+            onConfirmPressed={()=>{
+                setInvalidDataAlert(false);
+            }}
+       />
+
         <AwesomeAlert
-                show={errorAlert}
-                showProgress={false}
-                title="Dados Inválidos"
-                message="Os dados inválidos devem ser corrigidos!"
-                closeOnTouchOutside={true}
-                closeOnHardwareBackPress={false}
-                showCancelButton={false}
-                showConfirmButton={true}
-                confirmText="   OK!   "
-                confirmButtonColor="#DD6B55"
-                onConfirmPressed={() => {
-                    setErrorAlert(false);
-                }}
-            />
+            show={errorAlert}
+            showProgress={false}
+            title="Dados Inválidos"
+            message={isLoggingIn ? "Ainda não tem conta. Pretendes criar uma conta de usuário?" : "Já tens uma conta. Pretendes fazer o login?"}
+            closeOnTouchOutside={false}
+            closeOnHardwareBackPress={false}
+            showCancelButton={true}
+            showConfirmButton={true}
+            cancelText="   Não   "
+            confirmText="   Sim   "
+            cancelButtonColor="#DD6B55"
+            confirmButtonColor={COLORS.main}
+            onCancelPressed={()=>{
+                setErrorAlert(false);
+            }}
+            onConfirmPressed={() => {
+                setErrorAlert(false);
+                if (isLoggingIn) {
+                    setIsLoggingIn(false);
+                }
+                else {
+                    setIsLoggingIn(true);
+                }
+            }}
+        />
 
         <View
             style={{
@@ -232,23 +333,23 @@ export default function WelcomeScreen () {
         >
 
         <Stack space={1} w="90%" mx="auto">
-            {
-                !isLoggingIn &&  (
-                <FormControl isRequired my="3" isInvalid={'name' in errors}>
-                    <FormControl.Label>Nome Completo</FormControl.Label>
-                    <CustomInput
-                        width="100%"
-                        placeholder="Nome completo"
-                        value={name}
-                        type="text"
-                        autoCapitalize="words"
-                        onChangeText={(newName)=>{
-                            setErrors(prev=>({...prev, name: ''}))
-                            setName(newName)}
-                        }
-                    />
+        {
+            !isLoggingIn &&  (
+            <FormControl isRequired my="3" isInvalid={'name' in errors}>
+                <FormControl.Label>Nome Completo</FormControl.Label>
+                <CustomInput
+                    width="100%"
+                    placeholder="Nome completo"
+                    value={name}
+                    type="text"
+                    autoCapitalize="words"
+                    onChangeText={(newName)=>{
+                        setErrors(prev=>({...prev, name: ''}))
+                        setName(newName)}
+                    }
+                />
                 {
-                'fullname' in errors 
+                'name' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.name}</FormControl.ErrorMessage> 
@@ -265,16 +366,21 @@ export default function WelcomeScreen () {
                     type="emailAddress"
                     value={email}
                     onChangeText={(newEmail)=>{
-                        setErrors((prev)=>({...prev, errorMessage: undefined}))
+                        setErrors((prev)=>({...prev, email: ''}))
                         setEmail(newEmail)
                     }}
                     InputLeftElement={<Icon name="email" color="grey" style={{ paddingLeft: 3 }} />}
                     />
-                <FormControl.HelperText></FormControl.HelperText>
+               { 'email' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.email}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+            }
             </FormControl>
             {
                 isLoggingIn &&
-
+                
                 <FormControl isRequired isInvalid={'password' in errors}>
                 <FormControl.Label>Senha</FormControl.Label>
                 <CustomInput
@@ -283,7 +389,7 @@ export default function WelcomeScreen () {
                     secureTextEntry={!showPassword ? true : false }
                     value={password}
                     onChangeText={(newPassword)=>{
-                        setErrors(prev=>({...prev, errorMessage: undefined}))
+                        setErrors(prev=>({...prev, password: ''}))
                         setPassword(newPassword)
                     }}
                     InputRightElement={
@@ -297,12 +403,18 @@ export default function WelcomeScreen () {
                         />
                     }
                     />
-                <FormControl.HelperText></FormControl.HelperText>
+                {
+                'password' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.password}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+                }
             </FormControl>
             }
             {
             !isLoggingIn &&  (
-            <Stack direction="row" w="100%" space={1}>
+                <Stack direction="row" w="100%" space={1}>
             <Box w="50%">
             <FormControl isRequired my="3" isInvalid={'password' in errors}>
                 <FormControl.Label>Senha</FormControl.Label>
@@ -312,26 +424,26 @@ export default function WelcomeScreen () {
                     secureTextEntry={!showPassword ? true : false}
                     value={password}
                     onChangeText={(newPassword)=>{
-                        setErrors(prev=>({...prev, password: '', passwordConfirm: ''}))   
+                        setErrors(prev=>({...prev, password: ''}))   
                         setPassword(newPassword)}
                     }
                     InputRightElement={
                         <Icon
-                            name={showPassword ? 'visibility' : 'visibility-off'}
-                            color="grey"
-                            size={30}
-                            style={{ paddingRight: 3, }}
-                            type="material"
-                            onPress={()=>setShowPassword(prev=>!prev)}
+                        name={showPassword ?  'visibility-off' : 'visibility'}
+                        color="grey"
+                        size={30}
+                        style={{ paddingRight: 3, }}
+                        type="material"
+                        onPress={()=>setShowPassword(prev=>!prev)}
                         />
                     }
                 />
             {
-            'password' in errors 
-            ? <FormControl.ErrorMessage 
+                'password' in errors 
+                ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.password}</FormControl.ErrorMessage> 
-            : <FormControl.HelperText></FormControl.HelperText>
+                : <FormControl.HelperText></FormControl.HelperText>
             }
             </FormControl>
             </Box>
@@ -346,19 +458,19 @@ export default function WelcomeScreen () {
                     secureTextEntry={!showPasswordConfirm ? true : false}
                     value={passwordConfirm}
                     onChangeText={(newPasswordConfirm)=>{
-                        setErrors(prev=>({...prev, passsword: '', passwordConfirm: ''}))
+                        setErrors(prev=>({...prev, passwordConfirm: ''}))
                         setPasswordConfirm(newPasswordConfirm)}
                     }
                     InputRightElement={
                         <Icon
-                        name={showPasswordConfirm ? 'visibility' : 'visibility-off'}
+                        name={showPasswordConfirm ?  'visibility-off' : 'visibility' }
                         color={COLORS.grey}
                         size={30}
                         type="material"
                         onPress={()=>setShowPasswordConfirm(prev=>!prev)}
                         />
                     }
-                />
+                    />
             {
                 'passwordConfirm' in errors 
                 ? <FormControl.ErrorMessage 
@@ -413,10 +525,10 @@ export default function WelcomeScreen () {
             !isLoggingIn && (
                 <Stack direction="row" w="100%" space={1}>
             <Box w="50%">
-                <FormControl isRequired my="3" isInvalid={'province' in errors}>
+                <FormControl isRequired my="3" isInvalid={'userProvince' in errors}>
                     <FormControl.Label>Província</FormControl.Label>
                     <Select
-                        selectedValue={province}
+                        selectedValue={userProvince}
                         accessibilityLabel="Escolha sua província"
                         placeholder="Escolha sua província"
                         _selectedItem={{
@@ -426,9 +538,9 @@ export default function WelcomeScreen () {
                         }}
                         mt={1}
                         onValueChange={(newProvince)=>{
-                            setErrors(prev=>({...prev, province: ''}));
-                            setDistrict('');
-                            setProvince(newProvince);
+                            setErrors(prev=>({...prev, userProvince: ''}));
+                            setUserDistrict('');
+                            setUserProvince(newProvince);
                         }}
                     >
                         <Select.Item label="Cabo Delgado" value="Cabo Delgado" />
@@ -437,19 +549,19 @@ export default function WelcomeScreen () {
                         <Select.Item label="Zambézia" value="Zambézia" />
                     </Select>
                     {
-                    'province' in errors 
-                    ? <FormControl.ErrorMessage 
-                    leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                    _text={{ fontSize: 'xs'}}>{errors?.province}</FormControl.ErrorMessage> 
+                        'userProvince' in errors 
+                        ? <FormControl.ErrorMessage 
+                        leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                        _text={{ fontSize: 'xs'}}>{errors?.userProvince}</FormControl.ErrorMessage> 
                     : <FormControl.HelperText></FormControl.HelperText>
                 }
                 </FormControl>
             </Box>
             <Box w="50%">
-            <FormControl isRequired my="3" isInvalid={'district' in errors}>
+            <FormControl isRequired my="3" isInvalid={'userDistrict' in errors}>
                 <FormControl.Label>Distrito</FormControl.Label>
                     <Select
-                        selectedValue={district}
+                        selectedValue={userDistrict}
                         accessibilityLabel="Escolha seu distrito"
                         placeholder="Escolha seu distrito"
                         _selectedItem={{
@@ -459,8 +571,8 @@ export default function WelcomeScreen () {
                         }}
                         mt={1}
                         onValueChange={(newDistrict)=>{
-                            setErrors(prev=>({...prev, district: ''}))
-                            setDistrict(newDistrict)}
+                            setErrors(prev=>({...prev, userDistrict: ''}))
+                            setUserDistrict(newDistrict)}
                         }
                     >{
                         selectedDistricts?.map((district, index)=>(
@@ -469,12 +581,12 @@ export default function WelcomeScreen () {
                         }
                     </Select>
                     {
-                        'district' in errors 
+                        'userDistrict' in errors 
                         ? <FormControl.ErrorMessage 
                         leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                        _text={{ fontSize: 'xs'}}>{errors?.district}</FormControl.ErrorMessage> 
-                    : <FormControl.HelperText></FormControl.HelperText>
-                }
+                        _text={{ fontSize: 'xs'}}>{errors?.userDistrict}</FormControl.ErrorMessage> 
+                        : <FormControl.HelperText></FormControl.HelperText>
+                    }
             </FormControl>
             </Box>
             </Stack>
@@ -484,14 +596,21 @@ export default function WelcomeScreen () {
         <Center w="100%"
             py="2"
             >
-          <Button 
-          title={isLoggingIn ? " Entrar" : "Registar-se"} 
-          onPress={onSubmitUserData} 
-          type="outline"
+        <Button 
+            title={isLoggingIn ? " Entrar" : "Registar-se"} 
+            onPress={ ()=> {
+                if (isLoggingIn){
+                    onSignIn();
+                }   
+                else {
+                    onSignUp();
+                } 
+            }} 
+            type="outline"
                 containerStyle={{
                     width: '100%',
                 }}
-                />
+        />
                 
         </Center>
         </Stack>
@@ -507,7 +626,7 @@ export default function WelcomeScreen () {
                 pr={5} 
                 w="50%" 
                 alignItems="center"
-            >
+                >
 
 {    isLoggingIn &&
             <Pressable onPress={()=>setIsLoggingIn(prevState => !prevState)}>
@@ -535,19 +654,18 @@ export default function WelcomeScreen () {
                         fontFamily: 'JosefinSans-Regular',
                         textDecoration: 'underline',
                     }}
-                >
+                    >
                     Fazer Login
                 </Text>
             </Pressable>
 }        
-
-
             </Box>
             </Stack>
         
         </View>
         </ScrollView>
     </SafeAreaView>
+    </>
   )
 };
 

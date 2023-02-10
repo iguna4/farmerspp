@@ -67,6 +67,7 @@ const InstitutionModal = (
         address, 
         manager,
         nuit,
+        // licence,
     } = farmerData;
 
     realm.write(()=>{
@@ -78,7 +79,9 @@ const InstitutionModal = (
             address,
             manager,
             nuit,
-            user: user.name,
+            // licence,
+            userDistrict: 'Mogovolas',
+            userId: 'userid',
         })
         setFarmerItem({
             ownerId: newInstitution?._id,

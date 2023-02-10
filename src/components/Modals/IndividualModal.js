@@ -66,6 +66,7 @@ const IndividualModal = (
         const newFarmer = realm.create('Farmer', {
             _id: uuidv4(),
             names,
+            ufid,
             isSprayingAgent,
             gender,
             familySize,
@@ -74,8 +75,8 @@ const IndividualModal = (
             address,
             contact,
             idDocument,
-            ufid,
-            user: user.name,
+            userDistrict: 'Mogovolas',
+            userId: 'userid',
         })
         setFarmerItem({
             ownerId: newFarmer._id,

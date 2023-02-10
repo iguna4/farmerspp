@@ -18,9 +18,8 @@ export const Institution = {
         image: { type: 'string', default: '' },
         farmlands: 'string[]',
         createdAt: { type: 'date', default: Date()},
-        district: 'string?',
-        user: 'string?',
-        owner_id: 'string?',
+        userDistrict: 'string?',
+        ownerId: 'string?',
     },
 }
 

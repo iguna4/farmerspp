@@ -75,13 +75,14 @@ const GroupModal = (
             _id: uuidv4(),
             type,
             name,
-            members,
             affiliationYear,
+            address,
+            members,
             manager,
             licence,
-            address,
             nuit,
-            user: user.name,
+            userDistrict: 'Mogovolas',
+            userId: 'userId',
         })
         setFarmerItem({
             ownerId: newGroup._id,

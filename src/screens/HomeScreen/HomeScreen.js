@@ -21,13 +21,14 @@ import {
  } from "react-native-popup-menu";
 import { user } from '../../consts/user';
 
-
+import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 const { useRealm } = realmContext; 
 
 
 export default function HomeScreen() {
   const realm = useRealm();
+  const currentUser = useUser();
   const [isPerformanceButtonActive, setIsPerformanceButtonActive] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
 
@@ -834,7 +835,9 @@ export default function HomeScreen() {
                 },
               }}
               onSelect={() => {
-                console.log('sessao terminada!')
+                // console.log('sessao terminada!')
+                currentUser.logOut();
+
               }} 
               >
             <Box

@@ -1,19 +1,20 @@
 /**
  *  User schema (custom user data)
  */
+ import { BSON } from "realm"
 
 export const User = {
     name: 'User',
     primaryKey: '_id',
     properties: {
-        _id: 'objectId',
+        _id: { type: 'objectId', default: ()=> new BSON.ObjectId()  },
         userId: 'string?',
         name: 'string',
         email: 'string',
         password: 'string',
         phone: 'int?',
-        province: 'string?',
-        district: 'string?',
+        userProvince: 'string?',
+        userDistrict: 'string?',
         lastLoginAt: {type: 'date', default: Date() },
         createdAt: { type: 'date', default: Date() },
     }

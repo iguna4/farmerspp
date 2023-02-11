@@ -30,7 +30,6 @@ export default function GroupFarmerForm({
     groupMembersNumber, setGroupMembersNumber, groupWomenNumber, setGroupWomenNumber,
     errors, setErrors, 
     selectedAddressAdminPosts,
-
 }) {
         
   return (

@@ -130,8 +130,8 @@ export default function FarmerRegistration({ route, navigation }) {
                birthProvince,
                birthDistrict,
                birthAdminPost,
-               addressProvince : customUserData.userProvince,
-               addressDistrict: customUserData.userDistrict,
+               addressProvince : customUserData?.userProvince,
+               addressDistrict: customUserData?.userDistrict,
                addressAdminPost,
                addressVillage,
                primaryPhone, 
@@ -176,8 +176,8 @@ export default function FarmerRegistration({ route, navigation }) {
                 institutionType,
                 institutionName,
                 institutionAdminPost,
-                institutionProvince : customUserData.userProvince,
-                institutionDistrict: customUserData.userDistrict,
+                institutionProvince : customUserData?.userProvince,
+                institutionDistrict: customUserData?.userDistrict,
                 institutionVillage,
                 institutionManagerName,
                 institutionManagerPhone,
@@ -201,8 +201,8 @@ export default function FarmerRegistration({ route, navigation }) {
                 groupAffiliationYear,
                 groupOperatingLicence,
                 groupNuit,
-                groupProvince : customUserData.userProvince,
-                groupDistrict: customUserData.userDistrict,
+                groupProvince : customUserData?.userProvince,
+                groupDistrict: customUserData?.userDistrict,
                 groupAdminPost,
                 groupVillage,
                 groupManagerName,
@@ -476,6 +476,7 @@ farmerType === "Instituição" && (
         selectedAddressAdminPosts={selectedAddressAdminPosts}
         setSelectedAddressAdminPosts={setSelectedAddressAdminPosts}
         addressAdminPost={addressAdminPost}
+
     />
 )}
 
@@ -533,6 +534,9 @@ farmerType === "Instituição" && (
 
             setFarmerItem={setFarmerItem}
             setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}            
+        
+            customUserData={customUserData}
+        
         />
     )
     }
@@ -559,7 +563,10 @@ farmerType === "Instituição" && (
 
                 setFarmerItem={setFarmerItem}
                 setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}                
-            />
+
+                customUserData={customUserData}
+
+                />
         )
     }
     {
@@ -583,7 +590,11 @@ farmerType === "Instituição" && (
                 setFarmerItem={setFarmerItem}
                 farmerItem={farmerItem}
                 setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}                
-             />
+     
+                customUserData={customUserData}
+     
+
+                />
         )
     }
     </Center>

@@ -32,18 +32,20 @@ export default function FarmersScreen({ route, navigation }) {
   const farmers = useQuery('Farmer');
   const groups = useQuery('Group');
   const institutions = useQuery('Institution');
+
+  // current user
   const user = useUser();
+
+  // custom user data
   let customUserData = user.customData;
+
+  // extract needed custom user data
   customUserData = {
     name: customUserData?.name,
     userDistrict: customUserData?.userDistrict,
     userProvince: customUserData?.userProvince,
     userId: customUserData?.userId,
   };
-
-  console.log('customUserData:', customUserData)
-
-  // const user = getCustomUserData();
 
   const individualsList = addFlagToListItem(farmers, 'Indivíduo')
   const groupsList = addFlagToListItem(groups, 'Grupo')

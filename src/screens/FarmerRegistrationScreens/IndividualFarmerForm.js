@@ -34,8 +34,7 @@ export default function IndividualFarmerForm({
     docNumber, setDocNumber, isSprayingAgent, setIsSprayingAgent, 
     surname, setSurname, otherNames, setOtherNames,
     primaryPhone, setPrimaryPhone, secondaryPhone, setSecondaryPhone,
-    nuit, setNuit, errors, setErrors, 
-
+    nuit, setNuit, errors, setErrors,     
 }) {
 
 

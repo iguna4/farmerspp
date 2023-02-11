@@ -50,6 +50,9 @@ const GroupModal = (
         setFarmerItem,
         setIsCoordinatesModalVisible,
 
+        customUserData,
+
+
     }
 ) => {
 
@@ -81,8 +84,8 @@ const GroupModal = (
             manager,
             licence,
             nuit,
-            userDistrict: 'Mogovolas',
-            userId: 'userId',
+            userDistrict: customUserData?.userDistrict,
+            userId: customUserData?.userId,
         })
         setFarmerItem({
             ownerId: newGroup._id,

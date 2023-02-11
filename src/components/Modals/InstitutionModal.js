@@ -51,6 +51,9 @@ const InstitutionModal = (
         farmerItem,
         setIsCoordinatesModalVisible,
 
+        customUserData,
+
+
     }
 ) => {
 
@@ -80,8 +83,8 @@ const InstitutionModal = (
             manager,
             nuit,
             // licence,
-            userDistrict: 'Mogovolas',
-            userId: 'userid',
+            userDistrict: customUserData?.userDistrict,
+            userId: customUserData?.userId,
         })
         setFarmerItem({
             ownerId: newInstitution?._id,

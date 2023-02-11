@@ -45,6 +45,8 @@ const IndividualModal = (
         setFarmerItem,
         setIsCoordinatesModalVisible,
 
+        customUserData,
+
     }
 ) => {
 
@@ -73,10 +75,14 @@ const IndividualModal = (
             birthDate,
             birthPlace,
             address,
+            // category: 'Não-categorizado',
             contact,
             idDocument,
-            userDistrict: 'Mogovolas',
-            userId: 'userid',
+            // image: '',
+            // farmlands: [],
+            // createdAt: new Date(),
+            userDistrict: customUserData?.userDistrict,
+            userId: customUserData?.userId,
         })
         setFarmerItem({
             ownerId: newFarmer._id,

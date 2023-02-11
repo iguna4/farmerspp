@@ -26,9 +26,7 @@ export default function InstitutionFarmerForm({
     institutionNuit, setInstitutionNuit, isPrivateInstitution, setIsPrivateInstitution,
     institutionLicence, setInstitutionLicence,
     errors, setErrors,
-
     selectedAddressAdminPosts, setSelectedAddressAdminPosts, 
-
  }) {
 
        

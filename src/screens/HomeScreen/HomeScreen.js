@@ -24,13 +24,14 @@ import {
 import { useUser, useApp } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 import { getCustomUserData } from '../../helpers/getCustomUserData';
-const { useRealm } = realmContext; 
+const { useRealm, useQuery, useObject } = realmContext; 
 
 
 export default function HomeScreen() {
   const realm = useRealm();
   const user = useUser();
   const customUserData = user.customData;
+  const achievements = useQuery('Achievement')
   // const me = useApp().currentUser;
   const [isPerformanceButtonActive, setIsPerformanceButtonActive] = useState(false)
   const [isOpen, setIsOpen] = useState(false);

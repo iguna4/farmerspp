@@ -15,6 +15,6 @@ export const Achievement = {
         farmersRegistrationGoal: { type: 'int',  default: 0},
         farmlandsRegistrationGoal: { type: 'int', default: 0},
         userDistrict: 'string?',
-        userId: 'string?',
+        userId: 'string',
     },
 };

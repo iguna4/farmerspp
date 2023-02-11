@@ -71,8 +71,6 @@ const validateUserData = (
             return false;
         }
 
-        console.log('tel:', retrievedPhone);
-
         if (!retrievedPhone || retrievedPhone === 0) {
             setErrors({ ...errors,
                 phone: 'Número de telefone.',

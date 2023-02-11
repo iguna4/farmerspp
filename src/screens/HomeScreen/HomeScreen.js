@@ -19,18 +19,26 @@ import {
   MenuTrigger,
   renderers
  } from "react-native-popup-menu";
-import { user } from '../../consts/user';
+// import { user } from '../../consts/user';
 
-import { useUser } from '@realm/react';
+import { useUser, useApp } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
+import { getCustomUserData } from '../../helpers/getCustomUserData';
 const { useRealm } = realmContext; 
 
 
 export default function HomeScreen() {
   const realm = useRealm();
-  const currentUser = useUser();
+  const user = useUser();
+  const customUserData = user.customData;
+  // const me = useApp().currentUser;
   const [isPerformanceButtonActive, setIsPerformanceButtonActive] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
+
+  // const userData = getCustomUserData();
+
+  // console.log('customData: ', currentUser?.customData);
+  // console.log('me:', me.customData);
 
   realm.write(()=>{
 
@@ -116,7 +124,7 @@ export default function HomeScreen() {
                   fontFamily: 'JosefinSans-Bold',
                   fontSize: 18,
                 }}
-                >{user.name?.split(' ')[0]}</Text>
+                >{customUserData.name?.split(' ')[0]}</Text>
             </TouchableOpacity>
           </Box>
         </Stack>
@@ -309,7 +317,7 @@ export default function HomeScreen() {
               fontFamily: 'JosefinSans-Bold',
               paddingTop: 10,
             }}>
-                Provincial ({user.province})
+                Provincial ({customUserData.userProvince})
             </Text>            
           
           <Stack w="100%" direction="row" space={4} py="2">
@@ -372,7 +380,7 @@ export default function HomeScreen() {
               fontFamily: 'JosefinSans-Bold',
               paddingTop: 10,
             }}>
-                Distrital ({user.district})
+                Distrital ({customUserData.userDistrict})
             </Text>            
           
           <Stack w="100%" direction="row" space={4} py="2">
@@ -436,7 +444,7 @@ export default function HomeScreen() {
               fontFamily: 'JosefinSans-Bold',
               paddingTop: 10,
             }}>
-                Individual ({user.name})
+                Individual ({customUserData.name})
             </Text>            
           
           <Stack w="100%" direction="row" space={4} py="2">
@@ -546,7 +554,7 @@ export default function HomeScreen() {
           fontFamily: 'JosefinSans-Bold',
           paddingTop: 10,
         }}>
-            Provincial ({user.province})
+            Provincial ({customUserData.userProvince})
         </Text>            
       
       <Stack w="100%" direction="row" space={4} py="2">
@@ -603,7 +611,7 @@ export default function HomeScreen() {
           fontFamily: 'JosefinSans-Bold',
           paddingTop: 10,
         }}>
-            Distrital ({user.district})
+            Distrital ({customUserData.userDistrict})
         </Text>            
       
       <Stack w="100%" direction="row" space={4} py="2">
@@ -659,7 +667,7 @@ export default function HomeScreen() {
           fontFamily: 'JosefinSans-Bold',
           paddingTop: 10,
         }}>
-            Individual ({user.name})
+            Individual ({customUserData.name})
         </Text>            
       
       <Stack w="100%" direction="row" space={4} py="2">
@@ -836,7 +844,7 @@ export default function HomeScreen() {
               }}
               onSelect={() => {
                 // console.log('sessao terminada!')
-                currentUser.logOut();
+                user.logOut();
 
               }} 
               >

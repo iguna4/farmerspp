@@ -16,9 +16,11 @@ import { addFlagToListItem } from '../../helpers/addFlagToListItem'
 import GroupItem from '../../components/GroupItem/GroupItem';
 import InstitutionItem from '../../components/InstitutionItem/InstitutionItem';
 import COLORS from '../../consts/colors';
-import { user } from '../../consts/user';
+// import { user } from '../../consts/user';
 
 import { realmContext } from '../../models/realmContext';
+import { getCustomUserData } from '../../helpers/getCustomUserData';
+import { useUser } from '@realm/react';
 const { useRealm, useQuery } = realmContext; 
 
 
@@ -30,6 +32,13 @@ export default function FarmersScreen({ route, navigation }) {
   const farmers = useQuery('Farmer');
   const groups = useQuery('Group');
   const institutions = useQuery('Institution');
+  const user = useUser();
+  let customUserData = user.customData;
+  customUserData = JSON.parse(customUserData);
+
+  console.log('customUserData:', customUserData)
+
+  // const user = getCustomUserData();
 
   const individualsList = addFlagToListItem(farmers, 'Indivíduo')
   const groupsList = addFlagToListItem(groups, 'Grupo')
@@ -81,7 +90,7 @@ export default function FarmersScreen({ route, navigation }) {
 
   
   const addFarmer = ()=>{
-    navigation.navigate('FarmerForm1', { user });
+    navigation.navigate('FarmerForm1', { customUserData });
   }
   
   const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
@@ -151,7 +160,7 @@ export default function FarmersScreen({ route, navigation }) {
                   color: COLORS.main, 
                 }}
               >
-                {user.district}
+                {customUserData.userDistrict}
               </Text>
 
               <Stack direction="row" space={2} my="1">

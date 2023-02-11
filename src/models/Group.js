@@ -23,7 +23,7 @@ export const Group = {
             type: 'date', default: Date()
         },
         userDistrict: 'string?',
-        userId: 'string?',
+        userId: 'string',
         // user: 'string?',
     },
 }

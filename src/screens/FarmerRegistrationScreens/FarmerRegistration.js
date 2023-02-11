@@ -111,7 +111,7 @@ export default function FarmerRegistration({ route, navigation }) {
 
     const [farmerItem, setFarmerItem] = useState({});
 
-    const user = route.params.user;
+    const customUserData = route.params.customUserData;
 
     const realm = useRealm();
 
@@ -130,8 +130,8 @@ export default function FarmerRegistration({ route, navigation }) {
                birthProvince,
                birthDistrict,
                birthAdminPost,
-               addressProvince : user.province,
-               addressDistrict: user.district,
+               addressProvince : customUserData.userProvince,
+               addressDistrict: customUserData.userDistrict,
                addressAdminPost,
                addressVillage,
                primaryPhone, 
@@ -176,8 +176,8 @@ export default function FarmerRegistration({ route, navigation }) {
                 institutionType,
                 institutionName,
                 institutionAdminPost,
-                institutionProvince : user.province,
-                institutionDistrict: user.district,
+                institutionProvince : customUserData.userProvince,
+                institutionDistrict: customUserData.userDistrict,
                 institutionVillage,
                 institutionManagerName,
                 institutionManagerPhone,
@@ -201,8 +201,8 @@ export default function FarmerRegistration({ route, navigation }) {
                 groupAffiliationYear,
                 groupOperatingLicence,
                 groupNuit,
-                groupProvince : user.province,
-                groupDistrict: user.district,
+                groupProvince : customUserData.userProvince,
+                groupDistrict: customUserData.userDistrict,
                 groupAdminPost,
                 groupVillage,
                 groupManagerName,
@@ -222,9 +222,9 @@ export default function FarmerRegistration({ route, navigation }) {
 
     useEffect(()=>{
 
-        if (user && user.district) {
-            const { district } = user;
-            setSelectedAddressAdminPosts(administrativePosts[district]);
+        if (customUserData && customUserData.userDistrict) {
+            const { userDistrict } = customUserData;
+            setSelectedAddressAdminPosts(administrativePosts[userDistrict]);
         }
         if (!birthProvince) {
             setBirthDistrict('');
@@ -234,7 +234,7 @@ export default function FarmerRegistration({ route, navigation }) {
             setBirthAdminPost('');
         }
 
-    }, [user, birthProvince, birthDistrict, birthAdminPost]);
+    }, [customUserData, birthProvince, birthDistrict, birthAdminPost]);
 
     useEffect(()=>{
         setLoadingActivityIndicator(true);

@@ -8,7 +8,7 @@ export const User = {
     primaryKey: '_id',
     properties: {
         _id: { type: 'objectId', default: ()=> new BSON.ObjectId()  },
-        userId: 'string?',
+        userId: 'string',
         name: 'string',
         email: 'string',
         password: 'string',

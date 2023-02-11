@@ -16,6 +16,7 @@ import COLORS from '../../consts/colors';
 
 import { Realm, useApp } from '@realm/react';
 import { secrets } from '../../secrets';
+import { BSON } from 'realm';
 
 
 export default function WelcomeScreen () {
@@ -40,7 +41,7 @@ export default function WelcomeScreen () {
 
     const [errorAlert, setErrorAlert] = useState(false);
     const [invalidDataAlert, setInvalidDataAlert] = useState(false);
-    const [userData, setUserData] = useState({});
+    // const [userData, setUserData] = useState({});
 
 
     const app = useApp();
@@ -56,52 +57,62 @@ export default function WelcomeScreen () {
           await signIn();
         } catch (error) {
             setErrorAlert(true);
-            console.log('Failed to sign up the user', { cause: error });
+            console.log('Failed to sign in the user', { cause: error });
         }
     }, [signIn]);
 
     // on user registration
-    const onSignUp = useCallback(async () => {
-
+    const onSignUp = useCallback(async (newName, newEmail, newPassword, newPasswordConfirm, newPhone, newUserDistrict, newUserProvince) => {
+        
+        // pack user data into an object
         const userData = {
-            name, 
-            email, 
-            password, 
-            passwordConfirm, 
-            phone,
-            userDistrict,
-            userProvince, 
-        };
+            name: newName,
+            email: newEmail,
+            password: newPassword,
+            passwordConfirm: newPasswordConfirm,
+            phone: newPhone,
+            userDistrict: newUserDistrict,
+            userProvince: newUserProvince,
+        }
 
+        // validate user data and return nothing if any error is found
         if (!validateUserData(userData, errors, setErrors)) {
             setInvalidDataAlert(true);
             return ;
         }
+        
+        // extract validated user data
+        const {
+            name, email, password, phone, userDistrict, userProvince,
+        } = validateUserData(userData, errors, setErrors);
 
+        // try to register new user
         try {
             await app.emailPasswordAuth.registerUser({email, password});
-        //   await signIn();
+
             const creds = Realm.Credentials.emailPassword(email, password);
             const newUser = await app.logIn(creds);
-            const mongo = newUser.mongoClient(secrets.clusterName);
+            const mongo = newUser.mongoClient(secrets.serviceName);
             const collection = mongo.db(secrets.databaseName).collection(secrets.userCollectionName);
             
-            // const filter = {
-            //     userId: newUser.id,
-            // };
-            
-            const userData = {
-                    userId: newUser.id,
-                    name: name,
-                    email: email,
-                    password: password,
-                    phone: phone,
-                    userProvince: userProvince,
-                    userDistrict: userDistrict,
-            };
-            console.log('userId:', newUser.id);
-            const result = await collection.insertOne(userData);
-            console.log('custom user data: ', result);
+
+            // pack the validated user data and save it into the database
+            const validatedUserdata = {
+                _id: new BSON.ObjectID(),
+                userId: newUser.id,
+                name,
+                email,
+                password,
+                phone,
+                userDistrict,
+                userProvince,
+                lastLoginAt: new Date(),
+                createdAt: new Date(),
+            }
+
+            // save custom user data 
+            const result = await collection.insertOne(validatedUserdata);
+            const customUserData = await newUser.refreshCustomData();
 
         } catch (error) {
             setErrorAlert(true)
@@ -603,7 +614,7 @@ export default function WelcomeScreen () {
                     onSignIn();
                 }   
                 else {
-                    onSignUp();
+                    onSignUp(name, email, password, passwordConfirm, phone, userDistrict, userProvince);
                 } 
             }} 
             type="outline"

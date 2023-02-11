@@ -34,7 +34,12 @@ export default function FarmersScreen({ route, navigation }) {
   const institutions = useQuery('Institution');
   const user = useUser();
   let customUserData = user.customData;
-  customUserData = JSON.parse(customUserData);
+  customUserData = {
+    name: customUserData?.name,
+    userDistrict: customUserData?.userDistrict,
+    userProvince: customUserData?.userProvince,
+    userId: customUserData?.userId,
+  };
 
   console.log('customUserData:', customUserData)
 

@@ -6,8 +6,9 @@
 export const Achievement = {
    
     name: 'Achievement',
-    embedded: true,
+    primaryKey: '_id',
     properties: {
+        _id: 'string',
         month: 'string',
         year: { type: 'int', default: ()=> new Date().getFullYear() },
         registeredFarmers: { type: 'int',  default: 0},

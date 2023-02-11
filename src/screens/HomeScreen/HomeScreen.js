@@ -31,7 +31,7 @@ export default function HomeScreen() {
   const realm = useRealm();
   const user = useUser();
   const customUserData = user.customData;
-  const achievements = useQuery('Achievement')
+  // const achievements = useQuery('Achievement')
   // const me = useApp().currentUser;
   const [isPerformanceButtonActive, setIsPerformanceButtonActive] = useState(false)
   const [isOpen, setIsOpen] = useState(false);

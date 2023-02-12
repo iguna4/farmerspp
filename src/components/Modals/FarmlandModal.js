@@ -21,6 +21,7 @@ import { user } from '../../consts/user';
 
 
 import { realmContext } from '../../models/realmContext';
+import { useUser } from '@realm/react';
 const {useRealm} = realmContext;
 
 const FarmlandModal = (
@@ -49,7 +50,9 @@ const FarmlandModal = (
 ) => {
 
     const navigation = useNavigation();
-    const realm = useRealm()
+    const realm = useRealm();
+    const user = useUser();
+    const customUserData = user?.customData;
 
 const onAddFarmland = useCallback((farmlandData, realm) =>{
     const {
@@ -93,8 +96,10 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
         };
     }
 
-    realm.write(()=>{
-        const newFarmland = realm.create('Farmland', {
+    let newFarmland;
+
+    realm.write( async ()=>{
+        newFarmland = await realm.create('Farmland', {
             _id: uuidv4(),
             plantingYear,
             description,
@@ -105,29 +110,35 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             totalArea,
             plantTypes,
             farmer: owner._id,
-            userDistrict: 'Mogovolas',
-            userId: 'userId',
+            userDistrict: customUserData?.userDistrict,
+            userId: customUserData?.userId,
         })
 
         // set the farmlandId
         setFarmlandId(newFarmland._id);
+    });
 
-        // add the created farmland to the Farmer (owner)'s object
-        owner.farmlands = [...owner.farmlands, newFarmland._id];
+    if (newFarmland) {
+        realm.write(()=>{
+            // add the created farmland to the Farmer (owner)'s object
+            owner.farmlands = [...owner.farmlands, newFarmland._id];    
+        })
+    }
 
-        
-        if (flag === 'Indivíduo'){            
-            // categorize by 'comercial' | 'familiar' | 'nao-categorizado'
-            const ownerFarmlands = realm.objects('Farmland').filtered('farmer == $0', owner._id)
+    if (flag === 'Indivíduo'){  
+        // categorize by 'comercial' | 'familiar' | 'nao-categorizado'
+        const ownerFarmlands = realm.objects('Farmland').filtered('farmer == $0', owner._id)
+        realm.write(()=>{
             owner.category = categorizeFarmer(ownerFarmlands);
-        }        
-    })
+        })
+    }        
+    
+}, [ realm, farmlandData ]);
 
-},
-    [
-        realm, farmlandData
-    ]
-)
+// const updateFarlmandOwnerCategory = useCallback((owner, realm)=>{
+    
+
+// }, realm, farmlandData, owner)
 
   return (
   <>

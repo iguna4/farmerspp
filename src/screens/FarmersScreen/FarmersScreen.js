@@ -29,6 +29,7 @@ const ownFarmerssSubscriptionName = 'ownSingleFarmers';
 const districtSingleFarmers = 'districtSingleFarmers';
 const districtGroupFarmers = 'districtGroupFarmers';
 const districtInstitutionFarmers = 'districtInstitutionFarmers';
+const districtFarmlands = 'districtFarmlands';
 
 
 export default function FarmersScreen({ route, navigation }) {
@@ -38,6 +39,7 @@ export default function FarmersScreen({ route, navigation }) {
   const farmers = useQuery('Farmer');
   const groups = useQuery('Group');
   const institutions = useQuery('Institution');
+  const farmlands = useQuery('Farmland');
 
   // current user
   const user = useUser();
@@ -123,6 +125,14 @@ export default function FarmersScreen({ route, navigation }) {
         mutableSubs.add(
           realm.objects('Institution').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
           {name: districtInstitutionFarmers},
+        );
+      });
+
+      realm.subscriptions.update(mutableSubs => {
+        mutableSubs.removeByName(districtFarmlands);
+        mutableSubs.add(
+          realm.objects('Farmland').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+          {name: districtFarmlands},
         );
       });
 

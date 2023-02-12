@@ -73,8 +73,8 @@ const GroupModal = (
         nuit,
     } = farmerData;
 
-    realm.write(()=>{
-        const newGroup = realm.create('Group', {
+    realm.write(async ()=>{
+        const newGroup = await realm.create('Group', {
             _id: uuidv4(),
             type,
             name,

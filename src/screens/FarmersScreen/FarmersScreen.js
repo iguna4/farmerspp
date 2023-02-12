@@ -17,12 +17,18 @@ import GroupItem from '../../components/GroupItem/GroupItem';
 import InstitutionItem from '../../components/InstitutionItem/InstitutionItem';
 import COLORS from '../../consts/colors';
 // import { user } from '../../consts/user';
+// import { getCustomUserData } from '../../helpers/getCustomUserData';
 
 import { realmContext } from '../../models/realmContext';
-import { getCustomUserData } from '../../helpers/getCustomUserData';
 import { useUser } from '@realm/react';
 const { useRealm, useQuery } = realmContext; 
 
+
+const farmerSubscriptionName = 'singleFarmers';
+const ownFarmerssSubscriptionName = 'ownSingleFarmers';
+const districtSingleFarmers = 'districtSingleFarmers';
+const districtGroupFarmers = 'districtGroupFarmers';
+const districtInstitutionFarmers = 'districtInstitutionFarmers';
 
 
 export default function FarmersScreen({ route, navigation }) {
@@ -73,25 +79,57 @@ export default function FarmersScreen({ route, navigation }) {
   
   // concatenate all farmlands
   const farmlandIds = farmersList
-        ?.filter((farmer) =>farmer?.farmlands?.length > 0)
-        ?.map(({ farmlands }) => {
-          farmlandsList = [...farmlandsList, ...farmlands ]
-        });
+      ?.filter((farmer) =>farmer?.farmlands?.length > 0)
+      ?.map(({ farmlands }) => {
+        farmlandsList = [...farmlandsList, ...farmlands ]
+  });
 
-  useEffect(()=>{
-    /**
-     *  const subscribedFarmers = realm.objects('Farmer').filtered(`district ==${user?.district}`);
-     *  const updateSubscriptions = async () =>{
-     *    await realm.subscriptions.update(mutableSubs => {
-     *      mutableSubs.add(subscribedFarmers, {name: farmerSubscriptionName});
-     * }); 
-     * };
-     * updateSubscriptions();
-     * 
-     */
+  useEffect(() => {
+    // if (showAllItems) {
+    //   realm.subscriptions.update(mutableSubs => {
+    //     mutableSubs.removeByName(ownItemsSubscriptionName);
+    //     mutableSubs.add(realm.objects(Item), {name: itemSubscriptionName});
+    //   });
+    // } 
+    // else if (showImportantOnly) {
+    //   realm.subscriptions.update(mutableSubs=>{
+    //     mutableSubs.removeByName(itemSubscriptionName);
+    //     mutableSubs.add(
+    //       realm.objects(Item).filtered(`owner_id =="${user?.id}" && priority <= 1`),
+    //       {name: ownItemsSubscriptionName}
+    //     );
+    //   });
+    // }
+    // else {
+      realm.subscriptions.update(mutableSubs => {
+        mutableSubs.removeByName(districtSingleFarmers);
+        mutableSubs.add(
+          realm.objects('Farmer').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+          {name: districtSingleFarmers},
+        );
+      });
+
+      realm.subscriptions.update(mutableSubs => {
+        mutableSubs.removeByName(districtGroupFarmers);
+        mutableSubs.add(
+          realm.objects('Group').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+          {name: districtGroupFarmers},
+        );
+      });
 
 
-  }, [farmers, groups, institutions, realm, farmersList]);
+      realm.subscriptions.update(mutableSubs => {
+        mutableSubs.removeByName(districtInstitutionFarmers);
+        mutableSubs.add(
+          realm.objects('Institution').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+          {name: districtInstitutionFarmers},
+        );
+      });
+
+
+
+    // }
+  }, [realm, user ]);
 
   const keyExtractor = (item, index)=>index.toString();
 

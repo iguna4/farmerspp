@@ -64,8 +64,8 @@ const IndividualModal = (
     // generate the universally farmer identifier
     const ufid = generateUFID({ names, birthDate, birthPlace });
   
-    realm.write(()=>{
-        const newFarmer = realm.create('Farmer', {
+    realm.write(async ()=>{
+        const newFarmer = await realm.create('Farmer', {
             _id: uuidv4(),
             names,
             ufid,
@@ -75,12 +75,8 @@ const IndividualModal = (
             birthDate,
             birthPlace,
             address,
-            // category: 'Não-categorizado',
             contact,
             idDocument,
-            // image: '',
-            // farmlands: [],
-            // createdAt: new Date(),
             userDistrict: customUserData?.userDistrict,
             userId: customUserData?.userId,
         })

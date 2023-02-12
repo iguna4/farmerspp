@@ -73,8 +73,8 @@ const InstitutionModal = (
         // licence,
     } = farmerData;
 
-    realm.write(()=>{
-        const newInstitution = realm.create('Institution', {
+    realm.write(async ()=>{
+        const newInstitution = await realm.create('Institution', {
             _id: uuidv4(),
             type,
             name,

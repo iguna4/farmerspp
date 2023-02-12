@@ -30,7 +30,7 @@ const { useRealm, useQuery, useObject } = realmContext;
 export default function HomeScreen() {
   const realm = useRealm();
   const user = useUser();
-  const customUserData = user.customData;
+  const customUserData = user?.customData;
   // const achievements = useQuery('Achievement')
   // const me = useApp().currentUser;
   const [isPerformanceButtonActive, setIsPerformanceButtonActive] = useState(false)
@@ -41,9 +41,9 @@ export default function HomeScreen() {
   // console.log('customData: ', currentUser?.customData);
   // console.log('me:', me.customData);
 
-  realm.write(()=>{
+  // realm.write(()=>{
 
-  })
+  // })
 
   const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
   
@@ -125,7 +125,7 @@ export default function HomeScreen() {
                   fontFamily: 'JosefinSans-Bold',
                   fontSize: 18,
                 }}
-                >{customUserData.name?.split(' ')[0]}</Text>
+                >{customUserData?.name?.split(' ')[0]}</Text>
             </TouchableOpacity>
           </Box>
         </Stack>
@@ -318,7 +318,7 @@ export default function HomeScreen() {
               fontFamily: 'JosefinSans-Bold',
               paddingTop: 10,
             }}>
-                Provincial ({customUserData.userProvince})
+                Provincial ({customUserData?.userProvince})
             </Text>            
           
           <Stack w="100%" direction="row" space={4} py="2">
@@ -381,7 +381,7 @@ export default function HomeScreen() {
               fontFamily: 'JosefinSans-Bold',
               paddingTop: 10,
             }}>
-                Distrital ({customUserData.userDistrict})
+                Distrital ({customUserData?.userDistrict})
             </Text>            
           
           <Stack w="100%" direction="row" space={4} py="2">
@@ -445,7 +445,7 @@ export default function HomeScreen() {
               fontFamily: 'JosefinSans-Bold',
               paddingTop: 10,
             }}>
-                Individual ({customUserData.name})
+                Individual ({customUserData?.name})
             </Text>            
           
           <Stack w="100%" direction="row" space={4} py="2">
@@ -555,7 +555,7 @@ export default function HomeScreen() {
           fontFamily: 'JosefinSans-Bold',
           paddingTop: 10,
         }}>
-            Provincial ({customUserData.userProvince})
+            Provincial ({customUserData?.userProvince})
         </Text>            
       
       <Stack w="100%" direction="row" space={4} py="2">
@@ -612,7 +612,7 @@ export default function HomeScreen() {
           fontFamily: 'JosefinSans-Bold',
           paddingTop: 10,
         }}>
-            Distrital ({customUserData.userDistrict})
+            Distrital ({customUserData?.userDistrict})
         </Text>            
       
       <Stack w="100%" direction="row" space={4} py="2">
@@ -668,7 +668,7 @@ export default function HomeScreen() {
           fontFamily: 'JosefinSans-Bold',
           paddingTop: 10,
         }}>
-            Individual ({customUserData.name})
+            Individual ({customUserData?.name})
         </Text>            
       
       <Stack w="100%" direction="row" space={4} py="2">

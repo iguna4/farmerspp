@@ -12,7 +12,7 @@ import FarmerItem from '../../components/FarmerItem/FarmerItem';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import LottieAddButton from '../../components/Buttons/LottieAddButton';
 import TickComponent from '../../components/LottieComponents/TickComponent';
-import { addFlagToListItem } from '../../helpers/addFlagToListItem'
+import { customizeItem } from '../../helpers/customizeItem'
 import GroupItem from '../../components/GroupItem/GroupItem';
 import InstitutionItem from '../../components/InstitutionItem/InstitutionItem';
 import COLORS from '../../consts/colors';
@@ -35,17 +35,18 @@ const districtFarmlands = 'districtFarmlands';
 export default function FarmersScreen({ route, navigation }) {
 
   const realm = useRealm();
-
-  const farmers = useQuery('Farmer');
-  const groups = useQuery('Group');
-  const institutions = useQuery('Institution');
-  const farmlands = useQuery('Farmland');
-
   // current user
   const user = useUser();
-
   // custom user data
   let customUserData = user.customData;
+
+  const farmers = realm.objects('Farmer').filtered("userDistrict == $0", customUserData?.userDistrict);;
+  const groups = realm.objects('Group').filtered("userDistrict == $0", customUserData?.userDistrict);;
+  const institutions = realm.objects('Institution').filtered("userDistrict == $0", customUserData?.userDistrict);
+  const farmlands = realm.objects('Farmland').filtered("userDistrict == $0" , customUserData?.userDistrict);
+  // const districtFarmlands = realm.objects('Farmland').filtered(`userDistrict = '${customUserData?.userDistrict}'`);
+
+  // console.log('groups: ', JSON.stringify(groups));
 
   // extract needed custom user data
   customUserData = {
@@ -55,9 +56,9 @@ export default function FarmersScreen({ route, navigation }) {
     userId: customUserData?.userId,
   };
 
-  const individualsList = addFlagToListItem(farmers, 'Indivíduo')
-  const groupsList = addFlagToListItem(groups, 'Grupo')
-  const institutionsList = addFlagToListItem(institutions, 'Instituição');
+  const individualsList = customizeItem(farmers, customUserData, 'Indivíduo')
+  const groupsList = customizeItem(groups, customUserData, 'Grupo')
+  const institutionsList = customizeItem(institutions, customUserData, 'Instituição');
 
  
   
@@ -80,11 +81,11 @@ export default function FarmersScreen({ route, navigation }) {
   }
   
   // concatenate all farmlands
-  const farmlandIds = farmersList
-      ?.filter((farmer) =>farmer?.farmlands?.length > 0)
-      ?.map(({ farmlands }) => {
-        farmlandsList = [...farmlandsList, ...farmlands ]
-  });
+  // const farmlandIds = farmersList
+  //     ?.filter((farmer) =>farmer?.farmlands?.length > 0)
+  //     ?.map(({ farmlands }) => {
+  //       farmlandsList = [...farmlandsList, ...farmlands ]
+  // });
 
   useEffect(() => {
     // if (showAllItems) {
@@ -230,7 +231,7 @@ export default function FarmersScreen({ route, navigation }) {
                 <Center>
                   <Text
                     style={{ fontFamily: 'JosefinSans-Regular', fonSize: 14, }}
-                  >[{'Parcelas:'}{' '}{farmlandsList.length}]</Text>
+                  >[{'Parcelas:'}{' '}{farmlands.length}]</Text>
                 </Center>
               </Stack>
             </Center>

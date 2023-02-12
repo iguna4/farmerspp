@@ -42,9 +42,13 @@ const FarmerItem = ({ item, route, farmerType }) => {
         <Avatar 
             size={60}
             rounded
-            title={getInitials(item?.names?.surname)}
+            // title={getInitials(item?.names?.surname)}
+            title={item.imageAlt}
             containerStyle={{ backgroundColor: COLORS.grey }}
-            source={{ uri: item?.image ? item?.image : 'htt://localhost/not-set-yet' }}
+            source={{ 
+              // uri: item?.image ? item?.image : 'htt://localhost/not-set-yet' 
+              uri: item.image
+            }}
         />
       </Center>
 
@@ -64,7 +68,8 @@ const FarmerItem = ({ item, route, farmerType }) => {
           color: COLORS.main,
         }}
         >
-        {item.names.otherNames}{' '}{item.names.surname}
+        {/* {item.names.otherNames}{' '}{item.names.surname} */}
+        {item.name}
       <Text 
         style={{
           fontSize: 14,
@@ -107,10 +112,11 @@ const FarmerItem = ({ item, route, farmerType }) => {
               fontFamily: 'JosefinSans-Italic',
               }}
             >
-              Tel: {
+              {/* Tel: {
               item.contact.primaryPhone ? item.contact.primaryPhone
               : item.contact.secondaryPhone ? item.contact.secondaryPhone : 'Nenhum'
-            }
+            } */}
+            Tel: {item.phone}
             </Text>
           </Box>
           <Box w="50%">
@@ -123,7 +129,10 @@ const FarmerItem = ({ item, route, farmerType }) => {
                   >
                     Parcelas: {' '}
                   </Text>
-                  <Text style={{ fontSize: 15, paddingTop: 2,  }}>{item.farmlands.length}</Text>
+                  <Text style={{ fontSize: 15, paddingTop: 2,  }}>
+                    {/* {item.farmlands.length} */}
+                    {item.farmlands}
+                  </Text>
               </Stack>
             </Box>
       </Stack>
@@ -146,7 +155,9 @@ const FarmerItem = ({ item, route, farmerType }) => {
           }}
           >
           Registo:{' '}                 
-          {new Date(item.createdAt).getDate()}/{months[new Date(item.createdAt).getMonth()]}/{new Date(item.createdAt).getFullYear()}
+          {/* {new Date(item.createdAt).getDate()}/{months[new Date(item.createdAt).getMonth()]}/{new Date(item.createdAt).getFullYear()} */}
+          {item.createdAt}
+          {/* {' '} por {item.user} */}
           {' '} por {item.user}
         </Text>
       </Box>

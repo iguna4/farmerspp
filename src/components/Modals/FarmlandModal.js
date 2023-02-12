@@ -118,20 +118,22 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
         setFarmlandId(newFarmland._id);
     });
 
-    if (newFarmland) {
-        realm.write(()=>{
-            // add the created farmland to the Farmer (owner)'s object
-            owner.farmlands = [...owner.farmlands, newFarmland._id];    
-        })
-    }
+    // if (newFarmland) {
+    //     console.log('newn Farmland: ', JSON.stringify(newFarmland));
+    //     realm.write(()=>{
+    //         // add the created farmland to the Farmer (owner)'s object
+    //         owner.farmlands = [...owner.farmlands, newFarmland._id];    
+    //     })
+    // }
 
-    if (flag === 'Indivíduo'){  
-        // categorize by 'comercial' | 'familiar' | 'nao-categorizado'
-        const ownerFarmlands = realm.objects('Farmland').filtered('farmer == $0', owner._id)
-        realm.write(()=>{
+    const ownerFarmlands = realm.objects('Farmland').filtered('farmer == $0', owner._id)
+    realm.write(()=>{
+        owner.farmlands = ownerFarmlands?.map((farmland)=>farmland._id);
+        if (flag === 'Indivíduo'){  
+            // categorize by 'comercial' | 'familiar' | 'nao-categorizado'
             owner.category = categorizeFarmer(ownerFarmlands);
-        })
-    }        
+        }        
+    })
     
 }, [ realm, farmlandData ]);
 

@@ -43,9 +43,13 @@ const InstitutionItem = ({ item, route }) => {
     <Avatar 
             size={60}
             rounded
-            title={getInitials(item?.manager?.fullname)}
+            // title={getInitials(item?.manager?.fullname)}
+            title={item.imageAlt}
             containerStyle={{ backgroundColor: COLORS.grey }}
-            source={{ uri: item?.image ? item?.image : 'htt://localhost/not-set-yet' }}
+            source={{ 
+              // uri: item?.image ? item?.image : 'htt://localhost/not-set-yet'
+              uri: item.image 
+            }}
         />
     </Center>
     <Box w="85%">
@@ -92,7 +96,8 @@ const InstitutionItem = ({ item, route }) => {
                 >
                 Responsável: {' '}
               {
-                item?.manager?.fullname
+                // item?.manager?.fullname
+                item.manager
               }
             </Text>
         </Stack>
@@ -107,8 +112,9 @@ const InstitutionItem = ({ item, route }) => {
                 }}
                 >
                 Tel: {
-                  item?.manager?.phone ? item?.manager?.phone
-                  : 'Nenhum'
+                  // item?.manager?.phone ? item?.manager?.phone
+                  // : 'Nenhum'
+                  item.phone
                 }
               </Text>
             </Box>
@@ -123,7 +129,10 @@ const InstitutionItem = ({ item, route }) => {
                 >
                   Parcelas: {' '}
                 </Text>
-                <Text style={{ fontSize: 15, paddingTop: 2,  }}>{item?.farmlands.length}</Text>
+                <Text style={{ fontSize: 15, paddingTop: 2,  }}>
+                  {/* {item?.farmlands.length} */}
+                  {item.farmlands}
+                  </Text>
               </Stack>
             </Box>
         </Stack>
@@ -145,7 +154,9 @@ const InstitutionItem = ({ item, route }) => {
           }}
           >
           Registo:{' '}                 
-          {new Date(item.createdAt).getDate()}/{months[new Date(item.createdAt).getMonth()]}/{new Date(item.createdAt).getFullYear()}
+          {/* {new Date(item.createdAt).getDate()}/{months[new Date(item.createdAt).getMonth()]}/{new Date(item.createdAt).getFullYear()} */}
+          {item.createdAt}
+          {/* {' '} por {item.user} */}
           {' '} por {item.user}
         </Text>
       </Box>

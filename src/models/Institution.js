@@ -20,6 +20,7 @@ export const Institution = {
         createdAt: { type: 'date', default: Date()},
         userDistrict: 'string?',
         userId: 'string',
+        userName: 'string?',
         ownerId: 'string',
     },
 }

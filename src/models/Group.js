@@ -24,6 +24,8 @@ export const Group = {
         },
         userDistrict: 'string?',
         userId: 'string',
+        userName: 'string?'
+
         // user: 'string?',
     },
 }

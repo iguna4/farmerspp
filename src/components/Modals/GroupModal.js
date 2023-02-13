@@ -86,6 +86,7 @@ const GroupModal = (
             nuit,
             userDistrict: customUserData?.userDistrict,
             userId: customUserData?.userId,
+            userName: customUserData?.name,
         })
         setFarmerItem({
             ownerId: newGroup._id,

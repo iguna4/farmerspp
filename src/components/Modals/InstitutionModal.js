@@ -85,6 +85,7 @@ const InstitutionModal = (
             // licence,
             userDistrict: customUserData?.userDistrict,
             userId: customUserData?.userId,
+            userName: customUserData?.name,
             ownerId: customUserData?.userId,
         })
         setFarmerItem({

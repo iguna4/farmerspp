@@ -17,7 +17,7 @@ import FarmerAddDataModal from './SuccessModal';
 
 import { useNavigation } from '@react-navigation/native';
 import { categorizeFarmer } from '../../helpers/categorizeFarmer';
-import { user } from '../../consts/user';
+// import { user } from '../../consts/user';
 
 
 import { realmContext } from '../../models/realmContext';
@@ -112,6 +112,7 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             farmer: owner._id,
             userDistrict: customUserData?.userDistrict,
             userId: customUserData?.userId,
+            userName: customUserData?.name,
         })
 
         // set the farmlandId

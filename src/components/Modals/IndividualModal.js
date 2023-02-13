@@ -79,6 +79,7 @@ const IndividualModal = (
             idDocument,
             userDistrict: customUserData?.userDistrict,
             userId: customUserData?.userId,
+            userName: customUserData?.name,
         })
         setFarmerItem({
             ownerId: newFarmer._id,

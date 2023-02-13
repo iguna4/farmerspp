@@ -1,10 +1,19 @@
 import { months } from "./dates";
 import { getInitials } from "./getInitials";
 
+import { realmContext } from '../models/realmContext';
+import { useObject } from '@realm/react';
+import { BSON } from "realm";
+const {useRealm } = realmContext;
+
 
 export const customizeItem = (list, customUserData, flag)=>{
 
+        const realm = useRealm();
+
+
         return list?.map((item)=>{
+
                 if (flag === 'Indivíduo') {
                         const newItem = {
                                 _id: item?._id,
@@ -26,10 +35,11 @@ export const customizeItem = (list, customUserData, flag)=>{
                                         : 'Nenhum',
                                 
                                 farmlands: item?.farmlands?.length,
-                                createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
-                                user: (customUserData?.userId === item?.userId)
+                                // createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
+                                createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth()+1}-${new Date(item?.createdAt).getFullYear()}`,
+                                user: (item?.userName === customUserData?.name)
                                         ? 'mim'
-                                        : customUserData?.name,
+                                        : item?.userName,
                                 flag: flag,
 
 
@@ -51,10 +61,11 @@ export const customizeItem = (list, customUserData, flag)=>{
                                         : 'Nenhum',
                                 
                                 farmlands: item?.farmlands?.length,
-                                createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
-                                user: (customUserData?.userId === item?.userId)
+                                // createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
+                                createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth()+1}-${new Date(item?.createdAt).getFullYear()}`,
+                                user: (item?.userName === customUserData?.name)
                                         ? 'mim'
-                                        : customUserData?.name,
+                                        : item?.userName,
                                 flag: flag,
 
                         }
@@ -75,10 +86,11 @@ export const customizeItem = (list, customUserData, flag)=>{
                                         : 'Nenhum',
                                 
                                 farmlands: item?.farmlands?.length,
-                                createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
-                                user: (customUserData?.userId === item?.userId)
+                                // createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
+                                createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth()+1}-${new Date(item?.createdAt).getFullYear()}`,
+                                user: (item?.userName === customUserData?.name)
                                         ? 'mim'
-                                        : customUserData?.name,
+                                        : item?.userName,
                                 flag: flag,
 
                         }

@@ -182,7 +182,7 @@ const FarmlandData = ({ farmland })=>{
                         
                     }}
                     >
-                    Árvores
+                    Árvores:
                 </Text>
                 </Box>
                 <Box w="70%">
@@ -208,7 +208,7 @@ const FarmlandData = ({ farmland })=>{
                         
                     }}
                     >
-                    Idade
+                    Idade:
                 </Text>
                 </Box>
                 <Box w="70%">
@@ -234,7 +234,7 @@ const FarmlandData = ({ farmland })=>{
                         
                     }}
                     >
-                    Compasso
+                    Compasso:
                 </Text>
                 </Box>
                 <Box w="70%">
@@ -261,7 +261,7 @@ const FarmlandData = ({ farmland })=>{
                         
                     }}
                     >
-                    Tipo de plantas
+                    Tipo de plantas:
                 </Text>
                 </Box>
                 <Box w="70%">
@@ -313,7 +313,7 @@ const FarmlandData = ({ farmland })=>{
                 
             }}
             >
-            Clones
+            Clones:
         </Text>
         </Box>
         <Box w="70%">
@@ -469,7 +469,7 @@ const FarmlandData = ({ farmland })=>{
                         fontFamily: 'JosefinSans-Regular',
                     }}
                     >
-                    Total declarada
+                    Total declarada:
                 </Text>
             </Box>
             <Box w="70%">
@@ -493,7 +493,7 @@ const FarmlandData = ({ farmland })=>{
                         fontFamily: 'JosefinSans-Regular',
                     }}
                     >
-                    Aproveitada declarada
+                    Aproveitada:
                 </Text>
             </Box>
             <Box w="70%">
@@ -517,7 +517,7 @@ const FarmlandData = ({ farmland })=>{
                         fontFamily: 'JosefinSans-Regular',
                     }}
                     >
-                    Auditada
+                    Auditada:
                 </Text>
             </Box>
             <Box w="70%">

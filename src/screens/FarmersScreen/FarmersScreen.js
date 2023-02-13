@@ -37,7 +37,7 @@ const districtFarmlands = 'districtFarmlands';
 
 export default function FarmersScreen({ route, navigation }) {
 
-  const [isSwitchEnabled, setIsSwitchEnabled] = useState(false);
+  // const [isSwitchEnabled, setIsSwitchEnabled] = useState(false);
   
   const realm = useRealm();
   // current user
@@ -69,19 +69,19 @@ export default function FarmersScreen({ route, navigation }) {
   // This is initialized based on which subscription is already active
   const [showAll, setShowAll] = useState(
     !!realm.subscriptions.findByName(districtSingleFarmers)
-    &&
+    ||
     !!realm.subscriptions.findByName(districtGroupFarmers)
-    &&
+    ||
     !!realm.subscriptions.findByName(districtInstitutionFarmers)
-    &&
+    ||
     !!realm.subscriptions.findByName(districtFarmlands)
   );
  
-  const toggleSwitch = ()=>setIsSwitchEnabled(prev =>!prev);
+  // const toggleSwitch = ()=>setIsSwitchEnabled(prev =>!prev);
   
   // merge the three arrays of farmers and sort the items by createdAt 
   let farmersList = [];
-  let farmlandsList = [];
+  // let farmlandsList = [];
 
   if (individualsList.length > 0){
     farmersList = farmersList.concat(individualsList)
@@ -348,8 +348,8 @@ export default function FarmersScreen({ route, navigation }) {
               lineHeight: 30,
             }}
           >
-            Serás o primeiro a iniciar o registo de produtores 
-            de caju neste distrito!
+            {/* Serás o primeiro a iniciar o registo de produtores 
+            de caju neste distrito! */}
           </Text>
           <TickComponent />
         </Center>

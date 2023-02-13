@@ -571,7 +571,8 @@ const FarmlandData = ({ farmland })=>{
                 >
                     <Icon 
                         name="add-location-alt" 
-                        size={30} color={COLORS.main} 
+                        size={30} 
+                        color={COLORS.second} 
                     />
                 </TouchableOpacity>
             </Box>

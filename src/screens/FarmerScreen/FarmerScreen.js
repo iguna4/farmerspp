@@ -11,6 +11,7 @@ import styles from './styles';
 import COLORS from '../../consts/colors';
 import PhotoModal from '../../components/Modals/PhotoModal';
 
+import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 const { useRealm, useQuery, useObject } = realmContext; 
 
@@ -18,6 +19,8 @@ const { useRealm, useQuery, useObject } = realmContext;
 export default function FarmerScreen ({ route, navigation }) {
     const ownerId = route.params.ownerId;
     const realm = useRealm();
+    const user = useUser();
+    const customUserData = user?.customData;
     const farmer = useObject('Farmer', ownerId);
     const farmlands = useQuery('Farmland').filtered('farmer == $0', ownerId);
     const [fileData, setFileData] = useState(null);
@@ -313,6 +316,7 @@ export default function FarmerScreen ({ route, navigation }) {
               <TouchableOpacity
                 style={{
                   flexDirection: 'row'
+
                 }}
                 onPress={()=>navigation.navigate('FarmlandForm1', {
                   ownerId: farmer._id,
@@ -320,7 +324,11 @@ export default function FarmerScreen ({ route, navigation }) {
                   flag: 'Indivíduo',
                 })}
               >
-                <Icon name="add-circle" color={COLORS.second}size={60} />
+                <Icon 
+                  name="add-circle" 
+                  color={COLORS.second} 
+                  size={60} 
+                />
 
               </TouchableOpacity>
             </Box>            

@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import {FlatList, InteractionManager, Image, SafeAreaView, Text, View, PermissionsAndroid, Animated} from 'react-native';
+import {FlatList, InteractionManager, Switch, Image, SafeAreaView, Text, View, PermissionsAndroid, Animated, TouchableOpacity} from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import {ListItem, Avatar, Icon } from '@rneui/themed';
+import {ListItem, Avatar, Icon, } from '@rneui/themed';
 import { Box, Center, Pressable, Stack } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -24,8 +24,11 @@ import { useUser } from '@realm/react';
 const { useRealm, useQuery } = realmContext; 
 
 
-const farmerSubscriptionName = 'singleFarmers';
-const ownFarmerssSubscriptionName = 'ownSingleFarmers';
+const userSingleFarmers = 'userSingleFarmers';
+const userGroupFarmers = 'userGroupFarmers';
+const userInstitutionFarmers = 'userInstitutionFarmers';
+const userFarmlands = 'userFarmlands';
+
 const districtSingleFarmers = 'districtSingleFarmers';
 const districtGroupFarmers = 'districtGroupFarmers';
 const districtInstitutionFarmers = 'districtInstitutionFarmers';
@@ -34,6 +37,8 @@ const districtFarmlands = 'districtFarmlands';
 
 export default function FarmersScreen({ route, navigation }) {
 
+  const [isSwitchEnabled, setIsSwitchEnabled] = useState(false);
+  
   const realm = useRealm();
   // current user
   const user = useUser();
@@ -60,7 +65,19 @@ export default function FarmersScreen({ route, navigation }) {
   const groupsList = customizeItem(groups, customUserData, 'Grupo')
   const institutionsList = customizeItem(institutions, customUserData, 'Instituição');
 
+  // This state will be used to toggle between showing all items and only showing the current user's items
+  // This is initialized based on which subscription is already active
+  const [showAll, setShowAll] = useState(
+    !!realm.subscriptions.findByName(districtSingleFarmers)
+    &&
+    !!realm.subscriptions.findByName(districtGroupFarmers)
+    &&
+    !!realm.subscriptions.findByName(districtInstitutionFarmers)
+    &&
+    !!realm.subscriptions.findByName(districtFarmlands)
+  );
  
+  const toggleSwitch = ()=>setIsSwitchEnabled(prev =>!prev);
   
   // merge the three arrays of farmers and sort the items by createdAt 
   let farmersList = [];
@@ -88,35 +105,58 @@ export default function FarmersScreen({ route, navigation }) {
   // });
 
   useEffect(() => {
-    // if (showAllItems) {
-    //   realm.subscriptions.update(mutableSubs => {
-    //     mutableSubs.removeByName(ownItemsSubscriptionName);
-    //     mutableSubs.add(realm.objects(Item), {name: itemSubscriptionName});
-    //   });
-    // } 
-    // else if (showImportantOnly) {
-    //   realm.subscriptions.update(mutableSubs=>{
-    //     mutableSubs.removeByName(itemSubscriptionName);
-    //     mutableSubs.add(
-    //       realm.objects(Item).filtered(`owner_id =="${user?.id}" && priority <= 1`),
-    //       {name: ownItemsSubscriptionName}
-    //     );
-    //   });
-    // }
-    // else {
+    if (showAll) {
+
+    realm.subscriptions.update(mutableSubs => {
+      mutableSubs.removeByName(userSingleFarmers);
+      mutableSubs.add(
+        realm.objects('Farmer').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+        {name: districtSingleFarmers},
+      );
+    });
+
+    realm.subscriptions.update(mutableSubs => {
+      mutableSubs.removeByName(userGroupFarmers);
+      mutableSubs.add(
+        realm.objects('Group').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+        {name: districtGroupFarmers},
+      );
+    });
+
+
+    realm.subscriptions.update(mutableSubs => {
+      mutableSubs.removeByName(userInstitutionFarmers);
+      mutableSubs.add(
+        realm.objects('Institution').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+        {name: districtInstitutionFarmers},
+      );
+    });
+
+    realm.subscriptions.update(mutableSubs => {
+      mutableSubs.removeByName(userFarmlands);
+      mutableSubs.add(
+        realm.objects('Farmland').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+        {name: districtFarmlands},
+      );
+    });
+
+
+  }
+    else {
+
       realm.subscriptions.update(mutableSubs => {
         mutableSubs.removeByName(districtSingleFarmers);
         mutableSubs.add(
-          realm.objects('Farmer').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
-          {name: districtSingleFarmers},
+          realm.objects('Farmer').filtered(`userId == "${user?.customData?.userId}"`),
+          {name: userSingleFarmers},
         );
       });
 
       realm.subscriptions.update(mutableSubs => {
         mutableSubs.removeByName(districtGroupFarmers);
         mutableSubs.add(
-          realm.objects('Group').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
-          {name: districtGroupFarmers},
+          realm.objects('Group').filtered(`userId == "${user?.customData?.userId}"`),
+          {name: userGroupFarmers},
         );
       });
 
@@ -124,23 +164,22 @@ export default function FarmersScreen({ route, navigation }) {
       realm.subscriptions.update(mutableSubs => {
         mutableSubs.removeByName(districtInstitutionFarmers);
         mutableSubs.add(
-          realm.objects('Institution').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
-          {name: districtInstitutionFarmers},
+          realm.objects('Institution').filtered(`userId == "${user?.customData?.userId}"`),
+          {name: userInstitutionFarmers},
         );
       });
 
       realm.subscriptions.update(mutableSubs => {
         mutableSubs.removeByName(districtFarmlands);
         mutableSubs.add(
-          realm.objects('Farmland').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
-          {name: districtFarmlands},
+          realm.objects('Farmland').filtered(`userId == "${user?.customData?.userId}"`),
+          {name: userFarmlands},
         );
       });
 
 
-
-    // }
-  }, [realm, user ]);
+    }
+  }, [realm, user, showAll ]);
 
   const keyExtractor = (item, index)=>index.toString();
 
@@ -183,7 +222,7 @@ export default function FarmersScreen({ route, navigation }) {
     >
       <View
           style={{
-            minHeight: "10%",
+            minHeight: "15%",
             width: '100%',
             paddingHorizontal: 15,
             paddingTop: 5,
@@ -199,12 +238,29 @@ export default function FarmersScreen({ route, navigation }) {
         <Stack
           direction="row" w="100%"
         >
-          <Center w="10%">
-            <Image
+          <Center w="15%">
+
+            <Switch
+              trackColor={{ true: COLORS.main, false: COLORS.grey }}
+              thumbColor={ showAll ? COLORS.grey : COLORS.main }
+              onValueChange={
+                () => {
+                // if (realm.syncSession?.state !== 'active') {
+                //   Alert.alert(
+                //     'Switching subscriptions does not affect Realm data when the sync is offline.',
+                //   );
+                // }
+                setShowAll(!showAll);
+                setLoadingActivityIndicator(true);
+              }
+            }
+              value={showAll}
+            />
+            {/* <Image
                   style={{ width: 40, height: 40, borderRadius: 100, }}
                   source={require('../../../assets/images/iamLogo2.png')}
                   // resizeMode={FastImage.resizeMode.contain}
-            />
+            /> */}
           </Center>
 
           <Box w="70%">
@@ -216,7 +272,7 @@ export default function FarmersScreen({ route, navigation }) {
                   color: COLORS.main, 
                 }}
               >
-                {customUserData.userDistrict}
+                { !showAll ? customUserData?.userDistrict : customUserData?.name}
               </Text>
 
               <Stack direction="row" space={2} my="1">
@@ -236,20 +292,30 @@ export default function FarmersScreen({ route, navigation }) {
               </Stack>
             </Center>
           </Box>
-          <Box w="20%"
-            style={{ justifyContent: 'center'}}
+          <Box 
+            w="15%"
+            style={{ 
+              justifyContent: 'center',
+              borderRadius: 100,
+              borderWidth: 1,
+              borderColor: COLORS.main,
+              backgroundColor: COLORS.main,
+            }}
           >
-            <Icon 
-                name="search" 
-                color={COLORS.main}
-                size={40}
-              />
+            <TouchableOpacity
+              onPress={addFarmer}
+            >
+              <Icon 
+                  name="person-add" 
+                  color={COLORS.ghostwhite}
+                  size={40}
+                  />
+            </TouchableOpacity>
           </Box>
         </Stack>
       </View>
 
-
-      <LottieAddButton
+      {/* <LottieAddButton
         styles={{ 
           zIndex: 3, 
           width: 100, 
@@ -259,7 +325,7 @@ export default function FarmersScreen({ route, navigation }) {
          
         }}
         onPress={addFarmer}
-        />
+        /> */}
 
       {
       (farmers?.length === 0 && groups.length === 0 && institutions.length === 0) 

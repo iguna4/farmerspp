@@ -5,14 +5,18 @@ import { Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 
 
-import { realmContext } from '../../models/realmContext';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import COLORS from '../../consts/colors';
 import { TouchableOpacity } from 'react-native';
+
+import { useUser } from '@realm/react';
+import { realmContext } from '../../models/realmContext';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const InstitutionData = ({ farmer })=>{
 
+    const user = useUser();
+    const customUserData = user?.customData;
     // console.log('fetchedFarmer:', JSON.stringify(farmer));
 
     return (
@@ -459,6 +463,28 @@ const InstitutionData = ({ farmer })=>{
     </Box>
     </Stack>
     </Stack>
+
+
+    <CustomDivider />
+
+    <Stack direction="row" w="100%" style={{ paddingTop: 5,  }} >
+        <Box w="100%">
+            <Text 
+            style={{ 
+                textAlign: 'right',
+                color: COLORS.grey,
+                fontFamily: 'JosefinSans-Italic',
+                fontSize: 12,
+            }}
+            >
+            Registo:{' '}                 
+            {new Date(farmer.createdAt).getDate()}-{new Date(farmer.createdAt).getMonth()+1}-{new Date(farmer.createdAt).getFullYear()}
+            {' '} por {farmer?.userName === customUserData?.name ? 'mim' : farmer?.userName}
+            </Text>
+        </Box>
+    </Stack>
+
+
 
         </View>
         </CollapseBody>

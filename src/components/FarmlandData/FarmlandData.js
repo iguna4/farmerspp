@@ -5,10 +5,13 @@ import { Avatar, Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 
 
-import { realmContext } from '../../models/realmContext';
 import CustomDivider from '../Divider/CustomDivider';
 import { useNavigation } from '@react-navigation/native';
 import COLORS from '../../consts/colors';
+
+
+import { useUser } from '@realm/react';
+import { realmContext } from '../../models/realmContext';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 
@@ -16,6 +19,9 @@ const { useRealm, useQuery, useObject } = realmContext;
 
 
 const FarmlandData = ({ farmland })=>{
+
+    const user = useUser();
+    const customUserData = user?.customData;
 
     const navigation = useNavigation();
     
@@ -641,6 +647,25 @@ const FarmlandData = ({ farmland })=>{
 
 }
 
+</Stack>
+
+<CustomDivider />
+
+<Stack direction="row" w="100%" style={{ paddingTop: 5,  }} >
+      <Box w="100%">
+        <Text 
+          style={{ 
+            textAlign: 'right',
+            color: COLORS.grey,
+            fontFamily: 'JosefinSans-Italic',
+            fontSize: 12,
+          }}
+          >
+          Registo:{' '}                 
+          {new Date(farmland.createdAt).getDate()}-{new Date(farmland.createdAt).getMonth()+1}-{new Date(farmland.createdAt).getFullYear()}
+          {' '} por {farmland?.userName === customUserData?.name ? 'mim' : farmland?.userName}
+        </Text>
+      </Box>
 </Stack>
 </View>
 </CollapseBody>

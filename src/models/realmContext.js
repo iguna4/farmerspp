@@ -7,8 +7,9 @@ import { Farmland } from "./Farmland";
 import { Institution } from "./Institution";
 import { User } from "./User";
 import { Group } from "./Group";
-import { Achievement } from './Achievement';
-import { ProvincialStats } from './ProvincialStats';
+// import { Achievement } from './Achievement';
+// import { ProvincialStats } from './ProvincialStats';
+import { UserStat } from './UserStat';
 
 export const realmContext = createRealmContext({
     schema: [
@@ -25,13 +26,13 @@ export const realmContext = createRealmContext({
         Density,
         PlantTypes,
         Coordinates,
-        Achievement,
-        ProvincialStats,
-        DistrictalStats,
-        UserStats,
+        // Achievement,
+        // ProvincialStats,
+        // DistrictalStats,
+        UserStat,
         User,
     ],
-    schemaVersion: 4,
-    deleteRealmIfMigrationNeeded: true,
+    schemaVersion: 11,
+    // deleteRealmIfMigrationNeeded: true,
 })
 

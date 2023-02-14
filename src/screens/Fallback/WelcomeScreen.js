@@ -30,6 +30,8 @@ export default function WelcomeScreen () {
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+    const [errorMessageAlert, setErrorMessageAlert] = useState('');
+    const [errorTitleAlert, setErrorTitleAlert] = useState('');
     
     const [errors, setErrors] = useState({});
     
@@ -56,8 +58,17 @@ export default function WelcomeScreen () {
         try {
           await signIn();
         } catch (error) {
-            setErrorAlert(true);
-            console.log('Failed to sign in the user', { cause: error });
+            if (error.includes('Network request failed')) {
+                setErrorTitleAlert('Conexão Internet');
+                setErrorMessageAlert('Para fazer o login, o seu dispositivo deve estar conectado à Internet!');
+                setInvalidDataAlert(true);                
+            }
+            else if (error.includes('Invalid')){
+                setErrorAlert(true);
+            }
+            else {
+                console.log('Failed to sign in the user', { cause: error });
+            }
         }
     }, [signIn]);
 
@@ -94,7 +105,6 @@ export default function WelcomeScreen () {
             const newUser = await app.logIn(creds);
             const mongo = newUser.mongoClient(secrets.serviceName);
             const collection = mongo.db(secrets.databaseName).collection(secrets.userCollectionName);
-            
 
             // pack the validated user data and save it into the database
             const validatedUserdata = {
@@ -115,8 +125,19 @@ export default function WelcomeScreen () {
             const customUserData = await newUser.refreshCustomData();
 
         } catch (error) {
-            setErrorAlert(true)
-            console.log('Failed to sign up the user', { cause: error });
+            if (error.includes('Network request failed')) {
+                setErrorTitleAlert('Conexão Internet');
+                setErrorMessageAlert('Para criar conta de usuário, o seu dispositivo deve estar conectado à Internet!');
+                setInvalidDataAlert(true); 
+            }
+            else if (error.includes('exist')){
+                setErrorTitleAlert('Credenciais Inválidas');
+                setErrorMessageAlert('Para criar conta de usuário, o seu dispositivo deve estar conectado à Internet!');
+                setInvalidDataAlert(true); 
+            }
+            else {
+                console.log('Failed to sign up the user', { cause: error });
+            }            
         }
     }, [signIn, app, email, password]);
 
@@ -167,26 +188,26 @@ export default function WelcomeScreen () {
 
     const onSubmitUserData = useCallback(async ()=>{
 
-            if (!validateUserData(userData, isLoggingIn, errors, setErrors)) {
-                setErrorAlert(true);
-                return ;
+        if (!validateUserData(userData, isLoggingIn, errors, setErrors)) {
+            setErrorAlert(true);
+            return ;
+        }
+
+        setUserData(validateUserData(userData, isLoggingIn, errors, setErrors));
+
+        try {
+            if (isLoggingIn) {
+                await onSignIn(userData);
             }
-
-            setUserData(validateUserData(userData, isLoggingIn, errors, setErrors));
-
-            try {
-                if (isLoggingIn) {
-                    await onSignIn(userData);
-                }
-                else {
-                    await onSignUp(userData);
-                }
-            } catch (error) {
-                throw new Error('Failed to process user request!');
+            else {
+                await onSignUp(userData);
             }
+        } catch (error) {
+            throw new Error('Failed to process user request!');
+        }
 
-            setEmail('');
-            setPassword('');
+        setEmail('');
+        setPassword('');
     }, []);
 
     useEffect(()=>{
@@ -277,7 +298,7 @@ export default function WelcomeScreen () {
                 style={{
                     textAlign: 'left',
                     fontSize: 18,
-                    color: COLORS.black,
+                    color: COLORS.main,
                     fontFamily: 'JosefinSans-Bold',
                     
                 }}
@@ -293,8 +314,8 @@ export default function WelcomeScreen () {
        <AwesomeAlert 
             show={invalidDataAlert}
             showProgress={false}
-            title="Dados Inválidos"
-            message={"Alguns dados são inválidos!"}
+            title={errorTitleAlert}
+            message={errorMessageAlert}
             closeOnTouchOutside={false}
             closeOnHardwareBackPress={false}
             showCancelButton={false}

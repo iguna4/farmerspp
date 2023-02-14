@@ -28,7 +28,7 @@ import { useUser, useApp } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 const { useRealm, useQuery, useObject } = realmContext; 
 
-const provincialStatsName = 'provincialStatsName';
+const userStats = 'userStats';
 
 export default function HomeScreen() {
   const realm = useRealm();
@@ -46,10 +46,10 @@ export default function HomeScreen() {
     // if (showAll) {
 
     realm.subscriptions.update(mutableSubs => {
-      mutableSubs.removeByName(provincialStatsName);
+      mutableSubs.removeByName(userStats);
       mutableSubs.add(
-        realm.objects('ProvincialStats'),
-        {name: provincialStatsName},
+        realm.objects('UserStat').filtered(`userProvince == "${user?.customData?.userProvince}"`),
+        {name: userStats},
       );
     });
 

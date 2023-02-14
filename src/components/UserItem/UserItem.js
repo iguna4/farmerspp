@@ -23,7 +23,7 @@ export default function UserItem({ userItem }){
     const [isUpdated, setIsUpdated] = useState(false);
     const realm = useRealm();
 
-    const provincialStats = useQuery('ProvincialStats').filtered("name == $0", userItem?.userProvince)[0];
+    const userStat = useQuery('UserStat').filtered("userId == $0", userItem?.userId)[0];
     // console.log('provincialStats:', JSON.stringify(provincialStats));
 
     // updating user goal
@@ -35,7 +35,8 @@ export default function UserItem({ userItem }){
         
         // keep the other users' stats apart
         const otherStats = provincialStats.userStats?.filter((stat)=>stat?.userId !== userItem?.userId);
-        
+        console.log('otherStats:', JSON.stringify(otherStats));
+        console.log('----------------------------------------------');
         // update
         realm.write(()=>{
             // if the user has already had an assigend target, update the target
@@ -46,6 +47,7 @@ export default function UserItem({ userItem }){
             // }
             // else {
             // else create and assign new target
+            
                 const newTargetStats = {
                     userName: userItem.name,
                     userId: userItem.userId,
@@ -55,6 +57,8 @@ export default function UserItem({ userItem }){
                     targetFarmlands: tFarmlands,
                 };
                 provincialStats.userStats = [...otherStats, newTargetStats];
+                console.log('updatedProvincial: ', JSON.stringify(provincialStats.userStats))
+                console.log('----------------------------------------------');
                 setIsUpdated(true);
             // }
         });

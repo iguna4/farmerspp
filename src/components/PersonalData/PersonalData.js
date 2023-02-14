@@ -8,7 +8,7 @@ import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion
 import CustomDivider from '../../components/Divider/CustomDivider';
 import COLORS from '../../consts/colors';
 import { TouchableOpacity } from 'react-native';
-import EditData from '../Edit/EditData';
+import EditData from '../EditData/EditData';
 
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';

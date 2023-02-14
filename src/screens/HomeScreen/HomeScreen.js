@@ -2,7 +2,7 @@
 import { 
   View, Text, InteractionManager, 
   SafeAreaView, Image, TouchableOpacity } from 'react-native'
-import React, { useCallback, useState} from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { Box, Stack, Center,  } from 'native-base';
 import COLORS from '../../consts/colors';
 
@@ -21,11 +21,14 @@ import {
  } from "react-native-popup-menu";
 // import { user } from '../../consts/user';
 
+
+import UpdateGoals from '../../components/EditData/UpdateGoals';
+
 import { useUser, useApp } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
-import { getCustomUserData } from '../../helpers/getCustomUserData';
 const { useRealm, useQuery, useObject } = realmContext; 
 
+const provincialStatsName = 'provincialStatsName';
 
 export default function HomeScreen() {
   const realm = useRealm();
@@ -35,18 +38,37 @@ export default function HomeScreen() {
   // const me = useApp().currentUser;
   const [isPerformanceButtonActive, setIsPerformanceButtonActive] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
-
-  // const userData = getCustomUserData();
-
-  // console.log('customData: ', currentUser?.customData);
-  // console.log('me:', me.customData);
-
-  // realm.write(()=>{
-
-  // })
+  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 
   const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
   
+  useEffect(() => {
+    // if (showAll) {
+
+    realm.subscriptions.update(mutableSubs => {
+      mutableSubs.removeByName(provincialStatsName);
+      mutableSubs.add(
+        realm.objects('ProvincialStats'),
+        {name: provincialStatsName},
+      );
+    });
+
+  // }
+  //   else {
+
+      // realm.subscriptions.update(mutableSubs => {
+      //   mutableSubs.removeByName(districtGroupFarmers);
+      //   mutableSubs.add(
+      //     realm.objects('Group').filtered(`userId == "${user?.customData?.userId}"`),
+      //     {name: userGroupFarmers},
+      //   );
+      // });
+    // }
+  }, [realm, user,]);
+
+
+
+
   useFocusEffect(
     useCallback(() => {
       const task = InteractionManager.runAfterInteractions(() => {
@@ -876,10 +898,60 @@ export default function HomeScreen() {
             }}>
               <CustomDivider thickness={1} my={2}  bg={COLORS.main} />
             </Center>
+
+
+            <MenuOption 
+              customStyles={{
+                optionWrapper: {
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  height: 45,
+                },
+              }}
+              onSelect={() => {
+                setIsOverlayVisible(true)
+                console.log('update goal')
+                // user.logOut();
+
+              }} 
+              >
+            <Box
+              style={{
+                paddingVertical: 5,
+              }}
+             >
+              <Stack direction="row" space={4}  ml="7">
+                <Icon name="update" size={30} color={COLORS.grey} />
+                <Text 
+                  style={{
+                    color: COLORS.grey, 
+                    fontSize: 18, 
+                    fontFamily: 'JosefinSans-Bold'
+                  }}
+                  >
+                    Actualizar Metas
+                  </Text>
+              </Stack>
+            </Box>            
+            </MenuOption>
+            <Center style={{
+              width: "80%",
+              marginLeft: 35,
+              marginVertical: 6,
+            }}>
+              <CustomDivider thickness={1} my={2}  bg={COLORS.main} />
+            </Center>
+
+
             </View>
           </MenuOptions>
         </Menu>
       </MenuProvider>
+      <UpdateGoals 
+        isOverlayVisible={isOverlayVisible}
+        setIsOverlayVisible={setIsOverlayVisible}
+      />
     </SafeAreaView>
   )
 }

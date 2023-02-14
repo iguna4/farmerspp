@@ -49,11 +49,7 @@ export default function FarmersScreen({ route, navigation }) {
   const groups = realm.objects('Group').filtered("userDistrict == $0", customUserData?.userDistrict);;
   const institutions = realm.objects('Institution').filtered("userDistrict == $0", customUserData?.userDistrict);
   const farmlands = realm.objects('Farmland').filtered("userDistrict == $0" , customUserData?.userDistrict);
-  // const districtFarmlands = realm.objects('Farmland').filtered(`userDistrict = '${customUserData?.userDistrict}'`);
 
-  // console.log('groups: ', JSON.stringify(groups));
-
-  // extract needed custom user data
   customUserData = {
     name: customUserData?.name,
     userDistrict: customUserData?.userDistrict,
@@ -68,17 +64,16 @@ export default function FarmersScreen({ route, navigation }) {
   // This state will be used to toggle between showing all items and only showing the current user's items
   // This is initialized based on which subscription is already active
   const [showAll, setShowAll] = useState(
-    !!realm.subscriptions.findByName(districtSingleFarmers)
+    realm.subscriptions.findByName(districtSingleFarmers)
     ||
-    !!realm.subscriptions.findByName(districtGroupFarmers)
+    realm.subscriptions.findByName(districtGroupFarmers)
     ||
-    !!realm.subscriptions.findByName(districtInstitutionFarmers)
+    realm.subscriptions.findByName(districtInstitutionFarmers)
     ||
-    !!realm.subscriptions.findByName(districtFarmlands)
+    realm.subscriptions.findByName(districtFarmlands)
   );
  
-  // const toggleSwitch = ()=>setIsSwitchEnabled(prev =>!prev);
-  
+  console.log('showAll:', showAll);
   // merge the three arrays of farmers and sort the items by createdAt 
   let farmersList = [];
   // let farmlandsList = [];

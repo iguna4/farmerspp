@@ -99,6 +99,40 @@ export const Coordinates = {
     },
 };
 
+// Embbeded UserStats Schema
+export const UserStats = {
+    name: 'UserStats',
+    embedded: true,
+    properties: {
+        userName: 'string',
+        userId: 'string',
+        district: 'string?',
+        province: 'string?',
+        targetFarmers: {type: 'int', default: 0 },
+        targetFarmlands: {type: 'int', default: 0 },
+        registeredFarmers: {type: 'int', default: 0 },
+        registeredFarmlands: {type: 'int', default: 0 },
+    },
+};
+
+// Embbeded DistrictalStats Schema
+export const DistrictalStats = {
+    name: 'DistrictalStats',
+    embedded: true,
+    properties: {
+        district: 'string?',
+        province: 'string?',
+        targetFarmers: {type: 'int', default: 0 },
+        targetFarmlands: {type: 'int', default: 0 },
+        registeredFarmers: {type: 'int', default: 0 },
+        registeredFarmlands: {type: 'int', default: 0 },
+    },
+};
+
+
+
+
+
 
 
 

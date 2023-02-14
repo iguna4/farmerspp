@@ -547,6 +547,13 @@ export default function WelcomeScreen () {
                             fontSize: 'lg',
                             endIcon: <CheckIcon size="5" />,
                         }}
+                        dropdownCloseIcon={userProvince 
+                            ? <Icon name="close" size={25} color="grey" onPress={()=>{
+                                setUserDistrict('')
+                                setUserProvince('');
+                            }} /> 
+                            : <Icon size={25} name="arrow-drop-down" color="#005000" />
+                        }
                         mt={1}
                         onValueChange={(newProvince)=>{
                             setErrors(prev=>({...prev, userProvince: ''}));
@@ -580,6 +587,10 @@ export default function WelcomeScreen () {
                             fontSize: 'lg',
                             endIcon: <CheckIcon size="5" />,
                         }}
+                        dropdownCloseIcon={userDistrict 
+                            ? <Icon name="close" size={25} color="grey" onPress={()=>setUserDistrict('')} /> 
+                            : <Icon size={25} name="arrow-drop-down" color="#005000" />
+                        }
                         mt={1}
                         onValueChange={(newDistrict)=>{
                             setErrors(prev=>({...prev, userDistrict: ''}))

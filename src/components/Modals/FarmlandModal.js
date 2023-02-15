@@ -22,6 +22,7 @@ import { categorizeFarmer } from '../../helpers/categorizeFarmer';
 
 import { realmContext } from '../../models/realmContext';
 import { useUser } from '@realm/react';
+import COLORS from '../../consts/colors';
 const {useRealm} = realmContext;
 
 const FarmlandModal = (
@@ -154,7 +155,7 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
                 direction="row" 
                 w="100%"
                 // pt="3"
-                bg="#EBEBE4"
+                bg={COLORS.fourth}
                 
             >
             <Box w="20%">
@@ -164,7 +165,9 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
                         setModalVisible(false);
                     }}                            
                 >
-                    <Icon name='arrow-back-ios' color="#005000" size={30}  />
+                    <Icon 
+                        name='arrow-back-ios' color={COLORS.second} size={30}  
+                    />
                 </TouchableOpacity>
             </Box>
             <Box w="60%">
@@ -173,7 +176,7 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
                     <Icon 
                         name="close" 
                         size={35} 
-                        color="grey" 
+                        color={COLORS.grey} 
                         onPress={() => setModalVisible(false)}
                     />
                 </Box>
@@ -200,7 +203,7 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
                     fontFamily: 'JosefinSans-Bold', 
                     fontSize: 24,
                     fontWeigth: 'bold',
-                    color: '#000',
+                    color: COLORS.black,
                     paddingTop: 15,
 
                 }}

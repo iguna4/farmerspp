@@ -1,3 +1,4 @@
+import { roles } from "../consts/roles";
 import { capitalize } from "./capitalize";
 
 const validateUserData = (
@@ -7,6 +8,7 @@ const validateUserData = (
         password, 
         passwordConfirm, 
         phone,
+        role,
         userDistrict,
         userProvince  
     }, errors, setErrors,
@@ -16,6 +18,7 @@ const validateUserData = (
     const retrievedEmail = email.trim();
     const retrievedPassword = password?.trim();
     const retrievedPasswordConfirm = passwordConfirm?.trim();
+    const retrievedRole = role?.trim();
     const retrievedPhone = phone?.trim();
     const retrievedUserDistrict = userDistrict?.trim();
     const retrievedUserProvince = userProvince?.trim();
@@ -96,7 +99,7 @@ const validateUserData = (
             return false;                
         }
 
-        if (!retrievedUserDistrict) {
+        if (!retrievedUserDistrict && !retrievedRole.includes(roles.provincialManager)) {
              setErrors({ ...errors,
                 userDistrict: 'Indica o distrito',
             });
@@ -108,8 +111,9 @@ const validateUserData = (
             email: retrievedEmail,
             password: retrievedPassword,
             phone: retrievedPhone ? parseInt(retrievedPhone) : 0,
+            role: retrievedRole,
             userProvince: retrievedUserProvince,
-            userDistrict: retrievedUserDistrict,
+            userDistrict: retrievedUserDistrict ? retrievedUserDistrict : 'NA',
         };     
     // }     
 };

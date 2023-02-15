@@ -21,6 +21,7 @@ import COLORS from '../../consts/colors';
 
 import { realmContext } from '../../models/realmContext';
 import { useUser } from '@realm/react';
+import { roles } from '../../consts/roles';
 const { useRealm, useQuery } = realmContext; 
 
 
@@ -73,7 +74,6 @@ export default function FarmersScreen({ route, navigation }) {
     realm.subscriptions.findByName(districtFarmlands)
   );
  
-  console.log('showAll:', showAll);
   // merge the three arrays of farmers and sort the items by createdAt 
   let farmersList = [];
   // let farmlandsList = [];
@@ -91,28 +91,21 @@ export default function FarmersScreen({ route, navigation }) {
     farmersList = farmersList
         ?.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt));
   }
-  
-  // concatenate all farmlands
-  // const farmlandIds = farmersList
-  //     ?.filter((farmer) =>farmer?.farmlands?.length > 0)
-  //     ?.map(({ farmlands }) => {
-  //       farmlandsList = [...farmlandsList, ...farmlands ]
-  // });
+
 
   useEffect(() => {
-    if (showAll) {
-
-    realm.subscriptions.update(mutableSubs => {
+    if (showAll && (customUserData?.role !== roles.provincialManager)) {
+      realm.subscriptions.update(mutableSubs => {
       mutableSubs.removeByName(userSingleFarmers);
       mutableSubs.add(
         realm.objects('Farmer').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
         {name: districtSingleFarmers},
-      );
-    });
-
-    realm.subscriptions.update(mutableSubs => {
-      mutableSubs.removeByName(userGroupFarmers);
-      mutableSubs.add(
+        );
+      });
+      
+      realm.subscriptions.update(mutableSubs => {
+        mutableSubs.removeByName(userGroupFarmers);
+        mutableSubs.add(
         realm.objects('Group').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
         {name: districtGroupFarmers},
       );
@@ -124,20 +117,19 @@ export default function FarmersScreen({ route, navigation }) {
       mutableSubs.add(
         realm.objects('Institution').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
         {name: districtInstitutionFarmers},
-      );
-    });
-
-    realm.subscriptions.update(mutableSubs => {
-      mutableSubs.removeByName(userFarmlands);
-      mutableSubs.add(
-        realm.objects('Farmland').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
-        {name: districtFarmlands},
-      );
-    });
-
-
+        );
+      });
+      
+      realm.subscriptions.update(mutableSubs => {
+        mutableSubs.removeByName(userFarmlands);
+        mutableSubs.add(
+          realm.objects('Farmland').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+          {name: districtFarmlands},
+          );
+        });
+                
   }
-    else {
+    else if (!showAll && (customUserData?.role !== roles.provincialManager)) {
 
       realm.subscriptions.update(mutableSubs => {
         mutableSubs.removeByName(districtSingleFarmers);

@@ -22,10 +22,11 @@ import {
 // import { user } from '../../consts/user';
 
 
-import UpdateGoals from '../../components/EditData/UpdateGoals';
+import UserGoalEdit from '../../components/UserGoalEdit/UserGoalEdit';
 
 import { useUser, useApp } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
+import UserProfile from '../../components/UserProfile/UserProfile';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const userStats = 'userStats';
@@ -34,16 +35,16 @@ export default function HomeScreen() {
   const realm = useRealm();
   const user = useUser();
   const customUserData = user?.customData;
-  // const achievements = useQuery('Achievement')
-  // const me = useApp().currentUser;
+
   const [isPerformanceButtonActive, setIsPerformanceButtonActive] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
-  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+  const [isUserProfileVisible, setIsUserProfileVisible] = useState(false);
+
+  const [isGoalUpdateVisible, setIsGoalUpdateVisible] = useState(false);
 
   const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
   
   useEffect(() => {
-    // if (showAll) {
 
     realm.subscriptions.update(mutableSubs => {
       mutableSubs.removeByName(userStats);
@@ -53,17 +54,6 @@ export default function HomeScreen() {
       );
     });
 
-  // }
-  //   else {
-
-      // realm.subscriptions.update(mutableSubs => {
-      //   mutableSubs.removeByName(districtGroupFarmers);
-      //   mutableSubs.add(
-      //     realm.objects('Group').filtered(`userId == "${user?.customData?.userId}"`),
-      //     {name: userGroupFarmers},
-      //   );
-      // });
-    // }
   }, [realm, user,]);
 
 
@@ -137,7 +127,8 @@ export default function HomeScreen() {
           <Box w="40%" alignItems={'center'}>
             <TouchableOpacity
               onPress={()=>{
-                setIsOpen(prev=>!prev);
+                setIsUserProfileVisible(prev=>!prev);
+
               }}
             >
               <Icon name="account-circle" color={COLORS.main} size={50}  />
@@ -746,212 +737,16 @@ export default function HomeScreen() {
       
     }
   
-
-
-      <MenuProvider
-        style={{
-          position: 'absolute',
-          top: 40,
-          left: 30,
-          zIndex: 4,
-        }}
-      >
-        <Menu
-        renderer={renderers.SlideInMenu}
-          opened={isOpen}
-          onBackdropPress={() =>{}}
-          onSelect={()=>{}}
-        >
-          <MenuTrigger
-            
-            customStyles={{
-              triggerWrapper: {
-                position: 'absolute', 
-                top: -30, 
-                left: -20,
-                zIndex: 6,
-              },
-            }}
-          >
-             {/* <Icon
-              onPress={()=>setIsOpen(true)}
-             name="add-circle" color="#005000" size={80} /> */}
-          </MenuTrigger>
-          <MenuOptions>
-          <View 
-            style={{
-              flex: 1,
-              backgroundColor: 'ghostwhite',
-              height: "80%",
-              width: '100%',
-              paddingBottom: 30,
-              zIndex: 4,
-            }}
-            >
-            <Stack direction="row" w="100%">
-              <Box w="80%">
-
-
-              </Box>
-              <Box w="20%" style={{
-                marginTop: 20,
-                paddingRight: 20,
-              }}>
-
-                <Icon 
-                  onPress={()=>{
-                    setIsOpen(false)}
-                  }
-                  name="close" size={35} color={COLORS.main} />
-              </Box>
-              </Stack>
-
-              <Center style={{
-                width: "80%",
-                marginLeft: 35,
-                marginVertical: 6,
-              }}>
-                <CustomDivider thickness={1} my={2}  bg={COLORS.main} />
-              </Center>
-
-              <MenuOption 
-              customStyles={{
-                optionWrapper: {
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  height: 45,
-                },
-              }}
-              onSelect={() => {
-                console.log('perfil do Usuário!')
-              }} 
-              >
-            <Box
-              style={{
-                paddingVertical: 5,
-              }}
-             >
-              <Stack direction="row" space={4}  ml="7">
-                <Icon name="account-circle" size={30} color={COLORS.grey} />
-                <Text 
-                  style={{
-                    color: COLORS.grey, 
-                    fontSize: 18, 
-                    fontFamily: 'JosefinSans-Bold'
-                  }}
-                  >
-                    Perfil do Usuário
-                  </Text>
-              </Stack>
-            </Box>            
-            </MenuOption>
-            
-
-            <Center style={{
-              width: "80%",
-              marginLeft: 35,
-              marginVertical: 6,
-            }}>
-              <CustomDivider thickness={1} my={2}  bg={COLORS.main} />
-            </Center>
-
-            <MenuOption 
-              customStyles={{
-                optionWrapper: {
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  height: 45,
-                },
-              }}
-              onSelect={() => {
-                // console.log('sessao terminada!')
-                user.logOut();
-
-              }} 
-              >
-            <Box
-              style={{
-                paddingVertical: 5,
-              }}
-             >
-              <Stack direction="row" space={4}  ml="7">
-                <Icon name="logout" size={30} color={COLORS.grey} />
-                <Text 
-                  style={{
-                    color: COLORS.grey, 
-                    fontSize: 18, 
-                    fontFamily: 'JosefinSans-Bold'
-                  }}
-                  >
-                    Terminar Sessão
-                  </Text>
-              </Stack>
-            </Box>            
-            </MenuOption>
-
-            <Center style={{
-              width: "80%",
-              marginLeft: 35,
-              marginVertical: 6,
-            }}>
-              <CustomDivider thickness={1} my={2}  bg={COLORS.main} />
-            </Center>
-
-
-            <MenuOption 
-              customStyles={{
-                optionWrapper: {
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  height: 45,
-                },
-              }}
-              onSelect={() => {
-                setIsOverlayVisible(true)
-                console.log('update goal')
-                // user.logOut();
-
-              }} 
-              >
-            <Box
-              style={{
-                paddingVertical: 5,
-              }}
-             >
-              <Stack direction="row" space={4}  ml="7">
-                <Icon name="update" size={30} color={COLORS.grey} />
-                <Text 
-                  style={{
-                    color: COLORS.grey, 
-                    fontSize: 18, 
-                    fontFamily: 'JosefinSans-Bold'
-                  }}
-                  >
-                    Actualizar Metas
-                  </Text>
-              </Stack>
-            </Box>            
-            </MenuOption>
-            <Center style={{
-              width: "80%",
-              marginLeft: 35,
-              marginVertical: 6,
-            }}>
-              <CustomDivider thickness={1} my={2}  bg={COLORS.main} />
-            </Center>
-
-
-            </View>
-          </MenuOptions>
-        </Menu>
-      </MenuProvider>
-      <UpdateGoals 
-        isOverlayVisible={isOverlayVisible}
-        setIsOverlayVisible={setIsOverlayVisible}
-      />
+    <UserProfile 
+      user={user}
+      setIsGoalUpdateVisible={setIsGoalUpdateVisible}
+      isUserProfileVisible={isUserProfileVisible}
+      setIsUserProfileVisible={setIsUserProfileVisible}
+    />
+    <UserGoalEdit 
+      isGoalUpdateVisible={isGoalUpdateVisible}
+      setIsGoalUpdateVisible={setIsGoalUpdateVisible}
+    />
     </SafeAreaView>
   )
 }

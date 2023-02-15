@@ -13,6 +13,8 @@ export const User = {
         email: 'string',
         password: 'string',
         phone: 'int?',
+        image: 'string?',
+        role: 'string?',
         userProvince: 'string?',
         userDistrict: 'string?',
         lastLoginAt: {type: 'date', default: Date() },

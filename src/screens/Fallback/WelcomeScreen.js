@@ -17,6 +17,7 @@ import COLORS from '../../consts/colors';
 import { Realm, useApp } from '@realm/react';
 import { secrets } from '../../secrets';
 import { BSON } from 'realm';
+import { roles } from '../../consts/roles';
 
 
 export default function WelcomeScreen () {
@@ -35,6 +36,7 @@ export default function WelcomeScreen () {
     
     const [errors, setErrors] = useState({});
     
+    const [role, setRole] = useState('Extensionista');
     const [userProvince, setUserProvince] = useState('');
     const [userDistrict, setUserDistrict] = useState('');
     const [selectedDistricts, setSelectedDistricts] = useState([]);
@@ -73,7 +75,7 @@ export default function WelcomeScreen () {
     }, [signIn]);
 
     // on user registration
-    const onSignUp = useCallback(async (newName, newEmail, newPassword, newPasswordConfirm, newPhone, newUserDistrict, newUserProvince) => {
+    const onSignUp = useCallback(async (newName, newEmail, newPassword, newPasswordConfirm, newPhone, newRole, newUserDistrict, newUserProvince) => {
         
         // pack user data into an object
         const userData = {
@@ -82,19 +84,20 @@ export default function WelcomeScreen () {
             password: newPassword,
             passwordConfirm: newPasswordConfirm,
             phone: newPhone,
+            role: newRole,
             userDistrict: newUserDistrict,
             userProvince: newUserProvince,
         }
 
         // validate user data and return nothing if any error is found
         if (!validateUserData(userData, errors, setErrors)) {
-            setInvalidDataAlert(true);
+            // setInvalidDataAlert(true);
             return ;
         }
         
         // extract validated user data
         const {
-            name, email, password, phone, userDistrict, userProvince,
+            name, email, password, phone, role, userDistrict, userProvince,
         } = validateUserData(userData, errors, setErrors);
 
         // try to register new user
@@ -114,8 +117,10 @@ export default function WelcomeScreen () {
                 email,
                 password,
                 phone,
+                role,
                 userDistrict,
                 userProvince,
+                image: '',
                 lastLoginAt: new Date(),
                 createdAt: new Date(),
             }
@@ -555,8 +560,87 @@ export default function WelcomeScreen () {
         }
         {
             !isLoggingIn && (
-                <Stack direction="row" w="100%" space={1}>
-            <Box w="50%">
+        <>
+
+            <Stack direction="row" w="100%">
+            <Box w="100%">
+                <FormControl isRequired my="3" isInvalid={'role' in errors}>
+                    <FormControl.Label>Perfil</FormControl.Label>
+                    <Select
+                        selectedValue={role}
+                        accessibilityLabel="Escolha seu perfil"
+                        placeholder="Escolha seu perfil"
+                        _selectedItem={{
+                            bg: 'teal.600',
+                            fontSize: 'lg',
+                            endIcon: <CheckIcon size="5" />,
+                        }}
+                        dropdownCloseIcon={role 
+                            ? <Icon name="close" size={25} color="grey" onPress={()=>{
+                                setRole('');
+                            }} /> 
+                            : <Icon size={25} name="arrow-drop-down" color="#005000" />
+                        }
+                        mt={1}
+                        onValueChange={(newRole)=>{
+                            setErrors(prev=>({...prev, role: ''}));
+                            setRole(newRole);
+                        }}
+                    >
+                        <Select.Item label={roles.fieldAgent} value={roles.fieldAgent} />
+                        <Select.Item label={roles.districtalManager} value={roles.districtalManager} />
+                        <Select.Item label={roles.provincialManager} value={roles.provincialManager} />
+                    </Select>
+                    {
+                        'role' in errors 
+                        ? <FormControl.ErrorMessage 
+                        leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                        _text={{ fontSize: 'xs'}}>{errors?.role}</FormControl.ErrorMessage> 
+                    : <FormControl.HelperText></FormControl.HelperText>
+                }
+                </FormControl>
+            </Box>
+
+            {/* <Box w="50%">
+            <FormControl isRequired my="3" isInvalid={'userDistrict' in errors}>
+                <FormControl.Label>Distrito</FormControl.Label>
+                    <Select
+                        selectedValue={userDistrict}
+                        accessibilityLabel="Escolha seu distrito"
+                        placeholder="Escolha seu distrito"
+                        _selectedItem={{
+                            bg: 'teal.600',
+                            fontSize: 'lg',
+                            endIcon: <CheckIcon size="5" />,
+                        }}
+                        dropdownCloseIcon={userDistrict 
+                            ? <Icon name="close" size={25} color="grey" onPress={()=>setUserDistrict('')} /> 
+                            : <Icon size={25} name="arrow-drop-down" color="#005000" />
+                        }
+                        mt={1}
+                        onValueChange={(newDistrict)=>{
+                            setErrors(prev=>({...prev, userDistrict: ''}))
+                            setUserDistrict(newDistrict)}
+                        }
+                    >{
+                        selectedDistricts?.map((district, index)=>(
+                            <Select.Item key={index} label={district} value={district} />
+                            ))
+                        }
+                    </Select>
+                    {
+                        'userDistrict' in errors 
+                        ? <FormControl.ErrorMessage 
+                        leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                        _text={{ fontSize: 'xs'}}>{errors?.userDistrict}</FormControl.ErrorMessage> 
+                        : <FormControl.HelperText></FormControl.HelperText>
+                    }
+            </FormControl>
+            </Box> */}
+            </Stack>
+
+            <Stack direction="row" w="100%" space={role.includes(roles.provincialManager) ? 0 : 1}>
+            <Box w={role.includes(roles.provincialManager) ? "100%" : "50%"}>
                 <FormControl isRequired my="3" isInvalid={'userProvince' in errors}>
                     <FormControl.Label>Província</FormControl.Label>
                     <Select
@@ -570,7 +654,9 @@ export default function WelcomeScreen () {
                         }}
                         dropdownCloseIcon={userProvince 
                             ? <Icon name="close" size={25} color="grey" onPress={()=>{
-                                setUserDistrict('')
+                                if (!role.includes(roles.provincialManager)){
+                                    setUserDistrict('')
+                                }
                                 setUserProvince('');
                             }} /> 
                             : <Icon size={25} name="arrow-drop-down" color="#005000" />
@@ -578,7 +664,9 @@ export default function WelcomeScreen () {
                         mt={1}
                         onValueChange={(newProvince)=>{
                             setErrors(prev=>({...prev, userProvince: ''}));
-                            setUserDistrict('');
+                            if (!role.includes(roles.provincialManager)){
+                                setUserDistrict('')
+                            }
                             setUserProvince(newProvince);
                         }}
                     >
@@ -596,7 +684,8 @@ export default function WelcomeScreen () {
                 }
                 </FormControl>
             </Box>
-            <Box w="50%">
+{   !role.includes(roles.provincialManager) &&
+         <Box w="50%">
             <FormControl isRequired my="3" isInvalid={'userDistrict' in errors}>
                 <FormControl.Label>Distrito</FormControl.Label>
                     <Select
@@ -632,8 +721,9 @@ export default function WelcomeScreen () {
                     }
             </FormControl>
             </Box>
+    }
             </Stack>
-
+        </>
             )
         }
         <Center w="100%"
@@ -646,7 +736,7 @@ export default function WelcomeScreen () {
                     onSignIn();
                 }   
                 else {
-                    onSignUp(name, email, password, passwordConfirm, phone, userDistrict, userProvince);
+                    onSignUp(name, email, password, passwordConfirm, phone, role, userDistrict, userProvince);
                 } 
             }} 
             type="outline"

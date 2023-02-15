@@ -15,7 +15,7 @@ import CustomDivider from "../Divider/CustomDivider";
 import { useFocusEffect } from "@react-navigation/native";
 import { InteractionManager } from "react-native";
 
-export default function UpdateGoals({ isOverlayVisible, setIsOverlayVisible, }){
+export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisible, }){
     const [district, setDistrict] = useState('');
     const [province, setProvince] = useState('');
     const [districtalUsers, setDistritalUsers] = useState([]);
@@ -47,12 +47,12 @@ export default function UpdateGoals({ isOverlayVisible, setIsOverlayVisible, }){
         const collection = mongo.db(secrets.databaseName).collection(secrets.userCollectionName);
         let users;
         try {
-            users = await collection.find({ userDistrict: district }, { name: 1, userId: 1, userDistrict: 1 });
+            users = await collection.find({ userDistrict: district });
             setDistritalUsers(users);
         } catch (error) {
             console.log('Could not fetch users: ', { cause: error });
         }
-        // console.log('users:', JSON.stringify(users));
+        console.log('users:', JSON.stringify(users));
         return users;
     }
 
@@ -66,7 +66,7 @@ export default function UpdateGoals({ isOverlayVisible, setIsOverlayVisible, }){
 
 
     const toggleOverlay = () => {
-        setIsOverlayVisible(!isOverlayVisible);
+        setIsGoalUpdateVisible(!isGoalUpdateVisible);
       };
 
     return (
@@ -79,7 +79,7 @@ export default function UpdateGoals({ isOverlayVisible, setIsOverlayVisible, }){
             // borderRadius: 10,
             // paddingBottom: 50,
         }}
-        isVisible={isOverlayVisible} 
+        isVisible={isGoalUpdateVisible} 
         onBackdropPress={toggleOverlay}
     >
         <View
@@ -88,6 +88,25 @@ export default function UpdateGoals({ isOverlayVisible, setIsOverlayVisible, }){
                 width: '100%', 
             }}
         >
+        <Stack w="100%"
+            style={{
+                paddingBottom: 20,
+            }}
+        >
+            <Box w="10%">
+                <Icon 
+                    name='arrow-back-ios' 
+                    color={COLORS.main} 
+                    size={30}  
+                    onPress={()=>{
+                        setIsGoalUpdateVisible(false);
+                    }}
+                />           
+            </Box>
+            <Box w="90%">
+            
+            </Box>
+        </Stack>
 
             <Box 
                 style={{
@@ -202,30 +221,33 @@ export default function UpdateGoals({ isOverlayVisible, setIsOverlayVisible, }){
                 width: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
+                padding: 30,
             }}
             >
         { (!district) &&  
             <Text
             style={{
-                    paddingVertical: 20,
+                    textAlign: 'center',
                     fontFamily: 'JosefinSans-Bold',
                     fontSize: 16,
                     color: COLORS.main
                 }}
             >
-                Selecciona Província e Distrito
+                Selecciona Província e Distrito!
             </Text>
         }        
         {
             (district && districtalUsers.length === 0)  && 
             <Text
                 style={{
+                    textAlign: 'center',
+                    lineHeight: 30,
                     fontFamily: 'JosefinSans-Bold',
                     fontSize: 16,
                     color: COLORS.danger
                 }}
             >
-                O distrito de {district} não tem usuários registados
+                O distrito de {district} não tem usuários registados!
             </Text>
         }
         {

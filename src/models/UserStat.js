@@ -13,6 +13,8 @@ export const UserStat = {
         targetFarmlands: {type: 'int', default: 0 },
         registeredFarmers: {type: 'int', default: 0 },
         registeredFarmlands: {type: 'int', default: 0 },
+        modifiedBy: 'string?',
+        modifiedAt: {type: 'date', default: ()=> new Date()},
         createdAt: {type: 'date', default: ()=> new Date()},
     },
 };

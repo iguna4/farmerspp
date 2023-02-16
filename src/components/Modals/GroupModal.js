@@ -24,7 +24,7 @@ import { user } from '../../consts/user';
 
 import { realmContext } from '../../models/realmContext';
 import COLORS from '../../consts/colors';
-const {useRealm, useObject } = realmContext;
+const {useRealm, useObject, useQuery } = realmContext;
 
 export default function GroupModal (
     {
@@ -60,7 +60,10 @@ export default function GroupModal (
     // const [farmerId, setFarmerId] = useState(null);
     const navigation = useNavigation();
     const realm = useRealm();
-    const currentUserStat = useObject('UserStat', customUserData?.userId);
+
+    // const currentUserStat = useObject('UserStat', customUserData?.userId);
+    const currentUserStat = useQuery('UserStat').filtered("userId == $0", customUserData?.userId)[0];
+
 
     const addGroup = useCallback((farmerData, realm) =>{
     const {

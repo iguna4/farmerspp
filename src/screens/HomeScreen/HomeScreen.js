@@ -438,7 +438,7 @@ export default function HomeScreen() {
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
                 }}             
                 >
-                {getPercentage(rpFarmers, tpFarmers)} %
+                {getPercentage(rpFarmers, tpFarmers)}
               </Text>
               </Center>
             </Center>
@@ -495,7 +495,7 @@ export default function HomeScreen() {
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
                 }}              
                 >
-                {getPercentage(rdFarmers,tdFarmers)} %
+                {getPercentage(rdFarmers,tdFarmers)}
               </Text>
             </Center>
             </Center>
@@ -552,7 +552,7 @@ export default function HomeScreen() {
 
                 }}              
                 >
-                {getPercentage(ruFarmers, tuFarmers)} %
+                {getPercentage(ruFarmers, tuFarmers)}
               </Text>
               </Center>
             </Center>
@@ -658,7 +658,7 @@ export default function HomeScreen() {
               color: COLORS.ghostwhite,
             }}              
             >
-           {getPercentage(rpFarmlands, tpFarmlands)} %
+           {getPercentage(rpFarmlands, tpFarmlands)}
           </Text>
           </Center>
         </Center>
@@ -715,7 +715,7 @@ export default function HomeScreen() {
               color: COLORS.ghostwhite,
             }}
             >
-            {getPercentage(rdFarmlands, tdFarmlands)} %
+            {getPercentage(rdFarmlands, tdFarmlands)}
           </Text>
           </Center>
         </Center>
@@ -771,7 +771,7 @@ export default function HomeScreen() {
               color: COLORS.ghostwhite,
             }}
             >
-            {getPercentage(ruFarmlands, tuFarmlands)} %
+            {getPercentage(ruFarmlands, tuFarmlands)}
           </Text>
         </Center>
         </Center>

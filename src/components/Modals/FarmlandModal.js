@@ -23,7 +23,7 @@ import { categorizeFarmer } from '../../helpers/categorizeFarmer';
 import { realmContext } from '../../models/realmContext';
 import { useUser } from '@realm/react';
 import COLORS from '../../consts/colors';
-const {useRealm, useObject} = realmContext;
+const {useRealm, useQuery, useObject} = realmContext;
 
 export default function FarmlandModal (
     {
@@ -55,7 +55,9 @@ export default function FarmlandModal (
     const user = useUser();
     const customUserData = user?.customData;
 
-    const currentUserStat = useObject('UserStat', customUserData?.userId);
+    // const currentUserStat = useObject('UserStat', customUserData?.userId);
+    const currentUserStat = useQuery('UserStat').filtered("userId == $0", customUserData?.userId)[0];
+
 
 
 const onAddFarmland = useCallback((farmlandData, realm) =>{
@@ -143,7 +145,7 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
     // update user stat (1 more farmland registered by the user)
     if(currentUserStat) {
         realm.write(()=>{
-            currentUserStat.registeredFarmers = currentUserStat.registeredFarmers + 1; 
+            currentUserStat.registeredFarmlands = currentUserStat.registeredFarmlands + 1; 
         })
     } 
     else {

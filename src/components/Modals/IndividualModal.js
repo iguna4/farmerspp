@@ -52,7 +52,9 @@ export default function IndividualModal (
 
     const realm = useRealm();
 
-    const currentUserStat = useObject('UserStat', customUserData?.userId);
+    // const currentUserStat = useObject('UserStat', customUserData?.userId);
+    const currentUserStat = useQuery('UserStat').filtered("userId == $0", customUserData?.userId)[0];
+
     // console.log('found currentUserStat: ', JSON.stringify(currentUserStat));
 
 

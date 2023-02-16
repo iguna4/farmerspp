@@ -26,7 +26,7 @@ import { user } from '../../consts/user';
 
 
 import { realmContext } from '../../models/realmContext';
-const {useRealm, useObject} = realmContext;
+const {useRealm, useObject, useQuery} = realmContext;
 
 export default function InstitutionModal (
     {
@@ -61,7 +61,10 @@ export default function InstitutionModal (
     const [successAlert, setSuccessAlert] = useState(false);
     const navigation = useNavigation();
     const realm = useRealm();
-    const currentUserStat = useObject('UserStat', customUserData?.userId);
+
+    // const currentUserStat = useObject('UserStat', customUserData?.userId);
+    const currentUserStat = useQuery('UserStat').filtered("userId == $0", customUserData?.userId)[0];
+
 
 
     const addInstitution = useCallback((farmerData, realm) =>{

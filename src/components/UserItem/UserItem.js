@@ -57,7 +57,7 @@ export default function UserItem({ userItem }){
                         targetFarmers: tFarmers,
                         targetFarmlands: tFarmlands,
                         modifiedBy: customUserData?.name,
-                    })
+                    });
                 })
             }
         }

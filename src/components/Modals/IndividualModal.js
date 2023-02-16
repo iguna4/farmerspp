@@ -15,9 +15,9 @@ import { user } from '../../consts/user';
 
 
 import { realmContext } from '../../models/realmContext';
-const {useRealm} = realmContext;
+const {useRealm, useQuery, useObject } = realmContext;
 
-const IndividualModal = (
+export default function IndividualModal (
     {
         modalVisible,
         setModalVisible,
@@ -48,9 +48,12 @@ const IndividualModal = (
         customUserData,
 
     }
-) => {
+){
 
-    const realm = useRealm()
+    const realm = useRealm();
+
+    const currentUserStat = useObject('UserStat', customUserData?.userId);
+    // console.log('found currentUserStat: ', JSON.stringify(currentUserStat));
 
 
     const addFarmer = useCallback((farmerData, realm) =>{
@@ -86,7 +89,27 @@ const IndividualModal = (
             ownerName: newFarmer.names?.otherNames + ' ' + newFarmer.names?.surname,
             flag: 'Indivíduo',
         });       
-    })
+    });
+
+    // update user stat (1 more farmer registered by the user)
+    if(currentUserStat) {
+        realm.write(()=>{
+            currentUserStat.registeredFarmers = currentUserStat.registeredFarmers + 1; 
+        })
+    } 
+    else {
+        realm.write(()=>{
+            const newStat = realm.create('UserStat', {
+                _id: uuidv4(),
+                userName: customUserData.name,
+                userId: customUserData.userId,
+                userDistrict: customUserData.userDistrict,
+                userProvince: customUserData.userProvince,
+                registeredFarmers: 1,
+            });
+        })
+    }
+
 }, [
         realm, 
         farmerData,
@@ -448,4 +471,4 @@ const IndividualModal = (
   )
 }
 
-export default IndividualModal;
+// export default IndividualModal;

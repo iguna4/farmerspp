@@ -26,9 +26,9 @@ import { user } from '../../consts/user';
 
 
 import { realmContext } from '../../models/realmContext';
-const {useRealm} = realmContext;
+const {useRealm, useObject} = realmContext;
 
-const InstitutionModal = (
+export default function InstitutionModal (
     {
         modalVisible,
         setModalVisible,
@@ -55,12 +55,14 @@ const InstitutionModal = (
 
 
     }
-) => {
+) {
 
    const [addDataModalVisible, setAddDataModalVisible] = useState(false);
     const [successAlert, setSuccessAlert] = useState(false);
     const navigation = useNavigation();
-    const realm = useRealm()
+    const realm = useRealm();
+    const currentUserStat = useObject('UserStat', customUserData?.userId);
+
 
     const addInstitution = useCallback((farmerData, realm) =>{
     const {
@@ -93,8 +95,27 @@ const InstitutionModal = (
             ownerName: `${newInstitution?.type} ${newInstitution?.name}`,
             flag: 'Instituição',            
         });  
-
     })
+
+    // update user stat (1 more farmer registered by the user)
+    if(currentUserStat) {
+        realm.write(()=>{
+            currentUserStat.registeredFarmers = currentUserStat.registeredFarmers + 1; 
+        })
+    } 
+    else {
+        realm.write(()=>{
+            const newStat = realm.create('UserStat', {
+                _id: uuidv4(),
+                userName: customUserData.name,
+                userId: customUserData.userId,
+                userDistrict: customUserData.userDistrict,
+                userProvince: customUserData.userProvince,
+                registeredFarmers: 1,
+            });
+        })
+    }
+
 }, [
         realm, 
         farmerData,
@@ -327,17 +348,9 @@ const InstitutionModal = (
     </ScrollView>
     </Modal>
 
-    {/* <Center flex={1} px="3">
-        <SuccessModal
-            addDataModalVisible={addDataModalVisible}
-            setAddDataModalVisible={setAddDataModalVisible}
-            farmerId={farmerId}
-            setFarmerType={setFarmerType}
-        />
-    </Center> */}
     </>
 
   )
 }
 
-export default InstitutionModal;
+// export default InstitutionModal;

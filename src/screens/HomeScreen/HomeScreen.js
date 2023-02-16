@@ -27,6 +27,7 @@ import UserGoalEdit from '../../components/UserGoalEdit/UserGoalEdit';
 import { useUser, useApp } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 import UserProfile from '../../components/UserProfile/UserProfile';
+import { getPercentage } from '../../helpers/getPercentage';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const userStats = 'userStats';
@@ -42,54 +43,10 @@ export default function HomeScreen() {
   const [isGoalUpdateVisible, setIsGoalUpdateVisible] = useState(false);
 
   const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
-  
-  // const [provincialGoal, setProvincialGoal] = useState({
-  //   farmers: 0,
-  //   farmlands: 0,
-  // });
-  // const [districtalGoal, setDistrictalGoal] = useState({
-  //   farmers: 0,
-  //   farmlands: 0,
-  // });
-  // const [userGoal, setUserGoal] = useState({
-  //   farmers: 0,
-  //   farmlands: 0,
-  // });
-  // const [provinceRegistrations, setProvinceRegistrations] = useState({
-  //   farmers: 0,
-  //   farmlands: 0,
-  // });
-  // const [districtRegistrations, setDistrictRegistrations] = useState({
-  //   farmers: 0,
-  //   farmlands: 0,
-  // });
-  // const [userRegistrations, setUserRegistrations] = useState({
-  //   farmers: 0,
-  //   farmlands: 0,
-  // })
-
-  const [targets, setTargets] = useState({
-    provinceFarmers: 0,
-    provinceFarmlands: 0,
-    districtFarmers: 0,
-    districtFarmlands: 0,
-    userFarmers: 0,
-    userFarmlands: 0,
-  })
-
-  const [achievements, setAchievements] = useState({
-    provinceFarmers: 0,
-    provinceFarmlands: 0,
-    districtFarmers: 0,
-    districtFarmlands: 0,
-    userFarmers: 0,
-    userFarmlands: 0,
-  })
-  
+    
   const provincialUserStats = useQuery('UserStat').filtered(`userProvince =="${customUserData.userProvince}"`);
-  // console.log('provincialUserStats: ', JSON.stringify(provincialUserStats))
 
-
+  // --------------------------------------------------------
   // get extract stats from whole province
   const tWholeProvince =  provincialUserStats?.map((stat)=>{
     return (
@@ -114,7 +71,8 @@ export default function HomeScreen() {
   const tpFarmlands = tWholeProvince.map((stat)=>stat.tFarmlands).reduce((ac, cur)=>(ac+cur), 0);
   const rpFarmlands = rWholeProvince.map((stat)=>stat.rFarmlands).reduce((ac, cur)=>(ac+cur), 0);
 
-
+  // ----------------------------------------------------------------
+  //  extract stats from whole district
   const tWholeDistrict = 
     provincialUserStats
       ?.filter((stat)=>stat.userDistrict === customUserData?.userDistrict)
@@ -143,6 +101,9 @@ export default function HomeScreen() {
   const tdFarmlands = tWholeDistrict.map((stat)=>stat.tFarmlands).reduce((ac, cur)=>(ac+cur), 0);
   const rdFarmlands = rWholeDistrict.map((stat)=>stat.rFarmlands).reduce((ac, cur)=>(ac+cur), 0);
 
+  // ---------------------------------------------------------------
+  // extract stats of the current user
+  
   const tCurrentUser = 
     provincialUserStats
     ?.filter((stat)=>stat.userId === customUserData?.userId)
@@ -171,7 +132,7 @@ export default function HomeScreen() {
     const ruFarmers = rCurrentUser.map((stat)=>stat.rFarmers).reduce((ac, cur)=>(ac+cur), 0);
     const tuFarmlands = tCurrentUser.map((stat)=>stat.tFarmlands).reduce((ac, cur)=>(ac+cur), 0);
     const ruFarmlands = rCurrentUser.map((stat)=>stat.rFarmlands).reduce((ac, cur)=>(ac+cur), 0);
-        
+    //---------------------------------------------------------------------- 
 
 
   useEffect(() => {
@@ -244,6 +205,7 @@ export default function HomeScreen() {
               />
               <Text
                 style={{
+                  textAlign: 'center',
                   color: COLORS.main,
                   fontSize: 18,
                   fontFamily: 'JosefinSans-Bold',
@@ -262,6 +224,7 @@ export default function HomeScreen() {
               <Icon name="account-circle" color={COLORS.main} size={50}  />
               <Text
                 style={{
+                  textAlign: 'center',
                   color: COLORS.grey,
                   fontFamily: 'JosefinSans-Bold',
                   fontSize: 18,
@@ -475,7 +438,7 @@ export default function HomeScreen() {
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
                 }}             
                 >
-                {((rpFarmers / tpFarmers) * 100)} %
+                {getPercentage(rpFarmers, tpFarmers)} %
               </Text>
               </Center>
             </Center>
@@ -532,7 +495,7 @@ export default function HomeScreen() {
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
                 }}              
                 >
-                {((rdFarmers / tdFarmers) * 100) } %
+                {getPercentage(rdFarmers,tdFarmers)} %
               </Text>
             </Center>
             </Center>
@@ -589,7 +552,7 @@ export default function HomeScreen() {
 
                 }}              
                 >
-                {((ruFarmers / tuFarmers) * 100)} %
+                {getPercentage(ruFarmers, tuFarmers)} %
               </Text>
               </Center>
             </Center>
@@ -695,7 +658,7 @@ export default function HomeScreen() {
               color: COLORS.ghostwhite,
             }}              
             >
-           {((rpFarmlands / tpFarmlands) * 100)} %
+           {getPercentage(rpFarmlands, tpFarmlands)} %
           </Text>
           </Center>
         </Center>
@@ -752,7 +715,7 @@ export default function HomeScreen() {
               color: COLORS.ghostwhite,
             }}
             >
-            {((rdFarmlands / tdFarmlands) * 100)} %
+            {getPercentage(rdFarmlands, tdFarmlands)} %
           </Text>
           </Center>
         </Center>
@@ -808,7 +771,7 @@ export default function HomeScreen() {
               color: COLORS.ghostwhite,
             }}
             >
-            {((ruFarmlands / tuFarmlands) * 100)} %
+            {getPercentage(ruFarmlands, tuFarmlands)} %
           </Text>
         </Center>
         </Center>

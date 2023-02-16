@@ -24,9 +24,9 @@ import { user } from '../../consts/user';
 
 import { realmContext } from '../../models/realmContext';
 import COLORS from '../../consts/colors';
-const {useRealm} = realmContext;
+const {useRealm, useObject } = realmContext;
 
-const GroupModal = (
+export default function GroupModal (
     {
         modalVisible,
         setModalVisible,
@@ -54,12 +54,13 @@ const GroupModal = (
 
 
     }
-) => {
+){
 
    const [addDataModalVisible, setAddDataModalVisible] = useState(false);
     // const [farmerId, setFarmerId] = useState(null);
     const navigation = useNavigation();
-    const realm = useRealm()
+    const realm = useRealm();
+    const currentUserStat = useObject('UserStat', customUserData?.userId);
 
     const addGroup = useCallback((farmerData, realm) =>{
     const {
@@ -93,8 +94,27 @@ const GroupModal = (
             ownerName: newGroup.type + ' ' + newGroup.name,
             flag: 'Grupo',        
         });
-        
-    })
+    });
+
+    // update userStat (1 more farmer registered by the user)
+    if(currentUserStat) {
+        realm.write(()=>{
+            currentUserStat.registeredFarmers = currentUserStat.registeredFarmers + 1; 
+        })
+    } 
+    else {
+        realm.write(()=>{
+            const newStat = realm.create('UserStat', {
+                _id: uuidv4(),
+                userName: customUserData.name,
+                userId: customUserData.userId,
+                userDistrict: customUserData.userDistrict,
+                userProvince: customUserData.userProvince,
+                registeredFarmers: 1,
+            });
+        })
+    }
+
 }, [
         realm, 
         farmerData,
@@ -363,4 +383,4 @@ const GroupModal = (
   )
 }
 
-export default GroupModal;
+// export default GroupModal;

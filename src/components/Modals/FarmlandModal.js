@@ -23,9 +23,9 @@ import { categorizeFarmer } from '../../helpers/categorizeFarmer';
 import { realmContext } from '../../models/realmContext';
 import { useUser } from '@realm/react';
 import COLORS from '../../consts/colors';
-const {useRealm} = realmContext;
+const {useRealm, useObject} = realmContext;
 
-const FarmlandModal = (
+export default function FarmlandModal (
     {
         modalVisible,
         setModalVisible,
@@ -48,12 +48,15 @@ const FarmlandModal = (
         setIsCoordinatesModalVisible,
 
     }
-) => {
+) {
 
     const navigation = useNavigation();
     const realm = useRealm();
     const user = useUser();
     const customUserData = user?.customData;
+
+    const currentUserStat = useObject('UserStat', customUserData?.userId);
+
 
 const onAddFarmland = useCallback((farmlandData, realm) =>{
     const {
@@ -135,7 +138,28 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
             // categorize by 'comercial' | 'familiar' | 'nao-categorizado'
             owner.category = categorizeFarmer(ownerFarmlands);
         }        
-    })
+    });
+
+    // update user stat (1 more farmland registered by the user)
+    if(currentUserStat) {
+        realm.write(()=>{
+            currentUserStat.registeredFarmers = currentUserStat.registeredFarmers + 1; 
+        })
+    } 
+    else {
+        realm.write(()=>{
+            const newStat = realm.create('UserStat', {
+                _id: uuidv4(),
+                userName: customUserData.name,
+                userId: customUserData.userId,
+                userDistrict: customUserData.userDistrict,
+                userProvince: customUserData.userProvince,
+                registeredFarmlands: 1,
+            });
+        })
+    }
+    
+
     
 }, [ realm, farmlandData ]);
 
@@ -410,4 +434,4 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
   )
 }
 
-export default FarmlandModal;
+// export default FarmlandModal;

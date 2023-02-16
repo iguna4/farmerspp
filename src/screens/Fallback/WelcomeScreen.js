@@ -18,6 +18,7 @@ import { Realm, useApp } from '@realm/react';
 import { secrets } from '../../secrets';
 import { BSON } from 'realm';
 import { roles } from '../../consts/roles';
+import { errorMessages } from '../../consts/errorMessages';
 
 
 export default function WelcomeScreen () {
@@ -31,19 +32,27 @@ export default function WelcomeScreen () {
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-    const [errorMessageAlert, setErrorMessageAlert] = useState('');
-    const [errorTitleAlert, setErrorTitleAlert] = useState('');
+
+    // ------------------------------------------
+    const [alert, setAlert] = useState(false);
+    const [messageAlert, setMessageAlert] = useState('');
+    const [titleAlert, setTitleAlert] = useState('');
+    const [cancelText, setCancelText] = useState('');
+    const [confirmText, setConfirmText] = useState('');
+    const [showCancelButton, setShowCancelButton] = useState(false);
+    const [showConfirmButton, setShowConfirmBttom] = useState(false);
+
+    // ---------------------------------------------
     
     const [errors, setErrors] = useState({});
     
-    const [role, setRole] = useState('Extensionista');
+    const [role, setRole] = useState(roles.fieldAgent);
     const [userProvince, setUserProvince] = useState('');
     const [userDistrict, setUserDistrict] = useState('');
     const [selectedDistricts, setSelectedDistricts] = useState([]);
     
     const [phone, setPhone] = useState(null);
 
-    const [errorAlert, setErrorAlert] = useState(false);
     const [invalidDataAlert, setInvalidDataAlert] = useState(false);
     // const [userData, setUserData] = useState({});
 
@@ -60,17 +69,37 @@ export default function WelcomeScreen () {
         try {
           await signIn();
         } catch (error) {
-            if (error.includes('Network request failed')) {
-                setErrorTitleAlert('Conexão Internet');
-                setErrorMessageAlert('Para fazer o login, o seu dispositivo deve estar conectado à Internet!');
-                setInvalidDataAlert(true);                
+            if (error.includes(errorMessages.network.logFlag)) {
+                // Alert message
+                setTitleAlert(errorMessages.network.title);
+                setMessageAlert(errorMessages.network.message);
+                setShowCancelButton(errorMessages.network.showCancelButton);
+                setShowConfirmBttom(errorMessages.network.showCancelButton);
+                setConfirmText(errorMessages.network.confirmText);
+                setCancelText(errorMessages.network.cancelText);
+                setAlert(true);                
             }
-            else if (error.includes('Invalid')){
-                setErrorAlert(true);
+            else if (error.includes(errorMessages.signIn.logFlag)){
+                // complete this 
+                setTitleAlert(errorMessages.signIn.title);
+                setMessageAlert(errorMessages.signIn.message);
+                setShowCancelButton(errorMessages.signIn.showCancelButton);
+                setShowConfirmBttom(errorMessages.signIn.showCancelButton);
+                setConfirmText(errorMessages.signIn.confirmText);
+                setCancelText(errorMessages.signIn.cancelText);
+                setAlert(true);
             }
             else {
-                console.log('Failed to sign in the user', { cause: error });
+                // Alert message
+                setTitleAlert(errorMessages.server.title);
+                setMessageAlert(errorMessages.server.message);
+                setShowCancelButton(errorMessages.server.showCancelButton);
+                setShowConfirmBttom(errorMessages.server.showCancelButton);
+                setConfirmText(errorMessages.server.confirmText);
+                setCancelText(errorMessages.server.cancelText);
+                setAlert(true);
             }
+            return ;
         }
     }, [signIn]);
 
@@ -130,19 +159,37 @@ export default function WelcomeScreen () {
             const customUserData = await newUser.refreshCustomData();
 
         } catch (error) {
-            if (error.includes('Network request failed')) {
-                setErrorTitleAlert('Conexão Internet');
-                setErrorMessageAlert('Para criar conta de usuário, o seu dispositivo deve estar conectado à Internet!');
-                setInvalidDataAlert(true); 
+            if (error.includes(errorMessages.network.logFlag)){
+                // Alert message
+                setTitleAlert(errorMessages.network.title);
+                setMessageAlert(errorMessages.network.message);
+                setShowCancelButton(errorMessages.network.showCancelButton);
+                setShowConfirmBttom(errorMessages.network.showCancelButton);
+                setConfirmText(errorMessages.network.confirmText);
+                setCancelText(errorMessages.network.cancelText);
+                setAlert(true);
             }
-            else if (error.includes('exist')){
-                setErrorTitleAlert('Credenciais Inválidas');
-                setErrorMessageAlert('Para criar conta de usuário, o seu dispositivo deve estar conectado à Internet!');
-                setInvalidDataAlert(true); 
+            else if (error.includes(errorMessages.signUp.logFlag)){
+                // Alert message
+                setTitleAlert(errorMessages.signUp.title);
+                setMessageAlert(errorMessages.signUp.message);
+                setShowCancelButton(errorMessages.signUp.showCancelButton);
+                setShowConfirmBttom(errorMessages.signUp.showCancelButton);
+                setConfirmText(errorMessages.signUp.confirmText);
+                setCancelText(errorMessages.signUp.cancelText);
+                setAlert(true);
             }
             else {
-                console.log('Failed to sign up the user', { cause: error });
-            }            
+                // Alert message
+                setTitleAlert(errorMessages.server.title);
+                setMessageAlert(errorMessages.server.message);
+                setShowCancelButton(errorMessages.server.showCancelButton);
+                setShowConfirmBttom(errorMessages.service.showConfirmButton);
+                setConfirmText(errorMessages.server.confirmText);
+                setCancelText(errorMessages.server.cancelText);
+                setAlert(true);
+            }
+            return ;
         }
     }, [signIn, app, email, password]);
 
@@ -316,11 +363,11 @@ export default function WelcomeScreen () {
 
        </Box>
 
-       <AwesomeAlert 
-            show={invalidDataAlert}
+       {/* <AwesomeAlert 
+            show={alert}
             showProgress={false}
-            title={errorTitleAlert}
-            message={errorMessageAlert}
+            title={titleAlert}
+            message={messageAlert}
             closeOnTouchOutside={false}
             closeOnHardwareBackPress={false}
             showCancelButton={false}
@@ -330,28 +377,28 @@ export default function WelcomeScreen () {
             // cancelButtonColor="#DD6B55"
             confirmButtonColor="#DD6B55"
             onConfirmPressed={()=>{
-                setInvalidDataAlert(false);
+                setAlert(false);
             }}
-       />
+       /> */}
 
         <AwesomeAlert
-            show={errorAlert}
+            show={alert}
             showProgress={false}
-            title="Dados Inválidos"
-            message={isLoggingIn ? "Ainda não tem conta. Pretendes criar uma conta de usuário?" : "Já tens uma conta. Pretendes fazer o login?"}
+            title={titleAlert}
+            message={messageAlert}
             closeOnTouchOutside={false}
             closeOnHardwareBackPress={false}
-            showCancelButton={true}
-            showConfirmButton={true}
-            cancelText="   Não   "
-            confirmText="   Sim   "
+            showCancelButton={showCancelButton}
+            showConfirmButton={showConfirmButton}
+            cancelText={cancelText}
+            confirmText={confirmText}
             cancelButtonColor="#DD6B55"
             confirmButtonColor={COLORS.main}
             onCancelPressed={()=>{
-                setErrorAlert(false);
+                setAlert(false);
             }}
             onConfirmPressed={() => {
-                setErrorAlert(false);
+                setAlert(false);
                 if (isLoggingIn) {
                     setIsLoggingIn(false);
                 }

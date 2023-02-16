@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Overlay, Icon, Button } from "@rneui/base";
 import { Box, Center, CheckIcon, FormControl, Select, Stack } from "native-base";
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 import CustomActivityIndicator from "../ActivityIndicator/CustomActivityIndicator";
 import COLORS from "../../consts/colors";
@@ -14,12 +15,25 @@ import UserItem from "../UserItem/UserItem";
 import CustomDivider from "../Divider/CustomDivider";
 import { useFocusEffect } from "@react-navigation/native";
 import { InteractionManager } from "react-native";
+import { errorMessages } from "../../consts/errorMessages";
 
 export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisible, }){
     const [district, setDistrict] = useState('');
     const [province, setProvince] = useState('');
     const [districtalUsers, setDistritalUsers] = useState([]);
     const [selectedDistricts, setSelectedDistricts] = useState([]);
+
+    // ------------------------------------------
+    const [alert, setAlert] = useState(false);
+    const [messageAlert, setMessageAlert] = useState('');
+    const [titleAlert, setTitleAlert] = useState('');
+    const [cancelText, setCancelText] = useState('');
+    const [confirmText, setConfirmText] = useState('');
+    const [showCancelButton, setShowCancelButton] = useState(false);
+    const [showConfirmButton, setShowConfirmBttom] = useState(false);
+
+    // ---------------------------------------------
+
     const user = useUser();
 
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
@@ -50,9 +64,28 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
             users = await collection.find({ userDistrict: district });
             setDistritalUsers(users);
         } catch (error) {
-            console.log('Could not fetch users: ', { cause: error });
+            if (error.includes(errorMessages.network.logFlag)){
+                // Alert message
+                setTitleAlert(errorMessages.network.title);
+                setMessageAlert(errorMessages.network.message);
+                setShowCancelButton(errorMessages.network.showCancelButton);
+                setShowConfirmBttom(errorMessages.network.showCancelButton);
+                setConfirmText(errorMessages.network.confirmText);
+                setCancelText(errorMessages.network.cancelText);
+                setAlert(true);
+            }
+            else {
+                // Alert message
+                setTitleAlert(errorMessages.server.title);
+                setMessageAlert(errorMessages.server.message);
+                setShowCancelButton(errorMessages.server.showCancelButton);
+                setShowConfirmBttom(errorMessages.service.showConfirmButton);
+                setConfirmText(errorMessages.server.confirmText);
+                setCancelText(errorMessages.server.cancelText);
+                setAlert(true);
+            }
+            return ;
         }
-        console.log('users:', JSON.stringify(users));
         return users;
     }
 
@@ -70,6 +103,7 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
       };
 
     return (
+    <>
 
     <Overlay 
         overlayStyle={{ 
@@ -88,10 +122,8 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                 width: '100%', 
             }}
         >
-        <Stack w="100%"
-            style={{
-                paddingBottom: 20,
-            }}
+        <Stack w="100%" py="4" direction="row" 
+
         >
             <Box w="10%">
                 <Icon 
@@ -104,41 +136,22 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                 />           
             </Box>
             <Box w="90%">
-            
-            </Box>
-        </Stack>
-
-            <Box 
-                style={{
-                    width: '100%',
-                    paddingVertical: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    // backgroundColor: COLORS.main
-                }}
-            >
                 <Text
                     style={{
+                        textAlign: 'center',
                         color: COLORS.main,
                         fontSize: 20,
                         fontFamily: 'JosefinSans-Bold',
                     }}
-                    >Actualização de Metas</Text>
+                >
+                    Actualização de Metas
+                </Text>            
             </Box>
-            <Text
-                style={{
-                    paddingVertical: 10,
-                    fontFamily: 'JosefinSans-Regular',
-                    fontSize: 14,
-                    color: COLORS.grey
-                }}
-            >
-                Selecciona Província e Distrito
-            </Text>
+        </Stack>
             <Box
                 style={{
                     width: '100%',
-                    paddingTop: 5,
+                    // paddingTop: 3,
                 }}
                 >
                 <Stack
@@ -172,7 +185,7 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                             setProvince(newProvince);
                         }}
                         >
-                        <Select.Item label="Cabo Delgado" value="Cabo Delgado" />
+                        <Select.Item label={"Cabo Delgado"} value="Cabo Delgado" />
                         <Select.Item label="Nampula" value="Nampula" />
                         <Select.Item label="Niassa" value="Niassa" />
                         <Select.Item label="Zambézia" value="Zambézia" />
@@ -221,7 +234,7 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                 width: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
-                padding: 30,
+                padding: 5,
             }}
             >
         { (!district) &&  
@@ -261,7 +274,13 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                 width: '100%',
             }}
             >
-            <Stack w="100%" direction="row" mb="2" space={1} >
+            <Stack w="100%" direction="row" mb="2" space={1}
+                style={{
+                    backgroundColor: COLORS.main,
+                    padding: 10,
+
+                }}
+            >
                 <Box w="40%"
                     style={{
                         justifyContent: 'center',
@@ -271,8 +290,8 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                         style={{
                         // textAlign: 'center',
                         fontFamily: 'JosefinSans-Bold',
-                        fontSize: 14,
-                        color: COLORS.main
+                        fontSize: 16,
+                        color: COLORS.ghostwhite,
                     }}     
                     >Usuário</Text>
                 </Box>
@@ -281,8 +300,8 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                         style={{
                             textAlign: 'center',
                             fontFamily: 'JosefinSans-Bold',
-                            fontSize: 14,
-                            color: COLORS.main
+                            fontSize: 16,
+                            color: COLORS.ghostwhite,
                         }}
                     >
                         Meta
@@ -292,7 +311,7 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                             textAlign: 'center',
                             fontFamily: 'JosefinSans-Bold',
                             fontSize: 12,
-                            color: COLORS.grey
+                            color: COLORS.ghostwhite,
                         }}
                     >
                         (Produtores)
@@ -303,8 +322,8 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                         style={{
                             textAlign: 'center',
                             fontFamily: 'JosefinSans-Bold',
-                            fontSize: 14,
-                            color: COLORS.main
+                            fontSize: 16,
+                            color: COLORS.ghostwhite,
                         }}
                     >Meta</Text>
                     <Text
@@ -312,7 +331,7 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                             textAlign: 'center',
                             fontFamily: 'JosefinSans-Bold',
                             fontSize: 12,
-                            color: COLORS.grey
+                            color: COLORS.ghostwhite,
                         }}
                     >(Parcelas)</Text>
                 </Box>
@@ -326,8 +345,8 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                         style={{
                             textAlign: 'center',
                             fontFamily: 'JosefinSans-Bold',
-                            fontSize: 14,
-                            color: COLORS.main
+                            fontSize: 16,
+                            color: COLORS.ghostwhite,
                         }}
                     >
                         Acção
@@ -339,7 +358,7 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                     /> */}
                 </Box>
             </Stack>
-            <CustomDivider thickness={1} my={2}  bg={COLORS.main} />
+            {/* <CustomDivider thickness={1} my={2}  bg={COLORS.main} /> */}
             <ScrollView>
 
             {
@@ -352,41 +371,42 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
 
 
 
-{ (district && districtalUsers.length > 0) &&
-    <Center 
-        w="100%"
-        mt="4"
-    >
+{
+//  (district && districtalUsers.length > 0) &&
+//     <Center 
+//         w="100%"
+//         mt="4"
+//     >
 
-        <Button
-        title="Actualizar"
-            titleStyle={{
-                color: COLORS.ghostwhite,
-                fontFamily: 'JosefinSans-Bold',
-                width: '100%',
-            }}
-            // iconPosition="right"
-            // icon={
-            // <Icon
-            // name="update"
-            //     color="white"
-            //     size={25}
-            //     iconStyle={{ 
-            //         // marginLeft: 20,
-            //         // color: COLORS.ghostwhite,
-            //         // paddingHorizontal: 10,
-            //     }}
-            //     />
-            // }
-            containerStyle={{
-                backgroundColor: COLORS.second,
-                borderRadius: 10,
-                // color: COLORS.ghostwhite,
-            }}
-            type="outline"
-            onPress={toggleOverlay}
-            />
-        </Center>
+//         <Button
+//         title="Actualizar"
+//             titleStyle={{
+//                 color: COLORS.ghostwhite,
+//                 fontFamily: 'JosefinSans-Bold',
+//                 width: '100%',
+//             }}
+//             // iconPosition="right"
+//             // icon={
+//             // <Icon
+//             // name="update"
+//             //     color="white"
+//             //     size={25}
+//             //     iconStyle={{ 
+//             //         // marginLeft: 20,
+//             //         // color: COLORS.ghostwhite,
+//             //         // paddingHorizontal: 10,
+//             //     }}
+//             //     />
+//             // }
+//             containerStyle={{
+//                 backgroundColor: COLORS.second,
+//                 borderRadius: 10,
+//                 // color: COLORS.ghostwhite,
+//             }}
+//             type="outline"
+//             onPress={toggleOverlay}
+//             />
+//         </Center>
         }
         </ScrollView>
 
@@ -394,7 +414,28 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
 }
         </View>
     </Overlay>
+    <AwesomeAlert
+            show={alert}
+            showProgress={false}
+            title={titleAlert}
+            message={messageAlert}
+            closeOnTouchOutside={false}
+            closeOnHardwareBackPress={false}
+            showCancelButton={showCancelButton}
+            showConfirmButton={showConfirmButton}
+            cancelText={cancelText}
+            confirmText={confirmText}
+            cancelButtonColor="#DD6B55"
+            confirmButtonColor={COLORS.main}
+            onCancelPressed={()=>{
+                setAlert(false);
+            }}
+            onConfirmPressed={() => {
+                setAlert(false);
+            }}
+        />
 
+    </>
     )
 }
 

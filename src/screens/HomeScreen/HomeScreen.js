@@ -39,11 +39,141 @@ export default function HomeScreen() {
   const [isPerformanceButtonActive, setIsPerformanceButtonActive] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
   const [isUserProfileVisible, setIsUserProfileVisible] = useState(false);
-
   const [isGoalUpdateVisible, setIsGoalUpdateVisible] = useState(false);
 
   const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
   
+  // const [provincialGoal, setProvincialGoal] = useState({
+  //   farmers: 0,
+  //   farmlands: 0,
+  // });
+  // const [districtalGoal, setDistrictalGoal] = useState({
+  //   farmers: 0,
+  //   farmlands: 0,
+  // });
+  // const [userGoal, setUserGoal] = useState({
+  //   farmers: 0,
+  //   farmlands: 0,
+  // });
+  // const [provinceRegistrations, setProvinceRegistrations] = useState({
+  //   farmers: 0,
+  //   farmlands: 0,
+  // });
+  // const [districtRegistrations, setDistrictRegistrations] = useState({
+  //   farmers: 0,
+  //   farmlands: 0,
+  // });
+  // const [userRegistrations, setUserRegistrations] = useState({
+  //   farmers: 0,
+  //   farmlands: 0,
+  // })
+
+  const [targets, setTargets] = useState({
+    provinceFarmers: 0,
+    provinceFarmlands: 0,
+    districtFarmers: 0,
+    districtFarmlands: 0,
+    userFarmers: 0,
+    userFarmlands: 0,
+  })
+
+  const [achievements, setAchievements] = useState({
+    provinceFarmers: 0,
+    provinceFarmlands: 0,
+    districtFarmers: 0,
+    districtFarmlands: 0,
+    userFarmers: 0,
+    userFarmlands: 0,
+  })
+  
+  const provincialUserStats = useQuery('UserStat').filtered(`userProvince =="${customUserData.userProvince}"`);
+  // console.log('provincialUserStats: ', JSON.stringify(provincialUserStats))
+
+
+  // get extract stats from whole province
+  const tWholeProvince =  provincialUserStats?.map((stat)=>{
+    return (
+      {
+        tFarmers: stat.targetFarmers,
+        tFarmlands: stat.targetFarmlands,
+      }
+    )
+  });
+
+  const rWholeProvince =  provincialUserStats?.map((stat)=>{
+    return (
+      {
+        rFarmers: stat.registeredFarmers,
+        rFarmlands: stat.registeredFarmlands,
+      }
+    )
+  });
+
+  const tpFarmers = tWholeProvince.map((stat)=>stat.tFarmers).reduce((ac, cur)=>(ac+cur), 0);
+  const rpFarmers = rWholeProvince.map((stat)=>stat.rFarmers).reduce((ac, cur)=>(ac+cur), 0);
+  const tpFarmlands = tWholeProvince.map((stat)=>stat.tFarmlands).reduce((ac, cur)=>(ac+cur), 0);
+  const rpFarmlands = rWholeProvince.map((stat)=>stat.rFarmlands).reduce((ac, cur)=>(ac+cur), 0);
+
+
+  const tWholeDistrict = 
+    provincialUserStats
+      ?.filter((stat)=>stat.userDistrict === customUserData?.userDistrict)
+      ?.map((stat)=>{
+        return (
+          {
+            tFarmers: stat.targetFarmers,
+            tFarmlands: stat.targetFarmlands,
+          }
+        )
+      });
+
+  const rWholeDistrict = 
+    provincialUserStats
+      ?.filter((stat)=>stat.userDistrict === customUserData?.userDistrict)
+      ?.map((stat)=>{
+        return (
+          {
+            rFarmers: stat.registeredFarmers,
+            rFarmlands: stat.registeredFarmlands,
+          }
+        )
+      });
+  const tdFarmers = tWholeDistrict.map((stat)=>stat.tFarmers).reduce((ac, cur)=>(ac+cur), 0);
+  const rdFarmers = rWholeDistrict.map((stat)=>stat.rFarmers).reduce((ac, cur)=>(ac+cur), 0);
+  const tdFarmlands = tWholeDistrict.map((stat)=>stat.tFarmlands).reduce((ac, cur)=>(ac+cur), 0);
+  const rdFarmlands = rWholeDistrict.map((stat)=>stat.rFarmlands).reduce((ac, cur)=>(ac+cur), 0);
+
+  const tCurrentUser = 
+    provincialUserStats
+    ?.filter((stat)=>stat.userId === customUserData?.userId)
+    ?.map((stat)=>{
+      return (
+        {
+          tFarmers: stat.targetFarmers,
+          tFarmlands: stat.targetFarmlands,
+        }
+      )
+    }); 
+    
+    const rCurrentUser = 
+    provincialUserStats
+    ?.filter((stat)=>stat.userId === customUserData?.userId)
+    ?.map((stat)=>{
+      return (
+        {
+          rFarmers: stat.registeredFarmers,
+          rFarmlands: stat.registeredFarmlands,
+        }
+      )
+    }); 
+
+    const tuFarmers = tCurrentUser.map((stat)=>stat.tFarmers).reduce((ac, cur)=>(ac+cur), 0);
+    const ruFarmers = rCurrentUser.map((stat)=>stat.rFarmers).reduce((ac, cur)=>(ac+cur), 0);
+    const tuFarmlands = tCurrentUser.map((stat)=>stat.tFarmlands).reduce((ac, cur)=>(ac+cur), 0);
+    const ruFarmlands = rCurrentUser.map((stat)=>stat.rFarmlands).reduce((ac, cur)=>(ac+cur), 0);
+        
+
+
   useEffect(() => {
 
     realm.subscriptions.update(mutableSubs => {
@@ -55,8 +185,6 @@ export default function HomeScreen() {
     });
 
   }, [realm, user,]);
-
-
 
 
   useFocusEffect(
@@ -237,12 +365,7 @@ export default function HomeScreen() {
                   </Text>                
                   </TouchableOpacity>
               </Box>
-              <Box w="50%"
-                alignItems={'center'}
-                style={{
-                  // alignItems: 'flex-end',
-                }}
-                >
+              <Box w="50%"   alignItems={'center'}   >
                 <TouchableOpacity  
                   onPress={()=>{
                     setIsPerformanceButtonActive(prev=>!prev);
@@ -350,10 +473,9 @@ export default function HomeScreen() {
                 style={{
                   fontFamily: 'JosefinSans-Regular',
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
-                  // borderWidth: 1,
                 }}             
                 >
-                27.11 %
+                {((rpFarmers / tpFarmers) * 100)} %
               </Text>
               </Center>
             </Center>
@@ -373,13 +495,9 @@ export default function HomeScreen() {
                 style={{
                   fontFamily: 'JosefinSans-Regular',
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
-                  // borderWidth: 1,
-                  // padding: 5,
-                  // borderRadius: 30,
-                  // backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
                 }}             
                 >
-                32744
+                {tpFarmers}
               </Text>
             </Center>
             </Center>
@@ -412,13 +530,9 @@ export default function HomeScreen() {
                 style={{
                   fontFamily: 'JosefinSans-Regular',
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
-                  // borderWidth: 1,
-                  // padding: 5,
-                  // borderRadius: 30,
-                  // backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
                 }}              
                 >
-                15.56 %
+                {((rdFarmers / tdFarmers) * 100) } %
               </Text>
             </Center>
             </Center>
@@ -438,13 +552,9 @@ export default function HomeScreen() {
                 style={{
                   fontFamily: 'JosefinSans-Regular',
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
-                  // borderWidth: 1,
-                  // padding: 5,
-                  // borderRadius: 30,
-                  // backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
                 }}             
                 >
-                9800
+                {tdFarmers}
               </Text>
             </Center>
             </Center>
@@ -476,13 +586,10 @@ export default function HomeScreen() {
                 style={{
                   fontFamily: 'JosefinSans-Regular',
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
-                  // borderWidth: 1,
-                  // padding: 5,
-                  // borderRadius: 30,
-                  // backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
+
                 }}              
                 >
-                29.90 %
+                {((ruFarmers / tuFarmers) * 100)} %
               </Text>
               </Center>
             </Center>
@@ -508,7 +615,7 @@ export default function HomeScreen() {
                   // backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
                 }}              
                 >
-                850
+                {tuFarmers}
               </Text>
             </Center>
             </Center>
@@ -588,7 +695,7 @@ export default function HomeScreen() {
               color: COLORS.ghostwhite,
             }}              
             >
-            19.35 %
+           {((rpFarmlands / tpFarmlands) * 100)} %
           </Text>
           </Center>
         </Center>
@@ -610,7 +717,7 @@ export default function HomeScreen() {
               color: COLORS.ghostwhite,
             }}
             >
-            42000
+            {tpFarmlands}
           </Text>
         </Center>
         </Center>
@@ -645,7 +752,7 @@ export default function HomeScreen() {
               color: COLORS.ghostwhite,
             }}
             >
-            20.78 %
+            {((rdFarmlands / tdFarmlands) * 100)} %
           </Text>
           </Center>
         </Center>
@@ -667,7 +774,7 @@ export default function HomeScreen() {
               color: COLORS.ghostwhite,
             }}
             >
-            9170
+            {tdFarmlands}
           </Text>
         </Center>
         </Center>
@@ -701,7 +808,7 @@ export default function HomeScreen() {
               color: COLORS.ghostwhite,
             }}
             >
-            5.89 %
+            {((ruFarmlands / tuFarmlands) * 100)} %
           </Text>
         </Center>
         </Center>
@@ -722,7 +829,7 @@ export default function HomeScreen() {
               color: COLORS.ghostwhite,
             }}
             >
-            230
+            {tuFarmlands}
           </Text>
         </Center>
         </Center>

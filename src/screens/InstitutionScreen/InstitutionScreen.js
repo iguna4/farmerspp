@@ -294,8 +294,8 @@ export default function InstitutionScreen ({ route, navigation }) {
         </Box>
         <PhotoModal 
           realm={realm}
-          farmer={farmer}
-          famerType={'Instituição'}
+          photoOwner={farmer}
+          photoOwnerType={'Instituição'}
           isPhotoModalVisible={isPhotoModalVisible}
           setIsPhotoModalVisible={setIsPhotoModalVisible}
         />

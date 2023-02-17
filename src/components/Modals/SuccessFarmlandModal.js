@@ -12,21 +12,14 @@ function SuccessFarmlandModal({
 
     const navigation = useNavigation();
 
-    console.log('farmlandId:', farmlandId);
-
     return (
-        // <View style={{ flex: 1, }}>
         <Modal 
             animationType="slide"
-            // transparent={true}
             visible={isCoordinatesModalVisible}
             onRequestClose={()=>setIsCoordinatesModalVisible(false)}
-            // isVisible={true}
-
         >
             <View style={{ 
                 flex: 1, 
-                // justifyContent: 'center', 
                 marginTop: 80,
                 alignItems: 'center' 
                 }}

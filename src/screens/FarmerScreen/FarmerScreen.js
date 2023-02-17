@@ -342,8 +342,8 @@ export default function FarmerScreen ({ route, navigation }) {
         </Box>
         <PhotoModal 
           realm={realm}
-          farmer={farmer}
-          farmerType={'Indivíduo'}
+          photoOwner={farmer}
+          photoOwnerType={'Indivíduo'}
           isPhotoModalVisible={isPhotoModalVisible}
           setIsPhotoModalVisible={setIsPhotoModalVisible}
         />

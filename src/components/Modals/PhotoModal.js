@@ -8,12 +8,21 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 import COLORS from "../../consts/colors";
 
-function PhotoModal({ 
-    realm, farmer, farmerType, isPhotoModalVisible, setIsPhotoModalVisible,
+import { useUser } from "@realm/react";
 
+function PhotoModal({ 
+    realm, 
+    photoOwner, 
+    photoOwnerType, 
+    isPhotoModalVisible, 
+    setIsPhotoModalVisible,
+    updateUserImage,
     }) {
 
     const navigation = useNavigation();
+    const user = useUser();
+    const customUserData = user?.customData;
+    // console.log('userId: ', user.id);
 
     const launchNativeCamera = () => {
         let options = {
@@ -31,26 +40,39 @@ function PhotoModal({
           } else if (response.errorCode) {
             console.log('ImagePicker Error: ', response.errorMessage);
           } else {
+
             const source = { uri: response.uri };
-            realm.write(()=>{
-                farmer.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
-            });
+            const imageString = 'data:image/jpeg;base64,' + response.assets[0].base64;
+
+            if (photoOwnerType !== 'Usuário') {
+                realm.write(()=>{
+                    // photoOwner.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
+                    photoOwner.image = imageString;
+                });
+            }
+            else {
+                updateUserImage(customUserData.userId, imageString)
+            }
             setIsPhotoModalVisible(false);
 
-            if (farmerType === 'Grupo') {
+            if (photoOwnerType === 'Grupo') {
                 navigation.navigate('Group', {
-                    ownerId: farmer?._id,
+                    ownerId: photoOwner?._id,
                 })
             } 
-            else if (farmerType === 'Indivíduo') {
+            else if (photoOwnerType === 'Indivíduo') {
                 navigation.navigate('Farmer', {
-                    ownerId: farmer?._id,
+                    ownerId: photoOwner?._id,
                 })
             } 
-            else if (farmerType === 'Instituição') {
+            else if (photoOwnerType === 'Instituição') {
                 navigation.navigate('Institution', {
-                    ownerId: farmer?._id,
+                    ownerId: photoOwner?._id,
                 })
+            }
+            else if (photoOwnerType === 'Usuário') {
+                // taking user photo
+                // navigation.goBack();
             }
         
           }
@@ -74,24 +96,41 @@ function PhotoModal({
             console.log('ImagePicker Error: ', response.error);
           } else {
             const source = { uri: response.assets.uri };
-            realm.write(()=>{
-              farmer.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
-            })
+
+            // realm.write(()=>{
+            //   photoOwner.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
+            // })
+            const imageString = 'data:image/jpeg;base64,' + response.assets[0].base64;
+
+            if (photoOwnerType !== 'Usuário') {
+                realm.write(()=>{
+                    // photoOwner.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
+                    photoOwner.image = imageString;
+                });
+            }
+            else {
+                updateUserImage(customUserData.userId, imageString)
+            }
+
             setIsPhotoModalVisible(false);
-            if (farmerType === 'Grupo') {
+            if (photoOwnerType === 'Grupo') {
                 navigation.navigate('Group', {
-                    ownerId: farmer?._id,
+                    ownerId: photoOwner?._id,
                 })
             } 
-            else if (farmerType === 'Indivíduo') {
+            else if (photoOwnerType === 'Indivíduo') {
                 navigation.navigate('Farmer', {
-                    ownerId: farmer?._id,
+                    ownerId: photoOwner?._id,
                 })
             } 
-            else if (farmerType === 'Instituição') {
+            else if (photoOwnerType === 'Instituição') {
                 navigation.navigate('Institution', {
-                    ownerId: farmer?._id,
+                    ownerId: photoOwner?._id,
                 })
+            }
+            else if (photoOwnerType === 'Usuário') {
+                // taking user photo
+                // navigation.goBack();
             }
           }
         });
@@ -119,19 +158,19 @@ function PhotoModal({
                         style={{ flexDirection: 'row' }}
                             onPress={()=>{
                                 setIsPhotoModalVisible(false);
-                                if (farmerType === 'Grupo') {
+                                if (photoOwnerType === 'Grupo') {
                                     navigation.navigate('Group', {
-                                        ownerId: farmer?._id,
+                                        ownerId: photoOwner?._id,
                                     })
                                 } 
-                                else if (farmerType === 'Indivíduo') {
+                                else if (photoOwnerType === 'Indivíduo') {
                                     navigation.navigate('Farmer', {
-                                        ownerId: farmer?._id,
+                                        ownerId: photoOwner?._id,
                                     })
                                 } 
-                                else if (farmerType === 'Instituição') {
+                                else if (photoOwnerType === 'Instituição') {
                                     navigation.navigate('Institution', {
-                                        ownerId: farmer?._id,
+                                        ownerId: photoOwner?._id,
                                     })
                                 }
                             }}                            
@@ -169,11 +208,19 @@ function PhotoModal({
                 >
                     <Box alignItems={'center'}>
 
-                    { farmerType === 'Indivíduo'  ?
+                    { photoOwnerType === 'Indivíduo'  ?
                         ( <Text
                             style={{ color: COLORS.main, fontSize: 20, fontFamily: 'JosefinSans-Bold', }}
                         >
-                            {farmer.names.otherNames} {farmer.names.surname}
+                            {photoOwner.names.otherNames} {photoOwner.names.surname}
+                        </Text>
+                    )
+                    : photoOwnerType === 'Usuário' ?
+                    (
+                        <Text
+                        style={{ color: COLORS.main, fontSize: 20, fontFamily: 'JosefinSans-Bold', }}
+                        >
+                            {photoOwner.name}
                         </Text>
                     )
                     :
@@ -181,7 +228,7 @@ function PhotoModal({
                         <Text
                         style={{ color: COLORS.main, fontSize: 20, fontFamily: 'JosefinSans-Bold', }}
                         >
-                            {farmer.manager?.fullname}
+                            {photoOwner.manager?.fullname}
                         </Text>
                     )
                 }

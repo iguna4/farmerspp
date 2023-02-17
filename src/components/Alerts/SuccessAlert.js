@@ -127,8 +127,7 @@ function SuccessAlert({
                 onPress={()=>{
                     navigation.navigate('FarmlandForm1', farmerItem);
                     setIsCoordinatesModalVisible(false);
-                }}    
-                           
+                }}                
             >
             <Box
                 // alignItems={'center'}

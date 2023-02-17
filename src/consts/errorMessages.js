@@ -1,6 +1,7 @@
 
 export const errorMessages = {
 
+    
     network: {
         title: 'Conexão Internet',
         message: 'Verifique a sua Internet!',
@@ -38,6 +39,17 @@ export const errorMessages = {
         title: 'Credenciais Reconhecidas',
         message: 'Já tens uma conta. Fazer o login?',
         logFlag: 'exist',
+        showCancelButton: true,
+        showConfirmButton: true,
+        cancelText: '  Não!  ',
+        confirmText: '  Sim!  ',
+        onCancelPressed: ()=>{},
+        onConfirmPressed: ()=>{},
+    },
+    addPhoto: {
+        title: 'Fotografia',
+        message: 'Pretendes carregar uma nova fotografia?',
+        logFlag: 'photo',
         showCancelButton: true,
         showConfirmButton: true,
         cancelText: '  Não!  ',

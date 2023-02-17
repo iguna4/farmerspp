@@ -281,8 +281,8 @@ export default function GroupScreen ({ route, navigation }) {
         </Box>
         <PhotoModal 
           realm={realm}
-          farmer={farmer}
-          famerType={'Grupo'}
+          photoOwner={farmer}
+          photoOwnerType={'Grupo'}
           isPhotoModalVisible={isPhotoModalVisible}
           setIsPhotoModalVisible={setIsPhotoModalVisible}
         />

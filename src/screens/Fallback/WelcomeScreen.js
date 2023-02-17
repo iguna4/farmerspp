@@ -40,7 +40,7 @@ export default function WelcomeScreen () {
     const [cancelText, setCancelText] = useState('');
     const [confirmText, setConfirmText] = useState('');
     const [showCancelButton, setShowCancelButton] = useState(false);
-    const [showConfirmButton, setShowConfirmBttom] = useState(false);
+    const [showConfirmButton, setShowConfirmButtom] = useState(false);
 
     // ---------------------------------------------
     
@@ -74,7 +74,7 @@ export default function WelcomeScreen () {
                 setTitleAlert(errorMessages.network.title);
                 setMessageAlert(errorMessages.network.message);
                 setShowCancelButton(errorMessages.network.showCancelButton);
-                setShowConfirmBttom(errorMessages.network.showCancelButton);
+                setShowConfirmButtom(errorMessages.network.showCancelButton);
                 setConfirmText(errorMessages.network.confirmText);
                 setCancelText(errorMessages.network.cancelText);
                 setAlert(true);                
@@ -84,7 +84,7 @@ export default function WelcomeScreen () {
                 setTitleAlert(errorMessages.signIn.title);
                 setMessageAlert(errorMessages.signIn.message);
                 setShowCancelButton(errorMessages.signIn.showCancelButton);
-                setShowConfirmBttom(errorMessages.signIn.showCancelButton);
+                setShowConfirmButtom(errorMessages.signIn.showCancelButton);
                 setConfirmText(errorMessages.signIn.confirmText);
                 setCancelText(errorMessages.signIn.cancelText);
                 setAlert(true);
@@ -174,7 +174,7 @@ export default function WelcomeScreen () {
                 setTitleAlert(errorMessages.signUp.title);
                 setMessageAlert(errorMessages.signUp.message);
                 setShowCancelButton(errorMessages.signUp.showCancelButton);
-                setShowConfirmBttom(errorMessages.signUp.showCancelButton);
+                setShowConfirmButtom(errorMessages.signUp.showCancelButton);
                 setConfirmText(errorMessages.signUp.confirmText);
                 setCancelText(errorMessages.signUp.cancelText);
                 setAlert(true);
@@ -184,7 +184,7 @@ export default function WelcomeScreen () {
                 setTitleAlert(errorMessages.server.title);
                 setMessageAlert(errorMessages.server.message);
                 setShowCancelButton(errorMessages.server.showCancelButton);
-                setShowConfirmBttom(errorMessages.service.showConfirmButton);
+                setShowConfirmButtom(errorMessages.service.showConfirmButton);
                 setConfirmText(errorMessages.server.confirmText);
                 setCancelText(errorMessages.server.cancelText);
                 setAlert(true);

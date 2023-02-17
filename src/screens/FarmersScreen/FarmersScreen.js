@@ -198,7 +198,7 @@ export default function FarmersScreen({ route, navigation }) {
       style={{    
         flex: 1,
         backgroundColor: 'ghostwhite',
-        paddingBottom: 60,
+        paddingBottom: 120,
       }}
     >
     <Box 

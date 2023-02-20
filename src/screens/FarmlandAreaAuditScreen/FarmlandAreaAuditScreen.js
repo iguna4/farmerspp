@@ -239,7 +239,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                             color: COLORS.grey,
                         }}
                     >
-                        Captura os pontos extremos da área com cajueiros
+                        {/* Captura os pontos extremos da área total */}
                     </Text>
                 </Box>
                 <Box w="20%"
@@ -261,30 +261,74 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             </Stack>
         </Box>
     {    farmland?.extremeCoordinates.length === 0 &&   
-        <Center
-            style={{ minHeight: 300, }}
-        >
-        <TouchableOpacity
-            onPress={ async ()=> await getGeolocation()
-            }
-        >
-            <GeoPin />
-        </TouchableOpacity>
+        <Center style={{ minHeight: 300, }}>
+        <Stack direction="row" space={4}>
+            <Box w="50%" alignItems={"center"}>
+                <TouchableOpacity
+                    // onPress={async ()=> await getGeolocation()}
+                    >
+                    {/* <GeoPin /> */}
+                    <Icon name="location-pin" size={80} color={COLORS.main} />
+                </TouchableOpacity>
+                <Box w="70%">
 
-             <Text 
-                style={{ 
+                <Text style={{
+                    color: COLORS.grey,
+                    fontSize: 15,
                     fontFamily: 'JosefinSans-Regular',
-                    fontSize: 20,
-                    padding: 10,
-                    // paddingHorizontal: 10,
                     textAlign: 'center',
-                    color: COLORS.black,
-                }
-            }
-            >
-                Adicione o primeiro ponto das coordenadas da parcela!
-            </Text>   
+                }}>
+                    Pontos extremos da parcela
+                </Text>
+                </Box>
+            </Box>
+            <Box w="50%" alignItems={"center"}>
+                <TouchableOpacity
+                    // onPress={async ()=> await getGeolocation()}
+                >
+                    {/* <GeoPin /> */}
+                    <Icon name="location-searching" size={80} color={COLORS.main} />
+                </TouchableOpacity>
+                <Box w="70%">
+
+                <Text
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 15,
+                        fontFamily: 'JosefinSans-Regular',
+                        textAlign: 'center',
+                    }}
+                    >
+                    Visualização da parcela no mapa
+                </Text>
+                </Box>
+            </Box>
+        </Stack>
         </Center>
+        // <Center
+        //     style={{ minHeight: 300, }}
+        // >
+        // <TouchableOpacity
+        //     onPress={ async ()=> await getGeolocation()
+        //     }
+        // >
+        //     <GeoPin />
+        // </TouchableOpacity>
+
+        //      <Text 
+        //         style={{ 
+        //             fontFamily: 'JosefinSans-Regular',
+        //             fontSize: 20,
+        //             padding: 10,
+        //             // paddingHorizontal: 10,
+        //             textAlign: 'center',
+        //             color: COLORS.black,
+        //         }
+        //     }
+        //     >
+        //         Adicione o primeiro ponto das coordenadas da parcela!
+        //     </Text>   
+        // </Center>
     }
 
     <FlatList

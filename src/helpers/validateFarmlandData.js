@@ -36,20 +36,27 @@ const validateFarmlandData = (
         });
         return false;
     }
-
-    if (retrievedConsociatedCrops.length === 0) { 
-        setErrors({ ...errors,
-            consociatedCrops: 'Cultura consociada.',
-        });
-        return false;
-    }
-
+    
     if (!retrievedFarmlandDescription) { 
         setErrors({ ...errors,
             description: 'Descreva a localização deste pomar.',
         });
         return false;
     }
+
+    if (retrievedConsociatedCrops.length === 0) { 
+        setErrors({ ...errors,
+            consociatedCrops: 'Selecciona culturas consociadas.',
+        });
+        return false;
+    }
+    else if(retrievedConsociatedCrops.find((crop)=>crop.includes('Nenhuma')) && retrievedConsociatedCrops.length > 1){
+        setErrors({ ...errors,
+            consociatedCrops: 'Culturas seleccionadas inválidas.',
+        });
+        return false;
+    } 
+
    
     if (!retrievedTreesNumber){
         setErrors({ ...errors,
@@ -109,6 +116,15 @@ const validateFarmlandData = (
         ){
         setErrors({ ...errors,
             clones: 'Selecciona clones.',
+        });
+        return false;
+    }
+    else if (            
+        retrievedPlantTypes.some(el=>el.includes('enxert')) 
+    &&  retrievedClones?.length > 1 && retrievedClones.find((clone)=>clone.includes('Desconhecido'))
+    ) {
+        setErrors({ ...errors,
+            clones: 'Clones seleccionados inválidos.',
         });
         return false;
     }

@@ -133,7 +133,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 show={errorAlert}
                 showProgress={false}
                 title="Dados Obrigatórios"
-                message="Os campos obrigatórios devem ser preenchidos!"
+                message="Os campos obrigatórios devem ser BEM preenchidos!"
                 closeOnTouchOutside={true}
                 closeOnHardwareBackPress={false}
                 showCancelButton={false}
@@ -286,9 +286,9 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 <FormControl.Label>Culturas consociadas</FormControl.Label>
                 <MultipleSelectList
                     setSelected={(crop)=>{
-                        setErrors(prev=>({...prev, consociatedCrops: ''}))
-                        setConsociatedCrops(crop)}
-                    }
+                        setErrors(prev=>({...prev, consociatedCrops: ''}));
+                        setConsociatedCrops(crop);
+                    }}
                     data={crops}
                     save="value"
                     arrowicon={

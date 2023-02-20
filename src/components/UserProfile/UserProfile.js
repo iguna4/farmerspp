@@ -230,29 +230,27 @@ const { useRealm, useQuery, useObject } = realmContext;
             {/* </Box> */}
             <Box w="95%" h="70%"
                 style={{
-                    marginTop: 15,
+                    marginTop: 5,
                 }}
                 >
                 <Box
                     style={{
-                        // backgroundColor: COLORS.lightgrey,
+                        flex: 1,
                         width: '100%',
                         height: '100%',
-                        borderRadius: 20,
-                        // borderTopLeftRadius: 20,
-                        padding: 10,
-                        backgroundColor: COLORS.ghostwhite,
-                        // borderWidth: 2,
+                        padding: 15,
+                        marginVertical: 10,
+                        minHeight: 100,
                         borderColor: COLORS.main,
-                        shadowColor: COLORS.second,
+                        shadowColor: COLORS.main,
                         shadowOffset: {
-                            width: 2,
-                            height: 3,
+                          width: 0,
+                          height: 3,
                         },
                         shadowOpacity: 0.27,
                         shadowRadius: 4.65,
+                
                         elevation: 3,
-                        opacity: 3,
                     }}
                 >
                     <Stack w="100%" direction="row" my="1">

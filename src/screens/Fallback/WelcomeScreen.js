@@ -40,7 +40,8 @@ export default function WelcomeScreen () {
     const [cancelText, setCancelText] = useState('');
     const [confirmText, setConfirmText] = useState('');
     const [showCancelButton, setShowCancelButton] = useState(false);
-    const [showConfirmButton, setShowConfirmButtom] = useState(false);
+    const [showConfirmButton, setShowConfirmButton] = useState(false);
+    const [errorFlag, seterrorFlag] = useState(null);
 
     // ---------------------------------------------
     
@@ -56,35 +57,76 @@ export default function WelcomeScreen () {
     const [invalidDataAlert, setInvalidDataAlert] = useState(false);
     // const [userData, setUserData] = useState({});
 
+    useEffect(()=>{
+        console.log('errorFlag:', errorFlag);
+        if (alert && (errorFlag?.toString()?.includes(errorMessages.signIn.logUsernameFlag) || errorFlag?.toString()?.includes(errorMessages.signIn.logPasswordFlag))) {
+            setTitleAlert(errorMessages.signIn.title);
+            setMessageAlert(errorMessages.signIn.message);
+            setShowCancelButton(errorMessages.signIn.showCancelButton);
+            setShowConfirmButton(errorMessages.signIn.showConfirmButton);
+            setConfirmText(errorMessages.signIn.confirmText);
+            setCancelText(errorMessages.signIn.cancelText);
+        }
+        else  if (alert && (errorFlag?.toString()?.includes(errorMessages.network.logFlag))) {
+            setTitleAlert(errorMessages.network.title);
+            setMessageAlert(errorMessages.network.message);
+            setShowCancelButton(errorMessages.network.showCancelButton);
+            setShowConfirmButton(errorMessages.network.showConfirmButton);
+            setConfirmText(errorMessages.network.confirmText);
+            setCancelText(errorMessages.network.cancelText);
+        }
+        else if (alert && errorFlag?.toString()?.includes(errorMessages.signUp.logFlag)){
+            // Alert message
+            setTitleAlert(errorMessages.signUp.title);
+            setMessageAlert(errorMessages.signUp.message);
+            setShowCancelButton(errorMessages.signUp.showCancelButton);
+            setShowConfirmButton(errorMessages.signUp.showConfirmButton);
+            setConfirmText(errorMessages.signUp.confirmText);
+            setCancelText(errorMessages.signUp.cancelText);
+        }
+        else if (alert) {
+            setTitleAlert(errorMessages.server.title);
+            setMessageAlert(errorMessages.server.message);
+            setShowCancelButton(errorMessages.server.showCancelButton);
+            setShowConfirmButton(errorMessages.server.showConfirmButton);
+            setConfirmText(errorMessages.server.confirmText);
+            setCancelText(errorMessages.server.cancelText);
+        }
+
+    }, [errorFlag, alert]);
+
 
     const app = useApp();
 
     const signIn = useCallback(async () => {
+
+        // remove any current user
+        
         const creds = Realm.Credentials.emailPassword(email, password);
-        await app.logIn(creds);
-      }, [app, email, password]);
-    
-      // on user log in
-    const onSignIn = useCallback(async () => {
+        app?.currentUser?.logOut();
         try {
-          await signIn();
+            await app?.logIn(creds);
         } catch (error) {
+            if (error.includes('username')){
+                console.log('yes')
+            }
+            console.log('login Error1:', { cause: error })
             if (error.includes(errorMessages.network.logFlag)) {
                 // Alert message
                 setTitleAlert(errorMessages.network.title);
                 setMessageAlert(errorMessages.network.message);
                 setShowCancelButton(errorMessages.network.showCancelButton);
-                setShowConfirmButtom(errorMessages.network.showCancelButton);
+                setShowConfirmButton(errorMessages.network.showConfirmButton);
                 setConfirmText(errorMessages.network.confirmText);
                 setCancelText(errorMessages.network.cancelText);
                 setAlert(true);                
             }
-            else if (error.includes(errorMessages.signIn.logFlag)){
+            else if (error.includes(errorMessages.signIn.logUsernameFlag) || error.includes(errorMessages.signIn.logPasswordFlag)){
                 // complete this 
                 setTitleAlert(errorMessages.signIn.title);
                 setMessageAlert(errorMessages.signIn.message);
                 setShowCancelButton(errorMessages.signIn.showCancelButton);
-                setShowConfirmButtom(errorMessages.signIn.showCancelButton);
+                setShowConfirmButton(errorMessages.signIn.showConfirmButton);
                 setConfirmText(errorMessages.signIn.confirmText);
                 setCancelText(errorMessages.signIn.cancelText);
                 setAlert(true);
@@ -94,14 +136,55 @@ export default function WelcomeScreen () {
                 setTitleAlert(errorMessages.server.title);
                 setMessageAlert(errorMessages.server.message);
                 setShowCancelButton(errorMessages.server.showCancelButton);
-                setShowConfirmBttom(errorMessages.server.showCancelButton);
+                setShowConfirmButton(errorMessages.server.showConfirmButton);
                 setConfirmText(errorMessages.server.confirmText);
                 setCancelText(errorMessages.server.cancelText);
                 setAlert(true);
             }
-            return ;
+            return ;            
         }
-    }, [signIn]);
+      }, [app, email, password]);
+    
+      // on user log in
+    // const onSignIn = useCallback(async () => {
+    //     try {
+    //       await signIn();
+    //     } catch (error) {
+    //         console.log('login Error2:', { cause: error })
+
+    //         if (error.includes(errorMessages.network.logFlag)) {
+    //             // Alert message
+    //             setTitleAlert(errorMessages.network.title);
+    //             setMessageAlert(errorMessages.network.message);
+    //             setShowCancelButton(errorMessages.network.showCancelButton);
+    //             setShowConfirmButton(errorMessages.network.showConfirmButton);
+    //             setConfirmText(errorMessages.network.confirmText);
+    //             setCancelText(errorMessages.network.cancelText);
+    //             setAlert(true);                
+    //         }
+    //         else if (error.includes(errorMessages.signIn.logFlag)){
+    //             // complete this 
+    //             setTitleAlert(errorMessages.signIn.title);
+    //             setMessageAlert(errorMessages.signIn.message);
+    //             setShowCancelButton(errorMessages.signIn.showCancelButton);
+    //             setShowConfirmButton(errorMessages.signIn.showConfirmButton);
+    //             setConfirmText(errorMessages.signIn.confirmText);
+    //             setCancelText(errorMessages.signIn.cancelText);
+    //             setAlert(true);
+    //         }
+    //         else {
+    //             // Alert message
+    //             setTitleAlert(errorMessages.server.title);
+    //             setMessageAlert(errorMessages.server.message);
+    //             setShowCancelButton(errorMessages.server.showCancelButton);
+    //             setShowConfirmButton(errorMessages.server.showConfirmButton);
+    //             setConfirmText(errorMessages.server.confirmText);
+    //             setCancelText(errorMessages.server.cancelText);
+    //             setAlert(true);
+    //         }
+    //         return ;
+    //     }
+    // }, [signIn]);
 
     // on user registration
     const onSignUp = useCallback(async (newName, newEmail, newPassword, newPasswordConfirm, newPhone, newRole, newUserDistrict, newUserProvince) => {
@@ -131,6 +214,9 @@ export default function WelcomeScreen () {
 
         // try to register new user
         try {
+            // remove any current user
+            app?.currentUser?.logOut();
+
             await app.emailPasswordAuth.registerUser({email, password});
 
             const creds = Realm.Credentials.emailPassword(email, password);
@@ -159,108 +245,69 @@ export default function WelcomeScreen () {
             const customUserData = await newUser.refreshCustomData();
 
         } catch (error) {
-            if (error.includes(errorMessages.network.logFlag)){
-                // Alert message
-                setTitleAlert(errorMessages.network.title);
-                setMessageAlert(errorMessages.network.message);
-                setShowCancelButton(errorMessages.network.showCancelButton);
-                setShowConfirmBttom(errorMessages.network.showCancelButton);
-                setConfirmText(errorMessages.network.confirmText);
-                setCancelText(errorMessages.network.cancelText);
-                setAlert(true);
-            }
-            else if (error.includes(errorMessages.signUp.logFlag)){
-                // Alert message
-                setTitleAlert(errorMessages.signUp.title);
-                setMessageAlert(errorMessages.signUp.message);
-                setShowCancelButton(errorMessages.signUp.showCancelButton);
-                setShowConfirmButtom(errorMessages.signUp.showCancelButton);
-                setConfirmText(errorMessages.signUp.confirmText);
-                setCancelText(errorMessages.signUp.cancelText);
-                setAlert(true);
-            }
-            else {
-                // Alert message
-                setTitleAlert(errorMessages.server.title);
-                setMessageAlert(errorMessages.server.message);
-                setShowCancelButton(errorMessages.server.showCancelButton);
-                setShowConfirmButtom(errorMessages.service.showConfirmButton);
-                setConfirmText(errorMessages.server.confirmText);
-                setCancelText(errorMessages.server.cancelText);
-                setAlert(true);
-            }
+            setAlert(true);
+            seterrorFlag(error);
+            // if (error.includes(errorMessages.network.logFlag)){
+            //     // Alert message
+            //     setTitleAlert(errorMessages.network.title);
+            //     setMessageAlert(errorMessages.network.message);
+            //     setShowCancelButton(errorMessages.network.showCancelButton);
+            //     setShowConfirmButton(errorMessages.network.showConfirmButton);
+            //     setConfirmText(errorMessages.network.confirmText);
+            //     setCancelText(errorMessages.network.cancelText);
+            //     setAlert(true);
+            // }
+            // else if (error.includes(errorMessages.signUp.logFlag)){
+            //     // Alert message
+            //     setTitleAlert(errorMessages.signUp.title);
+            //     setMessageAlert(errorMessages.signUp.message);
+            //     setShowCancelButton(errorMessages.signUp.showCancelButton);
+            //     setShowConfirmButton(errorMessages.signUp.showConfirmButton);
+            //     setConfirmText(errorMessages.signUp.confirmText);
+            //     setCancelText(errorMessages.signUp.cancelText);
+            //     setAlert(true);
+            // }
+            // else {
+            //     // Alert message
+            //     setTitleAlert(errorMessages.server.title);
+            //     setMessageAlert(errorMessages.server.message);
+            //     setShowCancelButton(errorMessages.server.showCancelButton);
+            //     setShowConfirmButton(errorMessages.service.showConfirmButton);
+            //     setConfirmText(errorMessages.server.confirmText);
+            //     setCancelText(errorMessages.server.cancelText);
+            //     setAlert(true);
+            // }
             return ;
         }
-    }, [signIn, app, email, password]);
+    }, [app, email, password]);
 
-    // const onSignIn = useCallback(async (newEmail, newPassword)=>{
-    //     // const { email, password } = userData;
 
-    //     const creds = Realm.Credentials.emailPassword(newEmail, newPassword);
-    //     try {
-    //         await app.logIn(creds);
-    //     } catch (error) {
-    //         await onSignUp(newEmail, newPassword);
-    //         // throw new Error('Failed to sign in the user');
+
+
+
+    // const onSubmitUserData = useCallback(async ()=>{
+
+    //     if (!validateUserData(userData, isLoggingIn, errors, setErrors)) {
+    //         setErrorAlert(true);
+    //         return ;
     //     }
-    // }, [app, email, password]);
 
-
-    // const onSignUp = useCallback(async (newEmail, newPassword)=>{
-    //     const {
-    //         name,
-    //         email,
-    //         password,
-    //         phone,
-    //         province,
-    //         district,
-    //     } = userData;
-
-    //     console.log('user credentials:', JSON.stringify({email: newEmail, password: newPassword}));
+    //     setUserData(validateUserData(userData, isLoggingIn, errors, setErrors));
 
     //     try {
-    //         await app.emailPasswordAuth.registerUser({ newEmail, newPassword });
-    //         try {
-    //             await onSignIn(newEmail, newPassword);               
-    //         } catch (error) {
-    //             // console.log('Failed to sign in after registration', { cause: error });
-    //             throw new Error('Failed to sign in after user registration', { cause: error });   
+    //         if (isLoggingIn) {
+    //             await onSignIn(userData);
     //         }
-    //         // save user custom data to the atlas mongodb database
-    //         // add name, phone, province and district to custom data
-
+    //         else {
+    //             await onSignUp(userData);
+    //         }
     //     } catch (error) {
-    //         // setErrorAlert(true);
-    //         throw new Error('Failed to sign up the user');
+    //         throw new Error('Failed to process user request!');
     //     }
-    // }, [app, onSignIn, email, password]);
-   
 
-
-
-    const onSubmitUserData = useCallback(async ()=>{
-
-        if (!validateUserData(userData, isLoggingIn, errors, setErrors)) {
-            setErrorAlert(true);
-            return ;
-        }
-
-        setUserData(validateUserData(userData, isLoggingIn, errors, setErrors));
-
-        try {
-            if (isLoggingIn) {
-                await onSignIn(userData);
-            }
-            else {
-                await onSignUp(userData);
-            }
-        } catch (error) {
-            throw new Error('Failed to process user request!');
-        }
-
-        setEmail('');
-        setPassword('');
-    }, []);
+    //     setEmail('');
+    //     setPassword('');
+    // }, []);
 
     useEffect(()=>{
 
@@ -363,24 +410,6 @@ export default function WelcomeScreen () {
 
        </Box>
 
-       {/* <AwesomeAlert 
-            show={alert}
-            showProgress={false}
-            title={titleAlert}
-            message={messageAlert}
-            closeOnTouchOutside={false}
-            closeOnHardwareBackPress={false}
-            showCancelButton={false}
-            showConfirmButton={true}
-            // cancelText="   Sim   "
-            confirmText="   Ok!   "
-            // cancelButtonColor="#DD6B55"
-            confirmButtonColor="#DD6B55"
-            onConfirmPressed={()=>{
-                setAlert(false);
-            }}
-       /> */}
-
         <AwesomeAlert
             show={alert}
             showProgress={false}
@@ -396,15 +425,19 @@ export default function WelcomeScreen () {
             confirmButtonColor={COLORS.main}
             onCancelPressed={()=>{
                 setAlert(false);
+                seterrorFlag(null);
             }}
             onConfirmPressed={() => {
                 setAlert(false);
                 if (isLoggingIn) {
-                    setIsLoggingIn(false);
+                    // setIsLoggingIn(false);
                 }
                 else {
                     setIsLoggingIn(true);
+                    setEmail('');
+                    setPassword('');
                 }
+                seterrorFlag(null);
             }}
         />
 
@@ -647,43 +680,6 @@ export default function WelcomeScreen () {
                 }
                 </FormControl>
             </Box>
-
-            {/* <Box w="50%">
-            <FormControl isRequired my="3" isInvalid={'userDistrict' in errors}>
-                <FormControl.Label>Distrito</FormControl.Label>
-                    <Select
-                        selectedValue={userDistrict}
-                        accessibilityLabel="Escolha seu distrito"
-                        placeholder="Escolha seu distrito"
-                        _selectedItem={{
-                            bg: 'teal.600',
-                            fontSize: 'lg',
-                            endIcon: <CheckIcon size="5" />,
-                        }}
-                        dropdownCloseIcon={userDistrict 
-                            ? <Icon name="close" size={25} color="grey" onPress={()=>setUserDistrict('')} /> 
-                            : <Icon size={25} name="arrow-drop-down" color="#005000" />
-                        }
-                        mt={1}
-                        onValueChange={(newDistrict)=>{
-                            setErrors(prev=>({...prev, userDistrict: ''}))
-                            setUserDistrict(newDistrict)}
-                        }
-                    >{
-                        selectedDistricts?.map((district, index)=>(
-                            <Select.Item key={index} label={district} value={district} />
-                            ))
-                        }
-                    </Select>
-                    {
-                        'userDistrict' in errors 
-                        ? <FormControl.ErrorMessage 
-                        leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                        _text={{ fontSize: 'xs'}}>{errors?.userDistrict}</FormControl.ErrorMessage> 
-                        : <FormControl.HelperText></FormControl.HelperText>
-                    }
-            </FormControl>
-            </Box> */}
             </Stack>
 
             <Stack direction="row" w="100%" space={role.includes(roles.provincialManager) ? 0 : 1}>
@@ -778,13 +774,26 @@ export default function WelcomeScreen () {
             >
         <Button 
             title={isLoggingIn ? " Entrar" : "Registar-se"} 
-            onPress={ ()=> {
+            onPress={ async ()=> {
+                
                 if (isLoggingIn){
-                    onSignIn();
+                    app?.currentUser?.logOut();
+                    try{
+                        // await signIn();
+                        const creds = Realm.Credentials.emailPassword(email, password);
+                        await app?.logIn(creds);
+                    }
+                    catch(error){
+                        console.log('SignIn or SignUp Error: ', { cause: error });
+                        setAlert(true);
+                        seterrorFlag(error);
+                        return ;
+                    }   
                 }   
                 else {
-                    onSignUp(name, email, password, passwordConfirm, phone, role, userDistrict, userProvince);
+                    await onSignUp(name, email, password, passwordConfirm, phone, role, userDistrict, userProvince);
                 } 
+
             }} 
             type="outline"
                 containerStyle={{

@@ -27,7 +27,8 @@ export const errorMessages = {
     signIn: {
         title: 'Credenciais Inválidas',
         message: 'O endereço electrónico e a senha  não correspondem!',
-        logFlag: 'password',
+        logUsernameFlag: 'username',
+        logPasswordFlag: 'password',
         showCancelButton: false,
         showConfirmButton: true,
         cancelText: '',
@@ -38,7 +39,7 @@ export const errorMessages = {
     signUp: {
         title: 'Credenciais Reconhecidas',
         message: 'Já tens uma conta. Fazer o login?',
-        logFlag: 'exist',
+        logFlag: 'name already in use',
         showCancelButton: true,
         showConfirmButton: true,
         cancelText: '  Não!  ',

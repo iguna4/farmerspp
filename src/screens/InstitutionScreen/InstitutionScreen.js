@@ -11,6 +11,7 @@ import COLORS from '../../consts/colors';
 import PhotoModal from '../../components/Modals/PhotoModal';
 
 import { realmContext } from '../../models/realmContext';
+import { useEffect } from 'react';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const institution = 'institution';

@@ -221,17 +221,19 @@ export default function FarmerScreen ({ route, navigation }) {
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: 60,
-            borderRadius: 5,
-            borderColor: COLORS.main,
-            shadowColor: COLORS.main,
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            shadowOpacity: 0.27,
-            shadowRadius: 1.65,
+            borderRadius: 30,
+            borderWidth: 3,
+            // backgroundColor: COLORS.main,
+            borderColor: COLORS.grey,
+            // shadowColor: COLORS.main,
+            // shadowOffset: {
+            //   width: 0,
+            //   height: 1,
+            // },
+            // shadowOpacity: 0.5,
+            // shadowRadius: 1.65,
     
-            elevation: 1,
+            // elevation: 3,
 
           }}
         >
@@ -287,7 +289,7 @@ export default function FarmerScreen ({ route, navigation }) {
           top: -50,
         }}                
       >
-        ({farmer?.category})
+        ({farmer?.category}{farmer?.isSprayingAgent && 'e Provedor de Serviço de Pulverização'})
       </Text>
     </Box>
     

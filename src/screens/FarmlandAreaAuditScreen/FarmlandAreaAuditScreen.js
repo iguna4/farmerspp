@@ -263,45 +263,104 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     {    farmland?.extremeCoordinates.length === 0 &&   
         <Center style={{ minHeight: 300, }}>
         <Stack direction="row" space={4}>
-            <Box w="50%" alignItems={"center"}>
+            <Box w="10%" alignItems={"center"}>
+            </Box>
+            <Box
+                w="35%" 
+            >
+
+            <Stack
+                // w="100%"
+                direction="column"
+            >
+
+            <Box 
+                // alignItems={"center"}
+                style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 100,
+                borderWidth: 10,
+                // padding: 10,
+                borderColor: COLORS.main,
+                shadowColor: COLORS.main,
+                shadowOffset: {
+                    width: 0,
+                    height: 3,
+                },
+                shadowOpacity: 0.5,
+                shadowRadius: 1.65,
+                elevation: 3,
+            }}
+            >
                 <TouchableOpacity
-                    // onPress={async ()=> await getGeolocation()}
+                    onPress={async ()=> await getGeolocation()}
                     >
                     {/* <GeoPin /> */}
-                    <Icon name="location-pin" size={80} color={COLORS.main} />
+                    <Icon name="location-pin" size={70} color={COLORS.main} />
                 </TouchableOpacity>
-                <Box w="70%">
-
-                <Text style={{
-                    color: COLORS.grey,
-                    fontSize: 15,
-                    fontFamily: 'JosefinSans-Regular',
-                    textAlign: 'center',
-                }}>
-                    Pontos extremos da parcela
-                </Text>
-                </Box>
             </Box>
-            <Box w="50%" alignItems={"center"}>
-                <TouchableOpacity
-                    // onPress={async ()=> await getGeolocation()}
-                >
-                    {/* <GeoPin /> */}
-                    <Icon name="location-searching" size={80} color={COLORS.main} />
-                </TouchableOpacity>
-                <Box w="70%">
-
-                <Text
-                    style={{
+                <Box w="100%">
+                    <Text style={{
                         color: COLORS.grey,
                         fontSize: 15,
                         fontFamily: 'JosefinSans-Regular',
                         textAlign: 'center',
-                    }}
-                    >
-                    Visualização da parcela no mapa
-                </Text>
+                    }}>
+                    Pontos extremos
+                    </Text>
                 </Box>
+            </Stack>
+            </Box>
+            <Box w="10%" alignItems={"center"}>
+            </Box>
+            <Box
+                w="35%" 
+            >
+                <Stack direction="column">
+
+            <Box 
+                // alignItems={"center"}
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 100,
+                    borderWidth: 10,
+                    // padding: 10,
+                    borderColor: COLORS.main,
+                    shadowColor: COLORS.main,
+                    shadowOffset: {
+                        width: 0,
+                        height: 3,
+                    },
+                    shadowOpacity: 0.5,
+                    shadowRadius: 1.65,
+                    elevation: 3,
+                }}
+                >
+                <TouchableOpacity
+                    // onPress={async ()=> await getGeolocation()}
+                    >
+                    {/* <GeoPin /> */}
+                    <Icon name="map" size={70} color={COLORS.main} />
+                </TouchableOpacity>
+            </Box>
+            <Box w="100%">
+
+                <Text
+                style={{
+                    color: COLORS.grey,
+                    fontSize: 15,
+                    fontFamily: 'JosefinSans-Regular',
+                    textAlign: 'center',
+                }}
+                >
+                    Parcela no mapa
+                </Text>
+            </Box>
+            </Stack>
+            </Box>
+            <Box w="10%" alignItems={"center"}>
             </Box>
         </Stack>
         </Center>

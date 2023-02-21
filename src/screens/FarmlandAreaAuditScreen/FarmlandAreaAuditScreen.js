@@ -281,7 +281,6 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 alignItems: 'center',
                 borderRadius: 100,
                 borderWidth: 10,
-                // padding: 10,
                 borderColor: COLORS.main,
                 shadowColor: COLORS.main,
                 shadowOffset: {

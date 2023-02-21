@@ -161,17 +161,7 @@ export default function GroupScreen ({ route, navigation }) {
               marginTop: 60,
               borderRadius: 30,
               borderWidth: 3,
-              // backgroundColor: COLORS.main,
               borderColor: COLORS.grey,
-              // shadowColor: COLORS.main,
-              // shadowOffset: {
-              //   width: 0,
-              //   height: 1,
-              // },
-              // shadowOpacity: 0.5,
-              // shadowRadius: 1.65,
-      
-              // elevation: 3,
             }}
             >
             <TouchableOpacity

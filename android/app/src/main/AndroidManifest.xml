@@ -31,5 +31,9 @@
           <data android:scheme="connectcaju" />
         </intent-filter>
       </activity>
+      <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyDfNO_DWXQX0o8qhybbOp-EDYc2da_4WeQ"
+      />
     </application>
 </manifest>

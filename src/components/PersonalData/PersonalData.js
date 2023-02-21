@@ -109,7 +109,7 @@ const PersonalData = ({ farmer })=>{
                             // paddingLeft: 10,
                             fontFamily: 'JosefinSans-Regular',
                         }} >
-                        {new Date(farmer.birthDate).toLocaleDateString()}{' '}({new Date().getFullYear() - new Date(farmer.birthDate).getFullYear()} anos)
+                        {new Date(farmer?.birthDate).toLocaleDateString()}{' '}({new Date().getFullYear() - new Date(farmer?.birthDate).getFullYear()} anos)
                     </Text>
                 </Box>
         </Stack>
@@ -559,7 +559,7 @@ const PersonalData = ({ farmer })=>{
             }}
             >
             Registo:{' '}                 
-            {new Date(farmer.createdAt).getDate()}-{new Date(farmer.createdAt).getMonth()+1}-{new Date(farmer.createdAt).getFullYear()}
+            {new Date(farmer?.createdAt).getDate()}-{new Date(farmer?.createdAt).getMonth()+1}-{new Date(farmer?.createdAt).getFullYear()}
             {' '} por {farmer?.userName === customUserData?.name ? 'mim' : farmer?.userName}
             </Text>
         </Box>
@@ -575,7 +575,7 @@ const PersonalData = ({ farmer })=>{
         <EditData 
             isOverlayVisible={isOverlayVisible}
             setIsOverlayVisible={setIsOverlayVisible}
-            ownerName={farmer.names?.otherNames + ' ' + farmer.names?.surname}
+            ownerName={farmer?.names?.otherNames + ' ' + farmer?.names?.surname}
         />
         )
     }

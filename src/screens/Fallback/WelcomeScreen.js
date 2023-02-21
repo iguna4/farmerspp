@@ -24,8 +24,6 @@ import { errorMessages } from '../../consts/errorMessages';
 export default function WelcomeScreen () {
     const [isLoggingIn, setIsLoggingIn] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
-    // const [emailFailMessage, setEmailFailMessage] = useState('');
-    // const [passwordFailMessage, setPasswordFailMessage] = useState('');
     
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -55,136 +53,8 @@ export default function WelcomeScreen () {
     const [phone, setPhone] = useState(null);
 
     const [invalidDataAlert, setInvalidDataAlert] = useState(false);
-    // const [userData, setUserData] = useState({});
-
-    useEffect(()=>{
-        console.log('errorFlag:', errorFlag);
-        if (alert && (errorFlag?.toString()?.includes(errorMessages.signIn.logUsernameFlag) || errorFlag?.toString()?.includes(errorMessages.signIn.logPasswordFlag))) {
-            setTitleAlert(errorMessages.signIn.title);
-            setMessageAlert(errorMessages.signIn.message);
-            setShowCancelButton(errorMessages.signIn.showCancelButton);
-            setShowConfirmButton(errorMessages.signIn.showConfirmButton);
-            setConfirmText(errorMessages.signIn.confirmText);
-            setCancelText(errorMessages.signIn.cancelText);
-        }
-        else  if (alert && (errorFlag?.toString()?.includes(errorMessages.network.logFlag))) {
-            setTitleAlert(errorMessages.network.title);
-            setMessageAlert(errorMessages.network.message);
-            setShowCancelButton(errorMessages.network.showCancelButton);
-            setShowConfirmButton(errorMessages.network.showConfirmButton);
-            setConfirmText(errorMessages.network.confirmText);
-            setCancelText(errorMessages.network.cancelText);
-        }
-        else if (alert && errorFlag?.toString()?.includes(errorMessages.signUp.logFlag)){
-            // Alert message
-            setTitleAlert(errorMessages.signUp.title);
-            setMessageAlert(errorMessages.signUp.message);
-            setShowCancelButton(errorMessages.signUp.showCancelButton);
-            setShowConfirmButton(errorMessages.signUp.showConfirmButton);
-            setConfirmText(errorMessages.signUp.confirmText);
-            setCancelText(errorMessages.signUp.cancelText);
-        }
-        else if (alert) {
-            setTitleAlert(errorMessages.server.title);
-            setMessageAlert(errorMessages.server.message);
-            setShowCancelButton(errorMessages.server.showCancelButton);
-            setShowConfirmButton(errorMessages.server.showConfirmButton);
-            setConfirmText(errorMessages.server.confirmText);
-            setCancelText(errorMessages.server.cancelText);
-        }
-
-    }, [errorFlag, alert]);
-
 
     const app = useApp();
-
-    const signIn = useCallback(async () => {
-
-        // remove any current user
-        
-        const creds = Realm.Credentials.emailPassword(email, password);
-        app?.currentUser?.logOut();
-        try {
-            await app?.logIn(creds);
-        } catch (error) {
-            if (error.includes('username')){
-                console.log('yes')
-            }
-            console.log('login Error1:', { cause: error })
-            if (error.includes(errorMessages.network.logFlag)) {
-                // Alert message
-                setTitleAlert(errorMessages.network.title);
-                setMessageAlert(errorMessages.network.message);
-                setShowCancelButton(errorMessages.network.showCancelButton);
-                setShowConfirmButton(errorMessages.network.showConfirmButton);
-                setConfirmText(errorMessages.network.confirmText);
-                setCancelText(errorMessages.network.cancelText);
-                setAlert(true);                
-            }
-            else if (error.includes(errorMessages.signIn.logUsernameFlag) || error.includes(errorMessages.signIn.logPasswordFlag)){
-                // complete this 
-                setTitleAlert(errorMessages.signIn.title);
-                setMessageAlert(errorMessages.signIn.message);
-                setShowCancelButton(errorMessages.signIn.showCancelButton);
-                setShowConfirmButton(errorMessages.signIn.showConfirmButton);
-                setConfirmText(errorMessages.signIn.confirmText);
-                setCancelText(errorMessages.signIn.cancelText);
-                setAlert(true);
-            }
-            else {
-                // Alert message
-                setTitleAlert(errorMessages.server.title);
-                setMessageAlert(errorMessages.server.message);
-                setShowCancelButton(errorMessages.server.showCancelButton);
-                setShowConfirmButton(errorMessages.server.showConfirmButton);
-                setConfirmText(errorMessages.server.confirmText);
-                setCancelText(errorMessages.server.cancelText);
-                setAlert(true);
-            }
-            return ;            
-        }
-      }, [app, email, password]);
-    
-      // on user log in
-    // const onSignIn = useCallback(async () => {
-    //     try {
-    //       await signIn();
-    //     } catch (error) {
-    //         console.log('login Error2:', { cause: error })
-
-    //         if (error.includes(errorMessages.network.logFlag)) {
-    //             // Alert message
-    //             setTitleAlert(errorMessages.network.title);
-    //             setMessageAlert(errorMessages.network.message);
-    //             setShowCancelButton(errorMessages.network.showCancelButton);
-    //             setShowConfirmButton(errorMessages.network.showConfirmButton);
-    //             setConfirmText(errorMessages.network.confirmText);
-    //             setCancelText(errorMessages.network.cancelText);
-    //             setAlert(true);                
-    //         }
-    //         else if (error.includes(errorMessages.signIn.logFlag)){
-    //             // complete this 
-    //             setTitleAlert(errorMessages.signIn.title);
-    //             setMessageAlert(errorMessages.signIn.message);
-    //             setShowCancelButton(errorMessages.signIn.showCancelButton);
-    //             setShowConfirmButton(errorMessages.signIn.showConfirmButton);
-    //             setConfirmText(errorMessages.signIn.confirmText);
-    //             setCancelText(errorMessages.signIn.cancelText);
-    //             setAlert(true);
-    //         }
-    //         else {
-    //             // Alert message
-    //             setTitleAlert(errorMessages.server.title);
-    //             setMessageAlert(errorMessages.server.message);
-    //             setShowCancelButton(errorMessages.server.showCancelButton);
-    //             setShowConfirmButton(errorMessages.server.showConfirmButton);
-    //             setConfirmText(errorMessages.server.confirmText);
-    //             setCancelText(errorMessages.server.cancelText);
-    //             setAlert(true);
-    //         }
-    //         return ;
-    //     }
-    // }, [signIn]);
 
     // on user registration
     const onSignUp = useCallback(async (newName, newEmail, newPassword, newPasswordConfirm, newPhone, newRole, newUserDistrict, newUserProvince) => {
@@ -247,67 +117,48 @@ export default function WelcomeScreen () {
         } catch (error) {
             setAlert(true);
             seterrorFlag(error);
-            // if (error.includes(errorMessages.network.logFlag)){
-            //     // Alert message
-            //     setTitleAlert(errorMessages.network.title);
-            //     setMessageAlert(errorMessages.network.message);
-            //     setShowCancelButton(errorMessages.network.showCancelButton);
-            //     setShowConfirmButton(errorMessages.network.showConfirmButton);
-            //     setConfirmText(errorMessages.network.confirmText);
-            //     setCancelText(errorMessages.network.cancelText);
-            //     setAlert(true);
-            // }
-            // else if (error.includes(errorMessages.signUp.logFlag)){
-            //     // Alert message
-            //     setTitleAlert(errorMessages.signUp.title);
-            //     setMessageAlert(errorMessages.signUp.message);
-            //     setShowCancelButton(errorMessages.signUp.showCancelButton);
-            //     setShowConfirmButton(errorMessages.signUp.showConfirmButton);
-            //     setConfirmText(errorMessages.signUp.confirmText);
-            //     setCancelText(errorMessages.signUp.cancelText);
-            //     setAlert(true);
-            // }
-            // else {
-            //     // Alert message
-            //     setTitleAlert(errorMessages.server.title);
-            //     setMessageAlert(errorMessages.server.message);
-            //     setShowCancelButton(errorMessages.server.showCancelButton);
-            //     setShowConfirmButton(errorMessages.service.showConfirmButton);
-            //     setConfirmText(errorMessages.server.confirmText);
-            //     setCancelText(errorMessages.server.cancelText);
-            //     setAlert(true);
-            // }
             return ;
         }
     }, [app, email, password]);
 
 
+    useEffect(()=>{
+        if (alert && (errorFlag?.toString()?.includes(errorMessages.signIn.logUsernameFlag) || errorFlag?.toString()?.includes(errorMessages.signIn.logPasswordFlag))) {
+            setTitleAlert(errorMessages.signIn.title);
+            setMessageAlert(errorMessages.signIn.message);
+            setShowCancelButton(errorMessages.signIn.showCancelButton);
+            setShowConfirmButton(errorMessages.signIn.showConfirmButton);
+            setConfirmText(errorMessages.signIn.confirmText);
+            setCancelText(errorMessages.signIn.cancelText);
+        }
+        else  if (alert && (errorFlag?.toString()?.includes(errorMessages.network.logFlag))) {
+            setTitleAlert(errorMessages.network.title);
+            setMessageAlert(errorMessages.network.message);
+            setShowCancelButton(errorMessages.network.showCancelButton);
+            setShowConfirmButton(errorMessages.network.showConfirmButton);
+            setConfirmText(errorMessages.network.confirmText);
+            setCancelText(errorMessages.network.cancelText);
+        }
+        else if (alert && errorFlag?.toString()?.includes(errorMessages.signUp.logFlag)){
+            // Alert message
+            setTitleAlert(errorMessages.signUp.title);
+            setMessageAlert(errorMessages.signUp.message);
+            setShowCancelButton(errorMessages.signUp.showCancelButton);
+            setShowConfirmButton(errorMessages.signUp.showConfirmButton);
+            setConfirmText(errorMessages.signUp.confirmText);
+            setCancelText(errorMessages.signUp.cancelText);
+        }
+        else if (alert) {
+            setTitleAlert(errorMessages.server.title);
+            setMessageAlert(errorMessages.server.message);
+            setShowCancelButton(errorMessages.server.showCancelButton);
+            setShowConfirmButton(errorMessages.server.showConfirmButton);
+            setConfirmText(errorMessages.server.confirmText);
+            setCancelText(errorMessages.server.cancelText);
+        }
 
+    }, [errorFlag, alert]);
 
-
-    // const onSubmitUserData = useCallback(async ()=>{
-
-    //     if (!validateUserData(userData, isLoggingIn, errors, setErrors)) {
-    //         setErrorAlert(true);
-    //         return ;
-    //     }
-
-    //     setUserData(validateUserData(userData, isLoggingIn, errors, setErrors));
-
-    //     try {
-    //         if (isLoggingIn) {
-    //             await onSignIn(userData);
-    //         }
-    //         else {
-    //             await onSignUp(userData);
-    //         }
-    //     } catch (error) {
-    //         throw new Error('Failed to process user request!');
-    //     }
-
-    //     setEmail('');
-    //     setPassword('');
-    // }, []);
 
     useEffect(()=>{
 
@@ -345,21 +196,23 @@ export default function WelcomeScreen () {
                     style={{ width: 60, height: 60, borderRadius: 100,  }}
                     source={require('../../../assets/images/iamLogo2.png')}
                     />
-                <Text
+                {/* <Text
                     style={{
                         color: COLORS.main,
                         fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         paddingTop: 6,
+                        textAlign: 'center',
                     }}
                     >
                     Instituto de Amêndoas de Moçambique, IP
-                </Text>
+                </Text> */}
                 <Text
                     style={{
                     color: COLORS.main,
                     fontSize: 18,
                     fontFamily: 'JosefinSans-Bold',
+                    textAlign: 'center',
                     }}
                 >
                     IAM, IP
@@ -372,7 +225,7 @@ export default function WelcomeScreen () {
     <ScrollView
             contentContainerStyle={{
 
-                alignItems: 'center',
+                // alignItems: 'center',
             }}
     >
     { isLoggingIn &&        
@@ -380,34 +233,40 @@ export default function WelcomeScreen () {
             <Text style={styles.signInTitle}>ConnectCaju - 2023</Text>
         </Center>
     }
-        <Box my="5" pl="4">
-        { ('errorMessage' in errors && errors?.errorMessage && isLoggingIn) ?
-            <Box backgroundColor='error.100'  w="80" height="10">
-                <Text style={styles.signInErrorMessage}>{errors.errorMessage}</Text>
-            </Box>
-            : isLoggingIn ?
+        <Box mt="5" pl="4">
+        {  isLoggingIn ?
             <Icon 
                 name='lock-open'
-                size={40}
+                size={30}
                 color={COLORS.main}
                 />
             :
             (
+            <Box 
+            style={{
+                flexDirection: 'row',
+                //
+
+            }}
+            >
+                <Icon 
+                    name='account-circle'
+                    size={40}
+                    color={COLORS.main}
+                />   
                 <Text
-                style={{
-                    textAlign: 'left',
-                    fontSize: 18,
-                    color: COLORS.main,
-                    fontFamily: 'JosefinSans-Bold',
-                    
-                }}
+                    style={{
+                        fontSize: 18,
+                        color: COLORS.main,
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingHorizontal: 10,
+                    }}
                 >
                     Novo usuário
                 </Text>
+            </Box>
             )
-            
         }
-
        </Box>
 
         <AwesomeAlert
@@ -443,9 +302,12 @@ export default function WelcomeScreen () {
 
         <View
             style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
                 width: '95%',
                 marginBottom: 20,
-                paddingTop: 30,
+                paddingTop: 10,
             }}
         >
 
@@ -484,7 +346,7 @@ export default function WelcomeScreen () {
                     value={email}
                     onChangeText={(newEmail)=>{
                         setErrors((prev)=>({...prev, email: ''}))
-                        setEmail(newEmail)
+                        setEmail(newEmail?.toLowerCase()?.trim())
                     }}
                     InputLeftElement={<Icon name="email" color="grey" style={{ paddingLeft: 3 }} />}
                     />
@@ -668,7 +530,7 @@ export default function WelcomeScreen () {
                         }}
                     >
                         <Select.Item label={roles.fieldAgent} value={roles.fieldAgent} />
-                        <Select.Item label={roles.districtalManager} value={roles.districtalManager} />
+                        <Select.Item label={roles.districtalSupervisor} value={roles.districtalSupervisor} />
                         <Select.Item label={roles.provincialManager} value={roles.provincialManager} />
                     </Select>
                     {

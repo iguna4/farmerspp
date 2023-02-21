@@ -478,7 +478,7 @@ const InstitutionData = ({ farmer })=>{
             }}
             >
             Registo:{' '}                 
-            {new Date(farmer.createdAt).getDate()}-{new Date(farmer.createdAt).getMonth()+1}-{new Date(farmer.createdAt).getFullYear()}
+            {new Date(farmer?.createdAt).getDate()}-{new Date(farmer?.createdAt).getMonth()+1}-{new Date(farmer?.createdAt).getFullYear()}
             {' '} por {farmer?.userName === customUserData?.name ? 'mim' : farmer?.userName}
             </Text>
         </Box>

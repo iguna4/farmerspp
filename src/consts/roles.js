@@ -1,5 +1,5 @@
 export const roles = {
     fieldAgent: 'Extensionista',
-    districtalManager: 'Gestor Distrital',
+    districtalSupervisor: 'Supervisor Distrital',
     provincialManager: 'Gestor Provincial',
 }

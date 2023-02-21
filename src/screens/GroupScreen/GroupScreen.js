@@ -190,7 +190,7 @@ export default function GroupScreen ({ route, navigation }) {
                   top: -50,
                 }}
                 >
-                    {farmer?.manager.fullname}
+                    {farmer?.manager?.fullname}
                 </Text>
                 <Text
                 style={{
@@ -260,8 +260,8 @@ export default function GroupScreen ({ route, navigation }) {
                   flexDirection: 'row'
                 }}
                 onPress={()=>navigation.navigate('FarmlandForm1', {
-                  ownerId: farmer._id,
-                  ownerName: `${farmer.type} ${farmer.name}`,
+                  ownerId: farmer?._id,
+                  ownerName: `${farmer?.type} ${farmer?.name}`,
                   flag: 'Grupo',
                 })}
               >
@@ -276,7 +276,7 @@ export default function GroupScreen ({ route, navigation }) {
 
         {
             farmlands?.map((farmland)=>
-            (<FarmlandData key={farmland._id} farmland={farmland} />))
+            (<FarmlandData key={farmland?._id} farmland={farmland} />))
         }
         </Box>
         <PhotoModal 

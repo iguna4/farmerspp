@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     },
     signInTitle: {
         fontFamily: 'JosefinSans-Bold',
-        fontSize: 26,
+        fontSize: 18,
         color: COLORS.main,
         textAlign: 'center',
     },

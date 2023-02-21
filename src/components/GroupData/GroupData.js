@@ -34,9 +34,7 @@ const GroupData = ({ farmer })=>{
                 paddingTop: 24,
                 backgroundColor: COLORS.main,
                 paddingHorizontal: 10,
-                marginVertical: 10,
-                
-                
+                marginVertical: 10,      
             }}
             >
             <View
@@ -191,8 +189,7 @@ const GroupData = ({ farmer })=>{
                     style={{
                         color: 'grey',
                         fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                        
+                        fontFamily: 'JosefinSans-Regular',   
                     }}
                     >
                     Telefone
@@ -267,7 +264,6 @@ const GroupData = ({ farmer })=>{
                             color: 'grey',
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
-                            
                         }}
                         >
                     Total
@@ -293,7 +289,6 @@ const GroupData = ({ farmer })=>{
                             color: 'grey',
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
-                            
                         }}
                         >
                     Homens
@@ -319,7 +314,6 @@ const GroupData = ({ farmer })=>{
                             color: 'grey',
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
-                            
                         }}
                         >
                     Mulheres
@@ -340,11 +334,6 @@ const GroupData = ({ farmer })=>{
 
         </Stack>
         <CustomDivider />
-
-
-
-
-
 
         <Stack w="100%" direction="column" py="4">
         <Text
@@ -388,11 +377,7 @@ const GroupData = ({ farmer })=>{
         </Stack>
         <CustomDivider />
 
-
-
-
         <Stack w="100%" direction="column" py="4">
-
 
         <Stack w="100%" direction="row" >
             <Box w="70%">
@@ -400,8 +385,7 @@ const GroupData = ({ farmer })=>{
                     style={{
                         color: COLORS.black,
                         fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        
+                        fontFamily: 'JosefinSans-Bold',                        
                     }}
                     >
                     Endereço
@@ -543,8 +527,7 @@ const GroupData = ({ farmer })=>{
                     style={{
                         color: COLORS.black,
                         fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        
+                        fontFamily: 'JosefinSans-Bold',                
                     }}
                     >
                     Documentos
@@ -638,13 +621,11 @@ const GroupData = ({ farmer })=>{
             }}
             >
             Registo:{' '}                 
-            {new Date(farmer.createdAt).getDate()}-{new Date(farmer.createdAt).getMonth()+1}-{new Date(farmer.createdAt).getFullYear()}
+            {new Date(farmer?.createdAt).getDate()}-{new Date(farmer?.createdAt).getMonth()+1}-{new Date(farmer?.createdAt).getFullYear()}
             {' '} por {farmer?.userName === customUserData?.name ? 'mim' : farmer?.userName}
             </Text>
         </Box>
     </Stack>
-
-
 </View>
 </CollapseBody>
 </Collapse>  

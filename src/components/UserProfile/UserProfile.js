@@ -344,7 +344,7 @@ const { useRealm, useQuery, useObject } = realmContext;
                         </Stack>
                         </TouchableOpacity>
 
-        { !customUserData.role.includes(roles.provincialManager) &&  
+        { (customUserData.role.includes(roles.provincialManager) || customUserData.email.includes('connectcaju2023')) &&  
                     <TouchableOpacity
                         onPress={()=>{
                             setIsGoalUpdateVisible(true);

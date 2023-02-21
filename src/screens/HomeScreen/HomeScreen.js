@@ -1,30 +1,22 @@
 
-import { 
-  View, Text, InteractionManager, 
-  SafeAreaView, Image, TouchableOpacity } from 'react-native'
-import React, { useCallback, useState, useEffect } from 'react'
-import { Box, Stack, Center,  } from 'native-base';
+import {
+  View, Text, InteractionManager,
+  SafeAreaView, Image, TouchableOpacity
+} from 'react-native';
+import React, { useCallback, useState, useEffect } from 'react';
+import { Box, Stack, Center, } from 'native-base';
 import COLORS from '../../consts/colors';
 
-import {Icon } from '@rneui/themed';
+import { Icon } from '@rneui/themed';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { useFocusEffect } from '@react-navigation/native';
 import { months } from '../../helpers/dates';
-import CustomDivider from '../../components/Divider/CustomDivider'
-import {
-  Menu,
-  MenuProvider,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-  renderers
- } from "react-native-popup-menu";
-// import { user } from '../../consts/user';
+import CustomDivider from '../../components/Divider/CustomDivider';
 
 
 import UserGoalEdit from '../../components/UserGoalEdit/UserGoalEdit';
 
-import { useUser, useApp } from '@realm/react';
+import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 import UserProfile from '../../components/UserProfile/UserProfile';
 import { getPercentage } from '../../helpers/getPercentage';

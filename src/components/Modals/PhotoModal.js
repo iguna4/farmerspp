@@ -212,7 +212,7 @@ function PhotoModal({
                         ( <Text
                             style={{ color: COLORS.main, fontSize: 20, fontFamily: 'JosefinSans-Bold', }}
                         >
-                            {photoOwner.names.otherNames} {photoOwner.names.surname}
+                            {photoOwner?.names?.otherNames} {photoOwner?.names?.surname}
                         </Text>
                     )
                     : photoOwnerType === 'Usuário' ?
@@ -220,7 +220,7 @@ function PhotoModal({
                         <Text
                         style={{ color: COLORS.main, fontSize: 20, fontFamily: 'JosefinSans-Bold', }}
                         >
-                            {photoOwner.name}
+                            {photoOwner?.name}
                         </Text>
                     )
                     :
@@ -228,7 +228,7 @@ function PhotoModal({
                         <Text
                         style={{ color: COLORS.main, fontSize: 20, fontFamily: 'JosefinSans-Bold', }}
                         >
-                            {photoOwner.manager?.fullname}
+                            {photoOwner?.manager?.fullname}
                         </Text>
                     )
                 }

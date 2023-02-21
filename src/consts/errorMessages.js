@@ -26,7 +26,7 @@ export const errorMessages = {
     },
     signIn: {
         title: 'Credenciais Inválidas',
-        message: 'O endereço electrónico e a senha  não correspondem!',
+        message: 'O endereço electrónico ou a senha  inválido!',
         logUsernameFlag: 'username',
         logPasswordFlag: 'password',
         showCancelButton: false,

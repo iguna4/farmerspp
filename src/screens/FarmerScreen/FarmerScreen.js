@@ -250,7 +250,7 @@ export default function FarmerScreen ({ route, navigation }) {
           top: -50,
         }}
       >
-        {farmer.names.otherNames}{' '}{farmer.names.surname}
+        {farmer?.names?.otherNames}{' '}{farmer?.names?.surname}
       </Text>
       <Text
         style={{  
@@ -262,7 +262,7 @@ export default function FarmerScreen ({ route, navigation }) {
           top: -50,
         }}                
       >
-        ({farmer.category})
+        ({farmer?.category})
       </Text>
     </Box>
     
@@ -337,7 +337,7 @@ export default function FarmerScreen ({ route, navigation }) {
 
         {
             farmlands?.map((farmland)=>
-            (<FarmlandData key={farmland._id} farmland={farmland} />))
+            (<FarmlandData key={farmland?._id} farmland={farmland} />))
         }
         </Box>
         <PhotoModal 

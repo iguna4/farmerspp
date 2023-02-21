@@ -23,7 +23,6 @@ const validateUserData = (
     const retrievedUserDistrict = userDistrict?.trim();
     const retrievedUserProvince = userProvince?.trim();
    
-    // if (isLoggingIn) {
         
         if ((!retrievedName) || (retrievedName?.split(' ')?.length <= 1)) {
             setErrors({ ...errors,
@@ -31,27 +30,6 @@ const validateUserData = (
             });
             return false;
         } 
-
-        // if (!retrievedEmail || !retrievedEmail.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
-        //     setErrors({ ...errors,
-        //         errorMessage: 'Credenciais inválidas!',
-        //     });
-        //     return false;
-        // }
-        // else if ('savedPassword' && 'savedPassword' !== retrievedPassword) { // compare the provided pass with the saved one
-        //     setErrors({ ...errors,
-        //         errorMessage: 'Credenciais inválidas!',
-        //     });
-        //     return false;
-        // }
-        
-        // return {
-        //     email: retrievedEmail,
-        //     password: retrievedPassword,
-        // };
-    // }
-    // else {
-
 
         if (!retrievedEmail || !retrievedEmail?.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
             setErrors({ ...errors,
@@ -103,7 +81,7 @@ const validateUserData = (
              setErrors({ ...errors,
                 userDistrict: 'Indica o distrito',
             });
-            return false;                
+            return false;               
         }
 
         return {
@@ -115,7 +93,6 @@ const validateUserData = (
             userProvince: retrievedUserProvince,
             userDistrict: retrievedUserDistrict ? retrievedUserDistrict : 'NA',
         };     
-    // }     
 };
 
 export default validateUserData;

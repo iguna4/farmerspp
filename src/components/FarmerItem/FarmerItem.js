@@ -14,8 +14,6 @@ const FarmerItem = ({ item, route, farmerType }) => {
    const [visible, setVisible] = useState(false);
    const navigation = useNavigation();
 
-
-
   return (
     <View
       style={{

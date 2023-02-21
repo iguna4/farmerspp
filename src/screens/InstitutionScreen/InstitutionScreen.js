@@ -25,9 +25,6 @@ export default function InstitutionScreen ({ route, navigation }) {
     const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
     const farmlands = realm.objects("Farmland").filtered('farmer == $0', ownerId);
 
-    // console.log('ownerId:', ownerId);
-    // console.log('institution:', JSON.stringify(farmer));
-
     const keyExtractor = (item, index)=>index.toString();
 
     useEffect(() => {

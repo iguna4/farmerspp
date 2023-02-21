@@ -120,15 +120,8 @@ export default function FarmersScreen({ route, navigation }) {
         );
       });
       
-      realm.subscriptions.update(mutableSubs => {
-        mutableSubs.removeByName(userFarmlands);
-        mutableSubs.add(
-          realm.objects('Farmland').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
-          {name: districtFarmlands},
-          );
-        });
-                
-  }
+      
+    }
     else if (!showAll && (customUserData?.role !== roles.provincialManager)) {
 
       realm.subscriptions.update(mutableSubs => {
@@ -136,8 +129,8 @@ export default function FarmersScreen({ route, navigation }) {
         mutableSubs.add(
           realm.objects('Farmer').filtered(`userId == "${user?.customData?.userId}"`),
           {name: userSingleFarmers},
-        );
-      });
+          );
+        });
 
       realm.subscriptions.update(mutableSubs => {
         mutableSubs.removeByName(districtGroupFarmers);
@@ -146,8 +139,8 @@ export default function FarmersScreen({ route, navigation }) {
           {name: userGroupFarmers},
         );
       });
-
-
+      
+      
       realm.subscriptions.update(mutableSubs => {
         mutableSubs.removeByName(districtInstitutionFarmers);
         mutableSubs.add(
@@ -155,17 +148,23 @@ export default function FarmersScreen({ route, navigation }) {
           {name: userInstitutionFarmers},
         );
       });
-
+      
+      // realm.subscriptions.update(mutableSubs => {
+      //   mutableSubs.removeByName(districtFarmlands);
+      //   mutableSubs.add(
+      //     realm.objects('Farmland').filtered(`userId == "${user?.customData?.userId}"`),
+      //     {name: userFarmlands},
+      //     );
+      //   });
+                
+      }
       realm.subscriptions.update(mutableSubs => {
-        mutableSubs.removeByName(districtFarmlands);
+        mutableSubs.removeByName(userFarmlands);
         mutableSubs.add(
-          realm.objects('Farmland').filtered(`userId == "${user?.customData?.userId}"`),
-          {name: userFarmlands},
-        );
-      });
-
-
-    }
+          realm.objects('Farmland').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+          {name: districtFarmlands},
+          );
+        });
   }, [realm, user, showAll ]);
 
   const keyExtractor = (item, index)=>index.toString();

@@ -11,19 +11,46 @@ import PhotoModal from '../../components/Modals/PhotoModal';
 import styles from './styles';
 
 import { realmContext } from '../../models/realmContext';
+import { useEffect } from 'react';
 const { useRealm, useQuery, useObject } = realmContext; 
 
-
+const group = 'group';
+const groupFarmlands = 'groupFarmlands';
 
 export default function GroupScreen ({ route, navigation }) {
     const ownerId = route.params.ownerId;
     const realm = useRealm();
-    const farmer = useObject('Group', ownerId);
-    const farmlands = useQuery('Farmland').filtered('farmer == $0', ownerId);
+    const farmer = realm.objectForPrimaryKey('Group', ownerId);
+   
     const [isAddPhoto, setIsAddPhoto] = useState(false);
     const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
+    const farmlands = realm.objects("Farmland").filtered('farmer == $0', ownerId);
+
+    // console.log('ownerId:', ownerId);
+    // console.log('group:', JSON.stringify(farmer));
 
     const keyExtractor = (item, index)=>index.toString();
+
+    useEffect(() => {
+      realm.subscriptions.update(mutableSubs => {
+        mutableSubs.removeByName(group);
+        mutableSubs.add(
+          realm.objects('Group').filtered(`_id == "${ownerId}"`),
+          {name: group},
+        );
+      });
+  
+      realm.subscriptions.update(mutableSubs => {
+        mutableSubs.removeByName(groupFarmlands);
+        mutableSubs.add(
+          realm.objects('Farmland').filtered(`farmer == "${ownerId}"`),
+          {name: groupFarmlands},
+        );
+      });
+
+    }, [realm ]);
+
+
 
     return (
         <SafeAreaView 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, SafeAreaView, FlatList, Pressable, StyleSheet } from 'react-native';
 import { Box, Stack, Center, } from 'native-base';
 import { Divider, Icon, Avatar } from '@rneui/base';
@@ -15,20 +15,44 @@ import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 const { useRealm, useQuery, useObject } = realmContext; 
 
+const singleFarmer = 'singleFarmer';
+const ownFarmlands = 'ownFarmlands';
+
 
 export default function FarmerScreen ({ route, navigation }) {
     const ownerId = route.params.ownerId;
     const realm = useRealm();
-    const user = useUser();
-    // const customUserData = user?.customData;
-    const farmer = useObject('Farmer', ownerId);
-    const farmlands = useQuery('Farmland').filtered('farmer == $0', ownerId);
-    // const [fileData, setFileData] = useState(null);
-    // const [fileUri, setFileUri] = useState(null);
+    const farmer = realm.objectForPrimaryKey('Farmer', ownerId);
+    const farmlands = realm.objects("Farmland").filtered('farmer == $0', ownerId);
     const [isAddPhoto, setIsAddPhoto] = useState(false);
     const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
 
-    console.log('ownerId:', ownerId);
+    // console.log('ownerId:', ownerId);
+    // console.log('farmlands:', farmlands)
+
+    useEffect(() => {
+      realm.subscriptions.update(mutableSubs => {
+        mutableSubs.removeByName(singleFarmer);
+        mutableSubs.add(
+          realm.objects('Farmer').filtered(`_id == "${ownerId}"`),
+          {name: singleFarmer},
+        );
+      });
+  
+      realm.subscriptions.update(mutableSubs => {
+        mutableSubs.removeByName(ownFarmlands);
+        mutableSubs.add(
+          realm.objects('Farmland').filtered(`farmer == "${ownerId}"`),
+          {name: ownFarmlands},
+        );
+      });
+
+    }, [realm ]);
+
+
+
+
+
 
     // const launchNativeCamera = () => {
     //   let options = {

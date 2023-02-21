@@ -13,16 +13,42 @@ import PhotoModal from '../../components/Modals/PhotoModal';
 import { realmContext } from '../../models/realmContext';
 const { useRealm, useQuery, useObject } = realmContext; 
 
+const institution = 'institution';
+const institutionFarmlands = 'institutionFarmlands';
+
 
 export default function InstitutionScreen ({ route, navigation }) {
     const ownerId = route.params.ownerId;
     const realm = useRealm();
-    const farmer = useObject('Institution', ownerId);
-    const farmlands = useQuery('Farmland').filtered('farmer == $0', ownerId);
+    const farmer = realm.objectForPrimaryKey('Institution', ownerId);
     const [isAddPhoto, setIsAddPhoto] = useState(false);
     const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
+    const farmlands = realm.objects("Farmland").filtered('farmer == $0', ownerId);
+
+    // console.log('ownerId:', ownerId);
+    // console.log('institution:', JSON.stringify(farmer));
 
     const keyExtractor = (item, index)=>index.toString();
+
+    useEffect(() => {
+      realm.subscriptions.update(mutableSubs => {
+        mutableSubs.removeByName(institution);
+        mutableSubs.add(
+          realm.objects('Institution').filtered(`_id == "${ownerId}"`),
+          {name: institution},
+        );
+      });
+  
+      realm.subscriptions.update(mutableSubs => {
+        mutableSubs.removeByName(institutionFarmlands);
+        mutableSubs.add(
+          realm.objects('Farmland').filtered(`farmer == "${ownerId}"`),
+          {name: institutionFarmlands},
+        );
+      });
+
+    }, [realm ]);
+
 
 
     return (

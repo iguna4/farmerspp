@@ -19,6 +19,7 @@ import { positions } from "../../fakedata/positions";
 
 import { realmContext } from '../../models/realmContext';
 import COLORS from "../../consts/colors";
+import MapModal from "../../components/Modals/MapModal";
 const {useRealm, useObject, useQuery } = realmContext;
 
 
@@ -30,6 +31,11 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     const [rejectGeoAlert, setRejectGeoAlert] = useState(false);
     const [failedGeoLocationRequest, setFailedGeoLocationRequest] = useState(false);
     const [permissionGranted, setPermissionGranted] = useState(false);
+
+    const [currentLat, setCurrentLat] = useState();
+    const [currentLong, setCurrentLong] = useState();
+
+    const [isMapVisible, setIsMapVisible] = useState(false);
 
     const farmland = useObject('Farmland', farmlandId);
 
@@ -50,6 +56,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                     setPermissionGranted(true)
                     setConfirmGeoAlert(true);
+                    subscribeLocation();
                     console.log("You can use the app");
                 } else {
                     setPermissionGranted(false)
@@ -69,6 +76,69 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             farmland.extremeCoordinates?.push(point);        
         })
     };
+
+    const subscribeLocation = () => {
+        watchID = Geolocation.watchPosition(
+          (position) => {
+            //Will give you the location on location change
+            setCurrentLat(position.coords.latitude);
+            setCurrentLong(position.coords.longitude);
+
+            // saveCoordinates(farmland, {
+            //     latitude: position.coords.latitude,
+            //     longitude: position.coords.longitude,
+            //     position: number,
+            // });
+
+          },
+            (error) => {
+                Alert.alert('Falha', 'Tenta novamente!', {
+                    cause: error,
+                })
+            },
+            { 
+                enableHighAccuracy: true, 
+                accuracy: 'high',
+                timeout: 15000, 
+                maximumAge: 10000, 
+                distanceFilter: 100,  
+            }
+        );
+
+        // Geolocation.clearWatch(watchID);
+
+      };
+
+    const getCurrentPosition = ()=>{
+
+        if(!permissionGranted) {
+            requestLocationPermission();
+        }
+        else{
+            subscribeLocation();
+        //     Geolocation.getCurrentPosition(
+        //         (position)=>{
+        //             setCurrentLat(position.coords.latitude);
+        //             setCurrentLong(position.coords.longitude);
+        //         },
+        //         (error) => {
+        //             Alert.alert('Falha', 'Tenta novamente!', {
+        //                 cause: error,
+        //             })
+        //         },
+        //         { 
+        //             enableHighAccuracy: true, 
+        //             accuracy: 'high',
+        //             timeout: 15000, 
+        //             maximumAge: 10000, 
+        //             distanceFilter: 100,  
+        //         }
+        //     )
+        }
+    }
+
+    console.log('gotLatitude:', currentLat);
+    console.log('gotLongitude:', currentLong);
 
     // get the current coordinates of device position  
     const getGeolocation = async ()=>{
@@ -103,8 +173,19 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         }
         setPermissionGranted(false);
 
-        }
+    }
     
+
+    useEffect(() => {
+
+        requestLocationPermission();
+        return () => {
+          Geolocation.clearWatch(watchID);
+        };
+      }, []);
+    
+
+
 
     const keyExtractor = (item, index)=>index.toString();
 
@@ -338,7 +419,10 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 }}
                 >
                 <TouchableOpacity
-                    // onPress={async ()=> await getGeolocation()}
+                    onPress={ ()=> {
+                        getCurrentPosition();
+                        setIsMapVisible(true);
+                    }}
                     >
                     {/* <GeoPin /> */}
                     <Icon name="map" size={70} color={COLORS.main} />
@@ -441,6 +525,14 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     )}    
 
     </Center>
+    <MapModal 
+        farmlandId={farmland._id}
+        isMapVisible={isMapVisible}
+        setIsMapVisible={setIsMapVisible}
+        getCurrentPosition={getCurrentPosition}
+        currentLat={currentLat}
+        currentLong={currentLong}
+    />
     </SafeAreaView>
     )
 }

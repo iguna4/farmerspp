@@ -15,11 +15,17 @@ import nbTheme from './nbTheme';
 import WelcomeScreen from './screens/Fallback/WelcomeScreen';
 import CustomActivityIndicator from './components/ActivityIndicator/CustomActivityIndicator';
 
+import {enableLatestRenderer} from 'react-native-maps';
+
 
 import { secrets } from './secrets';
 import { AppProvider, UserProvider } from '@realm/react';
 import { realmContext } from './models/realmContext';
 const { RealmProvider} = realmContext;
+
+
+// enableLatestRenderer();
+
 
 
 export default function App() {

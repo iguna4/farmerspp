@@ -161,7 +161,7 @@ export default function FarmerRegistration({ route, navigation }) {
                 const ufid = generateUFID(ufidData);
                 let suspected = realm.objects('Farmer').filtered(`ufid == $0`, ufid);
 
-                console.log('suspected: ', JSON.stringify(suspected));
+                // console.log('suspected: ', JSON.stringify(suspected));
                 
                 // get more evidence on the duplication attempt
                 suspected = detectDuplicates(retrievedFarmerData, suspected);
@@ -255,6 +255,8 @@ export default function FarmerRegistration({ route, navigation }) {
                     addFarmer={addFarmer}
                     farmerData={farmerData}
                     realm={realm}
+                    customUserData={customUserData}
+                    // setModalVisible={setModalVisible}
                     
                 />
             </Center>

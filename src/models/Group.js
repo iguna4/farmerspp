@@ -19,14 +19,13 @@ export const Group = {
         nuit: { type: 'int?', default: 0}, 
         image: { type: 'string', default: '' },
         farmlands: 'string[]',
+        geolocation: 'Coordinates?',
         createdAt: { 
             type: 'date', default: Date()
         },
         userDistrict: 'string?',
         userId: 'string',
         userName: 'string?'
-
         // user: 'string?',
     },
 }
-

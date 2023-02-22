@@ -160,7 +160,9 @@ export default function FarmerScreen ({ route, navigation }) {
             // style={{ justifyContent: 'center'}}
           >
             <Pressable
-                onPress={()=>navigation.navigate('Farmers')}
+                onPress={()=>navigation.goBack()
+                  // .navigate('Farmers')
+                }
             >
                 <Icon 
                     name="arrow-back-ios" 

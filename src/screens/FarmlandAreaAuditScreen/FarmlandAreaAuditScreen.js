@@ -147,7 +147,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         }
     }
 
-    console.log('currentCoordinates:', currentCoordinates);
+    // console.log('currentCoordinates:', currentCoordinates);
 
     // get the current coordinates of device position  
     const getGeolocation = async ()=>{

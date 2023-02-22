@@ -341,7 +341,7 @@ const mapStyle = [
                     longitudeDelta: 0.0121,
                 }}
                 onPress={(e)=>{
-                    console.log('e.nativeEvent: ', e.nativeEvent)
+                    // console.log('e.nativeEvent: ', e.nativeEvent)
                     setMarker(e.nativeEvent.coordinate)
                 }
                 }

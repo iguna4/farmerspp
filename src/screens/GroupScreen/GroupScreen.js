@@ -100,7 +100,9 @@ export default function GroupScreen ({ route, navigation }) {
         >
           <Center w="10%">
           <Pressable
-              onPress={()=>navigation.navigate('Farmers')}
+              onPress={()=>navigation.goBack()
+                // navigate('Farmers')
+              }
           >
 
             <Icon 

@@ -17,6 +17,7 @@ export const Institution = {
         licence: {type: 'string?', default: ''},
         image: { type: 'string', default: '' },
         farmlands: 'string[]',
+        Geolocation: 'Coordinates?',
         createdAt: { type: 'date', default: Date()},
         userDistrict: 'string?',
         userId: 'string',

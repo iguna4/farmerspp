@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Alert, Collapse, Button, VStack, HStack, IconButton, CloseIcon, Box, Center, NativeBaseProvider, Stack } from "native-base";
 import { FlatList, Pressable, ScrollView, View, Text, SafeAreaView} from "react-native";
-import { Icon, CheckBox } from '@rneui/themed';
+import { Icon, CheckBox, Overlay } from '@rneui/themed';
 import DuplicatesAlertItem from "./DuplicatesAlertItem";
 import COLORS from "../../consts/colors";
 
@@ -16,6 +16,8 @@ const DuplicatesAlert = ({
     addFarmer,
     farmerData,
     realm,
+    customUserData,
+    setModalVisible
    })=> {
 
     const navigation = useNavigation();
@@ -26,7 +28,7 @@ const DuplicatesAlert = ({
       style={{ 
         flex: 1,
         backgroundColor: 'ghostwhite', 
-        // width: '100%',
+        
       }}
       >
 
@@ -38,45 +40,49 @@ const DuplicatesAlert = ({
       contentContainerStyle={{
         minHeight: '100%',
         width: '100%',
-        // justifyContent: 'center',
+        justifyContent: 'center',
         alignItems: 'center',
       }}
     >
       <Box 
         w="100%"
         alignItems={'center'}
-        style={{ padding: 25, }}
+        style={{ paddingVertical: 25, }}
       >
-        <Center
+        <Box
           style={{ 
             // backgroundColor: 'red', 
-            width: '100%', 
-            borderRadius: 10,
+            // width: '100%', 
+            flexDirection: 'row',
+            paddingHorizontal: 15,
+            // borderRadius: 10,
             borderWidth: 2,
             borderColor: COLORS.red,
+            // backgroundColor: COLORS.danger,
             padding: 5,
           }}
         >
           <Icon 
-            name="warning"
+            name="dangerous"
             color={COLORS.red}
-            size={40}
+            size={35}
           />
-          <Text
+          {/* <Text
               style={{
+                textAlign: 'center',
                 color: COLORS.red,
                 fontSize: 18,
                 fontFamily: "JosefinSans-Bold",
               }}
             >
               Tentativa de duplicação de registos? 
-          </Text>
+          </Text> */}
 
           <Text
             style={{
               color: COLORS.red,
               fontSize: 16,
-              paddingVertical: 10,
+              paddingHorizontal: 10,
               textAlign: 'justify',
               fontFamily: "JosefinSans-Regular",
               // paddingHorizontal: 1,
@@ -86,7 +92,7 @@ const DuplicatesAlert = ({
             dados similares aos seguintes produtores 
             já registados:
           </Text>
-        </Center>
+        </Box>
     </Box>
 
 
@@ -101,59 +107,80 @@ const DuplicatesAlert = ({
 
       <Stack 
         direction="row" 
-        space={4}
+        // space={1}
         w="100%"
+        style={{ paddingTop: 20, }}
         >
-        <Box w="50%" alignItems={'center'}>
+        <Box w="8%">
+
+        </Box>
+        <Box w="38%" alignItems={'center'}>
             <Pressable 
               style={{ 
-                paddingVertical: 30, 
+                // paddingVertical: 30, 
               }}
-              size={"lg"} 
+              // size={"lg"} 
               onPress={() => {
                 setDuplicatesAlert(false);
                 setFarmerType('')
-                navigation.navigate('FarmerForm1', { user, })
+                navigation.navigate('FarmerForm1', { customUserData, })
               }} 
-              mt={8} 
-              mx="auto"
+              // mt={8} 
+              // mx="auto"
               >
               <Text
                   style={{
                       color: COLORS.main,
                       fontSize: 18,
-                      fontFamily: 'JosefinSans-Regular',
+                      fontFamily: 'JosefinSans-Bold',
                       textDecoration: 'underline',
+                      textAlign: 'center',
                     }}
                 >
                   Cancelar registo
                 </Text>
             </Pressable>
           </Box>
-          <Box w="50%" alignItems={'center'}>
+          <Box w="10%">
+
+          </Box>
+          <Box 
+            w="38%" 
+            alignItems={'center'}
+            style={{ 
+              // borderWidth: 1, 
+              // borderColor: COLORS.main, 
+              // borderRadius: 50, 
+              justifyContent: 'center',
+            }}
+          >
           <Pressable 
             style={{ 
-              paddingVertical: 30,  
+              // paddingVertical: 30,  
             }}
-            size={"lg"} 
+            // size={"lg"} 
               onPress={() => {
                 setDuplicatesAlert(false);
-                addFarmer(farmerData, realm, true);
+                setModalVisible(true);
+                // addFarmer(farmerData, realm, true);
               }} 
-              mt={8} 
-              mx="auto"
+              // mt={8} 
+              // mx="auto"
               >
             <Text
                 style={{
                     color: COLORS.red,
                     fontSize: 18,
-                    fontFamily: 'JosefinSans-Regular',
+                    fontFamily: 'JosefinSans-Bold',
                     textDecoration: 'underline',
                 }}
                 >
                   Validar registo
             </Text>
           </Pressable>
+          </Box>
+          <Box w="8%">
+
           </Box>
         </Stack>
       </ScrollView>

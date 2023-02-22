@@ -35,8 +35,10 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     const [failedGeoLocationRequest, setFailedGeoLocationRequest] = useState(false);
     const [permissionGranted, setPermissionGranted] = useState(false);
 
-    const [currentLat, setCurrentLat] = useState();
-    const [currentLong, setCurrentLong] = useState();
+    const [currentCoordinates, setCurrentCoordinates] = useState({
+        latitude: -1,
+        longitude: -1,
+    });
 
     const [isMapVisible, setIsMapVisible] = useState(false);
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
@@ -86,8 +88,12 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         watchID = Geolocation.watchPosition(
           (position) => {
             //Will give you the location on location change
-            setCurrentLat(position.coords.latitude);
-            setCurrentLong(position.coords.longitude);
+
+
+            setCurrentCoordinates({
+                latitude: position?.coords.latitude,
+                longitude: position?.coords.longitude,
+            })
 
             // saveCoordinates(farmland, {
             //     latitude: position.coords.latitude,
@@ -123,8 +129,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             subscribeLocation();
         //     Geolocation.getCurrentPosition(
         //         (position)=>{
-        //             setCurrentLat(position.coords.latitude);
-        //             setCurrentLong(position.coords.longitude);
+
         //         },
         //         (error) => {
         //             Alert.alert('Falha', 'Tenta novamente!', {
@@ -142,8 +147,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         }
     }
 
-    // console.log('gotLatitude:', currentLat);
-    // console.log('gotLongitude:', currentLong);
+    console.log('currentCoordinates:', currentCoordinates);
 
     // get the current coordinates of device position  
     const getGeolocation = async ()=>{
@@ -163,9 +167,9 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     });
                 },
                 (error) => {
-                Alert.alert('Falha', 'Tenta novamente!', {
-                    cause: error,
-                })
+                    Alert.alert('Falha', 'Tenta novamente!', {
+                        cause: error,
+                    })
                 },
                 { 
                     enableHighAccuracy: true, 
@@ -182,12 +186,11 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     
 
     useEffect(() => {
-
         requestLocationPermission();
         return () => {
           Geolocation.clearWatch(watchID);
         };
-      }, [ navigation ]);
+    }, [ navigation ]);
     
 
 
@@ -370,10 +373,10 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     {    farmland?.extremeCoordinates.length === 0 &&   
         <Center style={{ minHeight: 300, }}>
         <Stack direction="row" space={4}>
-            <Box w="10%" alignItems={"center"}>
+            <Box w="15%" alignItems={"center"}>
             </Box>
             <Box
-                w="35%" 
+                w="30%" 
             >
 
             <Stack
@@ -403,7 +406,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     onPress={async ()=> await getGeolocation()}
                     >
                     {/* <GeoPin /> */}
-                    <Icon name="location-pin" size={70} color={COLORS.main} />
+                    <Icon name="location-pin" size={60} color={COLORS.main} />
                 </TouchableOpacity>
             </Box>
                 <Box w="100%">
@@ -421,7 +424,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             <Box w="10%" alignItems={"center"}>
             </Box>
             <Box
-                w="35%" 
+                w="30%" 
             >
                 <Stack direction="column">
 
@@ -452,7 +455,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     }}
                     >
                     {/* <GeoPin /> */}
-                    <Icon name="map" size={70} color={COLORS.main} />
+                    <Icon name="map" size={60} color={COLORS.main} />
                 </TouchableOpacity>
             </Box>
             <Box w="100%">
@@ -470,7 +473,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             </Box>
             </Stack>
             </Box>
-            <Box w="10%" alignItems={"center"}>
+            <Box w="15%" alignItems={"center"}>
             </Box>
         </Stack>
         </Center>
@@ -557,8 +560,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         isMapVisible={isMapVisible}
         setIsMapVisible={setIsMapVisible}
         getCurrentPosition={getCurrentPosition}
-        currentLat={currentLat}
-        currentLong={currentLong}
+        currentCoordinates={currentCoordinates}
     />
     </SafeAreaView>
     )

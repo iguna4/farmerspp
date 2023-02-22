@@ -43,8 +43,182 @@ const styles = StyleSheet.create({
 });
 
 
+const mapStyle = [
+    {
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#242f3e"
+        }
+      ]
+    },
+    {
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#746855"
+        }
+      ]
+    },
+    {
+      "elementType": "labels.text.stroke",
+      "stylers": [
+        {
+          "color": "#242f3e"
+        }
+      ]
+    },
+    {
+      "featureType": "administrative.locality",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#d59563"
+        }
+      ]
+    },
+    {
+      "featureType": "poi",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#d59563"
+        }
+      ]
+    },
+    {
+      "featureType": "poi.park",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#263c3f"
+        }
+      ]
+    },
+    {
+      "featureType": "poi.park",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#6b9a76"
+        }
+      ]
+    },
+    {
+      "featureType": "road",
+      "stylers": [
+        {
+          "saturation": -100
+        },
+        {
+          "visibility": "simplified"
+        }
+      ]
+    },
+    {
+      "featureType": "road",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#38414e"
+        }
+      ]
+    },
+    {
+      "featureType": "road",
+      "elementType": "geometry.stroke",
+      "stylers": [
+        {
+          "color": "#212a37"
+        }
+      ]
+    },
+    {
+      "featureType": "road",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#9ca5b3"
+        }
+      ]
+    },
+    {
+      "featureType": "road.highway",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#746855"
+        }
+      ]
+    },
+    {
+      "featureType": "road.highway",
+      "elementType": "geometry.stroke",
+      "stylers": [
+        {
+          "color": "#1f2835"
+        }
+      ]
+    },
+    {
+      "featureType": "road.highway",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#f3d19c"
+        }
+      ]
+    },
+    {
+      "featureType": "transit",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#2f3948"
+        }
+      ]
+    },
+    {
+      "featureType": "transit.station",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#d59563"
+        }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#17263c"
+        }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#515c6d"
+        }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "labels.text.stroke",
+      "stylers": [
+        {
+          "color": "#17263c"
+        }
+      ]
+    }
+  ];
 
-  export default function MapModal({ farmlandId, isMapVisible, setIsMapVisible, currentLat, currentLong }) {
+
+
+  export default function MapModal({ farmlandId, isMapVisible, setIsMapVisible, currentCoordinates }) {
 
     // const [isOverlayVisible, setIsOverlayVisible] = useState(false);
     const realm = useRealm();
@@ -65,20 +239,14 @@ const styles = StyleSheet.create({
 
     const [marker, setMarker] = useState();
     const [address, setAddress] = useState();
-    const [location, setLocation] = useState({
-        marker: '',
-        address: '',
+    const [region, setRegion] = useState({
+        latitude:   -25.943940,  // initial latitude
+        longitude:  32.573218,   // initial longitude
+        latitudeDelta: 0.015,
+        longitudeDelta: 0.0121,
     });
-    const [currentPosistion, setCurrentPosition] = useState({
-        latitude: 0,
-        longitude: 0,
-    })
-    Geocoder.init(secrets.googleAPIKey);
 
-    const onLocationSelected = ({ marker, address })=>{
-        console.log('marker:', marker);
-        console.log('address:', address);
-    }
+    // Geocoder.init(secrets.googleAPIKey);
 
 
     const toggleOverlay = () => {
@@ -86,17 +254,18 @@ const styles = StyleSheet.create({
       };
     
     useEffect(()=>{
-        if (marker !== undefined) {
-            Geocoder.from(marker.latitude, marker.longitude).then(data=>{
-                let fetchedAddress = data.results[0].formatted_address
-                // console.log('geocode data:', data);
-                setAddress(fetchedAddress);
-            })
-        }
-        // else {
-        //     setMarker({latitude: currentLat, longitude: currentLong});
+        // if (marker !== undefined) {
+        //     Geocoder.from(marker.latitude, marker.longitude).then(data=>{
+        //         let fetchedAddress = data.results[0].formatted_address
+        //         setAddress(fetchedAddress);
+        //     })
         // }
-    }, [marker]);
+        // else {
+        // }
+        setMarker(currentCoordinates);
+    }, [ currentCoordinates ]);
+
+
 
 
     useFocusEffect(
@@ -164,14 +333,15 @@ const styles = StyleSheet.create({
                 showsMyLocationButton={true}
                 provider={PROVIDER_GOOGLE}
                 style={styles.map}
+                customMapStyle={mapStyle}
                 region={{
-                    latitude:   currentLat ? currentLat : -1, //-25.943940,
-                    longitude:  currentLong ? currentLong : -1, //32.573218,
+                    latitude:   currentCoordinates?.latitude ? currentCoordinates?.latitude : -25.943940,  // initial latitude
+                    longitude:  currentCoordinates?.longitude ? currentCoordinates?.longitude : 32.573218,   // initial longitude
                     latitudeDelta: 0.015,
                     longitudeDelta: 0.0121,
                 }}
                 onPress={(e)=>{
-                    console.log('coordinate to marker: ', e.nativeEvent.coordinate)
+                    console.log('e.nativeEvent: ', e.nativeEvent)
                     setMarker(e.nativeEvent.coordinate)
                 }
                 }
@@ -234,9 +404,9 @@ const styles = StyleSheet.create({
                     left: Dimensions.get('window').width / 2 - 70,
                 }}
 
-                onPress={()=>onLocationSelected({
-                    marker, address,
-                })}
+                onPress={()=>{
+                    // marker, address,
+                }}
             >
                 <View 
                     style={{

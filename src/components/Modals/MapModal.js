@@ -61,6 +61,8 @@ const styles = StyleSheet.create({
     const [alert, setAlert] = useState(false);
     // ----------------------------------------------------
 
+    const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
+
     const [marker, setMarker] = useState();
     const [address, setAddress] = useState();
     const [location, setLocation] = useState({
@@ -96,6 +98,22 @@ const styles = StyleSheet.create({
         // }
     }, [marker]);
 
+
+    useFocusEffect(
+        React.useCallback(() => {
+          const task = InteractionManager.runAfterInteractions(() => {
+            setLoadingActivityIndicator(true);
+          });
+          return () => task.cancel();
+        }, [])
+      );
+    
+      if (loadingActivitiyIndicator) {
+        return <CustomActivityIndicator 
+            loadingActivitiyIndicator={loadingActivitiyIndicator}
+            setLoadingActivityIndicator={setLoadingActivityIndicator}
+        />
+      }
 
 
 
@@ -147,8 +165,8 @@ const styles = StyleSheet.create({
                 provider={PROVIDER_GOOGLE}
                 style={styles.map}
                 region={{
-                    latitude:   currentLat, //-25.943940,
-                    longitude:  currentLong, //32.573218,
+                    latitude:   currentLat ? currentLat : -1, //-25.943940,
+                    longitude:  currentLong ? currentLong : -1, //32.573218,
                     latitudeDelta: 0.015,
                     longitudeDelta: 0.0121,
                 }}
@@ -194,7 +212,7 @@ const styles = StyleSheet.create({
                         setMarker(undefined)
                     }}
                     >
-                    <Icon name="close" color={COLORS.grey} size={35} />
+                    <Icon name="close" color={COLORS.grey} size={25} />
                 </TouchableOpacity>
                 </View>
             { address &&

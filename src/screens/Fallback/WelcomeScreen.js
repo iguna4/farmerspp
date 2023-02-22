@@ -1,5 +1,5 @@
 import { 
-    Pressable, SafeAreaView, Text, View, Image, 
+    Pressable, SafeAreaView, Text, View, Image, InteractionManager,
 } from 'react-native';
 import React, {useEffect, useState, useCallback } from 'react';
 import { Button, Icon } from '@rneui/themed';
@@ -19,6 +19,8 @@ import { secrets } from '../../secrets';
 import { BSON } from 'realm';
 import { roles } from '../../consts/roles';
 import { errorMessages } from '../../consts/errorMessages';
+import { useFocusEffect } from '@react-navigation/native';
+import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 
 
 export default function WelcomeScreen () {
@@ -53,8 +55,10 @@ export default function WelcomeScreen () {
     const [phone, setPhone] = useState(null);
 
     const [invalidDataAlert, setInvalidDataAlert] = useState(false);
+    const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
     const app = useApp();
+
 
     // on user registration
     const onSignUp = useCallback(async (newName, newEmail, newPassword, newPasswordConfirm, newPhone, newRole, newUserDistrict, newUserProvince) => {
@@ -167,6 +171,26 @@ export default function WelcomeScreen () {
         }
 
     }, [userProvince, errors, isLoggingIn]);
+
+
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //       const task = InteractionManager.runAfterInteractions(() => {
+    //         setLoadingActivityIndicator(true);
+    //       });
+    //       return () => task.cancel();
+    //     }, [])
+    //   );
+    
+      if (loadingActivitiyIndicator) {
+        return <CustomActivityIndicator 
+            loadingActivitiyIndicator={loadingActivitiyIndicator}
+            setLoadingActivityIndicator={setLoadingActivityIndicator}
+        />
+      }
+    
+
+
 
 
   return (
@@ -638,6 +662,7 @@ export default function WelcomeScreen () {
             title={isLoggingIn ? " Entrar" : "Registar-se"} 
             onPress={ async ()=> {
                 
+                setLoadingActivityIndicator(true);
                 if (isLoggingIn){
                     app?.currentUser?.logOut();
                     try{
@@ -680,7 +705,11 @@ export default function WelcomeScreen () {
                 >
 
 {    isLoggingIn &&
-            <Pressable onPress={()=>setIsLoggingIn(prevState => !prevState)}>
+            <Pressable onPress={()=>{
+                setLoadingActivityIndicator(true);
+                setIsLoggingIn(prevState => !prevState)
+            }}
+            >
                 <Text 
                     style={{ 
                         textAlign: 'center',
@@ -696,7 +725,11 @@ export default function WelcomeScreen () {
 }
 
 {    !isLoggingIn &&
-            <Pressable onPress={()=>setIsLoggingIn(prevState => !prevState)}>
+            <Pressable onPress={()=>{
+                setLoadingActivityIndicator(true);
+                setIsLoggingIn(prevState => !prevState)
+                }}
+            >
                 <Text 
                     style={{ 
                         textAlign: 'center',

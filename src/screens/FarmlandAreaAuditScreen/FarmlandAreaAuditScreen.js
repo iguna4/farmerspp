@@ -20,6 +20,9 @@ import { positions } from "../../fakedata/positions";
 import { realmContext } from '../../models/realmContext';
 import COLORS from "../../consts/colors";
 import MapModal from "../../components/Modals/MapModal";
+import { useFocusEffect } from "@react-navigation/native";
+import { InteractionManager } from "react-native";
+import CustomActivityIndicator from "../../components/ActivityIndicator/CustomActivityIndicator";
 const {useRealm, useObject, useQuery } = realmContext;
 
 
@@ -36,6 +39,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     const [currentLong, setCurrentLong] = useState();
 
     const [isMapVisible, setIsMapVisible] = useState(false);
+    const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
+
 
     const farmland = useObject('Farmland', farmlandId);
 
@@ -137,8 +142,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         }
     }
 
-    console.log('gotLatitude:', currentLat);
-    console.log('gotLongitude:', currentLong);
+    // console.log('gotLatitude:', currentLat);
+    // console.log('gotLongitude:', currentLong);
 
     // get the current coordinates of device position  
     const getGeolocation = async ()=>{
@@ -182,12 +187,33 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         return () => {
           Geolocation.clearWatch(watchID);
         };
-      }, []);
+      }, [ navigation ]);
     
 
 
 
     const keyExtractor = (item, index)=>index.toString();
+
+
+    useFocusEffect(
+        React.useCallback(() => {
+          const task = InteractionManager.runAfterInteractions(() => {
+            setLoadingActivityIndicator(true);
+          });
+          return () => task.cancel();
+        }, [])
+      );
+    
+      if (loadingActivitiyIndicator) {
+        return <CustomActivityIndicator 
+            loadingActivitiyIndicator={loadingActivitiyIndicator}
+            setLoadingActivityIndicator={setLoadingActivityIndicator}
+        />
+      }
+    
+
+
+
 
     return (
         <SafeAreaView
@@ -420,6 +446,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 >
                 <TouchableOpacity
                     onPress={ ()=> {
+                        setLoadingActivityIndicator(true);
                         getCurrentPosition();
                         setIsMapVisible(true);
                     }}

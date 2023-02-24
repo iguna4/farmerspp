@@ -156,6 +156,7 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
                 userId: customUserData.userId,
                 userDistrict: customUserData.userDistrict,
                 userProvince: customUserData.userProvince,
+                userRole: customUserData.role,
                 registeredFarmlands: 1,
             });
         })

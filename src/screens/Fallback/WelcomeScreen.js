@@ -2,7 +2,7 @@ import {
     Pressable, SafeAreaView, Text, View, Image, InteractionManager,
 } from 'react-native';
 import React, {useEffect, useState, useCallback } from 'react';
-import { Button, Icon } from '@rneui/themed';
+import { Button, Icon, CheckBox } from '@rneui/themed';
 import { Box, Stack, FormControl, Center, Select, CheckIcon, ScrollView } from 'native-base';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
@@ -21,6 +21,11 @@ import { roles } from '../../consts/roles';
 import { errorMessages } from '../../consts/errorMessages';
 import { useFocusEffect } from '@react-navigation/native';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
+import { cooperatives } from '../../consts/cooperatives';
+// import { CheckBox } from '@rneui/base';
+
+
+// import  { MongoClient } from 'mongodb';
 
 
 export default function WelcomeScreen () {
@@ -47,11 +52,14 @@ export default function WelcomeScreen () {
     
     const [errors, setErrors] = useState({});
     
+    const [signInWithPhone, setSignInWithPhone] = useState(false);
+    const [signInPhone, setSignInPhone] = useState(null);
     const [role, setRole] = useState(roles.fieldAgent);
     const [userProvince, setUserProvince] = useState('');
     const [userDistrict, setUserDistrict] = useState('');
     const [selectedDistricts, setSelectedDistricts] = useState([]);
-    
+    const [coop, setCoop] = useState('');
+       
     const [phone, setPhone] = useState(null);
 
     const [invalidDataAlert, setInvalidDataAlert] = useState(false);
@@ -61,7 +69,7 @@ export default function WelcomeScreen () {
 
 
     // on user registration
-    const onSignUp = useCallback(async (newName, newEmail, newPassword, newPasswordConfirm, newPhone, newRole, newUserDistrict, newUserProvince) => {
+    const onSignUp = useCallback(async (newName, newEmail, newPassword, newPasswordConfirm, newPhone, newRole, newUserDistrict, newUserProvince, newCoop) => {
         
         // pack user data into an object
         const userData = {
@@ -73,6 +81,7 @@ export default function WelcomeScreen () {
             role: newRole,
             userDistrict: newUserDistrict,
             userProvince: newUserProvince,
+            coop: newCoop,
         }
 
         // validate user data and return nothing if any error is found
@@ -83,7 +92,7 @@ export default function WelcomeScreen () {
         
         // extract validated user data
         const {
-            name, email, password, phone, role, userDistrict, userProvince,
+            name, email, password, phone, role, userDistrict, userProvince, coop,
         } = validateUserData(userData, errors, setErrors);
 
         // try to register new user
@@ -106,7 +115,7 @@ export default function WelcomeScreen () {
                 email,
                 password,
                 phone,
-                role,
+                role: role?.includes('AMPC') ? `${role} [${coop}]` : role,
                 userDistrict,
                 userProvince,
                 image: '',
@@ -361,23 +370,108 @@ export default function WelcomeScreen () {
             </FormControl>
         )}
 
+        {
+            isLoggingIn &&
+                (
+                    <Stack
+                        direction="row"
+                        style={{
+                            // paddingBottom: -20,
+                            marginBottom: -25,
+                        }}
+                    >
+                        <Box
+                            style={{
+                                width: '50%',
+                            }} 
+                        >
+
+                        </Box>
+                        <Box
+                            style={{
+                                width: '50%',
+                                
+                            }}
+                        >
+                            {/* <CheckBox
+                                center
+                                fontFamily = 'JosefinSans-Italic'
+                                containerStyle={{
+                                    backgroundColor: COLORS.ghostwhite,
+                                }}
+                                textStyle={{
+                                    
+                                    fontWeight: '100',
+                                    color: COLORS.main,
+                                }}
+                                title="Com número de telefone"
+                                checked={signInWithPhone}
+                                checkedIcon={
+                                    <Icon
+                                        name="check-box"
+                                        color={COLORS.main}
+                                        size={20}
+                                        iconStyle={{ marginRight: 1 }}
+                                    />
+                                }
+                                uncheckedIcon={
+                                    <Icon
+                                        name="radio-button-unchecked"
+                                        color={COLORS.main}
+                                        size={20}
+                                        iconStyle={{ marginRight: 1 }}
+                                    />
+                                }
+                                onPress={() => setSignInWithPhone(!signInWithPhone)}
+                            /> */}
+                        </Box>
+                    </Stack>
+                )
+            }
+
             <FormControl isRequired isInvalid={'email' in errors}>
-                <FormControl.Label>Endereço Electrónico</FormControl.Label>
+                <FormControl.Label>{signInWithPhone ? 'Número de Telefone' : 'Endereço Electrónico'}</FormControl.Label>
                 <CustomInput
                     width="100%"
-                    placeholder="Endereço Electrónico"
-                    type="emailAddress"
-                    value={email}
-                    onChangeText={(newEmail)=>{
-                        setErrors((prev)=>({...prev, email: ''}))
-                        setEmail(newEmail?.toLowerCase()?.trim())
+                    placeholder={signInWithPhone ? "Número de Telefone" : "Endereço Electrónico"}
+                    type={signInWithPhone ? "telephoneNumber" : "emailAddress"}
+                    keyboardType={signInWithPhone ? "numeric" : ""}
+                    value={signInWithPhone ? signInPhone : email}
+                    onChangeText={(value)=>{
+                        if (signInWithPhone) {
+                            setErrors(prev=>({
+                                ...prev,
+                                signInPhone: null,
+                            }));
+                            setSignInPhone(parseInt(value));
+                        }
+                        else {
+                            setErrors((prev)=>({...prev, email: ''}));
+                            setEmail(value?.toLowerCase()?.trim());
+                        }
                     }}
-                    InputLeftElement={<Icon name="email" color="grey" style={{ paddingLeft: 3 }} />}
-                    />
-               { 'email' in errors 
+                    InputLeftElement={
+                        signInWithPhone ?
+                        (
+                            <Icon name="phone" color="grey" style={{ paddingLeft: 3 }} />
+                        )
+                        :
+                        (
+                            <Icon name="email" color="grey" style={{ paddingLeft: 3 }} />
+
+                        )
+                    }
+            />
+            { 'email' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.email}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+            }
+            { 'signInPhone' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.signInPhone}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
             }
             </FormControl>
@@ -556,6 +650,7 @@ export default function WelcomeScreen () {
                         <Select.Item label={roles.fieldAgent} value={roles.fieldAgent} />
                         <Select.Item label={roles.districtalSupervisor} value={roles.districtalSupervisor} />
                         <Select.Item label={roles.provincialManager} value={roles.provincialManager} />
+                        <Select.Item label={roles.coopManager} value={roles.coopManager} />
                     </Select>
                     {
                         'role' in errors 
@@ -655,6 +750,57 @@ export default function WelcomeScreen () {
         </>
             )
         }
+
+{ role.includes('AMPCM') && (userDistrict) &&
+                <Stack direction="row" w="100%">
+                <Box w="100%">
+                    <FormControl isRequired my="3" isInvalid={'coop' in errors}>
+                        <FormControl.Label>Nome da Cooperativa</FormControl.Label>
+                        <Select
+                            selectedValue={coop}
+                            accessibilityLabel="Escolha sua cooperativa"
+                            placeholder="Escolha sua cooperativa"
+                            _selectedItem={{
+                                bg: 'teal.600',
+                                fontSize: 'lg',
+                                endIcon: <CheckIcon size="5" />,
+                            }}
+                            dropdownCloseIcon={coop 
+                                ? <Icon name="close" size={25} color="grey" onPress={()=>{
+                                    setCoop('');
+                                }} /> 
+                                : <Icon size={25} name="arrow-drop-down" color="#005000" />
+                            }
+                            mt={1}
+                            onValueChange={(newCoop)=>{
+                                setErrors(prev=>({...prev, coop: ''}));
+                                setCoop(newCoop);
+                            }}
+                        >
+                            {
+                                cooperatives[userDistrict]?.map((coop, index)=>(
+                                    <Select.Item key={coop} label={coop} value={coop} />
+                                ))
+                            }
+                            {/* <Select.Item label={roles.districtalSupervisor} value={roles.districtalSupervisor} />
+                            <Select.Item label={roles.provincialManager} value={roles.provincialManager} />
+                            <Select.Item label={roles.coopManager} value={roles.coopManager} /> */}
+                        </Select>
+                        {
+                            'coop' in errors 
+                            ? <FormControl.ErrorMessage 
+                            leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                            _text={{ fontSize: 'xs'}}>{errors?.coop}</FormControl.ErrorMessage> 
+                        : <FormControl.HelperText></FormControl.HelperText>
+                    }
+                    </FormControl>
+                </Box>
+                </Stack>
+        }
+
+
+
+
         <Center w="100%"
             py="2"
             >
@@ -664,6 +810,29 @@ export default function WelcomeScreen () {
                 
                 setLoadingActivityIndicator(true);
                 if (isLoggingIn){
+
+                    if(signInWithPhone) {
+                        try {
+                            MongoClient.connect(secrets.mongoURI, function(err, db) {
+                            if(!err) {
+                                console.log("We are connected");
+                            }
+                            });
+                            // const mongo = app.currentUser.mongoClient(secrets.serviceName);
+                            // const collection = mongo.db(secrets.databaseName).collection(secrets.userCollectionName);
+                           
+                           
+                            // const result = await collection.findOne({ phone: signInPhone });
+                            // console.log('found User:', result);
+                            return ;
+                            
+                        } catch (error) {
+                            console.log('Could not fetch user phone number: ', { cause: error });
+                            setAlert(true);
+                            seterrorFlag(error);
+                            return ;                       
+                        }
+                    }
                     app?.currentUser?.logOut();
                     try{
                         // await signIn();
@@ -678,7 +847,7 @@ export default function WelcomeScreen () {
                     }   
                 }   
                 else {
-                    await onSignUp(name, email, password, passwordConfirm, phone, role, userDistrict, userProvince);
+                    await onSignUp(name, email, password, passwordConfirm, phone, role, userDistrict, userProvince, coop);
                 } 
 
             }} 

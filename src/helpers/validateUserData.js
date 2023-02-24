@@ -10,7 +10,8 @@ const validateUserData = (
         phone,
         role,
         userDistrict,
-        userProvince  
+        userProvince,
+        coop,  
     }, errors, setErrors,
     ) => {
 
@@ -22,6 +23,7 @@ const validateUserData = (
     const retrievedPhone = phone?.trim();
     const retrievedUserDistrict = userDistrict?.trim();
     const retrievedUserProvince = userProvince?.trim();
+    const retrievedCoop = coop?.trim()
    
         
         if ((!retrievedName) || (retrievedName?.split(' ')?.length <= 1)) {
@@ -84,6 +86,15 @@ const validateUserData = (
             return false;               
         }
 
+        if (!retrievedCoop && retrievedRole?.includes('AMPCM') && retrievedUserDistrict) {
+            setErrors({
+                ...errors, 
+                coop: 'Indica a sua cooperativa',
+            });
+            return false;
+        }
+
+
         return {
             name: retrievedName,
             email: retrievedEmail,
@@ -92,6 +103,7 @@ const validateUserData = (
             role: retrievedRole,
             userProvince: retrievedUserProvince,
             userDistrict: retrievedUserDistrict ? retrievedUserDistrict : 'NA',
+            coop: retrievedCoop ? retrievedCoop : '',
         };     
 };
 

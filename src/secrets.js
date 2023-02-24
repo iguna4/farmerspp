@@ -5,6 +5,7 @@ export const secrets = {
     // appID: 'farmers-app-hxnkd',
     serviceName: 'mongodb-atlas',
     databaseName: 'connectcajuDB',
+    mongoURI: 'mongodb+srv://connectcaju:$Ssssssss12@connectcajucluster0.usovxbh.mongodb.net/?retryWrites=true&w=majority',
     // databaseName: 'farmersDB',
     userCollectionName: 'User',
     databaseAccess: {

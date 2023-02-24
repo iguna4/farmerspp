@@ -113,6 +113,7 @@ export default function GroupModal (
                 userId: customUserData.userId,
                 userDistrict: customUserData.userDistrict,
                 userProvince: customUserData.userProvince,
+                userRole: customUserData.role,
                 registeredFarmers: 1,
             });
         })

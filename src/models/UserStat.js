@@ -9,6 +9,7 @@ export const UserStat = {
         userId: 'string',
         userDistrict: 'string',
         userProvince: 'string',
+        userRole: 'string?',
         targetFarmers: {type: 'int', default: 0 },
         targetFarmlands: {type: 'int', default: 0 },
         registeredFarmers: {type: 'int', default: 0 },

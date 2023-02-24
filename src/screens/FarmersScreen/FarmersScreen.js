@@ -46,6 +46,9 @@ export default function FarmersScreen({ route, navigation }) {
   // custom user data
   let customUserData = user.customData;
 
+  const [isFieldAgent, setIsFieldAgent] = useState(true);
+
+
   const farmers = realm.objects('Farmer').filtered("userDistrict == $0", customUserData?.userDistrict);;
   const groups = realm.objects('Group').filtered("userDistrict == $0", customUserData?.userDistrict);;
   const institutions = realm.objects('Institution').filtered("userDistrict == $0", customUserData?.userDistrict);
@@ -56,6 +59,7 @@ export default function FarmersScreen({ route, navigation }) {
     userDistrict: customUserData?.userDistrict,
     userProvince: customUserData?.userProvince,
     userId: customUserData?.userId,
+    role: customUserData?.role,
   };
 
   const individualsList = customizeItem(farmers, customUserData, 'Indivíduo')
@@ -185,12 +189,36 @@ export default function FarmersScreen({ route, navigation }) {
     }, [])
   );
 
+
+  useEffect(()=>{
+    if (customUserData?.role?.includes(roles.provincialManager)) {
+      setIsFieldAgent(false);
+    }
+
+  }, [ user ])
+
+
   if (loadingActivitiyIndicator) {
     return <CustomActivityIndicator 
         loadingActivitiyIndicator={loadingActivitiyIndicator}
         setLoadingActivityIndicator={setLoadingActivityIndicator}
     />
   }
+
+  if (!isFieldAgent) {
+    return (
+      <View
+        style={{ 
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Text>Hello Users!</Text>
+      </View>
+    )
+  }
+
 
   return (
     <SafeAreaView 

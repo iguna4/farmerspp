@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { generateUFID } from '../../helpers/generateUFID';
 import { useNavigation } from '@react-navigation/native';
-import { user } from '../../consts/user';
+// import { user } from '../../consts/user';
 
 
 import { realmContext } from '../../models/realmContext';
@@ -107,6 +107,7 @@ export default function IndividualModal (
                 userId: customUserData.userId,
                 userDistrict: customUserData.userDistrict,
                 userProvince: customUserData.userProvince,
+                userRole: customUserData.role,
                 registeredFarmers: 1,
             });
         })

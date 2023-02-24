@@ -114,6 +114,7 @@ export default function InstitutionModal (
                 userId: customUserData.userId,
                 userDistrict: customUserData.userDistrict,
                 userProvince: customUserData.userProvince,
+                userRole: customUserData.role,
                 registeredFarmers: 1,
             });
         })

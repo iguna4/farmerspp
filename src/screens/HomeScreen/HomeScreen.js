@@ -31,7 +31,6 @@ export default function HomeScreen() {
   const customUserData = user?.customData;
 
   const [isPerformanceButtonActive, setIsPerformanceButtonActive] = useState(false)
-  const [isOpen, setIsOpen] = useState(false);
   const [isUserProfileVisible, setIsUserProfileVisible] = useState(false);
   const [isGoalUpdateVisible, setIsGoalUpdateVisible] = useState(false);
   const [isFieldAgent, setIsFieldAgent] = useState(true);
@@ -43,7 +42,7 @@ export default function HomeScreen() {
 
   
   
-  const provincialUserStats = useQuery('UserStat').filtered(`userProvince =="${customUserData.userProvince}"`);
+  const provincialUserStats = useQuery('UserStat').filtered(`userProvince == "${customUserData?.userProvince}" && userDistrict != "NA"`);
   
   // console.log('usersStats: ', JSON.stringify(provincialUserStats));
   // --------------------------------------------------------
@@ -79,7 +78,7 @@ export default function HomeScreen() {
   //  extract stats from whole district
   const tWholeDistrict = 
     provincialUserStats
-      ?.filter((stat)=>stat.userDistrict === customUserData?.userDistrict)
+      ?.filter((stat)=>stat.userDistrict === customUserData?.userDistrict && stat.userDistrict !== 'NA')
       ?.map((stat)=>{
         return (
           {
@@ -91,7 +90,7 @@ export default function HomeScreen() {
 
   const rWholeDistrict = 
     provincialUserStats
-      ?.filter((stat)=>stat.userDistrict === customUserData?.userDistrict)
+      ?.filter((stat)=>stat.userDistrict === customUserData?.userDistrict && stat.userDistrict !== 'NA')
       ?.map((stat)=>{
         return (
           {
@@ -172,6 +171,7 @@ export default function HomeScreen() {
 );
 
 
+
   if (loadingActivitiyIndicator) {
     return <CustomActivityIndicator 
         loadingActivitiyIndicator={loadingActivitiyIndicator}
@@ -179,8 +179,6 @@ export default function HomeScreen() {
     />
   }
   
-
-
   return (
     <SafeAreaView
       style={{ 

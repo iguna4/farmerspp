@@ -1,6 +1,6 @@
 import {TouchableOpacity, View, Text,} from 'react-native';
 import React from 'react';
-import {Avatar } from '@rneui/themed';
+import {Avatar, Icon } from '@rneui/themed';
 
 import { Box, Center, Stack,  } from 'native-base';
 import { getInitials } from '../../helpers/getInitials';
@@ -18,12 +18,10 @@ const InstitutionItem = ({ item, route }) => {
       style={{
         padding: 10,
         marginVertical: 10,
-        // backgroundColor: '#EBEBE4',
         borderColor: COLORS.main,
         minHeight: 100,
         width: '100%',
         flex: 1,
-        // alignItems: 'center',
         shadowColor: COLORS.main,
         shadowOffset: {
           width: 0,
@@ -36,21 +34,30 @@ const InstitutionItem = ({ item, route }) => {
 
       }}
     >   
-
+      <Box
+        style={{
+          position: 'absolute',
+          top: 1,
+          right: 1,
+          zIndex: 1,
+        }}
+      >
+        <Icon 
+          name={item?.validated === 'pending' ? 'pending-actions' : item?.validated === 'validated' ? 'check-circle' : 'dangerous'}
+          size={30}
+          color={item?.validated === 'pending' ? COLORS.danger : item?.validated === 'validated' ? COLORS.main : COLORS.red}
+        />
+      </Box>
     <Stack direction="row" w="100%">
     <Center w="15%" m="2">
 
     <Avatar 
-            size={60}
-            rounded
-            // title={getInitials(item?.manager?.fullname)}
-            title={item.imageAlt}
-            containerStyle={{ backgroundColor: COLORS.grey }}
-            source={{ 
-              // uri: item?.image ? item?.image : 'htt://localhost/not-set-yet'
-              uri: item.image 
-            }}
-        />
+      size={60}
+      rounded
+      title={item.imageAlt}
+      containerStyle={{ backgroundColor: COLORS.grey }}
+      source={{ uri: item.image }}
+    />
     </Center>
     <Box w="85%">
 
@@ -91,14 +98,9 @@ const InstitutionItem = ({ item, route }) => {
                 style={{
                   fontSize: 15,
                   fontFamily: 'JosefinSans-Italic',
-                  // paddingTop: 6,
                 }}
                 >
-                Responsável: {' '}
-              {
-                // item?.manager?.fullname
-                item.manager
-              }
+                Responsável: {item.manager}
             </Text>
         </Stack>
 
@@ -108,14 +110,9 @@ const InstitutionItem = ({ item, route }) => {
                 style={{
                   fontSize: 15,
                   fontFamily: 'JosefinSans-Italic',
-                // paddingTop: 6,
                 }}
                 >
-                Tel: {
-                  // item?.manager?.phone ? item?.manager?.phone
-                  // : 'Nenhum'
-                  item.phone
-                }
+                Tel: {item.phone}
               </Text>
             </Box>
             <Box w="50%">
@@ -124,13 +121,11 @@ const InstitutionItem = ({ item, route }) => {
                   style={{
                     fontSize: 15,
                     fontFamily: 'JosefinSans-Italic',
-                    // paddingTop: 6,
                   }}
                 >
                   Parcelas: {' '}
                 </Text>
                 <Text style={{ fontSize: 15, paddingTop: 2,  }}>
-                  {/* {item?.farmlands.length} */}
                   {item.farmlands}
                   </Text>
               </Stack>
@@ -153,11 +148,7 @@ const InstitutionItem = ({ item, route }) => {
             fontSize: 12,
           }}
           >
-          Registo:{' '}                 
-          {/* {new Date(item.createdAt).getDate()}/{months[new Date(item.createdAt).getMonth()]}/{new Date(item.createdAt).getFullYear()} */}
-          {item.createdAt}
-          {/* {' '} por {item.user} */}
-          {' '} por {item.user}
+          Registo:  {item.createdAt} por {item.user}
         </Text>
       </Box>
   </Stack>

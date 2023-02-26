@@ -4,33 +4,65 @@ import AwesomeAlert from "react-native-awesome-alerts";
 
 
 const CustomAwesomeAlert = ({ 
-    show, 
-    showProgress, 
+    alert, 
     title,
     message,
-    closeOnTouchOutside,
-    closeOnHardwareBackPress,
     confirmText,
+    cancelText,
     showCancelButton,
     showConfirmButton,
+    onCancelPressed,
     onConfirmPressed,
  })=>{
 
     return (
-        <AwesomeAlert
-        show={confirmGeoAlert}
-        showProgress={false}
-        title="Geolocalização"
-        message="Este dispositivo aprovou o pedido de permissão deste aplicativo!"
-        closeOnTouchOutside={true}
-        closeOnHardwareBackPress={false}
-        showCancelButton={false}
-        showConfirmButton={true}
-        confirmText="   OK!   "
-        confirmButtonColor="#005000"
-        onConfirmPressed={() => {
-          setConfirmGeoAlert(false);
+      <AwesomeAlert
+        show={alert}
+        
+        titleStyle={{
+            fontSize: 20,
+            color: COLORS.main,
+            fontWeight: 'bold',
         }}
+        messageStyle={{
+            fontSize: 18,
+            color: COLORS.grey,
+            fontFamily: 'JosefinSans-Regular',
+            lineHeight: 20,
+        }}
+        alertContainerStyle	={{
+          // width: 300,
+        }}
+        cancelButtonStyle={{
+          width: 600,
+        }}
+
+        cancelButtonTextStyle={{
+            fontSize: 100,
+        }}
+
+        confirmButtonStyle={{
+
+        }}
+
+        confirmButtonTextStyle={{
+
+        }}
+
+
+        showProgress={false}
+        title={title}
+        message={message}
+        closeOnTouchOutside={false}
+        closeOnHardwareBackPress={false}
+        showCancelButton={showCancelButton}
+        showConfirmButton={showConfirmButton}
+        cancelText={cancelText}
+        confirmText={confirmText}
+        cancelButtonColor="#DD6B55"
+        confirmButtonColor={COLORS.main}
+        onCancelPressed={onCancelPressed}
+        onConfirmPressed={onConfirmPressed}
       />
     )
 }

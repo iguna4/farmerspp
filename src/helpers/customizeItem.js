@@ -4,42 +4,44 @@ import { getInitials } from "./getInitials";
 import { realmContext } from '../models/realmContext';
 import { useObject } from '@realm/react';
 import { BSON } from "realm";
-const {useRealm } = realmContext;
+const { useRealm } = realmContext;
 
 
-export const customizeItem = (list, customUserData, flag)=>{
+export const customizeItem = (list, customUserData, flag) => {
 
         const realm = useRealm();
 
 
-        return list?.map((item)=>{
+        return list?.map((item) => {
 
                 if (flag === 'Indivíduo') {
                         const newItem = {
                                 _id: item?._id,
-                                image: 
-                                        item?.image 
-                                        ? item?.image 
-                                        : 'htt://localhost/not-set-yet',
+                                image:
+                                        item?.image
+                                                ? item?.image
+                                                : 'htt://localhost/not-set-yet',
                                 imageAlt: getInitials(item?.names.surname),
                                 name: item?.names.otherNames + ' ' + item?.names.surname,
                                 category: item?.category,
                                 isSprayingAgent: item?.isSprayingAgent,
-                                phone: 
-                                        (item?.contact.primaryPhone && item?.contact.primaryPhone > 0 && item?.contact.secondaryPhone && item?.contact.secondaryPhone > 0) 
-                                        ? `${item?.contact.primaryPhone}/${item?.contact.secondaryPhone}`
-                                        : (item?.contact.primaryPhone && item?.contact.primaryPhone)
-                                        ? `${item?.contact.primaryPhone}`
-                                        : (item?.contact.secondaryPhone && item?.contact.secondaryPhone) 
-                                        ? `${item?.contact.secondaryPhone}` 
-                                        : 'Nenhum',
-                                
+                                phone:
+                                        (item?.contact.primaryPhone && item?.contact.primaryPhone > 0 && item?.contact.secondaryPhone && item?.contact.secondaryPhone > 0)
+                                                ? `${item?.contact.primaryPhone}/${item?.contact.secondaryPhone}`
+                                                : (item?.contact.primaryPhone && item?.contact.primaryPhone)
+                                                        ? `${item?.contact.primaryPhone}`
+                                                        : (item?.contact.secondaryPhone && item?.contact.secondaryPhone)
+                                                                ? `${item?.contact.secondaryPhone}`
+                                                                : 'Nenhum',
+
                                 farmlands: item?.farmlands?.length,
                                 // createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
-                                createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth()+1}-${new Date(item?.createdAt).getFullYear()}`,
+                                createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth() + 1}-${new Date(item?.createdAt).getFullYear()}`,
                                 user: (item?.userName === customUserData?.name)
                                         ? 'mim'
                                         : item?.userName,
+                                validated: item?.validated,
+                                validatedBy: item?.validatedBy,
                                 flag: flag,
 
 
@@ -55,17 +57,19 @@ export const customizeItem = (list, customUserData, flag)=>{
                                 name: item?.name,
                                 type: item?.type,
                                 manager: item?.manager?.fullname,
-                                phone: 
-                                        (item?.manager.phone && item?.manager.phone) 
-                                        ? `${item?.manager.phone}` 
-                                        : 'Nenhum',
-                                
+                                phone:
+                                        (item?.manager.phone && item?.manager.phone)
+                                                ? `${item?.manager.phone}`
+                                                : 'Nenhum',
+
                                 farmlands: item?.farmlands?.length,
                                 // createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
-                                createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth()+1}-${new Date(item?.createdAt).getFullYear()}`,
+                                createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth() + 1}-${new Date(item?.createdAt).getFullYear()}`,
                                 user: (item?.userName === customUserData?.name)
                                         ? 'mim'
                                         : item?.userName,
+                                validated: item?.validated,
+                                validatedBy: item?.validatedBy,
                                 flag: flag,
 
                         }
@@ -80,24 +84,26 @@ export const customizeItem = (list, customUserData, flag)=>{
                                 type: item?.type,
                                 isPrivate: item?.isPrivate,
                                 manager: item?.manager?.fullname,
-                                phone: 
-                                        (item?.manager.phone && item?.manager.phone) 
-                                        ? `${item?.manager.phone}` 
-                                        : 'Nenhum',
-                                
+                                phone:
+                                        (item?.manager.phone && item?.manager.phone)
+                                                ? `${item?.manager.phone}`
+                                                : 'Nenhum',
+
                                 farmlands: item?.farmlands?.length,
                                 // createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
-                                createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth()+1}-${new Date(item?.createdAt).getFullYear()}`,
+                                createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth() + 1}-${new Date(item?.createdAt).getFullYear()}`,
                                 user: (item?.userName === customUserData?.name)
                                         ? 'mim'
                                         : item?.userName,
+                                validated: item?.validated,
+                                validatedBy: item?.validatedBy,
                                 flag: flag,
 
                         }
                         return newItem;
                 }
-        //         item['flag'] = flag;
-        //     return item;
+                //         item['flag'] = flag;
+                //     return item;
         })
 
 }

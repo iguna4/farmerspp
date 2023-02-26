@@ -57,6 +57,29 @@ export const errorMessages = {
         confirmText: '  Sim!  ',
         onCancelPressed: ()=>{},
         onConfirmPressed: ()=>{},
+    },
+
+    resourceValidation: {
+        title: 'Validação do Registo',
+        message: `Após a validação, não será possível alterar dados associados a este registo. Pretendes validar este registo?`,
+        logFlag: 'dataValidation',
+        showCancelButton: true,
+        showConfirmButton: true,
+        cancelText: '  Não  ',
+        confirmText: '  Sim  ',
+        onCancelPressed: ()=>{},
+        onConfirmPressed: ()=>{},
+    },
+    resourceInvalidation: {
+        title: 'Invalidação do Registo',
+        message: `Após a invalidação, o usuário irá alterar dados deste registo para uma revalidação a posterior. Pretendes invalidar o registo?`,
+        logFlag: 'dataInvalidation',
+        showCancelButton: true,
+        showConfirmButton: true,
+        cancelText: '  Não  ',
+        confirmText: '  Sim  ',
+        onCancelPressed: ()=>{},
+        onConfirmPressed: ()=>{},
     }
 
     

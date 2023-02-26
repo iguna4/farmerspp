@@ -1,7 +1,7 @@
 
 import { 
     View, Text, InteractionManager, 
-    SafeAreaView, Image, TouchableOpacity } from 'react-native'
+    SafeAreaView, Image, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useCallback, useState, useEffect } from 'react'
 import { Box, Stack, Center,  } from 'native-base';
 import {Icon, Overlay, } from '@rneui/themed';
@@ -143,11 +143,15 @@ const { useRealm, useQuery, useObject } = realmContext;
     />
 
 
-        <Box h="100%" w="100%" >
+        <Box 
+        // h="100%" 
+        w="100%"
+            style={{ flex: 1, }}
+        >
 
         <Stack w="100%"
             style={{
-                paddingBottom: 20,
+                // marginBottom: 10,
             }}
         >
             <Box w="10%">
@@ -164,7 +168,15 @@ const { useRealm, useQuery, useObject } = realmContext;
             
             </Box>
         </Stack>
-        <Center h="90%">
+        
+        <ScrollView
+            // style={{ paddingTop: 40}}
+        >
+
+
+        <Center 
+        // h="100%"
+        >
                 {/* <Icon 
                     name="account-circle" 
                     size={200} 
@@ -187,21 +199,25 @@ const { useRealm, useQuery, useObject } = realmContext;
     {            
         customUserData?.image &&   
         ( 
-        <>
+        <Box
+            style={{ marginTop: 50, }}
+        >
             <Image 
                 source={{ uri: customUserData?.image }}
                 style={styles.images}
             />     
-        </>
+        </Box>
         )        
     }
 
 
     {            
         !customUserData?.image &&   
-        ( <>
+        ( <Box
+            style={{ marginTop: 50, }}
+        >
             <Icon name="account-circle" size={200} color={COLORS.grey} />
-        </>
+        </Box>
         )        
     }
     </TouchableOpacity>
@@ -215,7 +231,7 @@ const { useRealm, useQuery, useObject } = realmContext;
                         color: COLORS.main,
                     }}
                     >
-                    {customUserData.name}
+                    {customUserData?.name}
                 </Text>
                 <Text
                     style={{
@@ -225,10 +241,14 @@ const { useRealm, useQuery, useObject } = realmContext;
                         color: COLORS.grey,
                     }}
                     >
-                    ({customUserData.role})
+                    ({customUserData?.role})
                 </Text>
             {/* </Box> */}
-            <Box w="95%" h="70%"
+
+
+
+            <Box w="95%" 
+                h="70%"
                 style={{
                     marginTop: 5,
                 }}
@@ -266,7 +286,7 @@ const { useRealm, useQuery, useObject } = realmContext;
                             </Text>
                         </Box>
                         <Box w="60%">
-                            <Text>{customUserData.userProvince}</Text>
+                            <Text>{customUserData?.userProvince}</Text>
                         </Box>
                     </Stack>
                     <Stack w="100%" direction="row"  my="1">
@@ -280,7 +300,7 @@ const { useRealm, useQuery, useObject } = realmContext;
                             >Distrito:</Text>
                         </Box>
                         <Box w="60%">
-                            <Text>{customUserData.userDistrict?.includes('NA') ? 'Não Aplicável' : customUserData.userDistrict}</Text>
+                            <Text>{customUserData?.userDistrict?.includes('NA') ? 'Não Aplicável' : customUserData?.userDistrict}</Text>
                         </Box>
                     </Stack>
                     <Stack w="100%" direction="row"  my="1">
@@ -294,7 +314,7 @@ const { useRealm, useQuery, useObject } = realmContext;
                             >Telefone:</Text>
                         </Box>
                         <Box w="60%">
-                            <Text>{customUserData.phone}</Text>
+                            <Text>{customUserData?.phone}</Text>
                         </Box>
                     </Stack>
                     <Stack w="100%" direction="row"  my="1">
@@ -308,7 +328,7 @@ const { useRealm, useQuery, useObject } = realmContext;
                                 >Email:</Text>
                         </Box>
                         <Box w="60%">
-                            <Text>{customUserData.email}</Text>
+                            <Text>{customUserData?.email}</Text>
                         </Box>
                     </Stack>
                     <CustomDivider thickness={2} my={2}  bg={COLORS.main} />
@@ -319,7 +339,7 @@ const { useRealm, useQuery, useObject } = realmContext;
                     >
                         <TouchableOpacity
                             onPress={()=>{
-                                user.logOut()
+                                user?.logOut()
                             }}
                         >
 
@@ -344,7 +364,7 @@ const { useRealm, useQuery, useObject } = realmContext;
                         </Stack>
                         </TouchableOpacity>
 
-        { (customUserData.role.includes(roles.provincialManager) || customUserData.email.includes('connectcaju2023')) &&  
+        { (customUserData?.role.includes(roles.provincialManager) || customUserData?.email.includes('connectcaju2023')) &&  
                     <TouchableOpacity
                         onPress={()=>{
                             setIsGoalUpdateVisible(true);
@@ -407,6 +427,10 @@ const { useRealm, useQuery, useObject } = realmContext;
                 </Box>
             </Box>
         </Center>
+
+        </ScrollView>
+
+
         </Box>
         <PhotoModal 
           realm={realm}

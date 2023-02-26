@@ -1,7 +1,10 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import {FlatList, InteractionManager, Switch, Image, SafeAreaView, Text, View, PermissionsAndroid, Animated, TouchableOpacity} from 'react-native';
+import {
+  FlatList,  InteractionManager,  ScrollView, 
+  Switch, Image, SafeAreaView, Text, View, PermissionsAndroid, 
+  Animated, TouchableOpacity, SectionList, } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import {ListItem, Avatar, Icon, } from '@rneui/themed';
 import { Box, Center, Pressable, Stack } from 'native-base';
@@ -22,6 +25,7 @@ import COLORS from '../../consts/colors';
 import { realmContext } from '../../models/realmContext';
 import { useUser } from '@realm/react';
 import { roles } from '../../consts/roles';
+import StatItem from '../../components/StatItem/StatItem';
 const { useRealm, useQuery } = realmContext; 
 
 
@@ -35,6 +39,8 @@ const districtGroupFarmers = 'districtGroupFarmers';
 const districtInstitutionFarmers = 'districtInstitutionFarmers';
 const districtFarmlands = 'districtFarmlands';
 
+const provincialStats = 'provincialStats';
+
 
 export default function FarmersScreen({ route, navigation }) {
 
@@ -46,13 +52,14 @@ export default function FarmersScreen({ route, navigation }) {
   // custom user data
   let customUserData = user.customData;
 
-  const [isFieldAgent, setIsFieldAgent] = useState(true);
 
-
-  const farmers = realm.objects('Farmer').filtered("userDistrict == $0", customUserData?.userDistrict);;
-  const groups = realm.objects('Group').filtered("userDistrict == $0", customUserData?.userDistrict);;
+  const farmers = realm.objects('Farmer').filtered("userDistrict == $0", customUserData?.userDistrict);
+  const groups = realm.objects('Group').filtered("userDistrict == $0", customUserData?.userDistrict);
   const institutions = realm.objects('Institution').filtered("userDistrict == $0", customUserData?.userDistrict);
   const farmlands = realm.objects('Farmland').filtered("userDistrict == $0" , customUserData?.userDistrict);
+  const stats = realm.objects('UserStat').filtered("userProvince == $0", customUserData?.userProvince);
+
+  const districts =  Array.from(new Set(stats.map((stat)=>stat?.userDistrict))).filter(district=>district !== 'NA');
 
   customUserData = {
     name: customUserData?.name,
@@ -65,6 +72,52 @@ export default function FarmersScreen({ route, navigation }) {
   const individualsList = customizeItem(farmers, customUserData, 'Indivíduo')
   const groupsList = customizeItem(groups, customUserData, 'Grupo')
   const institutionsList = customizeItem(institutions, customUserData, 'Instituição');
+  const filteredStats = stats?.filter(stat => (stat.userDistrict !== 'NA'));
+
+
+  // const groupItemsByOwner = (userId, stats, farmers, groups, institutions, farmlands)=>{
+
+  //   const itemsOwner = {
+  //     userId: userId,
+  //     userName: stats.find((stat)=>stat.userId === userId).userName,
+  //     farmers: farmers?.filter(farmer=>farmer?.userId === userId),
+  //     groups: groups?.filter(group=>group?.userId === userId),
+  //     institutions: institutions?.filter(institution=>institution?.userId === userId),
+  //     farmlands: farmlands?.filter(farmland=>farmland?.userId === userId),
+  //   };
+  //   return itemsOwner;
+  // }
+
+  // const items = groupItemsByOwner(stats[3].userId, stats, farmers, groups, institutions, farmlands);
+
+  // console.log('items: ', farmers);
+
+  
+  // ---------------------------------------------------------------------------- 
+  const listStatsByDistrict = (stats)=>{
+    // get the array of all the districts in which users are living
+    // to create a SectionList where each item has title and data properties
+    // excluding the stats whose district value is 'NA'
+    const districts = Array.from(new Set(stats.map(stat=>stat.userDistrict))).filter(district=>district !== 'NA').sort();
+    const statsByDistrict = [];
+    for (let i = 0; i < districts.length; i++) {
+      const district = districts[i];
+      let newObject = {};
+      const usersStats = stats.filter(stat=>stat.userDistrict === district);
+      newObject["title"] = `${district}`;
+      newObject["data"] = usersStats;
+      statsByDistrict.push(newObject);
+    }
+
+    return statsByDistrict;
+  }
+
+  const statsByDistrict = listStatsByDistrict(stats);
+  
+  // console.log('districts--:', statsByDistrict);
+  //  ---------------------------------------------------------------------------------
+
+
 
   // This state will be used to toggle between showing all items and only showing the current user's items
   // This is initialized based on which subscription is already active
@@ -80,7 +133,6 @@ export default function FarmersScreen({ route, navigation }) {
  
   // merge the three arrays of farmers and sort the items by createdAt 
   let farmersList = [];
-  // let farmlandsList = [];
 
   if (individualsList.length > 0){
     farmersList = farmersList.concat(individualsList)
@@ -98,82 +150,126 @@ export default function FarmersScreen({ route, navigation }) {
 
 
   useEffect(() => {
-    if (showAll && (customUserData?.role !== roles.provincialManager)) {
-      realm.subscriptions.update(mutableSubs => {
-      mutableSubs.removeByName(userSingleFarmers);
-      mutableSubs.add(
-        realm.objects('Farmer').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
-        {name: districtSingleFarmers},
-        );
-      });
       
-      realm.subscriptions.update(mutableSubs => {
-        mutableSubs.removeByName(userGroupFarmers);
-        mutableSubs.add(
-        realm.objects('Group').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
-        {name: districtGroupFarmers},
-      );
-    });
-
-
-    realm.subscriptions.update(mutableSubs => {
-      mutableSubs.removeByName(userInstitutionFarmers);
-      mutableSubs.add(
-        realm.objects('Institution').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
-        {name: districtInstitutionFarmers},
-        );
-      });
+      if (showAll && (customUserData?.role !== roles.provincialManager)) {
+        
+        realm.subscriptions.update(mutableSubs => {
+          mutableSubs.removeByName(userSingleFarmers);
+          mutableSubs.add(
+            realm.objects('Farmer').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+            {name: districtSingleFarmers},
+          );
+        });
       
-      
-    }
-    else if (!showAll && (customUserData?.role !== roles.provincialManager)) {
+        realm.subscriptions.update(mutableSubs => {
+          mutableSubs.removeByName(userGroupFarmers);
+          mutableSubs.add(
+            realm.objects('Group').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+            {name: districtGroupFarmers},
+          );
+        });          
 
-      realm.subscriptions.update(mutableSubs => {
-        mutableSubs.removeByName(districtSingleFarmers);
-        mutableSubs.add(
-          realm.objects('Farmer').filtered(`userId == "${user?.customData?.userId}"`),
-          {name: userSingleFarmers},
+        realm.subscriptions.update(mutableSubs => {
+          mutableSubs.removeByName(userInstitutionFarmers);
+          mutableSubs.add(
+            realm.objects('Institution').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+            {name: districtInstitutionFarmers},
           );
         });
 
-      realm.subscriptions.update(mutableSubs => {
-        mutableSubs.removeByName(districtGroupFarmers);
-        mutableSubs.add(
-          realm.objects('Group').filtered(`userId == "${user?.customData?.userId}"`),
-          {name: userGroupFarmers},
-        );
-      });
+        realm.subscriptions.update(mutableSubs => {
+          mutableSubs.removeByName(userFarmlands);
+          mutableSubs.add(
+            realm.objects('Farmland').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+            {name: districtFarmlands},
+          );
+        });
+
+      }
+      else if (!showAll && (customUserData?.role !== roles.provincialManager)) {
       
-      
-      realm.subscriptions.update(mutableSubs => {
-        mutableSubs.removeByName(districtInstitutionFarmers);
-        mutableSubs.add(
-          realm.objects('Institution').filtered(`userId == "${user?.customData?.userId}"`),
-          {name: userInstitutionFarmers},
-        );
-      });
+        realm.subscriptions.update(mutableSubs => {
+          mutableSubs.removeByName(districtSingleFarmers);
+          mutableSubs.add(
+            realm.objects('Farmer').filtered(`userId == "${user?.customData?.userId}"`),
+            {name: userSingleFarmers},
+          );
+        });
+        
+        realm.subscriptions.update(mutableSubs => {
+          mutableSubs.removeByName(districtGroupFarmers);
+          mutableSubs.add(
+            realm.objects('Group').filtered(`userId == "${user?.customData?.userId}"`),
+            {name: userGroupFarmers},
+          );
+        });
+          
+        realm.subscriptions.update(mutableSubs => {
+          mutableSubs.removeByName(districtInstitutionFarmers);
+          mutableSubs.add(
+            realm.objects('Institution').filtered(`userId == "${user?.customData?.userId}"`),
+            {name: userInstitutionFarmers},
+          );
+        });  
+        
+        realm.subscriptions.update(mutableSubs => {
+          mutableSubs.removeByName(userFarmlands);
+          mutableSubs.add(
+            realm.objects('Farmland').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+            {name: districtFarmlands},
+          );
+        });
+        
+    }
+    else if (customUserData?.role === roles.provincialManager) {
+
+      // realm.subscriptions.update(mutableSubs => {
+      //   mutableSubs.removeByName(districtSingleFarmers);
+      //   mutableSubs.add(
+      //     realm.objects('Farmer').filtered("userDistrict == $0", "Meconta"),
+      //     {name: userSingleFarmers},
+      //   );
+      // });
       
       // realm.subscriptions.update(mutableSubs => {
-      //   mutableSubs.removeByName(districtFarmlands);
+      //   mutableSubs.removeByName(districtGroupFarmers);
       //   mutableSubs.add(
-      //     realm.objects('Farmland').filtered(`userId == "${user?.customData?.userId}"`),
-      //     {name: userFarmlands},
-      //     );
-      //   });
-                
-      }
+      //     realm.objects('Group').filtered("userDistrict IN $0", districts),
+      //     {name: userGroupFarmers},
+      //   );
+      // });
+        
+      // realm.subscriptions.update(mutableSubs => {
+      //   mutableSubs.removeByName(districtInstitutionFarmers);
+      //   mutableSubs.add(
+      //     realm.objects('Institution').filtered("userDistrict IN $0", districts),
+      //     {name: userInstitutionFarmers},
+      //   );
+      // });  
+      
+      // realm.subscriptions.update(mutableSubs => {
+      //   mutableSubs.removeByName(userFarmlands);
+      //   mutableSubs.add(
+      //     realm.objects('Farmland').filtered("userDistrict IN $0", districts),
+      //     {name: districtFarmlands},
+      //   );
+      // });
+            
       realm.subscriptions.update(mutableSubs => {
-        mutableSubs.removeByName(userFarmlands);
+        mutableSubs.removeByName(provincialStats);
         mutableSubs.add(
-          realm.objects('Farmland').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
-          {name: districtFarmlands},
-          );
-        });
+          realm.objects('UserStat').filtered(`userProvince == "${user?.customData?.userProvince}"`),
+          {name: provincialStats},
+        );
+      });
+
+    }
+
   }, [realm, user, showAll ]);
 
   const keyExtractor = (item, index)=>index.toString();
 
-  
+
   const addFarmer = ()=>{
     navigation.navigate('FarmerForm1', { customUserData });
   }
@@ -190,13 +286,6 @@ export default function FarmersScreen({ route, navigation }) {
   );
 
 
-  useEffect(()=>{
-    if (customUserData?.role?.includes(roles.provincialManager)) {
-      setIsFieldAgent(false);
-    }
-
-  }, [ user ])
-
 
   if (loadingActivitiyIndicator) {
     return <CustomActivityIndicator 
@@ -205,34 +294,147 @@ export default function FarmersScreen({ route, navigation }) {
     />
   }
 
-  if (!isFieldAgent) {
-    return (
-      <View
-        style={{ 
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Text>Hello Users!</Text>
-      </View>
-    )
-  }
-
 
   return (
     <SafeAreaView 
       style={{    
         flex: 1,
         backgroundColor: 'ghostwhite',
-        paddingBottom: 120,
       }}
     >
-    <Box 
-      style={{
-        // marginVertical: 5,
-        // marginBottom: 20,
-      }}
+{/* 
+    Show this if the user is a provincial manager
+*/}
+
+{ 
+(customUserData?.role === roles.provincialManager) &&
+<View>
+
+      <View
+          style={{
+            width: '100%',
+            paddingHorizontal: 15,
+            paddingTop: 5,
+            backgroundColor: '#EBEBE4',
+            borderTopWidth: 0,
+            borderColor: '#EBEBE4',
+            borderBottomWidth: 3,
+            borderLeftWidth: 3,
+            borderRightWidth: 3,
+          }}
+      >
+        <Stack direction="row" w="100%"  >
+          <Center w="15%">
+          </Center>
+
+          <Box w="70%">
+            <Center>
+              <Text
+                style={{ 
+                  fontFamily: 'JosefinSans-Bold', 
+                  fontSize: 18, 
+                  color: COLORS.main, 
+                }}
+              >
+                {customUserData?.userProvince}
+              </Text>
+
+              <Stack direction="row" space={2} my="1">
+                <Center>
+                  <Text
+                    style={{ 
+                      fontFamily: 'JosefinSans-Regular', 
+                      fonSize: 14, 
+                    }}
+                  >[{'Usuários:'}{' '}{filteredStats.length}]</Text>
+                </Center>
+                <Center>
+                  <Text
+                    style={{ fontFamily: 'JosefinSans-Regular', fonSize: 14, }}
+                  >[{'Distritos:'}{' '}{districts.length}]</Text>
+                </Center>
+              </Stack>
+            </Center>
+          </Box>
+          <Box 
+            w="15%"
+          >
+
+          </Box>
+        </Stack>
+      </View>
+
+      {
+      (stats?.length === 0) 
+      ?
+      (
+      <Box>
+        <Center 
+          style={{
+            margin: 20,
+          }}
+        >
+          <Text 
+            style={{
+              fontFamily: 'JosefinSans-Regular',
+              fontSize: 18,
+              textAlign: 'center',
+              lineHeight: 30,
+              color: COLORS.red,
+            }}
+          >
+            A província de {customUserData?.userProvince} ainda não possui usuários activos!
+          </Text>
+          <TickComponent />
+        </Center>
+      </Box>
+    )
+        :
+        (
+          <Box 
+            alignItems="stretch" 
+            w="100%" 
+            style={{
+              marginBottom: 140,
+            }}
+            >
+            <SectionList
+              sections={statsByDistrict}
+              keyExtractor={(item, index) => {
+                return item.userId
+              }}
+              renderItem={({item}) => (
+                    <StatItem  route={route} navigation={navigation} item={item} />
+              )}
+              renderSectionHeader={({section: {title}}) => (
+                <Text 
+                  style={{
+                    paddingLeft: 10,
+                    fontWeight: 'bold',
+                    color: COLORS.danger,
+                  }}
+                >
+                  {title}
+                </Text>
+              )}
+            />
+          </Box>
+        )
+      }
+
+
+</View>
+}
+
+
+
+{/* 
+   Show this if the user is a field agent only
+*/}
+      
+{    
+  (customUserData?.role !== roles.provincialManager) &&
+<Box 
     >
       <View
           style={{
@@ -253,28 +455,16 @@ export default function FarmersScreen({ route, navigation }) {
           direction="row" w="100%"
         >
           <Center w="15%">
-
             <Switch
               trackColor={{ true: COLORS.main, false: COLORS.grey }}
               thumbColor={ showAll ? COLORS.grey : COLORS.main }
-              onValueChange={
-                () => {
-                // if (realm.syncSession?.state !== 'active') {
-                //   Alert.alert(
-                //     'Switching subscriptions does not affect Realm data when the sync is offline.',
-                //   );
-                // }
+              onValueChange={ () => {
                 setShowAll(!showAll);
                 setLoadingActivityIndicator(true);
               }
             }
               value={showAll}
             />
-            {/* <Image
-                  style={{ width: 40, height: 40, borderRadius: 100, }}
-                  source={require('../../../assets/images/iamLogo2.png')}
-                  // resizeMode={FastImage.resizeMode.contain}
-            /> */}
           </Center>
 
           <Box w="70%">
@@ -329,27 +519,12 @@ export default function FarmersScreen({ route, navigation }) {
         </Stack>
       </View>
 
-      {/* <LottieAddButton
-        styles={{ 
-          zIndex: 3, 
-          width: 100, 
-          height: 100, 
-          position: 'absolute', 
-          top: 400, 
-         
-        }}
-        onPress={addFarmer}
-        /> */}
-
       {
       (farmers?.length === 0 && groups.length === 0 && institutions.length === 0) 
       ?
       (
-      <Box 
-        // minH={'100%'}
-      >
+      <Box>
         <Center 
-          // height="100%"
           style={{
             margin: 20,
           }}
@@ -375,9 +550,10 @@ export default function FarmersScreen({ route, navigation }) {
             alignItems="stretch" 
             w="100%" 
             style={{
-              marginBottom: 80,
+              // flex: 1,
+              marginBottom: 140,
             }}
-            >
+          >
             <FlatList
               data={farmersList}
               keyExtractor={keyExtractor}
@@ -400,6 +576,8 @@ export default function FarmersScreen({ route, navigation }) {
       }
 
       </Box>
-  </SafeAreaView>
+}  
+
+</SafeAreaView>
   );
 }

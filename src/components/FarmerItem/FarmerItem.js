@@ -35,19 +35,43 @@ const FarmerItem = ({ item, route, farmerType }) => {
 
       }}
     >
+      <Box
+        style={{
+          position: 'absolute',
+          top: 1,
+          right: 1,
+          zIndex: 1,
+        }}
+      >
+        <Icon 
+          name={item?.validated === 'pending' ? 'pending-actions' : item?.validated === 'validated' ? 'check-circle' : 'dangerous'}
+          size={30}
+          color={item?.validated === 'pending' ? COLORS.danger : item?.validated === 'validated' ? COLORS.main : COLORS.red}
+        />
+      </Box>
       <Stack direction="row" w="100%">
       <Center w="15%" m="2">
+
         <Avatar 
             size={60}
             rounded
-            // title={getInitials(item?.names?.surname)}
             title={item.imageAlt}
             containerStyle={{ backgroundColor: COLORS.grey }}
             source={{ 
-              // uri: item?.image ? item?.image : 'htt://localhost/not-set-yet' 
               uri: item.image
             }}
         />
+  {    item?.isSprayingAgent &&   
+        <Box
+          style={{
+            position: 'absolute',
+            bottom: -1,
+            left: -8,
+          }}
+        >
+          <Icon name="verified-user" color="green" />
+        </Box>
+      }
       </Center>
 
       <Box w="85%">
@@ -66,7 +90,6 @@ const FarmerItem = ({ item, route, farmerType }) => {
           color: COLORS.main,
         }}
         >
-        {/* {item.names.otherNames}{' '}{item.names.surname} */}
         {item.name}
       <Text 
         style={{
@@ -77,7 +100,7 @@ const FarmerItem = ({ item, route, farmerType }) => {
           
         }}
         >
-        {' '}({item.category})
+        
       </Text>
     </Text>
 
@@ -86,22 +109,23 @@ const FarmerItem = ({ item, route, farmerType }) => {
 
         <Stack direction="row">
           <Box w="100%" style={{ }}>
-        <Stack direction="row">
+        {/* <Stack direction="row" w="100%"> */}
           <Text 
             style={{
               fontSize: 15,
               fontFamily: 'JosefinSans-Italic',
+              // marginLeft: 20,
             }}
             >
-            Provedor-S-Pulverização: {'  '}
+            Produtor {item.category}
           </Text>
-          {
+          {/* {
             item.isSprayingAgent ?
-            <Icon name="check-circle" color="green" />
+            <Icon name="verified-user" color="green" />
             :
             <Icon name="close" color="red" />
-          }
-      </Stack>
+          } */}
+      {/* </Stack> */}
       <Stack direction="row">
           <Box w="50%" >
             <Text 
@@ -110,10 +134,6 @@ const FarmerItem = ({ item, route, farmerType }) => {
               fontFamily: 'JosefinSans-Italic',
               }}
             >
-              {/* Tel: {
-              item.contact.primaryPhone ? item.contact.primaryPhone
-              : item.contact.secondaryPhone ? item.contact.secondaryPhone : 'Nenhum'
-            } */}
             Tel: {item.phone}
             </Text>
           </Box>
@@ -128,7 +148,6 @@ const FarmerItem = ({ item, route, farmerType }) => {
                     Parcelas: {' '}
                   </Text>
                   <Text style={{ fontSize: 15, paddingTop: 2,  }}>
-                    {/* {item.farmlands.length} */}
                     {item.farmlands}
                   </Text>
               </Stack>
@@ -152,11 +171,7 @@ const FarmerItem = ({ item, route, farmerType }) => {
             fontSize: 12,
           }}
           >
-          Registo:{' '}                 
-          {/* {new Date(item.createdAt).getDate()}/{months[new Date(item.createdAt).getMonth()]}/{new Date(item.createdAt).getFullYear()} */}
-          {item.createdAt}
-          {/* {' '} por {item.user} */}
-          {' '} por {item.user}
+          Registo: {item.createdAt} por {item.user}
         </Text>
       </Box>
   </Stack>

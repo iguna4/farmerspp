@@ -25,7 +25,9 @@ export const Group = {
         },
         userDistrict: 'string?',
         userId: 'string',
-        userName: 'string?'
-        // user: 'string?',
+        userName: 'string?',
+        validated: { type: 'string', default: 'pending'},
+        validatedBy: 'string?'
+
     },
 }

@@ -280,7 +280,7 @@ export default function FarmerScreen ({ route, navigation }) {
           top: -50,
         }}                
       >
-        ({farmer?.category}{farmer?.isSprayingAgent && 'e Provedor de Serviço de Pulverização'})
+        ({farmer?.category}{farmer?.isSprayingAgent && ' e Provedor de Serviço de Pulverização'})
       </Text>
     </Box>
     

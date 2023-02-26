@@ -23,6 +23,8 @@ export const Institution = {
         userId: 'string',
         userName: 'string?',
         ownerId: 'string',
+        validated: { type: 'string', default: 'pending'},
+        validatedBy: 'string?'
     },
 }
 

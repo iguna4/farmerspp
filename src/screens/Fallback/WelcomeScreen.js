@@ -62,7 +62,6 @@ export default function WelcomeScreen () {
        
     const [phone, setPhone] = useState(null);
 
-    const [invalidDataAlert, setInvalidDataAlert] = useState(false);
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
     const app = useApp();
@@ -208,7 +207,7 @@ export default function WelcomeScreen () {
     <SafeAreaView style={styles.loginContainer}>
 
         <View
-                style={{
+            style={{
                 width: '100%',
                 borderBottomWidth: 1,
                 borderRightWidth: 1,
@@ -827,7 +826,6 @@ export default function WelcomeScreen () {
                             return ;
                             
                         } catch (error) {
-                            console.log('Could not fetch user phone number: ', { cause: error });
                             setAlert(true);
                             seterrorFlag(error);
                             return ;                       
@@ -840,7 +838,6 @@ export default function WelcomeScreen () {
                         await app?.logIn(creds);
                     }
                     catch(error){
-                        console.log('SignIn or SignUp Error: ', { cause: error });
                         setAlert(true);
                         seterrorFlag(error);
                         return ;

@@ -24,7 +24,9 @@ export const Farmer = {
         createdAt: { type: 'date', default: Date()},
         userDistrict: 'string?',
         userId: 'string',
-        userName: 'string?'
+        userName: 'string?',
+        validated: { type: 'string', default: 'pending'},
+        validatedBy: 'string?'
 
         // user: 'string?',
     },

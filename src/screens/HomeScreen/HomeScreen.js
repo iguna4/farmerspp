@@ -358,8 +358,8 @@ export default function HomeScreen() {
                   </Text>
                   <Text
                     style={{
-                      fontSize: 18,
-                      fontFamily: 'JosefinSans-Bold',
+                      fontSize: 30,
+                      fontFamily: 'JosefinSans-Regular',
                       textAlign: 'center',
                       color: COLORS.ghostwhite,
                     }}
@@ -402,8 +402,8 @@ export default function HomeScreen() {
                   </Text>
                   <Text
                       style={{
-                        fontSize: 18,
-                        fontFamily: 'JosefinSans-Bold',
+                        fontSize: 30,
+                        fontFamily: 'JosefinSans-Regular',
                         textAlign: 'center',
                         color: COLORS.ghostwhite,
                       }}
@@ -463,7 +463,7 @@ export default function HomeScreen() {
                 
               }}
             >
-              Metas
+              Meta
             </Text>
 
         </Box>

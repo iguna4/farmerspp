@@ -7,6 +7,7 @@ import { getInitials } from '../../helpers/getInitials';
 import { useNavigation } from '@react-navigation/native';
 import COLORS from '../../consts/colors';
 import { months } from '../../helpers/dates';
+import { resourceValidation } from '../../consts/resourceValidation';
 
 
 const InstitutionItem = ({ item, route }) => {
@@ -43,9 +44,9 @@ const InstitutionItem = ({ item, route }) => {
         }}
       >
         <Icon 
-          name={item?.validated === 'pending' ? 'pending-actions' : item?.validated === 'validated' ? 'check-circle' : 'dangerous'}
+          name={item?.validated === resourceValidation.status.pending ? 'pending-actions' : item?.validated === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
           size={30}
-          color={item?.validated === 'pending' ? COLORS.danger : item?.validated === 'validated' ? COLORS.main : COLORS.red}
+          color={item?.validated === resourceValidation.status.pending ? COLORS.danger : item?.validated === resourceValidation.status.validated ? COLORS.main : COLORS.red}
         />
       </Box>
     <Stack direction="row" w="100%">

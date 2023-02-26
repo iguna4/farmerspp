@@ -57,7 +57,7 @@ const PersonalData = ({ farmer })=>{
 
     useEffect(()=>{
 
-    }, [ realm, ])
+    }, [ realm, ]);
 
     return (
         <>
@@ -567,44 +567,43 @@ const PersonalData = ({ farmer })=>{
                     Telefone
                 </Text>  
             </Box>
-        <Box>
-
-        <Text 
-            style={{
-                color: 'grey',
-                fontSize: 14,
-                fontFamily: 'JosefinSans-Regular',
-            }}  
-        >
-            {!(farmer?.contact?.primaryPhone || farmer?.contact?.secondaryPhone) && '(Nenhum).'}    
-        </Text> 
-        { farmer?.contact?.primaryPhone !== 0  &&
-            <Text 
-                style={{
-                    color: 'grey',
-                    fontSize: 14,
-                    // paddingLeft: 10,
-                    fontFamily: 'JosefinSans-Regular',
-                }}  
-            >
-                {farmer?.contact?.primaryPhone} (principal)
-            </Text>
-        }
-        {
-        farmer?.contact?.secondaryPhone !== 0 &&
-            <Text 
-                style={{
-                    color: 'grey',
-                    fontSize: 14,
-                    // paddingLeft: 10,
-                    fontFamily: 'JosefinSans-Regular',
-                }}  
+            <Box w="70%">
+                <Text 
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
                 >
-                {farmer?.contact?.secondaryPhone} (alternativo)
-            </Text>    
-        }
-    </Box>
-    </Stack>
+                    {!(farmer?.contact?.primaryPhone || farmer?.contact?.secondaryPhone) && '(Nenhum).'}    
+                </Text> 
+                { farmer?.contact?.primaryPhone !== 0  &&
+                    <Text 
+                        style={{
+                            color: 'grey',
+                            fontSize: 14,
+                            // paddingLeft: 10,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}  
+                    >
+                        {farmer?.contact?.primaryPhone} (principal)
+                    </Text>
+                }
+                {
+                farmer?.contact?.secondaryPhone !== 0 &&
+                    <Text 
+                        style={{
+                            color: 'grey',
+                            fontSize: 14,
+                            // paddingLeft: 10,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}  
+                        >
+                        {farmer?.contact?.secondaryPhone} (alternativo)
+                    </Text>    
+                }
+            </Box>
+        </Stack>
 
     </Stack>
    
@@ -774,8 +773,8 @@ const PersonalData = ({ farmer })=>{
     }
     </Stack>
 
-{ (customUserData?.role === roles.provincialManager) &&
 
+{ (customUserData?.role === roles.provincialManager) && (farmer?.validated !== resourceValidation.status.validated ) &&
 <Stack direction="row" w="100%" style={{ paddingTop: 5,  }} space={6} >
         <Box w="50%"
             style={{
@@ -813,32 +812,29 @@ const PersonalData = ({ farmer })=>{
                 paddingRight: 10,
             }}
         >
-        { farmer?.validated === resourceValidation.status.pending &&
-                    <TouchableOpacity
-                        disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
-                        onPress={()=>{
-                            setAlert(true);
-                            setInvalidated(true);
-                            setTitleAlert(errorMessages.resourceInvalidation.title);
-                            setMessageAlert(errorMessages.resourceInvalidation.message);
-                            setShowCancelButton(errorMessages.resourceInvalidation.showCancelButton);
-                            setShowConfirmButton(errorMessages.resourceInvalidation.showConfirmButton);
-                            setCancelText(errorMessages.resourceInvalidation.cancelText);
-                            setConfirmText(errorMessages.resourceInvalidation.confirmText);
-                        }}
-                    >
-                        <Text
-                            style= {{
-                                color: farmer?.validated === resourceValidation.status.validated ? COLORS.lightgrey : COLORS.red,
-                                fontSize: 16,
-                                fontFamily: 'JosefinSans-Bold',
-                            }}
-                        >
-                            Invalidar Registo
-                        </Text>
-                    </TouchableOpacity>
-            }
-
+            <TouchableOpacity
+                disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
+                onPress={()=>{
+                    setAlert(true);
+                    setInvalidated(true);
+                    setTitleAlert(errorMessages.resourceInvalidation.title);
+                    setMessageAlert(errorMessages.resourceInvalidation.message);
+                    setShowCancelButton(errorMessages.resourceInvalidation.showCancelButton);
+                    setShowConfirmButton(errorMessages.resourceInvalidation.showConfirmButton);
+                    setCancelText(errorMessages.resourceInvalidation.cancelText);
+                    setConfirmText(errorMessages.resourceInvalidation.confirmText);
+                }}
+            >
+                <Text
+                    style= {{
+                        color: farmer?.validated === resourceValidation.status.validated ? COLORS.lightgrey : COLORS.red,
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Bold',
+                    }}
+                >
+                    Invalidar Registo
+                </Text>
+            </TouchableOpacity>
 
         </Box>
     </Stack>

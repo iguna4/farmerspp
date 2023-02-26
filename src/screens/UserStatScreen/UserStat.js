@@ -211,11 +211,23 @@ export default function UserStat({ route, navigation  }) {
         alignItems="stretch" 
         w="100%" 
         style={{
-            // flex: 1,
-            marginBottom: 140,
+          marginBottom: 40,
+          marginTop: 10,
         }}
     >
         <FlatList
+
+          StickyHeaderComponent={()=>(
+              <Box style={{
+                height: 100,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+                {/* <Text>Hello! Here is the sticky header!</Text> */}
+              </Box>
+            )}
+            stickyHeaderHiddenOnScroll={true}
+
             data={farmersList}
             keyExtractor={keyExtractor}
             renderItem={({ item })=>{
@@ -229,8 +241,14 @@ export default function UserStat({ route, navigation  }) {
                 return <InstitutionItem  route={route}  item={item} />
             }
             }
-        }
-
+          }
+          ListFooterComponent={()=>(
+            <Box style={{
+              height: 100,
+              backgroundColor: COLORS.ghostwhite,
+            }}>
+            </Box>)
+          }
         />
     </Box>
 </View>

@@ -399,6 +399,7 @@ export default function FarmersScreen({ route, navigation }) {
             }}
             >
             <SectionList
+              
               sections={statsByDistrict}
               keyExtractor={(item, index) => {
                 return item.userId
@@ -438,7 +439,7 @@ export default function FarmersScreen({ route, navigation }) {
     >
       <View
           style={{
-            minHeight: "15%",
+            // minHeight: "15%",
             width: '100%',
             paddingHorizontal: 15,
             paddingTop: 5,
@@ -550,11 +551,22 @@ export default function FarmersScreen({ route, navigation }) {
             alignItems="stretch" 
             w="100%" 
             style={{
-              // flex: 1,
-              marginBottom: 140,
+              marginBottom: 120,
+              marginTop: 10,
             }}
           >
             <FlatList
+
+              StickyHeaderComponent={()=>(
+                <Box style={{
+                  height: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                  {/* <Text>Hello! Here is the sticky header!</Text> */}
+                </Box>
+              )}
+              stickyHeaderHiddenOnScroll={true}
               data={farmersList}
               keyExtractor={keyExtractor}
               renderItem={({ item })=>{
@@ -568,6 +580,13 @@ export default function FarmersScreen({ route, navigation }) {
                     return <InstitutionItem  route={route}  item={item} />
                 }
               }
+              }
+              ListFooterComponent={()=>(
+                <Box style={{
+                  height: 100,
+                  backgroundColor: COLORS.ghostwhite,
+                }}>
+                </Box>)
               }
 
              />

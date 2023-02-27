@@ -311,7 +311,7 @@ export default function UserStat({ route, navigation  }) {
                     >
                       <Text style={{
                         textAlign: 'center',
-                        color: COLORS.ghostwhite,
+                        color: pendingFarmers ? COLORS.main : COLORS.ghostwhite,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Bold',
                       }}>
@@ -349,7 +349,7 @@ export default function UserStat({ route, navigation  }) {
                       >
                         <Text style={{
                           textAlign: 'center',
-                          color: COLORS.ghostwhite,
+                          color: invalidatedFarmers ? COLORS.main : COLORS.ghostwhite,
                           fontSize: 14,
                           fontFamily: 'JosefinSans-Bold',
                           marginRight: 5,
@@ -428,7 +428,7 @@ export default function UserStat({ route, navigation  }) {
                       <Text 
                         style={{ 
                           textAling: 'center',  
-                          color: COLORS.ghostwhite, 
+                          color: pendingFarmlands ? COLORS.main : COLORS.ghostwhite, 
                           fontSize: 14,
                           fontFamily: 'JosefinSans-Bold',
                         }}
@@ -469,9 +469,9 @@ export default function UserStat({ route, navigation  }) {
                         <Text style={{
                           textAlign: 'center',
                           color: invalidatedFarmlands ? COLORS.main : COLORS.ghostwhite,
-                          fontSize: 15,
+                          fontSize: 14,
                           fontFamily: 'JosefinSans-Bold',
-                          marginRight: 10,
+                          marginRight: 4,
                         }}>
                           Invalidados
                         </Text>

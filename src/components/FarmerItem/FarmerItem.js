@@ -19,23 +19,27 @@ const subScribedFarmlands = 'subScribedFarmlands';
 
 const FarmerItem = ({ item, route, farmerType }) => {
 
-  const realm = useRealm();
-  const farmlands = realm.objects('Farmland').filtered("farmer == $0", item?._id);
-   const [visible, setVisible] = useState(false);
    const navigation = useNavigation();
-
-   console.log('fetched: ', JSON.stringify(farmlands));
+   const [farmlandStatus, setFarmlandStatus] = useState('');
 
    useEffect(()=>{
-    realm.subscriptions.update(mutableSubs => {
-      mutableSubs.removeByName(subScribedFarmlands);
-      mutableSubs.add(
-        realm.objects('Farmland').filtered("farmer == $0", item?._id),
-        {name: subScribedFarmlands},
-      );
-    });
 
-  }, [ realm ]);
+    if (item?.farmlandsList?.length > 0) {
+      if (item?.farmlandsList.some(farmland => farmland.validated === resourceValidation.status.invalidated)) {
+        setFarmlandStatus(resourceValidation.status.invalidated);
+      }
+      else if (item?.farmlandsList.some(farmland => farmland.validated === resourceValidation.status.pending)) {
+        setFarmlandStatus(resourceValidation.status.pending);
+      }
+      else {
+        setFarmlandStatus(resourceValidation.status.validated);
+      }
+    }
+    else {
+      // setFarmlandStatus(resourceValidation.status.invalidated);
+    }
+
+   }, [ item ]);
 
   return (
     <View
@@ -132,23 +136,14 @@ const FarmerItem = ({ item, route, farmerType }) => {
 
         <Stack direction="row">
           <Box w="100%" style={{ }}>
-        {/* <Stack direction="row" w="100%"> */}
           <Text 
             style={{
               fontSize: 15,
               fontFamily: 'JosefinSans-Italic',
-              // marginLeft: 20,
             }}
             >
             Produtor {item.category}
           </Text>
-          {/* {
-            item.isSprayingAgent ?
-            <Icon name="verified-user" color="green" />
-            :
-            <Icon name="close" color="red" />
-          } */}
-      {/* </Stack> */}
       <Stack direction="row">
           <Box w="50%" >
             <Text 
@@ -162,17 +157,37 @@ const FarmerItem = ({ item, route, farmerType }) => {
           </Box>
           <Box w="50%">
             <Stack direction="row">
-                  <Text 
-                    style={{
-                    fontSize: 15,
-                    fontFamily: 'JosefinSans-Italic',
-                  }}
-                  >
-                    Parcelas: {' '}
-                  </Text>
-                  <Text style={{ fontSize: 15, paddingTop: 2,  }}>
-                    {item.farmlands}
-                  </Text>
+                <Box style={{
+                  flexDirection: 'row',
+                  borderWidth: 1,
+                  borderRadius: 20,
+                  borderColor: farmlandStatus === resourceValidation.status.pending ? COLORS.danger : farmlandStatus === resourceValidation.status.validated ? COLORS.main : COLORS.red,
+                }}>
+                    <Text 
+                      style={{
+                        fontSize: 15,
+                        fontFamily: 'JosefinSans-Italic',
+                        marginHorizontal: 2,
+                        paddingHorizontal: 5,
+                      }}
+                      >
+                      Parcelas: {' '}{item.farmlands}
+                    </Text>
+                    <Icon  name={
+                      farmlandStatus === resourceValidation.status.pending 
+                      ? 'pending-actions' 
+                      : 
+                      farmlandStatus === resourceValidation.status.validated 
+                      ? 'check-circle' 
+                      :
+                      item?.farmlands === 0
+                      ? 'error-outline'
+                      : 'dangerous'
+                    }
+                          size={30}
+                          color={farmlandStatus === resourceValidation.status.pending ? COLORS.danger : farmlandStatus === resourceValidation.status.validated ? COLORS.main : COLORS.red}
+                    />
+                  </Box>
               </Stack>
             </Box>
       </Stack>

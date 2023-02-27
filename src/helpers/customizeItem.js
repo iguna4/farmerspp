@@ -7,11 +7,14 @@ import { BSON } from "realm";
 const { useRealm } = realmContext;
 
 
-export const customizeItem = (list, customUserData, flag) => {
+export const customizeItem = (farmersList, farmlandsList,  customUserData, flag) => {
 
-        return list?.map((item) => {
+        return farmersList?.map((item) => {
+                
+                const farmlands = farmlandsList?.filter(farmland=>farmland.farmer === item._id);
 
                 if (flag === 'Indivíduo') {
+
                         const newItem = {
                                 _id: item?._id,
                                 image:
@@ -32,7 +35,7 @@ export const customizeItem = (list, customUserData, flag) => {
                                                                 : 'Nenhum',
 
                                 farmlands: item?.farmlands?.length,
-                                // farmlandItems: item?.farmlands,
+                                farmlandsList: farmlands,
                                 // createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
                                 createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth() + 1}-${new Date(item?.createdAt).getFullYear()}`,
                                 user: (item?.userName === customUserData?.name)
@@ -61,6 +64,7 @@ export const customizeItem = (list, customUserData, flag) => {
                                                 : 'Nenhum',
 
                                 farmlands: item?.farmlands?.length,
+                                farmlandsList: farmlands,
                                 // createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
                                 createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth() + 1}-${new Date(item?.createdAt).getFullYear()}`,
                                 user: (item?.userName === customUserData?.name)
@@ -88,6 +92,7 @@ export const customizeItem = (list, customUserData, flag) => {
                                                 : 'Nenhum',
 
                                 farmlands: item?.farmlands?.length,
+                                farmlandsList: farmlands,
                                 // createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
                                 createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth() + 1}-${new Date(item?.createdAt).getFullYear()}`,
                                 user: (item?.userName === customUserData?.name)

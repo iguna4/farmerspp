@@ -1,5 +1,5 @@
 import {TouchableOpacity, View, Text,} from 'react-native';
-import React from 'react';
+import React, { useState, useEffect, } from 'react';
 import {Avatar, Icon } from '@rneui/themed';
 
 import { Box, Center, Stack,  } from 'native-base';
@@ -13,7 +13,31 @@ import { resourceValidation } from '../../consts/resourceValidation';
 const GroupItem = ({ item, route }) => {
 
    const navigation = useNavigation();
-   
+   const [farmlandStatus, setFarmlandStatus] = useState('');
+
+   useEffect(()=>{
+
+    if (item?.farmlandsList?.length > 0) {
+      if (item?.farmlandsList.some(farmland => farmland.validated === resourceValidation.status.invalidated)) {
+        setFarmlandStatus(resourceValidation.status.invalidated);
+      }
+      else if (item?.farmlandsList.some(farmland => farmland.validated === resourceValidation.status.pending)) {
+        setFarmlandStatus(resourceValidation.status.pending);
+      }
+      else {
+        setFarmlandStatus(resourceValidation.status.validated);
+      }
+    }
+    else {
+      // setFarmlandStatus(resourceValidation.status.invalidated);
+    }
+
+   }, [ item ]);
+
+
+  //  console.log('farmlandList: ', item.farmlandsList);
+
+
    return (
     <View
       style={{
@@ -117,17 +141,37 @@ const GroupItem = ({ item, route }) => {
             </Box>
             <Box w="50%">
             <Stack direction="row">
-                  <Text 
-                    style={{
-                      fontSize: 15,
-                    fontFamily: 'JosefinSans-Italic',
-                  }}
-                  >
-                    Parcelas: {' '}
-                  </Text>
-                  <Text style={{ fontSize: 15, paddingTop: 2,  }}>
-                    {item.farmlands}
+                <Box style={{
+                  flexDirection: 'row',
+                  borderWidth: 1,
+                  borderRadius: 20,
+                  borderColor: farmlandStatus === resourceValidation.status.pending ? COLORS.danger : farmlandStatus === resourceValidation.status.validated ? COLORS.main : COLORS.red,
+                }}>
+                    <Text 
+                      style={{
+                        fontSize: 15,
+                        fontFamily: 'JosefinSans-Italic',
+                        marginHorizontal: 2,
+                        paddingHorizontal: 5,
+                      }}
+                      >
+                      Parcelas: {' '}{item.farmlands}
                     </Text>
+                    <Icon  name={
+                      farmlandStatus === resourceValidation.status.pending 
+                      ? 'pending-actions' 
+                      : 
+                      farmlandStatus === resourceValidation.status.validated 
+                      ? 'check-circle' 
+                      :
+                      item?.farmlands === 0
+                      ? 'error-outline'
+                      : 'dangerous'
+                    }
+                          size={30}
+                          color={farmlandStatus === resourceValidation.status.pending ? COLORS.danger : farmlandStatus === resourceValidation.status.validated ? COLORS.main : COLORS.red}
+                    />
+                  </Box>
               </Stack>
             </Box>
         </Stack>

@@ -64,9 +64,9 @@ export default function FarmersScreen({ route, navigation }) {
     role: customUserData?.role,
   };
 
-  const individualsList = customizeItem(farmers, customUserData, 'Indivíduo')
-  const groupsList = customizeItem(groups, customUserData, 'Grupo')
-  const institutionsList = customizeItem(institutions, customUserData, 'Instituição');
+  const individualsList = customizeItem(farmers, farmlands, customUserData, 'Indivíduo')
+  const groupsList = customizeItem(groups, farmlands, customUserData, 'Grupo')
+  const institutionsList = customizeItem(institutions, farmlands, customUserData, 'Instituição');
   const filteredStats = stats?.filter(stat => (stat.userDistrict !== 'NA'));
 
 

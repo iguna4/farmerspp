@@ -57,9 +57,9 @@ export default function UserStat({ route, navigation  }) {
     const farmlands = realm.objects('Farmland').filtered("userId == $0", userId);
     const stats = realm.objects('UserStat').filtered("userId == $0", userId);
 
-    const individualsList = customizeItem(farmers, {}, 'Indivíduo')
-    const groupsList = customizeItem(groups, {}, 'Grupo')
-    const institutionsList = customizeItem(institutions, {}, 'Instituição');
+    const individualsList = customizeItem(farmers, farmlands, {}, 'Indivíduo')
+    const groupsList = customizeItem(groups, farmlands, {}, 'Grupo')
+    const institutionsList = customizeItem(institutions, farmlands, {}, 'Instituição');
   
 
       // merge the three arrays of farmers and sort the items by createdAt 

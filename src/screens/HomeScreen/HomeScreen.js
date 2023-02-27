@@ -5,25 +5,28 @@ import {
 } from 'react-native';
 import React, { useCallback, useState, useEffect } from 'react';
 import { Box, Stack, Center, } from 'native-base';
-import COLORS from '../../consts/colors';
-
 import { Icon } from '@rneui/themed';
-import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { useFocusEffect } from '@react-navigation/native';
+
+
+
+import COLORS from '../../consts/colors';
+import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { months } from '../../helpers/dates';
 import CustomDivider from '../../components/Divider/CustomDivider';
-
-
 import UserGoalEdit from '../../components/UserGoalEdit/UserGoalEdit';
 import { roles } from '../../consts/roles';
+import UserProfile from '../../components/UserProfile/UserProfile';
+import { getPercentage } from '../../helpers/getPercentage';
+
 
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
-import UserProfile from '../../components/UserProfile/UserProfile';
-import { getPercentage } from '../../helpers/getPercentage';
 const { useRealm, useQuery, useObject } = realmContext; 
 
+
 const userStats = 'userStats';
+
 
 export default function HomeScreen() {
   const realm = useRealm();
@@ -37,18 +40,13 @@ export default function HomeScreen() {
 
   const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
-  // const provincialUsers = useQuery('User').filtered(`userProvince =="${customUserData.userProvince}"`) ;
-  // const provincialUsers = realm.objects('User').filtered(`userProvince == "${user?.customData?.userProvince}"`);
-
-  
+ 
   
   const provincialUserStats = useQuery('UserStat').filtered(`userProvince == "${customUserData?.userProvince}" && userDistrict != "NA"`);
-  
-  // console.log('usersStats: ', JSON.stringify(provincialUserStats));
+
   // --------------------------------------------------------
   const districts =  Array.from(new Set(provincialUserStats.map((stat)=>stat?.userDistrict)));
 
-  // console.log('districts:', districts);
   // --------------------------------------------------------
   // get extract stats from whole province
   const tWholeProvince =  provincialUserStats?.map((stat)=>{
@@ -68,6 +66,10 @@ export default function HomeScreen() {
       }
     )
   });
+
+  // the current user provincial stats (Number of farmers and farmlands that have to be registered
+  // until the end of the project execution
+  // the current user provincial stats (number of farmers and farmlands that have been registered so far)
 
   const tpFarmers = tWholeProvince.map((stat)=>stat.tFarmers).reduce((ac, cur)=>(ac+cur), 0);
   const rpFarmers = rWholeProvince.map((stat)=>stat.rFarmers).reduce((ac, cur)=>(ac+cur), 0);
@@ -99,6 +101,12 @@ export default function HomeScreen() {
           }
         )
       });
+
+
+  // the current user district stats in terms of farmers and farmlands that have to be registered
+  // within the district and the project execution timeline
+  // the current district stats (number of farmers and farmlands that have been registered so far)
+
   const tdFarmers = tWholeDistrict.map((stat)=>stat.tFarmers).reduce((ac, cur)=>(ac+cur), 0);
   const rdFarmers = rWholeDistrict.map((stat)=>stat.rFarmers).reduce((ac, cur)=>(ac+cur), 0);
   const tdFarmlands = tWholeDistrict.map((stat)=>stat.tFarmlands).reduce((ac, cur)=>(ac+cur), 0);
@@ -131,11 +139,20 @@ export default function HomeScreen() {
       )
     }); 
 
+    // the current user stats (target -- gooal in terms of the number of farmers and farmlands)
+    //  they must register throughout the project execution
+    //  the current user stats (number of farmers and farmlands registered)
+
     const tuFarmers = tCurrentUser.map((stat)=>stat.tFarmers).reduce((ac, cur)=>(ac+cur), 0);
     const ruFarmers = rCurrentUser.map((stat)=>stat.rFarmers).reduce((ac, cur)=>(ac+cur), 0);
     const tuFarmlands = tCurrentUser.map((stat)=>stat.tFarmlands).reduce((ac, cur)=>(ac+cur), 0);
     const ruFarmlands = rCurrentUser.map((stat)=>stat.rFarmlands).reduce((ac, cur)=>(ac+cur), 0);
     //---------------------------------------------------------------------- 
+
+
+
+
+    // -----------------------------------------------------------------------------------
 
 
   useEffect(() => {
@@ -148,15 +165,12 @@ export default function HomeScreen() {
       );
     });
 
-  }, [realm, user,]);
-
-
-  useEffect(()=>{
     if (customUserData?.role?.includes(roles.provincialManager)) {
       setIsFieldAgent(false);
+
     }
 
-  }, [ user ])
+  }, [ user, realm, ])
 
 
   useFocusEffect(
@@ -259,28 +273,23 @@ export default function HomeScreen() {
   !isFieldAgent && 
 
   <ScrollView
-    style={{
-      // padding: 10,
-      // height: '100%',
+    contentContainerStyle={{
+      justifyContent: 'center',
       borderTopLeftRadius: 10,
       borderTopRightRadius: 10,
       borderWidth: 1,
       borderColor: COLORS.main,
+      // marginVertical: 30,
 
     }}
 
   >
 
     <View
-    style={{
-      // padding: 10,
-      // borderWidth: 1,
-      // borderColor: COLORS.main,
-      // borderTopLeftRadius: 10,
-      // borderTopRightRadius: 10,
-    }}
+      style={{
+        marginBottom: 60,
+      }}
     >
-
 
       <View 
         style={{ 
@@ -290,20 +299,13 @@ export default function HomeScreen() {
           borderColor: COLORS.main,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
-          // shadowOffset: {
-          //     width: 1,
-          //     height: 1,
-          //   },
-          // shadowOpacity: 1,
-          // shadowRadius: 0.65,
-          // elevation: 2,
         }}
       >
         <Box
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            padding: 5,
+            // padding: 5,
           }}
         >
             <Text
@@ -318,35 +320,16 @@ export default function HomeScreen() {
               {customUserData?.userProvince}
             </Text>
 
-        </Box>
-      </View>
-
-        <Box
-          style={{  
-            width: '100%', 
-            backgroundColor: COLORS.main,
-          }}
-          >
-
           <Stack direction="row" w="100%">
 
             <Box 
               style={{
                 width: '40%',
-                height: 100,
+                // height: 100,
                
               }}
               >
-              <TouchableOpacity>
-                <Box
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text
+              <Text
                     style={{
                       fontSize: 18,
                       fontFamily: 'JosefinSans-Bold',
@@ -356,18 +339,27 @@ export default function HomeScreen() {
                   >
                     Usuários
                   </Text>
+                  <Box
+                    alignItems={"center"}
+                  >
+
                   <Text
                     style={{
+                      width: '50%',
                       fontSize: 30,
                       fontFamily: 'JosefinSans-Regular',
                       textAlign: 'center',
-                      color: COLORS.ghostwhite,
+                      color: COLORS.main,
+                      borderRadius: 100,
+                      borderWidth: 1,
+                      backgroundColor: COLORS.ghostwhite,
+                      borderColor: COLORS.ghostwhite
+              
                     }}
                   >
                     {provincialUserStats?.length}
                   </Text>
-                </Box>
-              </TouchableOpacity>
+                  </Box>
             </Box>
 
             <Box w="20%">
@@ -377,19 +369,10 @@ export default function HomeScreen() {
             <Box 
               style={{
                 width: '40%',
-                height: 100,
+                // height: 100,
                
               }}
               >
-              <TouchableOpacity>
-                <Box
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                  >
                   <Text
                     style={{
                       fontSize: 18,
@@ -400,23 +383,31 @@ export default function HomeScreen() {
                   >
                     Distritos
                   </Text>
+                  <Box alignItems={"center"}>
+
                   <Text
                       style={{
+                        width: '50%',
                         fontSize: 30,
                         fontFamily: 'JosefinSans-Regular',
                         textAlign: 'center',
-                        color: COLORS.ghostwhite,
+                        color: COLORS.main,
+                        borderRadius: 100,
+                        borderWidth: 1,
+                        backgroundColor: COLORS.ghostwhite,
+                        borderColor: COLORS.ghostwhite,
                       }}
-                  >
+                      >
                     {districts?.length}
                   </Text>
-                </Box>
-              </TouchableOpacity>
+                  </Box>
             </Box>
 
           </Stack>
+          </Box>
+        </View>
 
-        </Box>
+
     </View>
 
 
@@ -429,15 +420,10 @@ export default function HomeScreen() {
       padding: 10,
     }}
     >
-
-
       <View 
         style={{ 
           width: '100%',
-          // borderTopLeftRadius: 10,
-          // borderTopRightRadius: 10,
           shadowColor: COLORS.main,
-          // backgroundColor: COLORS.main,
           shadowOffset: {
               width: 1,
               height: 1,
@@ -449,23 +435,24 @@ export default function HomeScreen() {
       >
         <Box
           style={{
-            justifyContent: 'center',
-            // alignItems: 'center',
-            // paddingLeft: 10,
+            // justifyContent: 'center',
+            flexDirection: 'row',
           }}
         >
-            <Text
-              style={{
-                fontSize: 18,
-                color: COLORS.danger,
-                fontFamily: 'JosefinSans-Bold',
-                // textAlign: 'center',
-                
-              }}
-            >
-              Meta
-            </Text>
-
+            <Icon name="update" size={30} color={COLORS.danger} />
+            <Box style={{
+              paddingLeft: 10,
+            }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: COLORS.danger,
+                  fontFamily: 'JosefinSans-Bold',               
+                }}
+                >
+                Meta
+              </Text>
+            </Box>
         </Box>
       </View>
 
@@ -478,18 +465,15 @@ export default function HomeScreen() {
           <Stack direction="row" w="100%">
           <Box 
               style={{
-                width: '10%',
+                width: '15%',
               }}
               >
             </Box>
 
             <Box 
               style={{
-                width: '30%',
-                height: 100,
-                // borderWidth: 1,
-                // borderColor: COLORS.main,
-                
+                width: '25%',
+                height: 100,                
               }}
               >
               <TouchableOpacity>
@@ -499,27 +483,40 @@ export default function HomeScreen() {
                     height: '100%',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    borderRadius: 100,
-                    borderColor: COLORS.main,
-                    borderWidth: 1,
+                    borderBottomWidth: 2,
+                    borderBottomColor: COLORS.danger,
                   }}
                 >
+                  <Box
+                    style={{
+                      backgroundColor: COLORS.danger,
+                      borderTopLeftRadius: 100,
+                      borderTopRightRadius: 100,
+                      borderTopEndRadius: 100,
+                      width: '100%',
+
+                    }}
+                  >
+
+                  <Icon name="nature-people" size={35} color={COLORS.ghostwhite} />
                   <Text
                     style={{
                       fontSize: 16,
                       fontFamily: 'JosefinSans-Bold',
                       textAlign: 'center',
-                      color: COLORS.danger,
+                      color: COLORS.ghostwhite,
                     }}
-                  >
+                    >
                     Produtores
                   </Text>
+                  </Box>
                   <Text
                     style={{
-                      fontSize: 18,
+                      fontSize: 25,
                       fontFamily: 'JosefinSans-Regular',
                       textAlign: 'center',
                       color: COLORS.danger,
+                      paddingTop: 5,
                     }}
                   >
                     {tpFarmers}
@@ -531,13 +528,10 @@ export default function HomeScreen() {
             <Box w="20%">
             </Box>
 
-
             <Box 
               style={{
-                width: '30%',
-                height: 100,
-                // borderWidth: 1,
-                
+                width: '25%',
+                height: 100,               
               }}
               >
               <TouchableOpacity>
@@ -547,29 +541,41 @@ export default function HomeScreen() {
                     height: '100%',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    borderRadius: 100,
-                    borderColor: COLORS.main,
-                    borderWidth: 1,
+                    borderBottomWidth: 2,
+                    borderBottomColor: COLORS.danger,
                   }}
                 >
+
+                <Box
+                    style={{
+                      backgroundColor: COLORS.danger,
+                      borderTopLeftRadius: 100,
+                      borderTopRightRadius: 100,
+                      borderTopEndRadius: 100,
+                      width: '100%',
+                    }}
+                  >
+                  <Icon name="nature" size={35} color={COLORS.ghostwhite} />
                   <Text
                     style={{
                       fontSize: 16,
                       fontFamily: 'JosefinSans-Bold',
                       textAlign: 'center',
-                      color: COLORS.danger,
+                      color: COLORS.ghostwhite,
                     }}
-                  >
+                    >
                     Pomares
                   </Text>
+                  </Box>
                   <Text
                       style={{
-                        fontSize: 18,
+                        fontSize: 25,
                         fontFamily: 'JosefinSans-Regular',
                         textAlign: 'center',
                         color: COLORS.danger,
+                        paddingTop: 5,
                       }}
-                  >
+                      >
                     {tpFarmlands}
                   </Text>
                 </Box>
@@ -577,7 +583,7 @@ export default function HomeScreen() {
             </Box>
             <Box 
               style={{
-                width: '10%',
+                width: '15%',
               }}
               >
             </Box>
@@ -587,75 +593,72 @@ export default function HomeScreen() {
     </View>
 
 
-
     {/*  provincial achievments in terms of farmers and farmlands registrations */}
 
-
-    <View
-    style={{
-      padding: 10,
-    }}
-    >
-
+  
+    <CustomDivider 
+      thickness={1}
+      bg={COLORS.main}
+    />
 
       <View 
         style={{ 
           width: '100%',
-          // borderTopLeftRadius: 10,
-          // borderTopRightRadius: 10,
-          // shadowColor: COLORS.main,
-          // // backgroundColor: COLORS.main,
-          // shadowOffset: {
-          //     width: 1,
-          //     height: 1,
-          //   },
-          // shadowOpacity: 1,
-          // shadowRadius: 0.65,
-          // elevation: 2,
+          paddingVertical: 10,
+          shadowColor: COLORS.main,
+          shadowOffset: {
+              width: 1,
+              height: 1,
+            },
+          shadowOpacity: 1,
+          shadowRadius: 0.65,
+          elevation: 2,
         }}
       >
         <Box
           style={{
             // justifyContent: 'center',
-            // alignItems: 'center',
-            padding: 5,
+            flexDirection: 'row',
+            paddingLeft: 10,
           }}
         >
-            <Text
-              style={{
-                fontSize: 18,
-                color: COLORS.lightdanger,
-                fontFamily: 'JosefinSans-Bold',
-                // textAlign: 'center',
-                
-              }}
-            >
-              Realização
-            </Text>
-
+            <Icon name="done-outline" size={30} color={COLORS.lightdanger} />
+            <Box style={{
+              paddingLeft: 10,
+            }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: COLORS.lightdanger,
+                  fontFamily: 'JosefinSans-Bold',               
+                }}
+                >
+                Realização
+              </Text>
+            </Box>
         </Box>
       </View>
 
         <Box
           style={{  
             width: '100%', 
+            paddingVertical: 20,
+
           }}
-        >
+          >
 
           <Stack direction="row" w="100%">
           <Box 
               style={{
-                width: '10%',
+                width: '15%',
               }}
               >
             </Box>
+
             <Box 
               style={{
-                width: '30%',
-                height: 100,
-                // borderWidth: 1,
-                // borderColor: COLORS.main,
-                
+                width: '25%',
+                height: 100,                
               }}
               >
               <TouchableOpacity>
@@ -665,31 +668,46 @@ export default function HomeScreen() {
                     height: '100%',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    borderRadius: 100,
-                    borderColor: COLORS.main,
-                    borderWidth: 1,
+                    borderTopWidth: 2,
+                    borderTopColor: COLORS.lightdanger,
                   }}
                 >
+
+                  <Text
+                    style={{
+                      fontSize: 25,
+                      fontFamily: 'JosefinSans-Regular',
+                      textAlign: 'center',
+                      color: COLORS.lightdanger,
+                      paddingTop: 5,
+                    }}
+                  >
+                    {getPercentage(rpFarmers, tpFarmers)}
+                  </Text>
+
+                  <Box
+                    style={{
+                      backgroundColor: COLORS.lightdanger,
+                      borderBottomLeftRadius: 100,
+                      borderBottomRightRadius: 100,
+                      borderBottomEndRadius: 100,
+                      width: '100%',
+
+                    }}
+                  >
                   <Text
                     style={{
                       fontSize: 16,
                       fontFamily: 'JosefinSans-Bold',
                       textAlign: 'center',
-                      color: COLORS.lightdanger,
+                      color: COLORS.ghostwhite,
                     }}
-                  >
+                    >
                     Produtores
                   </Text>
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontFamily: 'JosefinSans-Regular',
-                      textAlign: 'center',
-                      color: COLORS.lightdanger,
-                    }}
-                  >
-                    {getPercentage(rpFarmers, tpFarmers)}
-                  </Text>
+
+                  <Icon name="nature-people" size={35} color={COLORS.ghostwhite} />
+                  </Box>
                 </Box>
               </TouchableOpacity>
             </Box>
@@ -697,14 +715,10 @@ export default function HomeScreen() {
             <Box w="20%">
             </Box>
 
-
             <Box 
               style={{
-                width: '30%',
-                height: 100,
-                // borderWidth: 1,
-                // borderColor: COLORS.main,
-                
+                width: '25%',
+                height: 100,               
               }}
               >
               <TouchableOpacity>
@@ -714,44 +728,58 @@ export default function HomeScreen() {
                     height: '100%',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    borderRadius: 100,
-                    borderColor: COLORS.main,
-                    borderWidth: 1,
+                    borderTopWidth: 2,
+                    borderTopColor: COLORS.lightdanger,
                   }}
                 >
+
+                  <Text
+                      style={{
+                        fontSize: 25,
+                        fontFamily: 'JosefinSans-Regular',
+                        textAlign: 'center',
+                        color: COLORS.lightdanger,
+                        paddingTop: 5,
+                      }}
+                      >
+                      {getPercentage(rpFarmlands, tpFarmlands)}
+                  </Text>
+
+                <Box
+                    style={{
+                      backgroundColor: COLORS.lightdanger,
+                      borderBottomLeftRadius: 100,
+                      borderBottomRightRadius: 100,
+                      borderBottomEndRadius: 100,
+                      width: '100%',
+                    }}
+                  >
                   <Text
                     style={{
                       fontSize: 16,
                       fontFamily: 'JosefinSans-Bold',
                       textAlign: 'center',
-                      color: COLORS.lightdanger,
+                      color: COLORS.ghostwhite,
                     }}
                     >
                     Pomares
                   </Text>
-                  <Text
-                      style={{
-                        fontSize: 18,
-                        fontFamily: 'JosefinSans-Regular',
-                        textAlign: 'center',
-                        color: COLORS.lightdanger,
-                      }}
-                      >
-                    {getPercentage(rpFarmlands, tpFarmlands)}
-                  </Text>
+                  <Icon name="nature" size={35} color={COLORS.ghostwhite} />
+                  </Box>
+
+
                 </Box>
               </TouchableOpacity>
             </Box>
             <Box 
               style={{
-                width: '10%',
+                width: '15%',
               }}
               >
             </Box>
           </Stack>
 
         </Box>
-    </View>
 
     
 </ScrollView>

@@ -44,14 +44,9 @@ const provincialStats = 'provincialStats';
 
 export default function FarmersScreen({ route, navigation }) {
 
-  // const [isSwitchEnabled, setIsSwitchEnabled] = useState(false);
-  
   const realm = useRealm();
-  // current user
   const user = useUser();
-  // custom user data
   let customUserData = user.customData;
-
 
   const farmers = realm.objects('Farmer').filtered("userDistrict == $0", customUserData?.userDistrict);
   const groups = realm.objects('Group').filtered("userDistrict == $0", customUserData?.userDistrict);
@@ -75,23 +70,6 @@ export default function FarmersScreen({ route, navigation }) {
   const filteredStats = stats?.filter(stat => (stat.userDistrict !== 'NA'));
 
 
-  // const groupItemsByOwner = (userId, stats, farmers, groups, institutions, farmlands)=>{
-
-  //   const itemsOwner = {
-  //     userId: userId,
-  //     userName: stats.find((stat)=>stat.userId === userId).userName,
-  //     farmers: farmers?.filter(farmer=>farmer?.userId === userId),
-  //     groups: groups?.filter(group=>group?.userId === userId),
-  //     institutions: institutions?.filter(institution=>institution?.userId === userId),
-  //     farmlands: farmlands?.filter(farmland=>farmland?.userId === userId),
-  //   };
-  //   return itemsOwner;
-  // }
-
-  // const items = groupItemsByOwner(stats[3].userId, stats, farmers, groups, institutions, farmlands);
-
-  // console.log('items: ', farmers);
-
   
   // ---------------------------------------------------------------------------- 
   const listStatsByDistrict = (stats)=>{
@@ -114,7 +92,6 @@ export default function FarmersScreen({ route, navigation }) {
 
   const statsByDistrict = listStatsByDistrict(stats);
   
-  // console.log('districts--:', statsByDistrict);
   //  ---------------------------------------------------------------------------------
 
 

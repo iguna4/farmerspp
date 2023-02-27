@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, SafeAreaView, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, SafeAreaView, FlatList } from 'react-native';
 import { Box, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
 import { Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
@@ -7,7 +7,6 @@ import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion
 
 import CustomDivider from '../../components/Divider/CustomDivider';
 import COLORS from '../../consts/colors';
-import { TouchableOpacity } from 'react-native';
 
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { resourceValidation } from '../../consts/resourceValidation';

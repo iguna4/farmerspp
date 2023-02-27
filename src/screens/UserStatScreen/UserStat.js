@@ -13,6 +13,7 @@ import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import COLORS from '../../consts/colors';
+import { resourceValidation } from '../../consts/resourceValidation';
 import { customizeItem } from '../../helpers/customizeItem';
 import GroupItem from '../../components/GroupItem/GroupItem';
 import FarmerItem from '../../components/FarmerItem/FarmerItem';
@@ -35,6 +36,16 @@ export default function UserStat({ route, navigation  }) {
     const realm = useRealm();
 
     const [refresh, setRefresh] = useState(false);
+
+
+// ---------------------------------------------------------------
+    const [pendingFarmers, setPendingFarmers] = useState(false);
+    const [invalidatedFarmers, setInvalidatedFarmers] = useState(false);
+    const [pendingFarmlands, setPendingFarmlands] = useState(false);
+    const [invalidatedFarmlands, setInvalidatedFarmlands] = useState(false);
+//----------------------------------------------------------------- 
+
+
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
     const farmers = realm.objects('Farmer').filtered("userId == $0", userId);
@@ -63,6 +74,23 @@ export default function UserStat({ route, navigation  }) {
     if (farmersList.length > 0){
         farmersList = farmersList
             ?.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt));
+    }
+
+    const filteredResources = (list, flag)=>{
+      let newResourcesList = [];
+      if (flag === 'pendingFarmers') {
+        newResourcesList = list?.filter(resource=>resource?.validated === resourceValidation.status.pending);
+      }
+      else if (flag === 'pendingFarmlands') {
+        newResourcesList = list?.filter(resource=>resource?.validated === resourceValidation.status.pending);
+      }
+      else if (flag === 'invalidatedFarmers') {
+        newResourcesList = list?.filter(resource=>resource?.validated === resourceValidation.status.invalidated);
+      }
+      else if (flag === 'invalidatedFarmlands') {
+        newResourcesList = list?.filter(resource=>resource?.validated === resourceValidation.status.invalidated);
+      }
+      return newResourcesList;
     }
 
 
@@ -170,7 +198,7 @@ export default function UserStat({ route, navigation  }) {
                 {userName}
               </Text>
 
-              <Stack direction="row" space={2} my="1">
+              {/* <Stack direction="row" space={2} my="1">
                 <Center>
                   <Text
                     style={{ 
@@ -184,7 +212,7 @@ export default function UserStat({ route, navigation  }) {
                     style={{ fontFamily: 'JosefinSans-Regular', fonSize: 14, }}
                   >[{'Pomares:'}{' '}{farmlands?.length}]</Text>
                 </Center>
-              </Stack>
+              </Stack> */}
             </Center>
           </Box>
           <Center 
@@ -192,14 +220,243 @@ export default function UserStat({ route, navigation  }) {
           >
             <TouchableOpacity
                 onPress={()=>setRefresh(!refresh)}
-            >
+                >
                 <Icon
                     name="refresh" size={35} color={COLORS.main}
-                />
+                    />
             </TouchableOpacity>
           </Center>
         </Stack>
-      </View>
+        </View>
+
+        {/* pending and invalidated buttons  */}
+
+        <Box
+          w="100%"
+          alignItems={"center"}
+
+        >
+
+        <Box
+          w="100%"
+          alignItems={"center"}
+          style={{
+            backgroundColor: COLORS.main,
+            paddingRight: 15,
+          }}
+        >
+          <Stack w="100%" direction="row" space={2} pt="5" >
+                <Box w="50%"
+                  style={{
+                    alignItems: 'center',
+                  }}
+                >
+                <Box
+                  w="100%"
+                  style={{
+                    alignItems: 'center',
+                    borderTopColor: COLORS.ghostwhite,
+                    borderLeftColor: COLORS.ghostwhite,
+                    borderRightColor: COLORS.ghostwhite,
+                    borderTopWidth: 2,
+                    borderLeftWidth: 2,
+                    borderRightWidth: 2,
+                    borderTopEndRadius: 10,
+                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: 10,
+                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: 10,
+                  }}
+                >
+                    <Text
+                      style={{
+                        color: COLORS.ghostwhite,
+                        fontSize: 20,
+                        fontFamily: 'JosefinSans-Bold',
+                        // paddingTop: 10,
+                      }}
+                    >Produtores</Text>
+
+                  <Stack w="100%" direction="row" space={2}>
+                    
+                  <Box w="50%"
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      // padding: 5,
+                      // backgroundColor: COLORS.second,
+                    }}
+                  >
+                  <TouchableOpacity
+                      onPress={()=>{
+
+                      }}
+                      style={{
+                        // width: '70%',
+                        height: 35,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        // borderColor: COLORS.ghostwhite,
+                        // borderWidth: 2,
+                      }}
+                    >
+                      <Text style={{
+                        textAlign: 'center',
+                        color: COLORS.ghostwhite,
+                        fontSize: 15,
+                        fontFamily: 'JosefinSans-Bold',
+                      }}>
+                        Pendentes
+                      </Text>
+                    </TouchableOpacity>
+                  </Box>
+                  <Box w="50%"
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      // padding: 5,
+                      // backgroundColor: COLORS.second,
+
+                    }}
+                  >
+                    <TouchableOpacity
+                        onPress={()=>{}}
+                        style={{
+                          height: 35,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          // borderColor: COLORS.ghostwhite,
+                          // borderRadius: 10,
+                          // borderWidth: 2,
+                        }}
+                      >
+                        <Text style={{
+                          textAlign: 'center',
+                          color: COLORS.ghostwhite,
+                          fontSize: 15,
+                          fontFamily: 'JosefinSans-Bold',
+                          marginRight: 10,
+                        }}>
+                          Invalidados
+                        </Text>
+                      </TouchableOpacity>
+                  </Box>
+                  </Stack>
+              </Box>
+              </Box>
+
+    
+              <Box w="50%"
+                style={{
+                  alignItems: 'center',
+
+                }}
+              >
+                <Box
+                  w="100%"
+                  style={{
+                    alignItems: 'center',
+                    borderTopColor: COLORS.ghostwhite,
+                    borderLeftColor: COLORS.ghostwhite,
+                    borderRightColor: COLORS.ghostwhite,
+                    borderTopWidth: 2,
+                    borderLeftWidth: 2,
+                    borderRightWidth: 2,
+                    borderTopEndRadius: 10,
+                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: 10,
+                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: 10,
+                  }}
+                >
+
+                 <Text
+                  style={{
+                    color: COLORS.ghostwhite,
+                    fontSize: 20,
+                    fontFamily: 'JosefinSans-Bold',
+                    // paddingTop: 10,
+                  }}
+                 >Pomares</Text>
+                <Stack w="100%" direction="row" space={2} >
+                  <Box w="50%"
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      // padding: 5,
+                      // backgroundColor: COLORS.second,
+
+                      // paddingRight: 15,
+                    }}
+                    >
+                    <TouchableOpacity
+                      onPress={()=>{}}
+                      style={{
+                        height: 35,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        // borderColor: COLORS.ghostwhite,
+                        // borderRadius: 10,
+                        // borderWidth: 2,
+                      }}
+                    >
+                      <Text 
+                        style={{ 
+                          textAling: 'center',  
+                          color: COLORS.ghostwhite, 
+                          fontSize: 15,
+                          fontFamily: 'JosefinSans-Bold',
+                        }}
+                        >
+                        Pendentes
+                      </Text>
+                    </TouchableOpacity>
+                  </Box>
+                  <Box w="50%"
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      // padding: 5,
+                      // backgroundColor: COLORS.second,
+
+                    }}
+                    >
+                    <TouchableOpacity
+                        onPress={()=>{}}
+                        style={{
+                          height: 35,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+
+                          // borderColor: COLORS.ghostwhite,
+                          // borderRadius: 10,
+                          // borderWidth: 2,
+                        }}
+                      >
+                        <Text style={{
+                          textAlign: 'center',
+                          color: COLORS.ghostwhite,
+                          fontSize: 15,
+                          fontFamily: 'JosefinSans-Bold',
+                          marginRight: 10,
+                        }}>
+                          Invalidados
+                        </Text>
+                      </TouchableOpacity>
+                  </Box>
+                </Stack>
+              </Box>
+           </Box>
+
+            </Stack>
+
+            </Box>
+
+      
+        </Box>
+
+ 
+
 
       <View
         style={{
@@ -215,7 +472,12 @@ export default function UserStat({ route, navigation  }) {
           marginTop: 10,
         }}
     >
-        <FlatList
+
+
+{   
+  !(pendingFarmers || invalidatedFarmers) &&
+
+    <FlatList
 
           StickyHeaderComponent={()=>(
               <Box style={{
@@ -250,6 +512,93 @@ export default function UserStat({ route, navigation  }) {
             </Box>)
           }
         />
+  }
+
+{   
+  (pendingFarmers) &&
+
+    <FlatList
+
+          StickyHeaderComponent={()=>(
+              <Box style={{
+                height: 100,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+                {/* <Text>Hello! Here is the sticky header!</Text> */}
+              </Box>
+            )}
+            stickyHeaderHiddenOnScroll={true}
+
+            data={()=>filteredResources(farmersList, 'pendingFarmers')}
+            keyExtractor={keyExtractor}
+            renderItem={({ item })=>{
+            if(item.flag === 'Grupo'){
+                return <GroupItem  route={route} item={item} />
+            }
+            else if (item.flag === 'Indivíduo'){
+                return <FarmerItem  route={route} navigation={navigation} item={item} />
+            }
+            else if (item.flag === 'Instituição'){
+                return <InstitutionItem  route={route}  item={item} />
+            }
+            }
+          }
+          ListFooterComponent={()=>(
+            <Box style={{
+              height: 100,
+              backgroundColor: COLORS.ghostwhite,
+            }}>
+            </Box>)
+          }
+        />
+  }
+
+{   
+  (invalidatedFarmers) &&
+
+    <FlatList
+
+          StickyHeaderComponent={()=>(
+              <Box style={{
+                height: 100,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+                {/* <Text>Hello! Here is the sticky header!</Text> */}
+              </Box>
+            )}
+            stickyHeaderHiddenOnScroll={true}
+
+            data={()=>filteredResources(farmersList, 'invalidatedFarmers')}
+            keyExtractor={keyExtractor}
+            renderItem={({ item })=>{
+            if(item.flag === 'Grupo'){
+                return <GroupItem  route={route} item={item} />
+            }
+            else if (item.flag === 'Indivíduo'){
+                return <FarmerItem  route={route} navigation={navigation} item={item} />
+            }
+            else if (item.flag === 'Instituição'){
+                return <InstitutionItem  route={route}  item={item} />
+            }
+            }
+          }
+          ListFooterComponent={()=>(
+            <Box style={{
+              height: 100,
+              backgroundColor: COLORS.ghostwhite,
+            }}>
+            </Box>)
+          }
+        />
+  }
+
+
+
+
+
+
     </Box>
 </View>
 

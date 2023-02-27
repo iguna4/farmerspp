@@ -9,9 +9,6 @@ const { useRealm } = realmContext;
 
 export const customizeItem = (list, customUserData, flag) => {
 
-        const realm = useRealm();
-
-
         return list?.map((item) => {
 
                 if (flag === 'Indivíduo') {

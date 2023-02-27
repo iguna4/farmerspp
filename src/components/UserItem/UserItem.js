@@ -29,7 +29,6 @@ export default function UserItem({ userItem }){
     const realm = useRealm();
 
     const userStat = useQuery('UserStat').filtered("userId == $0", userItem?.userId)[0];
-    // console.log('userStat', JSON.stringify(userStat));
 
     // updating user goal
     const updateUserGoal = useCallback((newTargetFarmers, newTargetFarmlands)=>{

@@ -76,7 +76,7 @@ export default function StatItem ({ item, route }){
                             fontFamily: 'JosefinSand-Bold',
                             fontSize: 15,
                         }}
-                    >Metas</Text>
+                    >Meta</Text>
                 </Box>
                 <Box w="35%" alignItems={"center"}>
                     <Text

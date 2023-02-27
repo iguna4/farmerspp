@@ -1,5 +1,5 @@
 import {TouchableOpacity, View, Text,} from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect, } from 'react';
 import {Icon, Avatar } from '@rneui/themed';
 
 import { Box, Center, Stack,  } from 'native-base';
@@ -9,11 +9,33 @@ import COLORS from '../../consts/colors';
 import { months } from '../../helpers/dates'
 import { resourceValidation } from '../../consts/resourceValidation';
 
+import { useUser } from '@realm/react';
+import { realmContext } from '../../models/realmContext';
+const { useRealm, useQuery, useObject } = realmContext; 
+
+
+const subScribedFarmlands = 'subScribedFarmlands';
+
 
 const FarmerItem = ({ item, route, farmerType }) => {
 
+  const realm = useRealm();
+  const farmlands = realm.objects('Farmland').filtered("farmer == $0", item?._id);
    const [visible, setVisible] = useState(false);
    const navigation = useNavigation();
+
+   console.log('fetched: ', JSON.stringify(farmlands));
+
+   useEffect(()=>{
+    realm.subscriptions.update(mutableSubs => {
+      mutableSubs.removeByName(subScribedFarmlands);
+      mutableSubs.add(
+        realm.objects('Farmland').filtered("farmer == $0", item?._id),
+        {name: subScribedFarmlands},
+      );
+    });
+
+  }, [ realm ]);
 
   return (
     <View

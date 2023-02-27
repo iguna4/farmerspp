@@ -32,6 +32,7 @@ export const customizeItem = (list, customUserData, flag) => {
                                                                 : 'Nenhum',
 
                                 farmlands: item?.farmlands?.length,
+                                // farmlandItems: item?.farmlands,
                                 // createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
                                 createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth() + 1}-${new Date(item?.createdAt).getFullYear()}`,
                                 user: (item?.userName === customUserData?.name)

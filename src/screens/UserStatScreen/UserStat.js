@@ -242,6 +242,7 @@ export default function UserStat({ route, navigation  }) {
           alignItems={"center"}
           style={{
             backgroundColor: COLORS.main,
+            paddingLeft: 10,
             paddingRight: 15,
           }}
         >
@@ -277,7 +278,7 @@ export default function UserStat({ route, navigation  }) {
                       }}
                     >Produtores</Text>
 
-                  <Stack w="100%" direction="row" space={2}>
+                  <Stack w="100%" direction="row" >
                     
                   <Box w="50%"
                     style={{
@@ -290,12 +291,20 @@ export default function UserStat({ route, navigation  }) {
                   <TouchableOpacity
                       onPress={()=>{
 
+                        setPendingFarmers(true);
+                        setPendingFarmlands(false);
+                        setInvalidatedFarmers(false);
+                        setInvalidatedFarmlands(false);
+
                       }}
                       style={{
                         // width: '70%',
                         height: 35,
                         alignItems: 'center',
                         justifyContent: 'center',
+                        paddingHorizontal: 5,
+                        backgroundColor: pendingFarmers ? COLORS.ghostwhite : COLORS.main,
+
                         // borderColor: COLORS.ghostwhite,
                         // borderWidth: 2,
                       }}
@@ -303,7 +312,7 @@ export default function UserStat({ route, navigation  }) {
                       <Text style={{
                         textAlign: 'center',
                         color: COLORS.ghostwhite,
-                        fontSize: 15,
+                        fontSize: 14,
                         fontFamily: 'JosefinSans-Bold',
                       }}>
                         Pendentes
@@ -320,11 +329,19 @@ export default function UserStat({ route, navigation  }) {
                     }}
                   >
                     <TouchableOpacity
-                        onPress={()=>{}}
+                        onPress={()=>{
+                          setPendingFarmers(false);
+                          setPendingFarmlands(false);
+                          setInvalidatedFarmers(true);
+                          setInvalidatedFarmlands(false);
+                        }}
                         style={{
                           height: 35,
                           alignItems: 'center',
                           justifyContent: 'center',
+                          paddingHorizontal: 5,
+                          backgroundColor: invalidatedFarmers ? COLORS.ghostwhite : COLORS.main,
+
                           // borderColor: COLORS.ghostwhite,
                           // borderRadius: 10,
                           // borderWidth: 2,
@@ -333,9 +350,9 @@ export default function UserStat({ route, navigation  }) {
                         <Text style={{
                           textAlign: 'center',
                           color: COLORS.ghostwhite,
-                          fontSize: 15,
+                          fontSize: 14,
                           fontFamily: 'JosefinSans-Bold',
-                          marginRight: 10,
+                          marginRight: 5,
                         }}>
                           Invalidados
                         </Text>
@@ -378,7 +395,7 @@ export default function UserStat({ route, navigation  }) {
                     // paddingTop: 10,
                   }}
                  >Pomares</Text>
-                <Stack w="100%" direction="row" space={2} >
+                <Stack w="100%" direction="row" >
                   <Box w="50%"
                     style={{
                       justifyContent: 'center',
@@ -390,11 +407,19 @@ export default function UserStat({ route, navigation  }) {
                     }}
                     >
                     <TouchableOpacity
-                      onPress={()=>{}}
+                      onPress={()=>{
+                        setPendingFarmers(false);
+                        setPendingFarmlands(true);
+                        setInvalidatedFarmers(false);
+                        setInvalidatedFarmlands(false);
+                      }}
                       style={{
                         height: 35,
                         alignItems: 'center',
                         justifyContent: 'center',
+                        paddingHorizontal: 5,
+                        backgroundColor: pendingFarmlands ? COLORS.ghostwhite : COLORS.main,
+
                         // borderColor: COLORS.ghostwhite,
                         // borderRadius: 10,
                         // borderWidth: 2,
@@ -404,7 +429,7 @@ export default function UserStat({ route, navigation  }) {
                         style={{ 
                           textAling: 'center',  
                           color: COLORS.ghostwhite, 
-                          fontSize: 15,
+                          fontSize: 14,
                           fontFamily: 'JosefinSans-Bold',
                         }}
                         >
@@ -422,11 +447,19 @@ export default function UserStat({ route, navigation  }) {
                     }}
                     >
                     <TouchableOpacity
-                        onPress={()=>{}}
+                        onPress={()=>{
+                          setPendingFarmers(false);
+                          setPendingFarmlands(false);
+                          setInvalidatedFarmers(false);
+                          setInvalidatedFarmlands(true);
+                        }}
                         style={{
                           height: 35,
                           alignItems: 'center',
                           justifyContent: 'center',
+                          paddingHorizontal: 5,
+                          backgroundColor: invalidatedFarmlands ? COLORS.ghostwhite : COLORS.main,
+
 
                           // borderColor: COLORS.ghostwhite,
                           // borderRadius: 10,
@@ -435,7 +468,7 @@ export default function UserStat({ route, navigation  }) {
                       >
                         <Text style={{
                           textAlign: 'center',
-                          color: COLORS.ghostwhite,
+                          color: invalidatedFarmlands ? COLORS.main : COLORS.ghostwhite,
                           fontSize: 15,
                           fontFamily: 'JosefinSans-Bold',
                           marginRight: 10,

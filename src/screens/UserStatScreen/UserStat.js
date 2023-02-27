@@ -47,8 +47,7 @@ export default function UserStat({ route, navigation  }) {
 //----------------------------------------------------------------- 
 
     const [farmlandList, setFarmlandList] = useState([]);
-
-
+    
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
     const farmers = realm.objects('Farmer').filtered("userId == $0", userId);
@@ -104,6 +103,7 @@ export default function UserStat({ route, navigation  }) {
 
     useEffect(()=>{
       setFarmlandList(farmlands.map(f=>f));
+      setLoadingActivityIndicator(true);
     }, [ refresh, invalidatedFarmers, invalidatedFarmlands, pendingFarmers, pendingFarmlands  ]);
 
     // console.log('farmlandsList: ', farmlandList)
@@ -150,23 +150,27 @@ export default function UserStat({ route, navigation  }) {
       });
     }, [realm, userId, refresh, invalidatedFarmers, invalidatedFarmlands, pendingFarmers, pendingFarmlands ]);
 
-    useFocusEffect(
-        React.useCallback(() => {
-          const task = InteractionManager.runAfterInteractions(() => {
-            setLoadingActivityIndicator(true);
-          });
-          return () => task.cancel();
-        }, [])
-      );
 
     const keyExtractor = (item, index)=>index.toString();
 
+
+    useFocusEffect(
+      React.useCallback(() => {
+        const task = InteractionManager.runAfterInteractions(() => {
+          setLoadingActivityIndicator(true);
+        });
+        return () => task.cancel();
+      }, [])
+    );
+  
+  
+  
     if (loadingActivitiyIndicator) {
-        return <CustomActivityIndicator 
-            loadingActivitiyIndicator={loadingActivitiyIndicator}
-            setLoadingActivityIndicator={setLoadingActivityIndicator}
-        />
-      }
+      return <CustomActivityIndicator 
+          loadingActivitiyIndicator={loadingActivitiyIndicator}
+          setLoadingActivityIndicator={setLoadingActivityIndicator}
+      />
+    }
     
 
     return (

@@ -109,12 +109,26 @@ export default function FarmlandRegistration ({ route, navigation }) {
     <SafeAreaView 
       style={styles.container}
     >
+    <AwesomeAlert
+        show={errorAlert}
+        showProgress={false}
+        title="Dados Obrigatórios"
+        message="Os campos obrigatórios devem ser BEM preenchidos!"
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={false}
+        showCancelButton={false}
+        showConfirmButton={true}
+        confirmText="   OK!   "
+        confirmButtonColor="#DD6B55"
+        onConfirmPressed={() => {
+            setErrorAlert(false);
+        }}
+    />
+
       <ScrollView>
-        <Box>
           <Box 
                 bg="#EBEBE4" 
                 w="100%" 
-                p="3" 
         
                 style={{
                     borderBottomRightRadius: 50,
@@ -123,29 +137,10 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     borderLeftWidth: 2,
                     borderRightWidth: 2,
                     borderColor: '#EBEBE4',
+                    paddingHorizontal: 5,
+                    paddingBottom: 15,
                     }}
             >
-            <Stack>
-                
-            </Stack>
-
-            <AwesomeAlert
-                show={errorAlert}
-                showProgress={false}
-                title="Dados Obrigatórios"
-                message="Os campos obrigatórios devem ser BEM preenchidos!"
-                closeOnTouchOutside={true}
-                closeOnHardwareBackPress={false}
-                showCancelButton={false}
-                showConfirmButton={true}
-                confirmText="   OK!   "
-                confirmButtonColor="#DD6B55"
-                onConfirmPressed={() => {
-                    setErrorAlert(false);
-                }}
-            />
-
-            <Box mb="2">
             <Stack direction="row">
             <Box w="10%">
                     <Icon 
@@ -155,12 +150,12 @@ export default function FarmlandRegistration ({ route, navigation }) {
                         onPress={()=>navigation.goBack()}
                     />
                 </Box>
-                <Box w="80%" alignItems={'center'} pt="1">
+                <Box w="80%" alignItems={'center'} >
                     <Text 
                         style={{ 
                             textAlign: 'center', 
                             fontFamily: 'JosefinSans-Bold', 
-                            fontSize: 18, 
+                            fontSize: 16, 
                             color: COLORS.main,  }}
                     >
                         Parcela
@@ -171,25 +166,26 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 </Box>
             </Stack>
             <Stack direction="row">
-                <Box w="80%">
+                <Box w="5%"></Box>
+                <Box w="80%" 
+                >
                     <Text style={styles.headerText}>
                         Registo
                     </Text>
+                    <Text style={{
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Regular',
+                        color: 'grey',
+                    }}>
+                        Proprietário: {ownerName}
+                    </Text>  
                 </Box>
-                <Center w="20%">
-                    <FontAwesomeIcon icon={faTree} size={40} color="grey" />
+                <Center w="15%">
+                    <FontAwesomeIcon icon={faTree} size={35} color="grey" />
                 </Center>
+                <Box w="5%"></Box>
             </Stack>
-            <Text style={{
-                fontSize: 16,
-                fontFamily: 'JosefinSans-Regular',
-                color: 'grey',
-            }}>
-                Proprietário: {ownerName}
-            </Text>  
-            </Box>
           </Box>
-        </Box>
 {
     loadingActivitiyIndicator && (
         <CustomActivityIndicator 
@@ -331,9 +327,6 @@ export default function FarmlandRegistration ({ route, navigation }) {
             </FormControl>
 
             <Box
-                style={{
-                    // alignItems: 'left',
-                }}
             >
                 <Text style={{
                     textAlign: 'left',
@@ -345,17 +338,23 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 </Text>
             </Box>
 
-            <Stack direction="row" mx="3" w="100%">
-            <Box w="32%" px="1">
+        <Box
+            style={{
+                justifyContent: 'center',
+                paddingTop: 5,
+            }}
+        >
+            <Stack direction="row" w="100%" space={1}>
+            <Box w="30%">
             <FormControl isRequired my="2" isInvalid={'totalArea' in errors}>
-                <FormControl.Label>Total (ha)</FormControl.Label>
+                <FormControl.Label><Text style={{ fontSize: 14, }}>Total</Text></FormControl.Label>
                 <CustomInput
-                    width="100%"
+                    width="70%"
                     // type="text"
                     keyboardType="numeric"
                     textAlign="center"
                     // autoCapitalize="words"
-                    placeholder="Hectares"
+                    placeholder="Hectar."
                     value={totalArea}
                     onChangeText={newNumber=>{
                         setErrors(prev=>({...prev, totalArea: ''}))
@@ -373,28 +372,23 @@ export default function FarmlandRegistration ({ route, navigation }) {
             </FormControl>
             </Box>
 
-
-            <Box w="2%" px="1">
-
-            </Box>
-
-            <Box w="32%" px="1">
+            <Box w="30%">
             <FormControl isRequired my="2" isInvalid={'usedArea' in errors}>
-                <FormControl.Label>Aproveitada (ha) </FormControl.Label>
+                <FormControl.Label><Text style={{ fontSize: 14, }}>Aproveitada</Text></FormControl.Label>
                 <CustomInput
-                    width="100%"
+                    width="70%"
                     // type="text"
                     keyboardType="numeric"
                     textAlign="center"
                     // autoCapitalize="words"
-                    placeholder="Hectares"
+                    placeholder="Hectar."
                     value={usedArea}
                     onChangeText={newNumber=>{
                         setErrors(prev=>({...prev, usedArea: ''}))
                         setUsedArea(newNumber)
                     }}
                 />
-                    
+
                 {
                     'usedArea' in errors 
                 ? <FormControl.ErrorMessage 
@@ -405,48 +399,41 @@ export default function FarmlandRegistration ({ route, navigation }) {
             </FormControl>
             </Box>
 
-
-            <Box w="2%" px="1">
-
-            </Box>
-
-            <Box w="32%" px="1">
+            <Box w="30%">
             <FormControl isRequired my="2" isInvalid={'trees' in errors}>
-                <FormControl.Label>N° de Cajueiros</FormControl.Label>
+                <FormControl.Label><Text style={{ fontSize: 14, }}>N° de Cajueiros</Text></FormControl.Label>
                 <CustomInput
-                    width="100%"
+                    width="70%"
                     // type="text"
                     keyboardType="numeric"
                     textAlign="center"
                     // autoCapitalize="words"
-                    placeholder="Cajueiros"
+                    placeholder="Cajueir."
                     value={trees}
                     onChangeText={newNumber=>{
                         setErrors(prev=>({...prev, trees: ''}))
                         setTrees(newNumber)
                     }}
-                />
+                    />
                     
                 {
                     'trees' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.trees}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
+                    ? <FormControl.ErrorMessage 
+                    leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                    _text={{ fontSize: 'xs'}}>{errors?.trees}</FormControl.ErrorMessage> 
+                    : <FormControl.HelperText></FormControl.HelperText>
                 }
             </FormControl>
             </Box>
 
         </Stack>  
-
-        <FormControl isRequired my="2" isInvalid={'densityMode' in errors}  >
+    </Box>
+        <FormControl isRequired my="2" isInvalid={ 'densityMode' in errors }  >
             <FormControl.Label>Compasso</FormControl.Label>
                 <Radio.Group
                     name="Density"
                     value={densityMode}
-                    // defaultValue=""
                     onChange={(nextValue) => {
-                        // setLoadingActivityIndicator(true) // trigger ActivityIndicator
                         setErrors(prev=>({...prev, densityMode: ''}))
                         setDensityMode(nextValue);
                     }}
@@ -457,10 +444,10 @@ export default function FarmlandRegistration ({ route, navigation }) {
                         md: "row"
                     }} 
                     alignItems={{
-                        base: "flex-start",
-                        md: "flex-start"
+                        base: "space-between",
+                        md: "space-between",
                     }} 
-                    space={10} 
+                    space={6} 
                     w="100%" 
                     >
                     <Radio 
@@ -468,10 +455,15 @@ export default function FarmlandRegistration ({ route, navigation }) {
                             fontFamily: 'JosefinSans-Bold',
                             color: 'grey'
                         }}
-                        value="Regular" my="1" mx="1" colorScheme="emerald" size="sm">
+                        value="Regular" 
+                        my="1" 
+                        mx="1" 
+                        colorScheme="emerald" 
+                        size="sm"
+                    >
                         Regular
                     </Radio>
-                    <Box w="10%">
+                    <Box w="5%">
                 
                     </Box>
                     <Radio 
@@ -479,7 +471,12 @@ export default function FarmlandRegistration ({ route, navigation }) {
                             fontFamily: 'JosefinSans-Bold',
                             color: 'Irregular'
                         }}
-                        value="Irregular" my="1" mx="1" colorScheme="emerald" size="sm">
+                        value="Irregular" 
+                        my="1" 
+                        mx="1" 
+                        colorScheme="emerald" 
+                        size="sm"
+                    >
                         Irregular
                     </Radio>
                 </Stack>
@@ -502,10 +499,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 <FormControl.Label>Comprimento</FormControl.Label>
                 <CustomInput
                     width="100%"
-                    // type="text"
                     textAlign="center"
                     keyboardType="numeric"
-                    // autoCapitalize="words"
                     placeholder="Comprimento"
                     value={densityLength}
                     onChangeText={newNumber=>{

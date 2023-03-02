@@ -81,7 +81,7 @@ const InstitutionItem = ({ item, route }) => {
       source={{ uri: item.image }}
     />
     </Center>
-    <Box w="85%">
+    <Box w="80%">
 
     <TouchableOpacity
       onPress={()=>{
@@ -91,14 +91,15 @@ const InstitutionItem = ({ item, route }) => {
       }}  
       >
 
+      <Box>
 
       <Text 
         style={{
-          fontSize: 20,
+          fontSize: 18,
           fontFamily: 'JosefinSans-Bold',
           color: COLORS.main,
         }}
-      >
+        >
         {item?.type === 'Outro' ? 'Empresa': `${item?.type}`}{' '}{item?.name}
       <Text 
         style={{
@@ -112,13 +113,14 @@ const InstitutionItem = ({ item, route }) => {
         {' '}({item?.isPrivate ? 'Instituição Privada' : 'Instituição Pública'})
         </Text>
       </Text>
+      </Box>
     <Stack direction="column" >
         <Stack direction="row">
           <Box w="100%" style={{ }}>
         <Stack direction="row">
             <Text 
                 style={{
-                  fontSize: 15,
+                  fontSize: 14,
                   fontFamily: 'JosefinSans-Italic',
                 }}
                 >
@@ -130,24 +132,25 @@ const InstitutionItem = ({ item, route }) => {
             <Box w="50%" >
               <Text 
                 style={{
-                  fontSize: 15,
+                  fontSize: 14,
                   fontFamily: 'JosefinSans-Italic',
                 }}
                 >
                 Tel: {item.phone}
               </Text>
             </Box>
-            <Box w="50%">
-            <Stack direction="row">
+            {/* <Box w="50%"> */}
+            {/* <Stack direction="row"> */}
                 <Box style={{
                   flexDirection: 'row',
                   borderWidth: 1,
                   borderRadius: 20,
                   borderColor: farmlandStatus === resourceValidation.status.pending ? COLORS.danger : farmlandStatus === resourceValidation.status.validated ? COLORS.main : COLORS.red,
+                  justifyContent: 'space-between',
                 }}>
                     <Text 
                       style={{
-                        fontSize: 15,
+                        fontSize: 14,
                         fontFamily: 'JosefinSans-Italic',
                         marginHorizontal: 2,
                         paddingHorizontal: 5,
@@ -166,18 +169,20 @@ const InstitutionItem = ({ item, route }) => {
                       ? 'error-outline'
                       : 'dangerous'
                     }
-                          size={30}
+                          size={20}
                           color={farmlandStatus === resourceValidation.status.pending ? COLORS.danger : farmlandStatus === resourceValidation.status.validated ? COLORS.main : COLORS.red}
                     />
-                  </Box>
-              </Stack>
+                  {/* </Box> */}
+              {/* </Stack> */}
             </Box>
+            <Box w="5%"></Box>
         </Stack>
         </Box>
         </Stack>
       </Stack>
     </TouchableOpacity>
     </Box>
+    {/* <Box w="5%"></Box> */}
     </Stack>
 
     <Stack direction="row" w="100%" style={{ paddingTop: 5,  }} >

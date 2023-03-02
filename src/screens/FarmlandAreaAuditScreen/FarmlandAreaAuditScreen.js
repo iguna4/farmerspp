@@ -127,27 +127,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         }
         else{
             subscribeLocation();
-        //     Geolocation.getCurrentPosition(
-        //         (position)=>{
-
-        //         },
-        //         (error) => {
-        //             Alert.alert('Falha', 'Tenta novamente!', {
-        //                 cause: error,
-        //             })
-        //         },
-        //         { 
-        //             enableHighAccuracy: true, 
-        //             accuracy: 'high',
-        //             timeout: 15000, 
-        //             maximumAge: 10000, 
-        //             distanceFilter: 100,  
-        //         }
-        //     )
         }
     }
-
-    // console.log('currentCoordinates:', currentCoordinates);
 
     // get the current coordinates of device position  
     const getGeolocation = async ()=>{
@@ -225,39 +206,9 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 backgroundColor: COLORS.ghostwhite,
             }}
         >
-        <Stack
-            direction="row" 
-            w="100%"
-            pt="3"
-            bg="#EBEBE4"
 
-        >
-            <Box w="20%">
-                <TouchableOpacity
-                    onPress={()=>{
-                        navigation.navigate("Farmers");
-                    }}                            
-                >
-                <Icon name='arrow-back-ios' color={COLORS.main} size={30}  />
-                </TouchableOpacity>
-            </Box>
-            <Center w="60%">
-                <Text
-                    style={{ 
-                        textAlign: 'center', 
-                        fontFamily: 'JosefinSans-Bold', 
-                        fontSize: 18, 
-                        color: COLORS.main,  
-                    }}
-                >
-                    Geolocalização
-                </Text>
-            </Center>
-            <Box w="20%">
-            </Box>
-        </Stack>
 
-        <AwesomeAlert
+<AwesomeAlert
           show={failedGeoLocationRequest}
           showProgress={false}
           title="Geolocalização"
@@ -314,6 +265,39 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
           }}
         />
 
+
+        <Stack
+            direction="row" 
+            w="100%"
+            // pt="3"
+            bg="#EBEBE4"
+
+        >
+            <Box w="20%">
+                <TouchableOpacity
+                    onPress={()=>{
+                        navigation.navigate("Farmers");
+                    }}                            
+                >
+                <Icon name='arrow-back-ios' color={COLORS.main} size={35}  />
+                </TouchableOpacity>
+            </Box>
+            <Center w="60%">
+                <Text
+                    style={{ 
+                        textAlign: 'center', 
+                        fontFamily: 'JosefinSans-Bold', 
+                        fontSize: 16, 
+                        color: COLORS.main,  
+                    }}
+                >
+                    Geolocalização
+                </Text>
+            </Center>
+            <Box w="20%">
+            </Box>
+        </Stack>
+
         <Box
             bg="#EBEBE4" 
             w="100%" 
@@ -329,14 +313,14 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             }}
         >
             <Stack direction="row"
-                py="5"
+                py="2"
                 px="3"
             >
                 <Box  w="80%">
                     <Text
                         style={{
                             fontFamily: 'JosefinSans-Bold',
-                            fontSize: 20,
+                            fontSize: 16,
                             color: COLORS.black,
                         }}
                     >
@@ -429,13 +413,11 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 <Stack direction="column">
 
             <Box 
-                // alignItems={"center"}
                 style={{
                     justifyContent: 'center',
                     alignItems: 'center',
                     borderRadius: 100,
                     borderWidth: 10,
-                    // padding: 10,
                     borderColor: COLORS.main,
                     shadowColor: COLORS.main,
                     shadowOffset: {
@@ -454,12 +436,10 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                         setIsMapVisible(true);
                     }}
                     >
-                    {/* <GeoPin /> */}
                     <Icon name="map" size={60} color={COLORS.main} />
                 </TouchableOpacity>
             </Box>
             <Box w="100%">
-
                 <Text
                 style={{
                     color: COLORS.grey,
@@ -477,30 +457,6 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             </Box>
         </Stack>
         </Center>
-        // <Center
-        //     style={{ minHeight: 300, }}
-        // >
-        // <TouchableOpacity
-        //     onPress={ async ()=> await getGeolocation()
-        //     }
-        // >
-        //     <GeoPin />
-        // </TouchableOpacity>
-
-        //      <Text 
-        //         style={{ 
-        //             fontFamily: 'JosefinSans-Regular',
-        //             fontSize: 20,
-        //             padding: 10,
-        //             // paddingHorizontal: 10,
-        //             textAlign: 'center',
-        //             color: COLORS.black,
-        //         }
-        //     }
-        //     >
-        //         Adicione o primeiro ponto das coordenadas da parcela!
-        //     </Text>   
-        // </Center>
     }
 
     <FlatList

@@ -346,13 +346,15 @@ export default function UserStat({ route, navigation  }) {
                           backgroundColor: invalidatedFarmers ? COLORS.ghostwhite : COLORS.main,
                         }}
                       >
-                        <Text style={{
-                          textAlign: 'center',
-                          color: invalidatedFarmers ? COLORS.main : COLORS.ghostwhite,
-                          fontSize: 14,
-                          fontFamily: 'JosefinSans-Bold',
-                          marginRight: 5,
-                        }}>
+                        <Text 
+                          style={{
+                            textAlign: 'center',
+                            color: invalidatedFarmers ? COLORS.main : COLORS.ghostwhite,
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Bold',
+                            marginRight: 5,
+                          }}
+                        >
                           Invalidados
                         </Text>
                       </TouchableOpacity>
@@ -360,8 +362,7 @@ export default function UserStat({ route, navigation  }) {
                   </Stack>
               </Box>
               </Box>
-
-    
+ 
               <Box w="50%"
                 style={{
                   alignItems: 'center',
@@ -392,7 +393,9 @@ export default function UserStat({ route, navigation  }) {
                     fontSize: 20,
                     fontFamily: 'JosefinSans-Bold',
                   }}
-                 >Pomares</Text>
+                 >
+                  Pomares
+                </Text>
                 <Stack w="100%" direction="row" >
                   <Box w="50%"
                     style={{
@@ -425,7 +428,7 @@ export default function UserStat({ route, navigation  }) {
                           fontSize: 14,
                           fontFamily: 'JosefinSans-Bold',
                         }}
-                        >
+                      >
                         Pendentes
                       </Text>
                     </TouchableOpacity>
@@ -434,9 +437,8 @@ export default function UserStat({ route, navigation  }) {
                     style={{
                       alignItems: 'center',
                       justifyContent: 'center',
-
                     }}
-                    >
+                  >
                     <TouchableOpacity
                         onPress={()=>{
                           setPendingFarmers(false);

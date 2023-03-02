@@ -27,9 +27,6 @@ export default function FarmerScreen ({ route, navigation }) {
     const [isAddPhoto, setIsAddPhoto] = useState(false);
     const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
 
-    // console.log('ownerId:', ownerId);
-    // console.log('farmlands:', farmlands)
-
     useEffect(() => {
       realm.subscriptions.update(mutableSubs => {
         mutableSubs.removeByName(singleFarmer);
@@ -48,64 +45,6 @@ export default function FarmerScreen ({ route, navigation }) {
       });
 
     }, [realm ]);
-
-
-
-
-
-
-    // const launchNativeCamera = () => {
-    //   let options = {
-    //     includeBase64: true,
-    //     storageOptions: {
-    //       skipBackup: true,
-    //       path: 'images',
-    //     },
-    //   };
-    //   launchCamera(options, (response) => {
-    //     console.log('Response = ', response);
-  
-    //     if (response.didCancel) {
-    //       console.log('User cancelled image picker');
-    //     } else if (response.errorCode) {
-    //       console.log('ImagePicker Error: ', response.errorMessage);
-    //     } else {
-    //       const source = { uri: response.uri };
-    //       console.log('response', JSON.stringify(response));
-    //       setFileData(response.assets[0].base64);
-    //       setFileUri(response.assets[0].uri)
-    //     }
-    //   });
-  
-    // };
-
-    // const launchNativeImageLibrary = () => {
-    //   let options = {
-    //     includeBase64: true,
-    //     storageOptions: {
-    //       skipBackup: true,
-    //       path: 'images',
-    //     },
-    //   };
-    //   launchImageLibrary(options, (response) => {
-    //     // console.log('Response = ', response);
-  
-    //     if (response.didCancel) {
-    //       console.log('User cancelled image picker');
-    //     } else if (response.errorCode) {
-    //       console.log('ImagePicker Error: ', response.error);
-    //     } else {
-    //       const source = { uri: response.assets.uri };
-    //       // console.log('response', JSON.stringify(response));
-    //       realm.write(()=>{
-    //         farmer.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
-    //       })
-    //       setFileData(response.assets[0].base64);
-    //       setFileUri(response.assets[0].uri)
-    //     }
-    //   });  
-    // }
-
 
     return (
         <SafeAreaView 
@@ -141,18 +80,17 @@ export default function FarmerScreen ({ route, navigation }) {
           style={{
             // height: "10%",
             width: '100%',
-            paddingHorizontal: 15,
-            paddingTop: 10,
+            paddingHorizontal: 5,
+            // paddingTop: 10,
             backgroundColor: '#EBEBE4',
             borderTopWidth: 0,
             borderColor: '#EBEBE4',
             borderBottomWidth: 3,
             borderLeftWidth: 3,
             borderRightWidth: 3,
+            alignItems: 'center',
           }}
       >
-
-
         <Stack
           direction="row" w="100%"
         >
@@ -186,7 +124,7 @@ export default function FarmerScreen ({ route, navigation }) {
                 Produtor Singular
               </Text>
 
-              <Stack direction="row" space={2} my="2">
+              <Stack direction="row" space={2} >
                 <Center>
                   <Text
                     style={{ fontFamily: 'JosefinSans-Regular', fonSize: 14, }}
@@ -210,9 +148,11 @@ export default function FarmerScreen ({ route, navigation }) {
           </Box>
         </Stack>
       </View>
+
+      
       <ScrollView
         contentContainerStyle={{
-            paddingVertical: 15,
+            // paddingVertical: 15,
             padding: 5,
             // marginBottom: 60,
         }}

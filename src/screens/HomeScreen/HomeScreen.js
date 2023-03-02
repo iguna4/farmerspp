@@ -778,16 +778,9 @@ export default function HomeScreen() {
               >
             </Box>
           </Stack>
-
-        </Box>
-
-    
+        </Box>    
 </ScrollView>
 }
-
-
-
-
 
 
 
@@ -1121,10 +1114,6 @@ export default function HomeScreen() {
                 style={{
                   fontFamily: 'JosefinSans-Regular',
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
-                  // borderWidth: 1,
-                  // padding: 5,
-                  // borderRadius: 30,
-                  // backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
                 }}              
                 >
                 {tuFarmers}

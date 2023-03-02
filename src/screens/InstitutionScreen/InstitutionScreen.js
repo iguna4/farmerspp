@@ -62,14 +62,15 @@ export default function InstitutionScreen ({ route, navigation }) {
           style={{
             // height: "10%",
             width: '100%',
-            paddingHorizontal: 15,
-            paddingTop: 10,
+            paddingHorizontal: 5,
+            // paddingTop: 10,
             backgroundColor: '#EBEBE4',
             borderTopWidth: 0,
             borderColor: '#EBEBE4',
             borderBottomWidth: 3,
             borderLeftWidth: 3,
             borderRightWidth: 3,
+            alignItems: 'center',
           }}
       >
       <AwesomeAlert
@@ -129,7 +130,7 @@ export default function InstitutionScreen ({ route, navigation }) {
                 Produtor Institucional
               </Text>
 
-              <Stack direction="row" space={2} my="2">
+              <Stack direction="row" space={2}>
                 <Center>
                   <Text
                     style={{ 
@@ -165,7 +166,7 @@ export default function InstitutionScreen ({ route, navigation }) {
       </View>
       <ScrollView
             contentContainerStyle={{
-                paddingVertical: 15,
+                // paddingVertical: 15,
                 padding: 5,
             }}
       >

@@ -83,18 +83,17 @@ export default function GroupScreen ({ route, navigation }) {
       <View
           style={{
             width: '100%',
-            paddingHorizontal: 15,
-            paddingTop: 10,
+            paddingHorizontal: 5,
+            // paddingTop: 10,
             backgroundColor: '#EBEBE4',
             borderTopWidth: 0,
             borderColor: '#EBEBE4',
             borderBottomWidth: 3,
             borderLeftWidth: 3,
             borderRightWidth: 3,
+            alignItems: 'center',
           }}
       >
-
-
         <Stack
           direction="row" w="100%"
         >
@@ -104,13 +103,12 @@ export default function GroupScreen ({ route, navigation }) {
                 // navigate('Farmers')
               }
           >
-
             <Icon 
                 name="arrow-back-ios" 
                 color={COLORS.main}
                 size={35}
-                />
-          </Pressable>`
+            />
+          </Pressable>
           </Center>
 
           <Box w="70%" 
@@ -127,7 +125,7 @@ export default function GroupScreen ({ route, navigation }) {
                 {farmer?.type}
               </Text>
 
-              <Stack direction="row" space={2} my="2">
+              <Stack direction="row" space={2}>
                 <Center>
                   <Text
                     style={{ fontFamily: 'JosefinSans-Regular', fonSize: 14, }}
@@ -138,7 +136,7 @@ export default function GroupScreen ({ route, navigation }) {
                   <Text
                     style={{ fontFamily: 'JosefinSans-Regular', fonSize: 14, }}
                   >
-                    </Text>
+                  </Text>
                 </Center>
               </Stack>
             </Center>
@@ -150,9 +148,11 @@ export default function GroupScreen ({ route, navigation }) {
           </Box>
         </Stack>
       </View>
+
+
       <ScrollView
             contentContainerStyle={{
-                paddingVertical: 15,
+                // paddingVertical: 15,
                 padding: 5,
             }}
       >

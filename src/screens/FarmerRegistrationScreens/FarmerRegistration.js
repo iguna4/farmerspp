@@ -321,7 +321,7 @@ export default function FarmerRegistration({ route, navigation }) {
                             style={{ 
                                 textAlign: 'center', 
                                 fontFamily: 'JosefinSans-Bold', 
-                                fontSize: 18, 
+                                fontSize: 16, 
                                 color: COLORS.main,  
                             }}
                         >

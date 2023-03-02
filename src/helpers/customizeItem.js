@@ -27,7 +27,7 @@ export const customizeItem = (farmersList, farmlandsList,  customUserData, flag)
                                 isSprayingAgent: item?.isSprayingAgent,
                                 phone:
                                         (item?.contact.primaryPhone && item?.contact.primaryPhone > 0 && item?.contact.secondaryPhone && item?.contact.secondaryPhone > 0)
-                                                ? `${item?.contact.primaryPhone}/${item?.contact.secondaryPhone}`
+                                                ? `${item?.contact.primaryPhone}`
                                                 : (item?.contact.primaryPhone && item?.contact.primaryPhone)
                                                         ? `${item?.contact.primaryPhone}`
                                                         : (item?.contact.secondaryPhone && item?.contact.secondaryPhone)

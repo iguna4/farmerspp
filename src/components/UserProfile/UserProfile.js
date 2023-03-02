@@ -158,7 +158,7 @@ const { useRealm, useQuery, useObject } = realmContext;
                 <Icon 
                     name='arrow-back-ios' 
                     color={COLORS.main} 
-                    size={30}  
+                    size={35}  
                     onPress={()=>{
                         setIsUserProfileVisible(false);
                     }}

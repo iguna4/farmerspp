@@ -256,13 +256,12 @@ export default function WelcomeScreen () {
 
     <ScrollView
             contentContainerStyle={{
-
                 // alignItems: 'center',
             }}
     >
     { isLoggingIn &&        
         <Center mt={'3'}>
-            <Text style={styles.signInTitle}>ConnectCaju - 2023</Text>
+            <Text style={styles.signInTitle}>ConnectCaju - {new Date().getFullYear()}</Text>
         </Center>
     }
         <Box mt="5" pl="4">
@@ -275,11 +274,9 @@ export default function WelcomeScreen () {
             :
             (
             <Box 
-            style={{
-                flexDirection: 'row',
-                //
-
-            }}
+                style={{
+                    flexDirection: 'row',
+                }}
             >
                 <Icon 
                     name='account-circle'

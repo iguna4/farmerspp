@@ -12,14 +12,15 @@ import districts from "../../consts/districts";
 import { secrets } from "../../secrets";
 import { useUser } from "@realm/react";
 import UserItem from "../UserItem/UserItem";
-import CustomDivider from "../Divider/CustomDivider";
 import { useFocusEffect } from "@react-navigation/native";
 import { InteractionManager } from "react-native";
 import { errorMessages } from "../../consts/errorMessages";
 
 export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisible, }){
+    const user = useUser();
+    const customUserData = user?.customData;
     const [district, setDistrict] = useState('');
-    const [province, setProvince] = useState('');
+    const [province, setProvince] = useState(customUserData?.userProvince);
     const [districtalUsers, setDistritalUsers] = useState([]);
     const [selectedDistricts, setSelectedDistricts] = useState([]);
 
@@ -34,7 +35,6 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
 
     // ---------------------------------------------
 
-    const user = useUser();
 
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
@@ -46,13 +46,6 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
           return () => task.cancel();
         }, [])
     );
-    
-    // if (loadingActivitiyIndicator) {
-    //     return <CustomActivityIndicator 
-    //         loadingActivitiyIndicator={loadingActivitiyIndicator}
-    //         setLoadingActivityIndicator={setLoadingActivityIndicator}
-    //     />
-    // }
     
 
     const getUsersByDistrict = async (district)=>{
@@ -110,8 +103,6 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
             backgroundColor: 'ghostwhite', 
             width: '100%',
             minHeight: '100%',
-            // borderRadius: 10,
-            // paddingBottom: 50,
         }}
         isVisible={isGoalUpdateVisible} 
         onBackdropPress={toggleOverlay}
@@ -129,7 +120,7 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                 <Icon 
                     name='arrow-back-ios' 
                     color={COLORS.main} 
-                    size={30}  
+                    size={35}  
                     onPress={()=>{
                         setIsGoalUpdateVisible(false);
                     }}
@@ -140,26 +131,34 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                     style={{
                         textAlign: 'center',
                         color: COLORS.main,
-                        fontSize: 20,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                     }}
                 >
-                    Actualização de Metas
+                    Actualização de Meta ({customUserData?.userProvince})
                 </Text>            
             </Box>
         </Stack>
-            <Box
-                style={{
-                    width: '100%',
-                    // paddingTop: 3,
-                }}
-                >
+        <Text style={{
+            textAlign: 'center',
+            fontSize: 16,
+            color: COLORS.main,
+            fontFamily: 'JosefinSans-Bold',
+        }}>
+            
+        </Text>
+        <Box
+            style={{
+                width: '100%',
+            }}
+            >
                 <Stack
                     w="100%"
-                    direction="row"
+                    direction="column"
                     space={1}
                 >
-                    <Box w="50%">
+ {  false &&
+                  <Box w="100%">
                     <FormControl isRequired my="3">
                     <FormControl.Label>Província</FormControl.Label>
                     <Select
@@ -180,22 +179,16 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                         }
                         mt={1}
                         onValueChange={(newProvince)=>{
-                            // setErrors(prev=>({...prev, userProvince: ''}));
                             setDistrict('');
                             setProvince(newProvince);
                         }}
-                        >
-                        <Select.Item label={"Cabo Delgado"} value="Cabo Delgado" />
-                        <Select.Item label="Nampula" value="Nampula" />
-                        <Select.Item label="Niassa" value="Niassa" />
-                        <Select.Item label="Zambézia" value="Zambézia" />
+                    >
+                        <Select.Item label={customUserData?.userProvince} value={customUserData?.userProvince} />
                     </Select>
-                    {/* 
-                        <FormControl.HelperText></FormControl.HelperText>
-                    */}
                 </FormControl>
                 </Box>
-                <Box w="50%">
+    }
+                <Box w="100%">
                     <FormControl isRequired my="3" >
                 <FormControl.Label>Distrito</FormControl.Label>
                     <Select
@@ -214,7 +207,6 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                         mt={1}
                         onValueChange={async (newDistrict)=>{
                             setDistrict(newDistrict);
-                            // setLoadingActivityIndicator(true);
                             await getUsersByDistrict(newDistrict);
                         }}
                     >{
@@ -241,14 +233,15 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
             <Text
             style={{
                     textAlign: 'center',
-                    fontFamily: 'JosefinSans-Bold',
-                    fontSize: 16,
-                    color: COLORS.main
+                    fontFamily: 'JosefinSans-Regular',
+                    fontSize: 15,
+                    color: COLORS.grey
                 }}
             >
-                Selecciona Província e Distrito!
+                Selecciona Distrito.
             </Text>
-        }        
+        }    
+            
         {
             (district && districtalUsers.length === 0)  && 
             <Text
@@ -288,12 +281,13 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                 >
                     <Text
                         style={{
-                        // textAlign: 'center',
-                        fontFamily: 'JosefinSans-Bold',
-                        fontSize: 16,
-                        color: COLORS.ghostwhite,
+                            fontFamily: 'JosefinSans-Bold',
+                            fontSize: 16,
+                            color: COLORS.ghostwhite,
                     }}     
-                    >Usuário</Text>
+                    >
+                        Usuário
+                    </Text>
                 </Box>
                 <Box w="20%">
                     <Text
@@ -325,7 +319,9 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                             fontSize: 16,
                             color: COLORS.ghostwhite,
                         }}
-                    >Meta</Text>
+                    >
+                        Meta
+                    </Text>
                     <Text
                         style={{
                             textAlign: 'center',
@@ -333,7 +329,9 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                             fontSize: 12,
                             color: COLORS.ghostwhite,
                         }}
-                    >(Parcelas)</Text>
+                    >
+                        (Parcelas)
+                    </Text>
                 </Box>
 
                 <Box w="20%"
@@ -351,14 +349,8 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                     >
                         Acção
                     </Text>
-                    {/* <Icon 
-                        name="save"
-                        size={45}
-                        color={COLORS.second}
-                    /> */}
                 </Box>
             </Stack>
-            {/* <CustomDivider thickness={1} my={2}  bg={COLORS.main} /> */}
             <ScrollView>
 
             {
@@ -371,48 +363,12 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
 
 
 
-{
-//  (district && districtalUsers.length > 0) &&
-//     <Center 
-//         w="100%"
-//         mt="4"
-//     >
 
-//         <Button
-//         title="Actualizar"
-//             titleStyle={{
-//                 color: COLORS.ghostwhite,
-//                 fontFamily: 'JosefinSans-Bold',
-//                 width: '100%',
-//             }}
-//             // iconPosition="right"
-//             // icon={
-//             // <Icon
-//             // name="update"
-//             //     color="white"
-//             //     size={25}
-//             //     iconStyle={{ 
-//             //         // marginLeft: 20,
-//             //         // color: COLORS.ghostwhite,
-//             //         // paddingHorizontal: 10,
-//             //     }}
-//             //     />
-//             // }
-//             containerStyle={{
-//                 backgroundColor: COLORS.second,
-//                 borderRadius: 10,
-//                 // color: COLORS.ghostwhite,
-//             }}
-//             type="outline"
-//             onPress={toggleOverlay}
-//             />
-//         </Center>
-        }
-        </ScrollView>
+</ScrollView>
 
     </Box>
 }
-        </View>
+   </View>
     </Overlay>
     <AwesomeAlert
             show={alert}
@@ -438,22 +394,5 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
     </>
     )
 }
-
-const styles = StyleSheet.create({
-    button: {
-      margin: 10,
-    },
-    textPrimary: {
-      marginVertical: 20,
-      textAlign: 'center',
-      fontSize: 20,
-    },
-    textSecondary: {
-      marginBottom: 10,
-      textAlign: 'center',
-    //   color: 'ghostwhite',
-      fontSize: 17,
-    },
-    });
 
     

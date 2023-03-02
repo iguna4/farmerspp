@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, SafeAreaView, FlatList } from 'react-native';
-import { Box, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
+import { Box,  FormControl, Stack, TextArea, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
 import { Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
+import { v4 as uuidv4 } from 'uuid';
 
 
 import CustomDivider from '../../components/Divider/CustomDivider';
@@ -13,17 +14,20 @@ import { resourceValidation } from '../../consts/resourceValidation';
 import EditData from '../EditData/EditData';
 import { roles } from '../../consts/roles';
 import { errorMessages } from '../../consts/errorMessages';
+import validateInvalidationMessage from '../../helpers/validateInvalidationMessage';
 
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 const { useRealm, useQuery, useObject } = realmContext; 
 
+const groupResourceMessage = 'groupResourceMessage';
 
 const GroupData = ({ farmer })=>{
 
     const realm = useRealm();
     const user = useUser();
     const customUserData = user?.customData;
+    const invalidationMotives = realm.objects('InvalidationMotive').filtered(`resourceId == "${farmer?._id}"`);
 
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 
@@ -37,6 +41,8 @@ const GroupData = ({ farmer })=>{
     const [showConfirmButton, setShowConfirmButton] = useState(false);
     const [validated, setValidated] = useState(false);
     const [invalidated, setInvalidated] = useState(false);
+    const [message, setMessage] = useState('');
+    const [errors, setErrors] = useState({});
 
     // ---------------------------------------------
 
@@ -54,9 +60,51 @@ const GroupData = ({ farmer })=>{
         });
     };
 
-    useEffect(()=>{
+    const addMessage = useCallback((realm, newResourceId, newMessage)=>{
 
-    }, [ realm, ]);
+        if (!validateInvalidationMessage(newMessage, errors, setErrors)){
+            return ;
+        } 
+
+        const validatedMessage = validateInvalidationMessage(newMessage, errors, setErrors);
+
+        const invalidationMotive = realm.objects('InvalidationMotive').filtered(`resourceId == "${newResourceId}"`);
+        const newMessageObject = {
+            position: (invalidationMotive[0] && invalidationMotive[0]?.messages?.length > 0) ? invalidationMotive[0]?.messages?.length + 1 : 0,
+            message: validatedMessage,
+            ownerName: customUserData?.name,
+            createdAt: new Date(),
+        };
+        
+        if (invalidationMotive?.length > 0){
+           realm.write(()=>{
+                invalidationMotive[0].messages.push(newMessageObject);
+            });
+        }
+        else {
+
+            realm.write(async ()=>{
+                const newResourceMessage = await realm.create('InvalidationMotive', {
+                    _id: uuidv4(),
+                    resourceId: farmer?._id,
+                    resourceName: 'Group',
+                    messages: [newMessageObject],  
+                    createdAt: new Date(),
+                });
+            });
+        }
+    }, [ realm, user, message ]);
+
+
+    useEffect(()=>{
+        realm.subscriptions.update(mutableSubs => {
+            mutableSubs.removeByName(groupResourceMessage);
+            mutableSubs.add(
+              realm.objects('InvalidationMotive').filtered(`resourceId == "${farmer._id}"`),
+              {name: groupResourceMessage},
+            );
+          });
+    }, [ realm, user, message, invalidationMotives ]);
 
 
     return (
@@ -635,8 +683,6 @@ const GroupData = ({ farmer })=>{
             </Box>
         </Stack>
 
-
-
         </Stack>
         <CustomDivider />
 
@@ -830,9 +876,149 @@ const GroupData = ({ farmer })=>{
 
 
 
+    {
+    farmer?.validated === resourceValidation.status.invalidated && 
+    <>
+{ customUserData?.role !== roles.provincialManager &&
+    <Text style={{
+        textAlign: 'left',
+        color: COLORS.red,
+        fontSize: 16,
+        fontFamily: 'JosefinSans-Bold',
+    }}>
+        Motivo da invalidação
+    </Text>
+}
+    {/* <Box 
+        // w="100%"
+        style={{
+            // alignItems: 'center',
+            paddingTop: 5,
+        }}
+    > */}
+        {
+        (invalidationMotives?.length > 0 && invalidationMotives[0]?.messages?.length > 0) && 
+            invalidationMotives[0]?.messages?.map((motive, index)=>(
+                <Box 
+                    key={index}
+                    style={{
+                        flexGrow: 1,
+                        backgroundColor: COLORS.fourth,
+                        borderRadius: 20,
+                        paddingHorizontal: 10,
+                        paddingVertical: 5,
+                        marginVertical: 5,
+                        marginHorizontal: 5,
+                        alignItems: 'flex-end',
+                    }}
+                >
+                    {/* <Box> */}
+                        <Text
+                            style={{
+                                fontSize: 14,
+                                fontFamily: 'JosefinSans-Italic',
+                                color: COLORS.black,
+                                textAlign: 'right',
+                            }}
+                        >
+                             {motive.message ? motive.message : ''}
+                        </Text>
+            
+                        <Text 
+                            style={{ 
+                                textAlign: 'right', 
+                                fontSize: 12, 
+                                color: COLORS.black, 
+                            }}
+                        >
+                            {motive?.ownerName} ({new Date(motive?.createdAt).getDate()}-{new Date(motive?.createdAt).getMonth()+1}-{new Date(motive?.createdAt).getFullYear()})
+                        </Text>
+                    {/* </Box> */}
+                </Box>
+            ))
+        }
 
 
-    { (customUserData?.role === roles.provincialManager) && (farmer?.validated !== resourceValidation.status.validated ) &&
+    {/* </Box> */}
+    </>
+}
+
+
+
+{ (farmer?.validated === resourceValidation.status.invalidated && customUserData?.role === roles.provincialManager) &&
+        <Stack 
+        direction="row" 
+        w="100%" 
+        space={1}
+    >
+
+        <FormControl isRequired isInvalid={'invalidationMessage' in errors}>
+            <FormControl.Label>Motivo da invalidação</FormControl.Label>
+                <TextArea 
+                    placeholder="Mensagem para o usuário"
+                    onChangeText={newMessage=>{
+                        setErrors({
+                            invalidationMessage: '',
+                        })
+                    setMessage(newMessage)
+                }}
+                value={message}
+
+                rightElement={
+                    <Box
+                        style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            right: 0,
+                            borderRadius: 100,
+                            borderWidth: 1,
+                            borderColor: COLORS.main,
+                            backgroundColor: COLORS.main,
+                        }}
+                    >
+                    <TouchableOpacity
+                        onPress={()=>{
+                            try{
+                                addMessage(realm, farmer?._id, message);
+                            }
+                            catch(error) {
+                                console.log('Failed to add invalidation message');
+                                return ;
+                            }
+                            finally{
+                                setMessage('');
+                            }
+                        }}
+                        >
+                        <Icon 
+                        name="send" 
+                        size={45} 
+                        color={COLORS.ghostwhite} 
+                        />
+                    </TouchableOpacity>
+                </Box>
+                }
+             />
+
+            {
+                'invalidationMessage' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.invalidationMessage}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+            }
+        </FormControl>
+    </Stack>
+
+}
+
+
+
+
+
+
+
+    { (customUserData?.role === roles.provincialManager) && (farmer?.validated === resourceValidation.status.pending ) &&
 <Stack direction="row" w="100%" style={{ paddingTop: 5,  }} space={6} >
         <Box w="50%"
             style={{

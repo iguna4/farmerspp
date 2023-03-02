@@ -194,7 +194,7 @@ export default function UserStat({ route, navigation  }) {
           }}
       >
         <Stack direction="row" w="100%"  >
-          <Center w="15%">
+          <Box>
             <TouchableOpacity
                 onPress={()=>navigation.goBack()}
             >
@@ -202,7 +202,7 @@ export default function UserStat({ route, navigation  }) {
                     name="arrow-back-ios" size={35} color={COLORS.main}
                 />
             </TouchableOpacity>
-          </Center>
+          </Box>
 
           <Box w="70%">
             <Center>

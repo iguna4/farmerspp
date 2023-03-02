@@ -31,6 +31,7 @@ const FarmlandData = ({ farmland })=>{
     const invalidationMotives = realm.objects('InvalidationMotive').filtered(`resourceId == "${farmland?._id}"`);
 
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+    const [autoRefresh, setAutoRefresh] = useState(false);
 
     const navigation = useNavigation();
     
@@ -107,7 +108,14 @@ const FarmlandData = ({ farmland })=>{
               {name: farmlandResourceMessage},
             );
           });
-    }, [ realm, user, message, invalidationMotives ]);
+
+        const interval = setInterval(()=>{
+            setAutoRefresh(!autoRefresh);
+        }, 2000);
+
+        clearInterval(interval);
+        
+    }, [ realm, user, message, invalidationMotives, autoRefresh ]);
 
 
 
@@ -933,7 +941,7 @@ const FarmlandData = ({ farmland })=>{
                         flexGrow: 1,
                         backgroundColor: COLORS.fourth,
                         borderRadius: 20,
-                        paddingHorizontal: 10,
+                        paddingHorizontal: 5,
                         paddingVertical: 5,
                         marginVertical: 5,
                         marginHorizontal: 5,
@@ -946,7 +954,7 @@ const FarmlandData = ({ farmland })=>{
                                 fontSize: 14,
                                 fontFamily: 'JosefinSans-Italic',
                                 color: COLORS.black,
-                                textAlign: 'right',
+                                textAlign: 'left',
                             }}
                         >
                              {motive.message ? motive.message : ''}
@@ -957,6 +965,7 @@ const FarmlandData = ({ farmland })=>{
                                 textAlign: 'right', 
                                 fontSize: 12, 
                                 color: COLORS.black, 
+                                paddingTop: 5,
                             }}
                         >
                             {motive?.ownerName} ({new Date(motive?.createdAt).getDate()}-{new Date(motive?.createdAt).getMonth()+1}-{new Date(motive?.createdAt).getFullYear()})

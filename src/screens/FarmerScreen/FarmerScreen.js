@@ -43,6 +43,7 @@ export default function FarmerScreen ({ route, navigation }) {
           {name: ownFarmlands},
         );
       });
+      
 
     }, [realm ]);
 

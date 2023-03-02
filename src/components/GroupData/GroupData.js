@@ -30,6 +30,7 @@ const GroupData = ({ farmer })=>{
     const invalidationMotives = realm.objects('InvalidationMotive').filtered(`resourceId == "${farmer?._id}"`);
 
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+    const [autoRefresh, setAutoRefresh] = useState(false);
 
     // ------------------------------------------
     const [alert, setAlert] = useState(false);
@@ -104,7 +105,14 @@ const GroupData = ({ farmer })=>{
               {name: groupResourceMessage},
             );
           });
-    }, [ realm, user, message, invalidationMotives ]);
+
+        const interval = setInterval(()=>{
+            setAutoRefresh(!autoRefresh);
+        }, 2000);
+
+        clearInterval(interval);
+
+    }, [ realm, user, message, invalidationMotives, autoRefresh ]);
 
 
     return (
@@ -905,7 +913,7 @@ const GroupData = ({ farmer })=>{
                         flexGrow: 1,
                         backgroundColor: COLORS.fourth,
                         borderRadius: 20,
-                        paddingHorizontal: 10,
+                        paddingHorizontal: 5,
                         paddingVertical: 5,
                         marginVertical: 5,
                         marginHorizontal: 5,
@@ -918,7 +926,7 @@ const GroupData = ({ farmer })=>{
                                 fontSize: 14,
                                 fontFamily: 'JosefinSans-Italic',
                                 color: COLORS.black,
-                                textAlign: 'right',
+                                textAlign: 'left',
                             }}
                         >
                              {motive.message ? motive.message : ''}
@@ -929,6 +937,7 @@ const GroupData = ({ farmer })=>{
                                 textAlign: 'right', 
                                 fontSize: 12, 
                                 color: COLORS.black, 
+                                paddingTop: 5,
                             }}
                         >
                             {motive?.ownerName} ({new Date(motive?.createdAt).getDate()}-{new Date(motive?.createdAt).getMonth()+1}-{new Date(motive?.createdAt).getFullYear()})

@@ -183,7 +183,7 @@ const FarmerItem = ({ item, route, farmerType }) => {
                       farmlandStatus === resourceValidation.status.validated 
                       ? 'check-circle' 
                       :
-                      item?.farmlands === 0
+                      item?.farmlandsList === 0
                       ? 'error-outline'
                       : 'dangerous'
                     }

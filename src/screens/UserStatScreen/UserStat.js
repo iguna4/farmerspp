@@ -251,11 +251,11 @@ export default function UserStat({ route, navigation  }) {
           alignItems={"center"}
           style={{
             backgroundColor: COLORS.main,
-            paddingLeft: 10,
-            paddingRight: 15,
+            paddingLeft: 5,
+            paddingRight: 10,
           }}
         >
-          <Stack w="100%" direction="row" space={2} pt="5" >
+          <Stack w="100%" direction="row" space={1} pt="5" >
                 <Box w="50%"
                   style={{
                     alignItems: 'center',
@@ -281,7 +281,7 @@ export default function UserStat({ route, navigation  }) {
                     <Text
                       style={{
                         color: COLORS.ghostwhite,
-                        fontSize: 20,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                       }}
                     >Produtores</Text>
@@ -316,7 +316,7 @@ export default function UserStat({ route, navigation  }) {
                       <Text style={{
                         textAlign: 'center',
                         color: pendingFarmers ? COLORS.main : COLORS.ghostwhite,
-                        fontSize: 14,
+                        fontSize: 12,
                         fontFamily: 'JosefinSans-Bold',
                       }}>
                         Pendentes
@@ -350,7 +350,7 @@ export default function UserStat({ route, navigation  }) {
                           style={{
                             textAlign: 'center',
                             color: invalidatedFarmers ? COLORS.main : COLORS.ghostwhite,
-                            fontSize: 14,
+                            fontSize: 12,
                             fontFamily: 'JosefinSans-Bold',
                             marginRight: 5,
                           }}
@@ -390,7 +390,7 @@ export default function UserStat({ route, navigation  }) {
                  <Text
                   style={{
                     color: COLORS.ghostwhite,
-                    fontSize: 20,
+                    fontSize: 16,
                     fontFamily: 'JosefinSans-Bold',
                   }}
                  >
@@ -425,7 +425,7 @@ export default function UserStat({ route, navigation  }) {
                         style={{ 
                           textAling: 'center',  
                           color: pendingFarmlands ? COLORS.main : COLORS.ghostwhite, 
-                          fontSize: 14,
+                          fontSize: 12,
                           fontFamily: 'JosefinSans-Bold',
                         }}
                       >
@@ -460,7 +460,7 @@ export default function UserStat({ route, navigation  }) {
                         <Text style={{
                           textAlign: 'center',
                           color: invalidatedFarmlands ? COLORS.main : COLORS.ghostwhite,
-                          fontSize: 14,
+                          fontSize: 12,
                           fontFamily: 'JosefinSans-Bold',
                           marginRight: 4,
                         }}>

@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, TouchableOpacity, Text, ScrollView, SafeAreaView, FlatList } from 'react-native';
-import { Box,  FormControl, Stack, TextArea, } from 'native-base';
+import { View, TouchableOpacity, TextInput, Text, ScrollView, SafeAreaView, FlatList } from 'react-native';
+import { Box,  FormControl, Stack, } from 'native-base';
 import { Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 import { v4 as uuidv4 } from 'uuid';
-
+// import Textarea from 'react-native-textarea';
 
 import CustomDivider from '../../components/Divider/CustomDivider';
 import COLORS from '../../consts/colors';
@@ -901,60 +901,37 @@ const PersonalData = ({ farmer })=>{
 }
 
 { (farmer?.validated === resourceValidation.status.invalidated && customUserData?.role === roles.provincialManager) &&
+        <>
         <Stack 
         direction="row" 
         w="100%" 
         space={1}
     >
-
+        <Box w="85%">
         <FormControl isRequired isInvalid={'invalidationMessage' in errors}>
             <FormControl.Label>Motivo da invalidação</FormControl.Label>
-                <TextArea 
+                <TextInput 
+                    style={{
+                        borderWidth: 2,
+                        borderColor: COLORS.main,
+                        borderRadius: 20,
+                        padding: 10,
+                        fontSize: 16,
+                        backgroundColor: '#efefef',
+                    }}
                     placeholder="Mensagem para o usuário"
+                    multiline={true}
+                    textAlignVertical="top"
+                    numberOfLines={2}
+                    maxLength={120}
+                    value={message}
                     onChangeText={newMessage=>{
                         setErrors({
                             invalidationMessage: '',
                         })
                     setMessage(newMessage)
                 }}
-                value={message}
-
-                rightElement={
-                    <Box
-                        style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            right: 0,
-                            borderRadius: 100,
-                            borderWidth: 1,
-                            borderColor: COLORS.main,
-                            backgroundColor: COLORS.main,
-                        }}
-                    >
-                    <TouchableOpacity
-                        onPress={()=>{
-                            try{
-                                addMessage(realm, farmer?._id, message);
-                            }
-                            catch(error) {
-                                console.log('Failed to add invalidation message');
-                                return ;
-                            }
-                            finally{
-                                setMessage('');
-                            }
-                        }}
-                        >
-                        <Icon 
-                        name="send" 
-                        size={45} 
-                        color={COLORS.ghostwhite} 
-                        />
-                    </TouchableOpacity>
-                </Box>
-                }
-             />
-
+                />
             {
                 'invalidationMessage' in errors 
                 ? <FormControl.ErrorMessage 
@@ -963,7 +940,57 @@ const PersonalData = ({ farmer })=>{
                 : <FormControl.HelperText></FormControl.HelperText>
             }
         </FormControl>
+        </Box>
+        <Box
+            style={{
+                width: '15%',
+                alignItems: 'baseline',
+                justifyContent: 'center',
+            }}
+        >
+            <Box
+                style={{
+                    position: 'absolute',
+                    bottom: 10,
+                    right: 10,
+                    padding: 5,
+                    borderRadius: 100,
+                    borderWidth: 1,
+                    borderColor: COLORS.main,
+                    backgroundColor: COLORS.main,
+                }}
+            >
+            <TouchableOpacity
+                onPress={()=>{
+                    try{
+                        addMessage(realm, farmer?._id, message);
+                    }
+                    catch(error) {
+                        console.log('Failed to add invalidation message');
+                        return ;
+                    }
+                    finally{
+                        setMessage('');
+                    }
+                }}
+            >
+                <Icon 
+                name="send" 
+                size={35} 
+                color={COLORS.ghostwhite} 
+                />
+            </TouchableOpacity>
+
+            </Box>
+        </Box>
+        <Box w="0%">
+
+        </Box>
+
     </Stack>
+
+
+    </>
 
 }
 

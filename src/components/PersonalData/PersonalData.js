@@ -309,6 +309,7 @@ const PersonalData = ({ farmer })=>{
             <Box w="25%"></Box>
             <Box w="25%">
                 <TouchableOpacity
+                    disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={
@@ -454,6 +455,7 @@ const PersonalData = ({ farmer })=>{
             <Box w="25%"></Box>
             <Box w="25%">
                 <TouchableOpacity
+                    disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={
@@ -528,12 +530,12 @@ const PersonalData = ({ farmer })=>{
     <Stack w="100%" direction="row">
         <Box w="30%">
             <Text
-                    style={{
-                        color: 'grey',
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                    }}                    
-                    >
+                style={{
+                    color: 'grey',
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                }}                    
+            >
                 Posto Admin.
             </Text>  
         </Box>
@@ -596,6 +598,7 @@ const PersonalData = ({ farmer })=>{
                 <Box w="25%"></Box>
                 <Box w="25%">
                     <TouchableOpacity
+                        disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
                         style={{
                         }}
                         onPress={
@@ -686,6 +689,7 @@ const PersonalData = ({ farmer })=>{
             <Box w="5%"></Box>
             <Box w="25%">
                 <TouchableOpacity
+                    disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={
@@ -745,12 +749,12 @@ const PersonalData = ({ farmer })=>{
         </Box>
         <Box>
             <Text
-                    style={{
-                        color: 'grey',
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                    }}                    
-                    >
+                style={{
+                    color: 'grey',
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                }}                    
+            >
                 {farmer?.idDocument?.docNumber !== 'Nenhum' ? farmer?.idDocument?.docNumber : '(Nenhum)'}
             </Text>  
         </Box>
@@ -759,12 +763,12 @@ const PersonalData = ({ farmer })=>{
     <Stack w="100%" direction="row">
         <Box w="30%">
             <Text
-                    style={{
-                        color: 'grey',
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                    }}                    
-                    >
+                style={{
+                    color: 'grey',
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                }}                    
+            >
                 NUIT
             </Text>  
         </Box>

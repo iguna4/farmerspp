@@ -68,7 +68,7 @@ export default function AppTabs() {
             name="FarmersStack"
             component={FarmersStackScreen}
            />
-          <Tab.Screen
+          {/* <Tab.Screen
             options={{
               tabBarIcon: (tabInfo)=><Icon 
                         name="search" 
@@ -78,7 +78,7 @@ export default function AppTabs() {
             }}
             name="Search"
             component={SearchScreen}
-           />
+           /> */}
       </Tab.Navigator>
     </NavigationContainer>
     </>

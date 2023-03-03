@@ -274,7 +274,7 @@ const GroupData = ({ farmer })=>{
         >
 
     <Box
-            style={{
+        style={{
             justifyContent: 'center',
             alignItems: 'center',
             position: 'absolute',
@@ -285,8 +285,8 @@ const GroupData = ({ farmer })=>{
             borderColor: farmer?.validated === resourceValidation.status.pending ? COLORS.danger : farmer?.validated === resourceValidation.status.validated ? COLORS.main : COLORS.red,
             borderWidth: 2,
             borderRadius: 10,
-            }}
-        >
+        }}
+    >
             <Icon 
                 name={farmer?.validated === resourceValidation.status.pending ? 'pending-actions' : farmer?.validated === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
                 size={25}
@@ -321,6 +321,7 @@ const GroupData = ({ farmer })=>{
         <Box w="25%"></Box>
         <Box w="25%">
             <TouchableOpacity
+                disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
                 style={{
                 }}
                 onPress={
@@ -334,7 +335,7 @@ const GroupData = ({ farmer })=>{
                     name="edit" 
                     size={20} 
                     color={farmer?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
-                    />
+                />
             </TouchableOpacity>
         </Box>
         </Stack>
@@ -385,6 +386,7 @@ const GroupData = ({ farmer })=>{
                 <Box w="25%"></Box>
                 <Box w="25%">
                     <TouchableOpacity
+                        disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
                         style={{
                         }}
                         onPress={
@@ -481,6 +483,7 @@ const GroupData = ({ farmer })=>{
             <Box w="25%"></Box>
             <Box w="25%">
                 <TouchableOpacity
+                    disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={
@@ -597,6 +600,7 @@ const GroupData = ({ farmer })=>{
             <Box w="25%"></Box>
             <Box w="25%">
                 <TouchableOpacity
+                    disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={
@@ -711,6 +715,7 @@ const GroupData = ({ farmer })=>{
             <Box w="5%"></Box>
             <Box w="25%">
                 <TouchableOpacity
+                    disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={
@@ -770,12 +775,12 @@ const GroupData = ({ farmer })=>{
         </Box>
         <Box>
             <Text
-                    style={{
-                        color: 'grey',
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                    }}                    
-                    >
+                style={{
+                    color: 'grey',
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                }}                    
+            >
                 {farmer?.address?.district ? farmer?.address?.district : '(Não Aplicável)'}
             </Text>  
         </Box>
@@ -784,12 +789,12 @@ const GroupData = ({ farmer })=>{
     <Stack w="100%" direction="row">
         <Box w="30%">
             <Text
-                    style={{
-                        color: 'grey',
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                    }}                    
-                    >
+                style={{
+                    color: 'grey',
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                }}                    
+            >
                 Posto Admin.
             </Text>  
         </Box>
@@ -837,11 +842,11 @@ const GroupData = ({ farmer })=>{
     <Stack direction="column" w="100%" style={{ paddingTop: 5,  }} >
         <Box w="100%">
             <Text 
-            style={{ 
-                textAlign: 'right',
-                color: COLORS.grey,
-                fontFamily: 'JosefinSans-Italic',
-                fontSize: 12,
+                style={{ 
+                    textAlign: 'right',
+                    color: COLORS.grey,
+                    fontFamily: 'JosefinSans-Italic',
+                    fontSize: 12,
             }}
             >
             Registo:{' '}                 

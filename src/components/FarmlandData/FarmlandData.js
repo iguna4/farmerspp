@@ -372,6 +372,7 @@ const FarmlandData = ({ farmland })=>{
             <Box w="25%"></Box>
             <Box w="25%">
                 <TouchableOpacity
+                    disabled={farmland?.validated === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={
@@ -572,6 +573,7 @@ const FarmlandData = ({ farmland })=>{
             <Box w="25%"></Box>
             <Box w="25%">
                 <TouchableOpacity
+                    disabled={farmland?.validated === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={
@@ -659,6 +661,7 @@ const FarmlandData = ({ farmland })=>{
             <Box w="25%"></Box>
             <Box w="25%">
                 <TouchableOpacity
+                    disabled={farmland?.validated === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={
@@ -770,6 +773,7 @@ const FarmlandData = ({ farmland })=>{
             <Box w="25%"></Box>
             <Box w="25%">
                 <TouchableOpacity
+                    // disabled={farmland?.validated === resourceValidation.status.validated ? true : false}
                     style={{
 
                     }}

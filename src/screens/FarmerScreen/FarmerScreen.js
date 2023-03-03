@@ -27,6 +27,13 @@ export default function FarmerScreen ({ route, navigation }) {
     const [isAddPhoto, setIsAddPhoto] = useState(false);
     const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
 
+    // ------------------------------------------------------------------------
+    // Editing Single Farmer Data
+    
+
+
+    // ----------------------------------------------------------------------
+
     useEffect(() => {
       realm.subscriptions.update(mutableSubs => {
         mutableSubs.removeByName(singleFarmer);

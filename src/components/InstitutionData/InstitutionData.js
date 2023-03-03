@@ -119,98 +119,98 @@ const InstitutionData = ({ farmer })=>{
     return (
         <>
 
-<AwesomeAlert
-                show={alert}
-                
-                titleStyle={{
-                    fontSize: 20,
-                    paddingVertical: 15,
-                    color: COLORS.ghostwhite,
-                    fontWeight: 'bold',
-                    marginBottom: 20,
-                    backgroundColor: COLORS.main,
-                    width: '100%',
-                    textAlign: 'center',
+        <AwesomeAlert
+            show={alert}
+            
+            titleStyle={{
+                fontSize: 20,
+                paddingVertical: 15,
+                color: COLORS.ghostwhite,
+                fontWeight: 'bold',
+                marginBottom: 20,
+                backgroundColor: COLORS.main,
+                width: '100%',
+                textAlign: 'center',
 
-                }}
-                messageStyle={{
-                    fontSize: 18,
-                    color: COLORS.grey,
-                    fontFamily: 'JosefinSans-Regular',
-                    lineHeight: 25,
-                    textAlign: 'center',
-                }}
+            }}
+            messageStyle={{
+                fontSize: 18,
+                color: COLORS.grey,
+                fontFamily: 'JosefinSans-Regular',
+                lineHeight: 25,
+                textAlign: 'center',
+            }}
 
-                alertContainerStyle	={{
-                    // width: 300,
-                  }}
-
-                overlayStyle={{
-                    // width: 100,
+            alertContainerStyle	={{
+                // width: 300,
                 }}
 
-                contentContainerStyle={{
-                    width: '90%',
-                    // height: '70%',
-                }}
+            overlayStyle={{
+                // width: 100,
+            }}
 
-                contentStyle={{
-                    // flex: 1,
-                    paddingVertical: 20,
-                }}
+            contentContainerStyle={{
+                width: '90%',
+                // height: '70%',
+            }}
 
-                cancelButtonStyle={{
-                    width: 120,
-                    marginRight: 15,
-                  }}
-          
-                  cancelButtonTextStyle={{
-                      fontSize: 18,
-                      textAlign: 'center',
-                    //   fontWeight: 'bold',
-                      fontFamily: 'JosefinSans-Bold',
-                  }}
-          
-                  confirmButtonStyle={{
-                    width: 120,
-                    marginLeft: 15,
-                  }}
-          
-                  confirmButtonTextStyle={{
+            contentStyle={{
+                // flex: 1,
+                paddingVertical: 20,
+            }}
+
+            cancelButtonStyle={{
+                width: 120,
+                marginRight: 15,
+                }}
+        
+                cancelButtonTextStyle={{
                     fontSize: 18,
                     textAlign: 'center',
-                  //   fontWeight: 'bold',
+                //   fontWeight: 'bold',
                     fontFamily: 'JosefinSans-Bold',
-                  }}
+                }}
+        
+                confirmButtonStyle={{
+                width: 120,
+                marginLeft: 15,
+                }}
+        
+                confirmButtonTextStyle={{
+                fontSize: 18,
+                textAlign: 'center',
+                //   fontWeight: 'bold',
+                fontFamily: 'JosefinSans-Bold',
+                }}
 
-                showProgress={false}
-                title={titleAlert}
-                message={messageAlert}
-                closeOnTouchOutside={false}
-                closeOnHardwareBackPress={false}
-                showCancelButton={showCancelButton}
-                showConfirmButton={showConfirmButton}
-                cancelText={cancelText}
-                confirmText={confirmText}
-                cancelButtonColor="#DD6B55"
-                confirmButtonColor={COLORS.main}
-                onCancelPressed={()=>{
-                    setAlert(false);
+            showProgress={false}
+            title={titleAlert}
+            message={messageAlert}
+            closeOnTouchOutside={false}
+            closeOnHardwareBackPress={false}
+            showCancelButton={showCancelButton}
+            showConfirmButton={showConfirmButton}
+            cancelText={cancelText}
+            confirmText={confirmText}
+            cancelButtonColor="#DD6B55"
+            confirmButtonColor={COLORS.main}
+            onCancelPressed={()=>{
+                setAlert(false);
+                setValidated(false);
+                setInvalidated(false);
+            }}
+            onConfirmPressed={() => {
+                setAlert(false);
+                if (validated){
+                    validationAction(realm, farmer?._id, 'validate');
                     setValidated(false);
+                }
+                else if (invalidated){
+                    validationAction(realm, farmer?._id, 'invalidate');
                     setInvalidated(false);
-                }}
-                onConfirmPressed={() => {
-                    setAlert(false);
-                    if (validated){
-                        validationAction(realm, farmer?._id, 'validate');
-                        setValidated(false);
-                    }
-                    else if (invalidated){
-                        validationAction(realm, farmer?._id, 'invalidate');
-                        setInvalidated(false);
-                    }
-                }}
-            />
+                }
+            }}
+        />
 
 
     <Collapse
@@ -323,6 +323,7 @@ const InstitutionData = ({ farmer })=>{
         <Box w="25%"></Box>
         <Box w="25%">
             <TouchableOpacity
+                disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
                 style={{
                 }}
                 onPress={
@@ -342,17 +343,16 @@ const InstitutionData = ({ farmer })=>{
         </Stack>     
 
         <Stack w="100%" direction="row">
-                <Box w="30%" >
-                    <Text
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Bold',
-                            
-                        }}
-                        >
-                    {/* Instituição: */}
-                    </Text>
+            <Box w="30%" >
+                <Text
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Bold',
+                    }}
+                    >
+                {/* Instituição: */}
+                </Text>
             </Box>
             <Box w="70%">
                 <Text 
@@ -395,6 +395,7 @@ const InstitutionData = ({ farmer })=>{
                 <Box w="25%"></Box>
                 <Box w="25%">
                     <TouchableOpacity
+                        disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
                         style={{
                         }}
                         onPress={
@@ -494,6 +495,7 @@ const InstitutionData = ({ farmer })=>{
             <Box w="5%"></Box>
             <Box w="25%">
                 <TouchableOpacity
+                    disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={
@@ -555,12 +557,12 @@ const InstitutionData = ({ farmer })=>{
         </Box>
         <Box>
             <Text
-                    style={{
-                        color: 'grey',
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                    }}                    
-                    >
+                style={{
+                    color: 'grey',
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                }}                    
+            >
                 {farmer?.address?.district ? farmer?.address?.district : '(Não Aplicável)'}
             </Text>  
         </Box>
@@ -637,6 +639,7 @@ const InstitutionData = ({ farmer })=>{
             <Box w="5%"></Box>
             <Box w="25%">
                 <TouchableOpacity
+                    disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={

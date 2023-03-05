@@ -12,6 +12,8 @@ import { resourceValidation } from '../../consts/resourceValidation';
 
 export default function FarmlandItem ({ item, route, }) {
 
+  console.log('item.farmer:', item?.farmer);
+
    const [visible, setVisible] = useState(false);
    const navigation = useNavigation();
 
@@ -53,7 +55,7 @@ export default function FarmlandItem ({ item, route, }) {
        <TouchableOpacity
          onPress={()=>{
            navigation.navigate('Farmer', {
-             ownerId: item.farmer,
+             ownerId: item?.farmer,
            })
          }}
          >

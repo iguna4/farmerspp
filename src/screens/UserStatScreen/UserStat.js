@@ -38,7 +38,6 @@ export default function UserStat({ route, navigation  }) {
 
     const [refresh, setRefresh] = useState(false);
 
-
 // ---------------------------------------------------------------
     const [pendingFarmers, setPendingFarmers] = useState(false);
     const [invalidatedFarmers, setInvalidatedFarmers] = useState(false);
@@ -79,10 +78,6 @@ export default function UserStat({ route, navigation  }) {
             ?.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt));
     }
 
-    // get the list of all the farmlands
-    // farmlandsList = farmlands.map(farmland => farmland);
-
-    // console.log('farmlands: ', farmlands)
 
     const filteredResources = (list, flag)=>{
       let newResourcesList = [];

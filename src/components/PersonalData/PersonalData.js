@@ -33,6 +33,7 @@ const PersonalData = ({ farmer })=>{
 
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
     const [autoRefresh, setAutoRefresh] = useState(false);
+    const [isCollapseOn, setIsCallapseOne] = useState(false);
 
     // ------------------------------------------
     const [alert, setAlert] = useState(false);
@@ -52,15 +53,15 @@ const PersonalData = ({ farmer })=>{
 
     const validationAction = (realm, resourceId, flag)=>{
         realm.write(()=>{
-            const foundFarmer = realm.objectForPrimaryKey('Farmer', `${resourceId}`);
+            const foundFarmer = realm.objectForPrimaryKey('Actor', `${resourceId}`);
             // console.log('foundFarmer: ', JSON.stringify(foundFarmer));
             if (flag === 'validate'){
-                foundFarmer.validated = resourceValidation.status.validated;
-                foundFarmer.validatedBy = customUserData?.name;
+                foundFarmer.status = resourceValidation.status.validated;
+                foundFarmer.checkedBy = customUserData?.name;
             }
             else if (flag === 'invalidate') {
-                foundFarmer.validated = resourceValidation.status.invalidated;
-                foundFarmer.validatedBy = customUserData?.name;
+                foundFarmer.status = resourceValidation.status.invalidated;
+                foundFarmer.checkedBy = customUserData?.name;
             }
         });
     };
@@ -115,7 +116,7 @@ const PersonalData = ({ farmer })=>{
         }, 2000);
 
         clearInterval(interval);
-    }, [ realm, user, message, invalidationMotives, autoRefresh, ]);
+    }, [ realm, user, message, invalidationMotives, autoRefresh, isCollapseOn ]);
 
     return (
         <>
@@ -216,6 +217,9 @@ const PersonalData = ({ farmer })=>{
             flex: 1,
             
         }}
+        onToggle={(isOn)=>{
+            setIsCallapseOne(isOn);
+        }}
     >
         <CollapseHeader
             style={{                     
@@ -272,22 +276,22 @@ const PersonalData = ({ farmer })=>{
             right: 4,
             zIndex: 1,
             flexDirection: 'row',
-            borderColor: farmer?.validated === resourceValidation.status.pending ? COLORS.danger : farmer?.validated === resourceValidation.status.validated ? COLORS.main : COLORS.red,
+            borderColor: farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red,
             borderWidth: 2,
             borderRadius: 10,
             }}
         >
             <Icon 
-                name={farmer?.validated === resourceValidation.status.pending ? 'pending-actions' : farmer?.validated === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
+                name={farmer?.status === resourceValidation.status.pending ? 'pending-actions' : farmer?.status === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
                 size={25}
-                color={farmer?.validated === resourceValidation.status.pending ? COLORS.danger : farmer?.validated === resourceValidation.status.validated ? COLORS.main : COLORS.red}
+                color={farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red}
             />
             <Text
                 style={{
-                    color: farmer?.validated === resourceValidation.status.pending ? COLORS.danger : farmer?.validated === resourceValidation.status.validated ? COLORS.main : COLORS.red,
+                    color: farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red,
                 }}
             >
-            {farmer?.validated === resourceValidation.status.pending ? resourceValidation.message.pendingResourceMessage : farmer?.validated === resourceValidation.status.validated ? resourceValidation.message.validatedResourceMessage : resourceValidation.message.invalidatedResourceMessage}
+            {farmer?.status === resourceValidation.status.pending ? resourceValidation.message.pendingResourceMessage : farmer?.status === resourceValidation.status.validated ? resourceValidation.message.validatedResourceMessage : resourceValidation.message.invalidatedResourceMessage}
             </Text>
         </Box>
 
@@ -309,7 +313,7 @@ const PersonalData = ({ farmer })=>{
             <Box w="25%"></Box>
             <Box w="25%">
                 <TouchableOpacity
-                    disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
+                    disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={
@@ -322,14 +326,14 @@ const PersonalData = ({ farmer })=>{
                         // name="home" 
                         name="edit" 
                         size={20} 
-                        color={farmer?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                         />
                 </TouchableOpacity>
             </Box>
         </Stack>
 
-        <Stack w="100%" direction="row">
-                <Box w="30%">
+        <Stack w="100%" direction="row" space={1}>
+                <Box w="35%">
                     <Text
                         style={{
                             color: 'grey',
@@ -340,7 +344,7 @@ const PersonalData = ({ farmer })=>{
                         >
                     Data:</Text>
                 </Box>
-                <Box w="70%">
+                <Box w="65%">
                     <Text                         
                         style={{
                             color: 'grey',
@@ -352,8 +356,8 @@ const PersonalData = ({ farmer })=>{
                     </Text>
                 </Box>
         </Stack>
-        <Stack w="100%" direction="row">
-            <Box w="30%">
+        <Stack w="100%" direction="row" space={1}>
+            <Box w="35%">
                 <Text
                         style={{
                             color: 'grey',
@@ -382,8 +386,8 @@ const PersonalData = ({ farmer })=>{
 {
     !farmer?.birthPlace?.province?.includes('Estrangeiro') &&
     <>
-    <Stack w="100%" direction="row">
-        <Box w="30%">
+    <Stack w="100%" direction="row" space={1}>
+        <Box w="35%">
             <Text
                     style={{
                         color: 'grey',
@@ -407,8 +411,8 @@ const PersonalData = ({ farmer })=>{
         </Box>
     </Stack>
 
-    <Stack w="100%" direction="row">
-        <Box w="30%">
+    <Stack w="100%" direction="row" space={1}>
+        <Box w="35%">
             <Text
                     style={{
                         color: 'grey',
@@ -455,7 +459,7 @@ const PersonalData = ({ farmer })=>{
             <Box w="25%"></Box>
             <Box w="25%">
                 <TouchableOpacity
-                    disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
+                    disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={
@@ -468,14 +472,14 @@ const PersonalData = ({ farmer })=>{
                         // name="home" 
                         name="edit" 
                         size={20} 
-                        color={farmer?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
                 </TouchableOpacity>
             </Box>
         </Stack>
 
-        <Stack w="100%" direction="row">
-            <Box w="30%">
+        <Stack w="100%" direction="row" space={1}>
+            <Box w="35%">
                 <Text
                     style={{
                         color: 'grey',
@@ -502,8 +506,8 @@ const PersonalData = ({ farmer })=>{
     </Box>
     </Stack>
 
-    <Stack w="100%" direction="row">
-        <Box w="30%">
+    <Stack w="100%" direction="row" space={1}>
+        <Box w="35%">
             <Text
                 style={{
                     color: 'grey',
@@ -527,8 +531,8 @@ const PersonalData = ({ farmer })=>{
         </Box>
     </Stack>
 
-    <Stack w="100%" direction="row">
-        <Box w="30%">
+    <Stack w="100%" direction="row" space={1}>
+        <Box w="35%">
             <Text
                 style={{
                     color: 'grey',
@@ -552,8 +556,8 @@ const PersonalData = ({ farmer })=>{
         </Box>
     </Stack>
 
-    <Stack w="100%" direction="row">
-        <Box w="30%">
+    <Stack w="100%" direction="row" space={1}>
+        <Box w="35%">
             <Text
                 style={{
                     color: 'grey',
@@ -598,7 +602,7 @@ const PersonalData = ({ farmer })=>{
                 <Box w="25%"></Box>
                 <Box w="25%">
                     <TouchableOpacity
-                        disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
+                        disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                         style={{
                         }}
                         onPress={
@@ -611,14 +615,14 @@ const PersonalData = ({ farmer })=>{
                             // name="contacts" 
                             name="edit"
                             size={20} 
-                            color={farmer?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
+                            color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
                         />
                     </TouchableOpacity>
                 </Box>
             </Stack>
 
-        <Stack w="100%" direction="row">
-            <Box w="30%">
+        <Stack w="100%" direction="row" space={1}>
+            <Box w="35%">
                 <Text
                     style={{
                         color: 'grey',
@@ -630,7 +634,7 @@ const PersonalData = ({ farmer })=>{
                 </Text>  
             </Box>
             <Box w="70%">
-                <Text 
+                {/* <Text 
                     style={{
                         color: 'grey',
                         fontSize: 14,
@@ -638,32 +642,32 @@ const PersonalData = ({ farmer })=>{
                     }}  
                 >
                     {!(farmer?.contact?.primaryPhone || farmer?.contact?.secondaryPhone) && '(Nenhum).'}    
-                </Text> 
-                { farmer?.contact?.primaryPhone !== 0  &&
-                    <Text 
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            // paddingLeft: 10,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}  
+                </Text>  */}
+                {/* { farmer?.contact?.primaryPhone !== 0  && */}
+                <Text 
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        // paddingLeft: 10,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                >
+                    {farmer?.contact?.primaryPhone !== 0 ? farmer?.contact?.primaryPhone : 'Nenhum'} (principal)
+                </Text>
+                {/* } */}
+                {/* {
+                farmer?.contact?.secondaryPhone !== 0 && */}
+                <Text 
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        // paddingLeft: 10,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
                     >
-                        {farmer?.contact?.primaryPhone} (principal)
-                    </Text>
-                }
-                {
-                farmer?.contact?.secondaryPhone !== 0 &&
-                    <Text 
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            // paddingLeft: 10,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}  
-                        >
-                        {farmer?.contact?.secondaryPhone} (alternativo)
-                    </Text>    
-                }
+                    {farmer?.contact?.secondaryPhone !== 0 ? farmer?.contact?.secondaryPhone: 'Nenhum'} (alternativo)
+                </Text>    
+                {/* } */}
             </Box>
         </Stack>
 
@@ -689,7 +693,7 @@ const PersonalData = ({ farmer })=>{
             <Box w="5%"></Box>
             <Box w="25%">
                 <TouchableOpacity
-                    disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
+                    disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={
@@ -702,14 +706,14 @@ const PersonalData = ({ farmer })=>{
                         // name="file-present" 
                         name="edit"
                         size={20} 
-                        color={farmer?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
                 </TouchableOpacity>
             </Box>
         </Stack>
 
-        <Stack w="100%" direction="row">
-            <Box w="30%">
+        <Stack w="100%" direction="row" space={1}>
+            <Box w="35%">
                 <Text
                     style={{
                         color: 'grey',
@@ -735,8 +739,8 @@ const PersonalData = ({ farmer })=>{
     </Box>
     </Stack>
 
-    <Stack w="100%" direction="row">
-        <Box w="30%">
+    <Stack w="100%" direction="row" space={1}>
+        <Box w="35%">
             <Text
                 style={{
                     color: 'grey',
@@ -760,8 +764,8 @@ const PersonalData = ({ farmer })=>{
         </Box>
     </Stack>
 
-    <Stack w="100%" direction="row">
-        <Box w="30%">
+    <Stack w="100%" direction="row" space={1}>
+        <Box w="35%">
             <Text
                 style={{
                     color: 'grey',
@@ -805,7 +809,7 @@ const PersonalData = ({ farmer })=>{
         </Box>
         
     {
-    farmer?.validated === resourceValidation.status.invalidated &&
+    farmer?.status === resourceValidation.status.invalidated &&
         <Box w="100%">
             <Text
                 style={{ 
@@ -815,12 +819,12 @@ const PersonalData = ({ farmer })=>{
                     fontSize: 12,
                 }}
             >
-                Invalidado por {farmer?.validatedBy}
+                Invalidado por {farmer?.checkedBy}
             </Text>
         </Box>
     }
     {
-    farmer?.validated === resourceValidation.status.validated &&
+    farmer?.status === resourceValidation.status.validated &&
         <Box w="100%">
             <Text
                 style={{ 
@@ -830,14 +834,14 @@ const PersonalData = ({ farmer })=>{
                     fontSize: 12,
                 }}
             >
-                Validado por {farmer?.validatedBy}
+                Validado por {farmer?.checkedBy}
             </Text>
         </Box>
     }
     </Stack>
 
 {
-    farmer?.validated === resourceValidation.status.invalidated && 
+    farmer?.status === resourceValidation.status.invalidated && 
     <>
 { customUserData?.role !== roles.provincialManager &&
     <Text style={{
@@ -904,7 +908,7 @@ const PersonalData = ({ farmer })=>{
     </>
 }
 
-{ (farmer?.validated === resourceValidation.status.invalidated && customUserData?.role === roles.provincialManager) &&
+{ (farmer?.status === resourceValidation.status.invalidated && customUserData?.role === roles.provincialManager) &&
         <>
         <Stack 
         direction="row" 
@@ -992,15 +996,13 @@ const PersonalData = ({ farmer })=>{
         </Box>
 
     </Stack>
-
-
     </>
 
 }
 
 
 
-{ (customUserData?.role === roles.provincialManager) && (farmer?.validated === resourceValidation.status.pending ) &&
+{ (customUserData?.role === roles.provincialManager) && (farmer?.status === resourceValidation.status.pending ) &&
 <Stack direction="row" w="100%" style={{ paddingTop: 5,  }} space={6} >
         <Box w="50%"
             style={{
@@ -1008,7 +1010,7 @@ const PersonalData = ({ farmer })=>{
             }}
             >
             <TouchableOpacity
-                disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
+                disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                 onPress={()=>{
                     // validationAction(realm, farmer._id, 'validate');
                     setAlert(true);
@@ -1023,7 +1025,7 @@ const PersonalData = ({ farmer })=>{
             >
                 <Text
                     style= {{
-                        color: farmer.validated === resourceValidation.status.validated ? COLORS.lightgrey : COLORS.main,
+                        color: farmer.status === resourceValidation.status.validated ? COLORS.lightgrey : COLORS.main,
                         fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                     }}
@@ -1039,7 +1041,7 @@ const PersonalData = ({ farmer })=>{
             }}
         >
             <TouchableOpacity
-                disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
+                disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                 onPress={()=>{
                     setAlert(true);
                     setInvalidated(true);
@@ -1053,7 +1055,7 @@ const PersonalData = ({ farmer })=>{
             >
                 <Text
                     style= {{
-                        color: farmer?.validated === resourceValidation.status.validated ? COLORS.lightgrey : COLORS.red,
+                        color: farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : COLORS.red,
                         fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                     }}

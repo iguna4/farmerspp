@@ -4,7 +4,7 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import { Text,  Stack, Box, Center, Divider } from 'native-base';
-import { Modal, ScrollView, TouchableOpacity } from 'react-native';
+import { Modal, ScrollView, View, TouchableOpacity } from 'react-native';
 import { Button, Icon } from '@rneui/themed';
 import CustomDivider from '../Divider/CustomDivider';
 import styles from './styles';
@@ -24,6 +24,7 @@ import { user } from '../../consts/user';
 
 import { realmContext } from '../../models/realmContext';
 import COLORS from '../../consts/colors';
+import { groupAffiliationStatus } from '../../consts/groupAffiliationStatus';
 const {useRealm, useObject, useQuery } = realmContext;
 
 export default function GroupModal (
@@ -64,14 +65,17 @@ export default function GroupModal (
     // const currentUserStat = useObject('UserStat', customUserData?.userId);
     const currentUserStat = useQuery('UserStat').filtered("userId == $0", customUserData?.userId)[0];
 
-
     const addGroup = useCallback((farmerData, realm) =>{
     const {
+        operationalStatus,
         type, 
         name, 
         address, 
+        creationYear,
+        legalStatus,
         affiliationYear,
-        members,
+        numberOfMembers,
+        assets,
         manager,
         licence,
         nuit,
@@ -80,15 +84,20 @@ export default function GroupModal (
     realm.write(async ()=>{
         const newGroup = await realm.create('Group', {
             _id: uuidv4(),
+            operationalStatus,
             type,
             name,
+            creationYear,
+            legalStatus,
             affiliationYear,
             address,
-            members,
+            numberOfMembers,
+            assets,
             manager,
             licence,
             nuit,
             userDistrict: customUserData?.userDistrict,
+            userProvince: customUserData?.userProvince,
             userId: customUserData?.userId,
             userName: customUserData?.name,
         })
@@ -128,7 +137,9 @@ export default function GroupModal (
 
 
   return (
-  <>
+    <View
+        style={{ flex: 1, }}
+    >
     <Modal
         visible={modalVisible}
         animationType="slide"
@@ -168,7 +179,7 @@ export default function GroupModal (
             contentContainerStyle={{
                 flex: 1, 
                 justifyContent: 'center', 
-                minHeight: '100%',
+                minHeight: '140%',
                 paddingVertical: 15,
             }}
         >
@@ -210,60 +221,12 @@ export default function GroupModal (
                     <Text style={styles.values}>
                         {farmerData?.name} ({farmerData?.type})
                     </Text>
+                    <Text style={styles.values}>
+                        {farmerData?.operationalStatus ? 'Activo': 'Inactivo'} 
+                    </Text>
                 </Box>
             </Box>
         </Stack>
-
-
-        <CustomDivider
-            marginVertical="1"
-            thickness={1}
-            bg="grey"
-        />
-
-    <Stack direction="row" w="100%" my="1">
-        <Box w="40%">
-            <Text style={styles.keys}>Membros</Text>
-        </Box>
-        <Box w="60%">
-            <Box>
-                <Text style={styles.values}>
-                    {farmerData.members?.women} (Mulheres)
-                </Text>
-            </Box>
-            <Box>
-                <Text style={styles.values}>
-                    {farmerData.members?.total - farmerData.members?.women} (Homens)
-                </Text>
-            </Box>
-            <Box>
-                <Text style={styles.values}>________</Text>
-                <Text style={styles.values}>
-                    {farmerData.members?.total} (Total)
-                </Text>
-            </Box>
-        </Box>
-    </Stack>
-
-
-        <CustomDivider
-            marginVertical="1"
-            thickness={1}
-            bg="grey"
-        />
-
-    <Stack direction="row" w="100%" my="1">
-        <Box w="40%">
-            <Text style={styles.keys}>Ano de {farmerData?.type?.includes('Grupo') ? "criação" : "legalização"}</Text>
-        </Box>
-        <Box w="60%">
-            <Box>
-                <Text style={styles.values}>
-                    {farmerData?.affiliationYear}
-                </Text>
-            </Box>
-        </Box>
-    </Stack>
 
 
     <CustomDivider
@@ -272,21 +235,111 @@ export default function GroupModal (
         bg="grey"
     />
 
-        <Stack direction="row" w="100%" my="1">
+    <Stack direction="row" w="100%" my="1">
         <Box w="40%">
-            <Text style={styles.keys}>Documentos:</Text>
+            <Text style={styles.keys}>Finalidade:</Text>
+        </Box>
+        <Box w="60%" style={styles.values}>
+            <Box>
+                {
+                    farmerData?.assets?.map((asset, index)=>(
+                        <Text key={index} style={styles.values}>
+                            - {asset?.subcategory} 
+                        </Text>
+                    ))
+                }
+                {/* <Text style={styles.values}>
+                    {farmerData?.operationalStatus} 
+                </Text> */}
+            </Box>
+        </Box>
+    </Stack>
+
+    <CustomDivider
+        marginVertical="1"
+        thickness={1}
+        bg="grey"
+    />
+
+    <Stack direction="row" w="100%" my="1">
+        <Box w="40%">
+            <Text style={styles.keys}>Membros</Text>
         </Box>
         <Box w="60%">
             <Box>
                 <Text style={styles.values}>
-                    {farmerData?.nuit ? farmerData?.nuit + ` (NUIT)` : 'Nenhum (NUIT)'} 
+                    {farmerData.numberOfMembers?.women} (Mulheres)
                 </Text>
+            </Box>
+            <Box>
                 <Text style={styles.values}>
-                    {farmerData?.licence ? farmerData?.licence + ` (Licença/Alvará)` : 'Nenhum (Licença/Alvará)'} 
+                    {farmerData.numberOfMembers?.total - farmerData.numberOfMembers?.women} (Homens)
+                </Text>
+            </Box>
+            <Box>
+                <Text style={styles.values}>________</Text>
+                <Text style={styles.values}>
+                    {farmerData.numberOfMembers?.total} (Total)
                 </Text>
             </Box>
         </Box>
     </Stack>
+
+
+        <CustomDivider
+            marginVertical="1"
+            thickness={1}
+            bg="grey"
+        />
+
+    <Stack direction="row" w="100%" my="1">
+        <Box w="40%">
+            <Text style={styles.keys}>Estado de legalização</Text>
+        </Box>
+        <Box w="60%">
+            <Box>
+                <Text style={styles.values}>
+                    {farmerData?.legalStatus}
+                </Text>
+                <Text style={styles.values}>
+                    {farmerData?.creationYear} (an de criação)
+                </Text>
+                {
+                    farmerData?.legalStatus === groupAffiliationStatus.affiliated &&
+                    <Text style={styles.values}>
+                        {farmerData?.affiliationYear} (ano de legalização)
+                    </Text>
+                }
+            </Box>
+        </Box>
+    </Stack>
+
+
+{   farmerData?.legalStatus === groupAffiliationStatus.affiliated &&
+    <>
+        <CustomDivider
+            marginVertical="1"
+            thickness={1}
+            bg="grey"
+        />
+
+        <Stack direction="row" w="100%" my="1">
+            <Box w="40%">
+                <Text style={styles.keys}>Documentos:</Text>
+            </Box>
+            <Box w="60%">
+                <Box>
+                    <Text style={styles.values}>
+                        {farmerData?.nuit ? farmerData?.nuit + ` (NUIT)` : 'Nenhum (NUIT)'} 
+                    </Text>
+                    <Text style={styles.values}>
+                        {farmerData?.licence ? farmerData?.licence + ` (Licença/Alvará)` : 'Nenhum (Licença/Alvará)'} 
+                    </Text>
+                </Box>
+            </Box>
+        </Stack>
+    </>
+}
 
 
     <CustomDivider
@@ -382,7 +435,7 @@ export default function GroupModal (
     </ScrollView>
 
       </Modal>
-    </>
+    </View>
 
   )
 }

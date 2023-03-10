@@ -15,7 +15,7 @@ const DuplicatesAlertItem = ({ item })=>{
 
   return (
     <TouchableOpacity
-      style={{ marginVertical: 20, }}
+      style={{ marginBottom: 10, }}
       onPress={()=>{
         navigation.navigate('Farmer', {
           ownerId: item._id,
@@ -26,21 +26,24 @@ const DuplicatesAlertItem = ({ item })=>{
       style={{ 
         height: 120, 
         width: '100%',
-        backgroundColor: COLORS.ghostwhite,
-        borderRadius: 10,
+        borderTopColor: COLORS.second,
+        borderTopWidth: 10,
+        borderTopEndRadius: 10,
+        borderTopLeftRadius: 10,
         borderColor: COLORS.main,
-        borderWidth: 3,
+        // borderWidth: 3,
+        shadowColor: COLORS.main,
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
+
+        elevation: 3,
         flexDirection: 'row',
        }}
     >
-      {/* <Avatar 
-        size={150}
-        // rounded
-        title={getInitials(item?.names?.surname)}
-        containerStyle={{ backgroundColor: COLORS.grey }}
-        source={{ uri: item?.image ? item?.image : 'htt://localhost/not-set-yet' }}
-      /> */}
-
       <Box
         w="35%"
       >
@@ -61,8 +64,6 @@ const DuplicatesAlertItem = ({ item })=>{
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            // borderRadius: 100,
-            // borderWidth: 1,
             backgroundColor: COLORS.lightgrey,
             width: '100%',
             height: '100%',
@@ -72,7 +73,6 @@ const DuplicatesAlertItem = ({ item })=>{
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            // borderRadius: 100,
             borderWidth: 1,
             borderColor: COLORS.lightgrey,
             width: '100%',
@@ -96,7 +96,6 @@ const DuplicatesAlertItem = ({ item })=>{
           alignItems: 'center',
           padding: 5,
          }}
-        // px={"4"}
       >
         <Text
           style={{
@@ -115,143 +114,6 @@ const DuplicatesAlertItem = ({ item })=>{
       </Box>
     </View>
   </TouchableOpacity>
-  )
-
-//   return (
-
-//       <TouchableOpacity
-//         onPress={()=>{
-//           navigation.navigate('Farmer', {
-//             ownerId: item._id,
-//           })
-//         }}
-//       >
-//         <Alert max="100%" status="info" my={2}
-//           style={{ borderRadius: 10, }}
-//         >
-//           <VStack space={1} flexShrink={1} w="100%">
-//             {/* <HStack flexShrink={1} space={2} alignItems="center" justifyContent="space-between"> */}
-//               {/* <HStack flexShrink={1} space={2} alignItems="center"> */}
-//                 {/* <Alert.Icon /> */}
-
-//                 <Avatar 
-//                     size={150}
-//                     // rounded
-//                     title={getInitials(item?.names?.surname)}
-//                     containerStyle={{ backgroundColor: COLORS.grey }}
-//                     source={{ uri: item?.image ? item?.image : 'htt://localhost/not-set-yet' }}
-//                 />
-
-
-//                 {/* <Text 
-//                 style={{
-//                   fontSize: 20,
-//                   color: COLORS.main,
-//                   fontFamily: 'JosefinSans-Bold',
-//                 }}
-//                 >
-//                   {item?.names?.otherNames}{' '}{item?.names?.surname}
-//                 </Text> */}
-//               {/* </HStack> */}
-//             {/* </HStack> */}
-//             <HStack flexShrink={1} space={1} alignItems="center">
-//               <Box w="30%">
-//               <Text 
-//                 style={{
-//                   fontSize: 16,
-//                   fontFamily: 'JosefinSans-Regular',
-//                 }}
-//               >
-//                 Nascimento: 
-//               </Text>
-//               </Box>
-//               <Box w="70%">
-//               <Text  
-//                 style={{
-//                   fontSize: 16,
-//                   fontFamily: 'JosefinSans-Regular',
-//                 }}
-//               >              
-//                 {new Date(item?.birthDate).getDay()}/{months[new Date(item?.birthDate).getMonth()]}/{new Date(item?.birthDate).getFullYear()}
-//               </Text>
-//               </Box>
-//             </HStack>
-
-//             <HStack 
-//             flexShrink={1} 
-//             space={1} 
-//             alignItems="center">
-//               <Box w="30%">
-//               <Text 
-//                 style={{
-//                   fontSize: 14,
-//                   fontFamily: 'JosefinSans-Regular',
-//                 }}
-//               >
-//                 Residência: 
-//               </Text>
-//               </Box>
-//               <Box w="70%">
-// { 
-// item?.address?.village !== '' &&
-//              <Text 
-//                 style={{
-//                   fontSize: 14,
-//                   fontFamily: 'JosefinSans-Regular',
-//                 }}
-//                >
-//                 {item?.address?.village}
-//               </Text>
-// }
-// { item?.address?.adminPost &&
-//              <Text 
-//                 style={{
-//                   fontSize: 14,
-//                   fontFamily: 'JosefinSans-Regular',
-//                 }}
-//                >
-//                 {item?.address?.adminPost}
-//               </Text>
-// }
-// { item?.address?.district &&
-//               <Text 
-//                 style={{
-//                   fontSize: 14,
-//                   fontFamily: 'JosefinSans-Regular',
-//                 }}
-//                >
-//                 {item?.address?.district}
-//               </Text>
-// }
-//               </Box>
-//             </HStack>
-
-//             <HStack flexShrink={1} space={1} alignItems="center">
-//               <Box w="30%">
-//               <Text 
-//                 style={{
-//                   fontSize: 14,
-//                   fontFamily: 'JosefinSans-Regular',
-//                 }}
-//               >
-//                 Registo: 
-//               </Text>
-//               </Box>
-//               <Box w="70%">
-//               <Text 
-//                 style={{
-//                   fontSize: 14,
-//                   fontFamily: 'JosefinSans-Regular',
-//                 }}
-//                 >
-//                 {new Date(item?.createdAt).getDate()}/{months[new Date(item?.createdAt).getMonth()]}/{new Date(item?.createdAt).getFullYear()} (por {item?.userName ? item?.userName  : 'usuario'})
-//               </Text>
-//               </Box>
-//             </HStack>
-//           </VStack>
-//         </Alert>
-//     </TouchableOpacity>
-// )
-  }
+  )}
 
 export default DuplicatesAlertItem;

@@ -6,6 +6,7 @@ import { Text, SafeAreaView, ScrollView, TextInput, View } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
 import { Icon, Button, CheckBox } from '@rneui/themed';
+import { MultipleSelectList  } from 'react-native-dropdown-select-list';
 
 import { CustomInput } from '../../components/Inputs/CustomInput';
 import villages from '../../consts/villages';
@@ -15,9 +16,12 @@ import styles from './styles';
 import { fullYears, getFullYears, localeDateService, useDatepickerState } from '../../helpers/dates';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { groups, institutions } from '../../consts/farmerTypes';
+import { groupPurposes } from '../../consts/groupPurposes';
 
 
 import { realmContext } from '../../models/realmContext';
+import COLORS from '../../consts/colors';
+import { groupAffiliationStatus } from '../../consts/groupAffiliationStatus';
 const {useRealm} = realmContext;
 
 export default function GroupFarmerForm({ 
@@ -30,12 +34,124 @@ export default function GroupFarmerForm({
     groupMembersNumber, setGroupMembersNumber, groupWomenNumber, setGroupWomenNumber,
     errors, setErrors, 
     selectedAddressAdminPosts,
+    groupGoals, setGroupGoals,
+    groupCreationYear, setGroupCreationYear,
+    groupLegalStatus, setGroupLegalStatus,
+    isGroupActive, setIsGroupActive,
+    isGroupInactive, setIsGroupInactive,
 }) {
         
   return (
 
     <Box px="3" my="6">
         <Box w="100%" alignItems="center">
+            <Box w="100%">
+                {/* <Text
+                    style={{
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Bold',
+                        color: COLORS.grey,
+                        paddingHorizontal: 15,
+                    }}
+                >Este grupo é...</Text> */}
+             <FormControl isRequired my="1" isInvalid={'operationalStatus' in errors}>
+            <FormControl.Label>                
+                <Text
+                    style={{
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Regular',
+                        color: COLORS.grey,
+                        paddingHorizontal: 15,
+                    }}
+                >Este grupo é...</Text>
+            </FormControl.Label>
+            <Stack  direction="row" mx="3" w="100%">
+                <Box w="50%" px="1">
+                <CheckBox
+                        center
+                        fontFamily = 'JosefinSans-Italic'
+                        containerStyle={{
+                            backgroundColor: COLORS.ghostwhite,
+                        }}
+                        textStyle={{
+                            fontWeight: '120',
+                            color: COLORS.main,
+                        }}
+                        title="Activo"
+                        checked={isGroupActive}
+                        checkedIcon={
+                            <Icon
+                                name="check-box"
+                                color={COLORS.main}
+                                size={30}
+                                iconStyle={{ marginRight: 1 }}
+                            />
+                        }
+                        uncheckedIcon={
+                            <Icon
+                                name="radio-button-unchecked"
+                                color={COLORS.main}
+                                size={30}
+                                iconStyle={{ marginRight: 1 }}
+                            />
+                        }
+                        onPress={() => {
+                            setIsGroupInactive(false);
+                            setIsGroupActive(true)
+                        
+                        }}
+                        />
+                </Box>
+                <Box w="50%" px="1">
+                    <CheckBox
+                        center
+                        fontFamily = 'JosefinSans-Italic'
+                        containerStyle={{
+                            backgroundColor: COLORS.ghostwhite,
+                        }}
+                        textStyle={{
+                            
+                            fontWeight: '120',
+                            color: COLORS.main,
+                        }}
+                        title="Inactivo"
+                        checked={isGroupInactive}
+                        checkedIcon={
+                            <Icon
+                                name="check-box"
+                                color={COLORS.main}
+                                size={30}
+                                iconStyle={{ marginRight: 1 }}
+                            />
+                        }
+                        uncheckedIcon={
+                            <Icon
+                                name="radio-button-unchecked"
+                                color={COLORS.main}
+                                size={30}
+                                iconStyle={{ marginRight: 1 }}
+                            />
+                        }
+                        onPress={() => {
+                            setIsGroupInactive(true);
+                            setIsGroupActive(false);                        
+                        }}
+                        />
+                    </Box>
+                </Stack>    
+                {
+                'operationalStatus' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.operationalStatus}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+                }
+                </FormControl>
+
+            </Box>
+
+
+
             <Stack direction="row" mx="3" w="100%">
             <Box w="50%" px="1">
                 <FormControl isRequired my="3" isInvalid={'groupType' in errors}>
@@ -53,7 +169,7 @@ export default function GroupFarmerForm({
                         mt={1}
                         dropdownCloseIcon={groupType 
                                             ? <Icon name="close" size={25} color="grey" onPress={()=>setGroupType('')} /> 
-                                            : <Icon size={25} name="arrow-drop-down" color="#005000" />
+                                            : <Icon size={45} name="arrow-drop-down" color={COLORS.main} />
                                         }
                         onValueChange={newGroupType => {
                             setErrors((prev)=>({...prev, groupType: ''}));
@@ -82,7 +198,7 @@ export default function GroupFarmerForm({
                         width="100%"
                         isDisabled={groupType === '' ? true : false}
                         autoCapitalize="words"
-                        placeholder="Designação do grupo"
+                        placeholder="Nome do grupo"
                         value={groupName}
                         onChangeText={newGroupName=>{
                             setErrors(prev=>({...prev, groupName: ''}))
@@ -153,10 +269,191 @@ export default function GroupFarmerForm({
         </Stack>
 
 
+
+
+        <Stack direction="row" mx="3" w="100%">
+        <Box w="100%" px="1" my="2">
+        <FormControl  isInvalid={'groupGoals' in errors} isRequired>
+            <FormControl.Label>Finalidades de {!groupType ? 'Grupo' : groupType }</FormControl.Label>
+                <MultipleSelectList
+                    setSelected={(goal)=>{
+                        setErrors(prev=>({...prev, groupGoals: ''}));
+                        setGroupGoals(goal);
+                    }}
+                    data={groupPurposes}
+                    placeholder="Finalidade de grupo"
+                    save="value"
+                    label="Finalidade de grupo"
+                    arrowicon={
+                        <Icon 
+                            size={45} 
+                            name="arrow-drop-down" 
+                            color={COLORS.main} 
+                            />
+                        }
+                        closeicon={
+                            <Icon 
+                            name="close" 
+                            size={20} 
+                            color="grey" 
+                            />
+                    }
+                    fontFamily='JosefinSans-Regular'
+                    dropdownTextStyles={{
+                        fontSize: 18,
+                    }}
+                    inputStyles={{
+                        fontSize: 16,
+                        color: '#A8A8A8',
+                    }}
+                    boxStyles={{
+                        borderRadius: 4,
+                        minHeight: 55,
+                    }}
+                />
+            {
+            'groupGoals' in errors 
+            ? <FormControl.ErrorMessage 
+            leftIcon={<Icon name="error-outline" size={16} color="red" />}
+            _text={{ fontSize: 'xs'}}>{errors?.groupGoals}</FormControl.ErrorMessage> 
+            : <FormControl.HelperText></FormControl.HelperText>
+            }
+        </FormControl>
+        {/* </Box>
+        <Box w="50%" px="1" my="2"> */}
+            {/* <FormControl isInvalid={'groupWomenNumber' in errors} isRequired>
+                <FormControl.Label>Total de mulheres</FormControl.Label>
+                <CustomInput
+                    width="100%"
+                    type="number"
+                    placeholder="Número de mulheres"
+                    textAlign={'center'}
+                    isDisabled={groupMembersNumber === '' ? true : false}
+                    value={groupWomenNumber}
+                    keyboardType="numeric"
+                    onChangeText={womenNumber=>{
+                        setErrors((prev)=>({...prev, groupWomenNumber: ''}));
+                        setGroupWomenNumber(womenNumber)
+                    }}
+                />
+                {
+                'groupWomenNumber' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.groupWomenNumber}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+                }
+            </FormControl> */}
+        </Box>
+        </Stack>
+
+
         <Stack direction="row" mx="3" w="100%">
             <Box w="50%" px="1">
+                <FormControl isRequired my="1" isInvalid={'groupCreationYear' in errors}>
+                    <FormControl.Label>Ano de criação</FormControl.Label>
+                    <Select
+                        selectedValue={groupCreationYear}
+                        accessibilityLabel="Escolha o ano"
+                        placeholder="Escolha o ano"
+                        minHeight={55}
+                        _selectedItem={{
+                            bg: 'teal.600',
+                            fontSize: 'lg',
+                            endIcon: <CheckIcon size="5" />,
+                        }}
+                      dropdownCloseIcon={groupCreationYear 
+                                        ? <Icon 
+                                            name="close" 
+                                            size={20} 
+                                            color="grey" 
+                                            onPress={()=>setGroupCreationYear('')} 
+                                        /> 
+                                        : <Icon 
+                                            size={45} 
+                                            name="arrow-drop-down" 
+                                            color={COLORS.main} 
+                                        />
+                                    }
+                        mt={1}
+                        onValueChange={newYear => {
+                            setErrors((prev)=>({...prev, groupCreationYear: ''}));
+                            setGroupCreationYear(newYear);
+                        }}
+                    >
+                    {
+                        getFullYears()?.map((year, index)=>(
+                            <Select.Item key={index} label={`${year}`} value={year} />
+                        ))
+                    }
+                    </Select>
+                {
+                'groupCreationYear' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.groupCreationYear}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+                }
+                </FormControl>
+            </Box>
+            <Box w="50%" px="1">
+                <FormControl isRequired my="1" isInvalid={'groupLegalStatus' in errors}>
+                    <FormControl.Label>Situação Legal</FormControl.Label>
+                    <Select
+                        selectedValue={groupLegalStatus}
+                        accessibilityLabel="Escolha a situação"
+                        placeholder="Escolha a situação"
+                        minHeight={55}
+                        _selectedItem={{
+                            bg: 'teal.600',
+                            fontSize: 'lg',
+                            endIcon: <CheckIcon size="5" />,
+                        }}
+                      dropdownCloseIcon={groupLegalStatus
+                                        ? <Icon 
+                                            name="close" 
+                                            size={20} 
+                                            color="grey" 
+                                            onPress={()=>setGroupLegalStatus('')} 
+                                        /> 
+                                        : <Icon 
+                                            size={45} 
+                                            name="arrow-drop-down" 
+                                            color={COLORS.main} 
+                                        />
+                                    }
+                        mt={1}
+                        onValueChange={status => {
+                            setErrors((prev)=>({...prev, groupLegalStatus: ''}));
+                            setGroupLegalStatus(status);
+                        }}
+                    >
+                        <Select.Item label={groupAffiliationStatus.notAffiliated} value={groupAffiliationStatus.notAffiliated} />
+                        <Select.Item label={groupAffiliationStatus.pendingAffiliation} value={groupAffiliationStatus.pendingAffiliation} />
+                        <Select.Item label={groupAffiliationStatus.affiliated} value={groupAffiliationStatus.affiliated} />
+                    </Select>
+                {
+                'groupLegalStatus' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.groupLegalStatus}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+                }
+                </FormControl>
+            </Box>
+        </Stack>
+
+
+
+
+{
+    groupLegalStatus === groupAffiliationStatus.affiliated &&
+        <>
+        <Stack direction="row" mx="3" w="100%">
+
+            <Box w="50%" px="1">
                 <FormControl isRequired my="1" isInvalid={'groupAffiliationYear' in errors}>
-                    <FormControl.Label>Ano de {groupType?.includes('Grupo') ? "criação" : "legalização"}</FormControl.Label>
+                    <FormControl.Label>Ano de legalização</FormControl.Label>
                     <Select
                         selectedValue={groupAffiliationYear}
                         accessibilityLabel="Escolha o ano"
@@ -170,14 +467,14 @@ export default function GroupFarmerForm({
                       dropdownCloseIcon={groupAffiliationYear 
                                         ? <Icon 
                                             name="close" 
-                                            size={25} 
+                                            size={20} 
                                             color="grey" 
                                             onPress={()=>setGroupAffiliationYear('')} 
                                         /> 
                                         : <Icon 
-                                            size={25} 
-                                            name="arrow-drop-down" 
-                                            color="#005000" 
+                                        size={45} 
+                                        name="arrow-drop-down" 
+                                            color={COLORS.main} 
                                         />
                                     }
                         mt={1}
@@ -201,14 +498,63 @@ export default function GroupFarmerForm({
                 }
                 </FormControl>
             </Box>
-            <Box w="50%" px="1">
 
+            <Box w="50%" px="1" my="2">
+                <FormControl  isInvalid={'groupOperatingLicence' in errors} isRequired>
+                    <FormControl.Label>N°. de Alvará</FormControl.Label>
+                    <CustomInput
+                        width="100%"
+                        // type="telephoneNumber"
+                        placeholder="Alvará"
+                        // keyboardType="numeric"
+                        // isDisabled={groupType === '' ? true : false}
+                        value={groupOperatingLicence}
+                        onChangeText={newOperatingLicence=>{
+                            setErrors((prev)=>({...prev, groupOperatingLicence: ''}))                        
+                            setGroupOperatingLicence(newOperatingLicence);
+                        }}
+                    />
+                    {
+                        'groupOperatingLicence' in errors 
+                    ? <FormControl.ErrorMessage 
+                    leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                    _text={{ fontSize: 'xs'}}>{errors?.groupOperatingLicence}</FormControl.ErrorMessage> 
+                    : <FormControl.HelperText></FormControl.HelperText>
+                    }
+                </FormControl>
             </Box>
+
         </Stack>
 
     <Stack direction="row" mx="3" w="100%">
+
         <Box w="50%" px="1" my="2">
-        <FormControl  isInvalid={'groupOperatingLicence' in errors}>
+            <FormControl isInvalid={'groupNuit' in errors} isRequired>
+                <FormControl.Label>NUIT</FormControl.Label>
+                <CustomInput
+                    width="100%"
+                    type="number"
+                    placeholder="NUIT"
+                    value={groupNuit}
+                    // isDisabled={groupType === '' ? true : false}
+                    keyboardType="numeric"
+                    onChangeText={newNuit=>{
+                        setErrors((prev)=>({...prev, groupNuit: ''}));
+                        setGroupNuit(newNuit)
+                    }}
+                    />
+                {
+                    'groupNuit' in errors 
+                    ? <FormControl.ErrorMessage 
+                    leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                    _text={{ fontSize: 'xs'}}>{errors?.groupNuit}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+                }
+            </FormControl>
+        </Box>
+
+        <Box w="50%" px="1" my="2">
+        {/* <FormControl  isInvalid={'groupOperatingLicence' in errors}>
             <FormControl.Label>N°. de Alvará</FormControl.Label>
             <CustomInput
                 width="100%"
@@ -223,40 +569,18 @@ export default function GroupFarmerForm({
                 }}
             />
             {
-            'groupOperatingLicence' in errors 
+                'groupOperatingLicence' in errors 
             ? <FormControl.ErrorMessage 
             leftIcon={<Icon name="error-outline" size={16} color="red" />}
             _text={{ fontSize: 'xs'}}>{errors?.groupOperatingLicence}</FormControl.ErrorMessage> 
             : <FormControl.HelperText></FormControl.HelperText>
             }
-        </FormControl>
+        </FormControl> */}
         </Box>
-        <Box w="50%" px="1" my="2">
-            <FormControl isInvalid={'groupNuit' in errors}>
-                <FormControl.Label>NUIT</FormControl.Label>
-                <CustomInput
-                    width="100%"
-                    type="number"
-                    placeholder={groupType ? `NUIT da ${groupType}` : `NUIT do grupo`}
-                    value={groupNuit}
-                    isDisabled={groupType === '' ? true : false}
-                    keyboardType="numeric"
-                    onChangeText={newNuit=>{
-                        setErrors((prev)=>({...prev, groupNuit: ''}));
-                        setGroupNuit(newNuit)
-                    }}
-                />
-                {
-                'groupNuit' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.groupNuit}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-                }
-            </FormControl>
-        </Box>
-        </Stack>
 
+        </Stack>
+    </>
+}
         <CustomDivider
             marginVertical="2"
             thickness={2}
@@ -287,7 +611,7 @@ export default function GroupFarmerForm({
                     }}
                     dropdownCloseIcon={groupAdminPost 
                                     ? <Icon name="close" size={25} color="grey" onPress={()=>setGroupAdminPost('')} /> 
-                                    : <Icon size={25} name="arrow-drop-down" color="#005000" />
+                                    : <Icon size={45} name="arrow-drop-down" color={COLORS.main} />
                                 }
                     mt={1}
                     onValueChange={newAdminPost => {
@@ -325,7 +649,7 @@ export default function GroupFarmerForm({
                     }}
                     dropdownCloseIcon={groupVillage
                                     ? <Icon name="close" size={25} color="grey" onPress={()=>setGroupVillage('')} /> 
-                                    : <Icon size={25} name="arrow-drop-down" color="#005000" />
+                                    : <Icon size={45} name="arrow-drop-down" color={COLORS.main} />
                                 }
                     mt={1}
                     onValueChange={newVillage => setGroupVillage(newVillage)}

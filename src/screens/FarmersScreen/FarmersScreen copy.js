@@ -38,7 +38,6 @@ const districtSingleFarmers = 'districtSingleFarmers';
 const districtGroupFarmers = 'districtGroupFarmers';
 const districtInstitutionFarmers = 'districtInstitutionFarmers';
 const districtFarmlands = 'districtFarmlands';
-const serviceProviderSubs = 'serviceProviderSubs';
 
 const provincialStats = 'provincialStats';
 
@@ -50,7 +49,6 @@ export default function FarmersScreen({ route, navigation }) {
   let customUserData = user.customData;
 
   const farmers = realm.objects('Actor').filtered("userDistrict == $0", customUserData?.userDistrict);
-  const serviceProviders = realm.objects('SprayingServiceProvider').filtered("userDistrict == $0", customUserData?.userDistrict);
   const groups = realm.objects('Group').filtered("userDistrict == $0", customUserData?.userDistrict);
   const institutions = realm.objects('Institution').filtered("userDistrict == $0", customUserData?.userDistrict);
   const farmlands = realm.objects('Farmland').filtered("userDistrict == $0" , customUserData?.userDistrict);
@@ -66,13 +64,14 @@ export default function FarmersScreen({ route, navigation }) {
     role: customUserData?.role,
   };
 
-  const individualsList = customizeItem(farmers, farmlands, serviceProviders, customUserData, 'Indivíduo')
-  const groupsList = customizeItem(groups, farmlands, serviceProviders, customUserData, 'Grupo')
-  const institutionsList = customizeItem(institutions, farmlands, serviceProviders, customUserData, 'Instituição');
+  const individualsList = customizeItem(farmers, farmlands, customUserData, 'Indivíduo')
+  const groupsList = customizeItem(groups, farmlands, customUserData, 'Grupo')
+  const institutionsList = customizeItem(institutions, farmlands, customUserData, 'Instituição');
   const filteredStats = stats?.filter(stat => (stat.userDistrict !== 'NA'));
 
 
-  // // ---------------------------------------------------------------------------- 
+  
+  // ---------------------------------------------------------------------------- 
   const listStatsByDistrict = (stats)=>{
     // get the array of all the districts in which users are living
     // to create a SectionList where each item has title and data properties
@@ -93,12 +92,12 @@ export default function FarmersScreen({ route, navigation }) {
 
   const statsByDistrict = listStatsByDistrict(stats);
   
-  // //  ---------------------------------------------------------------------------------
+  //  ---------------------------------------------------------------------------------
 
 
 
-  // // This state will be used to toggle between showing all items and only showing the current user's items
-  // // This is initialized based on which subscription is already active
+  // This state will be used to toggle between showing all items and only showing the current user's items
+  // This is initialized based on which subscription is already active
   const [showAll, setShowAll] = useState(
     realm.subscriptions.findByName(districtSingleFarmers)
     ||
@@ -109,7 +108,7 @@ export default function FarmersScreen({ route, navigation }) {
     realm.subscriptions.findByName(districtFarmlands)
   );
  
-  // // merge the three arrays of farmers and sort the items by createdAt 
+  // merge the three arrays of farmers and sort the items by createdAt 
   let farmersList = [];
 
   if (individualsList.length > 0){
@@ -197,14 +196,6 @@ export default function FarmersScreen({ route, navigation }) {
             {name: districtFarmlands},
           );
         });
-
-        realm.subscriptions.update(mutableSubs => {
-          mutableSubs.removeByName(serviceProviderSubs);
-          mutableSubs.add(
-            realm.objects('SprayingServiceProvider').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
-            {name: serviceProviderSubs},
-          );
-        });
         
     }
     else if (customUserData?.role === roles.provincialManager) {
@@ -288,8 +279,6 @@ export default function FarmersScreen({ route, navigation }) {
         backgroundColor: 'ghostwhite',
       }}
     >
-
-
 {/* 
     Show this if the user is a provincial manager
 */}

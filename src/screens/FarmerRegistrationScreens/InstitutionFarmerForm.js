@@ -16,6 +16,7 @@ import { groups, institutions, privateInstitutions, publicInstitutions } from '.
 
 
 import { realmContext } from '../../models/realmContext';
+import COLORS from '../../consts/colors';
 const {useRealm} = realmContext;
 
 export default function InstitutionFarmerForm({ 
@@ -27,12 +28,14 @@ export default function InstitutionFarmerForm({
     institutionLicence, setInstitutionLicence,
     errors, setErrors,
     selectedAddressAdminPosts, setSelectedAddressAdminPosts, 
+    isInstitutionPrivate, isInstitutionPublic,
+    setIsInstitutionPrivate, setIsInstitutionPublic,
  }) {
 
        
   return (
  <Box px="3" my="6">
-        <Stack  direction="row" mx="3" w="100%">
+        {/* <Stack  direction="row" mx="3" w="100%">
             <Box w="20%" px="1">
 
             </Box>
@@ -71,9 +74,121 @@ export default function InstitutionFarmerForm({
                     onPress={() => setIsPrivateInstitution(!isPrivateInstitution)}
                 />
             </Box>
-        </Stack>
+        </Stack> */}
 
     <Box w="100%" alignItems="center">
+
+    <Box w="100%">
+                {/* <Text
+                    style={{
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Bold',
+                        color: COLORS.grey,
+                        paddingHorizontal: 15,
+                    }}
+                >Este grupo é...</Text> */}
+             <FormControl isRequired my="1" isInvalid={'isPrivateInstitution' in errors}>
+            <FormControl.Label>                
+                <Text
+                    style={{
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Regular',
+                        color: COLORS.grey,
+                        paddingHorizontal: 15,
+                    }}
+                >Esta instituição é...</Text>
+            </FormControl.Label>
+            <Stack  direction="row" mx="3" w="100%">
+                <Box w="50%" px="1">
+                <CheckBox
+                        center
+                        fontFamily = 'JosefinSans-Italic'
+                        containerStyle={{
+                            backgroundColor: COLORS.ghostwhite,
+                        }}
+                        textStyle={{
+                            fontWeight: '120',
+                            color: COLORS.main,
+                        }}
+                        title="Privada"
+                        checked={isInstitutionPrivate}
+                        checkedIcon={
+                            <Icon
+                                name="check-box"
+                                color={COLORS.main}
+                                size={30}
+                                iconStyle={{ marginRight: 1 }}
+                            />
+                        }
+                        uncheckedIcon={
+                            <Icon
+                                name="radio-button-unchecked"
+                                color={COLORS.main}
+                                size={30}
+                                iconStyle={{ marginRight: 1 }}
+                            />
+                        }
+                        onPress={() => {
+                            setIsInstitutionPrivate(true);
+                            setIsInstitutionPublic(false)
+                            setIsPrivateInstitution(true);
+                            setInstitutionType('');
+                        }}
+                        />
+                </Box>
+                <Box w="50%" px="1">
+                    <CheckBox
+                        center
+                        fontFamily = 'JosefinSans-Italic'
+                        containerStyle={{
+                            backgroundColor: COLORS.ghostwhite,
+                        }}
+                        textStyle={{
+                            
+                            fontWeight: '120',
+                            color: COLORS.main,
+                        }}
+                        title="Pública"
+                        checked={isInstitutionPublic}
+                        checkedIcon={
+                            <Icon
+                                name="check-box"
+                                color={COLORS.main}
+                                size={30}
+                                iconStyle={{ marginRight: 1 }}
+                            />
+                        }
+                        uncheckedIcon={
+                            <Icon
+                                name="radio-button-unchecked"
+                                color={COLORS.main}
+                                size={30}
+                                iconStyle={{ marginRight: 1 }}
+                            />
+                        }
+                        onPress={() => {
+                            setIsInstitutionPrivate(false);
+                            setIsInstitutionPublic(true);        
+                            setIsPrivateInstitution(false);  
+                            setInstitutionType('');     
+                            setInstitutionLicence('');         
+                        }}
+                        />
+                    </Box>
+                </Stack>    
+                {
+                'isPrivateInstitution' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.isPrivateInstitution}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+                }
+                </FormControl>
+
+            </Box>
+
+
+
             <Stack direction="row" mx="3" w="100%">
             <Box w="50%" px="1">
                 <FormControl isRequired my="3" isInvalid={'institutionType' in errors}>
@@ -84,8 +199,8 @@ export default function InstitutionFarmerForm({
                         placeholder="Escolha uma instituição"
                         minHeight={55}
                         dropdownCloseIcon={institutionType 
-                                            ? <Icon name="close" size={25} color="grey" onPress={()=>setInstitutionType('')} /> 
-                                            : <Icon size={25} name="arrow-drop-down" color="#005000" />
+                                            ? <Icon name="close" size={20} color="grey" onPress={()=>setInstitutionType('')} /> 
+                                            : <Icon size={45} name="arrow-drop-down" color="#005000" />
                                         }
                         _selectedItem={{
                             bg: 'teal.600',
@@ -160,8 +275,8 @@ export default function InstitutionFarmerForm({
                         endIcon: <CheckIcon size="5" />,
                     }}
                     dropdownCloseIcon={institutionAdminPost 
-                                    ? <Icon name="close" size={25} color="grey" onPress={()=>setInstitutionAdminPost('')} /> 
-                                    : <Icon size={25} name="arrow-drop-down" color="#005000" />
+                                    ? <Icon name="close" size={20} color="grey" onPress={()=>setInstitutionAdminPost('')} /> 
+                                    : <Icon size={45} name="arrow-drop-down" color="#005000" />
                                 }
                     mt={1}
                     onValueChange={newAdminPost => {
@@ -197,8 +312,8 @@ export default function InstitutionFarmerForm({
                         endIcon: <CheckIcon size="5" />,
                     }}
                     dropdownCloseIcon={institutionVillage 
-                                    ? <Icon name="close" size={25} color="grey" onPress={()=>setInstitutionVillage('')} /> 
-                                    : <Icon size={25} name="arrow-drop-down" color="#005000" />
+                                    ? <Icon name="close" size={20} color="grey" onPress={()=>setInstitutionVillage('')} /> 
+                                    : <Icon size={45} name="arrow-drop-down" color="#005000" />
                                 }
                     mt={1}
                     onValueChange={newVillage => setInstitutionVillage(newVillage)}
@@ -239,7 +354,7 @@ export default function InstitutionFarmerForm({
         <Stack direction="row" mx="3" w="100%">
         <Box w="50%" px="1" my="2">
         <FormControl  isInvalid={'institutionManagerPhone' in errors}>
-            <FormControl.Label>Tel. do Representante</FormControl.Label>
+            <FormControl.Label>Tel. do Responsável</FormControl.Label>
             <CustomInput
                 width="100%"
                 type="telephoneNumber"
@@ -293,7 +408,7 @@ export default function InstitutionFarmerForm({
         </Box>
         </Stack>
 {
-    (institutionType.includes('Empresa') || institutionType?.includes('Outr'))
+    (institutionType.includes('Empresa') || institutionType?.includes('Outr') || institutionType?.includes('ONG'))
         && 
         (
     

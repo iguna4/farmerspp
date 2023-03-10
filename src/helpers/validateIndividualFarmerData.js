@@ -1,4 +1,6 @@
 
+import { assetTypes } from "../consts/assetTypes";
+import categories from "../consts/categories";
 import { capitalize } from "./capitalize";
 /**
  * 
@@ -54,6 +56,15 @@ const validateIndividualFarmerData = (
     const retrievedDocType = docType;
     const retrievedDocNumber = docNumber;
     const retrievedNuit = nuit; 
+
+    let asset =  {
+        category: categories.farmer.category,
+        subcategory: categories.farmer.subcategories.notSubcategorized,
+        assetType: assetTypes.farmland,
+    }; 
+
+
+
        
     // validating each data and sending back
     // errorMessages if invalid data is found
@@ -169,7 +180,7 @@ const validateIndividualFarmerData = (
         });
         return false;
     }
-    else if (!retrievedDocNumber && retrievedDocType){
+    else if (!retrievedDocNumber && retrievedDocType !== 'Não tem'){
         setErrors({ ...errors,
             docType: 'Número de documento do produtor.',
         });
@@ -196,6 +207,7 @@ const validateIndividualFarmerData = (
             otherNames: retrievedOtherNames, 
         }, 
         isSprayingAgent: retrievedisSprayingAgent,
+        assets: [asset],
         gender: retrievedGender,
         familySize: retrievedFamilySize ? parseInt(retrievedFamilySize) : 0,
         birthDate: retrievedBirthDate, 

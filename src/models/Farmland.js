@@ -7,25 +7,27 @@ export const Farmland = {
     primaryKey: '_id',
     properties: {
         _id: 'string',
-        plantingYear: 'int',
+        farmerId: 'string',
         description: 'string?',
         consociatedCrops: 'string[]',
-        density: 'Density',
-        trees: 'int',
-        usedArea: 'float?',
-        totalArea: 'float?',
-        auditedArea: 'float?',
         extremeCoordinates: 'Coordinates[]',
         middleCoordinates: 'Coordinates?',
-        plantTypes: 'PlantTypes',
-        farmer: 'string',
-        createdAt: { type: 'date', default: Date()},
+        auditedArea: 'float?',
+        totalArea: 'float?',
+        trees: 'int?',
+        
+        blocks: 'FarmlandBlock[]',
+
         userDistrict: 'string?',
+        userProvince: 'string?',
         userId: 'string',
         userName: 'string?',
-        validated: { type: 'string', default: 'pending'},
-        validatedBy: 'string?'
 
+        status: { type: 'string', default: 'pending'},
+        checkedBy: 'string?',
+
+        createdAt: { type: 'date', default: Date()},
+        modifiedAt: { type: 'date', default: Date()},
 
     },
 }

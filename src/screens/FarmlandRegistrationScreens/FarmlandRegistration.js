@@ -1,7 +1,7 @@
 
-import { Text, ScrollView, SafeAreaView,   } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { Icon, Button } from '@rneui/themed';
+import { Text, ScrollView, SafeAreaView, TouchableOpacity  } from 'react-native'
+import React, { useEffect, useState, useCallback } from 'react'
+import { Icon, Button, CheckBox } from '@rneui/themed';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio  } from 'native-base';
 import { MultipleSelectList  } from 'react-native-dropdown-select-list';
 import AwesomeAlert from 'react-native-awesome-alerts';
@@ -20,9 +20,42 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 import SuccessAlert from '../../components/Alerts/SuccessAlert';
 import COLORS from '../../consts/colors';
+import validateFarmlandMainData from '../../helpers/validateFarmlandMainData';
+import { assetTypes } from '../../consts/assetTypes';
+
+import { v4 as uuidv4 } from 'uuid';
+
+import { realmContext } from '../../models/realmContext';
+import { useUser } from '@realm/react';
+import { categorizeFarmer } from '../../helpers/categorizeFarmer';
+import FarmlandBlockRegistration from '../../components/FarmlandBlockRegistration/FarmlandBlockRegistration';
+import categories from '../../consts/categories';
+import validateBlockData from '../../helpers/validateBlockData';
+import CustomDivider from '../../components/Divider/CustomDivider';
+const {useRealm, useQuery, useObject} = realmContext;
 
 
 export default function FarmlandRegistration ({ route, navigation }) {
+    
+    const realm = useRealm();
+    const user = useUser()
+    const customUserData = user?.customData;
+    const [farmlandId, setFarmlandId] = useState('');
+    // const [farmlandMainData, setFarmlandMainData] = useState({ });
+
+    const currentUserStat = useQuery('UserStat').filtered("userId == $0", customUserData?.userId)[0];
+    const farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
+
+    // extract farmland owner id, name from the previous screen
+    const { ownerId, ownerName, flag } = route.params;
+    
+    // go back to the previous screen
+    // if farmerId is undefined
+    if (!ownerId || !flag) {
+        navigation.goBack();
+        return ;
+    }
+    
 
     const [modalVisible, setModalVisible] = useState(false);
     const [isCoordinatesModalVisible, setIsCoordinatesModalVisible] = useState(false);
@@ -33,6 +66,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
     const [description, setDescription] = useState('');
     const [plantingYear, setPlantingYear] = useState('');
     const [trees, setTrees] = useState('');
+    const [blockTrees, setBlockTrees] = useState('');
+    
     const [totalArea, setTotalArea] = useState('');
     const [usedArea, setUsedArea] = useState('');
     const [densityWidth, setDensityWidth] = useState('');
@@ -40,90 +75,347 @@ export default function FarmlandRegistration ({ route, navigation }) {
     const [plantTypes, setPlantTypes] = useState([]);
     const [clones, setClones] = useState([]);
     const [densityMode, setDensityMode] = useState('');
+    const [isDensityModeIrregular, setIsDensityModeIrregular] = useState(false);
+    const [isDensityModeRegular, setIsDensityModeRegular] = useState(false);
     
     const [errorAlert, setErrorAlert] = useState(false);
+    const [refresh, setRefresh] = useState(false);
+
+    // count all blocks associated to the farmland
+    const [blockCount, setBlockCount] = useState(0);
 
     
-    const [farmlandData, setFarmlandData] = useState({});
-    const [farmlandId, setFarmlandId] = useState('');
+    // const [farmland, setFarmland] = useState({});
+
+    // const [blocks, setBlocks] = useState([]);
+    const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 
 
-    // extract farmland owner id, name from the previous screen
-    const { ownerId, ownerName, flag } = route.params;
-
-    // go back to the previous screen
-    // if farmerId is undefined
-    if (!ownerId) {
-        navigation.goBack();
-        return ;
-    }
- 
     // loading activity indicator
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
-    
-    // function called onSubmitting form data
-    const visualizeFarmland = ()=>{
 
-        let farmlandData = {
+    const toggleOverlay = () => {
+        setIsOverlayVisible(!isOverlayVisible);
+      };
+      
+    const visualizeBlockData = ( )=>{
+
+        let blockData = {
             plantingYear, 
-            description, 
-            consociatedCrops, 
-            totalArea,
-            usedArea,
-            trees,
-            densityMode,
-            densityLength,
+            usedArea, 
             densityWidth,
+            densityLength,
+            blockTrees,
             plantTypes,
             clones,
+            isDensityModeIrregular,
+            isDensityModeRegular,
         }
         // if any required data is not validated
         // a alert message is sent to the user   
-        if (!validateFarmlandData(farmlandData, errors, setErrors)) {
+        if (!validateBlockData(blockData, errors, setErrors)) {
+            setErrorAlert(true);
+            return;
+        }
+        // created the validated data object to be passed to the FarmlandModal component
+        let retrievedBlockData = validateBlockData(blockData, errors, setErrors);
+
+        const block = {
+            _id: uuidv4(),
+            plantingYear: retrievedBlockData?.plantingYear,
+            density:  retrievedBlockData?.density,
+            trees: retrievedBlockData?.trees,
+            usedArea: retrievedBlockData?.usedArea,
+            plantTypes: retrievedBlockData?.plantTypes,
+            userName: customUserData?.name,
+            createdAt: new Date(),
+            modifiedAt: new Date(),
+        }
+
+      
+        onAddBlock(block, farmlandId, realm);
+
+
+        setPlantingYear('');
+        setUsedArea('');
+        setBlockTrees('');
+        setClones([]);
+        setPlantTypes([]);
+        setDensityLength('');
+        setDensityWidth('');
+        setIsDensityModeIrregular(false);
+        setIsDensityModeRegular(false);
+
+        toggleOverlay();
+    }
+
+    const deleteBlock = useCallback((farmlandId, realm)=>{
+
+        const foundFarmland = realm.objectForPrimaryKey('Farmland', farmlandId);
+        
+        realm.write(()=>{
+
+            foundFarmland.blocks.pop();
+
+            setRefresh(!refresh);
+
+        });
+
+    }, [realm, farmlandId, farmland]);
+
+    const normalizeBlockList = (list)=>{
+        let count = 0;
+        let newList = list?.map(block=>{
+            block['position'] = count;
+            count += 1;
+            return block;
+        });
+        return newList;
+
+    }
+
+
+
+
+    const onAddBlock = useCallback((block, farmlandId, realm) =>{
+
+        const farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
+        realm.write(()=>{
+            farmland?.blocks?.push(block);
+
+            setBlockCount(prev=>prev+1);
+
+        })
+        setRefresh(!refresh)
+    }, [realm, farmland, farmlandId ]);
+
+    
+    const visualizeFarmlandMainData = (  
+
+        )=>{
+
+        let farmlandMainData = {
+            description, 
+            consociatedCrops, 
+            totalArea,
+            trees,
+        }
+        // if any required data is not validated
+        // a alert message is sent to the user   
+        if (!validateFarmlandMainData(farmlandMainData, errors, setErrors)) {
             setErrorAlert(true)
             return;
         }
         // created the validated data object to be passed to the FarmlandModal component
-        let retrievedFarmlandData = validateFarmlandData(farmlandData, errors, setErrors);
-        // add farmerId property to the object
-        // as it's being passed to FarmlandModal component
-        retrievedFarmlandData['ownerId'] = ownerId;
-        retrievedFarmlandData['flag'] = flag;
+        let retrievedFarmlandMainData = validateFarmlandMainData(farmlandMainData, errors, setErrors);
        
-        setFarmlandData(retrievedFarmlandData);
-        
-        setModalVisible(true);
+        onAddFarmland(retrievedFarmlandMainData, realm)
+
     }
+
+
+    const onAddFarmland = useCallback((farmlandMainData, realm) =>{
+        const {
+            description,
+            consociatedCrops,
+            trees,
+            totalArea,
+        } = farmlandMainData;
+    
+        if (!ownerId) {
+            return {
+                status: 'FAILED',
+                code: 404,
+                message: 'Indica o proprietário desta parcela!',
+            };
+        }
+    
+    
+        let owner;
+        if (flag === 'Indivíduo'){
+            owner = realm.objectForPrimaryKey('Actor', ownerId);
+        }
+        else if (flag === 'Grupo') {
+            owner = realm.objectForPrimaryKey('Group', ownerId);
+        }
+        else if (flag === 'Instituição'){
+            owner = realm.objectForPrimaryKey('Institution', ownerId);
+        }
+    
+        if (!owner) {
+            return {
+                status: 'FAILED',
+                code: 404,
+                message: 'O proprietário desta parcela ainda não foi registado!',
+            };
+        }
+    
+        let newFarmland;
+    
+        realm.write( async ()=>{
+            newFarmland = await realm.create('Farmland', {
+                _id: uuidv4(),
+                description,
+                consociatedCrops,
+                trees,
+                totalArea,
+                farmerId: owner._id,
+                userDistrict: customUserData?.userDistrict,
+                userProvince: customUserData?.userProvince,
+                userId: customUserData?.userId,
+                userName: customUserData?.name,
+            });
+
+            // convert realm object to JS object
+            const farmlandObject = {
+                ...newFarmland,
+            }
+    
+            // set the farmlandId
+            setFarmlandId(newFarmland._id);
+
+            // setFarmland(farmlandObject);
+        });
+    
+        if (flag === 'Indivíduo'){  
+            // categorize by 'comercial' | 'familiar' | 'nao-categorizado'
+            const ownerFarmlands = realm.objects('Farmland').filtered('farmerId == $0', owner._id)
+            const subcategory = categorizeFarmer(ownerFarmlands);
+            let farmlandIds = ownerFarmlands?.map((farmland)=>farmland._id);
+            
+            realm.write(()=>{
+                let isAssetUpdated = false;
+                for (let i = 0; i < owner?.assets?.length; i++) {
+                    if (owner.assets[i].assetType === 'Pomar'){
+                        owner.assets[i].subcategory = subcategory;
+                        owner.assets[i].assets = farmlandIds;
+
+                        // asset is updated
+                        isAssetUpdated = true;
+                    }
+                }
+                // create assets if not found
+                if (!isAssetUpdated) {
+                    const asset = {
+                        assetType: assetTypes.farmland,
+                        category: categories.farmer.category,
+                        subcategory: subcategory,
+                        assets: farmlandIds,
+                    }
+                    owner.assets = [asset]; // add new asset
+                }
+            });
+        }  
+        else if(flag === 'Grupo') {
+
+            const ownerFarmlands = realm.objects('Farmland').filtered('farmerId == $0', owner._id)
+            let farmlandIds = ownerFarmlands?.map((farmland)=>farmland._id);
+            
+            realm.write(()=>{
+                let isAssetUpdated = false;
+                for (let i = 0; i < owner?.assets?.length; i++) {
+                    if (owner.assets[i].assetType === assetTypes.farmland){
+                        owner.assets[i].subcategory = categories.group.subcategories.production;
+                        owner.assets[i].assets = farmlandIds;
+
+                        // asset is updated
+                        isAssetUpdated = true;
+                    }
+                }
+                // create assets if not found
+                if (!isAssetUpdated) {
+                    const asset = {
+                        assetType: assetTypes.farmland,
+                        category: categories.group.category,
+                        subcategory: categories.group.subcategories.production,
+                        assets: farmlandIds,
+                    }
+                    owner.assets = [asset]; // add new asset
+                }
+            });
+
+        }   
+        else if (flag === 'Instituição') {
+            const ownerFarmlands = realm.objects('Farmland').filtered('farmerId == $0', owner._id)
+            let farmlandIds = ownerFarmlands?.map((farmland)=>farmland._id);
+            
+            realm.write(()=>{
+                let isAssetUpdated = false;
+                for (let i = 0; i < owner?.assets?.length; i++) {
+                    if (owner.assets[i].assetType === assetTypes.farmland){
+                        owner.assets[i].subcategory = categories.institution.subcategories.production
+                        owner.assets[i].assets = farmlandIds;
+
+                        // asset is updated
+                        isAssetUpdated = true;
+                    }
+                }
+                // create assets if not found
+                if (!isAssetUpdated) {
+                    const asset = {
+                        assetType: assetTypes.farmland,
+                        category: categories.institution.category,
+                        subcategory: categories.institution.subcategories.production,
+                        assets: farmlandIds,
+                    }
+
+                    owner.assets = [asset]; // add new asset
+                }
+            });
+        }  
+    
+        // update user stat (1 more farmland registered by the user)
+        if(currentUserStat) {
+            realm.write(()=>{
+                currentUserStat.registeredFarmlands = currentUserStat.registeredFarmlands + 1; 
+            })
+        } 
+        else {
+            realm.write(()=>{
+                const newStat = realm.create('UserStat', {
+                    _id: uuidv4(),
+                    userName: customUserData.name,
+                    userId: customUserData.userId,
+                    userDistrict: customUserData.userDistrict,
+                    userProvince: customUserData.userProvince,
+                    userRole: customUserData.role,
+                    registeredFarmlands: 1,
+                });
+            })
+        }    
+        
+    }, [ realm, farmland ]);
+
     
     useEffect(()=>{
         
-    }, [alert, ownerId])
+    }, [ ownerId, farmlandId, ]);
     
     
     useEffect(()=>{
         setLoadingActivityIndicator(true);
-    }, [navigation])
-    
-    
+    }, [navigation]);
+
+   
     return (
     <SafeAreaView 
       style={styles.container}
     >
-    <AwesomeAlert
-        show={errorAlert}
-        showProgress={false}
-        title="Dados Obrigatórios"
-        message="Os campos obrigatórios devem ser BEM preenchidos!"
-        closeOnTouchOutside={true}
-        closeOnHardwareBackPress={false}
-        showCancelButton={false}
-        showConfirmButton={true}
-        confirmText="   OK!   "
-        confirmButtonColor="#DD6B55"
-        onConfirmPressed={() => {
-            setErrorAlert(false);
-        }}
-    />
+        <AwesomeAlert
+            show={errorAlert}
+            showProgress={false}
+            title="Dados Obrigatórios"
+            message="Os campos obrigatórios devem ser BEM preenchidos!"
+            closeOnTouchOutside={true}
+            closeOnHardwareBackPress={false}
+            showCancelButton={false}
+            showConfirmButton={true}
+            confirmText="   OK!   "
+            confirmButtonColor="#DD6B55"
+            onConfirmPressed={() => {
+                setErrorAlert(false);
+            }}
+        />
 
       <ScrollView>
           <Box 
@@ -195,71 +487,17 @@ export default function FarmlandRegistration ({ route, navigation }) {
     )
 }
 
-    <Box px="3" my="6">
+{ 
+
+(!farmland) &&
+
+ <Box px="3" my="6">
         <Box w="100%" alignItems="center">
-            <Stack direction="row" mx="3" w="100%">
-                <Box w="45%" px="1">
-
-                </Box>
-                <Box w="10%">
-                    
-                </Box>
-                <Box w="45%" px="1">
-                    <FormControl isRequired my="1" isInvalid={'plantingYear' in errors}>
-                        <FormControl.Label>Ano de plantio</FormControl.Label>
-                            <Select
-                                selectedValue={plantingYear}
-                                accessibilityLabel="Ano de plantio"
-                                placeholder="Escolha o ano"
-                                minHeight={55}
-                                _selectedItem={{
-                                    bg: 'teal.600',
-                                    fontSize: 'lg',
-                                    endIcon: <CheckIcon size="5" />,
-                                }}
-                                dropdownCloseIcon={plantingYear 
-                                        ? <Icon 
-                                            name="close" 
-                                            size={25} 
-                                            color="grey" 
-                                            onPress={()=>setPlantingYear('')} 
-                                        /> 
-                                        : <Icon 
-                                            size={40} 
-                                            name="arrow-drop-down" 
-                                            color={COLORS.main} 
-                                        />
-                                    }
-                                mt={1}
-                                onValueChange={newYear => {
-                                    setErrors((prev)=>({...prev, plantingYear: ''}));
-                                    setPlantingYear(newYear);
-                                }}
-                            >
-                                {
-                                    getFullYears(100)?.map((year, index)=>(
-                                        <Select.Item key={index} label={`${year}`} value={year} />
-                                    ))
-                                }
-                            </Select>
-                        {
-                            'plantingYear' in errors 
-                        ? <FormControl.ErrorMessage 
-                        leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                        _text={{ fontSize: 'xs'}}>{errors?.plantingYear}</FormControl.ErrorMessage> 
-                        : <FormControl.HelperText></FormControl.HelperText>
-                        }
-                    </FormControl>
-                </Box>          
-            </Stack>            
-
-
             <FormControl isRequired my="1" isInvalid={'description' in errors}>
                 <FormControl.Label>Localização do Pomar</FormControl.Label>
                 <CustomInput
                     width="100%"
                     type="text"
-                    // autoCapitalize="words"
                     placeholder="Descrição da localização"
                     value={description}
                     onChangeText={newDescription=>{
@@ -275,7 +513,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 : <FormControl.HelperText></FormControl.HelperText>
                 }
             </FormControl>
-        </Box>
+        
 
         <Box w="100%" alignItems="center">
             <FormControl my="1" isRequired isInvalid={'consociatedCrops' in errors}>
@@ -289,7 +527,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     save="value"
                     arrowicon={
                         <Icon 
-                        size={40} 
+                        size={45} 
                         name="arrow-drop-down" 
                         color={COLORS.main} 
                         />
@@ -297,8 +535,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     closeicon={
                         <Icon 
                         name="close" 
-                        size={25} 
-                        color="red" 
+                        size={20} 
+                        color={COLORS.grey}
                         />
                     }
                     fontFamily='JosefinSans-Regular'
@@ -325,36 +563,20 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 <FormControl.HelperText></FormControl.HelperText>
                 }
             </FormControl>
-
-            <Box
-            >
-                <Text style={{
-                    textAlign: 'left',
-                    fontSize: 16,
-                    fontFamily: 'JosefinSans-Bold',
-                    color: COLORS.main,
-                }}>
-                    Área Declarada
-                </Text>
-            </Box>
-
         <Box
             style={{
-                justifyContent: 'center',
-                paddingTop: 5,
+
             }}
         >
-            <Stack direction="row" w="100%" space={1}>
-            <Box w="30%">
+        <Stack direction="row" w="100%" space={2}>
+            <Box w="48%">
             <FormControl isRequired my="2" isInvalid={'totalArea' in errors}>
-                <FormControl.Label><Text style={{ fontSize: 14, }}>Total</Text></FormControl.Label>
+                <FormControl.Label>Área Total Declarada</FormControl.Label>
                 <CustomInput
-                    width="70%"
-                    // type="text"
+                    width="100%"
                     keyboardType="numeric"
                     textAlign="center"
-                    // autoCapitalize="words"
-                    placeholder="Hectar."
+                    placeholder="Hectares"
                     value={totalArea}
                     onChangeText={newNumber=>{
                         setErrors(prev=>({...prev, totalArea: ''}))
@@ -372,332 +594,478 @@ export default function FarmlandRegistration ({ route, navigation }) {
             </FormControl>
             </Box>
 
-            <Box w="30%">
-            <FormControl isRequired my="2" isInvalid={'usedArea' in errors}>
-                <FormControl.Label><Text style={{ fontSize: 14, }}>Aproveitada</Text></FormControl.Label>
-                <CustomInput
-                    width="70%"
-                    // type="text"
-                    keyboardType="numeric"
-                    textAlign="center"
-                    // autoCapitalize="words"
-                    placeholder="Hectar."
-                    value={usedArea}
-                    onChangeText={newNumber=>{
-                        setErrors(prev=>({...prev, usedArea: ''}))
-                        setUsedArea(newNumber)
-                    }}
-                />
-
-                {
-                    'usedArea' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.usedArea}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-                }
-            </FormControl>
-            </Box>
-
-            <Box w="30%">
-            <FormControl isRequired my="2" isInvalid={'trees' in errors}>
-                <FormControl.Label><Text style={{ fontSize: 14, }}>N° de Cajueiros</Text></FormControl.Label>
-                <CustomInput
-                    width="70%"
-                    // type="text"
-                    keyboardType="numeric"
-                    textAlign="center"
-                    // autoCapitalize="words"
-                    placeholder="Cajueir."
-                    value={trees}
-                    onChangeText={newNumber=>{
-                        setErrors(prev=>({...prev, trees: ''}))
-                        setTrees(newNumber)
-                    }}
-                    />
-                    
-                {
-                    'trees' in errors 
-                    ? <FormControl.ErrorMessage 
-                    leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                    _text={{ fontSize: 'xs'}}>{errors?.trees}</FormControl.ErrorMessage> 
-                    : <FormControl.HelperText></FormControl.HelperText>
-                }
-            </FormControl>
-            </Box>
-
-        </Stack>  
-    </Box>
-        <FormControl isRequired my="2" isInvalid={ 'densityMode' in errors }  >
-            <FormControl.Label>Compasso</FormControl.Label>
-                <Radio.Group
-                    name="Density"
-                    value={densityMode}
-                    onChange={(nextValue) => {
-                        setErrors(prev=>({...prev, densityMode: ''}))
-                        setDensityMode(nextValue);
-                    }}
-                >
-                <Stack 
-                    direction={{
-                        base: "row",
-                        md: "row"
-                    }} 
-                    alignItems={{
-                        base: "space-between",
-                        md: "space-between",
-                    }} 
-                    space={6} 
-                    w="100%" 
-                    >
-                    <Radio 
-                        _text={{
-                            fontFamily: 'JosefinSans-Bold',
-                            color: 'grey'
-                        }}
-                        value="Regular" 
-                        my="1" 
-                        mx="1" 
-                        colorScheme="emerald" 
-                        size="sm"
-                    >
-                        Regular
-                    </Radio>
-                    <Box w="5%">
-                
-                    </Box>
-                    <Radio 
-                        _text={{
-                            fontFamily: 'JosefinSans-Bold',
-                            color: 'Irregular'
-                        }}
-                        value="Irregular" 
-                        my="1" 
-                        mx="1" 
-                        colorScheme="emerald" 
-                        size="sm"
-                    >
-                        Irregular
-                    </Radio>
-                </Stack>
-            </Radio.Group>
-                {
-                    'densityMode' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.densityMode}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-                }    
-            </FormControl> 
-
-
-    { densityMode === "Regular" && (
-    
-    <Stack direction="row" mx="3" w="100%">
-        <Box w="45%" px="1">
-            <FormControl my="1">
-                <FormControl.Label>Comprimento</FormControl.Label>
-                <CustomInput
-                    width="100%"
-                    textAlign="center"
-                    keyboardType="numeric"
-                    placeholder="Comprimento"
-                    value={densityLength}
-                    onChangeText={newNumber=>{
-                        setErrors(prev=>({...prev, densityMode: ''}))
-                        setDensityLength(newNumber)
-                    }}
-                    />
-                    
-                {
-                    'densityLength' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.densityLength}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-                }
-            </FormControl>
-        </Box>
-        <Box w="10%" 
+        <Box w="48%"
             style={{
-                justifyContent: 'center', 
-                alignItems: 'center',
-                paddingTop: 30,
+                justifyContent: 'flex-end'
             }}
-            >
-            <Text 
-                style={{ 
-                    fontSize: 20,
-                }}
-            >
-                X
-            </Text>
-        </Box>
-        <Box w="45%" px="1">
-        <FormControl my="1">
-            <FormControl.Label>Largura</FormControl.Label>
+        >
+        <FormControl isRequired my="2" isInvalid={'trees' in errors}>
+            <FormControl.Label>N° Total de Cajueiros</FormControl.Label>
             <CustomInput
                 width="100%"
-                // type="text"
                 keyboardType="numeric"
                 textAlign="center"
-                // autoCapitalize="words"
-                placeholder="Largura"
-                value={densityWidth}
+                placeholder="Cajueiros"
+                value={trees}
                 onChangeText={newNumber=>{
-                    setErrors(prev=>({...prev, densityMode: ''}))
-                    setDensityWidth(newNumber)
+                    setErrors(prev=>({...prev, trees: ''}))
+                    setTrees(newNumber)
                 }}
             />
                 
             {
-                'densityWidth' in errors 
-            ? <FormControl.ErrorMessage 
-            leftIcon={<Icon name="error-outline" size={16} color="red" />}
-            _text={{ fontSize: 'xs'}}>{errors?.densityWidth}</FormControl.ErrorMessage> 
-            : <FormControl.HelperText></FormControl.HelperText>
+                'trees' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.trees}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
             }
-        </FormControl> 
+            </FormControl>
+            </Box>
+        </Stack>  
         </Box>
-    </Stack>            
-)}
-            <FormControl isRequired my="1" isInvalid={'plantTypes' in errors}>
-                <FormControl.Label>Tipo de plantas</FormControl.Label>
-                <MultipleSelectList
-                  setSelected={(type)=>{
-                      setErrors(prev=>({...prev, plantTypes: ''}))
-                      setPlantTypes(type)}
-                    }
-                  data={plantingTypes}
-                  placeholder="Tipo de plantas"
-                  save="value"
-                  label="Tipo de plantas"
-                    arrowicon={
-                        <Icon 
-                            size={40} 
-                            name="arrow-drop-down" 
-                            color={COLORS.main} 
-                            />
-                        }
-                        closeicon={
-                            <Icon 
-                            name="close" 
-                            size={25} 
-                            color="red" 
-                            />
-                    }
-                    fontFamily='JosefinSans-Regular'
-                    dropdownTextStyles={{
-                        fontSize: 18,
-                    }}
-                    inputStyles={{
+    </Box>
+    </Box>
+</Box>
+}
+
+
+{
+   (farmland) && 
+    <>
+    <Box
+        style={{
+            // padding: 10,
+            margin: 10,
+            borderBottomWidth: 2,
+            borderBottomColor: COLORS.main,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            marginBottom: 40,
+
+        }}    
+    >
+
+
+<Box w="100%"
+        style={{
+            backgroundColor: COLORS.main,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            padding: 10,
+            position: 'relative',
+            top: -5,
+            left: 0,
+        }}
+    >
+
+        <Text
+            style={{
+                color: COLORS.ghostwhite,
+                fontSize: 18,
+                fontFamily: 'JosefinSans-Bold',
+                textAlign: 'center',
+                
+            }}
+        >{ownerName}</Text>
+
+        <Box
+            style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                zIndex: 1,
+                borderWidth: 1,
+                borderColor: COLORS.ghostwhite,
+                borderRadius: 100,
+                backgroundColor: COLORS.ghostwhite,
+                // padding: 5,
+            }}
+        >
+            <Icon name="approval" size={40} color={COLORS.main} />
+        </Box>
+    </Box>
+
+
+    <Box w="100%" alignItems={"center"}
+        style={{
+            paddingBottom: 10,
+            paddingHorizontal: 10,
+            marginTop: 10,
+            marginBottom: 2,
+        }}
+    >
+
+
+        <Stack w="100%" direction="row" space={2} mb="1">
+            <Box w="35%">
+                <Text
+                    style={{
+                        color: COLORS.black,
                         fontSize: 16,
-                        color: '#A8A8A8',
-                    }}
-                    boxStyles={{
-                        borderRadius: 4,
-                        minHeight: 55,
-                    }}
-                    />
-                {
-                    'plantTypes' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.plantTypes}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-                }
-            </FormControl>
+                        fontFamily: 'JosefinSans-Bold'
 
-
-{   plantTypes.some((el)=>el.includes('enxert')) 
-    && (
-
-        <FormControl my="1" isRequired isInvalid={'clones' in errors} >
-                <FormControl.Label>Clones</FormControl.Label>
-                <MultipleSelectList
-                  setSelected={(type)=>{
-                      setErrors(prev=>({...prev, clones: ''}))
-                      setClones(type)}
-                    }
-                  data={cloneList}
-                  placeholder="clones"
-                  save="value"
-                  label="Clones"
-                    arrowicon={
-                        <Icon 
-                            size={40} 
-                            name="arrow-drop-down" 
-                            color={COLORS.main} 
-                        />
-                    }
-                    closeicon={
-                        <Icon 
-                        name="close" 
-                        size={25} 
-                            color="red" 
-                            />
-                        }
-                        fontFamily='JosefinSans-Regular'
-                    dropdownTextStyles={{
-                        fontSize: 18,
-                    }}
-                    inputStyles={{
+                    }}            
+                >Área Total</Text>
+            </Box>
+            <Box w="60%">
+                <Text 
+                    style={{
+                        color: COLORS.grey,
                         fontSize: 16,
-                        color: '#A8A8A8',
+                        fontFamily: 'JosefinSans-Regular',
                     }}
-                    boxStyles={{
-                        borderRadius: 4,
-                        minHeight: 55,
+                >
+                    {farmland?.totalArea} hectares
+                </Text>
+            </Box>
+        </Stack>
+        <CustomDivider thickness={2} bg={COLORS.lightgrey} />
+        <Stack w="100%" direction="row" space={2} mb="1">
+            <Box w="35%">
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Bold'
+                    }}                
+                >Cajueiros</Text>
+            </Box>
+            <Box w="60%">
+                <Text 
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Regular',
                     }}
-                    />
+                >
+                    {farmland?.trees} árvores
+                </Text>
+            </Box>
+        </Stack>
+        <CustomDivider thickness={2} bg={COLORS.lightgrey} />
+
+        <Stack w="100%" direction="row" space={2}>
+            <Box w="35%">
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Bold'
+
+                    }}
+                >Consociação</Text>
+            </Box>
+            <Box 
+                style={{
+                    width: '60%',
+                }}
+            >
+                <Text
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}
+                >
                 {
-                    'clones' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.clones}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-                }     
-            </FormControl>
-    )        
+                    farmland?.consociatedCrops?.map((crop, index)=>(
+                        `${crop}; `
+                    ))
+                } 
+                </Text>
+            </Box>
+        </Stack>
+    </Box>
+    <CustomDivider thickness={2} bg={COLORS.lightgrey} />
+    <Box w="100%"
+        style={{
+            padding: 10,
+        }}
+    >
+
+        <Text
+            style={{
+                color: COLORS.black,
+                fontSize: 16,
+                fontFamily: 'JosefinSans-Regular',                
+            }}
+        >
+            {farmland?.description}
+        </Text>
+    </Box>
+    </Box>
+
+    {
+        farmland?.blocks?.length > 0 && normalizeBlockList(farmland?.blocks)?.map((block, index)=>{
+          
+            return (
+            <Box key={index}
+                style={{
+                    flex: 1,
+                    margin: 10,
+
+                }}
+            >
+                <Box
+                    style={{
+                        borderBottomWidth: 2,
+                        borderBottomColor: COLORS.mediumseagreen,
+                    }}
+                >
+                    <Box w="100%"
+                        style={{
+                            backgroundColor: COLORS.mediumseagreen,
+                            padding: 10,
+                            flexDirection: 'row',
+                            borderTopLeftRadius: 20,
+                            borderTopRightRadius: 20,
+                        }}
+                    >
+                        <Box w="70%"
+                            style={{
+                                paddingLeft: 10,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    color: COLORS.ghostwhite,
+                                    fontFamily: 'JosefinSans-Bold',
+                                    fontSize: 18,
+                                }}
+                            >Ano de Plantio: {block?.plantingYear}</Text>
+                        </Box>
+                        <Box w="15%">
+                        </Box>
+                        <Box w="10%">
+                            <TouchableOpacity
+                                disabled={block?.position === (farmland?.blocks?.length - 1) ? false : true}
+                                onPress={()=>{
+                                    deleteBlock(farmlandId, realm);
+                                }}
+                            >
+                                <Icon 
+                                    name={block?.position === (farmland?.blocks?.length - 1) ? 'delete-forever' : 'check-circle'} 
+                                    size={35} 
+                                    color={block?.position === (farmland?.blocks?.length - 1) ? COLORS.danger : COLORS.main} 
+                                />
+                            </TouchableOpacity>
+                        </Box>
+                        <Box w="5%">
+                        </Box>
+                    </Box>
+                    <Box
+                        w="100%"
+                        style={{
+
+                        }}
+                    >
+                        <Stack direction="row" w="100%" space={1} my="3">
+                            <Box w="50%"
+                                alignItems={"center"}
+                            >
+                                <Text
+                                    style={{ color: COLORS.black, fontFamily: 'JosefinSans-Bold', fontSize: 16, }}
+                                >Área (hectares)</Text>
+                                <Text>({block?.usedArea})</Text>
+                            </Box>
+                            <Box w="50%"
+                             alignItems={"center"}
+                            >
+                                <Text
+                                 style={{ color: COLORS.black, fontFamily: 'JosefinSans-Bold',  fontSize: 16, }}
+                                >Cajueiros (árvores)</Text>
+                                <Text>({block?.trees})</Text>
+                            </Box>
+                        </Stack>
+                    </Box>
+
+                    <Box
+                        w="100%"
+                        style={{
+                            
+                        }}
+                    >
+                        <Stack direction="row" w="100%" space={1} my="3">
+                            <Box w="50%"
+                                alignItems={"center"}
+                            >
+                                <Text
+                                style={{ color: COLORS.black, fontFamily: 'JosefinSans-Bold',  fontSize: 16, }}
+                                >Compasso (metros)</Text>
+                                <Text>{block?.density?.mode === 'Regular' ? `(${block?.density?.mode}: ${block?.density?.length}x${block?.density?.width})` : `(${block?.density?.mode})`}</Text>
+                            </Box>
+                            <Box w="50%"
+                             alignItems={"center"}
+                            >
+                                <Text
+                                style={{ color: COLORS.black, fontFamily: 'JosefinSans-Bold',  fontSize: 16, }}
+                                >
+                                    Tipo de plantas
+                                </Text>
+                                <Text
+                                    style={{ textAlign: 'center', }}
+
+                                >({block?.plantTypes?.plantType?.join("; ") })</Text>
+                                <Text
+                                    style={{ textAlign: 'center', }}
+                                >{block?.plantTypes?.plantType?.some(plant=>plant?.includes('enxert')) ? `(clones: ${block?.plantTypes?.clones?.join("; ")})` : ''}</Text>
+                            </Box>
+                        </Stack>
+                    </Box>
+                </Box>
+            </Box>
+        )})
+        }
+
+</>
+}
+    <Box
+        style={{
+            alignItems: 'flex-end',
+            padding: 20,
+            flexDirection: 'row-reverse',
+        }}
+    >
+
+        <Box>
+            <TouchableOpacity
+                onPress={()=>{
+                    if (farmland){
+
+                        // make the block data form visible
+                        setIsOverlayVisible(true);
+                    }
+                    else {
+                        setLoadingButton(true);
+                        
+                        // save the farmland main data
+                        visualizeFarmlandMainData();
+                    }
+                }}
+            >
+                <Box 
+                    style={{
+                        borderRadius: 100,
+                        backgroundColor: farmland ? COLORS.mediumseagreen : COLORS.main,
+                    }}
+                >
+                    <Icon name="add" size={45} color={COLORS.ghostwhite} />
+                </Box>
+            </TouchableOpacity>
+        </Box>
+{ farmland &&
+       <Box>
+            <Text
+                style={{
+                    fontSize: 18,
+                    fontFamily: 'JosefinSans-Regular',
+                    color: COLORS.mediumseagreen,
+                    textAlign: 'right',
+                    padding: 10,
+                }}
+            >
+                Adiciona bloco {farmland?.blocks?.length + 1}
+         </Text>    
+        </Box>
     }
+    </Box>
 
-    </Box> 
-    <Center w="100%" py="4"> 
-        <Button
-            type="outline"
-            title="Pré-visualizar dados"
-            containerStyle={{
-                width: '100%',
-            }}
-            onPress={()=>{
-                setLoadingButton(true);
-                visualizeFarmland();
-            }}
-        />
-    </Center>
-        <FarmlandModal 
-            farmlandData={farmlandData}
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            
-            setClones={setClones}
-            setDescription={setDescription}
-            setDensityMode={setDensityMode}
-            setDensityWidth={setDensityWidth}
-            setDensityLength={setDensityLength}
-            setConsociatedCrops={setConsociatedCrops}
-            setPlantTypes={setPlantTypes}
-            setPlantingYear={setPlantingYear}
-            setTrees={setTrees}
-            // setDeclaredArea={setDeclaredArea}
-            setUsedArea={setUsedArea}
-            setTotalArea={setTotalArea}
 
-            setFarmlandId={setFarmlandId}
-            setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}
-            
-            />
-      </Box>
+    <Box w="100%" mt="1">
+        <Stack w="100%" direction="row" >
+        <Box w="5%"></Box>
+        {  farmland?.blocks?.length > 0 ?          
+                <TouchableOpacity   
+                    onPress={()=>navigation.goBack()}   
+                >
+                    <Box 
+                        style={{ 
+                            borderWidth: 2, 
+                            borderColor: COLORS.red, 
+                            borderRadius: 100, 
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            padding: 4,
+                        }}
+                    >
+                    <Text
+                        style={{ fontSize: 18, color: COLORS.red, fontFamily: 'JosefinSans-Bold', }}
+                    >
+                        Concluir Registo
+                    </Text>
+                </Box>
+            </TouchableOpacity> 
+
+            :
+
+            <Box w="45%" >
+
+            </Box>
+        }               
+            <Box w="30%"></Box>
+            {/* <Box w="15%"
+                style={{ alignItems: 'center', justifyContent: 'center', }}
+            > */}
+                {/* <TouchableOpacity
+                    onPress={()=>{
+                        if (farmland){
+
+                            // make the block data form visible
+                            setIsOverlayVisible(true);
+                        }
+                        else {
+                            setLoadingButton(true);
+                            
+                            // save the farmland main data
+                            visualizeFarmlandMainData();
+                        }
+                    }}
+                >
+                    <Box 
+                        style={{
+                            borderRadius: 100,
+                            backgroundColor: farmland ? COLORS.mediumseagreen : COLORS.main,
+                        }}
+                    >
+                        <Icon name="add" size={60} color={COLORS.ghostwhite} />
+                    </Box>
+                </TouchableOpacity> */}
+
+            {/* </Box> */}
+            <Box w="5%"></Box>
+        </Stack>
+    </Box>
+
+    <FarmlandBlockRegistration 
+        isOverlayVisible={isOverlayVisible}
+        setIsOverlayVisible={setIsOverlayVisible}
+        customUserData={customUserData}
+        errors={errors}
+        setErrors={setErrors}
+        plantingYear={plantingYear}
+        setPlantingYear={setPlantingYear}
+        blockTrees={blockTrees}
+        setBlockTrees={setBlockTrees}
+        usedArea={usedArea}
+        setUsedArea={setUsedArea}
+        plantTypes={plantTypes}
+        setPlantTypes={setPlantTypes}
+        clones={clones}
+        setClones={setClones}
+        densityLength={densityLength}
+        setDensityLength={setDensityLength}
+        setDensityWidth={setDensityWidth}
+        densityWidth={densityWidth}
+        isDensityModeIrregular={isDensityModeIrregular}
+        isDensityModeRegular={isDensityModeRegular}
+        setIsDensityModeIrregular={setIsDensityModeIrregular}
+        setIsDensityModeRegular={setIsDensityModeRegular}
+        visualizeBlockData={visualizeBlockData}
+        farmlandId={farmlandId}
+
+    />
+
       <Box>
         <SuccessAlert
             isCoordinatesModalVisible={isCoordinatesModalVisible}

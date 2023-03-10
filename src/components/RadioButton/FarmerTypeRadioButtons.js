@@ -52,7 +52,7 @@ const FarmerTypeRadioButtons = ({ farmerType, setFarmerType}) =>{
                 }}
                 value="Grupo" 
                 my="1" mx="0" colorScheme="emerald" size="sm">
-                Grupo
+                Agrupados
             </Radio>
             </Stack>
     </Radio.Group>

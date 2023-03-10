@@ -7,11 +7,14 @@ import { BSON } from "realm";
 const { useRealm } = realmContext;
 
 
-export const customizeItem = (farmersList, farmlandsList,  customUserData, flag) => {
+export const customizeItem = (farmersList, farmlandsList, serviceProviders,  customUserData, flag) => {
 
         return farmersList?.map((item) => {
                 
-                const farmlands = farmlandsList?.filter(farmland=>farmland.farmer === item._id);
+                const farmlands = farmlandsList?.filter(farmland=>farmland.farmerId === item._id);
+                const isServiceProvider = serviceProviders?.filter(provider=>provider.actorId === item._id);
+                const { assets } = item;
+                // console.log('assets: ', JSON.stringify(assets));
 
                 if (flag === 'Indivíduo') {
 
@@ -23,8 +26,8 @@ export const customizeItem = (farmersList, farmlandsList,  customUserData, flag)
                                                 : 'htt://localhost/not-set-yet',
                                 imageAlt: getInitials(item?.names.surname),
                                 name: item?.names.otherNames + ' ' + item?.names.surname,
-                                category: item?.category,
-                                isSprayingAgent: item?.isSprayingAgent,
+                                assets: assets,
+                                isSprayingAgent: isServiceProvider.length > 0 ? true : false,
                                 phone:
                                         (item?.contact.primaryPhone && item?.contact.primaryPhone > 0 && item?.contact.secondaryPhone && item?.contact.secondaryPhone > 0)
                                                 ? `${item?.contact.primaryPhone}`
@@ -34,17 +37,17 @@ export const customizeItem = (farmersList, farmlandsList,  customUserData, flag)
                                                                 ? `${item?.contact.secondaryPhone}`
                                                                 : 'Nenhum',
 
-                                farmlands: item?.farmlands?.length,
+                                farmlands: farmlands?.length ? farmlands?.length : 0,
                                 farmlandsList: farmlands,
                                 // createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
                                 createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth() + 1}-${new Date(item?.createdAt).getFullYear()}`,
+                                modifiedAt: `${new Date(item?.modifiedAt).getDate()}-${new Date(item?.modifiedAt).getMonth() + 1}-${new Date(item?.modifiedAt).getFullYear()}`,
                                 user: (item?.userName === customUserData?.name)
                                         ? 'mim'
                                         : item?.userName,
-                                validated: item?.validated,
-                                validatedBy: item?.validatedBy,
+                                status: item?.status,
+                                checkedBy: item?.checkedBy,
                                 flag: flag,
-
 
                         }
                         return newItem;
@@ -53,6 +56,7 @@ export const customizeItem = (farmersList, farmlandsList,  customUserData, flag)
                 else if (flag === 'Grupo') {
                         const newItem = {
                                 _id: item?._id,
+                                operationalStatus: item?.operationalStatus,
                                 image: item?.image ? item?.image : 'htt://localhost/not-set-yet',
                                 imageAlt: getInitials(item?.manager.fullname),
                                 name: item?.name,
@@ -62,16 +66,21 @@ export const customizeItem = (farmersList, farmlandsList,  customUserData, flag)
                                         (item?.manager.phone && item?.manager.phone)
                                                 ? `${item?.manager.phone}`
                                                 : 'Nenhum',
-
-                                farmlands: item?.farmlands?.length,
+                                assets: assets,
+                                creationYear: item?.creationYear,
+                                legalStatus: item?.legalStatus,
+                                affiliationYear: item?.affiliationYear,
+                                members: item?.numberOfMembers.total,
+                                farmlands: farmlands?.length ? farmlands?.length : 0,
                                 farmlandsList: farmlands,
                                 // createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
                                 createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth() + 1}-${new Date(item?.createdAt).getFullYear()}`,
+                                modifiedAt: `${new Date(item?.modifiedAt).getDate()}-${new Date(item?.modifiedAt).getMonth() + 1}-${new Date(item?.modifiedAt).getFullYear()}`,
                                 user: (item?.userName === customUserData?.name)
                                         ? 'mim'
                                         : item?.userName,
-                                validated: item?.validated,
-                                validatedBy: item?.validatedBy,
+                                status: item?.status,
+                                checkedBy: item?.checkedBy,
                                 flag: flag,
 
                         }
@@ -84,22 +93,22 @@ export const customizeItem = (farmersList, farmlandsList,  customUserData, flag)
                                 imageAlt: getInitials(item?.manager.fullname),
                                 name: item?.name,
                                 type: item?.type,
-                                isPrivate: item?.isPrivate,
+                                isPrivate: item?.private,
                                 manager: item?.manager?.fullname,
                                 phone:
                                         (item?.manager.phone && item?.manager.phone)
                                                 ? `${item?.manager.phone}`
                                                 : 'Nenhum',
-
-                                farmlands: item?.farmlands?.length,
+                                assets: assets,
+                                farmlands: farmlands?.length ? farmlands?.length : 0,
                                 farmlandsList: farmlands,
-                                // createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
                                 createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth() + 1}-${new Date(item?.createdAt).getFullYear()}`,
+                                modifiedAt: `${new Date(item?.modifiedAt).getDate()}-${new Date(item?.modifiedAt).getMonth() + 1}-${new Date(item?.modifiedAt).getFullYear()}`,
                                 user: (item?.userName === customUserData?.name)
                                         ? 'mim'
                                         : item?.userName,
-                                validated: item?.validated,
-                                validatedBy: item?.validatedBy,
+                                status: item?.status,
+                                checkedBy: item?.checkedBy,
                                 flag: flag,
 
                         }

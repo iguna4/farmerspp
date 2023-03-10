@@ -22,8 +22,8 @@ const ownFarmlands = 'ownFarmlands';
 export default function FarmerScreen ({ route, navigation }) {
     const ownerId = route.params.ownerId;
     const realm = useRealm();
-    const farmer = realm.objectForPrimaryKey('Farmer', ownerId);
-    const farmlands = realm.objects("Farmland").filtered('farmer == $0', ownerId);
+    const farmer = realm.objectForPrimaryKey('Actor', ownerId);
+    const farmlands = realm.objects("Farmland").filtered('farmerId == $0', ownerId);
     const [isAddPhoto, setIsAddPhoto] = useState(false);
     const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
 
@@ -38,7 +38,7 @@ export default function FarmerScreen ({ route, navigation }) {
       realm.subscriptions.update(mutableSubs => {
         mutableSubs.removeByName(singleFarmer);
         mutableSubs.add(
-          realm.objects('Farmer').filtered(`_id == "${ownerId}"`),
+          realm.objects('Actor').filtered(`_id == "${ownerId}"`),
           {name: singleFarmer},
         );
       });
@@ -46,13 +46,20 @@ export default function FarmerScreen ({ route, navigation }) {
       realm.subscriptions.update(mutableSubs => {
         mutableSubs.removeByName(ownFarmlands);
         mutableSubs.add(
-          realm.objects('Farmland').filtered(`farmer == "${ownerId}"`),
+          realm.objects('Farmland').filtered(`farmerId == "${ownerId}"`),
           {name: ownFarmlands},
         );
       });
       
 
     }, [realm ]);
+
+    // useEffect(()=>{
+
+    // }, [ navigation ]);
+
+
+
 
     return (
         <SafeAreaView 
@@ -218,7 +225,9 @@ export default function FarmerScreen ({ route, navigation }) {
       >
         {farmer?.names?.otherNames}{' '}{farmer?.names?.surname}
       </Text>
+{ farmer?.assets?.map((asset, index)=>(
       <Text
+        key={index}
         style={{  
           color: COLORS.main,
           fontSize: 12,
@@ -228,8 +237,11 @@ export default function FarmerScreen ({ route, navigation }) {
           top: -50,
         }}                
       >
-        ({farmer?.category}{farmer?.isSprayingAgent && ' e Provedor de Serviço de Pulverização'})
+        ({asset.category} {asset.subcategory})
       </Text>
+
+))     
+    }
     </Box>
     
     {/* 
@@ -259,7 +271,7 @@ export default function FarmerScreen ({ route, navigation }) {
             fontFamily: 'JosefinSans-Bold',
             // paddingVertical: 5,
         }}>
-          Parcelas de Cajueiros
+          Pomares
         </Text>
         <Text
           style={{
@@ -269,7 +281,7 @@ export default function FarmerScreen ({ route, navigation }) {
               fontFamily: 'JosefinSans-Regular',
               paddingBottom: 5,
           }}
-        >({farmlands?.length} parcelas)</Text>
+        >({farmlands?.length})</Text>
 
           <Stack direction="row" w="100%">
           <Box w="70%">

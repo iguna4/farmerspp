@@ -31,6 +31,7 @@ const InstitutionData = ({ farmer })=>{
 
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
     const [autoRefresh, setAutoRefresh] = useState(false);
+    const [isCollapseOn, setIsCallapseOne] = useState(false);
 
     // ------------------------------------------
     const [alert, setAlert] = useState(false);
@@ -51,12 +52,12 @@ const InstitutionData = ({ farmer })=>{
         realm.write(()=>{
             const foundFarmer = realm.objectForPrimaryKey('Institution', `${resourceId}`);
             if (flag === 'validate'){
-                foundFarmer.validated = resourceValidation.status.validated;
-                foundFarmer.validatedBy = customUserData?.name;
+                foundFarmer.status = resourceValidation.status.validated;
+                foundFarmer.checkedBy = customUserData?.name;
             }
             else if (flag === 'invalidate') {
-                foundFarmer.validated = resourceValidation.status.invalidated;
-                foundFarmer.validatedBy = customUserData?.name;
+                foundFarmer.status = resourceValidation.status.invalidated;
+                foundFarmer.checkedBy = customUserData?.name;
             }
         });
     };
@@ -114,7 +115,7 @@ const InstitutionData = ({ farmer })=>{
 
         clearInterval(interval);
 
-    }, [ realm, user, message, invalidationMotives, autoRefresh ]);
+    }, [ realm, user, message, invalidationMotives, autoRefresh, isCollapseOn ]);
 
     return (
         <>
@@ -218,6 +219,9 @@ const InstitutionData = ({ farmer })=>{
             flex: 1,
             
         }}
+        onToggle={(isOn)=>{
+            setIsCallapseOne(isOn)
+        }}
     >
         <CollapseHeader
             style={{                     
@@ -254,7 +258,7 @@ const InstitutionData = ({ farmer })=>{
                         textAlign: 'right',
                     }}
                 >
-                    {farmer?.isPrivate ? 'Privada' : 'Pública'}
+                    {farmer?.private ? 'Privada' : 'Pública'}
                 </Text>                
             </View>
         </CollapseHeader>
@@ -285,22 +289,22 @@ const InstitutionData = ({ farmer })=>{
             right: 4,
             zIndex: 1,
             flexDirection: 'row',
-            borderColor: farmer?.validated === resourceValidation.status.pending ? COLORS.danger : farmer?.validated === resourceValidation.status.validated ? COLORS.main : COLORS.red,
+            borderColor: farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red,
             borderWidth: 2,
             borderRadius: 10,
             }}
         >
             <Icon 
-                name={farmer?.validated === resourceValidation.status.pending ? 'pending-actions' : farmer?.validated === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
+                name={farmer?.status === resourceValidation.status.pending ? 'pending-actions' : farmer?.status === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
                 size={25}
-                color={farmer?.validated === resourceValidation.status.pending ? COLORS.danger : farmer?.validated === resourceValidation.status.validated ? COLORS.main : COLORS.red}
+                color={farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red}
             />
             <Text
                 style={{
-                    color: farmer?.validated === resourceValidation.status.pending ? COLORS.danger : farmer?.validated === resourceValidation.status.validated ? COLORS.main : COLORS.red,
+                    color: farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red,
                 }}
             >
-            {farmer?.validated === resourceValidation.status.pending ? resourceValidation.message.pendingResourceMessage : farmer?.validated === resourceValidation.status.validated ? resourceValidation.message.validatedResourceMessage : resourceValidation.message.invalidatedResourceMessage}
+            {farmer?.status === resourceValidation.status.pending ? resourceValidation.message.pendingResourceMessage : farmer?.status === resourceValidation.status.validated ? resourceValidation.message.validatedResourceMessage : resourceValidation.message.invalidatedResourceMessage}
             </Text>
         </Box>
 
@@ -323,7 +327,7 @@ const InstitutionData = ({ farmer })=>{
         <Box w="25%"></Box>
         <Box w="25%">
             <TouchableOpacity
-                disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
+                disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                 style={{
                 }}
                 onPress={
@@ -336,14 +340,14 @@ const InstitutionData = ({ farmer })=>{
                     // name="home" 
                     name="edit" 
                     size={20} 
-                    color={farmer?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                    color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
             </TouchableOpacity>
         </Box>
         </Stack>     
 
-        <Stack w="100%" direction="row">
-            <Box w="30%" >
+        <Stack w="100%" direction="row" space={1}>
+            <Box w="35%" >
                 <Text
                     style={{
                         color: 'grey',
@@ -354,7 +358,7 @@ const InstitutionData = ({ farmer })=>{
                 {/* Instituição: */}
                 </Text>
             </Box>
-            <Box w="70%">
+            <Box w="65%">
                 <Text 
                     style={{
                         color: 'grey',
@@ -371,7 +375,7 @@ const InstitutionData = ({ farmer })=>{
                         fontFamily: 'JosefinSans-Regular',
                     }}
                 >
-                {farmer?.isPrivate ? 'Instituição privada' : 'Instituição pública'} 
+                {farmer?.private ? 'Instituição privada' : 'Instituição pública'} 
                 </Text>
             </Box>
         </Stack>
@@ -395,7 +399,7 @@ const InstitutionData = ({ farmer })=>{
                 <Box w="25%"></Box>
                 <Box w="25%">
                     <TouchableOpacity
-                        disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
+                        disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                         style={{
                         }}
                         onPress={
@@ -407,13 +411,13 @@ const InstitutionData = ({ farmer })=>{
                     <Icon 
                         name="edit"
                         size={20} 
-                        color={farmer?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
+                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
                     />
                     </TouchableOpacity>
                 </Box>
             </Stack>
-            <Stack w="100%" direction="row">
-            <Box w="30%">
+            <Stack w="100%" direction="row" space={1}>
+            <Box w="35%">
                 <Text
                     style={{
                         color: 'grey',
@@ -425,7 +429,7 @@ const InstitutionData = ({ farmer })=>{
                     Responsável
                 </Text>
                 </Box>
-                <Box w="70%" >
+                <Box w="65%" >
                     <Text style={{
                         color: 'grey',
                         fontSize: 14,
@@ -437,8 +441,8 @@ const InstitutionData = ({ farmer })=>{
                 </Box>
             </Stack>
 
-            <Stack w="100%" direction="row">
-            <Box w="30%">
+            <Stack w="100%" direction="row" space={1}>
+            <Box w="35%">
                 <Text
                     style={{
                         color: 'grey',
@@ -450,7 +454,7 @@ const InstitutionData = ({ farmer })=>{
                     Telefone
                 </Text>
                 </Box>
-                <Box w="70%" >
+                <Box w="65%" >
 {   ((!farmer?.manager?.phone) || (farmer?.manager?.phone === 0)) &&
                  <Text style={{
                         color: 'grey',
@@ -495,7 +499,7 @@ const InstitutionData = ({ farmer })=>{
             <Box w="5%"></Box>
             <Box w="25%">
                 <TouchableOpacity
-                    disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
+                    disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={
@@ -508,15 +512,15 @@ const InstitutionData = ({ farmer })=>{
                         // name="home" 
                         name="edit" 
                         size={20} 
-                        color={farmer?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
                 </TouchableOpacity>
             </Box>
         </Stack>
 
 
-        <Stack w="100%" direction="row">
-            <Box w="30%">
+        <Stack w="100%" direction="row" space={1}>
+            <Box w="35%">
                 <Text
                     style={{
                         color: 'grey',
@@ -543,8 +547,8 @@ const InstitutionData = ({ farmer })=>{
     </Box>
     </Stack>
 
-    <Stack w="100%" direction="row">
-        <Box w="30%">
+    <Stack w="100%" direction="row" space={1}>
+        <Box w="35%">
             <Text
                 style={{
                     color: 'grey',
@@ -568,8 +572,8 @@ const InstitutionData = ({ farmer })=>{
         </Box>
     </Stack>
 
-    <Stack w="100%" direction="row">
-        <Box w="30%">
+    <Stack w="100%" direction="row" space={1}>
+        <Box w="35%">
             <Text
                     style={{
                         color: 'grey',
@@ -593,8 +597,8 @@ const InstitutionData = ({ farmer })=>{
         </Box>
     </Stack>
 
-    <Stack w="100%" direction="row">
-        <Box w="30%">
+    <Stack w="100%" direction="row" space={1}>
+        <Box w="35%">
             <Text
                 style={{
                     color: 'grey',
@@ -639,7 +643,7 @@ const InstitutionData = ({ farmer })=>{
             <Box w="5%"></Box>
             <Box w="25%">
                 <TouchableOpacity
-                    disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
+                    disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
                     onPress={
@@ -651,15 +655,15 @@ const InstitutionData = ({ farmer })=>{
                 <Icon 
                     name="edit"
                     size={20} 
-                    color={farmer?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
+                    color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
                 />
                 </TouchableOpacity>
             </Box>
         </Stack>
 
 
-        <Stack w="100%" direction="row">
-            <Box w="30%">
+        <Stack w="100%" direction="row" space={1}>
+            <Box w="35%">
                 <Text
                     style={{
                         color: 'grey',
@@ -684,8 +688,8 @@ const InstitutionData = ({ farmer })=>{
     </Box>
     </Stack>
 
-    <Stack w="100%" direction="row">
-            <Box w="30%">
+    <Stack w="100%" direction="row" space={1}>
+            <Box w="35%">
                 <Text
                     style={{
                         color: 'grey',
@@ -705,7 +709,7 @@ const InstitutionData = ({ farmer })=>{
                 fontFamily: 'JosefinSans-Regular',
             }} 
         >
-            {(farmer?.licence && farmer?.licence !== 0) ? farmer?.licence : '(Nenhum)'}
+            {(farmer?.licence && farmer?.licence !== '') ? farmer?.licence : '(Nenhum)'}
         </Text>
     </Box>
     </Stack>
@@ -731,7 +735,7 @@ const InstitutionData = ({ farmer })=>{
         </Box>
         
     {
-    farmer?.validated === resourceValidation.status.invalidated &&
+    farmer?.status === resourceValidation.status.invalidated &&
         <Box w="100%">
             <Text
                 style={{ 
@@ -741,12 +745,12 @@ const InstitutionData = ({ farmer })=>{
                     fontSize: 12,
                 }}
             >
-                Invalidado por {farmer?.validatedBy}
+                Invalidado por {farmer?.checkedBy}
             </Text>
         </Box>
     }
     {
-    farmer?.validated === resourceValidation.status.validated &&
+    farmer?.status === resourceValidation.status.validated &&
         <Box w="100%">
             <Text
                 style={{ 
@@ -756,7 +760,7 @@ const InstitutionData = ({ farmer })=>{
                     fontSize: 12,
                 }}
             >
-                Validado por {farmer?.validatedBy}
+                Validado por {farmer?.checkedBy}
             </Text>
         </Box>
     }
@@ -764,7 +768,7 @@ const InstitutionData = ({ farmer })=>{
 
 
     {
-    farmer?.validated === resourceValidation.status.invalidated && 
+    farmer?.status === resourceValidation.status.invalidated && 
     <>
 { customUserData?.role !== roles.provincialManager &&
     <Text style={{
@@ -833,7 +837,7 @@ const InstitutionData = ({ farmer })=>{
 
 
 
-{ (farmer?.validated === resourceValidation.status.invalidated && customUserData?.role === roles.provincialManager) &&
+{ (farmer?.status === resourceValidation.status.invalidated && customUserData?.role === roles.provincialManager) &&
         <>
         <Stack 
         direction="row" 
@@ -931,7 +935,7 @@ const InstitutionData = ({ farmer })=>{
 
 
 
-    { (customUserData?.role === roles.provincialManager) && (farmer?.validated === resourceValidation.status.pending ) &&
+    { (customUserData?.role === roles.provincialManager) && (farmer?.status === resourceValidation.status.pending ) &&
 <Stack direction="row" w="100%" style={{ paddingTop: 5,  }} space={6} >
         <Box w="50%"
             style={{
@@ -939,7 +943,7 @@ const InstitutionData = ({ farmer })=>{
             }}
             >
             <TouchableOpacity
-                disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
+                disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                 onPress={()=>{
                     // validationAction(realm, farmer._id, 'validate');
                     setAlert(true);
@@ -954,7 +958,7 @@ const InstitutionData = ({ farmer })=>{
             >
                 <Text
                     style= {{
-                        color: farmer.validated === resourceValidation.status.validated ? COLORS.lightgrey : COLORS.main,
+                        color: farmer.status === resourceValidation.status.validated ? COLORS.lightgrey : COLORS.main,
                         fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                     }}
@@ -970,7 +974,7 @@ const InstitutionData = ({ farmer })=>{
             }}
         >
             <TouchableOpacity
-                disabled={farmer?.validated === resourceValidation.status.validated ? true : false}
+                disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                 onPress={()=>{
                     setAlert(true);
                     setInvalidated(true);
@@ -984,7 +988,7 @@ const InstitutionData = ({ farmer })=>{
             >
                 <Text
                     style= {{
-                        color: farmer?.validated === resourceValidation.status.validated ? COLORS.lightgrey : COLORS.red,
+                        color: farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : COLORS.red,
                         fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                     }}

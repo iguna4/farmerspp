@@ -31,6 +31,7 @@ export const privateInstitutions = [
     "Escola Primária (EPC)",
     "Escola Secundária",
     "Confissão Religiosa",
+    "ONG",
     "Empresa",
     "Outra",  
 ];

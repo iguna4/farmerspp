@@ -125,13 +125,6 @@ const onAddFarmland = useCallback((farmlandData, realm) =>{
         setFarmlandId(newFarmland._id);
     });
 
-    // if (newFarmland) {
-    //     console.log('newn Farmland: ', JSON.stringify(newFarmland));
-    //     realm.write(()=>{
-    //         // add the created farmland to the Farmer (owner)'s object
-    //         owner.farmlands = [...owner.farmlands, newFarmland._id];    
-    //     })
-    // }
 
     const ownerFarmlands = realm.objects('Farmland').filtered('farmer == $0', owner._id)
     realm.write(()=>{

@@ -18,10 +18,10 @@ const GroupItem = ({ item, route }) => {
    useEffect(()=>{
 
     if (item?.farmlandsList?.length > 0) {
-      if (item?.farmlandsList.some(farmland => farmland.validated === resourceValidation.status.invalidated)) {
+      if (item?.farmlandsList.some(farmland => farmland.status === resourceValidation.status.invalidated)) {
         setFarmlandStatus(resourceValidation.status.invalidated);
       }
-      else if (item?.farmlandsList.some(farmland => farmland.validated === resourceValidation.status.pending)) {
+      else if (item?.farmlandsList.some(farmland => farmland.status === resourceValidation.status.pending)) {
         setFarmlandStatus(resourceValidation.status.pending);
       }
       else {
@@ -46,6 +46,10 @@ const GroupItem = ({ item, route }) => {
         minHeight: 100,
         width: '100%',
         flex: 1,
+        borderTopColor: COLORS.fifth,
+        borderTopWidth: 10,
+        borderTopEndRadius: 10,
+        borderTopLeftRadius: 10,
         borderColor: COLORS.main,
         shadowColor: COLORS.main,
         shadowOffset: {
@@ -68,9 +72,9 @@ const GroupItem = ({ item, route }) => {
         }}
       >
         <Icon 
-          name={item?.validated === resourceValidation.status.pending ? 'pending-actions' : item?.validated === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
+          name={item?.status === resourceValidation.status.pending ? 'pending-actions' : item?.status === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
           size={30}
-          color={item?.validated === resourceValidation.status.pending ? COLORS.danger : item?.validated === resourceValidation.status.validated ? COLORS.main : COLORS.red}
+          color={item?.status === resourceValidation.status.pending ? COLORS.danger : item?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red}
         />
       </Box>
       <Stack direction="row" w="100%">
@@ -156,7 +160,7 @@ const GroupItem = ({ item, route }) => {
                         paddingHorizontal: 5,
                       }}
                       >
-                      Parcelas: {' '}{item.farmlands}
+                      Pomares: {' '}{item.farmlands}
                     </Text>
                     <Icon  name={
                       farmlandStatus === resourceValidation.status.pending 

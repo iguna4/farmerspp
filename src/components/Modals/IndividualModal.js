@@ -9,12 +9,15 @@ import styles from './styles';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
-import { generateUFID } from '../../helpers/generateUFID';
+import { generateUAID } from '../../helpers/generateUAID';
 import { useNavigation } from '@react-navigation/native';
 // import { user } from '../../consts/user';
 
-
+import Realm from 'realm';
 import { realmContext } from '../../models/realmContext';
+import categories from '../../consts/categories';
+import { assetTypes } from '../../consts/assetTypes';
+import { useEffect } from 'react';
 const {useRealm, useQuery, useObject } = realmContext;
 
 export default function IndividualModal (
@@ -22,6 +25,7 @@ export default function IndividualModal (
         modalVisible,
         setModalVisible,
         farmerData,
+
 
         setSurname, 
         setOtherNames, 
@@ -42,39 +46,96 @@ export default function IndividualModal (
         
         setFarmerType,
 
+        farmerItem,
         setFarmerItem,
         setIsCoordinatesModalVisible,
 
         customUserData,
-
+        setActor,
+        actor,
+        actorCategory,
+        setActorCategory,
     }
 ){
 
     const realm = useRealm();
+    const [isActorSaved, setIsActorSaved] = useState(false);
 
-    // const currentUserStat = useObject('UserStat', customUserData?.userId);
     const currentUserStat = useQuery('UserStat').filtered("userId == $0", customUserData?.userId)[0];
+    // const savedActor = useQuery('Actor').filtered("_id == $0", farmerItem?.ownerId);
 
-    // console.log('found currentUserStat: ', JSON.stringify(currentUserStat));
+    // update actor by adding the ActorCategory object to the property "categories"
+    // const updateActor = useCallback(async (actor, actorCategory)=>{
+
+    //     const realm = await Realm.open();
+    //     realm.write(()=>{
+
+    //         actor.categories?.push(actorCategory);
+    //     })
+
+    // }, [actor, actorCategory, realm ]);
 
 
+    // // create the actorcategory after the actor has been saved
+    // const addActorCategory = useCallback((actor, realm)=>{
+    //     try {
+    //         realm.write(async ()=>{
+    //             console.log('actorId: ', actor?._id);
+    //             console.log('actorName: ', actor?.names?.surname);
+    
+    //             const actorCategoryData = {
+    //                 _id: uuidv4(),
+    //                 actorId: actor?._id,
+    //                 actorName: actor?.names?.otherNames + ' ' + actor?.names?.surname,
+    //                 category: categories.farmer.category,
+    //                 subcategory: categories.farmer.subcategories.notSubcategorized,
+    //                 assetType: assetTypes.farmland,
+    //                 assets: [],
+    //                 userDistrict: customUserData?.userDistrict,
+    //                 userProvince: customUserData?.userProvince,
+    //                 userId: customUserData?.userId,
+    //                 userName: customUserData?.name,
+    //             }
+                
+    //             const newActorCategory = await realm.create('ActorCategory', actorCategoryData);
+
+    //             setActorCategory(newActorCategory);
+    //         });
+            
+    //     } catch (error) {
+    //         console.log('Could not create new ActorCategory object.');
+    //     }
+        
+    // }, [ actor, realm ]);
+
+
+    // create a new actor with data received from the form
     const addFarmer = useCallback((farmerData, realm) =>{
     const {
-        names, isSprayingAgent, gender, 
+        names, 
+        isSprayingAgent, 
+        gender, 
         familySize,
+        assets,
         birthDate, birthPlace, address,
         contact, idDocument,
     } = farmerData;
 
     // generate the universally farmer identifier
-    const ufid = generateUFID({ names, birthDate, birthPlace });
-  
+    const uaid = generateUAID({ names, birthDate, birthPlace });
+    
+    // const assets = {
+    //     category: categories.farmer.category,
+    //     subcategory: categories.farmer.subcategories.notSubcategorized,
+    //     assetType: assetTypes.farmland,
+    //     assets: [],
+    // }
     realm.write(async ()=>{
-        const newFarmer = await realm.create('Farmer', {
+        const newFarmer = await realm.create('Actor', {
             _id: uuidv4(),
             names,
-            ufid,
-            isSprayingAgent,
+            uaid,
+            // isSprayingAgent,
             gender,
             familySize,
             birthDate,
@@ -82,17 +143,24 @@ export default function IndividualModal (
             address,
             contact,
             idDocument,
+            assets,
             userDistrict: customUserData?.userDistrict,
+            userProvince: customUserData?.userProvince,
             userId: customUserData?.userId,
             userName: customUserData?.name,
-        })
+        });
+
+        setActor(newFarmer);
+        setIsActorSaved(true);
+        
         setFarmerItem({
             ownerId: newFarmer._id,
             ownerName: newFarmer.names?.otherNames + ' ' + newFarmer.names?.surname,
             flag: 'Indivíduo',
-        });       
+        });  
     });
-
+    
+    
     // update user stat (1 more farmer registered by the user)
     if(currentUserStat) {
         realm.write(()=>{
@@ -103,11 +171,11 @@ export default function IndividualModal (
         realm.write(()=>{
             const newStat = realm.create('UserStat', {
                 _id: uuidv4(),
-                userName: customUserData.name,
-                userId: customUserData.userId,
-                userDistrict: customUserData.userDistrict,
-                userProvince: customUserData.userProvince,
-                userRole: customUserData.role,
+                userName: customUserData?.name,
+                userId: customUserData?.userId,
+                userDistrict: customUserData?.userDistrict,
+                userProvince: customUserData?.userProvince,
+                userRole: customUserData?.role,
                 registeredFarmers: 1,
             });
         })
@@ -117,6 +185,43 @@ export default function IndividualModal (
         realm, 
         farmerData,
     ]);
+
+    const addSprayingServiceProvider = useCallback((actor, realm)=>{
+
+        const sprayingProviderObject = {
+            _id: uuidv4(),
+            actorId: actor?._id,
+            names: actor?.names?.otherNames + ' ' + actor?.names?.surname,
+
+            userName: customUserData?.name,
+            userId: customUserData?.userId,
+            userDistrict: customUserData?.userDistrict,
+            userProvince: customUserData?.userProvince,
+        }
+
+        realm.write(async ()=>{
+            const serviceProvider = await realm.create('SprayingServiceProvider', sprayingProviderObject);
+        })
+
+    }, [ realm, actor])
+
+
+    useEffect(()=>{
+
+        if(isActorSaved && farmerData?.isSprayingAgent) {
+            try {
+                addSprayingServiceProvider(actor, realm);
+                
+            } catch (error) {
+                console.log('Could not save actor category:', {cause: error });
+            }
+            finally {
+                setIsActorSaved(false);
+            }
+        }
+
+                
+    }, [ realm, isActorSaved, farmerData ]);
 
 
 
@@ -159,6 +264,7 @@ export default function IndividualModal (
          <ScrollView
             contentContainerStyle={{
                 flex: 1, 
+                justifyContent: 'center', 
                 minHeight: '180%',
                 paddingVertical: 10,
             }}
@@ -402,8 +508,14 @@ export default function IndividualModal (
                 <Text style={styles.keys}>Doc. Identificação:</Text>
             </Box>
             <Box w="60%">
-                    { farmerData?.idDocument?.docNumber ?
-                        (<Text style={styles.values}>{farmerData?.idDocument?.docNumber} ({farmerData?.idDocument?.docType})</Text>)
+                    { farmerData?.idDocument?.docNumber !== 'Nenhum' ?
+                        (<Text style={styles.values}>
+                            {farmerData?.idDocument?.docNumber} ({farmerData?.idDocument?.docType})
+                        </Text>)
+                        :
+                        farmerData?.idDocument?.docType === 'Não tem'
+                        ? 
+                        <Text style={styles.values}>Não tem</Text>
                         :
                         (<Text style={styles.values}>Nenhum (Nenhum)</Text>)
                     }
@@ -432,7 +544,9 @@ export default function IndividualModal (
             <Button
                 onPress={()=>{
                     try {
-                        addFarmer(farmerData, realm)
+                        addFarmer(farmerData, realm);
+                        // addActorCategory(actor, realm);
+                        // addActorCategory(actorId, realm);
                         setModalVisible(false);
                         setIsCoordinatesModalVisible(true);
                     } catch (error) {

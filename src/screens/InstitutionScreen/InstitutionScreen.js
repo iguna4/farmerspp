@@ -24,7 +24,7 @@ export default function InstitutionScreen ({ route, navigation }) {
     const farmer = realm.objectForPrimaryKey('Institution', ownerId);
     const [isAddPhoto, setIsAddPhoto] = useState(false);
     const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
-    const farmlands = realm.objects("Farmland").filtered('farmer == $0', ownerId);
+    const farmlands = realm.objects("Farmland").filtered('farmerId == $0', ownerId);
 
     const keyExtractor = (item, index)=>index.toString();
 
@@ -40,14 +40,16 @@ export default function InstitutionScreen ({ route, navigation }) {
       realm.subscriptions.update(mutableSubs => {
         mutableSubs.removeByName(institutionFarmlands);
         mutableSubs.add(
-          realm.objects('Farmland').filtered(`farmer == "${ownerId}"`),
+          realm.objects('Farmland').filtered(`farmerId == "${ownerId}"`),
           {name: institutionFarmlands},
         );
       });
 
     }, [realm ]);
 
+    // useEffect(()=>{
 
+    // }, [ navigation ]);
 
     return (
         <SafeAreaView 
@@ -264,7 +266,7 @@ export default function InstitutionScreen ({ route, navigation }) {
             fontFamily: 'JosefinSans-Bold',
             // paddingVertical: 5,
         }}>
-          Parcelas de Cajueiros
+          Pomares
         </Text>
         <Text
           style={{
@@ -275,7 +277,7 @@ export default function InstitutionScreen ({ route, navigation }) {
               paddingBottom: 5,
           }}
         >
-          ({farmlands?.length} parcelas)
+          ({farmlands?.length})
         </Text>
         <Stack direction="row" w="100%">
             <Box w="70%">

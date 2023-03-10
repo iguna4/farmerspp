@@ -1,11 +1,11 @@
 
 export const secrets = {
     baseUrl: "https://realm.mongodb.com",
-    appID: 'connectcaju-app-iyoae',
+    appID: 'connectcaju-platform-app-ljalr',
     // appID: 'farmers-app-hxnkd',
     serviceName: 'mongodb-atlas',
-    databaseName: 'connectcajuDB',
-    mongoURI: 'mongodb+srv://connectcaju:$Ssssssss12@connectcajucluster0.usovxbh.mongodb.net/?retryWrites=true&w=majority',
+    databaseName: 'ccajuDB',
+    // mongoURI: 'mongodb+srv://connectcaju:$Ssssssss12@connectcajucluster0.usovxbh.mongodb.net/?retryWrites=true&w=majority',
     // databaseName: 'farmersDB',
     userCollectionName: 'User',
     databaseAccess: {

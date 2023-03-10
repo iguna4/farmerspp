@@ -10,24 +10,32 @@ export const Group = {
         _id: 'string',
         type: 'string',
         name: 'string',
-        affiliationYear: 'int',
+        creationYear: 'int?',
+        affiliationYear: 'int?',
+        legalStatus: 'string?',
+        operationalStatus: { type: 'bool', default: false},
         address: 'Address',
-        members: 'Members',
+        numberOfMembers: 'Members',
+        members: 'string[]',
         manager: 'Manager',
-        registeredMembers: 'string[]',
+
         licence: 'string?',
         nuit: { type: 'int?', default: 0}, 
         image: { type: 'string', default: '' },
-        farmlands: 'string[]',
+
+        assets: 'Assets[]',
         geolocation: 'Coordinates?',
-        createdAt: { 
-            type: 'date', default: Date()
-        },
+
         userDistrict: 'string?',
+        userProvince: 'string?',
         userId: 'string',
         userName: 'string?',
-        validated: { type: 'string', default: 'pending'},
-        validatedBy: 'string?'
+
+        status: { type: 'string', default: 'pending'},
+        checkedBy: 'string?',
+
+        createdAt: { type: 'date', default: Date()},
+        modifiedAt: { type: 'date', default: Date()},
 
     },
 }

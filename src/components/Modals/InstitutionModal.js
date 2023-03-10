@@ -4,7 +4,7 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import { Text,  Stack, Box, Center, Divider } from 'native-base';
-import { Modal, ScrollView, TouchableOpacity } from 'react-native';
+import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
 import { Button, Icon } from '@rneui/themed';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
@@ -71,11 +71,12 @@ export default function InstitutionModal (
     const {
         type, 
         name, 
-        isPrivate,
+        // private: private,
+        assets,
         address, 
         manager,
         nuit,
-        // licence,
+        licence,
     } = farmerData;
 
     realm.write(async ()=>{
@@ -83,15 +84,16 @@ export default function InstitutionModal (
             _id: uuidv4(),
             type,
             name,
-            isPrivate,
+            private: farmerData?.private,
+            assets,
             address,
             manager,
             nuit,
-            // licence,
+            licence,
             userDistrict: customUserData?.userDistrict,
+            userProvince: customUserData?.userProvince,            
             userId: customUserData?.userId,
             userName: customUserData?.name,
-            ownerId: customUserData?.userId,
         })
         setFarmerItem({
             ownerId: newInstitution?._id,
@@ -129,7 +131,9 @@ export default function InstitutionModal (
 
 
   return (
-  <>
+    <View
+    style={{ flex: 1, }}
+>
     <Modal
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
@@ -169,7 +173,7 @@ export default function InstitutionModal (
         contentContainerStyle={{
             flex: 1, 
             justifyContent: 'center', 
-            minHeight: '100%',
+            minHeight: '120%',
             paddingVertical: 15,
         }}
     >
@@ -250,9 +254,11 @@ export default function InstitutionModal (
             <Text style={styles.values}>
                 {farmerData?.nuit ? farmerData?.nuit + ' (NUIT)' : 'Nenhum (NUIT)'}
             </Text>
-            <Text style={styles.values}>
+    {  farmerData?.private &&
+              <Text style={styles.values}>
                 {farmerData?.licence ? farmerData?.licence + ' (Alvará/Licença)' : 'Nenhum (Alvará/Licença)'}
             </Text>
+        }
         </Box>
     </Stack>
 
@@ -268,7 +274,7 @@ export default function InstitutionModal (
         </Box>
         <Box w="60%">
             <Text style={styles.values}>
-                {farmerData?.manager?.fullname} (Gerente)
+                {farmerData?.manager?.fullname} (Responsável)
             </Text>
             <Text style={styles.values}>
             {
@@ -352,7 +358,7 @@ export default function InstitutionModal (
     </ScrollView>
     </Modal>
 
-    </>
+    </View>
 
   )
 }

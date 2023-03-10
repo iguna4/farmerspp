@@ -24,7 +24,7 @@ export default function GroupScreen ({ route, navigation }) {
    
     const [isAddPhoto, setIsAddPhoto] = useState(false);
     const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
-    const farmlands = realm.objects("Farmland").filtered('farmer == $0', ownerId);
+    const farmlands = realm.objects("Farmland").filtered('farmerId == $0', ownerId);
 
     const keyExtractor = (item, index)=>index.toString();
 
@@ -40,13 +40,16 @@ export default function GroupScreen ({ route, navigation }) {
       realm.subscriptions.update(mutableSubs => {
         mutableSubs.removeByName(groupFarmlands);
         mutableSubs.add(
-          realm.objects('Farmland').filtered(`farmer == "${ownerId}"`),
+          realm.objects('Farmland').filtered(`farmerId == "${ownerId}"`),
           {name: groupFarmlands},
         );
       });
 
     }, [realm ]);
 
+    // useEffect(()=>{
+
+    // }, [ navigation ]);
 
 
     return (
@@ -250,7 +253,7 @@ export default function GroupScreen ({ route, navigation }) {
             textAlign: 'center',
             fontFamily: 'JosefinSans-Bold',
         }}>
-          Parcelas de Cajueiros
+          Pomares
         </Text>
         <Text
           style={{
@@ -261,7 +264,7 @@ export default function GroupScreen ({ route, navigation }) {
               paddingBottom: 5,
           }}
         >
-          ({farmlands?.length} parcelas)
+          ({farmlands?.length})
         </Text>
 
         <Stack direction="row" w="100%">

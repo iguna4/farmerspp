@@ -1,7 +1,7 @@
 
 import { ceps } from '../consts/ceps';
 
-export const generateUFID = ({ names, birthDate, birthPlace })=>{
+export const generateUAID = ({ names, birthDate, birthPlace })=>{
     const fNameInitials = names.otherNames?.slice(0,2).toLowerCase();
     const lNameInitials = names.surname?.slice(0,2).toLowerCase();
     const date = new Date(birthDate).valueOf();

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Alert, Collapse, Button, VStack, HStack, IconButton, CloseIcon, Box, Center, NativeBaseProvider, Stack } from "native-base";
-import { FlatList, Pressable, ScrollView, View, Text, SafeAreaView} from "react-native";
+import { FlatList, Pressable, ScrollView, View, Text, SafeAreaView, TouchableOpacity} from "react-native";
 import { Icon, CheckBox, Overlay } from '@rneui/themed';
 import DuplicatesAlertItem from "./DuplicatesAlertItem";
 import COLORS from "../../consts/colors";
@@ -31,11 +31,36 @@ const DuplicatesAlert = ({
         
       }}
       >
+          <Box
+            style={{ 
+              paddingVertical: 10,
+              paddingHorizontal: 1,
+              justifyContent: 'center',
+              backgroundColor: COLORS.danger,
+            }}
+          >
+            <Icon 
+              name="warning"
+              color={COLORS.ghostwhite}
+              size={45}
+            />
+ 
+            <Text
+              style={{
+                color: COLORS.ghostwhite,
+                fontSize: 20,
+                padding: 2,
+                lineHeight: 30,
+                textAlign: 'center',
+                fontFamily: "JosefinSans-Regular",
+              }}
+            >
+              O produtor que pretendes registar tem 
+              dados similares aos seguintes produtores 
+              já registados:
+            </Text>
+          </Box>
 
-    {/* <Box 
-      w="100%" 
-      alignItems="center" 
-    > */}
     <ScrollView  
       contentContainerStyle={{
         minHeight: '100%',
@@ -44,56 +69,6 @@ const DuplicatesAlert = ({
         alignItems: 'center',
       }}
     >
-      <Box 
-        w="100%"
-        alignItems={'center'}
-        style={{ paddingVertical: 25, }}
-      >
-        <Box
-          style={{ 
-            // backgroundColor: 'red', 
-            // width: '100%', 
-            flexDirection: 'row',
-            paddingHorizontal: 15,
-            // borderRadius: 10,
-            borderWidth: 2,
-            borderColor: COLORS.red,
-            // backgroundColor: COLORS.danger,
-            padding: 5,
-          }}
-        >
-          <Icon 
-            name="dangerous"
-            color={COLORS.red}
-            size={35}
-          />
-          {/* <Text
-              style={{
-                textAlign: 'center',
-                color: COLORS.red,
-                fontSize: 18,
-                fontFamily: "JosefinSans-Bold",
-              }}
-            >
-              Tentativa de duplicação de registos? 
-          </Text> */}
-
-          <Text
-            style={{
-              color: COLORS.red,
-              fontSize: 16,
-              paddingHorizontal: 10,
-              textAlign: 'justify',
-              fontFamily: "JosefinSans-Regular",
-              // paddingHorizontal: 1,
-            }}
-          >
-            O produtor que pretendes registar tem 
-            dados similares aos seguintes produtores 
-            já registados:
-          </Text>
-        </Box>
-    </Box>
 
 
     {
@@ -107,31 +82,33 @@ const DuplicatesAlert = ({
 
       <Stack 
         direction="row" 
-        // space={1}
         w="100%"
-        style={{ paddingTop: 20, }}
+        style={{ paddingTop: 40, }}
         >
         <Box w="8%">
 
         </Box>
-        <Box w="38%" alignItems={'center'}>
-            <Pressable 
+        <Box w="38%" alignItems={'center'}       
+          style={{
+            borderRadius: 100,
+            borderWidth: 2,
+            borderColor: COLORS.main,
+            padding: 5,
+          }}
+        >
+            <TouchableOpacity 
               style={{ 
-                // paddingVertical: 30, 
               }}
-              // size={"lg"} 
               onPress={() => {
                 setDuplicatesAlert(false);
                 setFarmerType('')
                 navigation.navigate('FarmerForm1', { customUserData, })
               }} 
-              // mt={8} 
-              // mx="auto"
-              >
+            >
               <Text
                   style={{
                       color: COLORS.main,
-                      fontSize: 18,
+                      fontSize: 16,
                       fontFamily: 'JosefinSans-Bold',
                       textDecoration: 'underline',
                       textAlign: 'center',
@@ -139,7 +116,7 @@ const DuplicatesAlert = ({
                 >
                   Cancelar registo
                 </Text>
-            </Pressable>
+            </TouchableOpacity>
           </Box>
           <Box w="10%">
 
@@ -147,44 +124,38 @@ const DuplicatesAlert = ({
           <Box 
             w="38%" 
             alignItems={'center'}
-            style={{ 
-              // borderWidth: 1, 
-              // borderColor: COLORS.main, 
-              // borderRadius: 50, 
-              justifyContent: 'center',
+            style={{
+              borderRadius: 100,
+              borderWidth: 2,
+              borderColor: COLORS.red,
+              padding: 5,
             }}
           >
-          <Pressable 
+          <TouchableOpacity 
             style={{ 
-              // paddingVertical: 30,  
             }}
-            // size={"lg"} 
               onPress={() => {
                 setDuplicatesAlert(false);
                 setModalVisible(true);
-                // addFarmer(farmerData, realm, true);
               }} 
-              // mt={8} 
-              // mx="auto"
-              >
+            >
             <Text
                 style={{
                     color: COLORS.red,
-                    fontSize: 18,
+                    fontSize: 16,
                     fontFamily: 'JosefinSans-Bold',
                     textDecoration: 'underline',
                 }}
                 >
                   Validar registo
             </Text>
-          </Pressable>
+          </TouchableOpacity>
           </Box>
           <Box w="8%">
 
           </Box>
         </Stack>
       </ScrollView>
-    {/* </Box> */}
     </SafeAreaView>
 )
 }

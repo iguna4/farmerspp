@@ -9,22 +9,26 @@ export const Institution = {
     properties: {
         _id: 'string',
         type: 'string',
+        private: { type: 'bool', default: false},
         name: 'string',
-        isPrivate: 'bool',
         address: 'Address',
         manager: 'Manager',
         nuit: { type: 'int?', default: 0},
         licence: {type: 'string?', default: ''},
         image: { type: 'string', default: '' },
-        farmlands: 'string[]',
+        assets: 'Assets[]',
         Geolocation: 'Coordinates?',
-        createdAt: { type: 'date', default: Date()},
+
         userDistrict: 'string?',
+        userProvince: 'string?',
         userId: 'string',
         userName: 'string?',
-        ownerId: 'string',
-        validated: { type: 'string', default: 'pending'},
-        validatedBy: 'string?'
+
+        status: { type: 'string', default: 'pending'},
+        checkedBy: 'string?',
+
+        createdAt: { type: 'date', default: Date()},
+        modifiedAt: { type: 'date', default: Date()},
     },
 }
 

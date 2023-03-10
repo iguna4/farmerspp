@@ -18,10 +18,10 @@ const InstitutionItem = ({ item, route }) => {
    useEffect(()=>{
 
     if (item?.farmlandsList?.length > 0) {
-      if (item?.farmlandsList.some(farmland => farmland.validated === resourceValidation.status.invalidated)) {
+      if (item?.farmlandsList.some(farmland => farmland.status === resourceValidation.status.invalidated)) {
         setFarmlandStatus(resourceValidation.status.invalidated);
       }
-      else if (item?.farmlandsList.some(farmland => farmland.validated === resourceValidation.status.pending)) {
+      else if (item?.farmlandsList.some(farmland => farmland.status === resourceValidation.status.pending)) {
         setFarmlandStatus(resourceValidation.status.pending);
       }
       else {
@@ -40,6 +40,11 @@ const InstitutionItem = ({ item, route }) => {
       style={{
         padding: 10,
         marginVertical: 10,
+        // backgroundColor: COLORS.sixth,
+        borderTopColor: COLORS.sixth,
+        borderTopWidth: 10,
+        borderTopEndRadius: 10,
+        borderTopLeftRadius: 10,
         borderColor: COLORS.main,
         minHeight: 100,
         width: '100%',
@@ -65,9 +70,9 @@ const InstitutionItem = ({ item, route }) => {
         }}
       >
         <Icon 
-          name={item?.validated === resourceValidation.status.pending ? 'pending-actions' : item?.validated === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
+          name={item?.status === resourceValidation.status.pending ? 'pending-actions' : item?.status === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
           size={30}
-          color={item?.validated === resourceValidation.status.pending ? COLORS.danger : item?.validated === resourceValidation.status.validated ? COLORS.main : COLORS.red}
+          color={item?.status === resourceValidation.status.pending ? COLORS.danger : item?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red}
         />
       </Box>
     <Stack direction="row" w="100%">
@@ -139,26 +144,27 @@ const InstitutionItem = ({ item, route }) => {
                 Tel: {item.phone}
               </Text>
             </Box>
-            {/* <Box w="50%"> */}
-            {/* <Stack direction="row"> */}
-                <Box style={{
+              <Box 
+                style={{
                   flexDirection: 'row',
                   borderWidth: 1,
                   borderRadius: 20,
                   borderColor: farmlandStatus === resourceValidation.status.pending ? COLORS.danger : farmlandStatus === resourceValidation.status.validated ? COLORS.main : COLORS.red,
                   justifyContent: 'space-between',
-                }}>
-                    <Text 
-                      style={{
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Italic',
-                        marginHorizontal: 2,
-                        paddingHorizontal: 5,
-                      }}
-                      >
-                      Parcelas: {' '}{item.farmlands}
-                    </Text>
-                    <Icon  name={
+                }}
+              >
+                <Text 
+                  style={{
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Italic',
+                    marginHorizontal: 2,
+                    paddingHorizontal: 5,
+                  }}
+                  >
+                  Pomares: {' '}{item.farmlands}
+                </Text>
+                  <Icon  
+                    name={
                       farmlandStatus === resourceValidation.status.pending 
                       ? 'pending-actions' 
                       : 
@@ -169,12 +175,10 @@ const InstitutionItem = ({ item, route }) => {
                       ? 'error-outline'
                       : 'dangerous'
                     }
-                          size={20}
-                          color={farmlandStatus === resourceValidation.status.pending ? COLORS.danger : farmlandStatus === resourceValidation.status.validated ? COLORS.main : COLORS.red}
-                    />
-                  {/* </Box> */}
-              {/* </Stack> */}
-            </Box>
+                    size={20}
+                    color={farmlandStatus === resourceValidation.status.pending ? COLORS.danger : farmlandStatus === resourceValidation.status.validated ? COLORS.main : COLORS.red}
+                  />
+                </Box>
             <Box w="5%"></Box>
         </Stack>
         </Box>

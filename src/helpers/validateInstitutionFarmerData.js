@@ -1,10 +1,15 @@
+import { assetTypes } from "../consts/assetTypes";
+import categories from "../consts/categories";
 import { capitalize } from "./capitalize";
 
 
 
 
 const validateInstitutionFarmerData = (
-    {   institutionType, 
+    {   
+        isInstitutionPrivate,
+        isInstitutionPublic,
+        institutionType, 
         institutionName, 
         institutionAdminPost,
         institutionVillage,
@@ -17,6 +22,8 @@ const validateInstitutionFarmerData = (
         institutionLicence,
     }, errors, setErrors,
     ) => {
+    const retrievedIsInstitutionPrivate = isInstitutionPrivate;
+    const retrievedIsInstitutionPublic = isInstitutionPublic;
     const retrievedInstitutionType = institutionType?.trim(); 
     const retrievedInstitutionName = capitalize(institutionName?.trim());
     const retrievedInstitutionAdminPost = institutionAdminPost?.trim();
@@ -28,6 +35,22 @@ const validateInstitutionFarmerData = (
     const retrievedInstitutionNuit = institutionNuit; 
     const retrievedIsPrivateInstitution = isPrivateInstitution;
     const retrievedInstitutionLicence = institutionLicence?.trim();   
+
+    const asset = {
+        category: categories.institution.category,
+        subcategory: categories.institution.subcategories.production,
+        assetType: assetTypes.farmland,
+    }
+
+    if ((!retrievedIsInstitutionPrivate && !retrievedIsInstitutionPublic) || (retrievedIsInstitutionPrivate && retrievedIsInstitutionPublic) ) {
+        setErrors({
+            ...errors,
+            isPrivateInstitution: 'Indica tipo da instituição.'
+        });
+
+        return false;
+    }
+
 
     if (!retrievedInstitutionType){
         setErrors({ ...errors,
@@ -83,9 +106,11 @@ const validateInstitutionFarmerData = (
     }
 
     const farmerData = {
+        private: retrievedIsInstitutionPrivate ? true : false,
         type: retrievedInstitutionType, 
         name: retrievedInstitutionName,
         isPrivate: retrievedIsPrivateInstitution,
+        assets: [asset],
         address: {
             province: retrievedInstitutionProvince,
             district: retrievedInstitutionDistrict,

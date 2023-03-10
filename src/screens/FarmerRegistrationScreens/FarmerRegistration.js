@@ -3,7 +3,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable prettier/prettier */
 import { Text, SafeAreaView, ScrollView, TextInput, View } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback } from 'react';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
 import { Icon, Button, CheckBox } from '@rneui/themed';
 import AwesomeAlert from 'react-native-awesome-alerts';
@@ -20,7 +20,7 @@ import TickComponent from '../../components/LottieComponents/TickComponent';
 import GroupModal from '../../components/Modals/GroupModal';
 import InstitutionModal from '../../components/Modals/InstitutionModal';
 
-import { generateUFID } from '../../helpers/generateUFID';
+import { generateUAID } from '../../helpers/generateUAID';
 import DuplicatesAlert from '../../components/Alerts/DuplicatesAlert';
 import { detectDuplicates } from '../../helpers/detectDuplicates';
 import FarmerTypeRadioButtons from '../../components/RadioButton/FarmerTypeRadioButtons';
@@ -87,6 +87,11 @@ export default function FarmerRegistration({ route, navigation }) {
     const [groupAffiliationYear, setGroupAffiliationYear] = useState('');
     const [groupMembersNumber, setGroupMembersNumber] = useState('');
     const [groupWomenNumber, setGroupWomenNumber] = useState('');
+    const [groupGoals, setGroupGoals] = useState([]);
+    const [groupCreationYear, setGroupCreationYear] = useState('');
+    const [groupLegalStatus, setGroupLegalStatus] = useState('');
+    const [isGroupActive, setIsGroupActive] = useState(false);
+    const [isGroupInactive, setIsGroupInactive] = useState(false);
 
 
     // Instution states
@@ -99,8 +104,11 @@ export default function FarmerRegistration({ route, navigation }) {
     const [institutionNuit, setInstitutionNuit] = useState('')
     const [isPrivateInstitution, setIsPrivateInstitution] = useState(false);
     const [institutionLicence, setInstitutionLicence] = useState('');
+    const [isInstitutionPublic, setIsInstitutionPublic] = useState(false);
+    const [isInstitutionPrivate, setIsInstitutionPrivate] = useState(false);
 
 
+    // -------------------------------------------------------------
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
     const [loadinButton, setLoadingButton] = useState(false);
     const [isCoordinatesModalVisible, setIsCoordinatesModalVisible] = useState(false);
@@ -114,6 +122,11 @@ export default function FarmerRegistration({ route, navigation }) {
     const customUserData = route.params.customUserData;
 
     const realm = useRealm();
+
+    const [actor, setActor] = useState();   
+    const [actorCategory, setActorCategory] = useState();
+
+
 
     const addFarmer = (farmerType, realm, isAllowed=false)=>{
         let farmerData;
@@ -152,16 +165,14 @@ export default function FarmerRegistration({ route, navigation }) {
             // on with registration after the alert on suspecious duplicates
             if (!isAllowed){
 
-                const ufidData = {
+                const uaidData = {
                     names: retrievedFarmerData.names,
                     birthDate: retrievedFarmerData.birthDate,
                     birthPlace: retrievedFarmerData.birthPlace,
                 }
                 
-                const ufid = generateUFID(ufidData);
-                let suspected = realm.objects('Farmer').filtered(`ufid == $0`, ufid);
-
-                // console.log('suspected: ', JSON.stringify(suspected));
+                const uaid = generateUAID(uaidData);
+                let suspected = realm.objects('Actor').filtered(`uaid == $0`, uaid);
                 
                 // get more evidence on the duplication attempt
                 suspected = detectDuplicates(retrievedFarmerData, suspected);
@@ -175,6 +186,8 @@ export default function FarmerRegistration({ route, navigation }) {
         }
         else if (farmerType === "Instituição"){
             farmerData = {
+                isInstitutionPrivate,
+                isInstitutionPublic,
                 institutionType,
                 institutionName,
                 institutionAdminPost,
@@ -185,6 +198,7 @@ export default function FarmerRegistration({ route, navigation }) {
                 institutionManagerPhone,
                 institutionNuit,
                 isPrivateInstitution,
+                institutionLicence,
             }
             if (!validateInstitutionFarmerData(farmerData, errors, setErrors)) {
                 setErrorAlert(true)
@@ -196,10 +210,15 @@ export default function FarmerRegistration({ route, navigation }) {
         }
         else if (farmerType === "Grupo") {
             farmerData = {
+                isGroupActive,
+                isGroupInactive,
                 groupType,
                 groupName,
+                groupGoals,
                 groupMembersNumber,
                 groupWomenNumber,
+                groupLegalStatus,
+                groupCreationYear,
                 groupAffiliationYear,
                 groupOperatingLicence,
                 groupNuit,
@@ -446,6 +465,11 @@ farmerType === "Instituição" && (
         selectedAddressAdminPosts={selectedAddressAdminPosts}
         setSelectedAddressAdminPosts={setSelectedAddressAdminPosts}
 
+        isInstitutionPrivate={isInstitutionPrivate}
+        isInstitutionPublic={isInstitutionPublic}
+        setIsInstitutionPrivate={setIsInstitutionPrivate}
+        setIsInstitutionPublic={setIsInstitutionPublic}
+
     />
 )}
 
@@ -480,6 +504,16 @@ farmerType === "Instituição" && (
         selectedAddressAdminPosts={selectedAddressAdminPosts}
         setSelectedAddressAdminPosts={setSelectedAddressAdminPosts}
         addressAdminPost={addressAdminPost}
+        groupGoals={groupGoals}
+        setGroupGoals={setGroupGoals}
+        groupCreationYear={groupCreationYear}
+        setGroupCreationYear={setGroupCreationYear}
+        setGroupLegalStatus={setGroupLegalStatus}
+        groupLegalStatus={groupLegalStatus}
+        isGroupActive={isGroupActive}
+        setIsGroupActive={setIsGroupActive}
+        isGroupInactive={isGroupInactive}
+        setIsGroupInactive={setIsGroupInactive}
 
     />
 )}
@@ -537,9 +571,15 @@ farmerType === "Instituição" && (
             setNuit={setNuit}
 
             setFarmerItem={setFarmerItem}
+            farmerItem={farmerItem}
             setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}            
         
             customUserData={customUserData}
+
+            setActor={setActor}
+            actor={actor}
+            actorCategory={actorCategory}
+            setActorCategory={setActorCategory}
         
         />
     )
@@ -566,6 +606,7 @@ farmerType === "Instituição" && (
                 setGroupWomenNumber={setGroupWomenNumber}
 
                 setFarmerItem={setFarmerItem}
+                farmerItem={farmerItem}
                 setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}                
 
                 customUserData={customUserData}

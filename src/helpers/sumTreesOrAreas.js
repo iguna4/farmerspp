@@ -12,7 +12,7 @@ export const sumTreesOrAreas = (farmlands, flag)=>{
     }
     else if (flag === 'declaredAreas') {
         // get all the numbers of declaredAreas from all the farmlands
-        const declaredAreas = farmlands?.map(farmland=>farmland.declaredArea);
+        const declaredAreas = farmlands?.map(farmland=>farmland.totalArea);
     
         // sum all the numbers
         return declaredAreas?.reduce((acc, value)=>acc + value, 0);

@@ -149,9 +149,42 @@ export default function HomeScreen() {
     const ruFarmlands = rCurrentUser.map((stat)=>stat.rFarmlands).reduce((ac, cur)=>(ac+cur), 0);
     //---------------------------------------------------------------------- 
 
+    // const deleteAllTypesObjects = useCallback(()=>{
+
+    //   realm.write(() => {
+    //     // Delete all instances of Cat from the realm.
+    //     realm.delete(realm.objects("Actor"));
+    //   });
+
+    //   realm.write(() => {
+    //     // Delete all instances of Cat from the realm.
+    //     realm.delete(realm.objects("Farmland"));
+    //   });
+
+    //   realm.write(() => {
+    //     // Delete all instances of Cat from the realm.
+    //     realm.delete(realm.objects("Group"));
+    //   });
+
+    //   realm.write(() => {
+    //     // Delete all instances of Cat from the realm.
+    //     realm.delete(realm.objects("Institution"));
+    //   });
+
+    //   realm.write(() => {
+    //     // Delete all instances of Cat from the realm.
+    //     realm.delete(realm.objects("UserStat"));
+    //   });
 
 
+    //   realm.write(() => {
+    //     // Delete all instances of Cat from the realm.
+    //     realm.delete(realm.objects("SprayingServiceProvider"));
+    //   });
+    // }, [ realm ])
+    
 
+    // deleteAllTypesObjects();
     // -----------------------------------------------------------------------------------
 
 

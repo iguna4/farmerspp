@@ -1,6 +1,6 @@
 /**
  *  This file contains embbeded schemas:
- *  The project has 9 embbeded schemas that are found in this file
+ *  The project models contain embbeded schemas that are found in this file
  */
 
 // Embedded Name schema
@@ -99,35 +99,37 @@ export const Coordinates = {
     },
 };
 
-// Embbeded UserStats Schema
-export const UserStats = {
-    name: 'UserStats',
+// Embedded SprayingBeneficiaries
+export const SprayingServiceBeneficiary = {
+    name: 'SprayingServiceBeneficiary',
     embedded: true,
     properties: {
-        userName: 'string',
-        userId: 'string',
-        district: 'string?',
-        province: 'string?',
-        targetFarmers: {type: 'int', default: 0 },
-        targetFarmlands: {type: 'int', default: 0 },
-        registeredFarmers: {type: 'int', default: 0 },
-        registeredFarmlands: {type: 'int', default: 0 },
-    },
+        beneficiaryId: 'string',
+        beneficiaryName: 'string',
+        trees: { type: 'int', default: 0 },
+    }
 };
 
-// Embbeded DistrictalStats Schema
-export const DistrictalStats = {
-    name: 'DistrictalStats',
+
+export const FarmlandBlock = {
+    name: 'FarmlandBlock',
     embedded: true,
     properties: {
-        district: 'string?',
-        province: 'string?',
-        targetFarmers: {type: 'int', default: 0 },
-        targetFarmlands: {type: 'int', default: 0 },
-        registeredFarmers: {type: 'int', default: 0 },
-        registeredFarmlands: {type: 'int', default: 0 },
+        _id: 'string', 
+        plantingYear: 'int',
+        density: 'Density',
+        trees: 'int',
+        usedArea: 'float?',
+        plantTypes: 'PlantTypes',
+
+        userName: 'string?',
+
+        createdAt: { type: 'date', default: ()=>new Date()},
+        modifiedAt: { type: 'date', default: ()=>new Date()},
     },
-};
+   }
+   
+
 
 export const InvalidationMessage = {
     name: 'InvalidationMessage',
@@ -140,6 +142,17 @@ export const InvalidationMessage = {
     }
 }
 
+
+export const Assets = {
+    name: 'Assets',
+    embedded: true,
+ properties: {
+    category: 'string?',
+    subcategory: 'string?', 
+    assetType: 'string',
+    assets: 'string[]',
+},
+}
 
 
 

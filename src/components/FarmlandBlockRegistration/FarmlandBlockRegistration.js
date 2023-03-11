@@ -31,6 +31,7 @@ export default function FarmlandBlockRegistration({
     setIsDensityModeRegular,
 
     visualizeBlockData,
+    
 }){
 
     const realm = useRealm();

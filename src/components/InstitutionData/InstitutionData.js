@@ -227,7 +227,7 @@ const InstitutionData = ({ farmer })=>{
             style={{                     
                 minHeight: 100,
                 paddingTop: 24,
-                backgroundColor: COLORS.main,
+                backgroundColor: COLORS.moderatelimegreen,
                 paddingHorizontal: 10,
                 marginVertical: 10,
                 

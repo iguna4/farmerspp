@@ -26,7 +26,7 @@ export default function FarmerScreen ({ route, navigation }) {
     const farmlands = realm.objects("Farmland").filtered('farmerId == $0', ownerId);
     const [isAddPhoto, setIsAddPhoto] = useState(false);
     const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
-
+    const [refresh, setRefresh] = useState(false);
     // ------------------------------------------------------------------------
     // Editing Single Farmer Data
     
@@ -52,7 +52,7 @@ export default function FarmerScreen ({ route, navigation }) {
       });
       
 
-    }, [realm ]);
+    }, [realm, refresh ]);
 
     // useEffect(()=>{
 
@@ -252,7 +252,7 @@ export default function FarmerScreen ({ route, navigation }) {
           marginTop: 40,
         }}
     >
-        <PersonalData farmer={farmer} />
+        <PersonalData farmer={farmer} setRefresh={setRefresh} />
     </View>
 
     <Box 
@@ -315,7 +315,7 @@ export default function FarmerScreen ({ route, navigation }) {
 
         {
             farmlands?.map((farmland)=>
-            (<FarmlandData key={farmland?._id} farmland={farmland} />))
+            (<FarmlandData key={farmland?._id} farmland={farmland} setRefresh={setRefresh} />))
         }
         </Box>
         <PhotoModal 

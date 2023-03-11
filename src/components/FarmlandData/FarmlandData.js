@@ -18,12 +18,15 @@ import validateInvalidationMessage from '../../helpers/validateInvalidationMessa
 
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
+import { normalizeBlockList } from '../../helpers/normalizeBlockList';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const farmlandResourceMessage = 'farmlandResourceMessage';
 
 
-const FarmlandData = ({ farmland })=>{
+const FarmlandData = ({ farmland, setRefresh })=>{
+
+    console.log('farmland: ', JSON.stringify(farmland));
 
     const realm = useRealm();
     const user = useUser();
@@ -98,7 +101,7 @@ const FarmlandData = ({ farmland })=>{
                 });
             });
         }
-    }, [ realm, user, message ]);
+    }, [ realm, user, message,  ]);
 
 
     useEffect(()=>{
@@ -118,6 +121,18 @@ const FarmlandData = ({ farmland })=>{
         
     }, [ realm, user, message, invalidationMotives, autoRefresh, isCollapseOn ]);
 
+    
+    const getPlantingYears = (blocks)=>{
+
+        console.log('blocks:', blocks)
+        
+        return blocks?.map(block=>{
+                console.log('block: ', JSON.stringify(block))
+                return block.plantingYear
+            })
+    }
+
+    
 
 
     return (
@@ -235,6 +250,7 @@ const FarmlandData = ({ farmland })=>{
             }}
             onToggle={(isOn)=>{
                 setIsCallapseOne(isOn)
+                setRefresh(!isOn);
             }}
         >
             <View
@@ -249,7 +265,7 @@ const FarmlandData = ({ farmland })=>{
 
                     }}
                     >
-                    Ano de Plantio : {farmland?.plantingYear}
+                    Anos de Plantio : [ {getPlantingYears(farmland?.blocks)} ]
                 </Text>
                 <Text
                     style={{ 
@@ -259,7 +275,7 @@ const FarmlandData = ({ farmland })=>{
                         textAlign: 'right',
                     }}
                     >
-                    {(new Date().getFullYear() - farmland?.plantingYear) < 3 ? 'Parcela Nova' : 'Parcela Estabelecida'}
+                    {/* {(new Date().getFullYear() - farmland?.plantingYear) < 3 ? 'Parcela Nova' : 'Parcela Estabelecida'} */}
                 </Text>
             </View>
         </CollapseHeader>
@@ -310,44 +326,61 @@ const FarmlandData = ({ farmland })=>{
         </Box>
 
         <Stack w="100%" direction="column" py="4">
-            <Text
-                style={{
-                    color: COLORS.black,
-                    fontSize: 16,
-                    fontFamily: 'JosefinSans-Bold',
-                    
-                }}
-            >
-                Descrição
-            </Text>
-
-        <Stack w="100%" direction="row">
-                <Box w="30%" >
+            <Stack direction="row" mt="5">
+                <Box w="50%">
                     <Text
                         style={{
-                            color: COLORS.grey,
-                            fontSize: 14,
+                            color: COLORS.black,
+                            fontSize: 18,
                             fontFamily: 'JosefinSans-Bold',
                             
                         }}
+                    >
+                        Dados do Pomar
+                    </Text>
+                </Box>
+                <Box w="25%">
+                
+                </Box>    
+                <Box w="25%">
+                <TouchableOpacity
+                    disabled={farmland?.status === resourceValidation.status.validated ? true : false}
+                    style={{
+                    }}
+                    onPress={
+                        ()=>{
+                            setIsOverlayVisible(!isOverlayVisible);
+                        }
+                    }
+                >
+                <Icon 
+                    // name="home" 
+                    name="edit" 
+                    size={20} 
+                    color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                />
+                </TouchableOpacity>
+            </Box>            
+            </Stack>
+
+        <Stack w="100%" direction="row">
+                <Box w="40%" >
+                    <Text
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Regular',
+                            
+                        }}
                         >
-                    {/* Descrição: */}
+                    Descrição:
                 </Text>
                 </Box>
-                <Box w="70%">
+                <Box w="60%">
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}                    
-                        >
-                        {(new Date().getFullYear() - farmland?.plantingYear) < 3 ? 'Parcela Nova' : 'Parcela Estabelecida'}
-                    </Text>
-                    <Text
-                        style={{
-                            color: COLORS.grey,
-                            fontSize: 14,
+                            fontSize: 16,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
@@ -355,9 +388,255 @@ const FarmlandData = ({ farmland })=>{
                     </Text>
                 </Box>
             </Stack>
-        </Stack>
-        <CustomDivider />
+            <Stack w="100%" direction="row">
+                <Box w="40%" >
+                    <Text
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Regular',
+                            
+                        }}
+                        >
+                    Consociação:
+                </Text>
+                </Box>
+                <Box w="60%">
+                    <Text
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}                    
+                        >
+                        [ {farmland?.consociatedCrops.join('; ')} ]
+                    </Text>
+                </Box>
+            </Stack>
 
+
+            <Stack w="100%" direction="row">
+                <Box w="40%" >
+                    <Text
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Regular',
+                            
+                        }}
+                        >
+                    Área Total:
+                </Text>
+                </Box>
+                <Box w="60%">
+                    <Text
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}                    
+                        >
+                        {farmland?.totalArea} hectares
+                    </Text>
+                </Box>
+            </Stack>
+
+            <Stack w="100%" direction="row">
+                <Box w="40%" >
+                    <Text
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Regular',
+                            
+                        }}
+                        >
+                    Total de Cajueiros:
+                </Text>
+                </Box>
+                <Box w="60%">
+                    <Text
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}                    
+                        >
+                        {farmland?.trees} árvores
+                    </Text>
+                </Box>
+            </Stack>
+
+
+        </Stack>
+        {/* <CustomDivider /> */}
+
+        {/* blocks start here */}
+        <Box w="100%"
+            style={{
+                backgroundColor: COLORS.mediumseagreen,
+                paddingVertical: 10,
+                paddingHorizontal: 5,
+            }}
+        >
+            <Text
+                style={{
+                    fontSize: 18,
+                    color: COLORS.ghostwhite,
+                    fontFamily: 'JosefinSans-Bold',
+                }}
+            >Blocos com cajueiros</Text>
+        </Box>
+
+        {
+            normalizeBlockList(farmland?.blocks)?.map((block, index)=>(
+                <Box key={index} mt="3">
+                    <Stack w="100%" direction="row" space={2}>
+                        {/* <Box w="5%"></Box> */}
+                        <Box w="10%"
+                            style={{
+                                backgroundColor: COLORS.mediumseagreen,
+                                borderRadius: 100,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: 3,
+                            }}    
+                        >
+                            <Text
+                                style={{
+                                    color: COLORS.ghostwhite,
+                                    fontSize: 18,
+                                }}
+                            >{block?.position + 1}</Text>
+                        </Box>
+                        <Box w="90%">
+                            <Text
+                                style={{
+                                    color: COLORS.mediumseagreen,
+                                    fontSize: 18,
+                                    fontFamily: 'JosefinSans-Bold',
+                                }}
+                            >
+                                Ano de Plantio: {block.plantingYear}
+                            </Text>
+                        </Box>
+                    </Stack>
+
+
+                    <Stack w="100%" direction="row" mt="4">
+                        <Box w="35%"
+                            style={{
+
+                            }}    
+                        >
+                            <Text
+                                style={{
+                                    color: COLORS.grey,
+                                    fontSize: 16,
+                                    fontFamily: 'JosefinSans-Regular',
+                                }}
+                            >
+                                Cajueiros: 
+                            </Text>
+                        </Box>
+                        <Box w="65%">
+                                <Text
+                                    style={{
+                                        color: COLORS.grey,
+                                        fontSize: 16,
+                                        fontFamily: 'JosefinSans-Regular',
+                                    }}
+                                >{block.trees} árvores</Text>
+                        </Box>
+                    </Stack>
+
+                    <Stack w="100%" direction="row" >
+                        <Box w="35%"
+                            style={{
+
+                            }}    
+                        >
+                            <Text
+                                style={{
+                                    color: COLORS.grey,
+                                    fontSize: 16,
+                                    fontFamily: 'JosefinSans-Regular',
+                                }}
+                            >
+                                Compasso: 
+                            </Text>
+                        </Box>
+                        <Box w="65%">
+                                <Text
+                                    style={{
+                                        color: COLORS.grey,
+                                        fontSize: 16,
+                                        fontFamily: 'JosefinSans-Regular',
+                                    }}
+                                >{block.density.mode === "Irregular" ? block.density.mode : block.density.mode === "Regular" ? `${block.density.mode} (${block.density.length} por ${block.density.width} metros)` : ''} </Text>
+                        </Box>
+                    </Stack>
+
+
+                    <Stack w="100%" direction="row" >
+                        <Box w="35%"
+                            style={{
+
+                            }}    
+                        >
+                            <Text
+                                style={{
+                                    color: COLORS.grey,
+                                    fontSize: 16,
+                                    fontFamily: 'JosefinSans-Regular',
+                                }}
+                            >
+                                Área: 
+                            </Text>
+                        </Box>
+                        <Box w="65%">
+                                <Text
+                                    style={{
+                                        color: COLORS.grey,
+                                        fontSize: 16,
+                                        fontFamily: 'JosefinSans-Regular',
+                                    }}
+                                >{block.usedArea} hectares</Text>
+                        </Box>
+                    </Stack>
+
+
+                    <Stack w="100%" direction="row" >
+                        <Box w="35%"
+                            style={{
+
+                            }}    
+                        >
+                            <Text
+                                style={{
+                                    color: COLORS.grey,
+                                    fontSize: 16,
+                                    fontFamily: 'JosefinSans-Regular',
+                                }}
+                            >
+                                Cajueiros: 
+                            </Text>
+                        </Box>
+                        <Box w="65%">
+                                <Text
+                                    style={{
+                                        color: COLORS.grey,
+                                        fontSize: 16,
+                                        fontFamily: 'JosefinSans-Regular',
+                                    }}
+                                >{block.trees} árvores</Text>
+                        </Box>
+                    </Stack>
+
+                </Box>
+            ))
+        }
+        
         <Stack w="100%" direction="column" py="4">
 
             <Stack w="100%" direction="row" >

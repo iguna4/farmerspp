@@ -22,7 +22,7 @@ const { useRealm, useQuery, useObject } = realmContext;
 
 const resourceMessage = 'resourceMessage';
 
-const PersonalData = ({ farmer })=>{
+const PersonalData = ({ farmer, setRefresh })=>{
 
     const realm = useRealm();
     const user = useUser();
@@ -219,13 +219,14 @@ const PersonalData = ({ farmer })=>{
         }}
         onToggle={(isOn)=>{
             setIsCallapseOne(isOn);
+            setRefresh(!isOn);
         }}
     >
         <CollapseHeader
             style={{                     
                 minHeight: 100,
                 paddingTop: 24,
-                backgroundColor: COLORS.main,
+                backgroundColor: COLORS.moderatelimegreen,
                 paddingHorizontal: 10,
                 marginVertical: 10,
                 

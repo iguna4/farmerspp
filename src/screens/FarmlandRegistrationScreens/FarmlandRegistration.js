@@ -25,13 +25,16 @@ import { assetTypes } from '../../consts/assetTypes';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { realmContext } from '../../models/realmContext';
-import { useUser } from '@realm/react';
 import { categorizeFarmer } from '../../helpers/categorizeFarmer';
 import FarmlandBlockRegistration from '../../components/FarmlandBlockRegistration/FarmlandBlockRegistration';
 import categories from '../../consts/categories';
 import validateBlockData from '../../helpers/validateBlockData';
 import CustomDivider from '../../components/Divider/CustomDivider';
+import { normalizeBlockList } from '../../helpers/normalizeBlockList';
+
+
+import { useUser } from '@realm/react';
+import { realmContext } from '../../models/realmContext';
 const {useRealm, useQuery, useObject} = realmContext;
 
 
@@ -163,16 +166,16 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
     }, [realm, farmlandId, farmland]);
 
-    const normalizeBlockList = (list)=>{
-        let count = 0;
-        let newList = list?.map(block=>{
-            block['position'] = count;
-            count += 1;
-            return block;
-        });
-        return newList;
+    // const normalizeBlockList = (list)=>{
+    //     let count = 0;
+    //     let newList = list?.map(block=>{
+    //         block['position'] = count;
+    //         count += 1;
+    //         return block;
+    //     });
+    //     return newList;
 
-    }
+    // }
 
 
 
@@ -977,7 +980,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
         <Box w="5%"></Box>
         {  farmland?.blocks?.length > 0 ?          
                 <TouchableOpacity   
-                    onPress={()=>navigation.goBack()}   
+                    onPress={()=>setIsCoordinatesModalVisible(true)}   
                 >
                     <Box 
                         style={{ 

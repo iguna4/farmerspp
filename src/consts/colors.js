@@ -15,6 +15,8 @@ const COLORS = {
     red: 'red',
     springGreen: '#00FF7F',
     mediumseagreen: '#3CB371',
+    moderatelimegreen: '#66cc66',
+    emerald: '#50c878',
 };
 
 

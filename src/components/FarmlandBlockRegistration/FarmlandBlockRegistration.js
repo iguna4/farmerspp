@@ -15,6 +15,8 @@ import { v4 as uuidv4 } from 'uuid';
 // import { useUser } from '@realm/react';
 
 import { realmContext } from '../../models/realmContext';
+import { TouchableOpacity } from "react-native";
+import validateBlockData from "../../helpers/validateBlockData";
 const {useRealm, useQuery, useObject} = realmContext;
 
 
@@ -23,24 +25,92 @@ export default function FarmlandBlockRegistration({
     customUserData, 
     farmlandId,
     isOverlayVisible, setIsOverlayVisible, errors, setErrors,
+    errorAlert, setErrorAlert,
     plantingYear, setPlantingYear, blockTrees, setBlockTrees,
     usedArea, setUsedArea, plantTypes, setPlantTypes,
+   
     clones, setClones, densityLength, setDensityLength,
     densityWidth, setDensityWidth,
     isDensityModeIrregular, isDensityModeRegular, setIsDensityModeIrregular,
     setIsDensityModeRegular,
 
     visualizeBlockData,
+
+    sameTypeTreesList, setSameTypeTreesList,
+
+    totalArea, setTotalArea, setTotalTrees, totalTrees,
+    treesFlag, setTreesFlag, areaFlag, setAreaFlag,
+
+    turnOffOverlay,
     
 }){
 
     const realm = useRealm();
     const foundFarmland = realm.objectForPrimaryKey('Farmland', farmlandId);
+    const [addedClone, setAddedClone] = useState('');
+  
+    const [addBlockIsOn, setAddBlockIsOn] = useState(false);
+    const [treeRedFlag, setTreeRedFlag] = useState(false);
+    const [areaRedFlag, setAreaRedFlag] = useState(false);
+   
+    const toggleOverlay = () => {
+    setIsOverlayVisible(!isOverlayVisible);
+    };
 
 
- const toggleOverlay = () => {
-  setIsOverlayVisible(!isOverlayVisible);
-};
+    useEffect(()=>{
+        if (addBlockIsOn){
+              
+            if (treesFlag > totalTrees || areaFlag > totalArea) {
+                setErrorAlert(true);
+                setAddBlockIsOn(false);
+
+                setTreeRedFlag(true);
+                setAreaRedFlag(true);
+
+                setTreesFlag(prev => prev - parseInt(blockTrees));
+                setAreaFlag(prev => prev - parseFloat(usedArea));
+        
+                return ;
+            }
+            else {
+                setAreaRedFlag(false);
+                setTreeRedFlag(false);
+            }
+
+
+            visualizeBlockData();
+
+            setAddBlockIsOn(false);
+        }
+
+    }, [ addBlockIsOn ])
+
+
+
+
+    useEffect(()=>{
+
+        let selectedClones = [];
+        let mergedSameTypeTrees = [];
+        const filteredPlantTypes = plantTypes.filter(plantType=>!plantType.includes('enxer'));
+        if (plantTypes.filter(plantType=>plantType.includes('enxer')).length > 0){
+            selectedClones = clones?.map(clone=>`Clone: ${clone}`);
+            mergedSameTypeTrees = filteredPlantTypes.concat(selectedClones);
+        }
+        else{
+            mergedSameTypeTrees = filteredPlantTypes;
+            if(clones?.length > 0){
+                setClones([]);
+            }
+        }
+        let normalizedSameTypeTrees = mergedSameTypeTrees?.map((treeType)=>({
+            treeType,
+            trees: '',
+        }));
+        setSameTypeTreesList(normalizedSameTypeTrees);
+
+    }, [ clones, plantTypes]);
 
 
  return (
@@ -52,16 +122,27 @@ export default function FarmlandBlockRegistration({
       borderRadius: 10,
       paddingBottom: 5,
   }}
-  isVisible={isOverlayVisible} 
-  onBackdropPress={toggleOverlay}
+    isVisible={isOverlayVisible} 
+    onBackdropPress={()=>{
+
+        turnOffOverlay();
+
+        if (treeRedFlag || areaRedFlag){
+            setTreeRedFlag(false);
+            setAreaRedFlag(false);
+        }
+
+    }}
 >
   <View
       style={{ 
           width: '100%', 
           backgroundColor: COLORS.mediumseagreen,
           marginBottom: 10, 
+          flexDirection: 'row',
       }}
   >
+    <Box w="90%">
       <Text
           style={{ 
               textAlign: 'center',
@@ -71,6 +152,21 @@ export default function FarmlandBlockRegistration({
 
           }}
       >Bloco {foundFarmland?.blocks?.length + 1}</Text>
+    </Box>
+    <Box w="10%">
+        <TouchableOpacity 
+            onPress={()=>{
+                turnOffOverlay();
+
+                if (treeRedFlag || areaRedFlag){
+                    setTreeRedFlag(false);
+                    setAreaRedFlag(false);
+                }
+            }}
+        >
+          <Icon name="close" color={COLORS.ghostwhite} size={30} />
+        </TouchableOpacity>
+    </Box>
 
   </View>
 
@@ -84,24 +180,43 @@ export default function FarmlandBlockRegistration({
                 minHeight: '70%',
                 justifyContent: 'center',
                 alignItems: 'center',
-                paddingTop: 20,
+                paddingTop: 2,
                 paddingBottom: 50,
             }}
         >
-            <Stack direction="row" mx="3" w="100%">
-                <Box w="45%" px="1">
+        <Stack direction="row">
+            <Box w="30%" px="1">
 
-                </Box>
-                <Box w="10%">
-                    
-                </Box>
+            </Box>  
+            <Box w="70%" px="1" >
+                <Text
+                    style={{
+                        fontSize: 14,
+                        color: treeRedFlag ? COLORS.red : COLORS.mediumseagreen,
+                        fontFamily: 'JosefinSans-Regular',
+                        textAlign: 'right',
+                    }}
+                >Quantas das {totalTrees - treesFlag} árvores?</Text>
+                <Text
+                    style={{
+                        fontSize: 14,
+                        color: areaRedFlag ? COLORS.red : COLORS.mediumseagreen,
+                        fontFamily: 'JosefinSans-Regular',
+                        textAlign: 'right',
+                    }}
+                >
+                    Quais dos {totalArea - areaFlag} hectares?
+                </Text>
+            </Box>  
+        </Stack>
+        <Stack direction="row" mx="3" w="100%">
                 <Box w="45%" px="1">
                     <FormControl isRequired my="1" isInvalid={'plantingYear' in errors}>
                         <FormControl.Label>Ano de plantio</FormControl.Label>
                             <Select
                                 selectedValue={plantingYear}
                                 accessibilityLabel="Ano de plantio"
-                                placeholder="Escolha o ano"
+                                 placeholder="Escolha o ano"
                                 minHeight={55}
                                 _selectedItem={{
                                     bg: 'teal.600',
@@ -141,7 +256,12 @@ export default function FarmlandBlockRegistration({
                         : <FormControl.HelperText></FormControl.HelperText>
                         }
                     </FormControl>
-                </Box>          
+
+                </Box>
+                <Box w="10%">
+                    
+                </Box>
+        
             </Stack>   
 
 
@@ -191,7 +311,8 @@ export default function FarmlandBlockRegistration({
                 value={blockTrees}
                 onChangeText={newNumber=>{
                     setErrors(prev=>({...prev, blockTrees: ''}))
-                    setBlockTrees(newNumber)
+                    setBlockTrees(newNumber);
+
                 }}
             />
                 
@@ -207,108 +328,7 @@ export default function FarmlandBlockRegistration({
         </Stack>  
         </Box>
 
-
-        <FormControl isRequired my="1" isInvalid={'plantTypes' in errors}>
-            <FormControl.Label>Tipo de plantas</FormControl.Label>
-            <MultipleSelectList
-                setSelected={(type)=>{
-                    setErrors(prev=>({...prev, plantTypes: ''}))
-                    setPlantTypes(type)}
-                }
-                data={plantingTypes}
-                placeholder="Tipo de plantas"
-                save="value"
-                label="Tipo de plantas"
-                arrowicon={
-                    <Icon 
-                        size={45} 
-                        name="arrow-drop-down" 
-                        color={COLORS.mediumseagreen} 
-                        />
-                    }
-                    closeicon={
-                        <Icon 
-                        name="close" 
-                        size={20} 
-                        color={COLORS.grey}
-                        />
-                }
-                fontFamily='JosefinSans-Regular'
-                dropdownTextStyles={{
-                    fontSize: 18,
-                }}
-                inputStyles={{
-                    fontSize: 16,
-                    color: '#A8A8A8',
-                }}
-                boxStyles={{
-                    borderRadius: 4,
-                    minHeight: 55,
-                }}
-                />
-            {
-                'plantTypes' in errors 
-            ? <FormControl.ErrorMessage 
-            leftIcon={<Icon name="error-outline" size={16} color="red" />}
-            _text={{ fontSize: 'xs'}}>{errors?.plantTypes}</FormControl.ErrorMessage> 
-            : <FormControl.HelperText></FormControl.HelperText>
-            }
-        </FormControl>
-
-
-{   plantTypes?.some((el)=>el?.includes('enxert')) 
-    && (
-
-        <FormControl my="1" isRequired isInvalid={'clones' in errors} >
-            <FormControl.Label>Clones</FormControl.Label>
-            <MultipleSelectList
-                setSelected={(type)=>{
-                    setErrors(prev=>({...prev, clones: ''}))
-                    setClones(type)}
-                }
-                data={cloneList}
-                placeholder="clones"
-                save="value"
-                label="Clones"
-                arrowicon={
-                    <Icon 
-                        size={45} 
-                        name="arrow-drop-down" 
-                        color={COLORS.mediumseagreen} 
-                    />
-                }
-                closeicon={
-                    <Icon 
-                        name="close" 
-                        size={20} 
-                        color={COLORS.grey} 
-                    />
-                    }
-                    fontFamily='JosefinSans-Regular'
-                dropdownTextStyles={{
-                    fontSize: 18,
-                }}
-                inputStyles={{
-                    fontSize: 16,
-                    color: '#A8A8A8',
-                }}
-                boxStyles={{
-                    borderRadius: 4,
-                    minHeight: 55,
-                }}
-                />
-            {
-                'clones' in errors 
-            ? <FormControl.ErrorMessage 
-            leftIcon={<Icon name="error-outline" size={16} color="red" />}
-            _text={{ fontSize: 'xs'}}>{errors?.clones}</FormControl.ErrorMessage> 
-            : <FormControl.HelperText></FormControl.HelperText>
-            }     
-        </FormControl>
-    )        
-    }
-
-    <Box w="100%">
+        <Box w="100%">
         <FormControl isRequired my="1" isInvalid={'densityMode' in errors}>
     <FormControl.Label>                
         <Text
@@ -488,6 +508,283 @@ export default function FarmlandBlockRegistration({
 
 
 
+
+
+    <FormControl isRequired my="1" isInvalid={'plantTypes' in errors}>
+        <FormControl.Label>Tipo de plantas</FormControl.Label>
+        <MultipleSelectList
+            setSelected={(type)=>{
+                setErrors(prev=>({...prev, plantTypes: ''}));
+                setPlantTypes(type)}
+            }
+            data={plantingTypes}
+            placeholder="Tipo de plantas"
+            save="value"
+            label="Tipo de plantas"
+            arrowicon={
+                <Icon 
+                    size={45} 
+                    name="arrow-drop-down" 
+                    color={COLORS.mediumseagreen} 
+                    />
+                }
+                closeicon={
+                    <Icon 
+                    name="close" 
+                    size={20} 
+                    color={COLORS.grey}
+                    />
+            }
+            fontFamily='JosefinSans-Regular'
+            dropdownTextStyles={{
+                fontSize: 18,
+            }}
+            inputStyles={{
+                fontSize: 16,
+                color: '#A8A8A8',
+            }}
+            boxStyles={{
+                borderRadius: 4,
+                minHeight: 55,
+            }}
+            />
+        {
+            'plantTypes' in errors 
+        ? <FormControl.ErrorMessage 
+        leftIcon={<Icon name="error-outline" size={16} color="red" />}
+        _text={{ fontSize: 'xs'}}>{errors?.plantTypes}</FormControl.ErrorMessage> 
+        : <FormControl.HelperText></FormControl.HelperText>
+        }
+    </FormControl>
+
+
+{   plantTypes?.some((el)=>el?.includes('enxert')) 
+    && (
+        <>
+        <FormControl my="1" isRequired isInvalid={'clones' in errors} >
+            <FormControl.Label>Clones</FormControl.Label>
+            <MultipleSelectList
+                setSelected={(type)=>{
+                    setErrors(prev=>({...prev, clones: ''}));
+                    setClones(type)}
+                }
+                data={cloneList}
+                placeholder="clones"
+                save="value"
+                label="Clones"
+                arrowicon={
+                    <Icon 
+                        size={45} 
+                        name="arrow-drop-down" 
+                        color={COLORS.mediumseagreen} 
+                    />
+                }
+                closeicon={
+                    <Icon 
+                        name="close" 
+                        size={20} 
+                        color={COLORS.grey} 
+                    />
+                    }
+                    fontFamily='JosefinSans-Regular'
+                dropdownTextStyles={{
+                    fontSize: 18,
+                }}
+                inputStyles={{
+                    fontSize: 16,
+                    color: '#A8A8A8',
+                }}
+                boxStyles={{
+                    borderRadius: 4,
+                    minHeight: 55,
+                }}
+                />
+            {
+                'clones' in errors 
+            ? <FormControl.ErrorMessage 
+            leftIcon={<Icon name="error-outline" size={16} color="red" />}
+            _text={{ fontSize: 'xs'}}>{errors?.clones}</FormControl.ErrorMessage> 
+            : <FormControl.HelperText></FormControl.HelperText>
+            }     
+        </FormControl>
+        <Box w="100%" alignItems={"center"} style={{
+            flexDirection: 'row'
+        }}>
+            <Box w="70%">
+                <FormControl  my="1" isInvalid={'addedClone' in errors}>
+                    <FormControl.Label>Adiciona novo clone</FormControl.Label>
+                    <CustomInput
+                        width="100%"
+                        type="text"
+                        placeholder="Clone não econtrado na lista"
+                        value={addedClone}
+                        onChangeText={newClone=>{
+                            setErrors({
+                                ...errors,
+                                addedClone: '',
+                            })
+                            setAddedClone(newClone);
+                        }}
+                        />
+                {   'addedClone' in errors ?
+                    <FormControl.ErrorMessage 
+                        leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                        _text={{ fontSize: 'xs'}}>{errors?.addedClone}</FormControl.ErrorMessage> 
+                    :
+                    <FormControl.HelperText></FormControl.HelperText>
+                    }
+                </FormControl>
+            </Box>
+            <Box
+                // w="15%"
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    // backgroundColor: 'red',
+                    position: 'relative',
+                    bottom: -5,
+                    left: 0,
+                }}
+                >
+                <TouchableOpacity
+                    style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginHorizontal: 10,
+                        marginTop: 10,
+                        padding: 5,
+                        borderRadius: 100,
+                        backgroundColor: COLORS.mediumseagreen,
+                        borderColor: COLORS.mediumseagreen,
+                        borderWidth: 1,
+                    }}
+
+
+                    onPress={()=>{
+                        if (addedClone){
+                            // let updatedCloneList = [...allClones].unshift(addedClone)
+                            // setAllClones(updatedCloneList);
+                            setClones(prev=>[...prev, addedClone]);
+
+                            setAddedClone('');
+                        }
+                        else{
+                            setErrors({
+                                ...errors,
+                                addedClone: 'Indica novo clone'
+                            });
+                        }
+                    }}
+                >
+                    <Icon name="arrow-downward" size={35} color={COLORS.ghostwhite} />
+                </TouchableOpacity>
+            </Box>
+            <Box w="15%">
+
+            </Box>
+
+        </Box>
+
+        </>
+    )        
+    }
+
+{  (plantTypes.length > 0 && sameTypeTreesList.length > 0) &&
+    <Box w="100%" mt="5"
+        style={{ 
+            // borderWidth: 2, 
+            // borderColor: COLORS.mediumseagreen,
+            // // borderTopEndRadius: 20,
+            // borderTopLeftRadius: 20,
+            // borderTopRightRadius: 20,
+
+        }}
+    >
+        <Box 
+            w="100%"
+            px="5"
+            style={{
+                backgroundColor: COLORS.mediumseagreen,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+                borderWidth: 2, 
+                borderColor: COLORS.mediumseagreen,
+
+            }}
+        >
+            <Stack direction="row" space={2} mb="1">
+                <Box w="65%">
+                    <Text
+                        style={{
+                            color: COLORS.ghostwhite,
+                            fontSize: 18,
+                            fontFamily: 'JosefinSans-Bold',
+                        }}
+                    >Tipos de plantas</Text>
+                </Box>
+                <Box w="35%">
+                    <Text
+                        style={{
+                            color: COLORS.ghostwhite,
+                            fontSize: 18,
+                            fontFamily: 'JosefinSans-Bold',
+                        }}
+                    >Cajueiros</Text>
+                </Box>
+
+            </Stack>
+        </Box>
+
+        { sameTypeTreesList?.map((sameTypeTree, index)=>(
+                <Box w="100%" key={index} px="5" my="2"
+                    style={{
+                        borderColor: COLORS.lightgrey,
+                        borderWidth: 2,
+                    }}
+                >
+                    <Stack direction="row" w="100%" space={2} mt="1">
+                        <Box w="65%"
+                            style={{ 
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 18,
+                                    fontFamily: 'JosefinSans-Regular',
+                                    color: COLORS.grey,
+                                }}
+                            >{sameTypeTree?.treeType}</Text>
+                        </Box>
+                        <Box w="35%">
+                            <CustomInput
+                                width="100%"
+                                textAlign="center"
+                                keyboardType="numeric"
+                                placeholder="Cajueiros"
+                                value={sameTypeTree?.trees}
+                                onChangeText={newTrees=>{
+                                                                            setErrors(prev=>({...prev, sameTypeTrees: ''}));
+                                    setSameTypeTreesList(sameTypeTreesList.map((object)=>{
+                                        if (object?.treeType === sameTypeTree?.treeType){
+                                            object.trees = newTrees;
+                                        }
+                                        return object;
+                                    }));
+
+                                }}
+                            />
+                        </Box>
+                    </Stack>
+                </Box>
+            ))
+        }
+    </Box>
+}
+
+
+
+
     </View>
   <Button
       title="Salvar Bloco"
@@ -504,9 +801,35 @@ export default function FarmlandBlockRegistration({
       }}
       type="outline"
       onPress={()=>{
+        // validate data before you update flags
+        let blockData = {
+            plantingYear, 
+            usedArea, 
+            densityWidth,
+            densityLength,
+            blockTrees,
+            plantTypes,
+            clones,
+            isDensityModeIrregular,
+            isDensityModeRegular,
+            sameTypeTreesList,
+        }
+        // if any required data is not validated
+        // a alert message is sent to the user   
+        if (!validateBlockData(blockData, errors, setErrors)) {
+            setErrorAlert(true);
+            return;
+        }
+        // created the validated data object to be passed to the FarmlandModal component
+        // let retrievedBlockData = validateBlockData(blockData, errors, setErrors);
 
-        visualizeBlockData();
+          setTreesFlag(prev=>prev + parseInt(blockTrees));
+          setAreaFlag(prev=>prev + parseFloat(usedArea));
 
+          setAddBlockIsOn(true); 
+
+          setAreaRedFlag(false);
+          setTreeRedFlag(false);
     }}
   />
 </ScrollView>

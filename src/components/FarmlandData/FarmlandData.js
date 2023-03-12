@@ -26,7 +26,6 @@ const farmlandResourceMessage = 'farmlandResourceMessage';
 
 const FarmlandData = ({ farmland, setRefresh })=>{
 
-    console.log('farmland: ', JSON.stringify(farmland));
 
     const realm = useRealm();
     const user = useUser();
@@ -123,11 +122,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 
     
     const getPlantingYears = (blocks)=>{
-
-        console.log('blocks:', blocks)
-        
         return blocks?.map(block=>{
-                console.log('block: ', JSON.stringify(block))
                 return block.plantingYear
             })
     }

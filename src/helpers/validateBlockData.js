@@ -65,15 +65,15 @@ const validateBlockData = (
      });
      return false;
  }
- else if (            
-     retrievedPlantTypes.some(el=>el.includes('enxert')) 
- &&  retrievedClones?.length > 1 && retrievedClones.find((clone)=>clone.includes('Desconhecido'))
- ) {
-     setErrors({ ...errors,
-         clones: 'Clones seleccionados inválidos.',
-     });
-     return false;
- }
+//  else if (            
+//      retrievedPlantTypes.some(el=>el.includes('enxert')) 
+//  &&  retrievedClones?.length > 1 && retrievedClones.find((clone)=>clone.includes('Desconhecido'))
+//  ) {
+//      setErrors({ ...errors,
+//          clones: 'Clones seleccionados inválidos.',
+//      });
+//      return false;
+//  }
 
 
  if (!retrievedDensityMode){

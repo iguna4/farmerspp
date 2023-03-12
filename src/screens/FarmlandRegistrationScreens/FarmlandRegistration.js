@@ -72,23 +72,27 @@ export default function FarmlandRegistration ({ route, navigation }) {
     const [blockTrees, setBlockTrees] = useState('');
     
     const [totalArea, setTotalArea] = useState('');
+    const [totalTrees, setTotalTrees] = useState('');
     const [usedArea, setUsedArea] = useState('');
     const [densityWidth, setDensityWidth] = useState('');
     const [densityLength, setDensityLength] = useState('');
     const [plantTypes, setPlantTypes] = useState([]);
     const [clones, setClones] = useState([]);
-    const [densityMode, setDensityMode] = useState('');
     const [isDensityModeIrregular, setIsDensityModeIrregular] = useState(false);
     const [isDensityModeRegular, setIsDensityModeRegular] = useState(false);
+    const [sameTypeTreesList, setSameTypeTreesList] = useState([]);
     
     const [errorAlert, setErrorAlert] = useState(false);
     const [refresh, setRefresh] = useState(false);
 
+    const [isDeleteBlockOn, setIsDeleteBlockOn] = useState(false)
+    
     // count all blocks associated to the farmland
     const [blockCount, setBlockCount] = useState(0);
-
     
-    // const [farmland, setFarmland] = useState({});
+    
+    const [treesFlag, setTreesFlag] = useState(0);
+    const [areaFlag, setAreaFlag] = useState(0);
 
     // const [blocks, setBlocks] = useState([]);
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
@@ -113,6 +117,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
             clones,
             isDensityModeIrregular,
             isDensityModeRegular,
+            sameTypeTreesList,
         }
         // if any required data is not validated
         // a alert message is sent to the user   
@@ -134,22 +139,10 @@ export default function FarmlandRegistration ({ route, navigation }) {
             createdAt: new Date(),
             modifiedAt: new Date(),
         }
-
       
         onAddBlock(block, farmlandId, realm);
 
-
-        setPlantingYear('');
-        setUsedArea('');
-        setBlockTrees('');
-        setClones([]);
-        setPlantTypes([]);
-        setDensityLength('');
-        setDensityWidth('');
-        setIsDensityModeIrregular(false);
-        setIsDensityModeRegular(false);
-
-        toggleOverlay();
+        turnOffOverlay();
     }
 
     const deleteBlock = useCallback((farmlandId, realm)=>{
@@ -166,19 +159,49 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
     }, [realm, farmlandId, farmland]);
 
-    // const normalizeBlockList = (list)=>{
-    //     let count = 0;
-    //     let newList = list?.map(block=>{
-    //         block['position'] = count;
-    //         count += 1;
-    //         return block;
-    //     });
-    //     return newList;
 
-    // }
+    useEffect(()=>{
+        if (isDeleteBlockOn) {
+            deleteBlock(farmlandId, realm);
+            setIsDeleteBlockOn(false);
+        }
+    }, [ isDeleteBlockOn ])
 
+    const turnOffOverlay = ()=>{
 
+        if ((treesFlag > totalTrees) || (areaFlag > totalArea)) {
+            // setErrorAlert(true);
+            // setAddBlockIsOn(false);
 
+            // setPlantingYear('');
+            // setUsedArea('');
+            // setBlockTrees('');
+            // setClones([]);
+            // setPlantTypes([]);
+            // setDensityLength('');
+            // setDensityWidth('');
+            // setIsDensityModeIrregular(false);
+            // setIsDensityModeRegular(false);
+
+            // setTreesFlag(prev => prev - parseInt(blockTrees));
+            // setAreaFlag(prev => prev - parseFloat(usedArea));
+    
+            // toggleOverlay();
+            // return ;
+        }
+
+        setPlantingYear('');
+        setUsedArea('');
+        setBlockTrees('');
+        setClones([]);
+        setPlantTypes([]);
+        setDensityLength('');
+        setDensityWidth('');
+        setIsDensityModeIrregular(false);
+        setIsDensityModeRegular(false);
+        
+        setIsOverlayVisible(false);
+    }
 
     const onAddBlock = useCallback((block, farmlandId, realm) =>{
 
@@ -212,10 +235,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
         // created the validated data object to be passed to the FarmlandModal component
         let retrievedFarmlandMainData = validateFarmlandMainData(farmlandMainData, errors, setErrors);
        
-        onAddFarmland(retrievedFarmlandMainData, realm)
-
+        onAddFarmland(retrievedFarmlandMainData, realm);
     }
-
 
     const onAddFarmland = useCallback((farmlandMainData, realm) =>{
         const {
@@ -844,7 +865,11 @@ export default function FarmlandRegistration ({ route, navigation }) {
                             <TouchableOpacity
                                 disabled={block?.position === (farmland?.blocks?.length - 1) ? false : true}
                                 onPress={()=>{
-                                    deleteBlock(farmlandId, realm);
+                                    setAreaFlag(prev=>prev - parseFloat(block?.usedArea));
+                                    setTreesFlag(prev =>prev - parseInt(block?.trees));
+
+                                    setIsDeleteBlockOn(true);
+
                                 }}
                             >
                                 <Icon 
@@ -1007,35 +1032,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
             </Box>
         }               
             <Box w="30%"></Box>
-            {/* <Box w="15%"
-                style={{ alignItems: 'center', justifyContent: 'center', }}
-            > */}
-                {/* <TouchableOpacity
-                    onPress={()=>{
-                        if (farmland){
 
-                            // make the block data form visible
-                            setIsOverlayVisible(true);
-                        }
-                        else {
-                            setLoadingButton(true);
-                            
-                            // save the farmland main data
-                            visualizeFarmlandMainData();
-                        }
-                    }}
-                >
-                    <Box 
-                        style={{
-                            borderRadius: 100,
-                            backgroundColor: farmland ? COLORS.mediumseagreen : COLORS.main,
-                        }}
-                    >
-                        <Icon name="add" size={60} color={COLORS.ghostwhite} />
-                    </Box>
-                </TouchableOpacity> */}
-
-            {/* </Box> */}
             <Box w="5%"></Box>
         </Stack>
     </Box>
@@ -1046,6 +1043,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
         customUserData={customUserData}
         errors={errors}
         setErrors={setErrors}
+        errorAlert={errorAlert}
+        setErrorAlert={setErrorAlert}
         plantingYear={plantingYear}
         setPlantingYear={setPlantingYear}
         blockTrees={blockTrees}
@@ -1066,6 +1065,20 @@ export default function FarmlandRegistration ({ route, navigation }) {
         setIsDensityModeRegular={setIsDensityModeRegular}
         visualizeBlockData={visualizeBlockData}
         farmlandId={farmlandId}
+
+        totalArea={totalArea}
+        setTotalArea={setTotalArea}
+        totalTrees={trees}
+        setTotalTrees={setTrees}
+        sameTypeTreesList={sameTypeTreesList}
+        setSameTypeTreesList={setSameTypeTreesList}
+
+        treesFlag={treesFlag}
+        setTreesFlag={setTreesFlag}
+        areaFlag={areaFlag}
+        setAreaFlag={setAreaFlag}
+
+        turnOffOverlay={turnOffOverlay}
 
     />
 

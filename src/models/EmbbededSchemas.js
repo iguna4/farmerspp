@@ -110,6 +110,15 @@ export const SprayingServiceBeneficiary = {
     }
 };
 
+export const SameTypeTrees = {
+    name: 'SameTypeTrees',
+    embedded: true,
+    properties: {
+        treeType: 'string?',
+        trees: 'int?',
+    },
+}
+
 
 export const FarmlandBlock = {
     name: 'FarmlandBlock',
@@ -121,6 +130,7 @@ export const FarmlandBlock = {
         trees: 'int',
         usedArea: 'float?',
         plantTypes: 'PlantTypes',
+        sameTypeTrees: 'SameTypeTrees[]',
 
         userName: 'string?',
 

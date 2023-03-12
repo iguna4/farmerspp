@@ -64,7 +64,6 @@ export default function FarmlandRegistration ({ route, navigation }) {
     const [isCoordinatesModalVisible, setIsCoordinatesModalVisible] = useState(false);
     const [loadingButton, setLoadingButton] = useState(false);
 
-    const [errors, setErrors] = useState({});
     const [consociatedCrops, setConsociatedCrops] = useState([]);
     const [description, setDescription] = useState('');
     const [plantingYear, setPlantingYear] = useState('');
@@ -101,6 +100,34 @@ export default function FarmlandRegistration ({ route, navigation }) {
     // loading activity indicator
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
+    
+    
+    // ------------------------------------------
+    const [alert, setAlert] = useState(false);
+
+    const [messageAlert, setMessageAlert] = useState('');
+    const [titleAlert, setTitleAlert] = useState('');
+    const [cancelText, setCancelText] = useState('');
+    const [confirmText, setConfirmText] = useState('');
+    const [showCancelButton, setShowCancelButton] = useState(false);
+    const [showConfirmButton, setShowConfirmButton] = useState(false);
+
+    // const [messageAlert, setMessageAlert] = useState('');
+    // const [titleAlert, setTitleAlert] = useState('');
+    // const [cancelText, setCancelText] = useState('');
+    // const [confirmText, setConfirmText] = useState('');
+    // const [showCancelButton, setShowCancelButton] = useState(false);
+    // const [showConfirmButton, setShowConfirmButton] = useState(false);
+    // // const [validated, setValidated] = useState(false);
+    // // const [invalidated, setInvalidated] = useState(false);
+    // const [message, setMessage] = useState('');
+    const [errors, setErrors] = useState({});
+    
+    // // ---------------------------------------------
+
+
+
+
     const toggleOverlay = () => {
         setIsOverlayVisible(!isOverlayVisible);
       };
@@ -122,7 +149,14 @@ export default function FarmlandRegistration ({ route, navigation }) {
         // if any required data is not validated
         // a alert message is sent to the user   
         if (!validateBlockData(blockData, errors, setErrors)) {
-            setErrorAlert(true);
+            setAlert(true);
+
+            setTitleAlert(errorMessages.farmlandError.title);
+            setMessageAlert(errorMessages.farmlandError.message);
+            setShowCancelButton(errorMessages.farmlandError.showCancelButton);
+            setShowConfirmButton(errorMessages.farmlandError.showConfirmButton);
+            setCancelText(errorMessages.farmlandError.cancelText);
+            setConfirmText(errorMessages.farmlandError.confirmText);
             return;
         }
         // created the validated data object to be passed to the FarmlandModal component
@@ -168,27 +202,6 @@ export default function FarmlandRegistration ({ route, navigation }) {
     }, [ isDeleteBlockOn ])
 
     const turnOffOverlay = ()=>{
-
-        if ((treesFlag > totalTrees) || (areaFlag > totalArea)) {
-            // setErrorAlert(true);
-            // setAddBlockIsOn(false);
-
-            // setPlantingYear('');
-            // setUsedArea('');
-            // setBlockTrees('');
-            // setClones([]);
-            // setPlantTypes([]);
-            // setDensityLength('');
-            // setDensityWidth('');
-            // setIsDensityModeIrregular(false);
-            // setIsDensityModeRegular(false);
-
-            // setTreesFlag(prev => prev - parseInt(blockTrees));
-            // setAreaFlag(prev => prev - parseFloat(usedArea));
-    
-            // toggleOverlay();
-            // return ;
-        }
 
         setPlantingYear('');
         setUsedArea('');
@@ -440,6 +453,93 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 setErrorAlert(false);
             }}
         />
+
+
+<AwesomeAlert
+        show={alert}
+        
+        titleStyle={{
+            fontSize: 20,
+            paddingVertical: 10,
+            color: COLORS.ghostwhite,
+            fontWeight: 'bold',
+            marginBottom: 20,
+            backgroundColor: COLORS.mediumseagreen,
+            width: '100%',
+            textAlign: 'center',
+
+        }}
+        messageStyle={{
+            fontSize: 18,
+            color: COLORS.grey,
+            fontFamily: 'JosefinSans-Regular',
+            lineHeight: 25,
+            textAlign: 'center',
+        }}
+
+        alertContainerStyle	={{
+            // width: 300,
+            }}
+
+        overlayStyle={{
+            // width: 100,
+
+        }}
+
+        contentContainerStyle={{
+            width: '90%',
+            minHeight: '30%',
+        }}
+
+        contentStyle={{
+            // flex: 1,
+            paddingVertical: 1,
+        }}
+
+        cancelButtonStyle={{
+            width: 120,
+            marginRight: 15,
+            }}
+    
+            cancelButtonTextStyle={{
+                fontSize: 18,
+                textAlign: 'center',
+            //   fontWeight: 'bold',
+                fontFamily: 'JosefinSans-Bold',
+            }}
+    
+            confirmButtonStyle={{
+            width: 120,
+            marginLeft: 15,
+            }}
+    
+            confirmButtonTextStyle={{
+            fontSize: 18,
+            textAlign: 'center',
+            //   fontWeight: 'bold',
+            fontFamily: 'JosefinSans-Bold',
+            }}
+
+            showProgress={false}
+            title={titleAlert}
+            message={messageAlert}
+            closeOnTouchOutside={false}
+            closeOnHardwareBackPress={false}
+            showCancelButton={showCancelButton}
+            showConfirmButton={showConfirmButton}
+            cancelText={cancelText}
+            confirmText={confirmText}
+            cancelButtonColor="#DD6B55"
+            confirmButtonColor={COLORS.danger}
+            onCancelPressed={()=>{
+                setAlert(false);
+            }}
+            onConfirmPressed={() => {
+                setAlert(false);
+            }}
+        />
+
+
 
       <ScrollView>
           <Box 
@@ -1043,8 +1143,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
         customUserData={customUserData}
         errors={errors}
         setErrors={setErrors}
-        errorAlert={errorAlert}
-        setErrorAlert={setErrorAlert}
+        alert={alert}
+        setAlert={setAlert}
         plantingYear={plantingYear}
         setPlantingYear={setPlantingYear}
         blockTrees={blockTrees}
@@ -1079,6 +1179,19 @@ export default function FarmlandRegistration ({ route, navigation }) {
         setAreaFlag={setAreaFlag}
 
         turnOffOverlay={turnOffOverlay}
+
+        messageAlert={messageAlert}
+        setMessageAlert={setMessageAlert}
+        titleAlert={titleAlert}
+        setTitleAlert={setTitleAlert}
+        cancelText={cancelText}
+        setCancelText={setCancelText}
+        confirmText={confirmText}
+        setConfirmText={setConfirmText}
+        showCancelButton={showCancelButton}
+        setShowCancelButton={setShowCancelButton}
+        showConfirmButton={showConfirmButton}
+        setShowConfirmButton={setShowConfirmButton}
 
     />
 

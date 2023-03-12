@@ -124,7 +124,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
     const getPlantingYears = (blocks)=>{
         return blocks?.map(block=>{
                 return block.plantingYear
-            })
+            }).join("; ")
     }
 
     
@@ -240,7 +240,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             style={{                     
                 minHeight: 100,
                 paddingTop: 24,
-                backgroundColor: COLORS.second,
+                backgroundColor: COLORS.pantone,
                 paddingHorizontal: 10,
             }}
             onToggle={(isOn)=>{

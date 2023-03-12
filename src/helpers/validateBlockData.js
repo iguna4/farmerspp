@@ -14,6 +14,8 @@ const validateBlockData = (
      densityWidth,
      plantTypes,
      clones,
+
+     sameTypeTreesList,
      // farmer,
 
  }, errors, setErrors,
@@ -26,6 +28,7 @@ const validateBlockData = (
  const retrievedDensityWidth = densityWidth ? parseInt(densityWidth): 0;
  const retrievedPlantTypes = [...plantTypes];
  const retrievedClones = [...clones];
+ const retrievedSameTypeTreesList = [...sameTypeTreesList];
     
  if (!retrievedPlantingYear){
      setErrors({ ...errors,
@@ -99,6 +102,17 @@ const validateBlockData = (
          density: 'Comprimento e Largura inválidos.',
      });
      return false;                   
+ }
+
+ const sumOfTrees = retrievedSameTypeTreesList.map(object=>parseInt(object?.trees)).reduce((acc, el)=>acc + el, 0);
+ console.log('sumOfTrees:', sumOfTrees);
+ if (sumOfTrees !== retrievedTreesNumber){
+    setErrors({
+        ...errors,
+        sameTypeTrees: 'A soma dos tipos de plantas não é igual ao total dos cajueiros deste bloco.'
+    });
+
+    return false;
  }
 
 

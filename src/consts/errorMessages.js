@@ -1,7 +1,19 @@
 
 export const errorMessages = {
 
-    
+    farmlandError : {
+        title: 'Dados Inválidos',
+        message: 'Corrija dados não válidos!',
+        // logFlag: 'Network request failed',
+        showCancelButton: false,
+        showConfirmButton: true,
+        cancelText: '',
+        confirmText: '  OK!  ',
+        onCancelPressed: ()=>{},
+        onConfirmPressed: ()=>{},
+    },
+
+
     network: {
         title: 'Conexão Internet',
         message: 'Verifique a sua Internet!',

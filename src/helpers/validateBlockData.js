@@ -28,7 +28,12 @@ const validateBlockData = (
  const retrievedDensityWidth = densityWidth ? parseInt(densityWidth): 0;
  const retrievedPlantTypes = [...plantTypes];
  const retrievedClones = [...clones];
- const retrievedSameTypeTreesList = [...sameTypeTreesList];
+ const retrievedSameTypeTreesList = [...sameTypeTreesList].map(object=>{
+    return {
+        treeType: object?.treeType,
+        trees: parseInt(object?.trees),
+    }
+ });
     
  if (!retrievedPlantingYear){
      setErrors({ ...errors,
@@ -105,7 +110,7 @@ const validateBlockData = (
  }
 
  const sumOfTrees = retrievedSameTypeTreesList.map(object=>parseInt(object?.trees)).reduce((acc, el)=>acc + el, 0);
- console.log('sumOfTrees:', sumOfTrees);
+
  if (sumOfTrees !== retrievedTreesNumber){
     setErrors({
         ...errors,
@@ -133,6 +138,7 @@ const validateBlockData = (
          plantType: retrievedPlantTypes,
          clones: retrievedClones,
      },
+     sameTypeTrees: retrievedSameTypeTreesList,
      // farmer: retrievedFarmerId,
  }
      

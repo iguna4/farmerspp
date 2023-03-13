@@ -35,6 +35,8 @@ import { normalizeBlockList } from '../../helpers/normalizeBlockList';
 
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
+import { errorMessages } from '../../consts/errorMessages';
+import { resourceValidation } from '../../consts/resourceValidation';
 const {useRealm, useQuery, useObject} = realmContext;
 
 
@@ -111,6 +113,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
     const [confirmText, setConfirmText] = useState('');
     const [showCancelButton, setShowCancelButton] = useState(false);
     const [showConfirmButton, setShowConfirmButton] = useState(false);
+    const [logFlag, setLogFlag] = useState('');
 
     // const [messageAlert, setMessageAlert] = useState('');
     // const [titleAlert, setTitleAlert] = useState('');
@@ -168,6 +171,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
             density:  retrievedBlockData?.density,
             trees: retrievedBlockData?.trees,
             usedArea: retrievedBlockData?.usedArea,
+            sameTypeTrees: retrievedBlockData?.sameTypeTrees,
             plantTypes: retrievedBlockData?.plantTypes,
             userName: customUserData?.name,
             createdAt: new Date(),
@@ -178,6 +182,45 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
         turnOffOverlay();
     }
+
+
+    const invalidateFarmland = useCallback((farmlandId, realm)=>{
+
+        const foundFarmland = realm.objectForPrimaryKey('Farmland', farmlandId);
+        
+        realm.write(()=>{
+            if (foundFarmland){
+                foundFarmland.status = resourceValidation.status.invalidated;
+                foundFarmland.checkedBy = customUserData?.name;
+            }
+        });
+
+    }, [realm, farmlandId]);
+
+    const addInvalidationMessage = useCallback((farmlandId, realm)=>{
+
+        const newMessageObject = {
+            position: 0,
+            message: 'Verificou-se inconsistencias ou entre o total dos cajueiros e a soma dos cajueiros dos blocos ou entre a área total e a soma das áreas dos blocos.',
+            ownerName: customUserData?.name,
+            createdAt: new Date(),
+        };
+        
+        realm.write(async ()=>{
+            const newResourceMessage = await realm.create('InvalidationMotive', {
+                _id: uuidv4(),
+                resourceId: farmlandId,
+                resourceName: 'Farmland',
+                messages: [newMessageObject],  
+                createdAt: new Date(),
+            });
+        });
+        
+    }, [ realm, farmlandId  ]);
+
+
+
+
 
     const deleteBlock = useCallback((farmlandId, realm)=>{
 
@@ -192,6 +235,41 @@ export default function FarmlandRegistration ({ route, navigation }) {
         });
 
     }, [realm, farmlandId, farmland]);
+
+    const checkBlockConformity = (farmlandId, realm) =>{
+
+        const farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
+
+        const blocksTrees = farmland?.blocks?.map(block=>parseInt(block?.trees))?.reduce((acc, el)=>acc + el, 0);
+        const blocksAreas = farmland?.blocks?.map(block=>parseFloat(block?.usedArea))?.reduce((acc, el)=>acc + el, 0);
+        const totalArea = parseFloat(farmland?.totalArea);
+        const totalTrees = parseInt(farmland?.trees);
+        if (blocksTrees !== totalTrees ){
+            setAlert(true);
+            setTitleAlert(errorMessages.blockTreesConformityError.title);
+            setMessageAlert(errorMessages.blockTreesConformityError.message);
+            setShowCancelButton(errorMessages.blockTreesConformityError.showCancelButton);
+            setShowConfirmButton(errorMessages.blockTreesConformityError.showConfirmButton);
+            setCancelText(errorMessages.blockTreesConformityError.cancelText);
+            setConfirmText(errorMessages.blockTreesConformityError.confirmText);
+            setLogFlag(errorMessages.blockTreesConformityError.logFlag)
+            return false;
+        }
+        if (blocksAreas > totalArea){
+            setAlert(true);
+            setTitleAlert(errorMessages.blockAreaConformityError.title);
+            setMessageAlert(errorMessages.blockAreaConformityError.message);
+            setShowCancelButton(errorMessages.blockAreaConformityError.showCancelButton);
+            setShowConfirmButton(errorMessages.blockAreaConformityError.showConfirmButton);
+            setCancelText(errorMessages.blockAreaConformityError.cancelText);
+            setConfirmText(errorMessages.blockAreaConformityError.confirmText);
+            setLogFlag(errorMessages.blockAreaConformityError.logFlag)
+
+            return false;
+        }
+        return true;
+
+    };
 
 
     useEffect(()=>{
@@ -242,7 +320,14 @@ export default function FarmlandRegistration ({ route, navigation }) {
         // if any required data is not validated
         // a alert message is sent to the user   
         if (!validateFarmlandMainData(farmlandMainData, errors, setErrors)) {
-            setErrorAlert(true)
+            setAlert(true)
+            setTitleAlert(errorMessages.farmlandError.title);
+            setMessageAlert(errorMessages.farmlandError.message);
+            setShowCancelButton(errorMessages.farmlandError.showCancelButton);
+            setShowConfirmButton(errorMessages.farmlandError.showConfirmButton);
+            setCancelText(errorMessages.farmlandError.cancelText);
+            setConfirmText(errorMessages.farmlandError.confirmText);
+
             return;
         }
         // created the validated data object to be passed to the FarmlandModal component
@@ -250,6 +335,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
        
         onAddFarmland(retrievedFarmlandMainData, realm);
     }
+
+
 
     const onAddFarmland = useCallback((farmlandMainData, realm) =>{
         const {
@@ -529,13 +616,18 @@ export default function FarmlandRegistration ({ route, navigation }) {
             showConfirmButton={showConfirmButton}
             cancelText={cancelText}
             confirmText={confirmText}
-            cancelButtonColor="#DD6B55"
-            confirmButtonColor={COLORS.danger}
+            cancelButtonColor={COLORS.mediumseagreen}
+            confirmButtonColor={logFlag?.includes('inconsistencies') ? COLORS.red : COLORS.mediumseagreen}
             onCancelPressed={()=>{
                 setAlert(false);
             }}
             onConfirmPressed={() => {
+                if (logFlag?.includes('inconsistencies')){
+                    invalidateFarmland(farmlandId, realm);
+                    addInvalidationMessage(farmlandId, realm);
+                }
                 setAlert(false);
+                navigation.goBack();
             }}
         />
 
@@ -1105,7 +1197,11 @@ export default function FarmlandRegistration ({ route, navigation }) {
         <Box w="5%"></Box>
         {  farmland?.blocks?.length > 0 ?          
                 <TouchableOpacity   
-                    onPress={()=>setIsCoordinatesModalVisible(true)}   
+                    onPress={()=>{
+                        if(checkBlockConformity(farmlandId, realm)){
+                            setIsCoordinatesModalVisible(true)
+                        }
+                    }}  
                 >
                     <Box 
                         style={{ 

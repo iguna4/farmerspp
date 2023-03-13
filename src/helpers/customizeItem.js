@@ -12,7 +12,7 @@ export const customizeItem = (farmersList, farmlandsList, serviceProviders,  cus
         return farmersList?.map((item) => {
                 
                 const farmlands = farmlandsList?.filter(farmland=>farmland.farmerId === item._id);
-                const isServiceProvider = serviceProviders?.filter(provider=>provider.actorId === item._id);
+                const isServiceProvider = serviceProviders?.filter(provider=>provider?.actorId === item?._id);
                 const { assets } = item;
                 // console.log('assets: ', JSON.stringify(assets));
 

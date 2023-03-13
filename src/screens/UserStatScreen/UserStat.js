@@ -49,16 +49,19 @@ export default function UserStat({ route, navigation  }) {
     
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
-    const farmers = realm.objects('Farmer').filtered("userId == $0", userId);
+    const farmers = realm.objects('Actor').filtered("userId == $0", userId);
+    // const serviceProviders = realm.objects('SprayingServiceProvider').filtered("userProvince == $0", customUserData?.userProvince);
     const groups = realm.objects('Group').filtered("userId == $0", userId);
     const institutions = realm.objects('Institution').filtered("userId == $0", userId);
     const farmlands = realm.objects('Farmland').filtered("userId == $0", userId);
     const stats = realm.objects('UserStat').filtered("userId == $0", userId);
 
-    const individualsList = customizeItem(farmers, farmlands, {}, 'Indivíduo')
-    const groupsList = customizeItem(groups, farmlands, {}, 'Grupo')
-    const institutionsList = customizeItem(institutions, farmlands, {}, 'Instituição');
-  
+    
+    const individualsList = customizeItem(farmers, farmlands, [], {}, 'Indivíduo')
+    const groupsList = customizeItem(groups, farmlands, [], {}, 'Grupo')
+    const institutionsList = customizeItem(institutions, farmlands, [], {}, 'Instituição');
+    
+   
 
       // merge the three arrays of farmers and sort the items by createdAt 
     let farmersList = [];
@@ -82,16 +85,16 @@ export default function UserStat({ route, navigation  }) {
     const filteredResources = (list, flag)=>{
       let newResourcesList = [];
       if (flag === 'pendingFarmers') {
-        newResourcesList = list?.filter(resource=>resource?.validated === resourceValidation.status.pending);
+        newResourcesList = list?.filter(resource=>resource?.status === resourceValidation.status.pending);
       }
       else if (flag === 'pendingFarmlands') {
-        newResourcesList = list?.filter(resource=>resource?.validated === resourceValidation.status.pending);
+        newResourcesList = list?.filter(resource=>resource?.status === resourceValidation.status.pending);
       }
       else if (flag === 'invalidatedFarmers') {
-        newResourcesList = list?.filter(resource=>resource?.validated === resourceValidation.status.invalidated);
+        newResourcesList = list?.filter(resource=>resource?.status === resourceValidation.status.invalidated);
       }
       else if (flag === 'invalidatedFarmlands') {
-        newResourcesList = list?.filter(resource=>resource?.validated === resourceValidation.status.invalidated);
+        newResourcesList = list?.filter(resource=>resource?.status === resourceValidation.status.invalidated);
       }
       return newResourcesList;
     }
@@ -107,7 +110,7 @@ export default function UserStat({ route, navigation  }) {
       realm.subscriptions.update(mutableSubs => {
         mutableSubs.removeByName(farmersItems);
         mutableSubs.add(
-          realm.objects('Farmer').filtered("userId == $0", userId),
+          realm.objects('Actor').filtered("userId == $0", userId),
           {name: farmersItems},
         );
       });
@@ -245,12 +248,12 @@ export default function UserStat({ route, navigation  }) {
           w="100%"
           alignItems={"center"}
           style={{
-            backgroundColor: COLORS.main,
+            backgroundColor: COLORS.pantone,
             paddingLeft: 5,
             paddingRight: 10,
           }}
         >
-          <Stack w="100%" direction="row" space={1} pt="5" >
+          <Stack w="100%" direction="row" space={1} pt="1" mb="2.5" >
                 <Box w="50%"
                   style={{
                     alignItems: 'center',
@@ -276,7 +279,7 @@ export default function UserStat({ route, navigation  }) {
                     <Text
                       style={{
                         color: COLORS.ghostwhite,
-                        fontSize: 16,
+                        fontSize: 14,
                         fontFamily: 'JosefinSans-Bold',
                       }}
                     >Produtores</Text>
@@ -285,6 +288,9 @@ export default function UserStat({ route, navigation  }) {
                     
                   <Box w="50%"
                     style={{
+                      position: 'relative',
+                      bottom: -10,
+                      
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}
@@ -299,19 +305,20 @@ export default function UserStat({ route, navigation  }) {
 
                       }}
                       style={{
-                        height: 35,
+                        // height: 35,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        paddingHorizontal: 5,
-                        borderTopEndRadius: 20,
-                        borderTopLeftRadius: 20,
-                        backgroundColor: pendingFarmers ? COLORS.ghostwhite : COLORS.main,
+                        paddingHorizontal: 2,
+                        paddingVertical: 5,
+                        // borderTopEndRadius: 20,
+                        // borderTopLeftRadius: 20,
+                        backgroundColor: pendingFarmers ? COLORS.ghostwhite : COLORS.pantone,
                       }}
                     >
                       <Text style={{
                         textAlign: 'center',
                         color: pendingFarmers ? COLORS.main : COLORS.ghostwhite,
-                        fontSize: 12,
+                        fontSize: 10,
                         fontFamily: 'JosefinSans-Bold',
                       }}>
                         Pendentes
@@ -322,6 +329,8 @@ export default function UserStat({ route, navigation  }) {
                     style={{
                       alignItems: 'center',
                       justifyContent: 'center',
+                      position: 'relative',
+                      bottom: -10,
                     }}
                   >
                     <TouchableOpacity
@@ -332,20 +341,21 @@ export default function UserStat({ route, navigation  }) {
                           setInvalidatedFarmlands(false);
                         }}
                         style={{
-                          height: 35,
+                          // height: 35,
                           alignItems: 'center',
                           justifyContent: 'center',
-                          paddingHorizontal: 5,
-                          borderTopEndRadius: 20,
-                          borderTopLeftRadius: 20,
-                          backgroundColor: invalidatedFarmers ? COLORS.ghostwhite : COLORS.main,
+                          paddingHorizontal: 2,
+                          paddingVertical: 5,
+                          // borderTopEndRadius: 20,
+                          // borderTopLeftRadius: 20,
+                          backgroundColor: invalidatedFarmers ? COLORS.ghostwhite : COLORS.pantone,
                         }}
                       >
                         <Text 
                           style={{
                             textAlign: 'center',
                             color: invalidatedFarmers ? COLORS.main : COLORS.ghostwhite,
-                            fontSize: 12,
+                            fontSize: 10,
                             fontFamily: 'JosefinSans-Bold',
                             marginRight: 5,
                           }}
@@ -385,7 +395,7 @@ export default function UserStat({ route, navigation  }) {
                  <Text
                   style={{
                     color: COLORS.ghostwhite,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontFamily: 'JosefinSans-Bold',
                   }}
                  >
@@ -396,6 +406,8 @@ export default function UserStat({ route, navigation  }) {
                     style={{
                       justifyContent: 'center',
                       alignItems: 'center',
+                      position: 'relative',
+                      bottom: -10,
                     }}
                     >
                     <TouchableOpacity
@@ -406,13 +418,14 @@ export default function UserStat({ route, navigation  }) {
                         setInvalidatedFarmlands(false);
                       }}
                       style={{
-                        height: 35,
+                        // height: 35,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        paddingHorizontal: 5,
-                        borderTopEndRadius: 20,
-                        borderTopLeftRadius: 20,
-                        backgroundColor: pendingFarmlands ? COLORS.ghostwhite : COLORS.main,
+                        paddingHorizontal: 2,
+                        paddingVertical: 5,
+                        // borderTopEndRadius: 20,
+                        // borderTopLeftRadius: 20,
+                        backgroundColor: pendingFarmlands ? COLORS.ghostwhite : COLORS.pantone,
 
                       }}
                     >
@@ -420,7 +433,7 @@ export default function UserStat({ route, navigation  }) {
                         style={{ 
                           textAling: 'center',  
                           color: pendingFarmlands ? COLORS.main : COLORS.ghostwhite, 
-                          fontSize: 12,
+                          fontSize: 10,
                           fontFamily: 'JosefinSans-Bold',
                         }}
                       >
@@ -432,6 +445,8 @@ export default function UserStat({ route, navigation  }) {
                     style={{
                       alignItems: 'center',
                       justifyContent: 'center',
+                      position: 'relative',
+                      bottom: -10,
                     }}
                   >
                     <TouchableOpacity
@@ -442,20 +457,21 @@ export default function UserStat({ route, navigation  }) {
                           setInvalidatedFarmlands(true);
                         }}
                         style={{
-                          height: 35,
+                          // height: 35,
                           alignItems: 'center',
                           justifyContent: 'center',
-                          paddingHorizontal: 5,
-                          borderTopEndRadius: 20,
-                          borderTopLeftRadius: 20,
-                          backgroundColor: invalidatedFarmlands ? COLORS.ghostwhite : COLORS.main,
+                          paddingHorizontal: 2,
+                          paddingVertical: 5,
+                          // borderTopEndRadius: 20,
+                          // borderTopLeftRadius: 20,
+                          backgroundColor: invalidatedFarmlands ? COLORS.ghostwhite : COLORS.pantone,
 
                         }}
                       >
                         <Text style={{
                           textAlign: 'center',
                           color: invalidatedFarmlands ? COLORS.main : COLORS.ghostwhite,
-                          fontSize: 12,
+                          fontSize: 10,
                           fontFamily: 'JosefinSans-Bold',
                           marginRight: 4,
                         }}>

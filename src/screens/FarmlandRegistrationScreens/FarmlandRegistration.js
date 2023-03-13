@@ -40,6 +40,8 @@ import { resourceValidation } from '../../consts/resourceValidation';
 const {useRealm, useQuery, useObject} = realmContext;
 
 
+const farmlandResourceMessage = 'farmlandResourceMessage';
+
 export default function FarmlandRegistration ({ route, navigation }) {
     
     const realm = useRealm();
@@ -195,13 +197,20 @@ export default function FarmlandRegistration ({ route, navigation }) {
             }
         });
 
+        try {
+            addInvalidationMessage(farmlandId, realm);
+        } catch (error) {
+            console.log('could not add invalidation message:', { cause: error});
+        }
+
+
     }, [realm, farmlandId]);
 
     const addInvalidationMessage = useCallback((farmlandId, realm)=>{
 
         const newMessageObject = {
             position: 0,
-            message: 'Verificou-se inconsistencias ou entre o total dos cajueiros e a soma dos cajueiros dos blocos ou entre a área total e a soma das áreas dos blocos.',
+            message: 'Verificou-se inconsistências ou entre o total dos cajueiros e a soma dos cajueiros dos blocos ou entre a área total e a soma das áreas dos blocos.',
             ownerName: customUserData?.name,
             createdAt: new Date(),
         };
@@ -216,10 +225,19 @@ export default function FarmlandRegistration ({ route, navigation }) {
             });
         });
         
-    }, [ realm, farmlandId  ]);
+    }, [ realm, farmlandId ]);
 
 
-
+    useEffect(()=>{
+        realm.subscriptions.update(mutableSubs => {
+            mutableSubs.removeByName(farmlandResourceMessage);
+            mutableSubs.add(
+              realm.objects('InvalidationMotive').filtered(`resourceId == "${farmlandId}"`),
+              {name: farmlandResourceMessage},
+            );
+          });
+        
+    }, [ realm, farmlandId ]);
 
 
     const deleteBlock = useCallback((farmlandId, realm)=>{
@@ -356,14 +374,19 @@ export default function FarmlandRegistration ({ route, navigation }) {
     
     
         let owner;
+        let ownerType;
         if (flag === 'Indivíduo'){
             owner = realm.objectForPrimaryKey('Actor', ownerId);
+            ownerType = 'Single';
         }
         else if (flag === 'Grupo') {
             owner = realm.objectForPrimaryKey('Group', ownerId);
+            ownerType = 'Group';
         }
         else if (flag === 'Instituição'){
             owner = realm.objectForPrimaryKey('Institution', ownerId);
+            ownerType = 'Institution';
+
         }
     
         if (!owner) {
@@ -388,6 +411,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 userProvince: customUserData?.userProvince,
                 userId: customUserData?.userId,
                 userName: customUserData?.name,
+                ownerType,
             });
 
             // convert realm object to JS object
@@ -623,11 +647,16 @@ export default function FarmlandRegistration ({ route, navigation }) {
             }}
             onConfirmPressed={() => {
                 if (logFlag?.includes('inconsistencies')){
-                    invalidateFarmland(farmlandId, realm);
-                    addInvalidationMessage(farmlandId, realm);
+                    try {
+                        invalidateFarmland(farmlandId, realm);
+                        
+                        navigation.goBack();
+                    }
+                    catch(error){
+                        console.log('could not finish invalidation task: ', { cause: error });
+                    }
                 }
                 setAlert(false);
-                navigation.goBack();
             }}
         />
 
@@ -1167,7 +1196,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 <Box 
                     style={{
                         borderRadius: 100,
-                        backgroundColor: farmland ? COLORS.mediumseagreen : COLORS.main,
+                        backgroundColor: farmland ? COLORS.mediumseagreen : COLORS.pantone,
                     }}
                 >
                     <Icon name="add" size={45} color={COLORS.ghostwhite} />

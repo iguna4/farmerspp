@@ -23,9 +23,10 @@ export const Farmland = {
         userId: 'string',
         userName: 'string?',
 
-        status: { type: 'string', default: 'pending'},
-        checkedBy: 'string?',
+        status: { type: 'string', default: 'pending'}, // pending, validated, or invalidated
+        checkedBy: 'string?',  // name of the user who validated/invalidated this farmland
 
+        ownerType: 'string?', // Single, Group, or Institution
         createdAt: { type: 'date', default: Date()},
         modifiedAt: { type: 'date', default: Date()},
 

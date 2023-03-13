@@ -285,7 +285,7 @@ export default function GroupScreen ({ route, navigation }) {
                   flag: 'Grupo',
                 })}
               >
-                <Icon name="add-circle" color={COLORS.second} size={60} />
+                <Icon name="add-circle" color={COLORS.pantone} size={60} />
 
               </TouchableOpacity>
             </Box>            

@@ -297,7 +297,7 @@ export default function InstitutionScreen ({ route, navigation }) {
                   flag: 'Instituição',
                 })}
               >
-                <Icon name="add-circle" color={COLORS.second} size={60} />
+                <Icon name="add-circle" color={COLORS.pantone} size={60} />
 
               </TouchableOpacity>
             </Box>            

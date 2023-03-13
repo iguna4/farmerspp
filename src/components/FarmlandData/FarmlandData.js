@@ -1338,9 +1338,12 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 }}
             >
                 <Icon 
-                name="send" 
-                size={35} 
-                color={COLORS.ghostwhite} 
+                    name="send" 
+                    size={35} 
+                    color={COLORS.ghostwhite} 
+                    iconStyle={{
+                        transform: [{ rotate: '-45deg' }]
+                    }}
                 />
             </TouchableOpacity>
 

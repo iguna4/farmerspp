@@ -12,8 +12,6 @@ import { resourceValidation } from '../../consts/resourceValidation';
 
 export default function FarmlandItem ({ item, route, }) {
 
-  console.log('item.farmer:', item?.farmer);
-
    const [visible, setVisible] = useState(false);
    const navigation = useNavigation();
 
@@ -47,16 +45,28 @@ export default function FarmlandItem ({ item, route, }) {
         }}
       >
         <Icon 
-          name={item?.validated === resourceValidation.status.pending ? 'pending-actions' : item?.validated === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
+          name={item?.status === resourceValidation.status.pending ? 'pending-actions' : item?.validated === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
           size={30}
-          color={item?.validated === resourceValidation.status.pending ? COLORS.danger : item?.validated === resourceValidation.status.validated ? COLORS.main : COLORS.red}
+          color={item?.status === resourceValidation.status.pending ? COLORS.danger : item?.validated === resourceValidation.status.validated ? COLORS.main : COLORS.red}
         />
       </Box>
        <TouchableOpacity
          onPress={()=>{
-           navigation.navigate('Farmer', {
-             ownerId: item?.farmer,
-           })
+          if (item?.ownerType === 'Single'){
+            navigation.navigate('Farmer', {
+              ownerId: item?.farmerId,
+            })
+          }
+          else if (item?.ownerType === 'Group'){
+            navigation.navigate('Group', {
+              ownerId: item?.farmerId,
+            })
+          }
+          else if (item?.ownerType === 'Institution'){
+            navigation.navigate('Institution', {
+              ownerId: item?.farmerId,
+            })
+          }
          }}
          >
       <Stack direction="row" w="100%" space={3}>

@@ -163,6 +163,16 @@ export default function HomeScreen() {
 
     //   realm.write(() => {
     //     // Delete all instances of Cat from the realm.
+    //     realm.delete(realm.objects("InvalidationMotive"));
+    //   });
+
+    //   realm.write(() => {
+    //     // Delete all instances of Cat from the realm.
+    //     realm.delete(realm.objects("SprayingServiceProvider"));
+    //   });
+
+    //   realm.write(() => {
+    //     // Delete all instances of Cat from the realm.
     //     realm.delete(realm.objects("Group"));
     //   });
 
@@ -307,11 +317,13 @@ export default function HomeScreen() {
 
   <ScrollView
     contentContainerStyle={{
+      flex: 1,
       justifyContent: 'center',
       borderTopLeftRadius: 10,
       borderTopRightRadius: 10,
-      borderWidth: 1,
-      borderColor: COLORS.main,
+      padding: 10,
+      // borderWidth: 1,
+      // borderColor: COLORS.main,
       // marginVertical: 30,
 
     }}
@@ -320,16 +332,16 @@ export default function HomeScreen() {
 
     <View
       style={{
-        marginBottom: 60,
+        marginBottom: 10,
       }}
     >
 
       <View 
         style={{ 
           width: '100%',
-          backgroundColor: COLORS.main,
+          backgroundColor: COLORS.pantone,
           borderWidth: 1,
-          borderColor: COLORS.main,
+          borderColor: COLORS.pantone,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
         }}
@@ -343,7 +355,7 @@ export default function HomeScreen() {
         >
             <Text
               style={{
-                fontSize: 22,
+                fontSize: 18,
                 color: COLORS.ghostwhite,
                 fontFamily: 'JosefinSans-Bold',
                 textAlign: 'center',
@@ -364,7 +376,7 @@ export default function HomeScreen() {
               >
               <Text
                     style={{
-                      fontSize: 18,
+                      fontSize: 16,
                       fontFamily: 'JosefinSans-Bold',
                       textAlign: 'center',
                       color: COLORS.ghostwhite,
@@ -379,7 +391,7 @@ export default function HomeScreen() {
                   <Text
                     style={{
                       width: '50%',
-                      fontSize: 30,
+                      fontSize: 24,
                       fontFamily: 'JosefinSans-Regular',
                       textAlign: 'center',
                       color: COLORS.main,
@@ -408,7 +420,7 @@ export default function HomeScreen() {
               >
                   <Text
                     style={{
-                      fontSize: 18,
+                      fontSize: 16,
                       fontFamily: 'JosefinSans-Bold',
                       textAlign: 'center',
                       color: COLORS.ghostwhite,
@@ -421,7 +433,7 @@ export default function HomeScreen() {
                   <Text
                       style={{
                         width: '50%',
-                        fontSize: 30,
+                        fontSize: 24,
                         fontFamily: 'JosefinSans-Regular',
                         textAlign: 'center',
                         color: COLORS.main,
@@ -450,368 +462,162 @@ export default function HomeScreen() {
 
     <View
     style={{
-      padding: 10,
+      // padding: 10,
     }}
     >
+
       <View 
         style={{ 
-          width: '100%',
-          shadowColor: COLORS.main,
-          shadowOffset: {
-              width: 1,
-              height: 1,
-            },
-          shadowOpacity: 1,
-          shadowRadius: 0.65,
-          elevation: 2,
+          flexDirection: 'row',
+          marginBottom: 10,
         }}
       >
-        <Box
+        <Icon name="update" size={30} color={COLORS.danger} />
+        <Text
           style={{
-            // justifyContent: 'center',
-            flexDirection: 'row',
-          }}
-        >
-            <Icon name="update" size={30} color={COLORS.danger} />
-            <Box style={{
-              paddingLeft: 10,
-            }}>
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: COLORS.danger,
-                  fontFamily: 'JosefinSans-Bold',               
-                }}
-                >
-                Meta
-              </Text>
-            </Box>
-        </Box>
-      </View>
-
-        <Box
-          style={{  
-            width: '100%', 
+            fontSize: 18,
+            color: COLORS.danger,
+            fontFamily: 'JosefinSans-Bold',    
+            marginLeft: 10,           
           }}
           >
+          Meta
+        </Text>
+      </View>
 
-          <Stack direction="row" w="100%">
-          <Box 
-              style={{
-                width: '15%',
-              }}
-              >
-            </Box>
-
-            <Box 
-              style={{
-                width: '25%',
-                height: 100,                
-              }}
-              >
-              <TouchableOpacity>
-                <Box
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderBottomWidth: 2,
-                    borderBottomColor: COLORS.danger,
-                  }}
-                >
-                  <Box
-                    style={{
-                      backgroundColor: COLORS.danger,
-                      borderTopLeftRadius: 100,
-                      borderTopRightRadius: 100,
-                      borderTopEndRadius: 100,
-                      width: '100%',
-
-                    }}
-                  >
-
-                  <Icon name="nature-people" size={35} color={COLORS.ghostwhite} />
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontFamily: 'JosefinSans-Bold',
-                      textAlign: 'center',
-                      color: COLORS.ghostwhite,
-                    }}
-                    >
-                    Produtores
-                  </Text>
-                  </Box>
-                  <Text
-                    style={{
-                      fontSize: 25,
-                      fontFamily: 'JosefinSans-Regular',
-                      textAlign: 'center',
-                      color: COLORS.danger,
-                      paddingTop: 5,
-                    }}
-                  >
-                    {tpFarmers}
-                  </Text>
-                </Box>
-              </TouchableOpacity>
-            </Box>
-
-            <Box w="20%">
-            </Box>
-
-            <Box 
-              style={{
-                width: '25%',
-                height: 100,               
-              }}
-              >
-              <TouchableOpacity>
-                <Box
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderBottomWidth: 2,
-                    borderBottomColor: COLORS.danger,
-                  }}
-                >
-
-                <Box
-                    style={{
-                      backgroundColor: COLORS.danger,
-                      borderTopLeftRadius: 100,
-                      borderTopRightRadius: 100,
-                      borderTopEndRadius: 100,
-                      width: '100%',
-                    }}
-                  >
-                  <Icon name="nature" size={35} color={COLORS.ghostwhite} />
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontFamily: 'JosefinSans-Bold',
-                      textAlign: 'center',
-                      color: COLORS.ghostwhite,
-                    }}
-                    >
-                    Pomares
-                  </Text>
-                  </Box>
-                  <Text
-                      style={{
-                        fontSize: 25,
-                        fontFamily: 'JosefinSans-Regular',
-                        textAlign: 'center',
-                        color: COLORS.danger,
-                        paddingTop: 5,
-                      }}
-                      >
-                    {tpFarmlands}
-                  </Text>
-                </Box>
-              </TouchableOpacity>
-            </Box>
-            <Box 
-              style={{
-                width: '15%',
-              }}
-              >
-            </Box>
-          </Stack>
-
+      <Stack w="100%" direction="row" space={3} >
+        <Box w="50%"
+          style={{ alignItems: 'center', justifyContent: 'center'}}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: 'JosefinSans-Bold',
+              textAlign: 'center',
+              color: COLORS.danger,
+            }}
+          >
+            Produtores
+          </Text>
+          <Text
+            style={{
+              fontSize: 25,
+              fontFamily: 'JosefinSans-Regular',
+              textAlign: 'center',
+              color: COLORS.danger,
+              paddingTop: 5,
+            }}
+          >
+            {tpFarmers}
+          </Text>
         </Box>
+        <Box w="50%"
+          style={{ alignItems: 'center', justifyContent: 'center'}}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: 'JosefinSans-Bold',
+              textAlign: 'center',
+              color: COLORS.danger,
+            }}
+          >
+            Pomares
+          </Text>
+          <Text
+            style={{
+              fontSize: 25,
+              fontFamily: 'JosefinSans-Regular',
+              textAlign: 'center',
+              color: COLORS.danger,
+              paddingTop: 5,
+            }}
+            >
+            {tpFarmlands}
+          </Text>
+        </Box>
+      </Stack>
+
+
     </View>
 
-
+    <CustomDivider thickness={2} bg={COLORS.danger} />
     {/*  provincial achievments in terms of farmers and farmlands registrations */}
 
-  
-    <CustomDivider 
-      thickness={1}
-      bg={COLORS.main}
-    />
-
-      <View 
+    <View 
         style={{ 
-          width: '100%',
-          paddingVertical: 10,
-          shadowColor: COLORS.main,
-          shadowOffset: {
-              width: 1,
-              height: 1,
-            },
-          shadowOpacity: 1,
-          shadowRadius: 0.65,
-          elevation: 2,
+          flexDirection: 'row',
+          marginBottom: 10,
         }}
       >
-        <Box
+        <Icon name="done-outline" size={30} color={COLORS.lightdanger} />
+        <Text
           style={{
-            // justifyContent: 'center',
-            flexDirection: 'row',
-            paddingLeft: 10,
-          }}
-        >
-            <Icon name="done-outline" size={30} color={COLORS.lightdanger} />
-            <Box style={{
-              paddingLeft: 10,
-            }}>
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: COLORS.lightdanger,
-                  fontFamily: 'JosefinSans-Bold',               
-                }}
-                >
-                Realização
-              </Text>
-            </Box>
-        </Box>
-      </View>
-
-        <Box
-          style={{  
-            width: '100%', 
-            paddingVertical: 20,
-
+            fontSize: 18,
+            color: COLORS.lightdanger,
+            fontFamily: 'JosefinSans-Bold',    
+            marginLeft: 10,           
           }}
           >
-
-          <Stack direction="row" w="100%">
-          <Box 
-              style={{
-                width: '15%',
-              }}
-              >
-            </Box>
-
-            <Box 
-              style={{
-                width: '25%',
-                height: 100,                
-              }}
-              >
-              <TouchableOpacity>
-                <Box
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderTopWidth: 2,
-                    borderTopColor: COLORS.lightdanger,
-                  }}
-                >
-
-                  <Text
-                    style={{
-                      fontSize: 25,
-                      fontFamily: 'JosefinSans-Regular',
-                      textAlign: 'center',
-                      color: COLORS.lightdanger,
-                      paddingTop: 5,
-                    }}
-                  >
-                    {getPercentage(rpFarmers, tpFarmers)}
-                  </Text>
-
-                  <Box
-                    style={{
-                      backgroundColor: COLORS.lightdanger,
-                      borderBottomLeftRadius: 100,
-                      borderBottomRightRadius: 100,
-                      borderBottomEndRadius: 100,
-                      width: '100%',
-
-                    }}
-                  >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontFamily: 'JosefinSans-Bold',
-                      textAlign: 'center',
-                      color: COLORS.ghostwhite,
-                    }}
-                    >
-                    Produtores
-                  </Text>
-
-                  <Icon name="nature-people" size={35} color={COLORS.ghostwhite} />
-                  </Box>
-                </Box>
-              </TouchableOpacity>
-            </Box>
-
-            <Box w="20%">
-            </Box>
-
-            <Box 
-              style={{
-                width: '25%',
-                height: 100,               
-              }}
-              >
-              <TouchableOpacity>
-                <Box
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderTopWidth: 2,
-                    borderTopColor: COLORS.lightdanger,
-                  }}
-                >
-
-                  <Text
-                      style={{
-                        fontSize: 25,
-                        fontFamily: 'JosefinSans-Regular',
-                        textAlign: 'center',
-                        color: COLORS.lightdanger,
-                        paddingTop: 5,
-                      }}
-                      >
-                      {getPercentage(rpFarmlands, tpFarmlands)}
-                  </Text>
-
-                <Box
-                    style={{
-                      backgroundColor: COLORS.lightdanger,
-                      borderBottomLeftRadius: 100,
-                      borderBottomRightRadius: 100,
-                      borderBottomEndRadius: 100,
-                      width: '100%',
-                    }}
-                  >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontFamily: 'JosefinSans-Bold',
-                      textAlign: 'center',
-                      color: COLORS.ghostwhite,
-                    }}
-                    >
-                    Pomares
-                  </Text>
-                  <Icon name="nature" size={35} color={COLORS.ghostwhite} />
-                  </Box>
+          Realização
+        </Text>
+      </View>
 
 
-                </Box>
-              </TouchableOpacity>
-            </Box>
-            <Box 
-              style={{
-                width: '15%',
-              }}
-              >
-            </Box>
-          </Stack>
-        </Box>    
+      <Stack w="100%" direction="row" space={3}>
+        <Box w="50%"
+          style={{ alignItems: 'center', justifyContent: 'center'}}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: 'JosefinSans-Bold',
+              textAlign: 'center',
+              color: COLORS.lightdanger,
+            }}
+          >
+            Produtores
+          </Text>
+          <Text
+            style={{
+              fontSize: 25,
+              fontFamily: 'JosefinSans-Regular',
+              textAlign: 'center',
+              color: COLORS.lightdanger,
+              paddingTop: 5,
+            }}
+          >
+            {getPercentage(rpFarmers, tpFarmers)}
+          </Text>
+        </Box>
+        <Box w="50%"
+          style={{ alignItems: 'center', justifyContent: 'center'}}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: 'JosefinSans-Bold',
+              textAlign: 'center',
+              color: COLORS.lightdanger,
+            }}
+          >
+            Pomares
+          </Text>
+          <Text
+            style={{
+              fontSize: 25,
+              fontFamily: 'JosefinSans-Regular',
+              textAlign: 'center',
+              color: COLORS.lightdanger,
+              paddingTop: 5,
+            }}
+            >
+            {getPercentage(rpFarmlands, tpFarmlands)}
+          </Text>
+        </Box>
+      </Stack>
+      <CustomDivider thickness={2} bg={COLORS.lightdanger} />
+
 </ScrollView>
 }
 

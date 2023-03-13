@@ -681,10 +681,17 @@ export default function FarmlandRegistration ({ route, navigation }) {
             <Stack direction="row">
             <Box w="10%">
                     <Icon 
+                        onPress={()=>{
+                            if (farmlandId && checkBlockConformity(farmlandId, realm)){
+                                setIsCoordinatesModalVisible(true)
+                            }
+                            else {
+                                navigation.goBack();
+                            }   
+                        }}
                         name="arrow-back-ios" 
                         color={COLORS.main}
                         size={35}
-                        onPress={()=>navigation.goBack()}
                     />
                 </Box>
                 <Box w="80%" alignItems={'center'} >

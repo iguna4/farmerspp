@@ -62,52 +62,6 @@ export default function IndividualModal (
     const [isActorSaved, setIsActorSaved] = useState(false);
 
     const currentUserStat = useQuery('UserStat').filtered("userId == $0", customUserData?.userId)[0];
-    // const savedActor = useQuery('Actor').filtered("_id == $0", farmerItem?.ownerId);
-
-    // update actor by adding the ActorCategory object to the property "categories"
-    // const updateActor = useCallback(async (actor, actorCategory)=>{
-
-    //     const realm = await Realm.open();
-    //     realm.write(()=>{
-
-    //         actor.categories?.push(actorCategory);
-    //     })
-
-    // }, [actor, actorCategory, realm ]);
-
-
-    // // create the actorcategory after the actor has been saved
-    // const addActorCategory = useCallback((actor, realm)=>{
-    //     try {
-    //         realm.write(async ()=>{
-    //             console.log('actorId: ', actor?._id);
-    //             console.log('actorName: ', actor?.names?.surname);
-    
-    //             const actorCategoryData = {
-    //                 _id: uuidv4(),
-    //                 actorId: actor?._id,
-    //                 actorName: actor?.names?.otherNames + ' ' + actor?.names?.surname,
-    //                 category: categories.farmer.category,
-    //                 subcategory: categories.farmer.subcategories.notSubcategorized,
-    //                 assetType: assetTypes.farmland,
-    //                 assets: [],
-    //                 userDistrict: customUserData?.userDistrict,
-    //                 userProvince: customUserData?.userProvince,
-    //                 userId: customUserData?.userId,
-    //                 userName: customUserData?.name,
-    //             }
-                
-    //             const newActorCategory = await realm.create('ActorCategory', actorCategoryData);
-
-    //             setActorCategory(newActorCategory);
-    //         });
-            
-    //     } catch (error) {
-    //         console.log('Could not create new ActorCategory object.');
-    //     }
-        
-    // }, [ actor, realm ]);
-
 
     // create a new actor with data received from the form
     const addFarmer = useCallback((farmerData, realm) =>{
@@ -124,12 +78,6 @@ export default function IndividualModal (
     // generate the universally farmer identifier
     const uaid = generateUAID({ names, birthDate, birthPlace });
     
-    // const assets = {
-    //     category: categories.farmer.category,
-    //     subcategory: categories.farmer.subcategories.notSubcategorized,
-    //     assetType: assetTypes.farmland,
-    //     assets: [],
-    // }
     realm.write(async ()=>{
         const newFarmer = await realm.create('Actor', {
             _id: uuidv4(),
@@ -265,7 +213,7 @@ export default function IndividualModal (
             contentContainerStyle={{
                 flex: 1, 
                 justifyContent: 'center', 
-                minHeight: '180%',
+                minHeight: '120%',
                 paddingVertical: 10,
             }}
          >

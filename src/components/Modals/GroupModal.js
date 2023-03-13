@@ -179,7 +179,7 @@ export default function GroupModal (
             contentContainerStyle={{
                 flex: 1, 
                 justifyContent: 'center', 
-                minHeight: '140%',
+                minHeight: '120%',
                 paddingVertical: 15,
             }}
         >
@@ -248,9 +248,6 @@ export default function GroupModal (
                         </Text>
                     ))
                 }
-                {/* <Text style={styles.values}>
-                    {farmerData?.operationalStatus} 
-                </Text> */}
             </Box>
         </Box>
     </Stack>

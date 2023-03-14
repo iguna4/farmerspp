@@ -18,6 +18,7 @@ const COLORS = {
     moderatelimegreen: '#66cc66',
     emerald: '#50c878',
     pantone: '#008759',
+    verylightgrey: '#f7f7f7',
 };
 
 

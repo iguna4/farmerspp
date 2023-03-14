@@ -142,7 +142,7 @@ const validateGroupFarmerData = (
         if (retrievedGroupCreationYear > retrievedGroupAffiliationYear) {
             setErrors({
                 ...errors,
-                groupCreationYear: 'Ano de criação superior a ano de legalização',
+                groupCreationYear: 'Ano de criação posterior ao ano de legalização',
                 // groupAffiYear: 'Ano de criação superior a ano de legalização'
             });
 

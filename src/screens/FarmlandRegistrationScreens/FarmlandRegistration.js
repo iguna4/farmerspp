@@ -64,7 +64,6 @@ export default function FarmlandRegistration ({ route, navigation }) {
     }
     
 
-    const [modalVisible, setModalVisible] = useState(false);
     const [isCoordinatesModalVisible, setIsCoordinatesModalVisible] = useState(false);
     const [loadingButton, setLoadingButton] = useState(false);
 
@@ -116,16 +115,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
     const [showCancelButton, setShowCancelButton] = useState(false);
     const [showConfirmButton, setShowConfirmButton] = useState(false);
     const [logFlag, setLogFlag] = useState('');
+    const [invalidationMessage, setInvalidationMessage] = useState('');
 
-    // const [messageAlert, setMessageAlert] = useState('');
-    // const [titleAlert, setTitleAlert] = useState('');
-    // const [cancelText, setCancelText] = useState('');
-    // const [confirmText, setConfirmText] = useState('');
-    // const [showCancelButton, setShowCancelButton] = useState(false);
-    // const [showConfirmButton, setShowConfirmButton] = useState(false);
-    // // const [validated, setValidated] = useState(false);
-    // // const [invalidated, setInvalidated] = useState(false);
-    // const [message, setMessage] = useState('');
     const [errors, setErrors] = useState({});
     
     // // ---------------------------------------------
@@ -186,7 +177,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
     }
 
 
-    const invalidateFarmland = useCallback((farmlandId, realm)=>{
+    const invalidateFarmland = useCallback((farmlandId, invalidationMessage, realm)=>{
 
         const foundFarmland = realm.objectForPrimaryKey('Farmland', farmlandId);
         
@@ -198,7 +189,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
         });
 
         try {
-            addInvalidationMessage(farmlandId, realm);
+            addInvalidationMessage(farmlandId, invalidationMessage,  realm);
         } catch (error) {
             console.log('could not add invalidation message:', { cause: error});
         }
@@ -206,11 +197,11 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
     }, [realm, farmlandId]);
 
-    const addInvalidationMessage = useCallback((farmlandId, realm)=>{
+    const addInvalidationMessage = useCallback((farmlandId, message, realm)=>{
 
         const newMessageObject = {
             position: 0,
-            message: 'Verificou-se inconsistências ou entre o total dos cajueiros e a soma dos cajueiros dos blocos ou entre a área total e a soma das áreas dos blocos.',
+            message: message,
             ownerName: customUserData?.name,
             createdAt: new Date(),
         };
@@ -262,7 +253,21 @@ export default function FarmlandRegistration ({ route, navigation }) {
         const blocksAreas = farmland?.blocks?.map(block=>parseFloat(block?.usedArea))?.reduce((acc, el)=>acc + el, 0);
         const totalArea = parseFloat(farmland?.totalArea);
         const totalTrees = parseInt(farmland?.trees);
-        if (blocksTrees !== totalTrees ){
+        if ((blocksTrees === 0 && totalTrees > 0) && (blocksAreas === 0 && totalArea > 0)) {
+
+            setAlert(true);
+            setTitleAlert(errorMessages.farmlandWithNoBlockError.title);
+            setMessageAlert(errorMessages.farmlandWithNoBlockError.message);
+            setShowCancelButton(errorMessages.farmlandWithNoBlockError.showCancelButton);
+            setShowConfirmButton(errorMessages.farmlandWithNoBlockError.showConfirmButton);
+            setCancelText(errorMessages.farmlandWithNoBlockError.cancelText);
+            setConfirmText(errorMessages.farmlandWithNoBlockError.confirmText);
+            setLogFlag(errorMessages.farmlandWithNoBlockError.logFlag)
+            setInvalidationMessage(errorMessages.farmlandWithNoBlockError.invalidationMessage)
+
+            return false;            
+        }  
+        else  if ((blocksTrees > 0) && (blocksTrees !== totalTrees )){
             setAlert(true);
             setTitleAlert(errorMessages.blockTreesConformityError.title);
             setMessageAlert(errorMessages.blockTreesConformityError.message);
@@ -271,6 +276,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
             setCancelText(errorMessages.blockTreesConformityError.cancelText);
             setConfirmText(errorMessages.blockTreesConformityError.confirmText);
             setLogFlag(errorMessages.blockTreesConformityError.logFlag)
+            setInvalidationMessage(errorMessages.blockTreesConformityError.invalidationMessage)
+
             return false;
         }
         if (blocksAreas > totalArea){
@@ -281,7 +288,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
             setShowConfirmButton(errorMessages.blockAreaConformityError.showConfirmButton);
             setCancelText(errorMessages.blockAreaConformityError.cancelText);
             setConfirmText(errorMessages.blockAreaConformityError.confirmText);
-            setLogFlag(errorMessages.blockAreaConformityError.logFlag)
+            setLogFlag(errorMessages.blockAreaConformityError.logFlag);
+            setInvalidationMessage(errorMessages.blockAreaConformityError.invalidationMessage)
 
             return false;
         }
@@ -317,6 +325,9 @@ export default function FarmlandRegistration ({ route, navigation }) {
         const farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
         realm.write(()=>{
             farmland?.blocks?.push(block);
+            if (farmland?.trees === farmland?.blocks?.map(block=>block.trees)?.reduce((acc, el)=>acc + el,0)){
+                farmland.status = resourceValidation.status.pending;
+            }
 
             setBlockCount(prev=>prev+1);
 
@@ -411,6 +422,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 userProvince: customUserData?.userProvince,
                 userId: customUserData?.userId,
                 userName: customUserData?.name,
+                status: resourceValidation.status.invalidated,
                 ownerType,
             });
 
@@ -641,14 +653,14 @@ export default function FarmlandRegistration ({ route, navigation }) {
             cancelText={cancelText}
             confirmText={confirmText}
             cancelButtonColor={COLORS.mediumseagreen}
-            confirmButtonColor={logFlag?.includes('inconsistencies') ? COLORS.red : COLORS.mediumseagreen}
+            confirmButtonColor={(logFlag?.includes('inconsistencies') || logFlag?.includes('no blocks') ) ? COLORS.red : COLORS.mediumseagreen}
             onCancelPressed={()=>{
                 setAlert(false);
             }}
             onConfirmPressed={() => {
-                if (logFlag?.includes('inconsistencies')){
+                if (logFlag?.includes('inconsistencies') || logFlag?.includes('no blocks')){
                     try {
-                        invalidateFarmland(farmlandId, realm);
+                        invalidateFarmland(farmlandId, invalidationMessage, realm);
                         
                         navigation.goBack();
                     }
@@ -682,8 +694,10 @@ export default function FarmlandRegistration ({ route, navigation }) {
             <Box w="10%">
                     <Icon 
                         onPress={()=>{
-                            if (farmlandId && checkBlockConformity(farmlandId, realm)){
-                                setIsCoordinatesModalVisible(true)
+                            if (farmlandId ){
+                                if(checkBlockConformity(farmlandId, realm)){
+                                    setIsCoordinatesModalVisible(true)
+                                }
                             }
                             else {
                                 navigation.goBack();
@@ -702,7 +716,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                             fontSize: 16, 
                             color: COLORS.main,  }}
                     >
-                        Parcela
+                        Pomar
                     </Text>
                 </Box>
                 <Box w="10%">

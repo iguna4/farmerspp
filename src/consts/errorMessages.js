@@ -1,27 +1,42 @@
-import { TurboModuleRegistry } from "react-native";
 
 export const errorMessages = {
 
     blockTreesConformityError : {
-        title: 'Inconsistências de Dados dos Cajueiros',
+        title: 'Dados Inconsistentes',
         message: 'O total dos cajueiros não é igual à soma dos cajueiros dos blocos. Se continuares, o presente registo será invalido.',
         logFlag: 'Farmland data inconsistencies',
         showCancelButton: true,
         showConfirmButton: true,
         cancelText: 'Corrigir',
         confirmText: 'Continuar',
+        invalidationMessage: 'O sistema invalidou este registo porque verificou-se a inconsistência entre o total dos cajueiros e a soma dos cajueiros dos blocos.',
         onCancelPressed: ()=>{},
         onConfirmPressed: ()=>{},
     },
 
+    farmlandWithNoBlockError : {
+        title: 'Dados da Área Aproveitada',
+        message: 'Adiciona dados sobre a área com cajueiros. Se continuares, o presente registo será invalido.',
+        logFlag: 'Farmland with no blocks',
+        showCancelButton: true,
+        showConfirmButton: true,
+        cancelText: 'Corrigir',
+        confirmText: 'Continuar',
+        invalidationMessage: 'O sistema invalidou este registo porque não tem dados sobre a área com cajueiros ',
+        onCancelPressed: ()=>{},
+        onConfirmPressed: ()=>{},
+    },
+
+
     blockAreaConformityError : {
-        title: 'Inconsistências de Dados da Área',
+        title: 'Dados Inconsistentes',
         message: 'A área total é inferior à soma das áreas dos blocos. Se continuares, o presente registo será invalido.',
         logFlag: 'Farmland data inconsistencies',
         showCancelButton: true,
         showConfirmButton: true,
         cancelText: 'Corrigir',
         confirmText: 'Continuar',
+        invalidationMessage: 'O sistema invalidou este registo porque verificou-se a inconsistência entre a área total e a soma das áreas dos blocos.',
         onCancelPressed: ()=>{},
         onConfirmPressed: ()=>{},
     },

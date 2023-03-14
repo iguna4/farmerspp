@@ -424,7 +424,11 @@ export default function GroupFarmerForm({
                                     }
                         mt={1}
                         onValueChange={status => {
-                            setErrors((prev)=>({...prev, groupLegalStatus: ''}));
+                            setErrors((prev)=>({
+                                ...prev, 
+                                groupCreationYear: '',
+                                groupLegalStatus: ''
+                            }));
                             setGroupLegalStatus(status);
                         }}
                     >

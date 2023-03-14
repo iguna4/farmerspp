@@ -150,7 +150,7 @@ function SuccessAlert({
                         textAlign: 'center',
                     }}
                 >
-                    Registar Parcela
+                    Registar Pomar
                 </Text>
             </Box>
         </TouchableOpacity>

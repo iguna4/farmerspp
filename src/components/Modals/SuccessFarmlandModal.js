@@ -40,7 +40,7 @@ function SuccessFarmlandModal({
                     <View>
                         <Text
                             style={{ fontFamily: 'JosefinSans-Regula', color: '#005000', fontSize: 18, }}
-                        >Registo de parcela ocorrido com successo!</Text>
+                        >Registo do pomar ocorrido com successo!</Text>
                     </View>
                 </Stack>
             </Alert>

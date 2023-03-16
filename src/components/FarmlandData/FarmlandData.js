@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, TextInput, ScrollView, SafeAreaView, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, ScrollView, SafeAreaView, FlatList, TouchableHighlight } from 'react-native';
 import { Box,  FormControl, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
-import { Avatar, Divider, Icon } from '@rneui/base';
+import { Avatar, Divider, Icon, Tooltip } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -55,8 +55,31 @@ const FarmlandData = ({ farmland, setRefresh })=>{
     // ---------------------------------------------
     // adding new Block to an existing farmland 
     const [isNewBlockVisible, setIsNewBlockVisible] = useState(false);
+    const [isAreaNotEnough, setIsAreaNotEnough] = useState(false);
+    const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
     // ----------------------------------------------- 
+
+    // check if there is enough area for a new Block to be added in
+    // this function prevent adding new cashew trees in a farmland
+    // where there is no enough space left
+    const checkAreasConformity = (farmland)=>{
+        const totalArea = farmland?.totalArea;
+        const blocksAreas = farmland?.blocks?.map((block)=>block?.usedArea).reduce((acc, el)=>acc + el, 0);
+        if ((totalArea - blocksAreas) <= 0.02) {
+            setIsAreaNotEnough(true);
+        }  
+    }
+
+    useEffect(()=>{
+
+        checkAreasConformity(farmland);
+
+        // if (isNewBlockVisible) {
+        //     console.log('a new block being addded');
+        // }
+
+    }, [ farmland, autoRefresh, ])
 
 
 
@@ -125,7 +148,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 
         clearInterval(interval);
         
-    }, [ realm, user, message, invalidationMotives, autoRefresh, isCollapseOn ]);
+    }, [ realm, user, message, invalidationMotives, autoRefresh, isCollapseOn, isNewBlockVisible ]);
 
     
     const getPlantingYears = (blocks)=>{
@@ -650,8 +673,8 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     </Text>
                 </Box>
             </Stack>
-
 }
+
 {
     (!farmland?.middleCoordinates || Object?.keys(farmland?.middleCoordinates).length === 0) &&
     (
@@ -685,6 +708,8 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 
     <CustomDivider />
 
+    { 
+    !isAreaNotEnough &&
     <Stack  w="100%" direction="row" my="5">
         <Box w="75%">
             <Text
@@ -693,34 +718,24 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     fontSize: 16,
                     fontFamily: 'JosefinSans-Regular',
                 }}
-                >
+            >
                 Bloco de Cajueiros
             </Text>
         </Box>
         <Box w="25%">
-            <TouchableOpacity
-                onPress={()=>{
-                    if (farmland){
-
-                        // make the block data form visible
-                        setIsNewBlockVisible(true);
-                    }
-                }}
-            >
-                <Icon name="add-circle" size={35} color={COLORS.mediumseagreen} />
-            </TouchableOpacity>
-            {/* <Text                     
-                style={{
-                    color: COLORS.grey,
-                    fontSize: 16,
-                    fontFamily: 'JosefinSans-Regular',
-                }}
-                >
-                (Nenhumas)
-            </Text> */}
+        <TouchableOpacity
+            onPress={()=>{
+                if (farmland){
+                    // make the block data form visible
+                    setIsNewBlockVisible(true);
+                }
+            }}
+        >
+            <Icon name="add-circle" size={35} color={COLORS.mediumseagreen} />
+        </TouchableOpacity>
         </Box>
     </Stack>
-
+    }
 
         {/* blocks start here */}
         <Box w="100%"
@@ -875,7 +890,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                         </Box>
                     </Stack>
 
-                    <CustomDivider />
+                    {/* <CustomDivider /> */}
                     <Stack w="100%" direction="row" >
                         <Box w="35%"
                             style={{
@@ -886,7 +901,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                 style={{
                                     color: COLORS.grey,
                                     fontSize: 16,
-                                    fontFamily: 'JosefinSans-Bold',
+                                    fontFamily: 'JosefinSans-regular',
                                 }}
                             >
                                 Cajueiros: 
@@ -897,7 +912,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                     style={{
                                         color: COLORS.grey,
                                         fontSize: 16,
-                                        fontFamily: 'JosefinSans-Bold',
+                                        fontFamily: 'JosefinSans-regular',
                                     }}
                                 >{block.trees} árvores</Text>
                         </Box>
@@ -917,7 +932,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                 fontFamily: 'JosefinSans-Regular',
                             }}
                         >
-                            {sameType?.treeType}
+                            <Icon name="arrow-forward" color={COLORS.grey} size={10} /> {sameType?.treeType}
                         </Text>
                     </Box>
                     <Box w="40%">
@@ -938,10 +953,6 @@ const FarmlandData = ({ farmland, setRefresh })=>{
     </Box>
     )) }
         
- 
-
-
-    
 
 
 
@@ -1293,7 +1304,9 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 {isNewBlockVisible && <NewFarmlandBlock 
     isNewBlockVisible={isNewBlockVisible}
     setIsNewBlockVisible={setIsNewBlockVisible}
-    farmlandId={farmland._id}
+    farmland={farmland}
+    setAutoRefresh={setAutoRefresh}
+    autoRefresh={autoRefresh}
 />
 }
 

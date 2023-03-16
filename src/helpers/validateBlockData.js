@@ -14,6 +14,7 @@ const validateBlockData = (
      densityWidth,
      plantTypes,
      clones,
+     remainingArea,
 
      sameTypeTreesList,
      // farmer,
@@ -24,6 +25,7 @@ const validateBlockData = (
  const retrievedDensityMode = isDensityModeRegular ? 'Regular' : isDensityModeIrregular ?  'Irregular' : '';
  const retrievedTreesNumber = blockTrees ? parseInt(blockTrees) : '';
  const retrievedUsedArea = usedArea ? parseFloat(usedArea): '';
+ const retrievedRemainingArea = remainingArea ? parseFloat(remainingArea) : '';
  const retrievedDensityLength = densityLength ? parseInt(densityLength) : 0;
  const retrievedDensityWidth = densityWidth ? parseInt(densityWidth): 0;
  const retrievedPlantTypes = [...plantTypes];
@@ -45,10 +47,19 @@ const validateBlockData = (
 
  if (!retrievedUsedArea){
      setErrors({ ...errors,
-         usedArea: 'Indica área total.',
+         usedArea: 'Indica área.',
      });
      return false;
  }
+
+ if(retrievedRemainingArea !== '' && retrievedRemainingArea < retrievedUsedArea) {
+    setErrors({
+        ...errors,
+        usedArea: 'Área aproveitada é superior a área disponível.'
+    });
+    return false;
+ }
+
 
  if (!retrievedTreesNumber){
      setErrors({ ...errors,
@@ -73,15 +84,6 @@ const validateBlockData = (
      });
      return false;
  }
-//  else if (            
-//      retrievedPlantTypes.some(el=>el.includes('enxert')) 
-//  &&  retrievedClones?.length > 1 && retrievedClones.find((clone)=>clone.includes('Desconhecido'))
-//  ) {
-//      setErrors({ ...errors,
-//          clones: 'Clones seleccionados inválidos.',
-//      });
-//      return false;
-//  }
 
 
  if (!retrievedDensityMode){

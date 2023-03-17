@@ -1,7 +1,7 @@
 
 import React, {useCallback, useState} from 'react';
 import { Text,  Stack, Box, Center } from 'native-base';
-import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
+import { Modal, ScrollView, TouchableOpacity, View, Pressable, } from 'react-native';
 import { Button, Icon } from '@rneui/themed';
 import CustomDivider from '../Divider/CustomDivider';
 import styles from './styles';
@@ -18,6 +18,7 @@ import { realmContext } from '../../models/realmContext';
 import categories from '../../consts/categories';
 import { assetTypes } from '../../consts/assetTypes';
 import { useEffect } from 'react';
+import COLORS from '../../consts/colors';
 const {useRealm, useQuery, useObject } = realmContext;
 
 export default function IndividualModal (
@@ -189,25 +190,57 @@ export default function IndividualModal (
                     backgroundColor: '#EBEBE4',
                 }}
             >
-            <Box w="20%">
-                <TouchableOpacity
+            <Box >
+
+                <Pressable
+                        onPress={()=>{
+                            setModalVisible(false);
+                        }} 
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 4,
+                        flexDirection: 'row',
+                        // justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Icon 
+                        name="arrow-back-ios" 
+                        color={COLORS.main}
+                        size={25}
+                        // onPress={()=>{}}
+                    /> 
+                    <Text
+                        style={{
+                            color: COLORS.main,
+                            fontFamily: 'JosefinSans-Bold',
+                            marginLeft: -10,
+                        }}
+                    >
+                        Voltar
+                    </Text>
+                </Pressable>
+
+
+                {/* <TouchableOpacity
                     onPress={()=>{
                         setModalVisible(false);
                     }}                            
                 >
                     <Icon name='arrow-back-ios' color="#005000" size={30}  />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </Box>
-            <Box w="60%">
-                </Box>
-                <Box w="20%">
-                    <Icon 
-                        name="close" 
-                        size={35} 
-                        color="grey" 
-                        onPress={() => setModalVisible(false)}
-                    />
-                </Box>
+            <Box w="80%">
+            </Box>
+            <Box w="20%">
+                <Icon 
+                    name="close" 
+                    size={35} 
+                    color="grey" 
+                    onPress={() => setModalVisible(false)}
+                />
+            </Box>
             </Stack>
          <ScrollView
             contentContainerStyle={{

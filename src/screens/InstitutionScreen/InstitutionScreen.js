@@ -100,10 +100,42 @@ export default function InstitutionScreen ({ route, navigation }) {
         <Stack
           direction="row" w="100%"
         >
-          <Center w="10%"
+          <Box
             // style={{ justifyContent: 'center'}}
           >
+
         <Pressable
+                onPress={()=>navigation.goBack()
+                  // .navigate('Farmers')
+                }
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 4,
+                        flexDirection: 'row',
+                        // justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Icon 
+                        name="arrow-back-ios" 
+                        color={COLORS.main}
+                        size={25}
+                        // onPress={()=>{}}
+                    /> 
+                    <Text
+                        style={{
+                            color: COLORS.main,
+                            fontFamily: 'JosefinSans-Bold',
+                            marginLeft: -10,
+                        }}
+                    >
+                        Voltar
+                    </Text>
+                </Pressable>
+
+
+        {/* <Pressable
             onPress={()=>navigation.goBack()
               // navigate('Farmers')
             }
@@ -115,10 +147,10 @@ export default function InstitutionScreen ({ route, navigation }) {
               size={35}
               
               />
-            </Pressable>
-          </Center>
+            </Pressable> */}
+          </Box>
 
-          <Box w="70%" 
+          <Box w="100%" 
 
           >
             <Center>
@@ -155,15 +187,6 @@ export default function InstitutionScreen ({ route, navigation }) {
             </Center>
           </Box>
 
-          <Box w="20%"
-            style={{ justifyContent: 'center'}}
-          >
-          {/* <Icon 
-              name="search" 
-              color="#005000"
-              size={40}
-            /> */}
-          </Box>
         </Stack>
       </View>
       <ScrollView

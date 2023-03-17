@@ -1,4 +1,16 @@
 
+// get the number of trees per hectar by their width and length
+const getTreeNumberThreshold = (trees, area, width, length)=>{
+    //calculate number of trees by their density (spaces) by hectar
+    const estimatedNumberOfTrees = area * (10000 / (width * length));
+
+    if ((trees >= (estimatedNumberOfTrees - 20)) && (trees <= (estimatedNumberOfTrees + 20) )) {
+        return true;
+    }    
+    return false;
+}
+
+
 const validateBlockData = (
  {   plantingYear, 
      // description, 
@@ -25,7 +37,7 @@ const validateBlockData = (
  const retrievedDensityMode = isDensityModeRegular ? 'Regular' : isDensityModeIrregular ?  'Irregular' : '';
  const retrievedTreesNumber = blockTrees ? parseInt(blockTrees) : '';
  const retrievedUsedArea = usedArea ? parseFloat(usedArea): '';
- const retrievedRemainingArea = remainingArea ? parseFloat(remainingArea) : '';
+ const retrievedRemainingArea = remainingArea ? parseFloat(remainingArea) : 0;
  const retrievedDensityLength = densityLength ? parseInt(densityLength) : 0;
  const retrievedDensityWidth = densityWidth ? parseInt(densityWidth): 0;
  const retrievedPlantTypes = [...plantTypes];
@@ -36,15 +48,17 @@ const validateBlockData = (
         trees: parseInt(object?.trees),
     }
  });
-    
+
+ 
+ 
  if (!retrievedPlantingYear){
      setErrors({ ...errors,
-         plantingYear: 'Selecciona ano de plantio',
-     });
-     return false;
- }
+        plantingYear: 'Selecciona ano de plantio',
+    });
+    return false;
+}
+// console.log('here')
  
-
  if (!retrievedUsedArea){
      setErrors({ ...errors,
          usedArea: 'Indica área.',
@@ -52,7 +66,14 @@ const validateBlockData = (
      return false;
  }
 
- if(retrievedRemainingArea !== '' && retrievedRemainingArea < retrievedUsedArea) {
+//  if (retrievedUsedArea){
+//     setErrors({ ...errors,
+//         usedArea: 'Indica área.',
+//     });
+//     return false;
+// }
+
+ if(retrievedRemainingArea !== 0 && retrievedRemainingArea < retrievedUsedArea) {
     setErrors({
         ...errors,
         usedArea: 'Área aproveitada é superior a área disponível.'
@@ -60,14 +81,12 @@ const validateBlockData = (
     return false;
  }
 
-
  if (!retrievedTreesNumber){
      setErrors({ ...errors,
          blockTrees: 'Indica número de cajueiros.',
      });
      return false;
  }
-
 
  if (retrievedPlantTypes?.length === 0 ){
      setErrors({ ...errors,
@@ -84,7 +103,6 @@ const validateBlockData = (
      });
      return false;
  }
-
 
  if (!retrievedDensityMode){
      setErrors({ ...errors,
@@ -111,6 +129,15 @@ const validateBlockData = (
      return false;                   
  }
 
+ if ( retrievedDensityMode === 'Regular' && !getTreeNumberThreshold(retrievedTreesNumber, retrievedUsedArea, retrievedDensityWidth, retrievedDensityLength)) {      
+    setErrors({ ...errors,
+        usedArea: 'Área e número de cajueiros não correspondem.',
+        blockTrees: 'Área e número de cajueiros não correspondem.'
+    });
+    return false;                   
+}
+
+
  const sumOfTrees = retrievedSameTypeTreesList.map(object=>parseInt(object?.trees)).reduce((acc, el)=>acc + el, 0);
 
  if (sumOfTrees !== retrievedTreesNumber){
@@ -121,8 +148,6 @@ const validateBlockData = (
 
     return false;
  }
-
-
 
  const farmlandData = {
      plantingYear: retrievedPlantingYear, 

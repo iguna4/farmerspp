@@ -1,5 +1,5 @@
 
-import { Text, ScrollView, SafeAreaView, TouchableOpacity  } from 'react-native'
+import { Text, ScrollView, SafeAreaView, TouchableOpacity, Pressable,  } from 'react-native'
 import React, { useEffect, useState, useCallback } from 'react'
 import { Icon, Button, CheckBox } from '@rneui/themed';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio  } from 'native-base';
@@ -114,6 +114,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
     const [confirmText, setConfirmText] = useState('');
     const [showCancelButton, setShowCancelButton] = useState(false);
     const [showConfirmButton, setShowConfirmButton] = useState(false);
+
     const [logFlag, setLogFlag] = useState('');
     const [invalidationMessage, setInvalidationMessage] = useState('');
 
@@ -691,8 +692,46 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     }}
             >
             <Stack direction="row">
-            <Box w="10%">
-                    <Icon 
+            <Box >
+
+            <Pressable
+                        onPress={()=>{
+                            if (farmlandId ){
+                                if(checkBlockConformity(farmlandId, realm)){
+                                    setIsCoordinatesModalVisible(true)
+                                }
+                            }
+                            else {
+                                navigation.goBack();
+                            }   
+                        }}   
+                            style={{
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                flexDirection: 'row',
+                                // justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                        <Icon 
+                            name="arrow-back-ios" 
+                            color={COLORS.main}
+                            size={25}
+                            // onPress={()=>{}}
+                        /> 
+                        <Text
+                            style={{
+                                color: COLORS.main,
+                                fontFamily: 'JosefinSans-Bold',
+                                marginLeft: -10,
+                            }}
+                        >
+                            Voltar
+                        </Text>
+                        </Pressable>
+
+                    {/* <Icon 
                         onPress={()=>{
                             if (farmlandId ){
                                 if(checkBlockConformity(farmlandId, realm)){
@@ -706,9 +745,9 @@ export default function FarmlandRegistration ({ route, navigation }) {
                         name="arrow-back-ios" 
                         color={COLORS.main}
                         size={35}
-                    />
+                    /> */}
                 </Box>
-                <Box w="80%" alignItems={'center'} >
+                <Box w="100%" alignItems={'center'} >
                     <Text 
                         style={{ 
                             textAlign: 'center', 
@@ -719,11 +758,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
                         Pomar
                     </Text>
                 </Box>
-                <Box w="10%">
-
-                </Box>
             </Stack>
-            <Stack direction="row">
+            <Stack direction="row" mt="2" >
                 <Box w="5%"></Box>
                 <Box w="80%" 
                 >

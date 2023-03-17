@@ -1,6 +1,19 @@
 
 export const errorMessages = {
 
+    farmlandAndBlockConformity : {
+        title: 'Dados Inconsistentes',
+        message: 'O total dos cajueiros e a área do pomar não correspondem com os dados deste bloco.',
+        logFlag: 'Farmland data inconsistencies',
+        showCancelButton: false,
+        showConfirmButton: true,
+        cancelText: '',
+        confirmText: '  OK  ',
+        // invalidationMessage: 'O sistema invalidou este registo porque verificou-se a inconsistência entre o total dos cajueiros e a soma dos cajueiros dos blocos.',
+        onCancelPressed: ()=>{},
+        onConfirmPressed: ()=>{},
+    },
+
     blockTreesConformityError : {
         title: 'Dados Inconsistentes',
         message: 'O total dos cajueiros não é igual à soma dos cajueiros dos blocos. Se continuares, o presente registo será invalido.',

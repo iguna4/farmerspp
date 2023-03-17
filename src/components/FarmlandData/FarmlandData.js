@@ -794,7 +794,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                 }}
                             >{block?.position + 1}</Text>
                         </Box>
-                        <Box w="90%">
+                        <Box w="65%">
                             <Text
                                 style={{
                                     color: COLORS.mediumseagreen,
@@ -805,6 +805,25 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                 Ano de Plantio: {block.plantingYear}
                             </Text>
                         </Box>
+                        <Box w="25%">
+                            <TouchableOpacity
+                                disabled={farmland?.status === resourceValidation.status.validated ? true : false}
+                                style={{
+                                }}
+                                onPress={
+                                    ()=>{
+                                        // setIsOverlayVisible(!isOverlayVisible);
+                                    }
+                                }
+                            >
+                            <Icon 
+                                // name="home" 
+                                name="edit" 
+                                size={20} 
+                                color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                            />
+                            </TouchableOpacity>
+                        </Box> 
                     </Stack>
 
 

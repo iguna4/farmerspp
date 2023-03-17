@@ -296,10 +296,10 @@ export default function NewFarmlandBlock({
         titleStyle={{
             fontSize: 20,
             paddingVertical: 10,
-            color: COLORS.ghostwhite,
+            // color: COLORS.ghostwhite,
             fontWeight: 'bold',
             marginBottom: 20,
-            backgroundColor: COLORS.mediumseagreen,
+            // backgroundColor: COLORS.mediumseagreen,
             width: '100%',
             textAlign: 'center',
 

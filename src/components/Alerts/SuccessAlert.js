@@ -35,9 +35,39 @@ function SuccessAlert({
                 <Box w="100%">
 
                 <Stack direction="row" w="100%">
-                    <Box w="20%"
-                    >
-                        <TouchableOpacity
+                    <Box >
+                        <Pressable
+                            onPress={()=>{
+                                navigation.navigate('Farmers');
+                                setIsCoordinatesModalVisible(false);
+                            }}   
+                            style={{
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                flexDirection: 'row',
+                                // justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                        <Icon 
+                            name="arrow-back-ios" 
+                            color={COLORS.main}
+                            size={25}
+                            // onPress={()=>{}}
+                        /> 
+                        <Text
+                            style={{
+                                color: COLORS.main,
+                                fontFamily: 'JosefinSans-Bold',
+                                marginLeft: -10,
+                            }}
+                        >
+                            Voltar
+                        </Text>
+                        </Pressable>
+
+                        {/* <TouchableOpacity
                         style={{ flexDirection: 'row' }}
                         onPress={()=>{
                             navigation.navigate('Farmers');
@@ -45,9 +75,9 @@ function SuccessAlert({
                         }}                            
                         >
                             <Icon name='arrow-back-ios' color={COLORS.main} size={30}  />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </Box>
-                    <Box w="80%">
+                    <Box w="100%">
 
                     </Box>
                 </Stack>

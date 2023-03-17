@@ -2,7 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 /* eslint-disable prettier/prettier */
-import { Text, SafeAreaView, ScrollView, TextInput, View } from 'react-native';
+import { Text, SafeAreaView, ScrollView, TextInput, View, Pressable } from 'react-native';
 import React, {useState, useEffect, useCallback } from 'react';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
 import { Icon, Button, CheckBox } from '@rneui/themed';
@@ -327,15 +327,36 @@ export default function FarmerRegistration({ route, navigation }) {
 
             <Box mb="2">
                 <Stack direction="row">
-                    <Box w="10%">
-                        <Icon 
-                            name="arrow-back-ios" 
-                            color={COLORS.main}
-                            size={35}
+                    <Box>
+                        <Pressable
+                            style={{
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                flexDirection: 'row',
+                                // justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
                             onPress={()=>navigation.goBack()}
-                        />
+                        >
+                            <Icon 
+                                name="arrow-back-ios" 
+                                color={COLORS.main}
+                                size={25}
+                            /> 
+                            <Text
+                                style={{
+                                    color: COLORS.main,
+                                    fontFamily: 'JosefinSans-Bold',
+                                    marginLeft: -10,
+                                }}
+                            >
+                                Voltar
+                            </Text>
+
+                        </Pressable>
                     </Box>
-                    <Box w="80%" alignItems={'center'} pt="1">
+                    <Box w="100%" alignItems={'center'} pt="1" pb="2">
                         <Text 
                             style={{ 
                                 textAlign: 'center', 

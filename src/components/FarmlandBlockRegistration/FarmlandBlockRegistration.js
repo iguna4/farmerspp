@@ -47,12 +47,13 @@ export default function FarmlandBlockRegistration({
 
     turnOffOverlay,
 
-    // messageAlert, setMessageAlert,
-    // titleAlert, setTitleAlert,
-    // cancelText, setCancelText,
-    // confirmText, setConfirmText,
-    // showCancelButton, setShowCancelButton,
-    // showConfirmButton, setShowConfirmButton,
+    alert, setAlert,
+    messageAlert, setMessageAlert,
+    titleAlert, setTitleAlert,
+    cancelText, setCancelText,
+    confirmText, setConfirmText,
+    showCancelButton, setShowCancelButton,
+    showConfirmButton, setShowConfirmButton,
     
 }){
 
@@ -65,13 +66,13 @@ export default function FarmlandBlockRegistration({
     const [areaRedFlag, setAreaRedFlag] = useState(false);
 
     // ------------------------------------------
-    const [alert, setAlert] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
-    const [titleAlert, setTitleAlert] = useState('');
-    const [cancelText, setCancelText] = useState('');
-    const [confirmText, setConfirmText] = useState('');
-    const [showCancelButton, setShowCancelButton] = useState(false);
-    const [showConfirmButton, setShowConfirmButton] = useState(false);
+    // const [alert, setAlert] = useState(false);
+    // const [messageAlert, setMessageAlert] = useState('');
+    // const [titleAlert, setTitleAlert] = useState('');
+    // const [cancelText, setCancelText] = useState('');
+    // const [confirmText, setConfirmText] = useState('');
+    // const [showCancelButton, setShowCancelButton] = useState(false);
+    // const [showConfirmButton, setShowConfirmButton] = useState(false);
 
     // const [errors, setErrors] = useState({});
     
@@ -87,6 +88,13 @@ export default function FarmlandBlockRegistration({
               
             if (treesFlag > totalTrees || areaFlag > totalArea) {
                 setAlert(true);
+                setTitleAlert(errorMessages.farmlandAndBlockConformity.title);
+                setMessageAlert(errorMessages.farmlandAndBlockConformity.message);
+                setShowCancelButton(errorMessages.farmlandAndBlockConformity.showCancelButton);
+                setShowConfirmButton(errorMessages.farmlandAndBlockConformity.showConfirmButton);
+                setCancelText(errorMessages.farmlandAndBlockConformity.cancelText);
+                setConfirmText(errorMessages.farmlandAndBlockConformity.confirmText);
+
                 setAddBlockIsOn(false);
 
                 setTreeRedFlag(true);
@@ -168,10 +176,10 @@ export default function FarmlandBlockRegistration({
         titleStyle={{
             fontSize: 20,
             paddingVertical: 10,
-            color: COLORS.ghostwhite,
+            // color: COLORS.ghostwhite,
             fontWeight: 'bold',
             marginBottom: 20,
-            backgroundColor: COLORS.mediumseagreen,
+            // backgroundColor: COLORS.mediumseagreen,
             width: '100%',
             textAlign: 'center',
 
@@ -230,8 +238,8 @@ export default function FarmlandBlockRegistration({
             showProgress={false}
             title={titleAlert}
             message={messageAlert}
-            closeOnTouchOutside={false}
-            closeOnHardwareBackPress={false}
+            closeOnTouchOutside={true}
+            closeOnHardwareBackPress={true}
             showCancelButton={showCancelButton}
             showConfirmButton={showConfirmButton}
             cancelText={cancelText}
@@ -386,7 +394,7 @@ export default function FarmlandBlockRegistration({
             }}
         >
         <Stack direction="row" w="100%" space={2}>
-            <Box w="48%">
+            <Box w={"48%"}>
             <FormControl isRequired my="2" isInvalid={'usedArea' in errors}>
                 <FormControl.Label>Área Aproveitada</FormControl.Label>
                 <CustomInput
@@ -396,13 +404,12 @@ export default function FarmlandBlockRegistration({
                     placeholder="Hectares"
                     value={usedArea}
                     onChangeText={newNumber=>{
-                        setErrors(prev=>({...prev, usedArea: ''}))
+                        setErrors(prev=>({...prev, usedArea: '', blockTrees: ''}))
                         setUsedArea(newNumber)
                     }}
                 />
                     
-                {
-                    'usedArea' in errors 
+                { ('usedArea' in errors && !'blockTrees' in errors)
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.usedArea}</FormControl.ErrorMessage> 
@@ -413,7 +420,7 @@ export default function FarmlandBlockRegistration({
 
         <Box w="48%"
             style={{
-                justifyContent: 'flex-end'
+                justifyContent: 'flex-end',
             }}
         >
         <FormControl isRequired my="2" isInvalid={'blockTrees' in errors}>
@@ -425,14 +432,14 @@ export default function FarmlandBlockRegistration({
                 placeholder="Cajueiros"
                 value={blockTrees}
                 onChangeText={newNumber=>{
-                    setErrors(prev=>({...prev, blockTrees: ''}))
+                    setErrors(prev=>({...prev, blockTrees: '', usedArea: ''}))
                     setBlockTrees(newNumber);
 
                 }}
             />
                 
             {
-                'blockTrees' in errors 
+                ('blockTrees' in errors && ! 'usedArea' in errors) 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.blockTrees}</FormControl.ErrorMessage> 
@@ -440,7 +447,11 @@ export default function FarmlandBlockRegistration({
             }
             </FormControl>
             </Box>
-        </Stack>  
+        </Stack>
+        {
+            (errors?.blockTrees && errors?.usedArea) &&
+            <Text style={{ fontSize: 12, color: COLORS.red, }}> <Icon name="error-outline" size={16} color="red" /> {errors?.blockTrees}</Text>        
+        }  
         </Box>
 
         <Box w="100%">
@@ -947,7 +958,6 @@ export default function FarmlandBlockRegistration({
         // if any required data is not validated
         // a alert message is sent to the user   
         if (!validateBlockData(blockData, errors, setErrors)) {
-            
             setAlert(true);
             // setValidated(true);
             setTitleAlert(errorMessages.farmlandError.title);

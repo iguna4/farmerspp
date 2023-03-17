@@ -4,7 +4,7 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import { Text,  Stack, Box, Center, Divider } from 'native-base';
-import { Modal, ScrollView, View, TouchableOpacity } from 'react-native';
+import { Modal, ScrollView, Pressable, View, TouchableOpacity } from 'react-native';
 import { Button, Icon } from '@rneui/themed';
 import CustomDivider from '../Divider/CustomDivider';
 import styles from './styles';
@@ -154,17 +154,49 @@ export default function GroupModal (
                     backgroundColor: '#EBEBE4',
                 }}
             >
-            <Box w="20%">
-                <TouchableOpacity
+            <Box >
+
+                <Pressable
+                    onPress={()=>{
+                        // navigation.goBack();
+                        setModalVisible(false);
+                    }}   
+                            style={{
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                flexDirection: 'row',
+                                // justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                        <Icon 
+                            name="arrow-back-ios" 
+                            color={COLORS.main}
+                            size={25}
+                            // onPress={()=>{}}
+                        /> 
+                        <Text
+                            style={{
+                                color: COLORS.main,
+                                fontFamily: 'JosefinSans-Bold',
+                                marginLeft: -10,
+                            }}
+                        >
+                            Voltar
+                        </Text>
+                        </Pressable>
+
+                {/* <TouchableOpacity
                     onPress={()=>{
                         // navigation.goBack();
                         setModalVisible(false);
                     }}                            
                 >
                     <Icon name='arrow-back-ios' color={COLORS.main} size={30}  />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </Box>
-            <Box w="60%">
+            <Box w="80%">
             </Box>
             <Box w="20%">
                 <Icon 

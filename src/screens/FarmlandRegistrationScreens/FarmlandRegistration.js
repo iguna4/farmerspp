@@ -164,7 +164,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
             plantingYear: retrievedBlockData?.plantingYear,
             density:  retrievedBlockData?.density,
             trees: retrievedBlockData?.trees,
-            usedArea: retrievedBlockData?.usedArea,
+            usedArea: Number(retrievedBlockData?.usedArea.toFixed(2)),
             sameTypeTrees: retrievedBlockData?.sameTypeTrees,
             plantTypes: retrievedBlockData?.plantTypes,
             userName: customUserData?.name,
@@ -251,8 +251,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
         const farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
 
         const blocksTrees = farmland?.blocks?.map(block=>parseInt(block?.trees))?.reduce((acc, el)=>acc + el, 0);
-        const blocksAreas = farmland?.blocks?.map(block=>parseFloat(block?.usedArea))?.reduce((acc, el)=>acc + el, 0);
-        const totalArea = parseFloat(farmland?.totalArea);
+        const blocksAreas =  farmland?.blocks?.map(block=>parseFloat(block?.usedArea))?.reduce((acc, el)=>acc + el, 0);
+        const totalArea = Number(farmland?.totalArea.toFixed(2));
         const totalTrees = parseInt(farmland?.trees);
         if ((blocksTrees === 0 && totalTrees > 0) && (blocksAreas === 0 && totalArea > 0)) {
 
@@ -417,7 +417,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 description,
                 consociatedCrops,
                 trees,
-                totalArea,
+                totalArea: Number(totalArea.toFixed(2)),
                 farmerId: owner._id,
                 userDistrict: customUserData?.userDistrict,
                 userProvince: customUserData?.userProvince,
@@ -567,7 +567,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
             showProgress={false}
             title="Dados Obrigatórios"
             message="Os campos obrigatórios devem ser BEM preenchidos!"
-            closeOnTouchOutside={true}
+            closeOnTouchOutside={false}
             closeOnHardwareBackPress={false}
             showCancelButton={false}
             showConfirmButton={true}
@@ -583,12 +583,12 @@ export default function FarmlandRegistration ({ route, navigation }) {
         show={alert}
         
         titleStyle={{
-            fontSize: 20,
-            paddingVertical: 10,
-            color: COLORS.ghostwhite,
+            fontSize: 18,
+            // paddingVertical: 5,
+            // color: COLORS.ghostwhite,
             fontWeight: 'bold',
-            marginBottom: 20,
-            backgroundColor: COLORS.mediumseagreen,
+            marginBottom: 5,
+            // backgroundColor: COLORS.mediumseagreen,
             width: '100%',
             textAlign: 'center',
 
@@ -611,17 +611,17 @@ export default function FarmlandRegistration ({ route, navigation }) {
         }}
 
         contentContainerStyle={{
-            width: '90%',
+            // width: '90%',
             minHeight: '30%',
         }}
 
         contentStyle={{
             // flex: 1,
-            paddingVertical: 1,
+            // paddingVertical: 1,
         }}
 
         cancelButtonStyle={{
-            width: 120,
+            // width: 120,
             marginRight: 15,
             }}
     
@@ -633,7 +633,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
             }}
     
             confirmButtonStyle={{
-            width: 120,
+            // width: 120,
             marginLeft: 15,
             }}
     
@@ -653,8 +653,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
             showConfirmButton={showConfirmButton}
             cancelText={cancelText}
             confirmText={confirmText}
-            cancelButtonColor={COLORS.mediumseagreen}
-            confirmButtonColor={(logFlag?.includes('inconsistencies') || logFlag?.includes('no blocks') ) ? COLORS.red : COLORS.mediumseagreen}
+            cancelButtonColor={COLORS.main}
+            confirmButtonColor={(logFlag?.includes('inconsistencies') || logFlag?.includes('no blocks') ) ? COLORS.danger : COLORS.danger}
             onCancelPressed={()=>{
                 setAlert(false);
             }}
@@ -1173,7 +1173,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                                 <Text
                                     style={{ color: COLORS.black, fontFamily: 'JosefinSans-Bold', fontSize: 16, }}
                                 >Área (hectares)</Text>
-                                <Text>({block?.usedArea})</Text>
+                                <Text>({block?.usedArea.toFixed(2)})</Text>
                             </Box>
                             <Box w="50%"
                              alignItems={"center"}

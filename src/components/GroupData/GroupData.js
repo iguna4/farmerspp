@@ -123,12 +123,12 @@ const GroupData = ({ farmer })=>{
                 show={alert}
                 
                 titleStyle={{
-                    fontSize: 20,
-                    paddingVertical: 15,
-                    color: COLORS.ghostwhite,
+                    fontSize: 18,
+                    // paddingVertical: 15,
+                    // color: COLORS.ghostwhite,
                     fontWeight: 'bold',
-                    marginBottom: 20,
-                    backgroundColor: COLORS.main,
+                    marginBottom: 5,
+                    // backgroundColor: COLORS.main,
                     width: '100%',
                     textAlign: 'center',
 
@@ -150,17 +150,17 @@ const GroupData = ({ farmer })=>{
                 }}
 
                 contentContainerStyle={{
-                    width: '90%',
+                    // width: '90%',
                     // height: '70%',
                 }}
 
                 contentStyle={{
                     // flex: 1,
-                    paddingVertical: 20,
+                    // paddingVertical: 20,
                 }}
 
                 cancelButtonStyle={{
-                    width: 120,
+                    // width: 120,
                     marginRight: 15,
                   }}
           
@@ -172,7 +172,7 @@ const GroupData = ({ farmer })=>{
                   }}
           
                   confirmButtonStyle={{
-                    width: 120,
+                    // width: 120,
                     marginLeft: 15,
                   }}
           
@@ -324,6 +324,8 @@ const GroupData = ({ farmer })=>{
         </Box>
         <Box w="25%"></Box>
         <Box w="25%">
+    {      
+        customUserData?.role !== roles.provincialManager && 
             <TouchableOpacity
                 disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                 style={{
@@ -341,6 +343,7 @@ const GroupData = ({ farmer })=>{
                     color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                 />
             </TouchableOpacity>
+        }
         </Box>
         </Stack>
 
@@ -417,7 +420,10 @@ const GroupData = ({ farmer })=>{
                 </Box>
                 <Box w="25%"></Box>
                 <Box w="25%">
-                    <TouchableOpacity
+            {    
+            customUserData?.role !== roles.provincialManager && 
+
+                <TouchableOpacity
                         disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                         style={{
                         }}
@@ -427,12 +433,13 @@ const GroupData = ({ farmer })=>{
                             }
                         }
                     >
-                <Icon 
-                    name="edit"
-                    size={20} 
-                    color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
-                />
+                        <Icon 
+                            name="edit"
+                            size={20} 
+                            color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
+                        />
                     </TouchableOpacity>
+            }
                 </Box>
             </Stack>
             <Stack w="100%" direction="row" space={1}>
@@ -514,6 +521,8 @@ const GroupData = ({ farmer })=>{
             </Box>
             <Box w="25%"></Box>
             <Box w="25%">
+        {                
+            customUserData?.role !== roles.provincialManager && 
                 <TouchableOpacity
                     disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                     style={{
@@ -531,6 +540,7 @@ const GroupData = ({ farmer })=>{
                         color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
                 </TouchableOpacity>
+            }
             </Box>
         </Stack>
        
@@ -631,7 +641,9 @@ const GroupData = ({ farmer })=>{
             </Box>
             <Box w="25%"></Box>
             <Box w="25%">
-                <TouchableOpacity
+        {   
+            customUserData?.role !== roles.provincialManager && 
+            <TouchableOpacity
                     disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
@@ -647,6 +659,7 @@ const GroupData = ({ farmer })=>{
                     color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
                 />
                 </TouchableOpacity>
+            }
             </Box>
         </Stack>
 
@@ -798,7 +811,9 @@ const GroupData = ({ farmer })=>{
             </Box>
             <Box w="5%"></Box>
             <Box w="25%">
-                <TouchableOpacity
+    {     
+        customUserData?.role !== roles.provincialManager && 
+        <TouchableOpacity
                     disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
@@ -814,6 +829,7 @@ const GroupData = ({ farmer })=>{
                     color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
                 />
                 </TouchableOpacity>
+            }
             </Box>
         </Stack>
 

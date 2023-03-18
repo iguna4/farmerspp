@@ -174,11 +174,11 @@ export default function FarmlandBlockRegistration({
         show={alert}
         
         titleStyle={{
-            fontSize: 20,
-            paddingVertical: 10,
+            fontSize: 18,
+            // paddingVertical: 10,
             // color: COLORS.ghostwhite,
             fontWeight: 'bold',
-            marginBottom: 20,
+            marginBottom: 5,
             // backgroundColor: COLORS.mediumseagreen,
             width: '100%',
             textAlign: 'center',
@@ -202,17 +202,17 @@ export default function FarmlandBlockRegistration({
         }}
 
         contentContainerStyle={{
-            width: '90%',
+            // width: '90%',
             minHeight: '30%',
         }}
 
         contentStyle={{
             // flex: 1,
-            paddingVertical: 1,
+            // paddingVertical: 1,
         }}
 
         cancelButtonStyle={{
-            width: 120,
+            // width: 120,
             marginRight: 15,
             }}
     
@@ -224,7 +224,7 @@ export default function FarmlandBlockRegistration({
             }}
     
             confirmButtonStyle={{
-            width: 120,
+            // width: 120,
             marginLeft: 15,
             }}
     
@@ -328,7 +328,7 @@ export default function FarmlandBlockRegistration({
                         textAlign: 'right',
                     }}
                 >
-                    Quais dos {totalArea - areaFlag} hectares?
+                    Quais dos {(totalArea - areaFlag).toFixed(2)} hectares?
                 </Text>
             </Box>  
         </Stack>

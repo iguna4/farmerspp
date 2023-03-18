@@ -12,6 +12,8 @@ import styles from './styles';
 
 import { realmContext } from '../../models/realmContext';
 import { useEffect } from 'react';
+import { roles } from '../../consts/roles';
+import { useUser } from '@realm/react';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const group = 'group';
@@ -20,6 +22,8 @@ const groupFarmlands = 'groupFarmlands';
 export default function GroupScreen ({ route, navigation }) {
     const ownerId = route.params.ownerId;
     const realm = useRealm();
+    const user = useUser();
+    const customUserData = user?.customData;
     const farmer = realm.objectForPrimaryKey('Group', ownerId);
    
     const [isAddPhoto, setIsAddPhoto] = useState(false);
@@ -294,7 +298,9 @@ export default function GroupScreen ({ route, navigation }) {
           ({farmlands?.length})
         </Text>
 
-        <Stack direction="row" w="100%">
+{        
+   customUserData?.role !== roles.provincialManager &&  
+      <Stack direction="row" w="100%">
             <Box w="70%">
 
             </Box>
@@ -316,7 +322,8 @@ export default function GroupScreen ({ route, navigation }) {
 
               </TouchableOpacity>
             </Box>            
-        </Stack>
+          </Stack>
+        }
 
 
 

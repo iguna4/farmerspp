@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import COLORS from '../../consts/colors';
 import { months } from '../../helpers/dates'
 import { resourceValidation } from '../../consts/resourceValidation';
+import { getPlantingYears } from '../../helpers/getPlantingYears';
 
 
 export default function FarmlandItem ({ item, route, }) {
@@ -70,28 +71,28 @@ export default function FarmlandItem ({ item, route, }) {
          }}
          >
       <Stack direction="row" w="100%" space={3}>
-       <Box w="30%">
+       <Box w="50%">
        <Text 
          style={{
-           fontSize: 16,
+           fontSize: 15,
            fontFamily: 'JosefinSans-Bold',
            color: COLORS.main,
          }}
          >
-          Ano de plantio:
+          Anos de plantio:
          </Text>
 
        </Box>
 
-      <Box w="70%" >
+      <Box w="50%" >
        <Text 
           style={{
-            fontSize: 16,
+            fontSize: 15,
             fontFamily: 'JosefinSans-Regular',
             color: COLORS.grey,
           }}
           >
-           {item?.plantingYear} ({item?.description})
+           [ {getPlantingYears(item?.blocks)} ]
         </Text>  
 
       </Box>
@@ -99,10 +100,10 @@ export default function FarmlandItem ({ item, route, }) {
 
 
     <Stack direction="row" w="100%" space={3}>
-       <Box w="30%">
+       <Box w="50%">
        <Text 
          style={{
-           fontSize: 16,
+           fontSize: 15,
            fontFamily: 'JosefinSans-Bold',
            color: COLORS.main,
          }}
@@ -112,15 +113,15 @@ export default function FarmlandItem ({ item, route, }) {
 
        </Box>
 
-      <Box w="70%" >
+      <Box w="50%" >
        <Text 
           style={{
-            fontSize: 16,
+            fontSize: 15,
             fontFamily: 'JosefinSans-Regular',
             color: COLORS.grey,
           }}
           >
-           {item?.trees} árvores (Compasso {item.density?.mode})
+           {item?.trees} árvores. 
         </Text>  
 
       </Box>

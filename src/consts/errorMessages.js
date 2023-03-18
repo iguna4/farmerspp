@@ -28,8 +28,8 @@ export const errorMessages = {
     },
 
     farmlandWithNoBlockError : {
-        title: 'Dados da Área Aproveitada',
-        message: 'Adiciona dados sobre a área com cajueiros. Se continuares, o presente registo será invalido.',
+        title: 'Área Aproveitada',
+        message: 'Adiciona bloco da área com cajueiros. Se continuares, o presente registo será invalido.',
         logFlag: 'Farmland with no blocks',
         showCancelButton: true,
         showConfirmButton: true,

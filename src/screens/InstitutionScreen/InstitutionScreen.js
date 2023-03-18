@@ -12,6 +12,8 @@ import PhotoModal from '../../components/Modals/PhotoModal';
 
 import { realmContext } from '../../models/realmContext';
 import { useEffect } from 'react';
+import { useUser } from '@realm/react';
+import { roles } from '../../consts/roles';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const institution = 'institution';
@@ -21,6 +23,8 @@ const institutionFarmlands = 'institutionFarmlands';
 export default function InstitutionScreen ({ route, navigation }) {
     const ownerId = route.params.ownerId;
     const realm = useRealm();
+    const user = useUser();
+    const customUserData = user?.customData;
     const farmer = realm.objectForPrimaryKey('Institution', ownerId);
     const [isAddPhoto, setIsAddPhoto] = useState(false);
     const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
@@ -302,6 +306,8 @@ export default function InstitutionScreen ({ route, navigation }) {
         >
           ({farmlands?.length})
         </Text>
+{        
+    customUserData?.role !== roles.provincialManager &&  
         <Stack direction="row" w="100%">
             <Box w="70%">
 
@@ -324,7 +330,8 @@ export default function InstitutionScreen ({ route, navigation }) {
 
               </TouchableOpacity>
             </Box>            
-        </Stack>
+          </Stack>
+        }
 
         {
             farmlands?.map((farmland)=>

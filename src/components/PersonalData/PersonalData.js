@@ -124,12 +124,12 @@ const PersonalData = ({ farmer, setRefresh })=>{
                 show={alert}
                 
                 titleStyle={{
-                    fontSize: 20,
-                    paddingVertical: 15,
-                    color: COLORS.ghostwhite,
+                    fontSize: 18,
+                    // paddingVertical: 15,
+                    // color: COLORS.ghostwhite,
                     fontWeight: 'bold',
-                    marginBottom: 20,
-                    backgroundColor: COLORS.main,
+                    marginBottom: 5,
+                    // backgroundColor: COLORS.main,
                     width: '100%',
                     textAlign: 'center',
 
@@ -151,17 +151,17 @@ const PersonalData = ({ farmer, setRefresh })=>{
                 }}
 
                 contentContainerStyle={{
-                    width: '90%',
+                    // width: '90%',
                     // height: '70%',
                 }}
 
                 contentStyle={{
                     // flex: 1,
-                    paddingVertical: 20,
+                    // paddingVertical: 20,
                 }}
 
                 cancelButtonStyle={{
-                    width: 120,
+                    // width: 120,
                     marginRight: 15,
                   }}
           
@@ -173,7 +173,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                   }}
           
                   confirmButtonStyle={{
-                    width: 120,
+                    // width: 120,
                     marginLeft: 15,
                   }}
           
@@ -313,6 +313,8 @@ const PersonalData = ({ farmer, setRefresh })=>{
             </Box>
             <Box w="25%"></Box>
             <Box w="25%">
+        {               
+        customUserData?.role !== roles.provincialManager && 
                 <TouchableOpacity
                     disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                     style={{
@@ -330,6 +332,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                         color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                         />
                 </TouchableOpacity>
+            }
             </Box>
         </Stack>
 
@@ -459,7 +462,9 @@ const PersonalData = ({ farmer, setRefresh })=>{
             </Box>
             <Box w="25%"></Box>
             <Box w="25%">
-                <TouchableOpacity
+        {   
+        customUserData?.role !== roles.provincialManager && 
+            <TouchableOpacity
                     disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
@@ -476,6 +481,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                         color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
                 </TouchableOpacity>
+        }
             </Box>
         </Stack>
 
@@ -602,7 +608,9 @@ const PersonalData = ({ farmer, setRefresh })=>{
                 </Box>
                 <Box w="25%"></Box>
                 <Box w="25%">
-                    <TouchableOpacity
+            {    
+                customUserData?.role !== roles.provincialManager && 
+                <TouchableOpacity
                         disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                         style={{
                         }}
@@ -619,6 +627,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                             color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
                         />
                     </TouchableOpacity>
+            }
                 </Box>
             </Stack>
 
@@ -693,7 +702,9 @@ const PersonalData = ({ farmer, setRefresh })=>{
             </Box>
             <Box w="5%"></Box>
             <Box w="25%">
-                <TouchableOpacity
+        {           
+            customUserData?.role !== roles.provincialManager && 
+            <TouchableOpacity
                     disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                     style={{
                     }}
@@ -710,6 +721,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                         color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
                 </TouchableOpacity>
+            }
             </Box>
         </Stack>
 

@@ -35,16 +35,16 @@ export default function StatItem ({ item, route }){
     >   
 
     <Stack direction="row" w="100%">
-        <Center w="15%" m="2">
+        <Center w="10%" m="1">
             <Avatar 
-                size={60}
+                size={40}
                 rounded
                 title={getInitials(item?.userName)}
                 containerStyle={{ backgroundColor: COLORS.grey }}
                 source={{ uri: 'http://localhost/not-set-yet'  }}
             />
         </Center>
-        <Box w="85%">
+        <Box w="90%">
 
         <TouchableOpacity
         onPress={()=>{
@@ -56,7 +56,7 @@ export default function StatItem ({ item, route }){
         >
             <Text 
                 style={{
-                    fontSize: 20,
+                    fontSize: 18,
                     fontFamily: 'JosefinSans-Bold',
                     color: COLORS.main,
                 }}
@@ -74,7 +74,7 @@ export default function StatItem ({ item, route }){
                         style={{ 
                             color: COLORS.black, 
                             fontFamily: 'JosefinSand-Bold',
-                            fontSize: 15,
+                            fontSize: 14,
                         }}
                     >Meta</Text>
                 </Box>
@@ -83,7 +83,7 @@ export default function StatItem ({ item, route }){
                         style={{ 
                             color: COLORS.black, 
                             fontFamily: 'JosefinSand-Bold',
-                            fontSize: 15,
+                            fontSize: 14,
                         }}
                     >Realização</Text>
                 </Box>
@@ -96,7 +96,7 @@ export default function StatItem ({ item, route }){
                         style={{ 
                             color: COLORS.black, 
                             fontFamily: 'JosefinSand-Bold',
-                            fontSize: 15,
+                            fontSize: 14,
                         }}
                     >Produtores</Text>
                 </Box>
@@ -120,7 +120,7 @@ export default function StatItem ({ item, route }){
                         style={{ 
                             color: COLORS.black, 
                             fontFamily: 'JosefinSand-Bold',
-                            fontSize: 15,
+                            fontSize: 14,
                         }}
                     >Pomares</Text>
                 </Box>

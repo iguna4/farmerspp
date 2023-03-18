@@ -20,6 +20,7 @@ import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 import { normalizeBlockList } from '../../helpers/normalizeBlockList';
 import NewFarmlandBlock from '../FarmlandBlockRegistration/NewFarmlandBlock';
+import { getPlantingYears } from '../../helpers/getPlantingYears';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const farmlandResourceMessage = 'farmlandResourceMessage';
@@ -151,16 +152,16 @@ const FarmlandData = ({ farmland, setRefresh })=>{
     }, [ realm, user, message, invalidationMotives, autoRefresh, isCollapseOn, isNewBlockVisible ]);
 
     
-    const getPlantingYears = (blocks)=>{
-        if (blocks?.length > 0) {
-            return blocks?.map(block=>{
-                    return block.plantingYear
-                }).join("; ")
-        }
-        else {
-            return 'Desconhecido';
-        }
-    }
+    // const getPlantingYears = (blocks)=>{
+    //     if (blocks?.length > 0) {
+    //         return blocks?.map(block=>{
+    //                 return block.plantingYear
+    //             }).join("; ")
+    //     }
+    //     else {
+    //         return 'Desconhecido';
+    //     }
+    // }
 
     
 
@@ -175,12 +176,12 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             show={alert}
             
             titleStyle={{
-                fontSize: 20,
-                paddingVertical: 15,
-                color: COLORS.ghostwhite,
+                fontSize: 18,
+                // paddingVertical: 15,
+                // color: COLORS.ghostwhite,
                 fontWeight: 'bold',
-                marginBottom: 20,
-                backgroundColor: COLORS.main,
+                marginBottom: 5,
+                // backgroundColor: COLORS.main,
                 width: '100%',
                 textAlign: 'center',
 
@@ -202,17 +203,17 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             }}
 
             contentContainerStyle={{
-                width: '90%',
+                // width: '90%',
                 // height: '70%',
             }}
 
             contentStyle={{
                 // flex: 1,
-                paddingVertical: 20,
+                // paddingVertical: 20,
             }}
 
             cancelButtonStyle={{
-                width: 120,
+                // width: 120,
                 marginRight: 15,
                 }}
         
@@ -224,7 +225,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 }}
         
                 confirmButtonStyle={{
-                width: 120,
+                // width: 120,
                 marginLeft: 15,
                 }}
         
@@ -373,6 +374,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 
                 </Box>    
                 <Box w="25%">
+            {   customUserData?.role !== roles.provincialManager &&             
                 <TouchableOpacity
                     disabled={farmland?.status === resourceValidation.status.validated ? true : false}
                     style={{
@@ -390,6 +392,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                 />
                 </TouchableOpacity>
+            }
             </Box>            
             </Stack>
 
@@ -514,6 +517,8 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             </Box>
             {/* <Box w="25%"></Box> */}
             <Box w="25%">
+
+            {  customUserData?.role !== roles.provincialManager && 
                 <TouchableOpacity
                     // disabled={farmland?.validated === resourceValidation.status.validated ? true : false}
                     style={{
@@ -532,6 +537,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                         // color={farmland?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
                 </TouchableOpacity>
+            }
             </Box>
         </Stack>
 {
@@ -625,6 +631,9 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             </Box>
             {/* <Box w="25%"></Box> */}
             <Box w="25%">
+        {   
+
+        customUserData?.role !== roles.provincialManager && 
                 <TouchableOpacity
                     // disabled={farmland?.validated === resourceValidation.status.validated ? true : false}
                     style={{
@@ -643,6 +652,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                         // color={farmland?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
                 </TouchableOpacity>
+            }
             </Box>
         </Stack>
 {
@@ -709,7 +719,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
     <CustomDivider />
 
     { 
-    !isAreaNotEnough &&
+    !isAreaNotEnough && customUserData?.role !== roles.provincialManager && 
     <Stack  w="100%" direction="row" my="5">
         <Box w="75%">
             <Text
@@ -806,7 +816,9 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                             </Text>
                         </Box>
                         <Box w="25%">
-                            <TouchableOpacity
+                {       
+                    customUserData?.role !== roles.provincialManager && 
+                        <TouchableOpacity
                                 disabled={farmland?.status === resourceValidation.status.validated ? true : false}
                                 style={{
                                 }}
@@ -823,6 +835,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                 color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                             />
                             </TouchableOpacity>
+                        }
                         </Box> 
                     </Stack>
 
@@ -905,7 +918,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                         fontSize: 16,
                                         fontFamily: 'JosefinSans-Regular',
                                     }}
-                                >{block.usedArea} hectares</Text>
+                                >{block.usedArea.toFixed(2)} hectares</Text>
                         </Box>
                     </Stack>
 

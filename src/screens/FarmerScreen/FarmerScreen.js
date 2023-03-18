@@ -13,6 +13,7 @@ import PhotoModal from '../../components/Modals/PhotoModal';
 
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
+import { roles } from '../../consts/roles';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const singleFarmer = 'singleFarmer';
@@ -22,6 +23,8 @@ const ownFarmlands = 'ownFarmlands';
 export default function FarmerScreen ({ route, navigation }) {
     const ownerId = route.params.ownerId;
     const realm = useRealm();
+    const user = useUser();
+    const customUserData = user?.customData;
     const farmer = realm.objectForPrimaryKey('Actor', ownerId);
     const farmlands = realm.objects("Farmland").filtered('farmerId == $0', ownerId);
     const [isAddPhoto, setIsAddPhoto] = useState(false);
@@ -307,7 +310,9 @@ export default function FarmerScreen ({ route, navigation }) {
           }}
         >({farmlands?.length})</Text>
 
-          <Stack direction="row" w="100%">
+{     
+  customUserData?.role !== roles.provincialManager &&  
+      <Stack direction="row" w="100%">
           <Box w="70%">
 
           </Box>
@@ -334,7 +339,8 @@ export default function FarmerScreen ({ route, navigation }) {
 
               </TouchableOpacity>
             </Box>            
-        </Stack>
+          </Stack>
+        }
 
 
         {

@@ -3,11 +3,29 @@
 const getTreeNumberThreshold = (trees, area, width, length)=>{
     //calculate number of trees by their density (spaces) by hectar
     const estimatedNumberOfTrees = area * (10000 / (width * length));
+    const {
+        lowerBound, upperBound
+    } = treeNumberInterval(trees, width, length)
 
-    if ((trees >= (estimatedNumberOfTrees - 20)) && (trees <= (estimatedNumberOfTrees + 20) )) {
+
+    // if ((trees >= (estimatedNumberOfTrees - 20)) && (trees <= (estimatedNumberOfTrees + 20) )) {
+    //     return true;
+    // }    
+
+    if ((area >= lowerBound) && (area <= upperBound)) {
         return true;
-    }    
+    } 
     return false;
+};
+
+const treeNumberInterval = (trees, width, length)=>{
+    //calculate number of trees by their density (spaces) by hectar
+    const estimatedArea = (trees * width * length) / 10000;
+    return {
+        lowerBound: (estimatedArea - 0.3).toFixed(2),
+        upperBound: (estimatedArea + 0.3).toFixed(2),
+
+    }
 }
 
 
@@ -36,8 +54,8 @@ const validateBlockData = (
  const retrievedPlantingYear = plantingYear ? parseInt(plantingYear) : ''; 
  const retrievedDensityMode = isDensityModeRegular ? 'Regular' : isDensityModeIrregular ?  'Irregular' : '';
  const retrievedTreesNumber = blockTrees ? parseInt(blockTrees) : '';
- const retrievedUsedArea = usedArea ? parseFloat(usedArea): '';
- const retrievedRemainingArea = remainingArea ? parseFloat(remainingArea) : 0;
+ const retrievedUsedArea = !usedArea ? '' : !isNaN(usedArea) ? Number(parseFloat(usedArea).toFixed(2)) : '';
+ const retrievedRemainingArea = !remainingArea ? 0 : !isNaN(remainingArea) ? Number(remainingArea.toFixed(2)) : 0;
  const retrievedDensityLength = densityLength ? parseInt(densityLength) : 0;
  const retrievedDensityWidth = densityWidth ? parseInt(densityWidth): 0;
  const retrievedPlantTypes = [...plantTypes];
@@ -48,7 +66,6 @@ const validateBlockData = (
         trees: parseInt(object?.trees),
     }
  });
-
  
  
  if (!retrievedPlantingYear){
@@ -131,8 +148,8 @@ const validateBlockData = (
 
  if ( retrievedDensityMode === 'Regular' && !getTreeNumberThreshold(retrievedTreesNumber, retrievedUsedArea, retrievedDensityWidth, retrievedDensityLength)) {      
     setErrors({ ...errors,
-        usedArea: 'Área e número de cajueiros não correspondem.',
-        blockTrees: 'Área e número de cajueiros não correspondem.'
+        usedArea: `Para ${retrievedTreesNumber} cajueiros e compasso de ${retrievedDensityWidth}x${retrievedDensityLength} metros, a área pode variar entre ${treeNumberInterval(retrievedTreesNumber, retrievedDensityWidth, retrievedDensityLength).lowerBound} e ${treeNumberInterval(retrievedTreesNumber, retrievedDensityWidth, retrievedDensityLength).upperBound} hectares.`,
+        blockTrees: `Para ${retrievedTreesNumber} cajueiros e compasso de ${retrievedDensityWidth}x${retrievedDensityLength} metros, a área pode variar entre ${treeNumberInterval(retrievedTreesNumber, retrievedDensityWidth, retrievedDensityLength).lowerBound} e ${treeNumberInterval(retrievedTreesNumber, retrievedDensityWidth, retrievedDensityLength).upperBound} hectares.`,
     });
     return false;                   
 }

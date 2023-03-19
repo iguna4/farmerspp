@@ -30,6 +30,7 @@ export const Actor = {
         
         createdAt: { type: 'date', default: Date()},
         modifiedAt: { type: 'date', default: Date()},
+        modifiedBy: 'string?',
     },
 }
 

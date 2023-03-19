@@ -334,7 +334,7 @@ export default function WelcomeScreen () {
                 flex: 1,
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: '95%',
+                width: '100%',
                 marginBottom: 20,
                 paddingTop: 10,
             }}

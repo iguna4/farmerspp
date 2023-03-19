@@ -29,6 +29,7 @@ export const Institution = {
 
         createdAt: { type: 'date', default: Date()},
         modifiedAt: { type: 'date', default: Date()},
+        modifiedBy: 'string?',
     },
 }
 

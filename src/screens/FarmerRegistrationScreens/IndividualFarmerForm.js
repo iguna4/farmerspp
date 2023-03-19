@@ -13,6 +13,7 @@ import administrativePosts from '../../consts/administrativePosts';
 import provinces from '../../consts/provinces';
 import districts from '../../consts/districts';
 import villages from '../../consts/villages';
+import idDocTypes from '../../consts/idDocTypes';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import styles from './styles';
 import { localeDateService } from '../../helpers/dates';
@@ -574,14 +575,17 @@ export default function IndividualFarmerForm({
                         setDocType(newDocType);
                       }}
                   >
-                    <Select.Item label="Bilhete de Identidade (BI)" value="Bilhete de Identidade" />
+                    {
+                        idDocTypes?.map((docType)=><Select.Item key={docType} label={docType} value={docType} />)
+                    }
+                    {/* <Select.Item label="Bilhete de Identidade (BI)" value="Bilhete de Identidade" />
                     <Select.Item label="Passaporte" value="Passaporte" />
                     <Select.Item label="Carta de Condução" value="Carta de Condução" />
                     <Select.Item label="Cédula" value="Cédula" />
                     <Select.Item label="Cartão de Eleitor" value="Cartão de Eleitor" />
                     <Select.Item label="DIRE" value="DIRE" />
                     <Select.Item label="Cartão de Refugiado" value="Cartão de Refugiado" />
-                    <Select.Item label="Não tem" value="Não tem" />
+                    <Select.Item label="Não tem" value="Não tem" /> */}
                   </Select>
                 {
                 'docType' in errors 

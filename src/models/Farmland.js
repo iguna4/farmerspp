@@ -29,6 +29,6 @@ export const Farmland = {
         ownerType: 'string?', // Single, Group, or Institution
         createdAt: { type: 'date', default: Date()},
         modifiedAt: { type: 'date', default: Date()},
-
+        modifiedBy: 'string?',
     },
 }

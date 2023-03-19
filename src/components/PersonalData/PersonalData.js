@@ -9,8 +9,12 @@ import { v4 as uuidv4 } from 'uuid';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import COLORS from '../../consts/colors';
 import EditData from '../EditData/EditData';
+import EditFarmerData from '../EditData/EditFarmerData';
 import { errorMessages } from '../../consts/errorMessages';
 import { roles } from '../../consts/roles';
+import ConfirmData from '../EditData/ConfirmData';
+
+
 
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
@@ -32,6 +36,9 @@ const PersonalData = ({ farmer, setRefresh })=>{
     // console.log('messages: ', JSON.stringify(invalidationMotives));
 
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+    const [isConfirmDataVisible, setIsConfirmDataVisible] = useState(false);
+
+
     const [autoRefresh, setAutoRefresh] = useState(false);
     const [isCollapseOn, setIsCallapseOne] = useState(false);
 
@@ -50,7 +57,56 @@ const PersonalData = ({ farmer, setRefresh })=>{
 
 
     // ---------------------------------------------
+    const [dataToBeUpdated, setDataToBeUpdated] = useState('');
 
+
+    // ----------------------------------------------------
+    // const [errors, setErrors] = useState({});
+    // const [overlayTitle, setOverlayTitle] = useState('');
+
+    // -----------------------------------------------------
+    
+    //  update address
+    const [addressProvince, setAddressProvince] = useState('');
+    const [addressDistrict, setAddressDistrict] = useState('');
+    const [addressAdminPost, setAddressAdminPost] = useState('');
+    const [addressVillage, setAddressVillage] = useState('');
+    
+    const [selectedAddressAdminPosts, setSelectedAddressAdminPosts] = useState([]);
+
+    const [addressOldProvince, setAddressOldProvince] = useState('');
+    const [addressOldDistrict, setAddressOldDistrict] = useState('');
+    const [addressOldAdminPost, setAddressOldAdminPost] = useState('');
+    const [addressOldVillage, setAddressOldVillage] = useState('');
+
+    //  -----------------------------------------------------
+
+    // update contact
+    const [ primaryPhone, setPrimaryPhone  ] = useState('');
+    const [ secondaryPhone, setSecondaryPhone ] = useState('');
+
+    const [oldPrimaryPhone, setOldPrimaryPhone ] = useState('');
+    const [oldSecondaryPhone, setOldSecondaryPhone ] = useState('');
+
+    // ----------------------------------------------------
+
+
+    const [newDataObject, setNewDataObject] = useState({});
+    const [oldDataObject, setOldDataObject] = useState({});
+
+    // -----------------------------------------------
+
+    // idDocument
+    const [docNumber, setDocNumber] = useState('');
+    const [docType, setDocType] = useState('');
+    const [nuit, setNuit] = useState('');
+
+    const [oldDocNumber, setOldDocNumber] = useState('')
+    const [oldDocType, setOldDocType] = useState('');
+    const [oldNuit, setOldNuit] = useState('');
+
+
+    // ---------------------------------------------------
     const validationAction = (realm, resourceId, flag)=>{
         realm.write(()=>{
             const foundFarmer = realm.objectForPrimaryKey('Actor', `${resourceId}`);
@@ -314,24 +370,24 @@ const PersonalData = ({ farmer, setRefresh })=>{
             <Box w="25%"></Box>
             <Box w="25%">
         {               
-        customUserData?.role !== roles.provincialManager && 
-                <TouchableOpacity
-                    disabled={farmer?.status === resourceValidation.status.validated ? true : false}
-                    style={{
-                    }}
-                    onPress={
-                        ()=>{
-                            setIsOverlayVisible(!isOverlayVisible);
-                        }
-                    }
-                >
-                    <Icon 
-                        // name="home" 
-                        name="edit" 
-                        size={20} 
-                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
-                        />
-                </TouchableOpacity>
+        // customUserData?.role !== roles.provincialManager && 
+        //         <TouchableOpacity
+        //             disabled={farmer?.status === resourceValidation.status.validated ? true : false}
+        //             style={{
+        //             }}
+        //             onPress={
+        //                 ()=>{
+        //                     setIsOverlayVisible(!isOverlayVisible);
+        //                 }
+        //             }
+        //         >
+        //             <Icon 
+        //                 // name="home" 
+        //                 name="edit" 
+        //                 size={20} 
+        //                 color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+        //                 />
+        //         </TouchableOpacity>
             }
             </Box>
         </Stack>
@@ -471,6 +527,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                     onPress={
                         ()=>{
                             setIsOverlayVisible(!isOverlayVisible);
+                            setDataToBeUpdated('address');
                         }
                     }
                 >
@@ -616,7 +673,8 @@ const PersonalData = ({ farmer, setRefresh })=>{
                         }}
                         onPress={
                             ()=>{
-                                
+                                setIsOverlayVisible(!isOverlayVisible);
+                                setDataToBeUpdated('contact');
                             }
                         }
                     >
@@ -710,7 +768,8 @@ const PersonalData = ({ farmer, setRefresh })=>{
                     }}
                     onPress={
                         ()=>{
-                            
+                            setIsOverlayVisible(!isOverlayVisible);
+                            setDataToBeUpdated('idDocument');
                         }
                     }
                 >
@@ -820,6 +879,23 @@ const PersonalData = ({ farmer, setRefresh })=>{
             {' '} por {farmer?.userName === customUserData?.name ? 'mim' : farmer?.userName}
             </Text>
         </Box>
+
+{ farmer?.modifiedBy &&
+       <Box w="100%">
+            <Text 
+            style={{ 
+                textAlign: 'right',
+                color: COLORS.grey,
+                fontFamily: 'JosefinSans-Italic',
+                fontSize: 12,
+            }}
+            >
+            Actualização:{' '}                 
+            {new Date(farmer?.modifiedAt).getDate()}-{new Date(farmer?.modifiedAt).getMonth()+1}-{new Date(farmer?.modifiedAt).getFullYear()}
+            {' '} por {farmer?.modifiedBy === customUserData?.name ? 'mim' : farmer?.modifiedBy}
+            </Text>
+        </Box>}
+
         
     {
     farmer?.status === resourceValidation.status.invalidated &&
@@ -1091,12 +1167,86 @@ const PersonalData = ({ farmer, setRefresh })=>{
     {
         isOverlayVisible && 
         (
-        <EditData 
+        <EditFarmerData 
             isOverlayVisible={isOverlayVisible}
             setIsOverlayVisible={setIsOverlayVisible}
+            isConfirmDataVisible={isConfirmDataVisible}
+            setIsConfirmDataVisible={setIsConfirmDataVisible}
+
             ownerName={farmer?.names?.otherNames + ' ' + farmer?.names?.surname}
+            resource={farmer}
+            resourceName={'Farmer'}
+            dataToBeUpdated={dataToBeUpdated}
+
+            newDataObject={newDataObject}
+            oldDataObject={oldDataObject}
+            setNewDataObject={setNewDataObject}
+            setOldDataObject={setOldDataObject}
+
+
+            addressProvince={addressProvince}
+            setAddressProvince={setAddressProvince}
+            addressDistrict={addressDistrict}
+            setAddressDistrict={setAddressDistrict}
+            addressAdminPost={addressAdminPost}
+            setAddressAdminPost={setAddressAdminPost}
+            addressVillage={addressVillage}
+            setAddressVillage={setAddressVillage}
+                        
+            selectedAddressAdminPosts={selectedAddressAdminPosts}
+            setSelectedAddressAdminPosts={setSelectedAddressAdminPosts}
+            addressOldProvince={addressOldProvince}
+            setAddressOldProvince={setAddressOldProvince}
+            addressOldDistrict={addressOldDistrict}
+            setAddressOldDistrict={setAddressOldDistrict}
+            addressOldAdminPost={addressOldAdminPost}
+            setAddressOldAdminPost={setAddressOldAdminPost}
+            addressOldVillage={addressOldVillage} 
+            setAddressOldVillage={setAddressOldVillage}
+
+
+            // contact
+            setPrimaryPhone={setPrimaryPhone}
+            setSecondaryPhone={setSecondaryPhone}
+            primaryPhone={primaryPhone}
+            secondaryPhone={secondaryPhone}
+            oldPrimaryPhone={oldPrimaryPhone}
+            oldSecondaryPhone={oldSecondaryPhone}
+            setOldPrimaryPhone={setOldPrimaryPhone}
+            setOldSecondaryPhone={setOldSecondaryPhone}
+
+            // idDocument
+            setDocNumber={setDocNumber}
+            docNumber={docNumber}
+            docType={docType}
+            setDocType={setDocType}
+            nuit={nuit}
+            setNuit={setNuit}
+
+            setOldDocNumber={setOldDocNumber}
+            oldDocNumber={oldDocNumber}
+            oldDocType={oldDocType}
+            setOldDocType={setOldDocType}
+            oldNuit={oldNuit}
+            setOldNuit={setOldNuit}
+
         />
         )
+    }
+
+
+    {isConfirmDataVisible &&
+            <ConfirmData
+                // setIsOverlayVisible={setIsOverlayVisible}
+                // isConfirmDataVisible={isConfirmDataVisible}
+                setIsConfirmDataVisible={setIsConfirmDataVisible}
+                ownerName={farmer?.names?.otherNames + ' ' + farmer?.names?.surname}
+                newDataObject={newDataObject}
+                oldDataObject={oldDataObject}
+                dataToBeUpdated={dataToBeUpdated}
+                resource={farmer}
+                resourceName={'Farmer'}
+            />
     }
 
 

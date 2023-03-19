@@ -329,7 +329,7 @@ const EditFarmerData = ({
                     type="text"
                     isDisabled={(docType === 'Não tem' || docType === '') ? true : false }
                     value={docNumber}
-                    placeholder="Número do Documento"
+                    placeholder={docNumber ? docNumber?.toString() : 'Nenhum'}
                     onChangeText={newDocNumber=>{
                         setErrors((prev)=>({...prev, docNumber: ''}));
                         setDocNumber(newDocNumber)
@@ -353,7 +353,7 @@ const EditFarmerData = ({
                 <CustomInput
                     width="100%"
                     type="number"
-                    placeholder="NUIT"
+                    placeholder={nuit ? nuit?.toString() : 'Nenhum'}
                     value={nuit}
                     keyboardType="numeric"
                     onChangeText={newNuit=>{

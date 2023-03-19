@@ -1183,7 +1183,6 @@ const PersonalData = ({ farmer, setRefresh })=>{
             setNewDataObject={setNewDataObject}
             setOldDataObject={setOldDataObject}
 
-
             addressProvince={addressProvince}
             setAddressProvince={setAddressProvince}
             addressDistrict={addressDistrict}

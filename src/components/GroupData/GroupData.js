@@ -953,6 +953,24 @@ const GroupData = ({ farmer })=>{
             {new Date(farmer?.createdAt).getDate()}-{new Date(farmer?.createdAt).getMonth()+1}-{new Date(farmer?.createdAt).getFullYear()}
             {' '} por {farmer?.userName === customUserData?.name ? 'mim' : farmer?.userName}
             </Text>
+        { farmer?.modifiedBy &&
+            <Box w="100%">
+                <Text 
+                style={{ 
+                    textAlign: 'right',
+                    color: COLORS.grey,
+                    fontFamily: 'JosefinSans-Italic',
+                    fontSize: 12,
+                }}
+                >
+                Actualização:{' '}                 
+                {new Date(farmer?.modifiedAt).getDate()}-{new Date(farmer?.modifiedAt).getMonth()+1}-{new Date(farmer?.modifiedAt).getFullYear()}
+                {' '} por {farmer?.modifiedBy === customUserData?.name ? 'mim' : farmer?.modifiedBy}
+                </Text>
+            </Box>
+         }
+
+
         </Box>
         
     {

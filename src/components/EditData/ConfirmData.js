@@ -12,12 +12,15 @@ import { realmContext } from '../../models/realmContext';
 const {useRealm} = realmContext;
 
 const ConfirmData = ({  
-    setIsOverlayVisible,
+    // setIsOverlayVisible,
     isConfirmDataVisible, 
     setIsConfirmDataVisible,
+
     newDataObject,
     oldDataObject,
+
     dataToBeUpdated,
+
     resourceName,
     ownerName,
     resource,
@@ -27,8 +30,8 @@ const ConfirmData = ({
     const user = useUser();
     const customUserData = user?.customData;
 
-    // console.log('newDataObject: ', newDataObject);
-    // console.log('oldDataObject: ', oldDataObject);
+    console.log('newDataObject: ', newDataObject);
+    console.log('oldDataObject: ', oldDataObject);
 
     const onUpdateData = (resource, newDataObject, realm, dataToBeUpdated, resourceName) =>{
 
@@ -40,7 +43,6 @@ const ConfirmData = ({
                 // resource.userProvince = newData?.province;
                 // resource.userDistrict = newData?.district;
                 resource.status = resourceValidation.status.pending;
-
 
             }
 
@@ -56,6 +58,30 @@ const ConfirmData = ({
 
             if (dataToBeUpdated === 'idDocument' && resourceName === 'Farmer') {
                 resource.idDocument = newDataObject;
+                resource.modifiedAt = new Date();
+                resource.modifiedBy = customUserData?.name;
+                // resource.userProvince = newData?.province;
+                // resource.userDistrict = newData?.district;
+                resource.status = resourceValidation.status.pending;
+            }
+
+
+            if (dataToBeUpdated === 'institutionDocument' && resourceName === 'Institution') {
+                resource.nuit = newDataObject?.nuit;
+                resource.licence = newDataObject?.licence;
+
+                resource.modifiedAt = new Date();
+                resource.modifiedBy = customUserData?.name;
+                // resource.userProvince = newData?.province;
+                // resource.userDistrict = newData?.district;
+                resource.status = resourceValidation.status.pending;
+            }
+
+
+            if (dataToBeUpdated === 'institutionManager' && resourceName === 'Institution') {
+                resource.manager.fullname = newDataObject?.fullname;
+                resource.manager.phone = newDataObject?.phone;
+
                 resource.modifiedAt = new Date();
                 resource.modifiedBy = customUserData?.name;
                 // resource.userProvince = newData?.province;
@@ -120,6 +146,179 @@ const ConfirmData = ({
                 color={COLORS.ghostwhite} 
                 />
         </View>
+
+        {  (dataToBeUpdated === 'institutionManager' &&  resourceName === 'Institution') &&        
+            <Box
+                style={{
+                    paddingVertical: 30,
+                    // alignItems: 'center',
+                }}
+            >
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 18,
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingBottom: 5,
+                    }}
+                >Contacto Anterior</Text>
+                <Stack direction="row">
+                    <Box w="50%">
+                        <Text>Nome do Responsável</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{oldDataObject?.fullname ? oldDataObject?.fullname : 'Nenhum' }</Text>
+                    </Box>
+                </Stack>
+                <Stack direction="row">
+                    <Box w="50%">
+                        <Text>Número de telemóvel</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{oldDataObject?.phone ? oldDataObject?.phone : 'Nenhum'}</Text>
+                    </Box>
+                </Stack>
+                {/* <Stack direction="row">
+                    <Box w="50%">
+                        <Text>NUIT</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
+                    </Box>
+                </Stack> */}
+
+                <Box
+                    style={{
+                        paddingVertical: 20,
+                    }}
+                > 
+
+
+                </Box>
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 18,
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingBottom: 5,
+                    }}
+                >Contacto Actual</Text>
+
+                <Stack direction="row">
+                    <Box w="50%">
+                        <Text>Nome do Responsável</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{newDataObject?.fullname ? newDataObject?.fullname : 'Nenhum'}</Text>
+                    </Box>
+                </Stack>
+                <Stack direction="row">
+                    <Box w="50%">
+                        <Text>Número de telemóvel</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{newDataObject?.phone ? newDataObject?.phone : 'Nenhum'}</Text>
+                    </Box>
+                </Stack>
+                {/* <Stack direction="row">
+                    <Box w="50%">
+                        <Text>NUIT</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
+                    </Box>
+                </Stack> */}
+            </Box>
+        }
+
+
+
+
+        {  (dataToBeUpdated === 'institutionDocument' &&  resourceName === 'Institution') &&        
+            <Box
+                style={{
+                    paddingVertical: 30,
+                    // alignItems: 'center',
+                }}
+            >
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 18,
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingBottom: 5,
+                    }}
+                >Documentação Anterior</Text>
+                <Stack direction="row">
+                    <Box w="50%">
+                        <Text>NUIT da instituição</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum' }</Text>
+                    </Box>
+                </Stack>
+                <Stack direction="row">
+                    <Box w="50%">
+                        <Text>Número do alvará</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{oldDataObject?.licence ? oldDataObject?.licence : 'Nenhum'}</Text>
+                    </Box>
+                </Stack>
+                {/* <Stack direction="row">
+                    <Box w="50%">
+                        <Text>NUIT</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
+                    </Box>
+                </Stack> */}
+
+                <Box
+                    style={{
+                        paddingVertical: 20,
+                    }}
+                > 
+
+
+                </Box>
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 18,
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingBottom: 5,
+                    }}
+                >Documentação Actual</Text>
+
+                <Stack direction="row">
+                    <Box w="50%">
+                        <Text>NUIT da instituição</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
+                    </Box>
+                </Stack>
+                <Stack direction="row">
+                    <Box w="50%">
+                        <Text>Número do alvará</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{newDataObject?.licence ? newDataObject?.licence : 'Nenhum'}</Text>
+                    </Box>
+                </Stack>
+                {/* <Stack direction="row">
+                    <Box w="50%">
+                        <Text>NUIT</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
+                    </Box>
+                </Stack> */}
+            </Box>
+        }
+
+
 
 
         {  (dataToBeUpdated === 'idDocument' &&  resourceName === 'Farmer') &&        

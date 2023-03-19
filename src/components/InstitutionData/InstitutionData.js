@@ -10,9 +10,13 @@ import CustomDivider from '../../components/Divider/CustomDivider';
 import COLORS from '../../consts/colors';
 import { TouchableOpacity } from 'react-native';
 
+import EditInstitutionData from '../EditData/EditInstitutionData';
+
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { resourceValidation } from '../../consts/resourceValidation';
 import EditData from '../EditData/EditData';
+import ConfirmData from '../EditData/ConfirmData';
+
 import { roles } from '../../consts/roles';
 import { errorMessages } from '../../consts/errorMessages';
 import validateInvalidationMessage from '../../helpers/validateInvalidationMessage';
@@ -29,7 +33,9 @@ const InstitutionData = ({ farmer })=>{
     const customUserData = user?.customData;
     const invalidationMotives = realm.objects('InvalidationMotive').filtered(`resourceId == "${farmer?._id}"`);
 
+    const [isConfirmDataVisible, setIsConfirmDataVisible] = useState(false);
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+   
     const [autoRefresh, setAutoRefresh] = useState(false);
     const [isCollapseOn, setIsCallapseOne] = useState(false);
 
@@ -48,6 +54,42 @@ const InstitutionData = ({ farmer })=>{
 
     // ---------------------------------------------
 
+    const [dataToBeUpdated, setDataToBeUpdated] = useState('');
+
+    
+    
+    // update institution manager personal data
+    const [ institutionManagerPhone, setInstitutionManagerPhone  ] = useState('');
+    const [ institutionManagerName, setInstitutionManagerName ] = useState('');
+
+    const [oldInstitutionManagerPhone, setOldInstitutionManagerPhone ] = useState('');
+    const [oldInstitutionManagerName, setOldInstitutionManagerName ] = useState('');
+
+    // -----------------------------------------------
+
+    const [newDataObject, setNewDataObject] = useState({});
+    const [oldDataObject, setOldDataObject] = useState({});
+
+    // ------------------------------------------------
+
+    // idDocument
+    // const [docNumber, setDocNumber] = useState('');
+    // const [docType, setDocType] = useState('');
+    const [institutionNuit, setInstitutionNuit] = useState('');
+    const [institutionLicence, setInstitutionLicence] = useState('');
+
+    // const [oldDocNumber, setOldDocNumber] = useState('')
+    // const [oldDocType, setOldDocType] = useState('');
+    const [oldInstitutionNuit, setOldInstitutionNuit] = useState('');
+    const [oldInstitutionLicence, setOldInstitutionLicence] = useState('');
+
+    
+    
+    // ----------------------------------------------------
+
+    
+    
+    
     const validationAction = (realm, resourceId, flag)=>{
         realm.write(()=>{
             const foundFarmer = realm.objectForPrimaryKey('Institution', `${resourceId}`);
@@ -326,7 +368,7 @@ const InstitutionData = ({ farmer })=>{
         </Box>
         <Box w="25%"></Box>
         <Box w="25%">
-    {           
+    {/* {           
         customUserData?.role !== roles.provincialManager && 
         <TouchableOpacity
                 disabled={farmer?.status === resourceValidation.status.validated ? true : false}
@@ -345,7 +387,7 @@ const InstitutionData = ({ farmer })=>{
                     color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
             </TouchableOpacity>
-        }
+        } */}
         </Box>
         </Stack>     
 
@@ -409,7 +451,8 @@ const InstitutionData = ({ farmer })=>{
                     }}
                     onPress={
                         ()=>{
-                            
+                            setIsOverlayVisible(!isOverlayVisible);
+                            setDataToBeUpdated('institutionManager');
                         }
                     }
                     >
@@ -504,7 +547,7 @@ const InstitutionData = ({ farmer })=>{
             </Box>
             <Box w="5%"></Box>
             <Box w="25%">
-        {           
+        {/* {           
             customUserData?.role !== roles.provincialManager && 
             <TouchableOpacity
                     disabled={farmer?.status === resourceValidation.status.validated ? true : false}
@@ -523,7 +566,7 @@ const InstitutionData = ({ farmer })=>{
                         color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
                 </TouchableOpacity>
-            }
+            } */}
             </Box>
         </Stack>
 
@@ -659,7 +702,8 @@ const InstitutionData = ({ farmer })=>{
                     }}
                     onPress={
                         ()=>{
-                            
+                            setIsOverlayVisible(!isOverlayVisible);
+                            setDataToBeUpdated('institutionDocument');
                         }
                     }
                 >
@@ -744,6 +788,25 @@ const InstitutionData = ({ farmer })=>{
             {new Date(farmer?.createdAt).getDate()}-{new Date(farmer?.createdAt).getMonth()+1}-{new Date(farmer?.createdAt).getFullYear()}
             {' '} por {farmer?.userName === customUserData?.name ? 'mim' : farmer?.userName}
             </Text>
+
+            { farmer?.modifiedBy &&
+            <Box w="100%">
+                    <Text 
+                    style={{ 
+                        textAlign: 'right',
+                        color: COLORS.grey,
+                        fontFamily: 'JosefinSans-Italic',
+                        fontSize: 12,
+                    }}
+                    >
+                    Actualização:{' '}                 
+                    {new Date(farmer?.modifiedAt).getDate()}-{new Date(farmer?.modifiedAt).getMonth()+1}-{new Date(farmer?.modifiedAt).getFullYear()}
+                    {' '} por {farmer?.modifiedBy === customUserData?.name ? 'mim' : farmer?.modifiedBy}
+                    </Text>
+                </Box>
+            }
+
+
         </Box>
         
     {
@@ -1021,15 +1084,63 @@ const InstitutionData = ({ farmer })=>{
 {
     isOverlayVisible && 
     (
-    <EditData 
-        isOverlayVisible={isOverlayVisible}
-        setIsOverlayVisible={setIsOverlayVisible}
-        ownerName={farmer?.type + ' ' + farmer?.name}
+    <EditInstitutionData 
+    isOverlayVisible={isOverlayVisible}
+    setIsOverlayVisible={setIsOverlayVisible}
+    isConfirmDataVisible={isConfirmDataVisible}
+    setIsConfirmDataVisible={setIsConfirmDataVisible}
+    
+    ownerName={farmer?.type + ' ' + farmer?.name}
+    resource={farmer}
+    resourceName={"Institution"}
+    dataToBeUpdated={dataToBeUpdated}
+
+    newDataObject={newDataObject}
+    oldDataObject={oldDataObject}
+    setNewDataObject={setNewDataObject}
+    setOldDataObject={setOldDataObject}
+
+    // the institution manager personal data
+    institutionManagerPhone={institutionManagerPhone}
+    setInstitutionManagerPhone={setInstitutionManagerPhone}
+    institutionManagerName={institutionManagerName}
+    setInstitutionManagerName={setInstitutionManagerName}
+    oldInstitutionManagerPhone={oldInstitutionManagerPhone}
+    setOldInstitutionManagerPhone={setOldInstitutionManagerPhone}
+    oldInstitutionManagerName={oldInstitutionManagerName}
+    setOldInstitutionManagerName={setOldInstitutionManagerName}
+
+    // the institution documents
+    institutionNuit={institutionNuit}
+    setInstitutionNuit={setInstitutionNuit}
+    institutionLicence={institutionLicence}
+    setInstitutionLicence={setInstitutionLicence}
+    oldInstitutionNuit={oldInstitutionNuit}
+    setOldInstitutionNuit={setOldInstitutionNuit}
+    oldInstitutionLicence={oldInstitutionLicence}
+    setOldInstitutionLicence={setOldInstitutionLicence}
+
+   
+
     />
     )
     }
 
-        </CollapseBody>
+{isConfirmDataVisible &&
+        <ConfirmData
+            // setIsOverlayVisible={setIsOverlayVisible}
+            isConfirmDataVisible={isConfirmDataVisible}
+            setIsConfirmDataVisible={setIsConfirmDataVisible}
+            ownerName={farmer?.type + ' ' + farmer?.name}
+            newDataObject={newDataObject}
+            oldDataObject={oldDataObject}
+            dataToBeUpdated={dataToBeUpdated}
+            resource={farmer}
+            resourceName={'Institution'}
+        />
+    }
+
+    </CollapseBody>
     </Collapse>  
         </>
     )

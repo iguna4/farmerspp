@@ -11,10 +11,11 @@ import COLORS from '../../consts/colors';
 
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { resourceValidation } from '../../consts/resourceValidation';
-import EditData from '../EditData/EditData';
+import EditGroupData from '../EditData/EditGroupData';
 import { roles } from '../../consts/roles';
 import { errorMessages } from '../../consts/errorMessages';
 import validateInvalidationMessage from '../../helpers/validateInvalidationMessage';
+import ConfirmData from '../EditData/ConfirmData';
 
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
@@ -30,6 +31,8 @@ const GroupData = ({ farmer })=>{
     const invalidationMotives = realm.objects('InvalidationMotive').filtered(`resourceId == "${farmer?._id}"`);
 
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+    const [isConfirmDataVisible, setIsConfirmDataVisible] = useState(false);
+    
     const [autoRefresh, setAutoRefresh] = useState(false);
     const [isCollapseOn, setIsCallapseOne] = useState(false);
 
@@ -47,6 +50,42 @@ const GroupData = ({ farmer })=>{
     const [errors, setErrors] = useState({});
 
     // ---------------------------------------------
+    const [dataToBeUpdated, setDataToBeUpdated] = useState('');
+
+
+    // -----------------------------------------------
+
+  
+      // update institution manager personal data
+      const [ groupManagerPhone, setGroupManagerPhone  ] = useState('');
+      const [ groupManagerName, setGroupManagerName ] = useState('');
+  
+      const [oldGroupManagerPhone, setOldGroupManagerPhone ] = useState('');
+      const [oldGroupManagerName, setOldGroupManagerName ] = useState('');
+  
+
+
+    
+    const [newDataObject, setNewDataObject] = useState({});
+    const [oldDataObject, setOldDataObject] = useState({});
+
+
+
+    // -----------------------------------------------
+
+
+    // affiliation Document
+
+    const [groupNuit, setGroupNuit] = useState('');
+    const [groupLicence, setGroupLicence] = useState('');
+
+    const [oldGroupNuit, setOldGroupNuit] = useState('');
+    const [oldGroupLicence, setOldGroupLicence] = useState('');
+
+    
+
+
+
 
     const validationAction = (realm, resourceId, flag)=>{
         realm.write(()=>{
@@ -301,7 +340,7 @@ const GroupData = ({ farmer })=>{
                     color: farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red,
                 }}
             >
-            {farmer?.validated === resourceValidation.status.pending ? resourceValidation.message.pendingResourceMessage : farmer?.validated === resourceValidation.status.validated ? resourceValidation.message.validatedResourceMessage : resourceValidation.message.invalidatedResourceMessage}
+            {farmer?.status === resourceValidation.status.pending ? resourceValidation.message.pendingResourceMessage : farmer?.status === resourceValidation.status.validated ? resourceValidation.message.validatedResourceMessage : resourceValidation.message.invalidatedResourceMessage}
             </Text>
         </Box>
 
@@ -324,7 +363,7 @@ const GroupData = ({ farmer })=>{
         </Box>
         <Box w="25%"></Box>
         <Box w="25%">
-    {      
+    {/* {      
         customUserData?.role !== roles.provincialManager && 
             <TouchableOpacity
                 disabled={farmer?.status === resourceValidation.status.validated ? true : false}
@@ -343,7 +382,7 @@ const GroupData = ({ farmer })=>{
                     color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                 />
             </TouchableOpacity>
-        }
+        } */}
         </Box>
         </Stack>
 
@@ -373,31 +412,6 @@ const GroupData = ({ farmer })=>{
             </Box>
         </Stack>
 
-        <Stack w="100%" direction="row" space={1}>
-                <Box w="35%" >
-                    <Text
-                        style={{
-                            color: 'grey',
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                            
-                        }}
-                        >
-                    Estado de Funcionamento
-                    </Text>
-            </Box>
-            <Box w="65%">
-                <Text 
-                    style={{
-                        color: 'grey',
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                    }}
-                >
-                {farmer?.operationalStatus ? 'Activo' : 'Inactivo'} 
-                </Text>
-            </Box>
-        </Stack>
 
 
         </Stack>
@@ -429,7 +443,8 @@ const GroupData = ({ farmer })=>{
                         }}
                         onPress={
                             ()=>{
-                                
+                                setIsOverlayVisible(!isOverlayVisible);
+                                setDataToBeUpdated('groupManager');
                             }
                         }
                     >
@@ -529,7 +544,8 @@ const GroupData = ({ farmer })=>{
                     }}
                     onPress={
                         ()=>{
-                            
+                            setIsOverlayVisible(!isOverlayVisible);
+                            setDataToBeUpdated('groupMembers');
                         }
                     }
                 >
@@ -544,6 +560,31 @@ const GroupData = ({ farmer })=>{
             </Box>
         </Stack>
        
+        <Stack w="100%" direction="row" space={1}>
+                <Box w="35%" >
+                    <Text
+                        style={{
+                            color: 'grey',
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                            
+                        }}
+                        >
+                    Estado de Funcionamento
+                    </Text>
+            </Box>
+            <Box w="65%">
+                <Text 
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}
+                >
+                {farmer?.operationalStatus ? 'Activo' : 'Inactivo'} 
+                </Text>
+            </Box>
+        </Stack>
 
         <Stack w="100%" direction="row" space={1}>
                 <Box w="35%" >
@@ -649,7 +690,8 @@ const GroupData = ({ farmer })=>{
                     }}
                     onPress={
                         ()=>{
-                            
+                            setIsOverlayVisible(!isOverlayVisible);
+                            setDataToBeUpdated('groupAffiliation');
                         }
                     }
                 >
@@ -811,7 +853,7 @@ const GroupData = ({ farmer })=>{
             </Box>
             <Box w="5%"></Box>
             <Box w="25%">
-    {     
+    {/* {     
         customUserData?.role !== roles.provincialManager && 
         <TouchableOpacity
                     disabled={farmer?.status === resourceValidation.status.validated ? true : false}
@@ -829,7 +871,7 @@ const GroupData = ({ farmer })=>{
                     color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
                 />
                 </TouchableOpacity>
-            }
+            } */}
             </Box>
         </Stack>
 
@@ -1250,12 +1292,51 @@ const GroupData = ({ farmer })=>{
 {
     isOverlayVisible && 
     (
-    <EditData 
+    <EditGroupData 
         isOverlayVisible={isOverlayVisible}
         setIsOverlayVisible={setIsOverlayVisible}
+        isConfirmDataVisible={isConfirmDataVisible}
+        setIsConfirmDataVisible={setIsConfirmDataVisible}
+        
         ownerName={farmer?.type + ' ' + farmer?.name}
+        resource={farmer}
+        resourceName={"Group"}
+        dataToBeUpdated={dataToBeUpdated}
+
+        newDataObject={newDataObject}
+        oldDataObject={oldDataObject}
+        setNewDataObject={setNewDataObject}
+        setOldDataObject={setOldDataObject}
+
+        // the institution manager personal data
+        groupManagerPhone={groupManagerPhone}
+        setGroupManagerPhone={setGroupManagerPhone}
+        groupManagerName={groupManagerName}
+        setGroupManagerName={setGroupManagerName}
+        oldGroupManagerPhone={oldGroupManagerPhone}
+        setOldGroupManagerPhone={setOldGroupManagerPhone}
+        oldGroupManagerName={oldGroupManagerName}
+        setOldGroupManagerName={setOldGroupManagerName}
+
+
     />
     )
+    }
+
+
+
+{isConfirmDataVisible &&
+        <ConfirmData
+            // setIsOverlayVisible={setIsOverlayVisible}
+            isConfirmDataVisible={isConfirmDataVisible}
+            setIsConfirmDataVisible={setIsConfirmDataVisible}
+            ownerName={farmer?.type + ' ' + farmer?.name}
+            newDataObject={newDataObject}
+            oldDataObject={oldDataObject}
+            dataToBeUpdated={dataToBeUpdated}
+            resource={farmer}
+            resourceName={'Group'}
+        />
     }
 
 </CollapseBody>

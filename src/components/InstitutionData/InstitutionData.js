@@ -73,13 +73,10 @@ const InstitutionData = ({ farmer })=>{
     // ------------------------------------------------
 
     // idDocument
-    // const [docNumber, setDocNumber] = useState('');
-    // const [docType, setDocType] = useState('');
+
     const [institutionNuit, setInstitutionNuit] = useState('');
     const [institutionLicence, setInstitutionLicence] = useState('');
 
-    // const [oldDocNumber, setOldDocNumber] = useState('')
-    // const [oldDocType, setOldDocType] = useState('');
     const [oldInstitutionNuit, setOldInstitutionNuit] = useState('');
     const [oldInstitutionLicence, setOldInstitutionLicence] = useState('');
 

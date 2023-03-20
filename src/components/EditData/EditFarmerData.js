@@ -328,7 +328,7 @@ const EditFarmerData = ({
                     width="100%"
                     type="text"
                     isDisabled={(docType === 'Não tem' || docType === '') ? true : false }
-                    value={docNumber}
+                    value={docNumber?.toString()}
                     placeholder={docNumber ? docNumber?.toString() : 'Nenhum'}
                     onChangeText={newDocNumber=>{
                         setErrors((prev)=>({...prev, docNumber: ''}));
@@ -354,7 +354,7 @@ const EditFarmerData = ({
                     width="100%"
                     type="number"
                     placeholder={nuit ? nuit?.toString() : 'Nenhum'}
-                    value={nuit}
+                    value={nuit?.toString()}
                     keyboardType="numeric"
                     onChangeText={newNuit=>{
                         setErrors((prev)=>({...prev, nuit: ''}));
@@ -393,7 +393,7 @@ const EditFarmerData = ({
                     type="telephoneNumber"
                     placeholder={primaryPhone ? primaryPhone?.toString() : 'Nenhum'}
                     keyboardType="numeric"
-                    value={primaryPhone}
+                    value={primaryPhone?.toString()}
                     onChangeText={newPhone=>{
                         setErrors((prev)=>({...prev, primaryPhone: ''}))                        
                         setPrimaryPhone(newPhone);
@@ -429,7 +429,7 @@ const EditFarmerData = ({
                     type="telephoneNumber"
                     placeholder={secondaryPhone ? secondaryPhone?.toString() : 'Nenhum'}
                     keyboardType="numeric"
-                    value={secondaryPhone}
+                    value={secondaryPhone?.toString()}
                     onChangeText={(newPhone=>{
                         setErrors((prev)=>({...prev, secondaryPhone: ''}))
                         setSecondaryPhone(newPhone)

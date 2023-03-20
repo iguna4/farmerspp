@@ -70,7 +70,7 @@ const validateInstitutionEditedData = (
             [2,3,4,5,6,7].indexOf(parseInt(retrievedInstitutionManagerPhone?.toString()[1])) < 0 )
             ) {      
             setErrors({ ...errors,
-                primaryPhone: 'Número de telefone inválido.',
+                institutionManagerPhone: 'Número de telefone inválido.',
             });
             return false;                   
         }

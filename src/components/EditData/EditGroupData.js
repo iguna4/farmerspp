@@ -15,14 +15,14 @@ import villages from '../../consts/villages';
 import countries from '../../consts/countries';
 import idDocTypes from '../../consts/idDocTypes';
 import { CustomInput } from '../Inputs/CustomInput';
-import validateInstitutionEditedData from '../../helpers/validateInstitutionEditedData';
+import validateGroupEditedData from '../../helpers/validateGroupEditedData';
 
 import { useUser } from "@realm/react";
 import { realmContext } from '../../models/realmContext';
 const {useRealm} = realmContext;
 
 
-const EditInstitutionData = ({  
+const EditGroupData = ({  
     isOverlayVisible, 
     setIsOverlayVisible,
     isConfirmDataVisible,
@@ -39,26 +39,16 @@ const EditInstitutionData = ({
     setNewDataObject,
     setOldDataObject,
 
-    // the institution manager personal data
-    institutionManagerPhone,
-    setInstitutionManagerPhone,
-    institutionManagerName,
-    setInstitutionManagerName,
-    oldInstitutionManagerPhone,
-    setOldInstitutionManagerPhone,
-    oldInstitutionManagerName,
-    setOldInstitutionManagerName,
+    // the group manager personal data
+    groupManagerPhone,
+    setGroupManagerPhone,
+    groupManagerName,
+    setGroupManagerName,
+    oldGroupManagerPhone,
+    setOldGroupManagerPhone,
+    oldGroupManagerName,
+    setOldGroupManagerName,
 
-    // the institution documents
-    institutionNuit,
-    setInstitutionNuit,
-    institutionLicence,
-    setInstitutionLicence,
-    oldInstitutionNuit,
-    setOldInstitutionNuit,
-    oldInstitutionLicence,
-    setOldInstitutionLicence
-    
 })=>{
 
     const realm = useRealm();
@@ -70,57 +60,53 @@ const EditInstitutionData = ({
     const [overlayTitle, setOverlayTitle] = useState('');
 
 
-
     useEffect(()=>{
-        if (dataToBeUpdated === 'institutionDocument' && resourceName === 'Institution'){
-            setInstitutionNuit(resource?.nuit);
-            setInstitutionLicence(resource?.licence);
-            setOverlayTitle('Actualizar Documentação.');
-
-            setOldInstitutionNuit(resource?.nuit);
-            setOldInstitutionLicence(resource?.licence);
-
-        }
-
-        if (dataToBeUpdated === 'institutionManager' && resourceName === 'Institution') {
-            setInstitutionManagerName(resource?.manager.fullname);
-            setInstitutionManagerPhone(resource?.manager.phone);
+        if (dataToBeUpdated === 'groupManager' && resourceName === 'Group'){
+            setGroupManagerName(resource?.manager.fullname);
+            setGroupManagerPhone(resource?.manager.phone);
             setOverlayTitle('Actualizar Contacto.');
 
-            setOldInstitutionManagerName(resource?.manager.fullname);
-            setOldInstitutionManagerPhone(resource?.manager.phone);
+            setOldGroupManagerName(resource?.manager.fullname);
+            setOldGroupManagerPhone(resource?.manager.phone);
         }
+
+        // if (dataToBeUpdated === 'contact' && resourceName === 'Farmer') {
+        //     setPrimaryPhone(resource?.contact.primaryPhone);
+        //     setSecondaryPhone(resource?.contact.secondaryPhone);
+        //     setOverlayTitle('Actualizar contactos.');
+
+        //     setOldPrimaryPhone(resource?.contact.primaryPhone);
+        //     setOldSecondaryPhone(resource?.contact.secondaryPhone);
+        // }
+
+        // if (dataToBeUpdated === 'idDocument' && resourceName === 'Farmer') {
+        //     setDocType(resource?.idDocument.docType);
+        //     setDocNumber(resource?.idDocument.docNumber);
+        //     setNuit(resource?.idDocument.nuit);
+
+        //     setOverlayTitle('Actualizar Documentos de Identidade.');
+
+        //     setOldDocType(resource?.idDocument.docType);
+        //     setOldDocNumber(resource?.idDocument.docNumber);
+        //     setOldNuit(resource?.idDocument.nuit);
+        // }
 
     }, [ dataToBeUpdated, resourceName ]);
 
-
     const onConfirmUpdate = (dataToBeUpdated, resourceName)=> {
 
-        const validatedData = validateInstitutionEditedData({
-            institutionNuit, oldInstitutionNuit,
-            institutionLicence, oldInstitutionLicence,
-            institutionManagerName, oldInstitutionManagerName,
-            institutionManagerPhone, oldInstitutionManagerPhone,
+        const validatedData = validateGroupEditedData({
+            // groupNuit, oldGroupNuit,
+            // groupLicence, oldGroupLicence,
+            groupManagerName, oldGroupManagerName,
+            groupManagerPhone, oldGroupManagerPhone,
         }, errors, setErrors, dataToBeUpdated, resourceName);
 
-        
         const newData = {};
         const oldData = {};
-        
-        if (dataToBeUpdated === 'institutionDocument' && resourceName === 'Institution') {
-            //  new incoming data
-            newData['nuit'] = validatedData?.nuit;
-            newData['licence'] = validatedData?.licence;
 
-            // old data
-            oldData['nuit'] = oldInstitutionNuit;
-            oldData['licence'] = oldInstitutionLicence;
-            
-            setNewDataObject(newData);
-            setOldDataObject(oldData);
-        }
 
-        if (dataToBeUpdated === 'institutionManager' && resourceName === 'Institution') {
+        if (dataToBeUpdated === 'groupManager' && resourceName === 'Group') {
 
             // new incoming data
             newData['fullname'] = validatedData?.fullname ? validatedData?.fullname?.trim() : '';
@@ -128,8 +114,8 @@ const EditInstitutionData = ({
 
 
             // old data
-            oldData['fullname'] = oldInstitutionManagerName ? oldInstitutionManagerName?.trim() : '';
-            oldData['phone'] = oldInstitutionManagerPhone ? Number(parseInt(oldInstitutionManagerPhone)) : 0;
+            oldData['fullname'] = oldGroupManagerName ? oldGroupManagerName?.trim() : '';
+            oldData['phone'] = oldGroupManagerPhone ? Number(parseInt(oldGroupManagerPhone)) : 0;
         
 
             setNewDataObject(newData);
@@ -137,8 +123,44 @@ const EditInstitutionData = ({
         }
 
 
+        // if (dataToBeUpdated === 'contact' && resourceName === 'Farmer') {
+
+        //     // new incoming data
+        //     newData['primaryPhone'] = validatedData?.primaryPhone ? Number(parseInt(validatedData?.primaryPhone)) : 0;
+        //     newData['secondaryPhone'] = validatedData?.secondaryPhone ? Number(parseInt(validatedData?.secondaryPhone)) : 0;
+
+
+        //     // old data
+        //     oldData['primaryPhone'] = oldPrimaryPhone ? Number(parseInt(oldPrimaryPhone)) : 0;
+        //     oldData['secondaryPhone'] = oldSecondaryPhone ? Number(parseInt(oldSecondaryPhone)) : 0;
+        
+
+        //     setNewDataObject(newData);
+        //     setOldDataObject(oldData);
+        // }
+
+
+        // if (dataToBeUpdated === 'idDocument' && resourceName === 'Farmer') {
+
+        //     // new incoming data
+        //     newData['docType'] = validatedData?.docType?.trim();
+        //     newData['docNumber'] = validatedData?.docNumber ? validatedData?.docNumber : '';
+        //     newData['nuit'] = validatedData?.nuit ? Number(parseInt(validatedData?.nuit)) : 0;
+
+        //     // old data
+        //     oldData['docType'] = oldDocType ? oldDocType : 'Não tem';
+        //     oldData['docNumber'] = oldDocNumber ? oldDocNumber : '';
+        //     oldData['nuit'] = oldNuit ? oldNuit : 0;
+
+        //     setNewDataObject(newData);
+        //     setOldDataObject(oldData);
+        // }
+
     }
 
+
+    // console.log('errors: ', errors);
+    // console.log('oldDataObject: ', oldDataObject);
 
     const toggleOverlay = () => {
         setIsOverlayVisible(!isOverlayVisible);
@@ -218,45 +240,45 @@ const EditInstitutionData = ({
                 >{overlayTitle}</Text>
             </Box>
 
-    {/* update the mamager personal data */}
+    {/* update the farmer idDocuments */}
 
     {
-        (dataToBeUpdated === 'institutionManager' && resourceName === 'Institution') &&
+        (dataToBeUpdated === 'groupManager' && resourceName === 'Group') &&
         <Stack direction="column">
           
-          <FormControl isRequired my="1" isInvalid={'institutionManagerName' in errors}>
-            <FormControl.Label>Nome do Representante</FormControl.Label>
+          <FormControl isRequired my="1" isInvalid={'groupManagerName' in errors}>
+            <FormControl.Label>Nome do Presidente</FormControl.Label>
             <CustomInput
                 width="100%"
                 type="text"
                 autoCapitalize="words"
-                placeholder="Nome completo do representante"
-                value={institutionManagerName}
+                placeholder="Nome completo do Presidente"
+                value={groupManagerName}
                 onChangeText={newManagerName=>{
-                    setErrors(prev=>({...prev, institutionManagerName: ''}))
-                    setInstitutionManagerName(newManagerName)
+                    setErrors(prev=>({...prev, groupManagerName: ''}))
+                    setGroupManagerName(newManagerName)
                 }}
             />
             {
-            'institutionManagerName' in errors 
+            'groupManagerName' in errors 
             ? <FormControl.ErrorMessage 
             leftIcon={<Icon name="error-outline" size={16} color="red" />}
-            _text={{ fontSize: 'xs'}}>{errors?.institutionManagerName}</FormControl.ErrorMessage> 
+            _text={{ fontSize: 'xs'}}>{errors?.groupManagerName}</FormControl.ErrorMessage> 
             : <FormControl.HelperText></FormControl.HelperText>
             }
         </FormControl>
 
-        <FormControl  isInvalid={'institutionManagerPhone' in errors}>
-            <FormControl.Label>Tel. do Responsável</FormControl.Label>
+        <FormControl  isInvalid={'groupManagerPhone' in errors}>
+            <FormControl.Label>Telemóvel do Presidente</FormControl.Label>
             <CustomInput
                 width="100%"
                 type="telephoneNumber"
-                placeholder={institutionManagerPhone ? institutionManagerPhone.toString() : 'Nenhum'}
+                placeholder={groupManagerPhone ? groupManagerPhone.toString() : 'Nenhum'}
                 keyboardType="numeric"
-                value={institutionManagerPhone?.toString()}
+                value={groupManagerPhone?.toString()}
                 onChangeText={newManagerPhone=>{
-                    setErrors((prev)=>({...prev, institutionManagerPhone: ''}))                        
-                    setInstitutionManagerPhone(newManagerPhone);
+                    setErrors((prev)=>({...prev, groupManagerPhone: ''}))                        
+                    setGroupManagerPhone(newManagerPhone);
                 }}
                 InputLeftElement={
                     <Icon
@@ -268,10 +290,10 @@ const EditInstitutionData = ({
                 }
             />
             {
-            'institutionManagerPhone' in errors 
+            'groupManagerPhone' in errors 
             ? <FormControl.ErrorMessage 
             leftIcon={<Icon name="error-outline" size={16} color="red" />}
-            _text={{ fontSize: 'xs'}}>{errors?.institutionManagerPhone}</FormControl.ErrorMessage> 
+            _text={{ fontSize: 'xs'}}>{errors?.groupManagerPhone}</FormControl.ErrorMessage> 
             : <FormControl.HelperText></FormControl.HelperText>
             }
         </FormControl>
@@ -285,59 +307,11 @@ const EditInstitutionData = ({
 
 
 
+ 
 
-    {/* update the institution Documents */}
 
-    {
-        (dataToBeUpdated === 'institutionDocument' && resourceName === 'Institution') &&
-        <Stack direction="column">
-          
-            <FormControl isInvalid={'institutionNuit' in errors}>
-                <FormControl.Label>NUIT da Instituição</FormControl.Label>
-                <CustomInput
-                    width="100%"
-                    type="number"
-                    placeholder={institutionNuit ? institutionNuit.toString() : 'Nenhum'}
-                    value={institutionNuit?.toString()}
-                    keyboardType="numeric"
-                    onChangeText={newNuit=>{
-                        setErrors((prev)=>({...prev, institutionNuit: ''}));
-                        setInstitutionNuit(newNuit)
-                    }}
-                />
-                {
-                'institutionNuit' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.institutionNuit}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-                }
-            </FormControl>
-   
-        <FormControl  isInvalid={'institutionLicence' in errors}>
-            <FormControl.Label>N°. de Alvará da Instituição</FormControl.Label>
-            <CustomInput
-                width="100%"
-                type="text"
-                placeholder={institutionLicence ? institutionLicence?.toString() : 'Nenhum'}
-                // keyboardType="numeric"
-                value={institutionLicence?.toString()}
-                onChangeText={newLicence=>{
-                    setErrors((prev)=>({...prev, institutionLicence: ''}))                        
-                    setInstitutionLicence(newLicence);
-                }}
-                />
-            {
-                'institutionLicence' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.institutionLicence}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-            }
-        </FormControl>
-    </Stack>
 
-    }
+
         <Button
             title="Confirmar Dados"
             titleStyle={{
@@ -345,6 +319,19 @@ const EditInstitutionData = ({
                 fontFamily: 'JosefinSans-Bold',
             }}
             iconPosition="right"
+            // icon={
+            // <Icon
+            //     name="save"
+            //     type="font-awesome"
+            //     color="white"
+            //     size={25}
+            //     iconStyle={{ 
+            //         marginRight: 10,
+            //         // color: COLORS.ghostwhite,
+            //         paddingHorizontal: 10,
+            //      }}
+            // />
+            // }
             containerStyle={{
                 backgroundColor: COLORS.second,
                 borderRadius: 10,
@@ -352,11 +339,11 @@ const EditInstitutionData = ({
             }}
             type="outline"
             onPress={()=>{
-                if(!validateInstitutionEditedData({
-                    institutionNuit, oldInstitutionNuit,
-                    institutionLicence, oldInstitutionLicence,
-                    institutionManagerName, oldInstitutionManagerName,
-                    institutionManagerPhone, oldInstitutionManagerPhone,
+                if(!validateGroupEditedData({
+                    // groupNuit, oldGroupNuit,
+                    // groupLicence, oldGroupLicence,
+                    groupManagerName, oldGroupManagerName,
+                    groupManagerPhone, oldGroupManagerPhone,
                 }, errors, setErrors, dataToBeUpdated, resourceName)) {
                     return ;
                 }
@@ -377,4 +364,4 @@ const EditInstitutionData = ({
 
 
     
-export default EditInstitutionData;
+export default EditGroupData;

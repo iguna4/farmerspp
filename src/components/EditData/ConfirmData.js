@@ -99,7 +99,48 @@ const ConfirmData = ({
                 // resource.userDistrict = newData?.district;
                 resource.status = resourceValidation.status.pending;
             }
-        })
+
+            if (dataToBeUpdated === 'groupMembers' && resourceName === 'Group') {
+                resource.operationalStatus = newDataObject?.operationalStatus;
+                resource.numberOfMembers.total = newDataObject?.total;
+                resource.numberOfMembers.women = newDataObject?.women;
+
+                resource.modifiedAt = new Date();
+                resource.modifiedBy = customUserData?.name;
+                // resource.userProvince = newData?.province;
+                // resource.userDistrict = newData?.district;
+                resource.status = resourceValidation.status.pending;
+            }
+
+            if (dataToBeUpdated === 'groupIdentity' && resourceName === 'Group') {
+                resource.affiliationYear = newDataObject?.affiliationYear;
+                resource.creationYear = newDataObject?.creationYear;
+                resource.legalStatus = newDataObject?.legalStatus;
+                resource.licence = newDataObject?.licence;
+                resource.nuit = newDataObject?.nuit;
+
+                resource.modifiedAt = new Date();
+                resource.modifiedBy = customUserData?.name;
+                // resource.userProvince = newData?.province;
+                // resource.userDistrict = newData?.district;
+                resource.status = resourceValidation.status.pending;
+            }
+
+            if (dataToBeUpdated === 'groupType' && resourceName === 'Group') {
+                resource.name = newDataObject?.name;
+                resource.type = newDataObject?.type;
+                resource.assets = newDataObject?.goals?.map(goal=>({assetType: 'Caju', category: 'Grupo', subcategory: goal,}));
+
+                resource.modifiedAt = new Date();
+                resource.modifiedBy = customUserData?.name;
+                // resource.userProvince = newData?.province;
+                // resource.userDistrict = newData?.district;
+                resource.status = resourceValidation.status.pending;
+            }
+
+            // ?.map(goal=>({assetType: 'Caju', category: 'Grupo', subcategory: goal, }))
+
+        });
 
     }
 
@@ -160,6 +201,314 @@ const ConfirmData = ({
 
 
         {/* groups data updating  */}
+
+{
+    (dataToBeUpdated === 'groupType' && resourceName === 'Group') &&
+
+    <Box
+    style={{
+        paddingVertical: 30,
+        // alignItems: 'center',
+    }}
+    >
+    <Text
+        style={{
+            color: COLORS.black,
+            fontSize: 18,
+            fontFamily: 'JosefinSans-Bold',
+            paddingBottom: 5,
+        }}
+    >
+        Tipo de Grupo Anterior
+    </Text>
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>Nome</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{oldDataObject?.name ? oldDataObject?.name : 'Nenhum' }</Text>
+        </Box>
+    </Stack>
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>Tipo</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{oldDataObject?.type ? oldDataObject?.type : 'Nenhum'}</Text>
+        </Box>
+    </Stack>
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>Finalidade</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{oldDataObject?.goals?.length > 0 ? oldDataObject?.goals?.join('; ') : 'Nenhuma'}</Text>
+        </Box>
+    </Stack>
+
+    <Box
+        style={{
+            paddingVertical: 20,
+        }}
+    > 
+
+
+    </Box>
+    <Text
+        style={{
+            color: COLORS.black,
+            fontSize: 18,
+            fontFamily: 'JosefinSans-Bold',
+            paddingBottom: 5,
+        }}
+    >
+        Tipo de Grupo Actual
+    </Text>
+
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>Nome</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{newDataObject?.name ? newDataObject?.name : 'Nenhum' }</Text>
+        </Box>
+    </Stack>
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>Tipo</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{newDataObject?.type ? newDataObject?.type : 'Nenhum'}</Text>
+        </Box>
+    </Stack>
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>Finalidade</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{newDataObject?.goals?.length > 0 ? newDataObject?.goals?.join('; ') : 'Nenhuma'}</Text>
+        </Box>
+    </Stack>
+
+    </Box>
+
+}
+
+
+
+{
+    (dataToBeUpdated === 'groupIdentity' &&  resourceName === 'Group') && 
+    <Box
+    style={{
+        paddingVertical: 30,
+        // alignItems: 'center',
+    }}
+    >
+    <Text
+        style={{
+            color: COLORS.black,
+            fontSize: 18,
+            fontFamily: 'JosefinSans-Bold',
+            paddingBottom: 5,
+        }}
+    >
+        Identidade Anterior
+    </Text>
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>Situação Legal</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{oldDataObject?.legalStatus ? oldDataObject?.legalStatus : 'Nenhum' }</Text>
+        </Box>
+    </Stack>
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>Ano de Criação</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{oldDataObject?.creationYear ? oldDataObject?.creationYear : 'Nenhum'}</Text>
+        </Box>
+    </Stack>
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>Ano de Legalização</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{oldDataObject?.affiliationYear ? oldDataObject?.affiliationYear : 'Nenhum'}</Text>
+        </Box>
+    </Stack>
+
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>NUIT</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
+        </Box>
+    </Stack>
+
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>Alvará</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{oldDataObject?.licence ? oldDataObject?.licence : 'Nenhum'}</Text>
+        </Box>
+    </Stack>
+
+
+    <Box
+        style={{
+            paddingVertical: 20,
+        }}
+    > 
+
+
+    </Box>
+    <Text
+        style={{
+            color: COLORS.black,
+            fontSize: 18,
+            fontFamily: 'JosefinSans-Bold',
+            paddingBottom: 5,
+        }}
+    >
+        Identidade Actual
+    </Text>
+
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>Situação Legal</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{newDataObject?.legalStatus ? newDataObject?.legalStatus : 'Nenhum' }</Text>
+        </Box>
+    </Stack>
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>Ano de Criação</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{newDataObject?.creationYear ? newDataObject?.creationYear : 'Nenhum'}</Text>
+        </Box>
+    </Stack>
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>Ano de Legalização</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{newDataObject?.affiliationYear ? newDataObject?.affiliationYear : 'Nenhum'}</Text>
+        </Box>
+    </Stack>
+
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>NUIT</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{newDataObject?.nuit ? newDataObject.nuit : 'Nenhum'}</Text>
+        </Box>
+    </Stack>
+
+    <Stack direction="row">
+        <Box w="50%">
+            <Text>Alvará</Text>
+        </Box>
+        <Box w="50%">
+            <Text>{newDataObject?.licence ? newDataObject?.licence : 'Nenhum'}</Text>
+        </Box>
+    </Stack>
+    </Box>
+}
+
+
+        {  (dataToBeUpdated === 'groupMembers' &&  resourceName === 'Group') &&        
+            <Box
+                style={{
+                    paddingVertical: 30,
+                    // alignItems: 'center',
+                }}
+            >
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 18,
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingBottom: 5,
+                    }}
+                >Efectividade Anterior</Text>
+                <Stack direction="row">
+                    <Box w="50%">
+                        <Text>Modo de Funcionamento</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{oldDataObject?.operationalStatus ? 'Activo' : 'Inactivo' }</Text>
+                    </Box>
+                </Stack>
+                <Stack direction="row">
+                    <Box w="50%">
+                        <Text>Total de Membros</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{oldDataObject?.total ? oldDataObject?.total : 0}</Text>
+                    </Box>
+                </Stack>
+                <Stack direction="row">
+                    <Box w="50%">
+                        <Text>Total de Mulheres </Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{oldDataObject?.women ? oldDataObject?.women : 0}</Text>
+                    </Box>
+                </Stack>
+
+                <Box
+                    style={{
+                        paddingVertical: 20,
+                    }}
+                > 
+
+
+                </Box>
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 18,
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingBottom: 5,
+                    }}
+                >Efectividade Actual</Text>
+
+                <Stack direction="row">
+                    <Box w="50%">
+                        <Text>Modo de Funcionamento</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{newDataObject?.operationalStatus ? 'Activo' : 'Inactivo'}</Text>
+                    </Box>
+                </Stack>
+                <Stack direction="row">
+                    <Box w="50%">
+                        <Text>Total de Membros</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{newDataObject?.total ? newDataObject?.total : 0}</Text>
+                    </Box>
+                </Stack>
+                <Stack direction="row">
+                    <Box w="50%">
+                        <Text>Total de Mulheres</Text>
+                    </Box>
+                    <Box w="50%">
+                        <Text>{newDataObject?.women ? newDataObject?.women : 0}</Text>
+                    </Box>
+                </Stack>
+            </Box>
+        }
+
+
+
 
         {  (dataToBeUpdated === 'groupManager' &&  resourceName === 'Group') &&        
             <Box
@@ -490,7 +839,7 @@ const ConfirmData = ({
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Telemóvel alternativo</Text>
+                        <Text>Número do documento</Text>
                     </Box>
                     <Box w="50%">
                         <Text>{newDataObject?.docNumber ? newDataObject?.docNumber : 'Nenhum'}</Text>

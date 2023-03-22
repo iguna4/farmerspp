@@ -74,13 +74,48 @@ const GroupData = ({ farmer })=>{
     // -----------------------------------------------
 
 
-    // affiliation Document
+    // ------------------------------------------------ 
+    // group members data
+    const [isGroupActive, setIsGroupActive] = useState(false);
+    const [isGroupInactive, setIsGroupInactive] = useState(false);
 
+    const [isOldGroupActive, setIsOldGroupActive] = useState(false);
+    const [isOldGroupInactive, setIsOldGroupInactive] = useState(false);
+
+    const [groupMembersNumber, setGroupMembersNumber ] = useState('');
+    const [ groupWomenNumber, setGroupWomenNumber ] = useState('');
+
+    const [oldGroupMembersNumber, setOldGroupMembersNumber ] = useState('');
+    const [ oldGroupWomenNumber, setOldGroupWomenNumber ] = useState('')
+
+    const [groupAffiliationYear, setGroupAffiliationYear] = useState('');
+    const [groupCreationYear, setGroupCreationYear] = useState('');
+    const [groupLegalStatus, setGroupLegalStatus] = useState('');
+    const [groupOperatingLicence, setGroupOperatingLicence] = useState('');
     const [groupNuit, setGroupNuit] = useState('');
-    const [groupLicence, setGroupLicence] = useState('');
-
+    
+    const [oldGroupAffiliationYear, setOldGroupAffiliationYear] = useState('');
+    const [oldGroupCreationYear, setOldGroupCreationYear] = useState('');
+    const [oldGroupLegalStatus, setOldGroupLegalStatus] = useState('');
+    const [oldGroupOperatingLicence, setOldGroupOperatingLicence] = useState('');    
     const [oldGroupNuit, setOldGroupNuit] = useState('');
-    const [oldGroupLicence, setOldGroupLicence] = useState('');
+    
+
+    const [groupType, setGroupType] = useState('');
+    const [oldGroupType, setOldGroupType] = useState('');
+
+    const [groupName, setGroupName] = useState('');
+    const [oldGroupName, setOldGroupName] = useState('');
+
+    const [groupGoals, setGroupGoals] = useState([]);
+    const [oldGroupGoals, setOldGroupGoals] = useState([]);
+
+
+    // group type
+
+
+    // const [oldGroupNuit, setOldGroupNuit] = useState('');
+    // const [oldGroupLicence, setOldGroupLicence] = useState('');
 
     
 
@@ -363,7 +398,7 @@ const GroupData = ({ farmer })=>{
         </Box>
         <Box w="25%"></Box>
         <Box w="25%">
-    {/* {      
+    {      
         customUserData?.role !== roles.provincialManager && 
             <TouchableOpacity
                 disabled={farmer?.status === resourceValidation.status.validated ? true : false}
@@ -372,6 +407,7 @@ const GroupData = ({ farmer })=>{
                 onPress={
                     ()=>{
                         setIsOverlayVisible(!isOverlayVisible);
+                        setDataToBeUpdated('groupType');
                     }
                 }
             >
@@ -382,7 +418,7 @@ const GroupData = ({ farmer })=>{
                     color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                 />
             </TouchableOpacity>
-        } */}
+        }
         </Box>
         </Stack>
 
@@ -412,7 +448,31 @@ const GroupData = ({ farmer })=>{
             </Box>
         </Stack>
 
-
+        <Stack w="100%" direction="row" space={1}>
+                <Box w="35%" >
+                    <Text
+                        style={{
+                            color: 'grey',
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                            
+                        }}
+                        >
+                    Finalidade
+                    </Text>
+            </Box>
+            <Box w="65%">
+                <Text 
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}
+                >
+                [ {farmer?.assets?.map(asset=>asset.subcategory)?.join('; ')} ]
+                </Text>
+            </Box>
+        </Stack>
 
         </Stack>
         <CustomDivider />
@@ -691,7 +751,7 @@ const GroupData = ({ farmer })=>{
                     onPress={
                         ()=>{
                             setIsOverlayVisible(!isOverlayVisible);
-                            setDataToBeUpdated('groupAffiliation');
+                            setDataToBeUpdated('groupIdentity');
                         }
                     }
                 >
@@ -1318,7 +1378,63 @@ const GroupData = ({ farmer })=>{
         oldGroupManagerName={oldGroupManagerName}
         setOldGroupManagerName={setOldGroupManagerName}
 
+        // the group member data
+        setIsGroupActive={setIsGroupActive}
+        isGroupActive={isGroupActive}
+        setIsGroupInactive={setIsGroupInactive}
+        isGroupInactive={isGroupInactive}
+        isOldGroupActive={isOldGroupActive}
+        isOldGroupActive={isOldGroupActive}
+        isOldGroupInactive={isOldGroupInactive}
+        setIsOldGroupActive={setIsOldGroupActive}
+        setIsOldGroupInactive={setIsOldGroupInactive}
 
+        groupMembersNumber={groupMembersNumber}
+        setGroupMembersNumber={setGroupMembersNumber}
+        groupWomenNumber={groupWomenNumber}
+        setGroupWomenNumber={setGroupWomenNumber}
+    
+        oldGroupMembersNumber={oldGroupMembersNumber}
+        setOldGroupMembersNumber={setOldGroupMembersNumber}
+        oldGroupWomenNumber={oldGroupWomenNumber}
+        setOldGroupWomenNumber={setOldGroupWomenNumber}
+
+        groupNuit={groupNuit}
+        setGroupNuit={setGroupNuit}
+        oldGroupNuit={oldGroupNuit}
+        setOldGroupNuit={setOldGroupNuit}
+
+        groupAffiliationYear={groupAffiliationYear}
+        setGroupAffiliationYear={setGroupAffiliationYear}
+        groupCreationYear={groupCreationYear}
+        setGroupCreationYear={setGroupCreationYear}
+        groupLegalStatus={groupLegalStatus}
+        setGroupLegalStatus={setGroupLegalStatus}
+        groupOperatingLicence={groupOperatingLicence}
+        setGroupOperatingLicence={setGroupOperatingLicence}
+        oldGroupAffiliationYear={oldGroupAffiliationYear}
+        setOldGroupAffiliationYear={setOldGroupAffiliationYear}
+        oldGroupCreationYear={oldGroupCreationYear}
+        setOldGroupCreationYear={setOldGroupCreationYear} 
+        oldGroupLegalStatus={oldGroupLegalStatus}
+        setOldGroupLegalStatus={setOldGroupLegalStatus}
+        oldGroupOperatingLicence={oldGroupOperatingLicence} 
+        setOldGroupOperatingLicence={setOldGroupOperatingLicence}  
+        
+        groupType={groupType}
+        setGroupType={setGroupType}
+        oldGroupType={oldGroupType}
+        setOldGroupType={setOldGroupType}
+    
+        groupName={groupName}
+        setGroupName={setGroupName}
+        oldGroupName={oldGroupName}
+        setOldGroupName={setOldGroupName}
+        groupGoals={groupGoals}
+        setGroupGoals={setGroupGoals}
+        oldGroupGoals={oldGroupGoals}
+        setOldGroupGoals={setOldGroupGoals}
+    
     />
     )
     }

@@ -933,7 +933,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                 style={{
                                     color: COLORS.grey,
                                     fontSize: 16,
-                                    fontFamily: 'JosefinSans-regular',
+                                    fontFamily: 'JosefinSans-Regular',
                                 }}
                             >
                                 Cajueiros: 
@@ -944,7 +944,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                     style={{
                                         color: COLORS.grey,
                                         fontSize: 16,
-                                        fontFamily: 'JosefinSans-regular',
+                                        fontFamily: 'JosefinSans-Regular',
                                     }}
                                 >{block.trees} árvores</Text>
                         </Box>

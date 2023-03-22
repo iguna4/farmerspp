@@ -106,7 +106,7 @@ const validateGroupFarmerData = (
         return false;        
     }
 
-    if (retrievedGroupGoals?.lenght === 0){
+    if (retrievedGroupGoals?.length === 0){
         setErrors({
             ...errors,
             groupGoals: 'Indica a finalidade do grupo.'

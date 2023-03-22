@@ -478,7 +478,7 @@ export default function NewFarmlandBlock({
                         textAlign: 'right',
                     }}
                 >
-                    {remainingArea} hectares disponíveis.
+                    {remainingArea?.toFixed(2)} hectares disponíveis.
                 </Text>
             </Box>  
         {/* </Stack> */}
@@ -554,18 +554,23 @@ export default function NewFarmlandBlock({
                     placeholder="Hectares"
                     value={usedArea}
                     onChangeText={newNumber=>{
-                        setErrors(prev=>({...prev, usedArea: ''}))
+                        setErrors(prev=>({
+                            ...prev, 
+                            blockTrees: '', 
+                            usedArea: '',
+                            treeDensity: '',
+                        }))
                         setUsedArea(newNumber)
                     }}
                 />
                     
-                {
+                {/* {
                     'usedArea' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.usedArea}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
-                }
+                } */}
             </FormControl>
             </Box>
 
@@ -583,22 +588,39 @@ export default function NewFarmlandBlock({
                 placeholder="Cajueiros"
                 value={blockTrees}
                 onChangeText={newNumber=>{
-                    setErrors(prev=>({...prev, blockTrees: ''}))
+                    setErrors(prev=>({
+                        ...prev, 
+                        blockTrees: '', 
+                        usedArea: '',
+                        treeDensity: '',
+                    }))
                     setBlockTrees(newNumber);
 
                 }}
             />
                 
-            {
+            {/* {
                 'blockTrees' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.blockTrees}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
-            }
+            } */}
             </FormControl>
             </Box>
-        </Stack>  
+        </Stack> 
+        {
+            (errors?.blockTrees && errors?.usedArea) &&
+            <Box
+                style={{
+                    backgroundColor: COLORS.danger,
+                }}
+            >
+                <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>       
+                <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>       
+                <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>        
+            </Box>
+        } 
         </Box>
 
         <Box w="100%">
@@ -690,7 +712,9 @@ export default function NewFarmlandBlock({
                     setErrors({
                         ...errors,
                         densityMode: '',
-                    })    
+                    });
+                    setDensityWidth('');   
+                    setDensityLength('');
         
                 }}
                 />
@@ -723,7 +747,13 @@ export default function NewFarmlandBlock({
                     placeholder="Comprimento"
                     value={densityLength}
                     onChangeText={newNumber=>{
-                        setErrors(prev=>({...prev, density: ''}))
+                        setErrors(prev=>({
+                            ...prev, 
+                            density: '',
+                            blockTrees: '', 
+                            usedArea: '',
+                            treeDensity: '',
+                        }))
                         setDensityLength(newNumber)
                     }}
                     />
@@ -762,7 +792,13 @@ export default function NewFarmlandBlock({
                 placeholder="Largura"
                 value={densityWidth}
                 onChangeText={newNumber=>{
-                    setErrors(prev=>({...prev, density: ''}))
+                    setErrors(prev=>({
+                        ...prev, 
+                        density: '',
+                        blockTrees: '', 
+                        usedArea: '',
+                        treeDensity: '',
+                    }))
                     setDensityWidth(newNumber)
                 }}
             />

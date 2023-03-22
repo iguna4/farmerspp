@@ -1,31 +1,36 @@
 
-// get the number of trees per hectar by their width and length
-const getTreeNumberThreshold = (trees, area, width, length)=>{
-    //calculate number of trees by their density (spaces) by hectar
-    const estimatedNumberOfTrees = area * (10000 / (width * length));
-    const {
-        lowerBound, upperBound
-    } = treeNumberInterval(trees, width, length)
+const errorCoeffients = {
+    area: 0.3,
+    trees: 5,
+    density: 0.5,
+}
 
 
-    // if ((trees >= (estimatedNumberOfTrees - 20)) && (trees <= (estimatedNumberOfTrees + 20) )) {
-    //     return true;
-    // }    
+// get estimates for trees number, area, and density
+const getThreshold = (trees, area, width, length)=>{
+    
+    const estimatedArea = ((trees * width * length) / 10000).toFixed(2);
+    const estimatedTrees = Math.round((area * 10000) / (width * length));
+    const estimatedDensity = Math.round(Math.sqrt((area *10000)/trees));   
 
-    if ((area >= lowerBound) && (area <= upperBound)) {
-        return true;
-    } 
-    return false;
-};
-
-const treeNumberInterval = (trees, width, length)=>{
-    //calculate number of trees by their density (spaces) by hectar
-    const estimatedArea = (trees * width * length) / 10000;
-    return {
-        lowerBound: (estimatedArea - 0.3).toFixed(2),
-        upperBound: (estimatedArea + 0.3).toFixed(2),
-
+    if (
+        ((trees - errorCoeffients.trees) <= estimatedTrees && (trees + errorCoeffients.trees) >= trees)
+        &&
+        ((area - errorCoeffients.area) <= estimatedArea && (area + errorCoeffients.area) >= area)
+        &&
+        ((width - errorCoeffients.density) <= estimatedDensity  && (width + errorCoeffients.density) >= estimatedDensity)
+        &&
+        ((length - errorCoeffients.density) <= estimatedDensity && (length + errorCoeffients.density) >= estimatedDensity)
+    ) 
+    {
+        return { status: true};
     }
+    return {
+        status: false,
+        area: `Para um total de ${trees} cajueiros e compasso de ${width} x ${length}, a área pode ser de ${estimatedArea} hectares`,
+        trees: `Para uma área de ${area} hectares e compasso de ${width} x ${length}, o total de cajueiros pode ser de ${estimatedTrees}.`,
+        density: `Para uma área de ${area} hectares e um total de ${trees} cajueiros, o compasso pode ser de ${estimatedDensity} x ${estimatedDensity} metros.`,
+    };
 }
 
 
@@ -74,7 +79,6 @@ const validateBlockData = (
     });
     return false;
 }
-// console.log('here')
  
  if (!retrievedUsedArea){
      setErrors({ ...errors,
@@ -83,12 +87,6 @@ const validateBlockData = (
      return false;
  }
 
-//  if (retrievedUsedArea){
-//     setErrors({ ...errors,
-//         usedArea: 'Indica área.',
-//     });
-//     return false;
-// }
 
  if(retrievedRemainingArea !== 0 && retrievedRemainingArea < retrievedUsedArea) {
     setErrors({
@@ -146,10 +144,11 @@ const validateBlockData = (
      return false;                   
  }
 
- if ( retrievedDensityMode === 'Regular' && !getTreeNumberThreshold(retrievedTreesNumber, retrievedUsedArea, retrievedDensityWidth, retrievedDensityLength)) {      
+ if ( retrievedDensityMode === 'Regular' && !getThreshold(retrievedTreesNumber, retrievedUsedArea, retrievedDensityWidth, retrievedDensityLength).status) {      
     setErrors({ ...errors,
-        usedArea: `Para ${retrievedTreesNumber} cajueiros e compasso de ${retrievedDensityWidth}x${retrievedDensityLength} metros, a área pode variar entre ${treeNumberInterval(retrievedTreesNumber, retrievedDensityWidth, retrievedDensityLength).lowerBound} e ${treeNumberInterval(retrievedTreesNumber, retrievedDensityWidth, retrievedDensityLength).upperBound} hectares.`,
-        blockTrees: `Para ${retrievedTreesNumber} cajueiros e compasso de ${retrievedDensityWidth}x${retrievedDensityLength} metros, a área pode variar entre ${treeNumberInterval(retrievedTreesNumber, retrievedDensityWidth, retrievedDensityLength).lowerBound} e ${treeNumberInterval(retrievedTreesNumber, retrievedDensityWidth, retrievedDensityLength).upperBound} hectares.`,
+        usedArea: getThreshold(retrievedTreesNumber, retrievedUsedArea, retrievedDensityWidth, retrievedDensityLength).area,
+        blockTrees: getThreshold(retrievedTreesNumber, retrievedUsedArea, retrievedDensityWidth, retrievedDensityLength).trees,
+        treeDensity: getThreshold(retrievedTreesNumber, retrievedUsedArea, retrievedDensityWidth, retrievedDensityLength).density,
     });
     return false;                   
 }

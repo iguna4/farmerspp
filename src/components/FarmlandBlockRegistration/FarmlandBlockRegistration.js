@@ -404,7 +404,12 @@ export default function FarmlandBlockRegistration({
                     placeholder="Hectares"
                     value={usedArea}
                     onChangeText={newNumber=>{
-                        setErrors(prev=>({...prev, usedArea: '', blockTrees: ''}))
+                        setErrors(prev=>({
+                            ...prev, 
+                            blockTrees: '', 
+                            usedArea: '',
+                            treeDensity: '',
+                        }))
                         setUsedArea(newNumber)
                     }}
                 />
@@ -432,7 +437,13 @@ export default function FarmlandBlockRegistration({
                 placeholder="Cajueiros"
                 value={blockTrees}
                 onChangeText={newNumber=>{
-                    setErrors(prev=>({...prev, blockTrees: '', usedArea: ''}))
+                    setErrors(prev=>({
+                        ...prev, 
+                        blockTrees: '', 
+                        usedArea: '',
+                        treeDensity: '',
+
+                    }))
                     setBlockTrees(newNumber);
 
                 }}
@@ -450,8 +461,16 @@ export default function FarmlandBlockRegistration({
         </Stack>
         {
             (errors?.blockTrees && errors?.usedArea) &&
-            <Text style={{ fontSize: 12, color: COLORS.red, }}> <Icon name="error-outline" size={16} color="red" /> {errors?.blockTrees}</Text>        
-        }  
+            <Box
+                style={{
+                    backgroundColor: COLORS.danger,
+                }}
+            >
+                <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>       
+                <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>       
+                <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>        
+            </Box>
+        } 
         </Box>
 
         <Box w="100%">
@@ -502,6 +521,7 @@ export default function FarmlandBlockRegistration({
                     setErrors({
                         ...errors,
                         densityMode: '',
+
                     })
 
                 }}
@@ -543,7 +563,10 @@ export default function FarmlandBlockRegistration({
                     setErrors({
                         ...errors,
                         densityMode: '',
-                    })    
+
+                    });
+                    setDensityWidth('');  
+                    setDensityLength('');
         
                 }}
                 />
@@ -576,7 +599,14 @@ export default function FarmlandBlockRegistration({
                     placeholder="Comprimento"
                     value={densityLength}
                     onChangeText={newNumber=>{
-                        setErrors(prev=>({...prev, density: ''}))
+                        setErrors(prev=>({
+                            ...prev, 
+                            density: '',
+                            blockTrees: '', 
+                            usedArea: '',
+                            treeDensity: '',
+                        
+                        }))
                         setDensityLength(newNumber)
                     }}
                     />
@@ -615,7 +645,13 @@ export default function FarmlandBlockRegistration({
                 placeholder="Largura"
                 value={densityWidth}
                 onChangeText={newNumber=>{
-                    setErrors(prev=>({...prev, density: ''}))
+                    setErrors(prev=>({
+                        ...prev, 
+                        density: '',
+                        blockTrees: '', 
+                        usedArea: '',
+                        treeDensity: '',
+                    }))
                     setDensityWidth(newNumber)
                 }}
             />

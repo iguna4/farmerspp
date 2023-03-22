@@ -192,8 +192,14 @@ const EditFarmerData = ({
 
     }
 
+    useEffect(()=>{
+        if (docType === 'Não tem'){
+            setDocNumber('');
+        }
+    }, [docType])
 
-    console.log('errors: ', errors);
+
+    // console.log('errors: ', errors);
     // console.log('oldDataObject: ', oldDataObject);
 
     const toggleOverlay = () => {
@@ -322,8 +328,9 @@ const EditFarmerData = ({
            </Stack>
            <Stack>
            
-            <FormControl my="3" isInvalid={'docNumber' in errors}>
-                <FormControl.Label>Número do dodcumento</FormControl.Label>
+{       !(docType === 'Não tem') &&  
+           <FormControl my="3" isInvalid={'docNumber' in errors}>
+                <FormControl.Label>Número do documento</FormControl.Label>
                 <CustomInput
                     width="100%"
                     type="text"
@@ -343,6 +350,8 @@ const EditFarmerData = ({
                 : <FormControl.HelperText></FormControl.HelperText>
                 }
             </FormControl>
+            
+            }
 
             </Stack>
 

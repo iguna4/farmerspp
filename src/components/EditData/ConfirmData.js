@@ -24,6 +24,8 @@ const ConfirmData = ({
     resourceName,
     ownerName,
     resource,
+
+    blockId,
 })=>{
 
     const realm = useRealm();
@@ -138,7 +140,30 @@ const ConfirmData = ({
                 resource.status = resourceValidation.status.pending;
             }
 
-            // ?.map(goal=>({assetType: 'Caju', category: 'Grupo', subcategory: goal, }))
+            if (dataToBeUpdated === 'farmlandMainData' && resourceName === 'Farmland') {
+                resource.description = newDataObject?.description;
+                resource.consociatedCrops = newDataObject?.consociatedCrops;
+                resource.trees = newDataObject?.trees;
+                resource.totalArea = newDataObject?.totalArea;
+
+                resource.modifiedAt = new Date();
+                resource.modifiedBy = customUserData?.name;
+                // resource.userProvince = newData?.province;
+                // resource.userDistrict = newData?.district;
+
+                resource.status = resourceValidation.status.pending;
+            }
+
+
+            if (dataToBeUpdated === 'blockData' && resourceName === 'Farmland') {
+                const block = resource?.blocks.find((block)=>block._id === blockId);
+
+                console.log('block to be updated:', block);
+
+                resource.modifiedAt = new Date();
+                resource.modifiedBy = customUserData?.name;
+                resource.status = resourceValidation.status.pending;
+            }
 
         });
 
@@ -198,6 +223,228 @@ const ConfirmData = ({
                 color={COLORS.ghostwhite} 
                 />
         </View>
+
+    {/* farmland block */}
+    
+    {
+        (dataToBeUpdated === 'blockData' && resourceName === 'Farmland') &&
+        <Box
+        style={{
+            paddingVertical: 30,
+            // alignItems: 'center',
+        }}
+        >
+        <Text
+            style={{
+                color: COLORS.black,
+                fontSize: 18,
+                fontFamily: 'JosefinSans-Bold',
+                paddingBottom: 5,
+            }}
+        >
+            Dados Anteriores do Bloco de Cajueiros
+        </Text>
+
+        <Stack direction="row">
+            <Box w="50%">
+                <Text>Área aproveitada</Text>
+            </Box>
+            <Box w="50%">
+               <Text>{oldDataObject?.usedArea ? `${oldDataObject?.usedArea} hectares` : 'Nenhum'}</Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text>Compasso</Text>
+            </Box>
+            <Box w="50%">
+                <Text>
+                    {oldDataObject.density?.mode ? oldDataObject.density.mode : 'Nenhum'}
+                    {oldDataObject.density?.mode === 'Regular' && `(${oldDataObject.density?.width} x ${oldDataObject.density?.length} metros)`}
+                </Text>
+            </Box>
+        </Stack>
+
+        <Stack direction="row">
+            <Box w="50%">
+                <Text>Cajueiros</Text>
+            </Box>
+            <Box w="50%">
+                <Text>{oldDataObject.trees ? `${oldDataObject.trees} árvores` : 'Nenhum'}</Text>
+            </Box>
+        </Stack>
+   
+        <Stack direction="row">
+            <Box w="50%">
+               <Text></Text>
+            </Box>
+            <Box w="50%">
+               <Text></Text>
+            </Box>
+        </Stack>
+        <Box
+            style={{
+                paddingVertical: 20,
+            }}
+        > 
+    
+    
+        </Box>
+        <Text
+            style={{
+                color: COLORS.black,
+                fontSize: 18,
+                fontFamily: 'JosefinSans-Bold',
+                paddingBottom: 5,
+            }}
+        >
+            Dados Actuais do Pomar
+        </Text>
+    
+        <Stack direction="row">
+            <Box w="50%">
+                <Text>Descrição</Text>
+            </Box>
+            <Box w="50%">
+                <Text></Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text>Culturas consociadas</Text>
+            </Box>
+            <Box w="50%">
+               <Text></Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text>Área total</Text>
+            </Box>
+            <Box w="50%">
+               <Text></Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text>N° de cajueiros</Text>
+            </Box>
+            <Box w="50%">
+               <Text></Text>
+            </Box>
+        </Stack> 
+        </Box>
+        
+    }
+
+
+{/* farmland data updating */}
+
+{
+     (dataToBeUpdated === 'farmlandMainData' && resourceName === 'Farmland') &&
+     <Box
+     style={{
+         paddingVertical: 30,
+         // alignItems: 'center',
+     }}
+     >
+     <Text
+         style={{
+             color: COLORS.black,
+             fontSize: 18,
+             fontFamily: 'JosefinSans-Bold',
+             paddingBottom: 5,
+         }}
+     >
+         Dados Anteriores do Pomar
+     </Text>
+     <Stack direction="row">
+         <Box w="50%">
+             <Text>Descrição</Text>
+         </Box>
+         <Box w="50%">
+             <Text>{oldDataObject?.description ? oldDataObject?.description : 'Nenhuma' }</Text>
+         </Box>
+     </Stack>
+     <Stack direction="row">
+         <Box w="50%">
+             <Text>Culturas consociadas</Text>
+         </Box>
+         <Box w="50%">
+            <Text>{oldDataObject?.consociatedCrops?.length > 0 ? oldDataObject?.consociatedCrops?.join('; ') : 'Nenhuma'}</Text>
+         </Box>
+     </Stack>
+     <Stack direction="row">
+         <Box w="50%">
+             <Text>Área total</Text>
+         </Box>
+         <Box w="50%">
+            <Text>{oldDataObject?.totalArea ? oldDataObject?.totalArea : 'Nenhuma'}</Text>
+         </Box>
+     </Stack>
+     <Stack direction="row">
+         <Box w="50%">
+             <Text>N° de cajueiros</Text>
+         </Box>
+         <Box w="50%">
+            <Text>{oldDataObject?.trees ? oldDataObject?.trees : 'Nenhum'}</Text>
+         </Box>
+     </Stack>
+
+     <Box
+         style={{
+             paddingVertical: 20,
+         }}
+     > 
+ 
+ 
+     </Box>
+     <Text
+         style={{
+             color: COLORS.black,
+             fontSize: 18,
+             fontFamily: 'JosefinSans-Bold',
+             paddingBottom: 5,
+         }}
+     >
+         Dados Actuais do Pomar
+     </Text>
+ 
+     <Stack direction="row">
+         <Box w="50%">
+             <Text>Descrição</Text>
+         </Box>
+         <Box w="50%">
+             <Text>{newDataObject?.description ? newDataObject?.description : 'Nenhuma' }</Text>
+         </Box>
+     </Stack>
+     <Stack direction="row">
+         <Box w="50%">
+             <Text>Culturas consociadas</Text>
+         </Box>
+         <Box w="50%">
+            <Text>{newDataObject?.consociatedCrops?.length > 0 ? newDataObject?.consociatedCrops?.join('; ') : 'Nenhuma'}</Text>
+         </Box>
+     </Stack>
+     <Stack direction="row">
+         <Box w="50%">
+             <Text>Área total</Text>
+         </Box>
+         <Box w="50%">
+            <Text>{newDataObject?.totalArea ? newDataObject?.totalArea : 'Nenhuma'}</Text>
+         </Box>
+     </Stack>
+     <Stack direction="row">
+         <Box w="50%">
+             <Text>N° de cajueiros</Text>
+         </Box>
+         <Box w="50%">
+            <Text>{newDataObject?.trees ? newDataObject?.trees : 'Nenhum'}</Text>
+         </Box>
+     </Stack> 
+     </Box>
+}
+
 
 
         {/* groups data updating  */}

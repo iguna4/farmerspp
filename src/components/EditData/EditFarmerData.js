@@ -212,8 +212,9 @@ const EditFarmerData = ({
         overlayStyle={{ 
             backgroundColor: 'ghostwhite', 
             width: '90%',
+            maxHeight: '80%',
             borderRadius: 10,
-            paddingBottom: 10,
+            // paddingBottom: 10,
         }}
         isVisible={isOverlayVisible} 
         onBackdropPress={toggleOverlay}
@@ -223,6 +224,7 @@ const EditFarmerData = ({
             style={{
                 // minHeight: '80%',
                 justifyContent: 'center',
+                maxHeight: '100%',
                 // marginVertical: 10,
             }}
         >

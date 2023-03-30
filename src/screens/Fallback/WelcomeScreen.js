@@ -261,7 +261,10 @@ export default function WelcomeScreen () {
     >
     { isLoggingIn &&        
         <Center mt={'3'}>
-            <Text style={styles.signInTitle}>ConnectCaju - {new Date().getFullYear()}</Text>
+            <Text style={styles.signInTitle}>
+                Connect Caju 
+            {/* {new Date().getFullYear()} */}
+            </Text>
         </Center>
     }
         <Box mt="5" pl="4">
@@ -310,7 +313,7 @@ export default function WelcomeScreen () {
             cancelText={cancelText}
             confirmText={confirmText}
             cancelButtonColor="#DD6B55"
-            confirmButtonColor={COLORS.main}
+            confirmButtonColor={COLORS.danger}
             onCancelPressed={()=>{
                 setAlert(false);
                 seterrorFlag(null);

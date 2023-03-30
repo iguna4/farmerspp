@@ -40,7 +40,7 @@ const getThreshold = (trees, area, width, length)=>{
 }
 
 
-const validateBlockData = (
+const validateEditedBlockData = (
  {   plantingYear, 
      blockTrees,
      usedArea,
@@ -191,4 +191,4 @@ const validateBlockData = (
 
 };
 
-export default validateBlockData;
+export default validateEditedBlockData;

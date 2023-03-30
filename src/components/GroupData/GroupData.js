@@ -1051,9 +1051,9 @@ const GroupData = ({ farmer })=>{
                     fontSize: 12,
             }}
             >
-            Registo:{' '}                 
+            Registo por {farmer?.userName === customUserData?.name ? 'mim' : farmer?.userName} 
+            {' '}aos{' '}                
             {new Date(farmer?.createdAt).getDate()}-{new Date(farmer?.createdAt).getMonth()+1}-{new Date(farmer?.createdAt).getFullYear()}
-            {' '} por {farmer?.userName === customUserData?.name ? 'mim' : farmer?.userName}
             </Text>
         { farmer?.modifiedBy &&
             <Box w="100%">
@@ -1065,9 +1065,9 @@ const GroupData = ({ farmer })=>{
                     fontSize: 12,
                 }}
                 >
-                Actualização:{' '}                 
+                Actualizado{' '}por {farmer?.modifiedBy === customUserData?.name ? 'mim' : farmer?.modifiedBy}
+                {' '}aos{' '}              
                 {new Date(farmer?.modifiedAt).getDate()}-{new Date(farmer?.modifiedAt).getMonth()+1}-{new Date(farmer?.modifiedAt).getFullYear()}
-                {' '} por {farmer?.modifiedBy === customUserData?.name ? 'mim' : farmer?.modifiedBy}
                 </Text>
             </Box>
          }
@@ -1086,7 +1086,8 @@ const GroupData = ({ farmer })=>{
                     fontSize: 12,
                 }}
             >
-                Invalidado por {farmer?.checkedBy}
+                {/* Invalidado por {farmer?.checkedBy} */}
+                Invalidado por {farmer?.checkedBy ? farmer?.checkedBy : 'ConnectCaju'}
             </Text>
         </Box>
     }
@@ -1384,7 +1385,7 @@ const GroupData = ({ farmer })=>{
         setIsGroupInactive={setIsGroupInactive}
         isGroupInactive={isGroupInactive}
         isOldGroupActive={isOldGroupActive}
-        isOldGroupActive={isOldGroupActive}
+        // isOldGroupActive={isOldGroupActive}
         isOldGroupInactive={isOldGroupInactive}
         setIsOldGroupActive={setIsOldGroupActive}
         setIsOldGroupInactive={setIsOldGroupInactive}

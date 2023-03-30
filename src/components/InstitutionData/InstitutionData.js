@@ -781,9 +781,9 @@ const InstitutionData = ({ farmer })=>{
                 fontSize: 12,
             }}
             >
-            Registo:{' '}                 
+            Registado por {farmer?.userName === customUserData?.name ? 'mim' : farmer?.userName}
+            {' '}aos{' '}                 
             {new Date(farmer?.createdAt).getDate()}-{new Date(farmer?.createdAt).getMonth()+1}-{new Date(farmer?.createdAt).getFullYear()}
-            {' '} por {farmer?.userName === customUserData?.name ? 'mim' : farmer?.userName}
             </Text>
 
             { farmer?.modifiedBy &&
@@ -796,9 +796,9 @@ const InstitutionData = ({ farmer })=>{
                         fontSize: 12,
                     }}
                     >
-                    Actualização:{' '}                 
-                    {new Date(farmer?.modifiedAt).getDate()}-{new Date(farmer?.modifiedAt).getMonth()+1}-{new Date(farmer?.modifiedAt).getFullYear()}
-                    {' '} por {farmer?.modifiedBy === customUserData?.name ? 'mim' : farmer?.modifiedBy}
+                    Actualizado por {farmer?.modifiedBy === customUserData?.name ? 'mim' : farmer?.modifiedBy}
+                    {' '}aos{' '}                 
+                    {new Date(farmer?.modifiedAt).getDate()}-{new Date(farmer?.modifiedAt).getMonth()+1}-{new Date(farmer?.modifiedAt).getFullYear()} 
                     </Text>
                 </Box>
             }
@@ -817,7 +817,8 @@ const InstitutionData = ({ farmer })=>{
                     fontSize: 12,
                 }}
             >
-                Invalidado por {farmer?.checkedBy}
+                Invalidado por {farmer?.checkedBy ? farmer?.checkedBy : 'Connect Caju'}
+                {/* Invalidado por {farmer?.checkedBy} */}
             </Text>
         </Box>
     }

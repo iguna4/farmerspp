@@ -302,7 +302,7 @@ const EditGroupData = ({
             width: '90%',
             borderRadius: 10,
             // marginBottom: 10,
-            maxHeight: '90%',
+            maxHeight: '80%',
         }}
         isVisible={isOverlayVisible} 
         onBackdropPress={toggleOverlay}
@@ -311,7 +311,7 @@ const EditGroupData = ({
         <View
             style={{
                 // minHeight: '80%',
-                maxHeight: '90%',
+                maxHeight: '100%',
                 justifyContent: 'center',
                 // marginVertical: 10,
             }}

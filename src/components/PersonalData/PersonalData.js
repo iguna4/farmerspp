@@ -874,9 +874,9 @@ const PersonalData = ({ farmer, setRefresh })=>{
                 fontSize: 12,
             }}
             >
-            Registo:{' '}                 
+            Registado por {farmer?.userName === customUserData?.name ? 'mim' : farmer?.userName}
+            {' '}aos{' '}                 
             {new Date(farmer?.createdAt).getDate()}-{new Date(farmer?.createdAt).getMonth()+1}-{new Date(farmer?.createdAt).getFullYear()}
-            {' '} por {farmer?.userName === customUserData?.name ? 'mim' : farmer?.userName}
             </Text>
         </Box>
 
@@ -890,9 +890,9 @@ const PersonalData = ({ farmer, setRefresh })=>{
                 fontSize: 12,
             }}
             >
-            Actualização:{' '}                 
+            Actualizado por {farmer?.modifiedBy === customUserData?.name ? 'mim' : farmer?.modifiedBy}
+            {' '}aos{' '}                 
             {new Date(farmer?.modifiedAt).getDate()}-{new Date(farmer?.modifiedAt).getMonth()+1}-{new Date(farmer?.modifiedAt).getFullYear()}
-            {' '} por {farmer?.modifiedBy === customUserData?.name ? 'mim' : farmer?.modifiedBy}
             </Text>
         </Box>}
 
@@ -908,7 +908,8 @@ const PersonalData = ({ farmer, setRefresh })=>{
                     fontSize: 12,
                 }}
             >
-                Invalidado por {farmer?.checkedBy}
+                Invalidado por {farmer?.checkedBy ? farmer?.checkedBy : 'ConnectCaju'}
+                {/* Invalidado por {farmer?.checkedBy} */}
             </Text>
         </Box>
     }

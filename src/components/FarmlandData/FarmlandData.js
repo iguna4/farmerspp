@@ -11,10 +11,11 @@ import COLORS from '../../consts/colors';
 
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { resourceValidation } from '../../consts/resourceValidation';
-import EditData from '../EditData/EditData';
+import EditFarmlandData from '../EditData/EditFarmlandData';
 import { roles } from '../../consts/roles';
 import { errorMessages } from '../../consts/errorMessages';
 import validateInvalidationMessage from '../../helpers/validateInvalidationMessage';
+import ConfirmData from '../EditData/ConfirmData';
 
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
@@ -60,6 +61,68 @@ const FarmlandData = ({ farmland, setRefresh })=>{
     const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
     // ----------------------------------------------- 
+
+
+    // ---------------------------------------------
+    //  Data editing
+
+    const [dataToBeUpdated, setDataToBeUpdated] = useState('');
+    const [isConfirmDataVisible, setIsConfirmDataVisible] = useState(false);
+    
+    // update farmland main data
+    const [ description, setDescription  ] = useState('');
+    const [ consociatedCrops, setConsociatedCrops ] = useState([]);
+    const [totalArea, setTotalArea] = useState('');
+    const [trees, setTrees] = useState('');
+
+    const [oldDescription, setOldDescription ] = useState('');
+    const [oldConsociatedCrops, setOldConsociatedCrops ] = useState([]);
+    const [oldTotalArea, setOldTotalArea] = useState('');
+    const [oldTrees, setOldTrees] = useState('');
+
+    const [newDataObject, setNewDataObject] = useState({});
+    const [oldDataObject, setOldDataObject] = useState({});
+
+    
+    // -----------------------------------------------
+    //  Block data updating
+    const [blockId, setBlockId] = useState('');
+    const [plantingYear, setPlantingYear] = useState('');
+    const [blockTrees, setBlockTrees] = useState('');
+    const [usedArea, setUsedArea] = useState('');
+    const [densityWidth, setDensityWidth] = useState('');
+    const [densityLength, setDensityLength] = useState('');
+    const [plantTypes, setPlantTypes] = useState([]);
+    const [clones, setClones] = useState([]);
+    const [addedClone, setAddedClone] = useState('');
+    const [isDensityModeIrregular, setIsDensityModeIrregular] = useState(false);
+    const [isDensityModeRegular, setIsDensityModeRegular] = useState(false);
+    const [sameTypeTreesList, setSameTypeTreesList] = useState([]);
+    const [remainingArea, setRemainingArea] = useState();
+
+
+
+    const [oldBlockId, setOldBlockId] = useState('');
+    const [oldPlantingYear, setOldPlantingYear] = useState('');
+    const [oldBlockTrees, setOldBlockTrees] = useState('');
+    const [oldUsedArea, setOldUsedArea] = useState('')
+    const [oldDensityWidth, setOldDensityWidth] = useState('');
+    const [oldDensityLength, setOldDensityLength] = useState('');
+    const [oldPlantTypes, setOldPlantTypes] = useState([]);
+    const [oldClones, setOldClones] = useState([]);
+    const [addedOldClone, setAddedOldClone] = useState('');
+    const [isOldDensityModeIrregular, setIsOldDensityModeIrregular] = useState(false);
+    const [isOldDensityModeRegular, setIsOldDensityModeRegular] = useState(false);
+    const [oldSameTypeTreesList, setOldSameTypeTreesList] = useState([]);
+    const [oldRemainingArea, setOldRemainingArea] = useState();
+
+    const [isEditBlockVisible, setIsEditBlockVisible] = useState(false);
+    // const [autoRefresh, setAutoRefresh] = useState(false);
+
+
+
+    // -----------------------------------------------
+
 
     // check if there is enough area for a new Block to be added in
     // this function prevent adding new cashew trees in a farmland
@@ -382,6 +445,8 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     onPress={
                         ()=>{
                             setIsOverlayVisible(!isOverlayVisible);
+                            setDataToBeUpdated('farmlandMainData');
+                            setBlockId(''); // remove the blockId to avoid confusion in the overlay component
                         }
                     }
                 >
@@ -824,7 +889,10 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                 }}
                                 onPress={
                                     ()=>{
-                                        // setIsOverlayVisible(!isOverlayVisible);
+                                        setIsOverlayVisible(!isOverlayVisible);
+                                        setDataToBeUpdated('blockData');
+                                        setBlockId(block._id);
+                                        setIsEditBlockVisible(true);
                                     }
                                 }
                             >
@@ -840,7 +908,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     </Stack>
 
 
-                    <Stack w="100%" direction="row" mt="4">
+                    {/* <Stack w="100%" direction="row" mt="4">
                         <Box w="35%"
                             style={{
 
@@ -865,7 +933,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                     }}
                                 >{block.trees} árvores</Text>
                         </Box>
-                    </Stack>
+                    </Stack> */}
 
                     <Stack w="100%" direction="row" >
                         <Box w="35%"
@@ -1006,10 +1074,28 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             fontSize: 12,
           }}
           >
-          Registo:{' '}                 
+          Registado por {farmland?.userName === customUserData?.name ? 'mim' : farmland?.userName}              
+          {' '}aos{' '} 
           {new Date(farmland?.createdAt).getDate()}-{new Date(farmland?.createdAt).getMonth()+1}-{new Date(farmland?.createdAt).getFullYear()}
-          {' '} por {farmland?.userName === customUserData?.name ? 'mim' : farmland?.userName}
         </Text>
+
+        { farmland?.modifiedBy &&
+            <Box w="100%">
+                <Text 
+                style={{ 
+                    textAlign: 'right',
+                    color: COLORS.grey,
+                    fontFamily: 'JosefinSans-Italic',
+                    fontSize: 12,
+                }}
+                >
+                Actualizado por {farmland?.modifiedBy === customUserData?.name ? 'mim' : farmland?.modifiedBy}
+                {' '}aos {new Date(farmland?.modifiedAt).getDate()}-{new Date(farmland?.modifiedAt).getMonth()+1}-{new Date(farmland?.modifiedAt).getFullYear()}
+                </Text>
+            </Box>
+         }
+
+
       </Box>
       {
     farmland?.status === resourceValidation.status.invalidated &&
@@ -1325,13 +1411,121 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 {
     isOverlayVisible && 
     (
-    <EditData 
+    <EditFarmlandData
         isOverlayVisible={isOverlayVisible}
         setIsOverlayVisible={setIsOverlayVisible}
+        isConfirmDataVisible={isConfirmDataVisible}
+        setIsConfirmDataVisible={setIsConfirmDataVisible}
+
         ownerName={farmland?.description}
+        resource={farmland}
+        blocks={farmland?.blocks}
+        resourceName={'Farmland'}
+        dataToBeUpdated={dataToBeUpdated}
+
+        newDataObject={newDataObject}
+        oldDataObject={oldDataObject}
+        setNewDataObject={setNewDataObject}
+        setOldDataObject={setOldDataObject}
+
+        description={description}
+        setDescription={setDescription}
+        consociatedCrops={consociatedCrops}
+        setConsociatedCrops={setConsociatedCrops}
+        totalArea={totalArea}
+        setTotalArea={setTotalArea}
+        trees={trees}
+        setTrees={setTrees}
+    
+        oldDescription={oldDescription}
+        setOldDescription={setOldDescription}
+        oldConsociatedCrops={oldConsociatedCrops}
+        setOldConsociatedCrops={setOldConsociatedCrops}
+        oldTotalArea={oldTotalArea}
+        setOldTotalArea={setOldTotalArea}
+        oldTrees={oldTrees}
+        setOldTrees={setOldTrees}
+
+        // block data
+        setBlockId={setBlockId}
+        blockId={blockId}
+
+        plantingYear={plantingYear}
+        setPlantingYear={setPlantingYear}
+        blockTrees={blockTrees}
+        setBlockTrees={setBlockTrees}
+        usedArea={usedArea}
+        setUsedArea={setUsedArea}
+        densityWidth={densityWidth}
+        setDensityWidth={setDensityWidth}
+        densityLength={densityLength}
+        setDensityLength={setDensityLength}
+        plantTypes={plantTypes}
+        setPlantTypes={setPlantTypes}
+        clones={clones}
+        setClones={setClones}
+        addedClone={addedClone}
+        setAddedClone={setAddedClone}
+
+        isDensityModeIrregular={isDensityModeIrregular}
+        setIsDensityModeIrregular={setIsDensityModeIrregular}
+        isDensityModeRegular={isDensityModeRegular}
+        setIsDensityModeRegular={setIsDensityModeRegular}
+        sameTypeTreesList={sameTypeTreesList}
+        setSameTypeTreesList={setSameTypeTreesList}
+        remainingArea={remainingArea}
+        setRemainingArea={setRemainingArea}
+
+        oldBlockId={oldBlockId}
+        setOldBlockId={setOldBlockId}
+        oldPlantingYear={oldPlantingYear}
+        setOldPlantingYear={setOldPlantingYear}
+        oldBlockTrees={oldBlockTrees}
+        setOldBlockTrees={setOldBlockTrees}
+        oldUsedArea={oldUsedArea}
+        setOldUsedArea={setOldUsedArea}
+        oldDensityWidth={oldDensityWidth}
+        setOldDensityWidth={setOldDensityWidth}
+        oldDensityLength={oldDensityLength}
+        setOldDensityLength={setOldDensityLength}
+        oldPlantTypes={oldPlantTypes}
+        setOldPlantTypes={setOldPlantTypes}
+        oldClones={oldClones}
+        setOldClones={setOldClones}
+        addedOldClone={addedOldClone}
+        setAddedOldClone={setAddedOldClone}
+        isOldDensityModeIrregular={isOldDensityModeIrregular}
+        setIsOldDensityModeIrregular={setIsOldDensityModeIrregular}
+        isOldDensityModeRegular={isOldDensityModeRegular}
+        setIsOldDensityModeRegular={setIsOldDensityModeRegular}
+        oldSameTypeTreesList={oldSameTypeTreesList}
+        setOldSameTypeTreesList={setOldSameTypeTreesList}
+        oldRemainingArea={oldRemainingArea}
+        setOldRemainingArea={setOldRemainingArea}
+
+        isEditBlockVisible={isEditBlockVisible}
+        setIsEditBlockVisible={setIsEditBlockVisible}
+        setAutoRefresh={setAutoRefresh}
+        autoRefresh={autoRefresh}
+
     />
     )
 }
+
+{isConfirmDataVisible &&
+        <ConfirmData
+            // setIsOverlayVisible={setIsOverlayVisible}
+            isConfirmDataVisible={isConfirmDataVisible}
+            setIsConfirmDataVisible={setIsConfirmDataVisible}
+            ownerName={farmland?.description}
+            newDataObject={newDataObject}
+            oldDataObject={oldDataObject}
+            dataToBeUpdated={dataToBeUpdated}
+            resource={farmland}
+            resourceName={'Farmland'}
+            blockId={blockId}
+        />
+    }
 
 {isNewBlockVisible && <NewFarmlandBlock 
     isNewBlockVisible={isNewBlockVisible}

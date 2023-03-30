@@ -26,36 +26,7 @@ const {useRealm, useQuery, useObject} = realmContext;
 
 
 export default function NewFarmlandBlock({ 
-    // farmland, setFarmland, 
-    // customUserData, 
-    // farmlandId,
-    // isOverlayVisible, setIsOverlayVisible, errors, setErrors,
-    // // alert, setAlert,
-    // plantingYear, setPlantingYear, blockTrees, setBlockTrees,
-    // usedArea, setUsedArea, plantTypes, setPlantTypes,
-   
-    // clones, setClones, densityLength, setDensityLength,
-    // densityWidth, setDensityWidth,
-    // isDensityModeIrregular, isDensityModeRegular, setIsDensityModeIrregular,
-    // setIsDensityModeRegular,
 
-    // visualizeBlockData,
-
-    // sameTypeTreesList, setSameTypeTreesList,
-
-    // totalArea, 
-    // setTotalArea, setTotalTrees, 
-    // totalTrees,
-    // treesFlag, setTreesFlag, areaFlag, setAreaFlag,
-
-    // turnOffOverlay,
-
-    // messageAlert, setMessageAlert,
-    // titleAlert, setTitleAlert,
-    // cancelText, setCancelText,
-    // confirmText, setConfirmText,
-    // showCancelButton, setShowCancelButton,
-    // showConfirmButton, setShowConfirmButton,
     isNewBlockVisible,
     setIsNewBlockVisible,
     farmland,
@@ -67,12 +38,9 @@ export default function NewFarmlandBlock({
     const realm = useRealm();
     const user = useUser();
     const customUserData = user?.customData;
-    // const farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
     const [addedClone, setAddedClone] = useState('');
   
     const [addBlockIsOn, setAddBlockIsOn] = useState(false);
-    // const [treeRedFlag, setTreeRedFlag] = useState(false);
-    // const [areaRedFlag, setAreaRedFlag] = useState(false);
 
     // ------------------------------------------
     const [alert, setAlert] = useState(false);
@@ -88,18 +56,9 @@ export default function NewFarmlandBlock({
     // ---------------------------------------------
 
     const [remainingArea, setRemainingArea] = useState();
-    // const [blocksArea, setBlocksAreas] = useState();
 
-    // const [isCoordinatesModalVisible, setIsCoordinatesModalVisible] = useState(false);
-    // const [loadingButton, setLoadingButton] = useState(false);
-
-    // const [consociatedCrops, setConsociatedCrops] = useState([]);
-    // const [description, setDescription] = useState('');
     const [plantingYear, setPlantingYear] = useState('');
-    // const [trees, setTrees] = useState('');
-    
-    // const [totalArea, setTotalArea] = useState('');
-    // const [totalTrees, setTotalTrees] = useState('');
+
     const [usedArea, setUsedArea] = useState('');
     const [blockTrees, setBlockTrees] = useState('');
     const [densityWidth, setDensityWidth] = useState('');
@@ -110,26 +69,6 @@ export default function NewFarmlandBlock({
     const [isDensityModeRegular, setIsDensityModeRegular] = useState(false);
     const [sameTypeTreesList, setSameTypeTreesList] = useState([]);
     
-    // const [errorAlert, setErrorAlert] = useState(false);
-    // const [refresh, setRefresh] = useState(false);
-
-    // const [isDeleteBlockOn, setIsDeleteBlockOn] = useState(false)
-    
-    // count all blocks associated to the farmland
-    // const [blockCount, setBlockCount] = useState(0);
-    
-    
-    // const [treesFlag, setTreesFlag] = useState(0);
-    // const [areaFlag, setAreaFlag] = useState(0);
-
-    // const [blocks, setBlocks] = useState([]);
-    // const [isOverlayVisible, setIsOverlayVisible] = useState(false);
-
-
-    // loading activity indicator
-    // const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
-
-
     // ----------------------------------------------
    
     const toggleOverlay = () => {
@@ -816,9 +755,6 @@ export default function NewFarmlandBlock({
 )}
 
 
-
-
-
     <FormControl isRequired my="1" isInvalid={'plantTypes' in errors}>
         <FormControl.Label>Tipo de plantas</FormControl.Label>
         <MultipleSelectList
@@ -1000,14 +936,7 @@ export default function NewFarmlandBlock({
 
 {  (plantTypes.length > 0 && sameTypeTreesList.length > 0) &&
     <Box w="100%" mt="5"
-        style={{ 
-            // borderWidth: 2, 
-            // borderColor: COLORS.mediumseagreen,
-            // // borderTopEndRadius: 20,
-            // borderTopLeftRadius: 20,
-            // borderTopRightRadius: 20,
-
-        }}
+        style={{      }}
     >
         <Box 
             w="100%"
@@ -1143,7 +1072,6 @@ export default function NewFarmlandBlock({
         if (!validateBlockData(blockData, errors, setErrors)) {
             
             setAlert(true);
-            // setValidated(true);
             setTitleAlert(errorMessages.farmlandError.title);
             setMessageAlert(errorMessages.farmlandError.message);
             setShowCancelButton(errorMessages.farmlandError.showCancelButton);
@@ -1153,16 +1081,9 @@ export default function NewFarmlandBlock({
 
             return;
         }
-        // created the validated data object to be passed to the FarmlandModal component
-        // let retrievedBlockData = validateBlockData(blockData, errors, setErrors);
-
-        //   setTreesFlag(prev=>prev + parseInt(blockTrees));
-        //   setAreaFlag(prev=>prev + parseFloat(usedArea));
 
           setAddBlockIsOn(true); 
 
-        //   setAreaRedFlag(false);
-        //   setTreeRedFlag(false);
     }}
   />
 </ScrollView>

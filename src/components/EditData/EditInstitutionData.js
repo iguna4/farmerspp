@@ -150,8 +150,9 @@ const EditInstitutionData = ({
         overlayStyle={{ 
             backgroundColor: 'ghostwhite', 
             width: '90%',
+            maxHeight: '80%',
             borderRadius: 10,
-            paddingBottom: 10,
+            // paddingBottom: 10,
         }}
         isVisible={isOverlayVisible} 
         onBackdropPress={toggleOverlay}
@@ -161,6 +162,7 @@ const EditInstitutionData = ({
             style={{
                 // minHeight: '80%',
                 justifyContent: 'center',
+                maxHeight: '100%',
                 // marginVertical: 10,
             }}
         >

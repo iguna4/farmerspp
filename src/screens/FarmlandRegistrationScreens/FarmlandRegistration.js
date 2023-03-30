@@ -71,6 +71,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
     const [description, setDescription] = useState('');
     const [plantingYear, setPlantingYear] = useState('');
     const [trees, setTrees] = useState('');
+   
     const [blockTrees, setBlockTrees] = useState('');
     
     const [totalArea, setTotalArea] = useState('');

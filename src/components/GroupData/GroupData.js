@@ -312,11 +312,9 @@ const GroupData = ({ farmer })=>{
                 >
                 <Text
                     style={{ 
-                        fontSize: 18, 
+                        fontSize: 14, 
                         color: COLORS.ghostwhite,
                         fontFamily: 'JosefinSans-Bold',
-                        
-
                     }}
                     >
                     Dados de {farmer?.type}

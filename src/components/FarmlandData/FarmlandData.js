@@ -353,13 +353,13 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             >
                 <Text
                     style={{ 
-                        fontSize: 18, 
+                        fontSize: 14, 
                         color: COLORS.ghostwhite,
                         fontFamily: 'JosefinSans-Bold',
 
                     }}
                     >
-                    Anos de Plantio : [ {getPlantingYears(farmland?.blocks)} ]
+                    Anos de Plantio : [{getPlantingYears(farmland?.blocks)}]
                 </Text>
                 <Text
                     style={{ 
@@ -610,8 +610,21 @@ const FarmlandData = ({ farmland, setRefresh })=>{
     farmland?.extremeCoordinates.length > 0 &&
     farmland?.extremeCoordinates?.map((coords)=>{
         return (
-           <Stack key={coords?.position} w="100%" direction="row">
-                <Box w="40%">
+           <Stack 
+                key={coords?.position} 
+                w="100%" 
+                direction="row"
+
+                style={{
+                    // backgroundColor: 'grey',
+                    marginVertical: 5,
+                }}
+            >
+                <Box w="40%"
+                    style={{
+                        justifyContent: 'center',
+                    }}
+                >
                     <Text
                          style={{
                             color: COLORS.grey,
@@ -710,6 +723,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                         navigation.navigate('Geolocation', {
                             resourceName: 'Farmland',
                             resourceId: farmland._id,
+                            ownerType: farmland.ownerType,
                         //     navigation.navigate('FarmlandAreaAudit', {
                         //     farmlandId: farmland._id,
                         })
@@ -730,7 +744,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
     <>
 
         <Stack w="100%" direction="row">
-            <Box w="35%">
+            <Box w="40%">
                 <Text>
                     Latitude
                 </Text>
@@ -750,7 +764,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
         </Stack>
 
         <Stack w="100%" direction="row">
-        <Box w="35%">
+        <Box w="40%">
             <Text>
                 Longitude
             </Text>
@@ -769,36 +783,6 @@ const FarmlandData = ({ farmland, setRefresh })=>{
         </Stack>
 </>
 }
-
-{
-    // (!farmland?.middleCoordinates || Object?.keys(farmland?.middleCoordinates).length === 0) &&
-    // (
-    //     <Stack  w="100%" direction="row">
-    //     <Box w="40%">
-    //         <Text
-    //             style={{
-    //                 color: COLORS.grey,
-    //                 fontSize: 16,
-    //                 fontFamily: 'JosefinSans-Regular',
-    //             }}
-    //             >
-    //             {/*  */}
-    //         </Text>
-    //     </Box>
-    //     <Box w="60%">
-    //         <Text                     
-    //             style={{
-    //                 color: COLORS.grey,
-    //                 fontSize: 16,
-    //                 fontFamily: 'JosefinSans-Regular',
-    //             }}
-    //             >
-    //             (Nenhumas)
-    //         </Text>
-    //     </Box>
-    //     </Stack>
-    //     )
-    }
     </Stack>
 
     <CustomDivider />

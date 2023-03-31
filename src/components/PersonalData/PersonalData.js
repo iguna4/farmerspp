@@ -285,8 +285,6 @@ const PersonalData = ({ farmer, setRefresh })=>{
                 backgroundColor: COLORS.moderatelimegreen,
                 paddingHorizontal: 10,
                 marginVertical: 10,
-                
-                
             }}
             >
             <View
@@ -296,11 +294,9 @@ const PersonalData = ({ farmer, setRefresh })=>{
                 >
                 <Text
                     style={{ 
-                        fontSize: 18, 
+                        fontSize: 14, 
                         color: 'ghostwhite',
                         fontFamily: 'JosefinSans-Bold',
-                        
-
                     }}
                     >
                     Dados Pessoais

@@ -30,8 +30,9 @@ const GeolocationScreen = ({ route, navigation })=>{
     const realm = useRealm();
 
     const resourceName = route.params?.resourceName;
-    const resourceId = route.params.resourceId;
+    const resourceId = route.params?.resourceId;
     let resource;
+    let ownerType; // farmland ownertype (single, group, institution) 
 
     if (resourceName === 'Group') {
         resource = useObject('Group', resourceId);
@@ -43,6 +44,9 @@ const GeolocationScreen = ({ route, navigation })=>{
 
     if (resourceName === 'Farmland') {
         resource = useObject('Farmland', resourceId);
+
+        // identity the farmland ownertype (single, group, institution)
+        ownerType = route.params?.ownerType;
     }
     // const resourceName = route.params?.resourceName;
 
@@ -188,6 +192,38 @@ const GeolocationScreen = ({ route, navigation })=>{
         setPermissionGranted(false);
 
     }
+
+    const navigateBack = ()=>{
+        if (resourceName === 'Group'){
+            navigation.navigate('Group', {
+                ownerId: resource?._id,
+            })
+        }
+        else if (resourceName === 'Institution'){
+            navigation.navigate('Institution', {
+                ownerId: resource?._id,
+            })
+        }
+        else if (resourceName === 'Farmland') {
+
+            if (ownerType === 'Single') {
+                navigation.navigate('Farmer', {
+                    ownerId: resource?.farmerId,
+                })                   
+            }
+            else if (ownerType === 'Group'){
+                navigation.navigate('Group', {
+                    ownerId: resource?.farmerId,
+                });
+            }
+            else if (ownerType === 'Institution') {
+                navigation.navigate('Institution', {
+                    ownerId: resource?.farmerId,
+                })  
+            }
+            // navigation.goBack();
+        }
+    }
     
 
     useEffect(() => {
@@ -259,19 +295,10 @@ const GeolocationScreen = ({ route, navigation })=>{
                 longitude: coordaintes.longitude,
                 position: coordaintes.position,
             });
-            if (resourceName === 'Group'){
-                navigation.navigate('Group', {
-                    ownerId: resource._id,
-                })
-            }
-            else if (resourceName === 'Institution'){
-                navigation.navigate('Institution', {
-                    ownerId: resource._id,
-                })
-            }
-            else if (resourceName === 'Farmland') {
-                navigation.goBack();
-            }
+
+            // navigate back to the respective farmer screen.
+            navigateBack();
+
             setAreCoordinatesPicked(false);
           }}
           onCancelPressed={()=>{
@@ -342,20 +369,35 @@ const GeolocationScreen = ({ route, navigation })=>{
             <Box>
                 <Pressable
                     onPress={()=>{
-                        // navigation.goBack();
-                        if (resourceName === 'Group'){
-                            navigation.navigate('Group', {
-                                ownerId: resource._id,
-                            })
-                        }
-                        else if (resourceName === 'Institution'){
-                            navigation.navigate('Institution', {
-                                ownerId: resource._id,
-                            })
-                        }
-                        else if (resourceName === 'Farmland') {
-                            navigation.goBack();
-                        }
+                        // navigation.goBack() to the respective farmer screen
+                        navigateBack();
+                        // if (resourceName === 'Group'){
+                        //     navigation.navigate('Group', {
+                        //         ownerId: resource?._id,
+                        //     })
+                        // }
+                        // else if (resourceName === 'Institution'){
+                        //     navigation.navigate('Institution', {
+                        //         ownerId: resource?._id,
+                        //     })
+                        // }
+                        // else if (resourceName === 'Farmland') {
+                        //     if (ownerType === 'Single') {
+                        //         navigation.navigate('Farmer', {
+                        //             ownerId: resource?.farmerId,
+                        //         })                   
+                        //     }
+                        //     else if (ownerType === 'Group'){
+                        //         navigation.navigate('Group', {
+                        //             ownerId: resource?.farmerId,
+                        //         });
+                        //     }
+                        //     else if (ownerType === 'Institution') {
+                        //         navigation.navigate('Institution', {
+                        //             ownerId: resource?.farmerId,
+                        //         })  
+                        //     }
+                        // }
                     }} 
                     
                     style={{

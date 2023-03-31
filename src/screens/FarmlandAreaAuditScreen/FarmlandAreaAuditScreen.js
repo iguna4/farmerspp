@@ -23,6 +23,7 @@ import MapModal from "../../components/Modals/MapModal";
 import { useFocusEffect } from "@react-navigation/native";
 import { InteractionManager } from "react-native";
 import CustomActivityIndicator from "../../components/ActivityIndicator/CustomActivityIndicator";
+import { Pressable } from "react-native";
 const {useRealm, useObject, useQuery } = realmContext;
 
 
@@ -89,17 +90,10 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
           (position) => {
             //Will give you the location on location change
 
-
             setCurrentCoordinates({
                 latitude: position?.coords.latitude,
                 longitude: position?.coords.longitude,
             })
-
-            // saveCoordinates(farmland, {
-            //     latitude: position.coords.latitude,
-            //     longitude: position.coords.longitude,
-            //     position: number,
-            // });
 
           },
             (error) => {
@@ -115,10 +109,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 distanceFilter: 100,  
             }
         );
-
-        // Geolocation.clearWatch(watchID);
-
-      };
+     };
 
     const getCurrentPosition = ()=>{
 
@@ -174,7 +165,23 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     }, [ navigation ]);
     
 
-
+    const navigateBack = ()=>{
+        if (farmland.ownerType === 'Group'){
+            navigation.navigate('Group', {
+                ownerId: farmland?.farmerId,
+            });
+        }
+        else if (farmland.ownerType === 'Single') {
+            navigation.navigate('Farmer', {
+                ownerId: farmland?.farmerId,
+            });
+        }
+        else if (farmland.ownerType === 'Institution') {
+            navigation.navigate('Institution', {
+                ownerId: farmland?.farmerId,
+            });
+        }
+    }
 
     const keyExtractor = (item, index)=>index.toString();
 
@@ -196,9 +203,6 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
       }
     
 
-
-
-
     return (
         <SafeAreaView
             style={{ 
@@ -208,7 +212,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         >
 
 
-<AwesomeAlert
+        <AwesomeAlert
           show={failedGeoLocationRequest}
           showProgress={false}
           title="Geolocalização"
@@ -266,6 +270,12 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         />
 
 
+    <Box
+        style={{
+            backgroundColor: COLORS.fourth,
+            paddingBottom: 15,
+        }}
+    >
         <Stack
             direction="row" 
             w="100%"
@@ -273,16 +283,41 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             bg="#EBEBE4"
 
         >
-            <Box w="20%">
-                <TouchableOpacity
+            <Box>
+                <Pressable
                     onPress={()=>{
-                        navigation.navigate("Farmers");
-                    }}                            
+
+                        navigateBack();
+
+                        // navigation.navigate("Farmers");
+                    }} 
+                    
+                    style={{
+                        position: 'absolute',
+                        left: 5,
+                        top: 4,
+                        flexDirection: 'row',
+                        // justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
                 >
-                <Icon name='arrow-back-ios' color={COLORS.main} size={35}  />
-                </TouchableOpacity>
+                    <Icon 
+                        name='arrow-back-ios' 
+                        color={COLORS.main} 
+                        size={25}  
+                    />
+                    <Text
+                        style={{
+                            color: COLORS.main,
+                            fontFamily: 'JosefinSans-Bold',
+                            marginLeft: -10,
+                        }}
+                    >
+                        Voltar
+                    </Text>
+                </Pressable>
             </Box>
-            <Center w="60%">
+            <Center w="100%">
                 <Text
                     style={{ 
                         textAlign: 'center', 
@@ -294,47 +329,50 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     Geolocalização
                 </Text>
             </Center>
-            <Box w="20%">
-            </Box>
         </Stack>
+        </Box>
 
         <Box
-            bg="#EBEBE4" 
+            // bg="#EBEBE4" 
             w="100%" 
             px="3" 
             
-            style={{
-                borderBottomRightRadius: 50,
-                borderBottomLeftRadius: 50,
-                borderBottomWidth: 2,
-                borderLeftWidth: 2,
-                borderRightWidth: 2,
-                borderColor: '#EBEBE4',
-            }}
+            // style={{
+            //     borderBottomRightRadius: 50,
+            //     borderBottomLeftRadius: 50,
+            //     borderBottomWidth: 2,
+            //     borderLeftWidth: 2,
+            //     borderRightWidth: 2,
+            //     borderColor: '#EBEBE4',
+            // }}
         >
             <Stack direction="row"
-                py="2"
+                py="1"
                 px="3"
             >
-                <Box  w="80%">
+                <Box  w="50%"
+                    style={{
+                        // flex: 1,
+                        justifyContent: 'center',
+                    }}
+                >
                     <Text
                         style={{
                             fontFamily: 'JosefinSans-Bold',
-                            fontSize: 16,
+                            fontSize: 18,
                             color: COLORS.black,
+                            lineHeight: 25,
+                            textAlign: 'center',
                         }}
                     >
-                        Área da Parcela
+                        Pontos extremos da área do pomar
                     </Text>
-                    <Text
-                        style={{
-                            fontFamily: 'JosefinSans-Regular',
-                            fontSize: 14,
-                            color: COLORS.grey,
-                        }}
-                    >
-                        {/* Captura os pontos extremos da área total */}
-                    </Text>
+                </Box>
+                <Box  w="30%"
+                    style={{
+                    }}
+                >
+
                 </Box>
                 <Box w="20%"
                     alignItems={'center'}
@@ -468,7 +506,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     />
     <Center
         style={{
-            paddingVertical: 20,
+            paddingVertical: 10,
         }}
     >
 

@@ -284,15 +284,13 @@ const InstitutionData = ({ farmer })=>{
                         fontSize: 14, 
                         color: 'ghostwhite',
                         fontFamily: 'JosefinSans-Bold',
-                        
-
                     }}
                 >
                     Dados da Instituição
                 </Text>
                 <Text
                     style={{ 
-                        fontSize: 18, 
+                        fontSize: 14, 
                         color: 'ghostwhite',
                         fontFamily: 'JosefinSans-Bold',
                         textAlign: 'right',

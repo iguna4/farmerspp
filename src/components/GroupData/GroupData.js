@@ -16,6 +16,7 @@ import { roles } from '../../consts/roles';
 import { errorMessages } from '../../consts/errorMessages';
 import validateInvalidationMessage from '../../helpers/validateInvalidationMessage';
 import ConfirmData from '../EditData/ConfirmData';
+import { useNavigation } from '@react-navigation/native';
 
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
@@ -27,6 +28,7 @@ const GroupData = ({ farmer })=>{
 
     const realm = useRealm();
     const user = useUser();
+    const navigation = useNavigation();
     const customUserData = user?.customData;
     const invalidationMotives = realm.objects('InvalidationMotive').filtered(`resourceId == "${farmer?._id}"`);
 
@@ -70,7 +72,6 @@ const GroupData = ({ farmer })=>{
     const [oldDataObject, setOldDataObject] = useState({});
 
 
-
     // -----------------------------------------------
 
 
@@ -109,17 +110,6 @@ const GroupData = ({ farmer })=>{
 
     const [groupGoals, setGroupGoals] = useState([]);
     const [oldGroupGoals, setOldGroupGoals] = useState([]);
-
-
-    // group type
-
-
-    // const [oldGroupNuit, setOldGroupNuit] = useState('');
-    // const [oldGroupLicence, setOldGroupLicence] = useState('');
-
-    
-
-
 
 
     const validationAction = (realm, resourceId, flag)=>{
@@ -171,6 +161,14 @@ const GroupData = ({ farmer })=>{
         }
     }, [ realm, user, message ]);
 
+    useEffect(()=>{
+        const interval = setInterval(()=>{
+            setAutoRefresh(!autoRefresh);
+        }, 1000);
+
+        clearInterval(interval);
+    }, [ navigation ]);
+
 
     useEffect(()=>{
         realm.subscriptions.update(mutableSubs => {
@@ -188,6 +186,8 @@ const GroupData = ({ farmer })=>{
         clearInterval(interval);
 
     }, [ realm, user, message, invalidationMotives, autoRefresh, isCollapseOn ]);
+
+
 
 
     return (
@@ -313,7 +313,7 @@ const GroupData = ({ farmer })=>{
                 <Text
                     style={{ 
                         fontSize: 18, 
-                        color: 'ghostwhite',
+                        color: COLORS.ghostwhite,
                         fontFamily: 'JosefinSans-Bold',
                         
 
@@ -324,7 +324,7 @@ const GroupData = ({ farmer })=>{
                 <Text
                     style={{ 
                         fontSize: 14, 
-                        color: 'ghostwhite',
+                        color: COLORS.ghostwhite,
                         fontFamily: 'JosefinSans-Bold',
                         textAlign: 'right',
                     }}
@@ -386,7 +386,7 @@ const GroupData = ({ farmer })=>{
         <Box w="50%">
             <Text
                 style={{
-                    color: '#000',
+                    color: COLORS.black,
                     fontSize: 16,
                     fontFamily: 'JosefinSans-Bold',
                     
@@ -426,7 +426,7 @@ const GroupData = ({ farmer })=>{
                 <Box w="35%" >
                     <Text
                         style={{
-                            color: 'grey',
+                            color: COLORS.grey,
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                             
@@ -438,7 +438,7 @@ const GroupData = ({ farmer })=>{
             <Box w="65%">
                 <Text 
                     style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}
@@ -452,7 +452,7 @@ const GroupData = ({ farmer })=>{
                 <Box w="35%" >
                     <Text
                         style={{
-                            color: 'grey',
+                            color: COLORS.grey,
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                             
@@ -464,7 +464,7 @@ const GroupData = ({ farmer })=>{
             <Box w="65%">
                 <Text 
                     style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}
@@ -521,7 +521,7 @@ const GroupData = ({ farmer })=>{
             <Box w="35%">
                 <Text
                     style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                         
@@ -532,7 +532,7 @@ const GroupData = ({ farmer })=>{
                 </Box>
                 <Box w="65%" >
                     <Text style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}
@@ -546,7 +546,7 @@ const GroupData = ({ farmer })=>{
             <Box w="35%">
                 <Text
                     style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',   
                     }}
@@ -557,7 +557,7 @@ const GroupData = ({ farmer })=>{
                 <Box w="65%" >
 {   ((!farmer?.manager?.phone) || (farmer?.manager?.phone === 0)) &&
                  <Text style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 13,
                         fontFamily: 'JosefinSans-Regular',
                     }}
@@ -567,7 +567,7 @@ const GroupData = ({ farmer })=>{
 }
 { ((farmer?.manager?.phone) || (farmer?.manager?.phone !== 0))  &&
                 <Text style={{
-                    color: 'grey',
+                    color: COLORS.grey,
                     fontSize: 14,
                     // paddingLeft: 10,
                     fontFamily: 'JosefinSans-Regular',
@@ -624,7 +624,7 @@ const GroupData = ({ farmer })=>{
                 <Box w="35%" >
                     <Text
                         style={{
-                            color: 'grey',
+                            color: COLORS.grey,
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                             
@@ -636,7 +636,7 @@ const GroupData = ({ farmer })=>{
             <Box w="65%">
                 <Text 
                     style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}
@@ -650,7 +650,7 @@ const GroupData = ({ farmer })=>{
                 <Box w="35%" >
                     <Text
                         style={{
-                            color: 'grey',
+                            color: COLORS.grey,
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}
@@ -661,7 +661,7 @@ const GroupData = ({ farmer })=>{
             <Box w="65%">
                 <Text 
                     style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}
@@ -675,7 +675,7 @@ const GroupData = ({ farmer })=>{
                 <Box w="35%" >
                     <Text
                         style={{
-                            color: 'grey',
+                            color: COLORS.grey,
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}
@@ -686,7 +686,7 @@ const GroupData = ({ farmer })=>{
             <Box w="65%">
                 <Text 
                     style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}
@@ -700,7 +700,7 @@ const GroupData = ({ farmer })=>{
                 <Box w="35%" >
                     <Text
                         style={{
-                            color: 'grey',
+                            color: COLORS.grey,
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}
@@ -711,7 +711,7 @@ const GroupData = ({ farmer })=>{
             <Box w="65%">
                 <Text 
                     style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}
@@ -729,13 +729,12 @@ const GroupData = ({ farmer })=>{
             <Box w="50%">
                 <Text
                     style={{
-                        color: '#000',
+                        color: COLORS.black,
                         fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         
                     }}
                 >
-                    
                     Legalização
                     
                 </Text>        
@@ -769,7 +768,7 @@ const GroupData = ({ farmer })=>{
                 <Box w="35%" >
                     <Text
                         style={{
-                            color: 'grey',
+                            color: COLORS.grey,
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                             
@@ -781,7 +780,7 @@ const GroupData = ({ farmer })=>{
             <Box w="65%">
                 <Text 
                     style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}
@@ -795,7 +794,7 @@ const GroupData = ({ farmer })=>{
                 <Box w="35%" >
                     <Text
                         style={{
-                            color: 'grey',
+                            color: COLORS.grey,
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                             
@@ -807,7 +806,7 @@ const GroupData = ({ farmer })=>{
             <Box w="65%">
                 <Text 
                     style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}
@@ -821,7 +820,7 @@ const GroupData = ({ farmer })=>{
                 <Box w="35%" >
                     <Text
                         style={{
-                            color: 'grey',
+                            color: COLORS.grey,
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                             
@@ -833,7 +832,7 @@ const GroupData = ({ farmer })=>{
             <Box w="65%">
                 <Text 
                     style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}
@@ -847,7 +846,7 @@ const GroupData = ({ farmer })=>{
                 <Box w="35%" >
                 <Text
                     style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}                    
@@ -858,7 +857,7 @@ const GroupData = ({ farmer })=>{
             <Box w="65%">
                 <Text 
                     style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}
@@ -872,7 +871,7 @@ const GroupData = ({ farmer })=>{
                 <Box w="35%" >
                     <Text
                         style={{
-                            color: 'grey',
+                            color: COLORS.grey,
                             fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                             
@@ -884,7 +883,7 @@ const GroupData = ({ farmer })=>{
             <Box w="65%">
                 <Text 
                     style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}
@@ -913,25 +912,6 @@ const GroupData = ({ farmer })=>{
             </Box>
             <Box w="5%"></Box>
             <Box w="25%">
-    {/* {     
-        customUserData?.role !== roles.provincialManager && 
-        <TouchableOpacity
-                    disabled={farmer?.status === resourceValidation.status.validated ? true : false}
-                    style={{
-                    }}
-                    onPress={
-                        ()=>{
-                            
-                        }
-                    }
-                >
-                <Icon 
-                    name="edit"
-                    size={20} 
-                    color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
-                />
-                </TouchableOpacity>
-            } */}
             </Box>
         </Stack>
 
@@ -939,7 +919,7 @@ const GroupData = ({ farmer })=>{
             <Box w="35%">
                 <Text
                     style={{
-                        color: 'grey',
+                        color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}                    
@@ -951,7 +931,7 @@ const GroupData = ({ farmer })=>{
     {   farmer?.address?.province &&
         <Text                         
             style={{
-                color: 'grey',
+                color: COLORS.grey,
                 fontSize: 14,
                 //  paddingLeft: 10,
                 fontFamily: 'JosefinSans-Regular',
@@ -967,7 +947,7 @@ const GroupData = ({ farmer })=>{
         <Box w="35%">
             <Text
                 style={{
-                    color: 'grey',
+                    color: COLORS.grey,
                     fontSize: 14,
                     fontFamily: 'JosefinSans-Regular',
                 }}                    
@@ -978,7 +958,7 @@ const GroupData = ({ farmer })=>{
         <Box>
             <Text
                 style={{
-                    color: 'grey',
+                    color: COLORS.grey,
                     fontSize: 14,
                     fontFamily: 'JosefinSans-Regular',
                 }}                    
@@ -992,7 +972,7 @@ const GroupData = ({ farmer })=>{
         <Box w="35%">
             <Text
                 style={{
-                    color: 'grey',
+                    color: COLORS.grey,
                     fontSize: 14,
                     fontFamily: 'JosefinSans-Regular',
                 }}                    
@@ -1003,7 +983,7 @@ const GroupData = ({ farmer })=>{
         <Box>
             <Text
                 style={{
-                    color: 'grey',
+                    color: COLORS.grey,
                     fontSize: 14,
                     fontFamily: 'JosefinSans-Regular',
                 }}                    
@@ -1017,7 +997,7 @@ const GroupData = ({ farmer })=>{
         <Box w="35%">
             <Text
                 style={{
-                    color: 'grey',
+                    color: COLORS.grey,
                     fontSize: 14,
                     fontFamily: 'JosefinSans-Regular',
                 }}                    
@@ -1028,7 +1008,7 @@ const GroupData = ({ farmer })=>{
         <Box>
             <Text
                 style={{
-                    color: 'grey',
+                    color: COLORS.grey,
                     fontSize: 14,
                     fontFamily: 'JosefinSans-Regular',
                 }}                    
@@ -1037,8 +1017,107 @@ const GroupData = ({ farmer })=>{
             </Text>  
         </Box>
     </Stack>
-
     </Stack>
+
+    <CustomDivider />
+
+    <Stack w="100%" direction="column" py="4">
+        <Stack w="100%" direction="row" >
+            <Box w="75%">
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Bold',
+                        
+                    }}
+                    >
+                    Geolocalização
+                </Text>
+            </Box>
+            <Box w="25%">
+        {   
+
+        customUserData?.role !== roles.provincialManager && 
+                <TouchableOpacity
+                    style={{
+
+                    }}
+                    onPress={
+                        ()=>{
+                            navigation.navigate('Geolocation', {
+                            resourceName: 'Group',
+                            resourceId: farmer._id,
+                            
+                        })
+                    }}
+                >
+                    <Icon 
+                        name="add-location-alt" 
+                        size={30} 
+                        color={COLORS.main}
+                    />
+                </TouchableOpacity>
+            }
+            </Box>
+        </Stack>
+
+{ farmer?.geolocation?.latitude && farmer?.geolocation?.longitude &&
+<>
+        <Stack w="100%" direction="row">
+            <Box w="35%">
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                    Latitude
+                </Text>
+            </Box>
+            <Box>
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                    {farmer?.geolocation?.latitude}
+                </Text>
+            </Box>
+        </Stack>
+        <Stack w="100%" direction="row">
+            <Box w="35%">
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                    Longitude
+                </Text>
+            </Box>
+            <Box>
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}
+                    >
+                    {farmer?.geolocation?.longitude}
+                </Text>
+            </Box>
+        </Stack>
+</>
+}
+
+
+</Stack>
+
     <CustomDivider />
 
     <Stack direction="column" w="100%" style={{ paddingTop: 5,  }} >
@@ -1086,8 +1165,7 @@ const GroupData = ({ farmer })=>{
                     fontSize: 12,
                 }}
             >
-                {/* Invalidado por {farmer?.checkedBy} */}
-                Invalidado por {farmer?.checkedBy ? farmer?.checkedBy : 'ConnectCaju'}
+                Invalidado por {farmer?.checkedBy ? farmer?.checkedBy : 'Connect Caju'}
             </Text>
         </Box>
     }
@@ -1113,23 +1191,17 @@ const GroupData = ({ farmer })=>{
     {
     farmer?.status === resourceValidation.status.invalidated && 
     <>
-{ customUserData?.role !== roles.provincialManager &&
-    <Text style={{
-        textAlign: 'left',
-        color: COLORS.red,
-        fontSize: 16,
-        fontFamily: 'JosefinSans-Bold',
-    }}>
-        Motivo da invalidação
-    </Text>
-}
-    {/* <Box 
-        // w="100%"
-        style={{
-            // alignItems: 'center',
-            paddingTop: 5,
-        }}
-    > */}
+        { customUserData?.role !== roles.provincialManager &&
+            <Text style={{
+                textAlign: 'left',
+                color: COLORS.red,
+                fontSize: 16,
+                fontFamily: 'JosefinSans-Bold',
+            }}>
+                Motivo da invalidação
+            </Text>
+        }
+
         {
         (invalidationMotives?.length > 0 && invalidationMotives[0]?.messages?.length > 0) && 
             invalidationMotives[0]?.messages?.map((motive, index)=>(

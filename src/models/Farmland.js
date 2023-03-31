@@ -11,7 +11,8 @@ export const Farmland = {
         description: 'string?',
         consociatedCrops: 'string[]',
         extremeCoordinates: 'Coordinates[]',
-        middleCoordinates: 'Coordinates?',
+        geolocation: 'Coordinates?',
+        middleCoordinates: 'Coordinates?', // to be removed. changed from middleCoordinates to geolocation
         auditedArea: 'float?',
         totalArea: 'float?',
         trees: 'int?',

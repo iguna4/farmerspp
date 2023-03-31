@@ -7,19 +7,10 @@ import { MultipleSelectList  } from 'react-native-dropdown-select-list';
 
 import ConfirmData from './ConfirmData';
 import COLORS from "../../consts/colors";
-import CustomActivityIndicator from "../ActivityIndicator/CustomActivityIndicator";
 import { getFullYears } from "../../helpers/dates";
 import { plantingTypes } from "../../consts/plantingTypes";
 import cloneList from "../../consts/clones";
 
-
-
-// import administrativePosts from '../../consts/administrativePosts';
-// import provinces from '../../consts/provinces';
-// import districts from '../../consts/districts';
-// import villages from '../../consts/villages';
-// import countries from '../../consts/countries';
-// import idDocTypes from '../../consts/idDocTypes';
 import { crops } from '../../consts/crops';
 
 import { CustomInput } from '../Inputs/CustomInput';
@@ -93,22 +84,25 @@ const EditFarmlandData = ({
     const [overlayTitle, setOverlayTitle] = useState('');
 
     const [editBlockIsOn, setEditBlockIsOn] = useState(false);
+    const [isSameTypeTreesUpdated, setIsSameTypeTreesUpdated] = useState(false);
 
     useEffect(()=>{
 
-    //     // let selectedClones = [];
-    //     // let mergedSameTypeTrees = [];
-    //     const filteredPlantTypes = plantTypes.filter(plantType=>!plantType.includes('enxer'));
-    //     const selectedClones = clones?.map(clone=>`Clone: ${clone}`);
-    //     const mergedSameTypeTrees = filteredPlantTypes.concat(selectedClones);
+        if (isSameTypeTreesUpdated) {
+            let plants = plantTypes?.filter(plantType=>!plantType.includes('enxer'));
+            let pickedClones = clones?.map(clone=>`Clone: ${clone}`);
+            let merged = plants.concat(pickedClones);
+            setSameTypeTreesList(merged?.map(sameTypeTrees=>({
+                treeType: sameTypeTrees,
+                trees: ''
+            })));
+            setIsSameTypeTreesUpdated(false);
+        }
 
-        // setSameTypeTreesList(prev=>[...prev, {}]);
-
-    }, [ clones, plantTypes ]);
+    }, [ clones, plantTypes, ]);
 
 
     useEffect(()=>{
-
         // save the block if everything is fine
         if (editBlockIsOn){
             // edit the block
@@ -204,6 +198,8 @@ const EditFarmlandData = ({
             newData['consociatedCrops'] = validatedData?.consociatedCrops;
             newData['totalArea'] = validatedData?.totalArea;
             newData['trees'] = validatedData?.trees;
+
+            console.log('new Data: ', newData);
 
             // old data
             oldData['description'] = oldDescription;
@@ -665,7 +661,6 @@ const EditFarmlandData = ({
                     setDensityWidth(newNumber)
                 }}
             />
-                
             {
                 'density' in errors 
             ? <FormControl.ErrorMessage 
@@ -684,11 +679,9 @@ const EditFarmlandData = ({
         <MultipleSelectList
             setSelected={(type)=>{
                 setErrors(prev=>({...prev, plantTypes: ''}));
-                setPlantTypes(type)
-                // if (type) {
-                //     console.log('type:', JSON.stringify(type));
-                //     setSameTypeTreesList(prev=>[...prev, {type, trees: ''}])
-                // }
+                setPlantTypes(type);
+                setIsSameTypeTreesUpdated(true);
+
             }}
             data={plantingTypes}
             placeholder="Tipo de plantas"
@@ -739,11 +732,8 @@ const EditFarmlandData = ({
             <MultipleSelectList
                 setSelected={(type)=>{
                     setErrors(prev=>({...prev, clones: ''}));
-                    setClones(type)
-                    // if (!type?.includes('enxer')) {
-                    // setSameTypeTreesList(prev=>[...prev, {type, trees: ''}])
-                    // }
-                
+                    setClones(type);
+                    setIsSameTypeTreesUpdated(true);               
                 }}
                 data={cloneList}
                 placeholder="clones"
@@ -801,6 +791,8 @@ const EditFarmlandData = ({
                                 addedClone: '',
                             })
                             setAddedClone(newClone);
+                            // setIsSameTypeTreesUpdated(false);
+
                         }}
                         />
                 {   'addedClone' in errors ?
@@ -839,10 +831,7 @@ const EditFarmlandData = ({
 
                     onPress={()=>{
                         if (addedClone){
-                            // let updatedCloneList = [...allClones].unshift(addedClone)
-                            // setAllClones(updatedCloneList);
                             setClones(prev=>[...prev, addedClone]);
-
                             setAddedClone('');
                         }
                         else{

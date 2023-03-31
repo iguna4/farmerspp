@@ -20,7 +20,7 @@ import ConfirmData from '../EditData/ConfirmData';
 import { roles } from '../../consts/roles';
 import { errorMessages } from '../../consts/errorMessages';
 import validateInvalidationMessage from '../../helpers/validateInvalidationMessage';
-
+import { useNavigation } from '@react-navigation/native';
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 const { useRealm, useQuery, useObject } = realmContext; 
@@ -30,6 +30,7 @@ const institutionResourceMessage = 'institutionResourceMessage';
 const InstitutionData = ({ farmer })=>{
     const realm = useRealm();
     const user = useUser();
+    const navigation = useNavigation();
     const customUserData = user?.customData;
     const invalidationMotives = realm.objects('InvalidationMotive').filtered(`resourceId == "${farmer?._id}"`);
 
@@ -767,6 +768,103 @@ const InstitutionData = ({ farmer })=>{
     </Box>
     </Stack>
     </Stack>
+
+    <CustomDivider />
+
+    <Stack w="100%" direction="column" py="4">
+        <Stack w="100%" direction="row" >
+            <Box w="75%">
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Bold',
+                        
+                    }}
+                    >
+                    Geolocalização
+                </Text>
+            </Box>
+            <Box w="25%">
+        {   
+
+        customUserData?.role !== roles.provincialManager && 
+                <TouchableOpacity
+                    style={{
+
+                    }}
+                    onPress={
+                        ()=>{
+                            navigation.navigate('Geolocation', {
+                            resourceName: 'Institution',
+                            resourceId: farmer._id,
+                        })
+                    }}
+                >
+                    <Icon 
+                        name="add-location-alt" 
+                        size={30} 
+                        color={COLORS.main}
+                    />
+                </TouchableOpacity>
+            }
+            </Box>
+        </Stack>
+
+{ farmer?.geolocation?.latitude && farmer?.geolocation?.longitude &&
+<>
+        <Stack w="100%" direction="row">
+            <Box w="35%">
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                    Latitude
+                </Text>
+            </Box>
+            <Box>
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                    {farmer?.geolocation?.latitude}
+                </Text>
+            </Box>
+        </Stack>
+        <Stack w="100%" direction="row">
+            <Box w="35%">
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                    Longitude
+                </Text>
+            </Box>
+            <Box>
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}
+                    >
+                    {farmer?.geolocation?.longitude}
+                </Text>
+            </Box>
+        </Stack>
+</>
+}
+</Stack>
+
 
 
     <CustomDivider />

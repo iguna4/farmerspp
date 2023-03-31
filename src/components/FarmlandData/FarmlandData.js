@@ -466,7 +466,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                             
                         }}
@@ -478,7 +478,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
@@ -491,7 +491,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                             
                         }}
@@ -503,7 +503,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
@@ -518,7 +518,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                             
                         }}
@@ -530,7 +530,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
@@ -544,7 +544,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                             
                         }}
@@ -556,7 +556,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
@@ -571,13 +571,14 @@ const FarmlandData = ({ farmland, setRefresh })=>{
         <Stack w="100%" direction="row" >
             <Box w="75%">
                 <Text
-                        style={{
-                            color: COLORS.grey,
-                            fontSize: 16,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}  
-                    >
-                    Coordenadas dos Pontos Extremos
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 18,
+                        fontFamily: 'JosefinSans-Bold',
+                        
+                    }} 
+                >
+                    Pontos Extremos do Pomar
                 </Text>
             </Box>
             {/* <Box w="25%"></Box> */}
@@ -614,7 +615,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                          style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}  
                         >
@@ -625,7 +626,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text                     
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}  
                         >
@@ -634,7 +635,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text                     
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Regular',
                         }}  
                         >
@@ -653,7 +654,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             <Text
                 style={{
                     color: COLORS.grey,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontFamily: 'JosefinSans-Regular',
                 }}  
                 >
@@ -664,7 +665,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             <Text                     
                 style={{
                     color: COLORS.grey,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontFamily: 'JosefinSans-Regular',
                 }}  
                 >
@@ -685,13 +686,13 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             <Box w="75%">
                 <Text
                     style={{
-                        color: COLORS.grey,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Regular',
+                        color: COLORS.black,
+                        fontSize: 18,
+                        fontFamily: 'JosefinSans-Bold',
                         
                     }}
-                    >
-                    Coordenadas dos Pontos Extremos
+                >
+                    Geolocalização                
                 </Text>
             </Box>
             {/* <Box w="25%"></Box> */}
@@ -705,10 +706,14 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 
                     }}
                     onPress={
-                        ()=>navigation.navigate('FarmlandAreaAudit', {
-                            farmlandId: farmland._id,
+                        ()=>{
+                        navigation.navigate('Geolocation', {
+                            resourceName: 'Farmland',
+                            resourceId: farmland._id,
+                        //     navigation.navigate('FarmlandAreaAudit', {
+                        //     farmlandId: farmland._id,
                         })
-                    }
+                    }}
                 >
                     <Icon 
                         name="add-location-alt" 
@@ -721,63 +726,78 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             </Box>
         </Stack>
 {
-    (farmland?.middleCoordinates && Object.keys(farmland?.middleCoordinates)?.length > 0) &&
+    (farmland?.geolocation?.latitude && farmland?.geolocation?.longitude) &&
+    <>
 
-           <Stack w="100%" direction="row">
-                <Box w="40%">
+        <Stack w="100%" direction="row">
+            <Box w="35%">
+                <Text>
+                    Latitude
+                </Text>
+            </Box>
+            <Box>
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                        {farmland?.geolocation?.latitude}
+                </Text>
 
-                </Box>
-                <Box w="60%">
-                    <Text                     
-                        style={{
-                            color: COLORS.grey,
-                            fontSize: 16,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}  
-                        >
-                        Latitude: {farmland?.middleCoordinates?.latitude}
-                    </Text>
-                    <Text                     
-                        style={{
-                            color: COLORS.grey,
-                            fontSize: 16,
-                            fontFamily: 'JosefinSans-Regular',
-                        }}
-                        >
-                        Longitude: {farmland?.middleCoordinates?.longitude}
-                    </Text>
-                </Box>
-            </Stack>
-}
+            </Box>
+        </Stack>
 
-{
-    (!farmland?.middleCoordinates || Object?.keys(farmland?.middleCoordinates).length === 0) &&
-    (
-        <Stack  w="100%" direction="row">
-        <Box w="40%">
-            <Text
-                style={{
-                    color: COLORS.grey,
-                    fontSize: 16,
-                    fontFamily: 'JosefinSans-Regular',
-                }}
-                >
-                {/*  */}
+        <Stack w="100%" direction="row">
+        <Box w="35%">
+            <Text>
+                Longitude
             </Text>
         </Box>
-        <Box w="60%">
+        <Box>
             <Text                     
                 style={{
                     color: COLORS.grey,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontFamily: 'JosefinSans-Regular',
-                }}
+                }}  
                 >
-                (Nenhumas)
+                {farmland?.geolocation?.longitude}
             </Text>
         </Box>
         </Stack>
-        )
+</>
+}
+
+{
+    // (!farmland?.middleCoordinates || Object?.keys(farmland?.middleCoordinates).length === 0) &&
+    // (
+    //     <Stack  w="100%" direction="row">
+    //     <Box w="40%">
+    //         <Text
+    //             style={{
+    //                 color: COLORS.grey,
+    //                 fontSize: 16,
+    //                 fontFamily: 'JosefinSans-Regular',
+    //             }}
+    //             >
+    //             {/*  */}
+    //         </Text>
+    //     </Box>
+    //     <Box w="60%">
+    //         <Text                     
+    //             style={{
+    //                 color: COLORS.grey,
+    //                 fontSize: 16,
+    //                 fontFamily: 'JosefinSans-Regular',
+    //             }}
+    //             >
+    //             (Nenhumas)
+    //         </Text>
+    //     </Box>
+    //     </Stack>
+    //     )
     }
     </Stack>
 
@@ -789,9 +809,10 @@ const FarmlandData = ({ farmland, setRefresh })=>{
         <Box w="75%">
             <Text
                 style={{
-                    color: COLORS.grey,
-                    fontSize: 16,
-                    fontFamily: 'JosefinSans-Regular',
+                    color: COLORS.black,
+                    fontSize: 18,
+                    fontFamily: 'JosefinSans-Bold',
+                    
                 }}
             >
                 Bloco de Cajueiros
@@ -907,35 +928,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                         </Box> 
                     </Stack>
 
-
-                    {/* <Stack w="100%" direction="row" mt="4">
-                        <Box w="35%"
-                            style={{
-
-                            }}    
-                        >
-                            <Text
-                                style={{
-                                    color: COLORS.grey,
-                                    fontSize: 16,
-                                    fontFamily: 'JosefinSans-Regular',
-                                }}
-                            >
-                                Cajueiros: 
-                            </Text>
-                        </Box>
-                        <Box w="65%">
-                                <Text
-                                    style={{
-                                        color: COLORS.grey,
-                                        fontSize: 16,
-                                        fontFamily: 'JosefinSans-Regular',
-                                    }}
-                                >{block.trees} árvores</Text>
-                        </Box>
-                    </Stack> */}
-
-                    <Stack w="100%" direction="row" >
+                   <Stack w="100%" direction="row" >
                         <Box w="35%"
                             style={{
 

@@ -109,7 +109,6 @@ const FarmerItem = ({ item, route, farmerType }) => {
 
       <TouchableOpacity
         onPress={()=>{
-          console.log('see farmer screen')
           navigation.navigate('Farmer', {
             ownerId: item._id,
           })

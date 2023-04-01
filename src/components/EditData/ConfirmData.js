@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
-import { View, Text, StyleSheet, } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, } from 'react-native';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
 import { Overlay, Icon, Button } from "@rneui/base";
 import COLORS from "../../consts/colors";
@@ -32,8 +32,8 @@ const ConfirmData = ({
     const user = useUser();
     const customUserData = user?.customData;
 
-    // console.log('newDataObject: ', newDataObject);
-    // console.log('oldDataObject: ', oldDataObject);
+    console.log('newDataObject: ', JSON.stringify(newDataObject));
+    console.log('oldDataObject: ', JSON.stringify(oldDataObject));
 
     const onUpdateData = (resource, newDataObject, realm, dataToBeUpdated, resourceName) =>{
 
@@ -157,6 +157,15 @@ const ConfirmData = ({
 
             if (dataToBeUpdated === 'blockData' && resourceName === 'Farmland') {
                 const block = resource?.blocks.find((block)=>block._id === blockId);
+                const updatedBlocks = resource?.blocks?.map((block)=>{
+                    if (block._id === blockId){
+                        return newDataObject;
+                    }
+                    return block;
+                });
+
+                resource.blocks = updatedBlocks;
+
 
                 console.log('block to be updated:', block);
 
@@ -177,13 +186,20 @@ const ConfirmData = ({
 
     <Overlay 
         overlayStyle={{ 
-            backgroundColor: 'ghostwhite', 
+            backgroundColor: COLORS.ghostwhite, 
             width: '90%',
+            maxHeight: '90%',
             borderRadius: 10,
         }}
         isVisible={isConfirmDataVisible} 
         onBackdropPress={toggleOverlay}
         >
+
+    <ScrollView
+        style={{
+            maxHeight: '100%',
+        }}
+    >
         <View
             style={{
                 // minHeight: '70%',
@@ -223,7 +239,7 @@ const ConfirmData = ({
                 color={COLORS.ghostwhite} 
                 />
         </View>
-
+        
     {/* farmland block */}
     
     {
@@ -244,7 +260,14 @@ const ConfirmData = ({
         >
             Dados Anteriores do Bloco de Cajueiros
         </Text>
-
+        <Stack direction="row">
+            <Box w="50%">
+                <Text>Ano de plantio</Text>
+            </Box>
+            <Box w="50%">
+               <Text>{oldDataObject?.plantingYear}</Text>
+            </Box>
+        </Stack>
         <Stack direction="row">
             <Box w="50%">
                 <Text>Área aproveitada</Text>
@@ -264,6 +287,21 @@ const ConfirmData = ({
                 </Text>
             </Box>
         </Stack>
+        <Stack direction="row">
+            <Box w="50%"
+                style={{
+                    justifyContent: 'center',
+                }}
+            >
+                <Text>Tipos de plantas</Text>
+            </Box>
+            <Box w="50%">
+               <Text>{oldDataObject?.plantTypes.plantType?.join('; ')}</Text>
+               { oldDataObject?.plantTypes.clones?.length > 0 &&
+                <Text>Clones: {oldDataObject?.plantTypes.clones?.join('; ')}</Text>
+               }
+            </Box>
+        </Stack>
 
         <Stack direction="row">
             <Box w="50%">
@@ -275,11 +313,22 @@ const ConfirmData = ({
         </Stack>
    
         <Stack direction="row">
-            <Box w="50%">
-               <Text></Text>
+            <Box w="10%">
+               {/* <Text></Text> */}
             </Box>
-            <Box w="50%">
-               <Text></Text>
+            <Box w="90%">
+               { oldDataObject.sameTypeTrees?.map(same=>(
+                    <Stack key={same.treeType} direction="row">
+                        <Box w="60%">
+                            <Text><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
+                        </Box>
+                        <Box w="40%">
+                            <Text>{same?.trees} árvores</Text>
+                        </Box>   
+                    </Stack>
+               )
+               )
+                }
             </Box>
         </Stack>
         <Box
@@ -298,41 +347,80 @@ const ConfirmData = ({
                 paddingBottom: 5,
             }}
         >
-            Dados Actuais do Pomar
+            Dados Actuais do Bloco de Cajueiros
         </Text>
-    
         <Stack direction="row">
             <Box w="50%">
-                <Text>Descrição</Text>
+                <Text>Ano de plantio</Text>
             </Box>
             <Box w="50%">
-                <Text></Text>
+               <Text>{newDataObject?.plantingYear}</Text>
             </Box>
         </Stack>
         <Stack direction="row">
             <Box w="50%">
-                <Text>Culturas consociadas</Text>
+                <Text>Área aproveitada</Text>
             </Box>
             <Box w="50%">
-               <Text></Text>
+            <Text>{newDataObject?.usedArea ? `${newDataObject?.usedArea} hectares` : 'Nenhum'}</Text>
             </Box>
         </Stack>
         <Stack direction="row">
             <Box w="50%">
-                <Text>Área total</Text>
+                <Text>Compasso</Text>
             </Box>
             <Box w="50%">
-               <Text></Text>
+                <Text>
+                    {newDataObject.density?.mode ? newDataObject.density.mode : 'Nenhum'}
+                    {newDataObject.density?.mode === 'Regular' && `(${newDataObject.density?.width} x ${newDataObject.density?.length} metros)`}
+                </Text>
+            </Box>
+        </Stack>
+
+        <Stack direction="row">
+            <Box w="50%"
+                style={{
+                    justifyContent: 'center',
+                }}
+            >
+                <Text>Tipos de plantas</Text>
+            </Box>
+            <Box w="50%">
+               <Text>{newDataObject?.plantTypes.plantType?.join('; ')}</Text>
+               { newDataObject?.plantTypes.clones?.length > 0 &&
+                <Text>Clones: {newDataObject?.plantTypes.clones?.join('; ')}</Text>
+               }
+            </Box>
+        </Stack>
+
+
+        <Stack direction="row">
+            <Box w="50%">
+                <Text>Cajueiros</Text>
+            </Box>
+            <Box w="50%">
+                <Text>{newDataObject.trees ? `${newDataObject.trees} árvores` : 'Nenhum'}</Text>
             </Box>
         </Stack>
         <Stack direction="row">
-            <Box w="50%">
-                <Text>N° de cajueiros</Text>
+            <Box w="10%">
+               {/* <Text></Text> */}
             </Box>
-            <Box w="50%">
-               <Text></Text>
+            <Box w="90%">
+               { newDataObject.sameTypeTrees?.map(same=>(
+                    <Stack key={same.treeType} direction="row">
+                        <Box w="60%">
+                            <Text><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
+                        </Box>
+                        <Box w="40%">
+                            <Text>{same?.trees} árvores</Text>
+                        </Box>   
+                    </Stack>
+               )
+               )
+                }
             </Box>
-        </Stack> 
+        </Stack>
         </Box>
         
     }
@@ -1284,6 +1372,7 @@ const ConfirmData = ({
                 }
             }}
         />
+    </ScrollView>
     </Overlay>
 
     )

@@ -56,6 +56,7 @@ const EditFarmlandData = ({
     usedArea, setUsedArea, densityWidth,  setDensityWidth,
     densityLength, setDensityLength, plantTypes, setPlantTypes,
     clones, setClones, addedClone, setAddedClone,
+    selected, setSelected,
     isDensityModeIrregular, setIsDensityModeIrregular,
     isDensityModeRegular, setIsDensityModeRegular, sameTypeTreesList,
     setSameTypeTreesList, remainingArea, setRemainingArea,
@@ -85,6 +86,7 @@ const EditFarmlandData = ({
 
     const [editBlockIsOn, setEditBlockIsOn] = useState(false);
     const [isSameTypeTreesUpdated, setIsSameTypeTreesUpdated] = useState(false);
+    
 
     useEffect(()=>{
 
@@ -155,10 +157,14 @@ const EditFarmlandData = ({
                 setOldDensityLength(block?.density.length);
                 setIsDensityModeIrregular(false);
                 setIsDensityModeRegular(true);
+                setIsOldDensityModeIrregular(false);
+                setIsOldDensityModeRegular(true);
             }
             else{
                 setIsDensityModeIrregular(true);
                 setIsDensityModeRegular(false);
+                setIsOldDensityModeIrregular(true);
+                setIsOldDensityModeRegular(false);
             }
             if (block?.plantTypes?.plantType.some((el)=>el?.includes('enxert')) ) {
                 setClones(block?.plantTypes.clones);
@@ -239,6 +245,7 @@ const EditFarmlandData = ({
                 clones: oldClones,
             };
             oldData['sameTypeTrees'] = oldSameTypeTreesList;
+
         }
 
         setNewDataObject(newData);
@@ -474,7 +481,7 @@ const EditFarmlandData = ({
                         usedArea: '',
                         treeDensity: '',
                     }))
-                    setBlockTrees(newNumber);
+                    setBlockTrees(parseInt(newNumber));
                 }}
             />
                 
@@ -613,7 +620,7 @@ const EditFarmlandData = ({
                             usedArea: '',
                             treeDensity: '',
                         }))
-                        setDensityLength(newNumber)
+                        setDensityLength(parseInt(newNumber));
                     }}
                     />
                     
@@ -658,7 +665,7 @@ const EditFarmlandData = ({
                         usedArea: '',
                         treeDensity: '',
                     }))
-                    setDensityWidth(newNumber)
+                    setDensityWidth(parseInt(newNumber));
                 }}
             />
             {
@@ -684,6 +691,7 @@ const EditFarmlandData = ({
 
             }}
             data={plantingTypes}
+            notFoundText={'Tipo de planta não encontrado'}
             placeholder="Tipo de plantas"
             save="value"
             label="Tipo de plantas"
@@ -736,6 +744,7 @@ const EditFarmlandData = ({
                     setIsSameTypeTreesUpdated(true);               
                 }}
                 data={cloneList}
+                notFoundText={'Clone não encontrado'}
                 placeholder="clones"
                 save="value"
                 label="Clones"
@@ -951,7 +960,7 @@ const EditFarmlandData = ({
                             setErrors(prev=>({...prev, sameTypeTrees: ''}));
                             setSameTypeTreesList(sameTypeTreesList.map((object)=>{
                                 if (object?.treeType === sameTypeTree?.treeType){
-                                    object.trees = newTrees;
+                                    object.trees = parseInt(newTrees);
                                 }
                                 return object;
                             }));
@@ -1034,6 +1043,7 @@ const EditFarmlandData = ({
                         setConsociatedCrops(crop);
                     }}
                     data={crops}
+                    notFoundText={'Tipo de cultura não encontrada'}
                     save="value"
                     arrowicon={
                         <Icon 

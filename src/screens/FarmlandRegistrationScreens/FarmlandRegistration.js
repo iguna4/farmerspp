@@ -827,6 +827,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                         setConsociatedCrops(crop);
                     }}
                     data={crops}
+                    notFoundText={'Tipo de cultura não encontrada'}
                     save="value"
                     arrowicon={
                         <Icon 

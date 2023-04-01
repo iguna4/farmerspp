@@ -414,12 +414,12 @@ export default function FarmlandBlockRegistration({
                     }}
                 />
                     
-                { ('usedArea' in errors && !'blockTrees' in errors)
+                {/* { ('usedArea' in errors && !'blockTrees' in errors)
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.usedArea}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
-                }
+                } */}
             </FormControl>
             </Box>
 
@@ -449,17 +449,60 @@ export default function FarmlandBlockRegistration({
                 }}
             />
                 
-            {
-                ('blockTrees' in errors && ! 'usedArea' in errors) 
+            {/* {
+                ('blockTrees' in errors && !'usedArea' in errors) 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.blockTrees}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
-            }
+            } */}
             </FormControl>
             </Box>
         </Stack>
-        {
+
+            {
+                (errors?.blockTrees && errors?.usedArea) &&
+                <Box
+                    style={{
+                        backgroundColor: COLORS.danger,
+                    }}
+                >
+                    <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>       
+                    <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>       
+                    <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>        
+                </Box>
+            } 
+
+            {
+                (errors?.blockTrees && !errors?.usedArea) &&
+                <Box
+                    style={{
+                        backgroundColor: COLORS.danger,
+                        marginTop: -30,
+                    }}
+                >
+                    {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>        */}
+                    <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>       
+                    {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
+                </Box>
+            } 
+
+            {
+                (!errors?.blockTrees && errors?.usedArea) &&
+                <Box
+                    style={{
+                        backgroundColor: COLORS.danger,
+                        marginTop: -30,
+                    }}
+                >
+                    <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>       
+                    {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>        */}
+                    {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
+                </Box>
+            } 
+
+
+        {/* {
             (errors?.blockTrees && errors?.usedArea) &&
             <Box
                 style={{
@@ -470,7 +513,7 @@ export default function FarmlandBlockRegistration({
                 <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>       
                 <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>        
             </Box>
-        } 
+        }  */}
         </Box>
 
         <Box w="100%">
@@ -481,9 +524,11 @@ export default function FarmlandBlockRegistration({
                 fontSize: 16,
                 fontFamily: 'JosefinSans-Regular',
                 color: COLORS.grey,
-                paddingHorizontal: 15,
+                paddingLeft: 15,
             }}
-        >Compasso</Text>
+        >
+            Compasso
+        </Text>
     </FormControl.Label>
     <Stack  direction="row" mx="3" w="100%">
         <Box w="50%" px="1">
@@ -680,6 +725,7 @@ export default function FarmlandBlockRegistration({
                 setPlantTypes(type)}
             }
             data={plantingTypes}
+            notFoundText={'Tipo de planta não encontrado'}
             placeholder="Tipo de plantas"
             save="value"
             label="Tipo de plantas"
@@ -731,6 +777,7 @@ export default function FarmlandBlockRegistration({
                     setClones(type)}
                 }
                 data={cloneList}
+                notFoundText={'Clone não encontrado'}
                 placeholder="clones"
                 save="value"
                 label="Clones"

@@ -154,47 +154,37 @@ export default function GroupModal (
                     backgroundColor: '#EBEBE4',
                 }}
             >
-            <Box >
-
+            <Box>
                 <Pressable
                     onPress={()=>{
                         // navigation.goBack();
                         setModalVisible(false);
                     }}   
-                            style={{
-                                position: 'absolute',
-                                left: 0,
-                                top: 4,
-                                flexDirection: 'row',
-                                // justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                        <Icon 
-                            name="arrow-back-ios" 
-                            color={COLORS.main}
-                            size={25}
-                            // onPress={()=>{}}
-                        /> 
-                        <Text
-                            style={{
-                                color: COLORS.main,
-                                fontFamily: 'JosefinSans-Bold',
-                                marginLeft: -10,
-                            }}
-                        >
-                            Voltar
-                        </Text>
-                        </Pressable>
-
-                {/* <TouchableOpacity
-                    onPress={()=>{
-                        // navigation.goBack();
-                        setModalVisible(false);
-                    }}                            
+                    style={{
+                        position: 'absolute',
+                        left: 5,
+                        top: 4,
+                        flexDirection: 'row',
+                        // justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
                 >
-                    <Icon name='arrow-back-ios' color={COLORS.main} size={30}  />
-                </TouchableOpacity> */}
+                    <Icon 
+                        name="arrow-back-ios" 
+                        color={COLORS.main}
+                        size={25}
+                        // onPress={()=>{}}
+                    /> 
+                    <Text
+                        style={{
+                            color: COLORS.main,
+                            fontFamily: 'JosefinSans-Bold',
+                            marginLeft: -10,
+                        }}
+                    >
+                        Voltar
+                    </Text>
+                </Pressable>
             </Box>
             <Box w="80%">
             </Box>

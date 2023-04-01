@@ -71,6 +71,7 @@ const validateEditedBlockData = (
         trees: parseInt(object?.trees),
     }
  });
+
  
  
  if (!retrievedPlantingYear){

@@ -16,7 +16,30 @@ function SuccessAlert({
 
     const navigation = useNavigation();
 
-    // console.log('farmlandId:', farmlandId);
+    const navigateBack = ()=>{
+        if (flag === 'farmer'){
+            if (farmerItem.flag === 'Grupo'){
+                navigation.navigate('Group', {
+                    ownerId: farmerItem.ownerId,
+                });
+            }
+            else if (farmerItem.flag === 'Indivíduo'){
+                navigation.navigate('Farmer', {
+                    ownerId: farmerItem.ownerId,
+                });
+            }
+            else if(farmerItem.flag === 'Instituição') {
+                navigation.navigate('Institution', {
+                    ownerId: farmerItem.ownerId,
+                });
+            }
+
+        }
+        else if(flag === 'farmland') {
+
+        }
+    }
+
 
     return (
         <Modal 
@@ -38,7 +61,8 @@ function SuccessAlert({
                     <Box >
                         <Pressable
                             onPress={()=>{
-                                navigation.navigate('Farmers');
+                                // navigation.navigate('Farmers');
+                                navigateBack();
                                 setIsCoordinatesModalVisible(false);
                             }}   
                             style={{
@@ -66,23 +90,18 @@ function SuccessAlert({
                             Voltar
                         </Text>
                         </Pressable>
-
-                        {/* <TouchableOpacity
-                        style={{ flexDirection: 'row' }}
-                        onPress={()=>{
-                            navigation.navigate('Farmers');
-                            setIsCoordinatesModalVisible(false);
-                        }}                            
-                        >
-                            <Icon name='arrow-back-ios' color={COLORS.main} size={30}  />
-                        </TouchableOpacity> */}
                     </Box>
                     <Box w="100%">
 
                     </Box>
                 </Stack>
                 </Box>
-                <Box w="100%" h="40%">
+                <Box w="100%" h="60%"
+                    style={{
+                        // flex: 1,
+                        justifyContent: 'center',
+                    }}
+                >
 
                 <Stack 
                     direction="column" 
@@ -116,41 +135,49 @@ function SuccessAlert({
                 <Center
                     h="40%"
                 >
-{  farmlandId &&  ( 
-        <TouchableOpacity
-            onPress={()=>{
-                navigation.navigate('FarmlandAreaAudit', {
-                    farmlandId,
-                })
-                setIsCoordinatesModalVisible(false);
-            }}
-        >
-        <Box
-            // alignItems={'center'}
-            style={{
+        {/* The block of code below is not used any more. Kindly remove it 
+            whenever you feel to
+        */}
 
-                borderWidth: 2,
-                borderColor: COLORS.main,
-                borderRadius: 30,
-                width: 300,
-                maxHeight: 60,
-                justifyContent: 'center',
-                
-            }}
-        >
-            <Text
-                style={{ 
-                    fontSize: 24, 
-                    fontFamily: 'JosefinSans-Bold', 
-                    color: COLORS.main,
-                    textAlign: 'center',
-                }}
-            >
-                Auditar Área
-            </Text>
-        </Box>
-        </TouchableOpacity>
-)}
+        {  farmlandId &&  ( 
+                <TouchableOpacity
+                    onPress={()=>{
+                        navigation.navigate('FarmlandAreaAudit', {
+                            farmlandId,
+                        })
+                        setIsCoordinatesModalVisible(false);
+                    }}
+                >
+                <Box
+                    // alignItems={'center'}
+                    style={{
+
+                        borderWidth: 2,
+                        borderColor: COLORS.main,
+                        borderRadius: 30,
+                        width: 300,
+                        maxHeight: 60,
+                        justifyContent: 'center',
+                        
+                    }}
+                >
+                    <Text
+                        style={{ 
+                            fontSize: 24, 
+                            fontFamily: 'JosefinSans-Bold', 
+                            color: COLORS.main,
+                            textAlign: 'center',
+                        }}
+                    >
+                        Auditar Área
+                    </Text>
+                </Box>
+                </TouchableOpacity>
+        )}
+    {/* 
+        The block of code below is still in use
+        Do not remove it
+    */}
 {  farmerItem?.ownerId &&  
             ( 
             <TouchableOpacity
@@ -185,12 +212,9 @@ function SuccessAlert({
             </Box>
         </TouchableOpacity>
 )}
-
-
-
-                </Center>
-            </View>
-        </Modal>
+            </Center>
+        </View>
+    </Modal>
     );
 }
 

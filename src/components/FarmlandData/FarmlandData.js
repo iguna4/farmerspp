@@ -99,7 +99,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
     const [isDensityModeRegular, setIsDensityModeRegular] = useState(false);
     const [sameTypeTreesList, setSameTypeTreesList] = useState([]);
     const [remainingArea, setRemainingArea] = useState();
-
+    const [selected, setSelected] = useState([]);
 
 
     const [oldBlockId, setOldBlockId] = useState('');
@@ -1443,6 +1443,8 @@ const FarmlandData = ({ farmland, setRefresh })=>{
         setClones={setClones}
         addedClone={addedClone}
         setAddedClone={setAddedClone}
+        selected={selected}
+        setSelected={setSelected}
 
         isDensityModeIrregular={isDensityModeIrregular}
         setIsDensityModeIrregular={setIsDensityModeIrregular}

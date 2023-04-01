@@ -209,7 +209,7 @@ export default function InstitutionModal (
         contentContainerStyle={{
             flex: 1, 
             justifyContent: 'center', 
-            minHeight: '120%',
+            minHeight: '100%',
             paddingVertical: 15,
         }}
     >

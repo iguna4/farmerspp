@@ -443,6 +443,7 @@ const EditGroupData = ({
                         setGroupGoals(goal);
                     }}
                     data={groupPurposes}
+                    notFoundText={'Finalidade não encontrada'}
                     placeholder="Finalidade de grupo"
                     save="value"
                     label="Finalidade de grupo"

@@ -331,7 +331,7 @@ export default function FarmerRegistration({ route, navigation }) {
                         <Pressable
                             style={{
                                 position: 'absolute',
-                                left: 0,
+                                left: 5,
                                 top: 4,
                                 flexDirection: 'row',
                                 // justifyContent: 'center',

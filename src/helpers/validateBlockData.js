@@ -93,6 +93,8 @@ const validateBlockData = (
         ...errors,
         usedArea: 'Área aproveitada é superior a área disponível.'
     });
+    // console.log('some invalid data??');
+
     return false;
  }
 
@@ -107,6 +109,7 @@ const validateBlockData = (
      setErrors({ ...errors,
          plantTypes: 'Selecciona o tipo de plantas.',
      });
+
      return false;               
  }
  else if (
@@ -116,6 +119,7 @@ const validateBlockData = (
      setErrors({ ...errors,
          clones: 'Selecciona clones.',
      });
+
      return false;
     }
     
@@ -123,6 +127,7 @@ const validateBlockData = (
      setErrors({ ...errors,
          densityMode: 'Indica o compasso',
      });
+
      return false;
  }
 
@@ -130,6 +135,7 @@ const validateBlockData = (
      setErrors({ ...errors,
          density: 'Indica comprimento e largura.',
      });
+
      return false;
     }
 
@@ -141,6 +147,7 @@ const validateBlockData = (
      setErrors({ ...errors,
          density: 'Comprimento e Largura inválidos.',
      });
+
      return false;                   
  }
 
@@ -153,24 +160,19 @@ const validateBlockData = (
 //     return false;                   
 // }
 
+const sumOfTrees = retrievedSameTypeTreesList.map(object=>parseInt(object?.trees)).reduce((acc, el)=>acc + el, 0);
 
- const sumOfTrees = retrievedSameTypeTreesList.map(object=>parseInt(object?.trees)).reduce((acc, el)=>acc + el, 0);
-
- if (sumOfTrees !== retrievedTreesNumber){
+if (sumOfTrees !== retrievedTreesNumber){
     setErrors({
         ...errors,
         sameTypeTrees: 'A soma dos tipos de plantas não é igual ao total dos cajueiros deste bloco.'
     });
-
+    
     return false;
- }
-
-
+}
 
  const farmlandData = {
      plantingYear: retrievedPlantingYear, 
-     // description: retrievedFarmlandDescription,
-     // consociatedCrops: [...retrievedConsociatedCrops],
      density: {
          mode: retrievedDensityMode,
          length: retrievedDensityLength,
@@ -178,13 +180,11 @@ const validateBlockData = (
      },
      trees: retrievedTreesNumber,
      usedArea: retrievedUsedArea,
-     // totalArea: retrievedTotalArea,
      plantTypes: {
          plantType: retrievedPlantTypes,
          clones: retrievedClones,
      },
      sameTypeTrees: retrievedSameTypeTreesList,
-     // farmer: retrievedFarmerId,
  }
      
  return farmlandData;

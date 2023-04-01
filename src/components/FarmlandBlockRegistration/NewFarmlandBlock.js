@@ -95,6 +95,7 @@ export default function NewFarmlandBlock({
         // if any required data is not validated
         // a alert message is sent to the user   
         if (!validateBlockData(blockData, errors, setErrors)) {
+
             setAlert(true);
 
             setTitleAlert(errorMessages.farmlandError.title);
@@ -560,21 +561,51 @@ export default function NewFarmlandBlock({
                 <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>        
             </Box>
         } 
+
+        {
+            (errors?.blockTrees && !errors?.usedArea) &&
+            <Box
+                style={{
+                    backgroundColor: COLORS.danger,
+                    marginTop: -30,
+                }}
+            >
+                {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>        */}
+                <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>       
+                {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
+            </Box>
+        } 
+
+        {
+            (!errors?.blockTrees && errors?.usedArea) &&
+            <Box
+                style={{
+                    backgroundColor: COLORS.danger,
+                    marginTop: -30,
+                }}
+            >
+                <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>       
+                {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>        */}
+                {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
+            </Box>
+        } 
         </Box>
 
         <Box w="100%">
         <FormControl isRequired my="1" isInvalid={'densityMode' in errors}>
-    <FormControl.Label>                
-        <Text
-            style={{
-                fontSize: 16,
-                fontFamily: 'JosefinSans-Regular',
-                color: COLORS.grey,
-                paddingHorizontal: 15,
-            }}
-        >Compasso</Text>
-    </FormControl.Label>
-    <Stack  direction="row" mx="3" w="100%">
+            <FormControl.Label>                
+                <Text
+                    style={{
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Regular',
+                        color: COLORS.grey,
+                        paddingLeft: 15,
+                    }}
+                >
+                    Compasso
+                </Text>
+            </FormControl.Label>
+        <Stack  direction="row" mx="3" w="100%">
         <Box w="50%" px="1">
         <CheckBox
                 center
@@ -763,6 +794,7 @@ export default function NewFarmlandBlock({
                 setPlantTypes(type)}
             }
             data={plantingTypes}
+            notFoundText={'Tipo de planta não encontrado'}
             placeholder="Tipo de plantas"
             save="value"
             label="Tipo de plantas"
@@ -814,6 +846,7 @@ export default function NewFarmlandBlock({
                     setClones(type)}
                 }
                 data={cloneList}
+                notFoundText={'Clone não encontrado'}
                 placeholder="clones"
                 save="value"
                 label="Clones"
@@ -1055,32 +1088,32 @@ export default function NewFarmlandBlock({
       type="outline"
       onPress={()=>{
         // validate data before you update flags
-        let blockData = {
-            plantingYear, 
-            usedArea, 
-            densityWidth,
-            densityLength,
-            blockTrees,
-            plantTypes,
-            clones,
-            isDensityModeIrregular,
-            isDensityModeRegular,
-            sameTypeTreesList,
-        }
+        // let blockData = {
+        //     plantingYear, 
+        //     usedArea, 
+        //     densityWidth,
+        //     densityLength,
+        //     blockTrees,
+        //     plantTypes,
+        //     clones,
+        //     isDensityModeIrregular,
+        //     isDensityModeRegular,
+        //     sameTypeTreesList,
+        // }
         // if any required data is not validated
         // a alert message is sent to the user   
-        if (!validateBlockData(blockData, errors, setErrors)) {
+        // if (!validateBlockData(blockData, errors, setErrors)) {
             
-            setAlert(true);
-            setTitleAlert(errorMessages.farmlandError.title);
-            setMessageAlert(errorMessages.farmlandError.message);
-            setShowCancelButton(errorMessages.farmlandError.showCancelButton);
-            setShowConfirmButton(errorMessages.farmlandError.showConfirmButton);
-            setCancelText(errorMessages.farmlandError.cancelText);
-            setConfirmText(errorMessages.farmlandError.confirmText);
+        //     setAlert(true);
+        //     setTitleAlert(errorMessages.farmlandError.title);
+        //     setMessageAlert(errorMessages.farmlandError.message);
+        //     setShowCancelButton(errorMessages.farmlandError.showCancelButton);
+        //     setShowConfirmButton(errorMessages.farmlandError.showConfirmButton);
+        //     setCancelText(errorMessages.farmlandError.cancelText);
+        //     setConfirmText(errorMessages.farmlandError.confirmText);
 
-            return;
-        }
+        //     return;
+        // }
 
           setAddBlockIsOn(true); 
 

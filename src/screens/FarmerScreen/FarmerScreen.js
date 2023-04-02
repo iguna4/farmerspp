@@ -333,7 +333,7 @@ export default function FarmerScreen ({ route, navigation }) {
               >
                 <Icon 
                   name="add-circle" 
-                  color={COLORS.pantone} 
+                  color={COLORS.mediumseagreen} 
                   size={60} 
                 />
 

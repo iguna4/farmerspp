@@ -154,6 +154,9 @@ const EditFarmlandData = ({
 
 
     useEffect(()=>{
+        // The farmland main data need to be updated
+        // get the existing data associated with the farmland and
+        // keep it in two different states: current and old
         if (dataToBeUpdated === 'farmlandMainData' && resourceName === 'Farmland'){
             setDescription(resource?.description);
             setConsociatedCrops(resource?.consociatedCrops);
@@ -168,21 +171,14 @@ const EditFarmlandData = ({
         }
 
         if (dataToBeUpdated === 'plantType' && resourceName === 'Farmland') {
-            const block = resource?.blocks.find((block)=>block._id === blockId);
 
-            // setBlockTrees(block?.trees);
-
-            if (block?.plantTypes?.plantType.some((el)=>el?.includes('enxert')) ) {
-                // setOldClones(block?.plantTypes?.clones);
-            }
-
-            // setOldPlantTypes(block?.plantTypes?.plantType);
-            // setOldSameTypeTreesList(block?.sameTypeTrees);
-
+            // just set the title and get the form to supply new information
+            // plantType needs no old data for the update
             setOverlayTitle('Actualizar tipos de planta.');
             
         }
 
+        // The farmland block is to be updated
         if (dataToBeUpdated === 'blockData' && resourceName === 'Farmland') {
 
             const block = resource?.blocks.find((block)=>block._id === blockId);
@@ -213,7 +209,9 @@ const EditFarmlandData = ({
             setOldBlockTrees(block?.trees);
         }
 
-    }, [ dataToBeUpdated, resourceName ]);
+        // whenever the dataToBeUpdated; resourceName; or blockId changes, 
+        // I want to make sure the state associated to this block changes also
+    }, [ dataToBeUpdated, resourceName, blockId, ]);
 
     const onConfirmUpdate = (dataToBeUpdated, resourceName)=> {
         
@@ -361,7 +359,7 @@ const EditFarmlandData = ({
             <View
                 style={{ 
                     width: '100%', 
-                    backgroundColor: COLORS.main, 
+                    backgroundColor: COLORS.mediumseagreen, 
                 }}
             >
                 <Text
@@ -763,7 +761,7 @@ const EditFarmlandData = ({
 
 {
     
-    (dataToBeUpdated === 'plantType' && resourceName === 'Farmland' && blockId) &&
+    (dataToBeUpdated === 'plantType' && resourceName === 'Farmland') &&
     <Stack direction="column">
         <Box>
             <Text
@@ -973,48 +971,14 @@ const EditFarmlandData = ({
     )        
     }
 
+
     
 {  (plantTypes.length > 0 && sameTypeTreesList.length > 0) &&
-    <Box w="100%" mt="5"
+    <Box 
+        w="100%" 
+        my="5"
         style={{     }}
     >
-        <Box 
-            w="100%"
-            px="5"
-            style={{
-                backgroundColor: COLORS.mediumseagreen,
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
-                borderWidth: 2, 
-                borderColor: COLORS.mediumseagreen,
-
-            }}
-        >
-            <Stack direction="row" space={2} mb="1">
-                <Box w="65%">
-                    <Text
-                        style={{
-                            color: COLORS.ghostwhite,
-                            fontSize: 18,
-                            fontFamily: 'JosefinSans-Bold',
-                        }}
-                    >
-                        Tipos de plantas
-                    </Text>
-                </Box>
-                <Box w="35%">
-                    <Text
-                        style={{
-                            color: COLORS.ghostwhite,
-                            fontSize: 18,
-                            fontFamily: 'JosefinSans-Bold',
-                        }}
-                    >
-                        Cajueiros
-                    </Text>
-                </Box>
-            </Stack>
-        </Box>
 
     {
         (errors?.sameTypeTrees) && 
@@ -1033,16 +997,59 @@ const EditFarmlandData = ({
                     {errors?.sameTypeTrees}
                 </Text>
             </Box>
-    }
+        }
 
-    { sameTypeTreesList?.map((sameTypeTree, index)=>(
-        <Box w="100%" key={index} px="5" my="2"
+
+        <Box 
+            w="100%"
+            mb="2"
             style={{
-                borderColor: COLORS.lightgrey,
-                borderWidth: 2,
+                // backgroundColor: COLORS.mediumseagreen,
+                // borderTopLeftRadius: 20,
+                // borderTopRightRadius: 20,
+                // borderWidth: 2, 
+                // borderColor: COLORS.mediumseagreen,
+
             }}
         >
-            <Stack direction="row" w="100%" space={2} mt="1">
+            <Stack direction="row" space={2} >
+                <Box w="65%">
+                    <Text
+                        style={{
+                            color: COLORS.mediumseagreen,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                        }}
+                    >
+                        Tipos de plantas
+                    </Text>
+                </Box>
+                <Box w="35%">
+                    <Text
+                        style={{
+                            color: COLORS.mediumseagreen,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                        }}
+                    >
+                        Cajueiros
+                    </Text>
+                </Box>
+            </Stack>
+        </Box>
+
+    { sameTypeTreesList?.map((sameTypeTree, index)=>(
+        <Box 
+            key={index} 
+            w="100%" 
+            // px="5" 
+            mb="1"
+            style={{
+                // borderColor: COLORS.lightgrey,
+                // borderWidth: 2,
+            }}
+        >
+            <Stack direction="row" w="100%" space={2} >
                 <Box w="65%"
                     style={{ 
                         justifyContent: 'center',
@@ -1055,16 +1062,16 @@ const EditFarmlandData = ({
                             color: COLORS.grey,
                         }}
                     >
-                        {sameTypeTree?.treeType}
+                     <Icon name="arrow-forward" color={COLORS.grey} size={10} />   {sameTypeTree?.treeType}
                     </Text>
                 </Box>
                 <Box w="35%">
                     <CustomInput
-                        width="100%"
+                        width="90%"
                         textAlign="center"
                         keyboardType="numeric"
                         placeholder="Cajueiros"
-                        value={sameTypeTree?.trees?.toString()}
+                        value={sameTypeTree.trees}
                         onChangeText={newTrees=>{
                             setErrors(prev=>({...prev, sameTypeTrees: ''}));
                             setSameTypeTreesList(sameTypeTreesList.map((object)=>{

@@ -282,7 +282,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
             style={{                     
                 minHeight: 100,
                 paddingTop: 24,
-                backgroundColor: COLORS.moderatelimegreen,
+                backgroundColor: COLORS.pantone,
                 paddingHorizontal: 10,
                 marginVertical: 10,
             }}
@@ -308,8 +308,8 @@ const PersonalData = ({ farmer, setRefresh })=>{
             style={{
                 marginBottom: 40,
                 padding: 10,
-                borderColor: COLORS.main,
-                shadowColor: COLORS.main,
+                borderColor: COLORS.pantone,
+                shadowColor: COLORS.pantone,
                 shadowOffset: {
                   width: 0,
                   height: 3,
@@ -329,7 +329,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
             right: 4,
             zIndex: 1,
             flexDirection: 'row',
-            borderColor: farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red,
+            borderColor: farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.pantone : COLORS.red,
             borderWidth: 2,
             borderRadius: 10,
             }}
@@ -337,11 +337,11 @@ const PersonalData = ({ farmer, setRefresh })=>{
             <Icon 
                 name={farmer?.status === resourceValidation.status.pending ? 'pending-actions' : farmer?.status === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
                 size={25}
-                color={farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red}
+                color={farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.pantone : COLORS.red}
             />
             <Text
                 style={{
-                    color: farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red,
+                    color: farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.pantone : COLORS.red,
                 }}
             >
             {farmer?.status === resourceValidation.status.pending ? resourceValidation.message.pendingResourceMessage : farmer?.status === resourceValidation.status.validated ? resourceValidation.message.validatedResourceMessage : resourceValidation.message.invalidatedResourceMessage}
@@ -531,7 +531,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                         // name="home" 
                         name="edit" 
                         size={20} 
-                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone } 
                     />
                 </TouchableOpacity>
         }
@@ -678,7 +678,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                             // name="contacts" 
                             name="edit"
                             size={20} 
-                            color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
+                            color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone }
                         />
                     </TouchableOpacity>
             }
@@ -773,7 +773,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                         // name="file-present" 
                         name="edit"
                         size={20} 
-                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone } 
                     />
                 </TouchableOpacity>
             }
@@ -1007,7 +1007,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                 <TextInput 
                     style={{
                         borderWidth: 2,
-                        borderColor: COLORS.main,
+                        borderColor: COLORS.pantone,
                         borderRadius: 20,
                         padding: 10,
                         fontSize: 16,
@@ -1050,8 +1050,8 @@ const PersonalData = ({ farmer, setRefresh })=>{
                     padding: 5,
                     borderRadius: 100,
                     borderWidth: 1,
-                    borderColor: COLORS.main,
-                    backgroundColor: COLORS.main,
+                    borderColor: COLORS.pantone,
+                    backgroundColor: COLORS.pantone,
                 }}
             >
             <TouchableOpacity

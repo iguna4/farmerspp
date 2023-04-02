@@ -300,7 +300,7 @@ const GroupData = ({ farmer })=>{
             style={{                     
                 minHeight: 100,
                 paddingTop: 24,
-                backgroundColor: COLORS.moderatelimegreen,
+                backgroundColor: COLORS.pantone,
                 paddingHorizontal: 10,
                 marginVertical: 10,      
             }}
@@ -336,8 +336,8 @@ const GroupData = ({ farmer })=>{
             style={{
                 marginBottom: 40,
                 padding: 10,
-                borderColor: COLORS.main,
-                shadowColor: COLORS.main,
+                borderColor: COLORS.pantone,
+                shadowColor: COLORS.pantone,
                 shadowOffset: {
                     width: 0,
                     height: 3,
@@ -358,7 +358,7 @@ const GroupData = ({ farmer })=>{
             right: 4,
             zIndex: 1,
             flexDirection: 'row',
-            borderColor: farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red,
+            borderColor: farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.pantone : COLORS.red,
             borderWidth: 2,
             borderRadius: 10,
         }}
@@ -366,11 +366,11 @@ const GroupData = ({ farmer })=>{
             <Icon 
                 name={farmer?.status === resourceValidation.status.pending ? 'pending-actions' : farmer?.status === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
                 size={25}
-                color={farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red}
+                color={farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.pantone : COLORS.red}
             />
             <Text
                 style={{
-                    color: farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red,
+                    color: farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.pantone : COLORS.red,
                 }}
             >
             {farmer?.status === resourceValidation.status.pending ? resourceValidation.message.pendingResourceMessage : farmer?.status === resourceValidation.status.validated ? resourceValidation.message.validatedResourceMessage : resourceValidation.message.invalidatedResourceMessage}
@@ -413,7 +413,7 @@ const GroupData = ({ farmer })=>{
                     // name="home" 
                     name="edit" 
                     size={20} 
-                    color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                    color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone } 
                 />
             </TouchableOpacity>
         }
@@ -509,7 +509,7 @@ const GroupData = ({ farmer })=>{
                         <Icon 
                             name="edit"
                             size={20} 
-                            color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
+                            color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone }
                         />
                     </TouchableOpacity>
             }
@@ -611,7 +611,7 @@ const GroupData = ({ farmer })=>{
                         // name="home" 
                         name="edit" 
                         size={20} 
-                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone } 
                     />
                 </TouchableOpacity>
             }
@@ -755,7 +755,7 @@ const GroupData = ({ farmer })=>{
                 <Icon 
                     name="edit"
                     size={20} 
-                    color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main }
+                    color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone }
                 />
                 </TouchableOpacity>
             }
@@ -1053,7 +1053,7 @@ const GroupData = ({ farmer })=>{
                     <Icon 
                         name="add-location-alt" 
                         size={30} 
-                        color={COLORS.main}
+                        color={COLORS.pantone}
                     />
                 </TouchableOpacity>
             }

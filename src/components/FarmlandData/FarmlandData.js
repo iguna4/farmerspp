@@ -339,7 +339,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             style={{                     
                 minHeight: 100,
                 paddingTop: 24,
-                backgroundColor: COLORS.pantone,
+                backgroundColor: COLORS.mediumseagreen,
                 paddingHorizontal: 10,
             }}
             onToggle={(isOn)=>{
@@ -378,8 +378,8 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             style={{
                 marginBottom: 40,
                 padding: 10,
-                borderColor: COLORS.main,
-                shadowColor: COLORS.main,
+                borderColor: COLORS.mediumseagreen,
+                shadowColor: COLORS.mediumseagreen,
                 shadowOffset: {
                   width: 0,
                   height: 3,
@@ -400,7 +400,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             right: 4,
             zIndex: 1,
             flexDirection: 'row',
-            borderColor: farmland?.status === resourceValidation.status.pending ? COLORS.danger : farmland?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red,
+            borderColor: farmland?.status === resourceValidation.status.pending ? COLORS.danger : farmland?.status === resourceValidation.status.validated ? COLORS.mediumseagreen : COLORS.red,
             borderWidth: 2,
             borderRadius: 10,
             }}
@@ -408,11 +408,11 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             <Icon 
                 name={farmland?.status === resourceValidation.status.pending ? 'pending-actions' : farmland?.status === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
                 size={25}
-                color={farmland?.status === resourceValidation.status.pending ? COLORS.danger : farmland?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red}
+                color={farmland?.status === resourceValidation.status.pending ? COLORS.danger : farmland?.status === resourceValidation.status.validated ? COLORS.mediumseagreen : COLORS.red}
             />
             <Text
                 style={{
-                    color: farmland?.status === resourceValidation.status.pending ? COLORS.danger : farmland?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red,
+                    color: farmland?.status === resourceValidation.status.pending ? COLORS.danger : farmland?.status === resourceValidation.status.validated ? COLORS.mediumseagreen : COLORS.red,
                 }}
             >
             {farmland?.status === resourceValidation.status.pending ? resourceValidation.message.pendingResourceMessage : farmland?.status === resourceValidation.status.validated ? resourceValidation.message.validatedResourceMessage : resourceValidation.message.invalidatedResourceMessage}
@@ -454,7 +454,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     // name="home" 
                     name="edit" 
                     size={20} 
-                    color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                    color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.mediumseagreen } 
                 />
                 </TouchableOpacity>
             }
@@ -599,7 +599,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Icon 
                         name="add-location-alt" 
                         size={30} 
-                        color={COLORS.main}
+                        color={COLORS.mediumseagreen}
                         // color={farmland?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
                 </TouchableOpacity>
@@ -732,7 +732,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Icon 
                         name="add-location-alt" 
                         size={30} 
-                        color={COLORS.main}
+                        color={COLORS.mediumseagreen}
                         // color={farmland?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
                 </TouchableOpacity>
@@ -911,7 +911,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                 // name="home" 
                                 name="edit" 
                                 size={20} 
-                                color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                                color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.mediumseagreen } 
                             />
                             </TouchableOpacity>
                         }
@@ -1024,7 +1024,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                     ()=>{
                                         setIsOverlayVisible(!isOverlayVisible);
                                         setDataToBeUpdated('plantType');
-                                        setBlockId(block?._id);
+                                        setBlockTrees(block?.trees);
                                         setIsEditBlockVisible(true);
                                     }
                                 }
@@ -1033,7 +1033,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                 // name="home" 
                                 name="edit" 
                                 size={20} 
-                                color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                                color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.mediumseagreen } 
                             />
                             </TouchableOpacity>
                         }   
@@ -1302,7 +1302,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 <TextInput 
                     style={{
                         borderWidth: 2,
-                        borderColor: COLORS.main,
+                        borderColor: COLORS.mediumseagreen,
                         borderRadius: 20,
                         padding: 10,
                         fontSize: 16,
@@ -1345,8 +1345,8 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     padding: 5,
                     borderRadius: 100,
                     borderWidth: 1,
-                    borderColor: COLORS.main,
-                    backgroundColor: COLORS.main,
+                    borderColor: COLORS.mediumseagreen,
+                    backgroundColor: COLORS.mediumseagreen,
                 }}
             >
             <TouchableOpacity

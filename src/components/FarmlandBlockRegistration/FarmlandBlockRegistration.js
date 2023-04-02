@@ -899,7 +899,9 @@ export default function FarmlandBlockRegistration({
     }
 
 {  (plantTypes.length > 0 && sameTypeTreesList.length > 0) &&
-    <Box w="100%" mt="5"
+    <Box 
+        w="100%" 
+        my="5"
         style={{ 
             // borderWidth: 2, 
             // borderColor: COLORS.mediumseagreen,
@@ -909,24 +911,41 @@ export default function FarmlandBlockRegistration({
 
         }}
     >
+      
+      {
+        (errors?.sameTypeTrees) && <Box style={{
+                flexDirection: 'row',
+            }}>
+                <Icon name="error-outline" size={26} color="red" />
+                <Text
+                style={{
+                    color: COLORS.red,
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingLeft: 5, 
+                }}
+            >{errors?.sameTypeTrees}</Text>
+            </Box>
+        }
+      
         <Box 
             w="100%"
-            px="5"
+            mb="2"
             style={{
-                backgroundColor: COLORS.mediumseagreen,
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
-                borderWidth: 2, 
-                borderColor: COLORS.mediumseagreen,
+                // backgroundColor: COLORS.mediumseagreen,
+                // borderTopLeftRadius: 20,
+                // borderTopRightRadius: 20,
+                // borderWidth: 2, 
+                // borderColor: COLORS.mediumseagreen,
 
             }}
         >
-            <Stack direction="row" space={2} mb="1">
+            <Stack direction="row" space={2} >
                 <Box w="65%">
                     <Text
                         style={{
-                            color: COLORS.ghostwhite,
-                            fontSize: 18,
+                            color: COLORS.mediumseagreen,
+                            fontSize: 16,
                             fontFamily: 'JosefinSans-Bold',
                         }}
                     >Tipos de plantas</Text>
@@ -934,8 +953,8 @@ export default function FarmlandBlockRegistration({
                 <Box w="35%">
                     <Text
                         style={{
-                            color: COLORS.ghostwhite,
-                            fontSize: 18,
+                            color: COLORS.mediumseagreen,
+                            fontSize: 16,
                             fontFamily: 'JosefinSans-Bold',
                         }}
                     >Cajueiros</Text>
@@ -944,29 +963,24 @@ export default function FarmlandBlockRegistration({
             </Stack>
         </Box>
 
-        {
-                (errors?.sameTypeTrees) && <Box style={{
-                        flexDirection: 'row',
-                    }}>
-                        <Icon name="error-outline" size={26} color="red" />
-                        <Text
-                        style={{
-                            color: COLORS.red,
-                            fontSize: 14,
-                            fontFamily: 'JosefinSans-Regular',
-                            paddingLeft: 5, 
-                        }}
-                    >{errors?.sameTypeTrees}</Text>
-                    </Box>
-        }
+
         { sameTypeTreesList?.map((sameTypeTree, index)=>(
-                <Box w="100%" key={index} px="5" my="2"
+                <Box 
+                    w="100%" 
+                    key={index} 
+                    // px="5" 
+                    mb="1"
                     style={{
-                        borderColor: COLORS.lightgrey,
-                        borderWidth: 2,
+                        // borderColor: COLORS.lightgrey,
+                        // borderWidth: 2,
                     }}
                 >
-                    <Stack direction="row" w="100%" space={2} mt="1">
+                    <Stack 
+                        direction="row" 
+                        w="100%" 
+                        space={2} 
+                        // mt="1"
+                    >
                         <Box w="65%"
                             style={{ 
                                 justifyContent: 'center',
@@ -978,11 +992,13 @@ export default function FarmlandBlockRegistration({
                                     fontFamily: 'JosefinSans-Regular',
                                     color: COLORS.grey,
                                 }}
-                            >{sameTypeTree?.treeType}</Text>
+                            >
+                                <Icon name="arrow-forward" color={COLORS.grey} size={10} /> {sameTypeTree?.treeType}
+                            </Text>
                         </Box>
                         <Box w="35%">
                             <CustomInput
-                                width="100%"
+                                width="90%"
                                 textAlign="center"
                                 keyboardType="numeric"
                                 placeholder="Cajueiros"

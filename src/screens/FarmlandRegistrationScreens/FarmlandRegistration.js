@@ -368,6 +368,24 @@ export default function FarmlandRegistration ({ route, navigation }) {
     }
 
 
+    const navigateBack = ()=>{
+        if (flag === 'Grupo'){
+            navigation.navigate('Group', {
+                ownerId: ownerId,
+            });
+        }
+        else if (flag === 'Indivíduo'){
+            navigation.navigate('Farmer', {
+                ownerId: ownerId,
+            });
+        }
+        else if(flag === 'Instituição') {
+            navigation.navigate('Institution', {
+                ownerId: ownerId,
+            });
+        }
+    }
+
 
     const onAddFarmland = useCallback((farmlandMainData, realm) =>{
         const {
@@ -580,7 +598,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
         />
 
 
-<AwesomeAlert
+    <AwesomeAlert
         show={alert}
         
         titleStyle={{
@@ -664,7 +682,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     try {
                         invalidateFarmland(farmlandId, invalidationMessage, realm);
                         
-                        navigation.goBack();
+                        // navigation.goBack();
+                        navigateBack();
                     }
                     catch(error){
                         console.log('could not finish invalidation task: ', { cause: error });
@@ -696,41 +715,42 @@ export default function FarmlandRegistration ({ route, navigation }) {
             <Box >
 
             <Pressable
-                        onPress={()=>{
-                            if (farmlandId ){
-                                if(checkBlockConformity(farmlandId, realm)){
-                                    setIsCoordinatesModalVisible(true)
-                                }
-                            }
-                            else {
-                                navigation.goBack();
-                            }   
-                        }}   
-                            style={{
-                                position: 'absolute',
-                                left: 0,
-                                top: 4,
-                                flexDirection: 'row',
-                                // justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                        <Icon 
-                            name="arrow-back-ios" 
-                            color={COLORS.main}
-                            size={25}
-                            // onPress={()=>{}}
-                        /> 
-                        <Text
-                            style={{
-                                color: COLORS.main,
-                                fontFamily: 'JosefinSans-Bold',
-                                marginLeft: -10,
-                            }}
-                        >
-                            Voltar
-                        </Text>
-                        </Pressable>
+                onPress={()=>{
+                    if (farmlandId){
+                        if(checkBlockConformity(farmlandId, realm)){
+                            // setIsCoordinatesModalVisible(true)
+                            navigateBack();
+                        }
+                    }
+                    else {
+                        navigation.goBack();
+                    }   
+                }}   
+                style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    flexDirection: 'row',
+                    // justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <Icon 
+                    name="arrow-back-ios" 
+                    color={COLORS.main}
+                    size={25}
+                    // onPress={()=>{}}
+                /> 
+                <Text
+                    style={{
+                        color: COLORS.main,
+                        fontFamily: 'JosefinSans-Bold',
+                        marginLeft: -10,
+                    }}
+                >
+                    Voltar
+                </Text>
+            </Pressable>
 
                     {/* <Icon 
                         onPress={()=>{
@@ -1385,6 +1405,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
             setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}
             farmlandId={farmlandId}
             flag={'farmland'}
+            navigateBack={navigateBack}
             
         />
       </Box>

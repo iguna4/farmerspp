@@ -231,7 +231,7 @@ const EditFarmerData = ({
                     <View
                         style={{ 
                             width: '100%', 
-                            backgroundColor: COLORS.main, 
+                            backgroundColor: COLORS.pantone, 
                         }}
                     >
                         <Text
@@ -303,7 +303,7 @@ const EditFarmerData = ({
                       }}
                       dropdownCloseIcon={docType 
                                         ? <Icon name="close" size={20} color="grey" onPress={()=>setDocType('')} /> 
-                                        : <Icon size={45} name="arrow-drop-down" color={COLORS.main} />
+                                        : <Icon size={45} name="arrow-drop-down" color={COLORS.pantone} />
                                     }
                       mt={1}
                       onValueChange={newDocType => {
@@ -490,7 +490,7 @@ const EditFarmerData = ({
                         }}
                         dropdownCloseIcon={addressAdminPost 
                             ? <Icon name="close" size={20} color="grey" onPress={()=>setAddressAdminPost('')} /> 
-                            : <Icon size={45} name="arrow-drop-down" color={COLORS.main} />
+                            : <Icon size={45} name="arrow-drop-down" color={COLORS.pantone} />
                         }
                         mt={1}
                     onValueChange={newAdminPost=> {
@@ -528,7 +528,7 @@ const EditFarmerData = ({
                         }}
                         dropdownCloseIcon={addressVillage 
                                         ? <Icon name="close" size={20} color="grey" onPress={()=>setAddressVillage('')} /> 
-                                        : <Icon size={45} name="arrow-drop-down" color={COLORS.main} />
+                                        : <Icon size={45} name="arrow-drop-down" color={COLORS.pantone} />
                                     }
                         mt={1}
                         onValueChange={newVillage => setAddressVillage(newVillage)}

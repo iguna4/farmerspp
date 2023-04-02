@@ -319,7 +319,7 @@ const EditGroupData = ({
                     <View
                         style={{ 
                             width: '100%', 
-                            backgroundColor: COLORS.main, 
+                            backgroundColor: COLORS.pantone, 
                         }}
                     >
                         <Text
@@ -391,7 +391,7 @@ const EditGroupData = ({
                 mt={1}
                 dropdownCloseIcon={groupType 
                                     ? <Icon name="close" size={25} color="grey" onPress={()=>setGroupType('')} /> 
-                                    : <Icon size={45} name="arrow-drop-down" color={COLORS.main} />
+                                    : <Icon size={45} name="arrow-drop-down" color={COLORS.pantone} />
                                 }
                 onValueChange={newGroupType => {
                     setErrors((prev)=>({...prev, groupType: ''}));
@@ -451,7 +451,7 @@ const EditGroupData = ({
                         <Icon 
                             size={45} 
                             name="arrow-drop-down" 
-                            color={COLORS.main} 
+                            color={COLORS.pantone} 
                             />
                         }
                         closeicon={
@@ -513,7 +513,7 @@ const EditGroupData = ({
                                         : <Icon 
                                             size={45} 
                                             name="arrow-drop-down" 
-                                            color={COLORS.main} 
+                                            color={COLORS.pantone} 
                                         />
                                     }
                         mt={1}
@@ -559,7 +559,7 @@ const EditGroupData = ({
                                         : <Icon 
                                             size={45} 
                                             name="arrow-drop-down" 
-                                            color={COLORS.main} 
+                                            color={COLORS.pantone} 
                                         />
                                     }
                         mt={1}
@@ -617,7 +617,7 @@ const EditGroupData = ({
                         : <Icon 
                         size={45} 
                         name="arrow-drop-down" 
-                            color={COLORS.main} 
+                            color={COLORS.pantone} 
                         />
                     }
                 mt={1}
@@ -719,14 +719,14 @@ const EditGroupData = ({
                     }}
                     textStyle={{
                         fontWeight: '120',
-                        color: COLORS.main,
+                        color: COLORS.pantone,
                     }}
                     title="Activo"
                     checked={isGroupActive}
                     checkedIcon={
                         <Icon
                             name="check-box"
-                            color={COLORS.main}
+                            color={COLORS.pantone}
                             size={30}
                             iconStyle={{ marginRight: 1 }}
                         />
@@ -734,7 +734,7 @@ const EditGroupData = ({
                     uncheckedIcon={
                         <Icon
                             name="radio-button-unchecked"
-                            color={COLORS.main}
+                            color={COLORS.pantone}
                             size={30}
                             iconStyle={{ marginRight: 1 }}
                         />
@@ -756,14 +756,14 @@ const EditGroupData = ({
                     textStyle={{
                         
                         fontWeight: '120',
-                        color: COLORS.main,
+                        color: COLORS.pantone,
                     }}
                     title="Inactivo"
                     checked={isGroupInactive}
                     checkedIcon={
                         <Icon
                             name="check-box"
-                            color={COLORS.main}
+                            color={COLORS.pantone}
                             size={30}
                             iconStyle={{ marginRight: 1 }}
                         />
@@ -771,7 +771,7 @@ const EditGroupData = ({
                     uncheckedIcon={
                         <Icon
                             name="radio-button-unchecked"
-                            color={COLORS.main}
+                            color={COLORS.pantone}
                             size={30}
                             iconStyle={{ marginRight: 1 }}
                         />

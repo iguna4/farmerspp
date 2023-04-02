@@ -169,7 +169,7 @@ const EditInstitutionData = ({
                     <View
                         style={{ 
                             width: '100%', 
-                            backgroundColor: COLORS.main, 
+                            backgroundColor: COLORS.pantone, 
                         }}
                     >
                         <Text

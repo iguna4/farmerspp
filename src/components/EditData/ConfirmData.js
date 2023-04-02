@@ -32,8 +32,6 @@ const ConfirmData = ({
     const user = useUser();
     const customUserData = user?.customData;
 
-    console.log('newDataObject: ', JSON.stringify(newDataObject));
-    console.log('oldDataObject: ', JSON.stringify(oldDataObject));
 
     const onUpdateData = (resource, newDataObject, realm, dataToBeUpdated, resourceName) =>{
 
@@ -156,18 +154,33 @@ const ConfirmData = ({
 
 
             if (dataToBeUpdated === 'blockData' && resourceName === 'Farmland') {
-                const block = resource?.blocks.find((block)=>block._id === blockId);
-                const updatedBlocks = resource?.blocks?.map((block)=>{
-                    if (block._id === blockId){
-                        return newDataObject;
-                    }
-                    return block;
-                });
 
-                resource.blocks = updatedBlocks;
+                // find and update the block
+                let blockTobeUpdated = resource?.blocks.find(block=>block._id === blockId);
+                blockTobeUpdated.userName = customUserData?.name;
+                blockTobeUpdated.modifiedAt = new Date();
+                blockTobeUpdated.usedArea = newDataObject?.usedArea;
+                blockTobeUpdated.density = newDataObject?.density;
+                blockTobeUpdated.plantingYear = newDataObject?.plantingYear;
+                blockTobeUpdated.trees = newDataObject?.trees;
+                blockTobeUpdated.sameTypeTrees = [];
+                blockTobeUpdated.plantTypes = {};
+
+                resource.modifiedAt = new Date();
+                resource.modifiedBy = customUserData?.name;
+                resource.status = resourceValidation.status.pending;
+            }
+
+            if (dataToBeUpdated === 'plantType' && resourceName === 'Farmland') {
 
 
-                console.log('block to be updated:', block);
+                // find and update the block
+                let blockTobeUpdated = resource?.blocks.find(block=>block._id === blockId);
+                blockTobeUpdated.modifiedAt = new Date();
+                blockTobeUpdated.userName = customUserData?.name;
+                blockTobeUpdated.sameTypeTrees = newDataObject?.sameTypeTrees;
+                blockTobeUpdated.plantTypes = newDataObject?.plantTypes;
+
 
                 resource.modifiedAt = new Date();
                 resource.modifiedBy = customUserData?.name;
@@ -241,7 +254,126 @@ const ConfirmData = ({
         </View>
         
     {/* farmland block */}
-    
+
+    {
+        (dataToBeUpdated === 'plantType' && resourceName === 'Farmland') &&
+        <Box
+        style={{
+            paddingVertical: 30,
+            // alignItems: 'center',
+        }}
+        >
+        <Text
+            style={{
+                color: COLORS.black,
+                fontSize: 18,
+                fontFamily: 'JosefinSans-Bold',
+                paddingBottom: 5,
+            }}
+        >
+            Tipos de Planta Actuais
+        </Text>
+
+        {/* <Stack direction="row">
+            <Box w="50%"
+                style={{
+                    justifyContent: 'center',
+                }}
+            >
+                <Text>Tipos de plantas</Text>
+            </Box>
+            <Box w="50%">
+               <Text>{oldDataObject?.plantTypes.plantType?.join('; ')}</Text>
+               { oldDataObject?.plantTypes.clones?.length > 0 &&
+                <Text>Clones: {oldDataObject?.plantTypes.clones?.join('; ')}</Text>
+               }
+            </Box>
+        </Stack> */}
+
+   
+        <Stack direction="row">
+            {/* <Box w="10%">
+               <Text></Text>
+            </Box> */}
+            <Box w="100%">
+               { 
+               newDataObject.sameTypeTrees?.map(same=>(
+                    <Stack key={same.treeType} direction="row">
+                        <Box w="60%">
+                            <Text><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
+                        </Box>
+                        <Box w="40%">
+                            <Text>{same?.trees} árvores</Text>
+                        </Box>   
+                    </Stack>
+               )
+               )
+                }
+            </Box>
+        </Stack>
+        {/* <Box
+            style={{
+                paddingVertical: 20,
+            }}
+        > 
+        </Box> */}
+
+        {/* <Text
+            style={{
+                color: COLORS.black,
+                fontSize: 18,
+                fontFamily: 'JosefinSans-Bold',
+                paddingBottom: 5,
+            }}
+        >
+            Dados Actuais do Bloco
+        </Text> */}
+
+        {/* <Stack direction="row">
+            <Box w="50%"
+                style={{
+                    justifyContent: 'center',
+                }}
+            >
+                <Text>Tipos de plantas</Text>
+            </Box>
+            <Box w="50%">
+               <Text>{newDataObject?.plantTypes.plantType?.join('; ')}</Text>
+               { newDataObject?.plantTypes.clones?.length > 0 &&
+                <Text>Clones: {newDataObject?.plantTypes.clones?.join('; ')}</Text>
+               }
+            </Box>
+        </Stack> */}
+
+
+        {/* <Stack direction="row">
+            <Box w="10%">
+               <Text></Text>
+            </Box>
+            <Box w="90%">
+               { 
+               newDataObject.sameTypeTrees?.map(same=>(
+                    <Stack key={same.treeType} direction="row">
+                        <Box w="60%">
+                            <Text><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
+                        </Box>
+                        <Box w="40%">
+                            <Text>{same?.trees} árvores</Text>
+                        </Box>   
+                    </Stack>
+               )
+               )
+                }
+            </Box>
+        </Stack> */}
+        </Box>
+        
+    }
+
+
+
+
+
     {
         (dataToBeUpdated === 'blockData' && resourceName === 'Farmland') &&
         <Box
@@ -258,7 +390,7 @@ const ConfirmData = ({
                 paddingBottom: 5,
             }}
         >
-            Dados Anteriores do Bloco de Cajueiros
+            Dados Anteriores do Bloco
         </Text>
         <Stack direction="row">
             <Box w="50%">
@@ -287,7 +419,7 @@ const ConfirmData = ({
                 </Text>
             </Box>
         </Stack>
-        <Stack direction="row">
+        {/* <Stack direction="row">
             <Box w="50%"
                 style={{
                     justifyContent: 'center',
@@ -301,7 +433,7 @@ const ConfirmData = ({
                 <Text>Clones: {oldDataObject?.plantTypes.clones?.join('; ')}</Text>
                }
             </Box>
-        </Stack>
+        </Stack> */}
 
         <Stack direction="row">
             <Box w="50%">
@@ -312,25 +444,26 @@ const ConfirmData = ({
             </Box>
         </Stack>
    
-        <Stack direction="row">
-            <Box w="10%">
+        {/* <Stack direction="row"> */}
+            {/* <Box w="10%"> */}
                {/* <Text></Text> */}
-            </Box>
-            <Box w="90%">
-               { oldDataObject.sameTypeTrees?.map(same=>(
-                    <Stack key={same.treeType} direction="row">
-                        <Box w="60%">
-                            <Text><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
-                        </Box>
-                        <Box w="40%">
-                            <Text>{same?.trees} árvores</Text>
-                        </Box>   
-                    </Stack>
-               )
-               )
+            {/* </Box> */}
+            {/* <Box w="90%"> */}
+               { 
+            //    oldDataObject.sameTypeTrees?.map(same=>(
+            //         <Stack key={same.treeType} direction="row">
+            //             <Box w="60%">
+            //                 <Text><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
+            //             </Box>
+            //             <Box w="40%">
+            //                 <Text>{same?.trees} árvores</Text>
+            //             </Box>   
+            //         </Stack>
+            //    )
+            //    )
                 }
-            </Box>
-        </Stack>
+            {/* </Box> */}
+        {/* </Stack> */}
         <Box
             style={{
                 paddingVertical: 20,
@@ -347,7 +480,7 @@ const ConfirmData = ({
                 paddingBottom: 5,
             }}
         >
-            Dados Actuais do Bloco de Cajueiros
+            Dados Actuais do Bloco
         </Text>
         <Stack direction="row">
             <Box w="50%">
@@ -377,7 +510,7 @@ const ConfirmData = ({
             </Box>
         </Stack>
 
-        <Stack direction="row">
+        {/* <Stack direction="row">
             <Box w="50%"
                 style={{
                     justifyContent: 'center',
@@ -391,7 +524,7 @@ const ConfirmData = ({
                 <Text>Clones: {newDataObject?.plantTypes.clones?.join('; ')}</Text>
                }
             </Box>
-        </Stack>
+        </Stack> */}
 
 
         <Stack direction="row">
@@ -402,25 +535,26 @@ const ConfirmData = ({
                 <Text>{newDataObject.trees ? `${newDataObject.trees} árvores` : 'Nenhum'}</Text>
             </Box>
         </Stack>
-        <Stack direction="row">
-            <Box w="10%">
+        {/* <Stack direction="row"> */}
+            {/* <Box w="10%"> */}
                {/* <Text></Text> */}
-            </Box>
-            <Box w="90%">
-               { newDataObject.sameTypeTrees?.map(same=>(
-                    <Stack key={same.treeType} direction="row">
-                        <Box w="60%">
-                            <Text><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
-                        </Box>
-                        <Box w="40%">
-                            <Text>{same?.trees} árvores</Text>
-                        </Box>   
-                    </Stack>
-               )
-               )
+            {/* </Box> */}
+            {/* <Box w="90%"> */}
+               { 
+            //    newDataObject.sameTypeTrees?.map(same=>(
+            //         <Stack key={same.treeType} direction="row">
+            //             <Box w="60%">
+            //                 <Text><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
+            //             </Box>
+            //             <Box w="40%">
+            //                 <Text>{same?.trees} árvores</Text>
+            //             </Box>   
+            //         </Stack>
+            //    )
+            //    )
                 }
-            </Box>
-        </Stack>
+            {/* </Box> */}
+        {/* </Stack> */}
         </Box>
         
     }

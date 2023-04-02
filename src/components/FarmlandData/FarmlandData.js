@@ -466,7 +466,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 14,
+                            fontSize: 16,
                             fontFamily: 'JosefinSans-Regular',
                             
                         }}
@@ -478,7 +478,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 14,
+                            fontSize: 16,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
@@ -491,7 +491,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 14,
+                            fontSize: 16,
                             fontFamily: 'JosefinSans-Regular',
                             
                         }}
@@ -503,7 +503,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 14,
+                            fontSize: 16,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
@@ -518,7 +518,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 14,
+                            fontSize: 16,
                             fontFamily: 'JosefinSans-Regular',
                             
                         }}
@@ -530,7 +530,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 14,
+                            fontSize: 16,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
@@ -544,7 +544,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 14,
+                            fontSize: 16,
                             fontFamily: 'JosefinSans-Regular',
                             
                         }}
@@ -556,7 +556,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 14,
+                            fontSize: 16,
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
@@ -855,11 +855,17 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                         marginBottom: 15,
                     }}
                 >
+                    <Box
+                        style={{
+                            paddingVertical: 20,
+                        }}
+                    >
+
                     <Stack w="100%" direction="row" space={2}>
                         {/* <Box w="5%"></Box> */}
                         <Box w="10%"
                             style={{
-                                backgroundColor: COLORS.mediumseagreen,
+                                backgroundColor: COLORS.black,
                                 borderRadius: 100,
                                 justifyContent: 'center',
                                 alignItems: 'center',
@@ -877,7 +883,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                         <Box w="65%">
                             <Text
                                 style={{
-                                    color: COLORS.mediumseagreen,
+                                    color: COLORS.black,
                                     fontSize: 18,
                                     fontFamily: 'JosefinSans-Bold',
                                 }}
@@ -935,7 +941,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                         fontSize: 16,
                                         fontFamily: 'JosefinSans-Regular',
                                     }}
-                                >{block.density.mode === "Irregular" ? block.density.mode : block.density.mode === "Regular" ? `${block.density.mode} (${block.density.length} por ${block.density.width} metros)` : ''} </Text>
+                                >{block?.density?.mode === "Irregular" ? block?.density?.mode : block?.density?.mode === "Regular" ? `${block?.density?.mode} (${block?.density.length} por ${block?.density?.width} metros)` : ''} </Text>
                         </Box>
                     </Stack>
 
@@ -963,11 +969,10 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                         fontSize: 16,
                                         fontFamily: 'JosefinSans-Regular',
                                     }}
-                                >{block.usedArea.toFixed(2)} hectares</Text>
+                                >{block?.usedArea?.toFixed(2)} hectares</Text>
                         </Box>
                     </Stack>
 
-                    {/* <CustomDivider /> */}
                     <Stack w="100%" direction="row" >
                         <Box w="35%"
                             style={{
@@ -991,55 +996,123 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                         fontSize: 16,
                                         fontFamily: 'JosefinSans-Regular',
                                     }}
-                                >{block.trees} árvores</Text>
+                                >{block?.trees} árvores</Text>
                         </Box>
                     </Stack>
-
-        {    block?.sameTypeTrees?.map((sameType, index)=>(
-                <Stack key={index} w="100%" direction="row" pl="4" >
-                    <Box w="60%"
-                        style={{
-
-                        }}    
-                    >
-                        <Text
-                            style={{
-                                color: COLORS.grey,
-                                fontSize: 14,
-                                fontFamily: 'JosefinSans-Regular',
-                            }}
-                        >
-                            <Icon name="arrow-forward" color={COLORS.grey} size={10} /> {sameType?.treeType}
-                        </Text>
                     </Box>
-                    <Box w="40%">
+
+                    {/* <CustomDivider /> */}
+
+                    <Stack w="100%" direction="row" space={3}>
+                        <Box w="75%">
+                            <Text
+                                style={{
+                                    color: COLORS.black,
+                                    fontSize: 18,
+                                    fontFamily: 'JosefinSans-Bold',
+                                }}
+                            >Tipos de planta</Text>
+                        </Box>
+                        <Box w="25%">
+                        {       
+                        customUserData?.role !== roles.provincialManager && 
+                        <TouchableOpacity
+                                disabled={farmland?.status === resourceValidation.status.validated ? true : false}
+                                style={{
+                                }}
+                                onPress={
+                                    ()=>{
+                                        setIsOverlayVisible(!isOverlayVisible);
+                                        setDataToBeUpdated('plantType');
+                                        setBlockId(block?._id);
+                                        setIsEditBlockVisible(true);
+                                    }
+                                }
+                            >
+                            <Icon 
+                                // name="home" 
+                                name="edit" 
+                                size={20} 
+                                color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                            />
+                            </TouchableOpacity>
+                        }   
+                        </Box>
+                    </Stack>
+        {  (block?.sameTypeTrees?.length > 0) ?  block?.sameTypeTrees?.map((sameType, index)=>(
+                <Box 
+                    key={index} 
+                >
+
+                    <Stack    
+                        w="100%" 
+                        direction="row" 
+                        // pl="4" 
+                    >
+                        <Box w="60%"
+                            style={{
+
+                            }}    
+                        >
                             <Text
                                 style={{
                                     color: COLORS.grey,
-                                    fontSize: 14,
+                                    fontSize: 16,
                                     fontFamily: 'JosefinSans-Regular',
                                 }}
-                            >{sameType?.trees} árvores</Text>
-                    </Box>
-                </Stack>
+                            >
+                                <Icon name="arrow-forward" color={COLORS.grey} size={10} /> {sameType?.treeType}
+                            </Text>
+                        </Box>
+                        <Box w="40%">
+                                <Text
+                                    style={{
+                                        color: COLORS.grey,
+                                        fontSize: 16,
+                                        fontFamily: 'JosefinSans-Regular',
+                                    }}
+                                >{sameType?.trees} árvores</Text>
+                        </Box>
+                    </Stack>
+                </Box>
 
             ) )              
+            :
+            <Text
+                style={{
+                    color: COLORS.red,
+                    fontSize: 16,
+                    fontFamily: 'JosefinSans-Regular',
+                    textAlign: 'center',
+                    padding: 20,
+                }}
+            >
+                Actualizar os tipos de planta para este bloco de cajueiros
+            </Text>
                     
         }
-    {/* <CustomDivider /> */}
+        <Box
+            style={{
+                paddingTop: 20,
+            }}
+        >
+            <CustomDivider />
+        </Box>
     </Box>
-    )) }
+    ))
+
+}
         
 
 
 
 <Box
     style={{
-        marginTop: 10,
+        marginTop: -10,
         backgroundColor: COLORS.verylightgrey
     }}
 >
-<CustomDivider />
+{/* <CustomDivider /> */}
     
 <Stack direction="column" w="100%" style={{ paddingTop: 5,  }} >
       <Box w="100%">

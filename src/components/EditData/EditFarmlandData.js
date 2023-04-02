@@ -86,22 +86,46 @@ const EditFarmlandData = ({
 
     const [editBlockIsOn, setEditBlockIsOn] = useState(false);
     const [isSameTypeTreesUpdated, setIsSameTypeTreesUpdated] = useState(false);
-    
 
+    
     useEffect(()=>{
 
-        if (isSameTypeTreesUpdated) {
-            let plants = plantTypes?.filter(plantType=>!plantType.includes('enxer'));
-            let pickedClones = clones?.map(clone=>`Clone: ${clone}`);
-            let merged = plants.concat(pickedClones);
-            setSameTypeTreesList(merged?.map(sameTypeTrees=>({
-                treeType: sameTypeTrees,
-                trees: ''
-            })));
-            setIsSameTypeTreesUpdated(false);
+        let selectedClones = [];
+        let mergedSameTypeTrees = [];
+        const filteredPlantTypes = plantTypes.filter(plantType=>!plantType.includes('enxer'));
+        if (plantTypes.filter(plantType=>plantType.includes('enxer')).length > 0){
+            selectedClones = clones?.map(clone=>`Clone: ${clone}`);
+            mergedSameTypeTrees = filteredPlantTypes.concat(selectedClones);
         }
+        else{
+            mergedSameTypeTrees = filteredPlantTypes;
+            if(clones?.length > 0){
+                setClones([]);
+            }
+        }
+        let normalizedSameTypeTrees = mergedSameTypeTrees?.map((treeType)=>({
+            treeType,
+            trees: '',
+        }));
+        setSameTypeTreesList(normalizedSameTypeTrees);
 
-    }, [ clones, plantTypes, ]);
+    }, [ clones, plantTypes]);
+
+
+    // useEffect(()=>{
+
+    //     if (isSameTypeTreesUpdated) {
+    //         let plants = plantTypes?.filter(plantType=>!plantType.includes('enxer'));
+    //         let pickedClones = clones?.map(clone=>`Clone: ${clone}`);
+    //         let merged = plants.concat(pickedClones);
+    //         setSameTypeTreesList(merged?.map(sameTypeTrees=>({
+    //             treeType: sameTypeTrees,
+    //             trees: ''
+    //         })));
+    //         setIsSameTypeTreesUpdated(false);
+    //     }
+
+    // }, [ clones, plantTypes, ]);
 
 
     useEffect(()=>{
@@ -143,13 +167,28 @@ const EditFarmlandData = ({
             setOldTrees(resource?.trees);
         }
 
+        if (dataToBeUpdated === 'plantType' && resourceName === 'Farmland') {
+            const block = resource?.blocks.find((block)=>block._id === blockId);
+
+            // setBlockTrees(block?.trees);
+
+            if (block?.plantTypes?.plantType.some((el)=>el?.includes('enxert')) ) {
+                // setOldClones(block?.plantTypes?.clones);
+            }
+
+            // setOldPlantTypes(block?.plantTypes?.plantType);
+            // setOldSameTypeTreesList(block?.sameTypeTrees);
+
+            setOverlayTitle('Actualizar tipos de planta.');
+            
+        }
+
         if (dataToBeUpdated === 'blockData' && resourceName === 'Farmland') {
+
             const block = resource?.blocks.find((block)=>block._id === blockId);
             setPlantingYear(block?.plantingYear);
             setUsedArea(block?.usedArea);
             setBlockTrees(block?.trees);
-            setPlantTypes(block?.plantTypes.plantType);
-            setSameTypeTreesList(block.sameTypeTrees);
             if (block?.density.mode === 'Regular') {
                 setDensityWidth(block?.density.width);
                 setDensityLength(block?.density.length);
@@ -166,30 +205,31 @@ const EditFarmlandData = ({
                 setIsOldDensityModeIrregular(true);
                 setIsOldDensityModeRegular(false);
             }
-            if (block?.plantTypes?.plantType.some((el)=>el?.includes('enxert')) ) {
-                setClones(block?.plantTypes.clones);
-                setOldClones(block?.plantTypes.clones);
-            }
 
             setOverlayTitle('Actualizar bloco de cajueiros.');
-
             
             setOldPlantingYear(block?.plantingYear);
             setOldUsedArea(block?.usedArea);
             setOldBlockTrees(block?.trees);
-            setOldPlantTypes(block?.plantTypes.plantType);
-            setOldSameTypeTreesList(block?.sameTypeTrees);
         }
 
     }, [ dataToBeUpdated, resourceName ]);
 
     const onConfirmUpdate = (dataToBeUpdated, resourceName)=> {
-
         
         const newData = {};
         const oldData = {};
         
         if (dataToBeUpdated === 'farmlandMainData' && resourceName === 'Farmland') {
+
+            if(dataToBeUpdated === 'farmlandMaiData' && !validateFarmlandEditedData({
+                description, consociatedCrops, totalArea,
+                trees, oldDescription, oldConsociatedCrops,
+                oldTotalArea, oldTrees,
+                blocks,
+            }, errors, setErrors, dataToBeUpdated, resourceName)) {
+                return ;
+            }
             
             const validatedData = validateFarmlandEditedData({
     
@@ -205,7 +245,7 @@ const EditFarmlandData = ({
             newData['totalArea'] = validatedData?.totalArea;
             newData['trees'] = validatedData?.trees;
 
-            console.log('new Data: ', newData);
+            // console.log('new Data: ', newData);
 
             // old data
             oldData['description'] = oldDescription;
@@ -215,7 +255,53 @@ const EditFarmlandData = ({
             
         }
 
+        if (dataToBeUpdated === 'plantType' && resourceName === 'Farmland') {
+
+            if (dataToBeUpdated === 'plantType' && !validateEditedBlockData({
+                plantingYear, blockTrees, usedArea,
+                isDensityModeIrregular, isDensityModeRegular, densityLength,
+                densityWidth, plantTypes, clones, sameTypeTreesList, 
+                remainingArea, 
+            }, errors, setErrors, dataToBeUpdated, resourceName)) {
+                return ;
+            }
+
+            const validatedData = validateEditedBlockData({    
+                plantingYear, blockTrees, usedArea,
+                isDensityModeIrregular, isDensityModeRegular, densityLength,
+                densityWidth, plantTypes, clones, sameTypeTreesList, 
+                remainingArea,
+            }, errors, setErrors, dataToBeUpdated, resourceName);
+            
+            // incoming data
+            newData['plantTypes'] = validatedData?.plantTypes;
+            newData['sameTypeTrees'] = validatedData?.sameTypeTrees;
+
+            
+            // old data
+            // oldData['plantTypes'] = {
+            //     plantType: oldPlantTypes,
+            //     clones: oldClones,
+            // };
+            // oldData['sameTypeTrees'] = oldSameTypeTreesList;
+            
+        }
+
         if (dataToBeUpdated === 'blockData' && resourceName === 'Farmland') {
+
+
+            if (dataToBeUpdated === 'blockData' && !validateEditedBlockData({
+                plantingYear, blockTrees, usedArea,
+                isDensityModeIrregular, isDensityModeRegular, densityLength,
+                densityWidth, plantTypes, clones, sameTypeTreesList, 
+                remainingArea, 
+            }, errors, setErrors, dataToBeUpdated, resourceName)) {
+
+
+                return ;
+            }
+
+
             const validatedData = validateEditedBlockData({    
                 plantingYear, blockTrees, usedArea,
                 isDensityModeIrregular, isDensityModeRegular, densityLength,
@@ -228,9 +314,7 @@ const EditFarmlandData = ({
             newData['density'] = validatedData?.density;
             newData['trees'] = validatedData?.trees;
             newData['usedArea'] = validatedData?.usedArea;
-            newData['plantTypes'] = validatedData?.plantTypes;
-            newData['sameTypeTrees'] = validatedData?.sameTypeTrees;
- 
+
             // old data
             oldData['plantingYear'] = oldPlantingYear;
             oldData['density'] = {
@@ -240,11 +324,6 @@ const EditFarmlandData = ({
             };
             oldData['trees'] = oldBlockTrees;
             oldData['usedArea'] = oldUsedArea;
-            oldData['plantTypes'] = {
-                plantType: oldPlantTypes,
-                clones: oldClones,
-            };
-            oldData['sameTypeTrees'] = oldSameTypeTreesList;
 
         }
 
@@ -679,9 +758,39 @@ const EditFarmlandData = ({
         </Box>
     </Stack>            
 )}
+</Stack>
+    }
 
+{
+    
+    (dataToBeUpdated === 'plantType' && resourceName === 'Farmland' && blockId) &&
+    <Stack direction="column">
+        <Box>
+            <Text
+                style={{
+                    textAlign: 'right',
+                    fontSize: 14,
+                    color: COLORS.mediumseagreen,
+                    fontFamily: 'JosefinSans-Regular',
 
-<FormControl isRequired my="1" isInvalid={'plantTypes' in errors}>
+                }}
+            >
+                Este bloco tem...
+            </Text>
+            <Text
+                style={{
+                    textAlign: 'right',
+                    fontSize: 14,
+                    color: COLORS.mediumseagreen,
+                    fontFamily: 'JosefinSans-Regular',
+                }}
+            >
+                {/* {resource?.blocks?.find(block=>block?._id === blockId).trees} cajueiros. */}
+                {blockTrees} cajueiros
+            </Text>
+
+        </Box>
+    <FormControl isRequired my="1" isInvalid={'plantTypes' in errors}>
         <FormControl.Label>Tipo de plantas</FormControl.Label>
         <MultipleSelectList
             setSelected={(type)=>{
@@ -1167,23 +1276,7 @@ const EditFarmlandData = ({
             }}
             type="outline"
             onPress={()=>{
-                if(dataToBeUpdated === 'farmlandMaiData' && !validateFarmlandEditedData({
-                    description, consociatedCrops, totalArea,
-                    trees, oldDescription, oldConsociatedCrops,
-                    oldTotalArea, oldTrees,
-                    blocks,
-                }, errors, setErrors, dataToBeUpdated, resourceName)) {
-                    return ;
-                }
 
-                if (dataToBeUpdated === 'blockData' && !validateEditedBlockData({
-                    plantingYear, blockTrees, usedArea,
-                    isDensityModeIrregular, isDensityModeRegular, densityLength,
-                    densityWidth, plantTypes, clones, sameTypeTreesList, 
-                    remainingArea,
-                }, errors, setErrors)) {
-                    return ;
-                }
 
                 onConfirmUpdate(dataToBeUpdated, resourceName);
                 setIsOverlayVisible(false);

@@ -110,7 +110,6 @@ export default function FarmlandBlockRegistration({
                 setTreeRedFlag(false);
             }
 
-
             visualizeBlockData();
 
             setAddBlockIsOn(false);
@@ -406,20 +405,20 @@ export default function FarmlandBlockRegistration({
                     onChangeText={newNumber=>{
                         setErrors(prev=>({
                             ...prev, 
-                            blockTrees: '', 
-                            usedArea: '',
-                            treeDensity: '',
+                            blockTrees: null, 
+                            usedArea: null,
+                            treeDensity: null,
                         }))
                         setUsedArea(newNumber)
                     }}
                 />
                     
-                {/* { ('usedArea' in errors && !'blockTrees' in errors)
+                { ('usedArea' in errors)
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.usedArea}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-                } */}
+                : <FormControl.HelperText>{errors?.blockTrees && <Text></Text>}</FormControl.HelperText>
+                }
             </FormControl>
             </Box>
 
@@ -439,23 +438,21 @@ export default function FarmlandBlockRegistration({
                 onChangeText={newNumber=>{
                     setErrors(prev=>({
                         ...prev, 
-                        blockTrees: '', 
-                        usedArea: '',
-                        treeDensity: '',
-
+                        blockTrees: null, 
+                        usedArea: null,
+                        treeDensity: null,
                     }))
                     setBlockTrees(newNumber);
-
                 }}
             />
                 
-            {/* {
-                ('blockTrees' in errors && !'usedArea' in errors) 
+            {
+                ('blockTrees' in errors) 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.blockTrees}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-            } */}
+                : <FormControl.HelperText>{errors?.usedArea && <Text></Text>}</FormControl.HelperText>
+            }
             </FormControl>
             </Box>
         </Stack>
@@ -476,28 +473,28 @@ export default function FarmlandBlockRegistration({
             {
                 (errors?.blockTrees && !errors?.usedArea) &&
                 <Box
-                    style={{
-                        backgroundColor: COLORS.danger,
-                        marginTop: -30,
-                    }}
-                >
+                //     style={{
+                //         backgroundColor: COLORS.danger,
+                //         // marginTop: -30,
+                //     }}
+                 >
                     {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>        */}
-                    <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>       
-                    {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
-                </Box>
+                     <Text style={{ fontSize: 14, color: COLORS.red, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.red} /> {errors?.blockTrees}</Text>       
+                     {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
+                 </Box>
             } 
 
             {
                 (!errors?.blockTrees && errors?.usedArea) &&
                 <Box
-                    style={{
-                        backgroundColor: COLORS.danger,
-                        marginTop: -30,
-                    }}
-                >
-                    <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>       
-                    {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>        */}
-                    {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
+                //     style={{
+                //         backgroundColor: COLORS.danger,
+                //         // marginTop: -30,
+                //     }}
+                 >
+                     <Text style={{ fontSize: 14, color: COLORS.red, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.red} /> {errors?.usedArea}</Text>       
+                     {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>        */}
+                     {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
                 </Box>
             } 
 
@@ -516,7 +513,9 @@ export default function FarmlandBlockRegistration({
         }  */}
         </Box>
 
-        <Box w="100%">
+        <Box w="100%"
+            style={{ marginTop: (errors?.usedArea && errors?.blockTrees) ? 0 : 0}}
+        >
         <FormControl isRequired my="1" isInvalid={'densityMode' in errors}>
     <FormControl.Label>                
         <Text
@@ -647,9 +646,9 @@ export default function FarmlandBlockRegistration({
                         setErrors(prev=>({
                             ...prev, 
                             density: '',
-                            blockTrees: '', 
-                            usedArea: '',
-                            treeDensity: '',
+                            blockTrees: null, 
+                            usedArea: null,
+                            treeDensity: null,
                         
                         }))
                         setDensityLength(newNumber)
@@ -693,9 +692,9 @@ export default function FarmlandBlockRegistration({
                     setErrors(prev=>({
                         ...prev, 
                         density: '',
-                        blockTrees: '', 
-                        usedArea: '',
-                        treeDensity: '',
+                        blockTrees: null, 
+                        usedArea: null,
+                        treeDensity: null,
                     }))
                     setDensityWidth(newNumber)
                 }}

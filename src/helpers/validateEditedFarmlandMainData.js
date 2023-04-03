@@ -16,7 +16,7 @@ import { capitalize } from "./capitalize";
  * in the form.
  */
 
-const validateFarmlandEditedData = (
+const validateEditedFarmlandMainData = (
     {   
 
         description, consociatedCrops, totalArea,
@@ -36,7 +36,7 @@ const validateFarmlandEditedData = (
 
       const retrievedOldDescription =  oldDescription ? oldDescription?.trim() : '';
       const retrievedOldTotalArea = oldTotalArea ? parseFloat(oldTotalArea) : '';
-      const retrievedOldTrees = trees ? Number(parseInt(trees)) : 0;
+      const retrievedOldTrees = oldTrees ? Number(parseInt(oldTrees)) : 0;
       const retrievedOldConsociatedCrops = oldConsociatedCrops?.length > 0 ? oldConsociatedCrops : [];
 
       const retrievedBlocks = [...blocks];
@@ -65,7 +65,7 @@ const validateFarmlandEditedData = (
         description: 'A localização actual não deve ser igual à anterior',
         consociatedCrops: 'As culturas consociadas actuais não podem ser iguais às anteriores.',
         trees: 'O número de cajueiros actual não pode ser igual ao anterior.',
-        totalArea: 'A area actual não pode ser igual à anteior.',
+        totalArea: 'A área actual não pode ser igual à anteior.',
        });
        
        return false;
@@ -156,4 +156,4 @@ const validateFarmlandEditedData = (
 
 };
 
-export default validateFarmlandEditedData;
+export default validateEditedFarmlandMainData;

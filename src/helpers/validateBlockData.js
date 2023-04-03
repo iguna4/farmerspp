@@ -10,8 +10,8 @@ const errorCoeffients = {
 const getThreshold = (trees, area, width, length)=>{
     
     const estimatedArea = ((trees * width * length) / 10000).toFixed(2);
-    const estimatedTrees = ((area * 10000) / (width * length)).toFixed(2);
-    const estimatedDensity = Math.sqrt((area *10000)/trees).toFixed(2);   
+    const estimatedTrees = Math.ceil((area * 10000) / (width * length));
+    const estimatedDensity = Math.ceil(Math.sqrt((area *10000)/trees));   
 
     if (
         (((estimatedTrees - errorCoeffients.trees) <= trees) && ((estimatedTrees + errorCoeffients.trees) >= trees))
@@ -104,7 +104,38 @@ const validateBlockData = (
         });
         return false;
     }
-    
+
+    if (!retrievedDensityMode){
+        setErrors({ ...errors,
+            densityMode: 'Indica o compasso',
+        });
+   
+        return false;
+    }
+   
+    if (retrievedDensityMode === 'Regular' && (retrievedDensityLength === '' || retrievedDensityWidth === '')){
+        setErrors({ ...errors,
+            density: 'Indica comprimento e largura.',
+        });
+   
+        return false;
+       }
+   
+    if ( retrievedDensityMode === 'Regular' && (
+        ( retrievedDensityLength > 20 ||  retrievedDensityWidth > 20 ) 
+        ||  
+        ( retrievedDensityLength < 5 ||  retrievedDensityWidth < 5 ))
+        ) {      
+        setErrors({ ...errors,
+            density: 'Comprimento e Largura inválidos.',
+        });
+   
+        return false;                   
+    }
+
+
+
+
  if (retrievedPlantTypes?.length === 0 ){
      setErrors({ ...errors,
          plantTypes: 'Selecciona o tipo de plantas.',
@@ -123,33 +154,6 @@ const validateBlockData = (
      return false;
     }
     
- if (!retrievedDensityMode){
-     setErrors({ ...errors,
-         densityMode: 'Indica o compasso',
-     });
-
-     return false;
- }
-
- if (retrievedDensityMode === 'Regular' && (retrievedDensityLength === '' || retrievedDensityWidth === '')){
-     setErrors({ ...errors,
-         density: 'Indica comprimento e largura.',
-     });
-
-     return false;
-    }
-
- if ( retrievedDensityMode === 'Regular' && (
-     ( retrievedDensityLength > 20 ||  retrievedDensityWidth > 20 ) 
-     ||  
-     ( retrievedDensityLength < 5 ||  retrievedDensityWidth < 5 ))
-     ) {      
-     setErrors({ ...errors,
-         density: 'Comprimento e Largura inválidos.',
-     });
-
-     return false;                   
- }
 
 //  if ( retrievedDensityMode === 'Regular' && !getThreshold(retrievedTreesNumber, retrievedUsedArea, retrievedDensityWidth, retrievedDensityLength).status) {      
 //     setErrors({ ...errors,

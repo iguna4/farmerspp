@@ -496,9 +496,9 @@ export default function NewFarmlandBlock({
                     onChangeText={newNumber=>{
                         setErrors(prev=>({
                             ...prev, 
-                            blockTrees: '', 
-                            usedArea: '',
-                            treeDensity: '',
+                            blockTrees: null, 
+                            usedArea: null,
+                            treeDensity: null,
                         }))
                         setUsedArea(newNumber)
                     }}
@@ -509,7 +509,7 @@ export default function NewFarmlandBlock({
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.usedArea}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
+                : <FormControl.HelperText><Text></Text></FormControl.HelperText>
                 } */}
             </FormControl>
             </Box>
@@ -530,9 +530,9 @@ export default function NewFarmlandBlock({
                 onChangeText={newNumber=>{
                     setErrors(prev=>({
                         ...prev, 
-                        blockTrees: '', 
-                        usedArea: '',
-                        treeDensity: '',
+                        blockTrees: null, 
+                        usedArea: null,
+                        treeDensity: null,
                     }))
                     setBlockTrees(newNumber);
 
@@ -544,7 +544,7 @@ export default function NewFarmlandBlock({
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.blockTrees}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
+                : <FormControl.HelperText><Text></Text></FormControl.HelperText>
             } */}
             </FormControl>
             </Box>
@@ -565,33 +565,35 @@ export default function NewFarmlandBlock({
         {
             (errors?.blockTrees && !errors?.usedArea) &&
             <Box
-                style={{
-                    backgroundColor: COLORS.danger,
-                    marginTop: -30,
-                }}
+            //     style={{
+            //         backgroundColor: COLORS.danger,
+            //         marginTop: -30,
+            //     }}
             >
-                {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>        */}
-                <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>       
-                {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
+                 {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>        */}
+                 <Text style={{ fontSize: 14, color: COLORS.red, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.red} /> {errors?.blockTrees}</Text>       
+                 {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
             </Box>
         } 
 
         {
             (!errors?.blockTrees && errors?.usedArea) &&
             <Box
-                style={{
-                    backgroundColor: COLORS.danger,
-                    marginTop: -30,
-                }}
+            //     style={{
+            //         backgroundColor: COLORS.danger,
+            //         marginTop: -30,
+            //     }}
             >
-                <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>       
-                {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>        */}
-                {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
-            </Box>
+                 <Text style={{ fontSize: 14, color: COLORS.red, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.red} /> {errors?.usedArea}</Text>       
+                 {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>        */}
+                 {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
+             </Box>
         } 
         </Box>
 
-        <Box w="100%">
+        <Box w="100%"
+                    style={{ marginTop: (errors?.usedArea && errors?.blockTrees) ? 0 : 0}}
+        >
         <FormControl isRequired my="1" isInvalid={'densityMode' in errors}>
             <FormControl.Label>                
                 <Text
@@ -720,9 +722,9 @@ export default function NewFarmlandBlock({
                         setErrors(prev=>({
                             ...prev, 
                             density: '',
-                            blockTrees: '', 
-                            usedArea: '',
-                            treeDensity: '',
+                            blockTrees: null, 
+                            usedArea: null,
+                            treeDensity: null,
                         }))
                         setDensityLength(newNumber)
                     }}
@@ -765,9 +767,9 @@ export default function NewFarmlandBlock({
                     setErrors(prev=>({
                         ...prev, 
                         density: '',
-                        blockTrees: '', 
-                        usedArea: '',
-                        treeDensity: '',
+                        blockTrees: null, 
+                        usedArea: null,
+                        treeDensity: null,
                     }))
                     setDensityWidth(newNumber)
                 }}

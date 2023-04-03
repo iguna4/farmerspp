@@ -212,7 +212,9 @@ export default function FarmerScreen ({ route, navigation }) {
         >
           <TouchableOpacity
             onPress={()=>{
-              setIsAddPhoto(true);
+              if(customUserData?.role !== roles.provincialManager){
+                setIsAddPhoto(true);
+              }
             }}
             style={{
               position: 'relative',

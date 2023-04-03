@@ -14,7 +14,7 @@ import cloneList from "../../consts/clones";
 import { crops } from '../../consts/crops';
 
 import { CustomInput } from '../Inputs/CustomInput';
-import validateFarmlandEditedData from '../../helpers/validateFarmlandEditedData';
+import validateEditedFarmlandMainData from '../../helpers/validateEditedFarmlandMainData';
 
 import { useUser } from "@realm/react";
 import { realmContext } from '../../models/realmContext';
@@ -112,22 +112,6 @@ const EditFarmlandData = ({
     }, [ clones, plantTypes]);
 
 
-    // useEffect(()=>{
-
-    //     if (isSameTypeTreesUpdated) {
-    //         let plants = plantTypes?.filter(plantType=>!plantType.includes('enxer'));
-    //         let pickedClones = clones?.map(clone=>`Clone: ${clone}`);
-    //         let merged = plants.concat(pickedClones);
-    //         setSameTypeTreesList(merged?.map(sameTypeTrees=>({
-    //             treeType: sameTypeTrees,
-    //             trees: ''
-    //         })));
-    //         setIsSameTypeTreesUpdated(false);
-    //     }
-
-    // }, [ clones, plantTypes, ]);
-
-
     useEffect(()=>{
         // save the block if everything is fine
         if (editBlockIsOn){
@@ -162,6 +146,7 @@ const EditFarmlandData = ({
             setConsociatedCrops(resource?.consociatedCrops);
             setTotalArea(resource?.totalArea);
             setTrees(resource?.trees);
+
             setOverlayTitle('Actualizar dados do pomar.');
 
             setOldDescription(resource?.description);
@@ -220,36 +205,38 @@ const EditFarmlandData = ({
         
         if (dataToBeUpdated === 'farmlandMainData' && resourceName === 'Farmland') {
 
-            if(dataToBeUpdated === 'farmlandMaiData' && !validateFarmlandEditedData({
+            if(dataToBeUpdated === 'farmlandMainData' && !validateEditedFarmlandMainData({
                 description, consociatedCrops, totalArea,
                 trees, oldDescription, oldConsociatedCrops,
                 oldTotalArea, oldTrees,
                 blocks,
             }, errors, setErrors, dataToBeUpdated, resourceName)) {
+
                 return ;
             }
-            
-            const validatedData = validateFarmlandEditedData({
+            else {
+                const validatedData = validateEditedFarmlandMainData({
+        
+                    description, consociatedCrops, totalArea,
+                    trees, oldDescription, oldConsociatedCrops,
+                    oldTotalArea, oldTrees,
+                    blocks,
+                }, errors, setErrors, dataToBeUpdated, resourceName);
     
-                description, consociatedCrops, totalArea,
-                trees, oldDescription, oldConsociatedCrops,
-                oldTotalArea, oldTrees,
-                blocks,
-            }, errors, setErrors, dataToBeUpdated, resourceName);
-
-            // new incoming data
-            newData['description'] = validatedData?.description;
-            newData['consociatedCrops'] = validatedData?.consociatedCrops;
-            newData['totalArea'] = validatedData?.totalArea;
-            newData['trees'] = validatedData?.trees;
-
-            // console.log('new Data: ', newData);
-
-            // old data
-            oldData['description'] = oldDescription;
-            oldData['consociatedCrops'] = oldConsociatedCrops;
-            oldData['totalArea'] = oldTotalArea;
-            oldData['trees'] = oldTrees;
+                // new incoming data
+                newData['description'] = validatedData?.description;
+                newData['consociatedCrops'] = validatedData?.consociatedCrops;
+                newData['totalArea'] = validatedData?.totalArea;
+                newData['trees'] = validatedData?.trees;
+    
+                // console.log('new Data: ', newData);
+    
+                // old data
+                oldData['description'] = oldDescription;
+                oldData['consociatedCrops'] = oldConsociatedCrops;
+                oldData['totalArea'] = oldTotalArea;
+                oldData['trees'] = oldTrees;
+            }
             
         }
 
@@ -274,14 +261,6 @@ const EditFarmlandData = ({
             // incoming data
             newData['plantTypes'] = validatedData?.plantTypes;
             newData['sameTypeTrees'] = validatedData?.sameTypeTrees;
-
-            
-            // old data
-            // oldData['plantTypes'] = {
-            //     plantType: oldPlantTypes,
-            //     clones: oldClones,
-            // };
-            // oldData['sameTypeTrees'] = oldSameTypeTreesList;
             
         }
 
@@ -289,10 +268,12 @@ const EditFarmlandData = ({
 
 
             if (dataToBeUpdated === 'blockData' && !validateEditedBlockData({
-                plantingYear, blockTrees, usedArea,
-                isDensityModeIrregular, isDensityModeRegular, densityLength,
-                densityWidth, plantTypes, clones, sameTypeTreesList, 
-                remainingArea, 
+                plantingYear, oldPlantingYear,  blockTrees, oldBlockTrees,
+                usedArea, oldUsedArea,  isDensityModeIrregular, isOldDensityModeIrregular,
+                isDensityModeRegular, isOldDensityModeRegular, densityLength, oldDensityLength,
+                densityWidth, oldDensityWidth, plantTypes, oldPlantTypes, clones, oldClones,
+                 sameTypeTreesList, oldSameTypeTreesList,
+                remainingArea, oldRemainingArea,
             }, errors, setErrors, dataToBeUpdated, resourceName)) {
 
 
@@ -327,6 +308,11 @@ const EditFarmlandData = ({
 
         setNewDataObject(newData);
         setOldDataObject(oldData);
+
+
+        setIsOverlayVisible(false);
+        setIsEditBlockVisible(false);
+        setIsConfirmDataVisible(true);
     }
 
 
@@ -526,21 +512,22 @@ const EditFarmlandData = ({
                     onChangeText={newNumber=>{
                         setErrors(prev=>({
                             ...prev, 
-                            blockTrees: '', 
-                            usedArea: '',
-                            treeDensity: '',
+                            blockTrees: null, 
+                            usedArea: null,
+                            treeDensity: null,
+                            plantingYear: null,
                         }))
                         setUsedArea(newNumber)
                     }}
                 />
                     
-            {/* {
+            {
                 'usedArea' in errors 
             ? <FormControl.ErrorMessage 
             leftIcon={<Icon name="error-outline" size={16} color="red" />}
             _text={{ fontSize: 'xs'}}>{errors?.usedArea}</FormControl.ErrorMessage> 
             : <FormControl.HelperText></FormControl.HelperText>
-            } */}
+            }
         </FormControl>
 
         <FormControl isRequired my="2" isInvalid={'blockTrees' in errors}>
@@ -554,21 +541,22 @@ const EditFarmlandData = ({
                 onChangeText={newNumber=>{
                     setErrors(prev=>({
                         ...prev, 
-                        blockTrees: '', 
-                        usedArea: '',
-                        treeDensity: '',
+                        blockTrees: null, 
+                        usedArea: null,
+                        treeDensity: null,
+                        plantingYear: null,
                     }))
                     setBlockTrees(parseInt(newNumber));
                 }}
             />
                 
-            {/* {
+            {
                 'blockTrees' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.blockTrees}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
-            } */}
+            }
         </FormControl>
 
 
@@ -618,7 +606,11 @@ const EditFarmlandData = ({
                             setIsDensityModeIrregular(false);
                             setErrors({
                                 ...errors,
-                                densityMode: '',
+                                // densityMode: '',
+                                blockTrees: null, 
+                                usedArea: null,
+                                treeDensity: null,
+                                plantingYear: null,
                             })
 
                         }}
@@ -659,7 +651,11 @@ const EditFarmlandData = ({
                             setIsDensityModeRegular(false);    
                             setErrors({
                                 ...errors,
-                                densityMode: '',
+                                // densityMode: '',
+                                blockTrees: null, 
+                                usedArea: null,
+                                treeDensity: null,
+                                plantingYear: null,
                             });
                             setDensityWidth('');   
                             setDensityLength('');
@@ -692,10 +688,10 @@ const EditFarmlandData = ({
                     onChangeText={newNumber=>{
                         setErrors(prev=>({
                             ...prev, 
-                            density: '',
-                            blockTrees: '', 
-                            usedArea: '',
-                            treeDensity: '',
+                            blockTrees: null, 
+                            usedArea: null,
+                            treeDensity: null,
+                            plantingYear: null,
                         }))
                         setDensityLength(parseInt(newNumber));
                     }}
@@ -737,10 +733,10 @@ const EditFarmlandData = ({
                 onChangeText={newNumber=>{
                     setErrors(prev=>({
                         ...prev, 
-                        density: '',
-                        blockTrees: '', 
-                        usedArea: '',
-                        treeDensity: '',
+                        blockTrees: null, 
+                        usedArea: null,
+                        treeDensity: null,
+                        plantingYear: null,
                     }))
                     setDensityWidth(parseInt(newNumber));
                 }}
@@ -792,7 +788,7 @@ const EditFarmlandData = ({
         <FormControl.Label>Tipo de plantas</FormControl.Label>
         <MultipleSelectList
             setSelected={(type)=>{
-                setErrors(prev=>({...prev, plantTypes: ''}));
+                setErrors(prev=>({...prev, plantTypes: null}));
                 setPlantTypes(type);
                 setIsSameTypeTreesUpdated(true);
 
@@ -846,7 +842,7 @@ const EditFarmlandData = ({
             <FormControl.Label>Clones</FormControl.Label>
             <MultipleSelectList
                 setSelected={(type)=>{
-                    setErrors(prev=>({...prev, clones: ''}));
+                    setErrors(prev=>({...prev, clones: null}));
                     setClones(type);
                     setIsSameTypeTreesUpdated(true);               
                 }}
@@ -904,7 +900,7 @@ const EditFarmlandData = ({
                         onChangeText={newClone=>{
                             setErrors({
                                 ...errors,
-                                addedClone: '',
+                                addedClone: null,
                             })
                             setAddedClone(newClone);
                             // setIsSameTypeTreesUpdated(false);
@@ -1073,7 +1069,7 @@ const EditFarmlandData = ({
                         placeholder="Cajueiros"
                         value={sameTypeTree.trees}
                         onChangeText={newTrees=>{
-                            setErrors(prev=>({...prev, sameTypeTrees: ''}));
+                            setErrors(prev=>({...prev, sameTypeTrees: null}));
                             setSameTypeTreesList(sameTypeTreesList.map((object)=>{
                                 if (object?.treeType === sameTypeTree?.treeType){
                                     object.trees = parseInt(newTrees);
@@ -1098,7 +1094,7 @@ const EditFarmlandData = ({
     {/* update the farmland main data */}
 
     {
-        (dataToBeUpdated === 'farmlandMainData' && resourceName === 'Farmland' && blockId === '') &&
+        (dataToBeUpdated === 'farmlandMainData' && resourceName === 'Farmland') &&
         <Stack direction="column">
 
         {
@@ -1286,9 +1282,7 @@ const EditFarmlandData = ({
 
 
                 onConfirmUpdate(dataToBeUpdated, resourceName);
-                setIsOverlayVisible(false);
-                setIsEditBlockVisible(false);
-                setIsConfirmDataVisible(true);
+
 
             }}
         />

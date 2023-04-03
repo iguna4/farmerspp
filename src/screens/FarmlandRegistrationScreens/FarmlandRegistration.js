@@ -962,7 +962,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
             // padding: 10,
             margin: 10,
             borderBottomWidth: 2,
-            borderBottomColor: COLORS.main,
+            borderBottomColor: COLORS.mediumseagreen,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             marginBottom: 40,
@@ -973,9 +973,10 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
 <Box w="100%"
         style={{
-            backgroundColor: COLORS.main,
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
+            backgroundColor: COLORS.mediumseagreen,
+            // borderTopLeftRadius: 20,
+            // borderTopRightRadius: 20,
+            marginTop: 40,
             padding: 10,
             position: 'relative',
             top: -5,
@@ -996,8 +997,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
         <Box
             style={{
                 position: 'absolute',
-                top: 0,
-                right: 0,
+                top: 6,
+                right: 10,
                 zIndex: 1,
                 borderWidth: 1,
                 borderColor: COLORS.ghostwhite,
@@ -1006,7 +1007,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 // padding: 5,
             }}
         >
-            <Icon name="approval" size={40} color={COLORS.main} />
+            <Icon name="approval" size={30} color={COLORS.mediumseagreen} />
         </Box>
     </Box>
 
@@ -1140,10 +1141,10 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     <Box w="100%"
                         style={{
                             backgroundColor: COLORS.mediumseagreen,
-                            padding: 10,
+                            padding: 6,
                             flexDirection: 'row',
-                            borderTopLeftRadius: 20,
-                            borderTopRightRadius: 20,
+                            // borderTopLeftRadius: 20,
+                            // borderTopRightRadius: 20,
                         }}
                     >
                         <Box w="70%"
@@ -1175,7 +1176,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                                 <Icon 
                                     name={block?.position === (farmland?.blocks?.length - 1) ? 'delete-forever' : 'check-circle'} 
                                     size={35} 
-                                    color={block?.position === (farmland?.blocks?.length - 1) ? COLORS.danger : COLORS.main} 
+                                    color={block?.position === (farmland?.blocks?.length - 1) ? COLORS.ghostwhite : COLORS.ghostwhite} 
                                 />
                             </TouchableOpacity>
                         </Box>
@@ -1267,7 +1268,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     else {
                         setLoadingButton(true);
                         
-                        // save the farmland main data
+                        // visualize and save the farmland main data
                         visualizeFarmlandMainData();
                     }
                 }}
@@ -1275,7 +1276,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 <Box 
                     style={{
                         borderRadius: 100,
-                        backgroundColor: farmland ? COLORS.mediumseagreen : COLORS.pantone,
+                        backgroundColor: COLORS.mediumseagreen,
                     }}
                 >
                     <Icon name="add" size={45} color={COLORS.ghostwhite} />

@@ -84,7 +84,7 @@ export default function FarmerScreen ({ route, navigation }) {
             cancelText="   Não   "
             confirmText="   Sim   "
             confirmButtonColor={COLORS.main}
-            cancelButtonColor={COLORS.grey}
+            cancelButtonColor={COLORS.danger}
             onCancelPressed={() => {
                 setIsAddPhoto(false);
             }}
@@ -213,7 +213,7 @@ export default function FarmerScreen ({ route, navigation }) {
           <TouchableOpacity
             onPress={()=>{
               if(customUserData?.role !== roles.provincialManager){
-                setIsAddPhoto(true);
+                setIsAddPhoto(!isAddPhoto);
               }
             }}
             style={{

@@ -11,35 +11,35 @@ function SuccessAlert({
     setIsCoordinatesModalVisible, 
     farmlandId,
     farmerItem,
-    navigateBack,
+    // navigateBack,
     flag,
     }) {
 
     const navigation = useNavigation();
 
-    // const navigateBack = ()=>{
-    //     if (flag === 'farmer'){
-    //         if (farmerItem.flag === 'Grupo'){
-    //             navigation.navigate('Group', {
-    //                 ownerId: farmerItem.ownerId,
-    //             });
-    //         }
-    //         else if (farmerItem.flag === 'Indivíduo'){
-    //             navigation.navigate('Farmer', {
-    //                 ownerId: farmerItem.ownerId,
-    //             });
-    //         }
-    //         else if(farmerItem.flag === 'Instituição') {
-    //             navigation.navigate('Institution', {
-    //                 ownerId: farmerItem.ownerId,
-    //             });
-    //         }
+    const navigateBack = ()=>{
+        if (flag === 'farmer'){
+            if (farmerItem.flag === 'Grupo'){
+                navigation.navigate('Group', {
+                    ownerId: farmerItem.ownerId,
+                });
+            }
+            else if (farmerItem.flag === 'Indivíduo'){
+                navigation.navigate('Farmer', {
+                    ownerId: farmerItem.ownerId,
+                });
+            }
+            else if(farmerItem.flag === 'Instituição') {
+                navigation.navigate('Institution', {
+                    ownerId: farmerItem.ownerId,
+                });
+            }
 
-    //     }
-    //     else if(flag === 'farmland') {
+        }
+        else if(flag === 'farmland') {
 
-    //     }
-    // }
+        }
+    }
 
 
     return (

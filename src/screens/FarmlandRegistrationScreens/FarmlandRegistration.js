@@ -1405,9 +1405,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
             isCoordinatesModalVisible={isCoordinatesModalVisible}
             setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}
             farmlandId={farmlandId}
-            flag={'farmland'}
-            navigateBack={navigateBack}
-            
+            // farmerItem={{ flag: flag, }} // just for navigation purpose
+            flag={'farmland'}           
         />
       </Box>
       </ScrollView>

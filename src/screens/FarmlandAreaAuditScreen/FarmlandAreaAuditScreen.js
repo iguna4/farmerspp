@@ -273,7 +273,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     <Box
         style={{
             backgroundColor: COLORS.fourth,
-            paddingBottom: 15,
+            paddingVertical: 15,
         }}
     >
         <Stack
@@ -350,7 +350,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 py="1"
                 px="3"
             >
-                <Box  w="50%"
+                <Box  w={farmland?.extremeCoordinates.length === 0 ? "100%" : "80%"}
                     style={{
                         // flex: 1,
                         justifyContent: 'center',
@@ -359,36 +359,34 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     <Text
                         style={{
                             fontFamily: 'JosefinSans-Bold',
-                            fontSize: 18,
+                            fontSize: 16,
                             color: COLORS.black,
                             lineHeight: 25,
                             textAlign: 'center',
+                            paddingTop: 20,
                         }}
                     >
                         Pontos extremos da área do pomar
                     </Text>
                 </Box>
-                <Box  w="30%"
-                    style={{
-                    }}
-                >
 
-                </Box>
-                <Box w="20%"
+                <Box w={farmland?.extremeCoordinates.length === 0 ? "0%" : "20%"}
                     alignItems={'center'}
                     style={{
                         flex: 1,
                         justifyContent: 'center'
                     }}
                 >
-        {   farmland?.extremeCoordinates.length > 0 &&
-                 <TouchableOpacity
-                        onPress={async ()=> await getGeolocation()
-                        }
-                    >
-                        <GeoPin />
-                    </TouchableOpacity>
-            }
+                {   
+                    farmland?.extremeCoordinates.length > 0 &&
+                        <TouchableOpacity
+                            onPress={
+                                async ()=> await getGeolocation()
+                            }
+                        >
+                            <GeoPin />
+                        </TouchableOpacity>
+                    }
                 </Box>
             </Stack>
         </Box>

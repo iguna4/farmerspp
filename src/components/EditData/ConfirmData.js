@@ -152,7 +152,6 @@ const ConfirmData = ({
                 resource.status = resourceValidation.status.pending;
             }
 
-
             if (dataToBeUpdated === 'blockData' && resourceName === 'Farmland') {
 
                 // find and update the block
@@ -173,7 +172,6 @@ const ConfirmData = ({
 
             if (dataToBeUpdated === 'plantType' && resourceName === 'Farmland') {
 
-
                 // find and update the block
                 let blockTobeUpdated = resource?.blocks.find(block=>block._id === blockId);
                 blockTobeUpdated.modifiedAt = new Date();
@@ -181,14 +179,11 @@ const ConfirmData = ({
                 blockTobeUpdated.sameTypeTrees = newDataObject?.sameTypeTrees;
                 blockTobeUpdated.plantTypes = newDataObject?.plantTypes;
 
-
                 resource.modifiedAt = new Date();
                 resource.modifiedBy = customUserData?.name;
                 resource.status = resourceValidation.status.pending;
             }
-
         });
-
     }
 
     const toggleOverlay = () => {

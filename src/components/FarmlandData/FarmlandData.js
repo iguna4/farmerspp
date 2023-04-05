@@ -1025,6 +1025,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                         setIsOverlayVisible(!isOverlayVisible);
                                         setDataToBeUpdated('plantType');
                                         setBlockTrees(block?.trees);
+                                        setBlockId(block._id);
                                         setIsEditBlockVisible(true);
                                     }
                                 }

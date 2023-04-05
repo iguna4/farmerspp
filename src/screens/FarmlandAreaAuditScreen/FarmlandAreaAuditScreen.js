@@ -273,7 +273,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     <Box
         style={{
             backgroundColor: COLORS.fourth,
-            paddingVertical: 15,
+            paddingVertical: 20,
         }}
     >
         <Stack
@@ -520,21 +520,18 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             }}
             >
         <Box
-            // alignItems={'center'}
             style={{
-                
                 borderWidth: 2,
                 borderColor: COLORS.main,
                 borderRadius: 30,
-                width: 300,
-                height: 60,
+                paddingHorizontal: 20,
+                paddingVertical: 10,
                 justifyContent: 'center',
-                
             }}
-            >
+        >
             <Text
                 style={{ 
-                    fontSize: 24, 
+                    fontSize: 20, 
                     fontFamily: 'JosefinSans-Bold', 
                     color: COLORS.main,
                     textAlign: 'center',

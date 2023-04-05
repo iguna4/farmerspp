@@ -40,6 +40,20 @@ const getThreshold = (trees, area, width, length)=>{
 }
 
 
+// make sure the number of trees of the edited block doesn't result into 
+// the sum of blocks trees being greater than the total trees of the farmland
+const areTotalTreesAndBlocksTreesConsistent = (resource, currentBlockTrees, blockId)=>{
+    // get the sum of all the block trees except the current block trees
+    const blocksTrees = resource.blocks?.filter(block=>block._id !== blockId)?.map(block=>block.trees)?.reduce((acc, el)=>acc + el, 0);
+    if (resource.trees <  (blocksTrees + currentBlockTrees)){
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+
 const validateEditedBlockData = (
     {   
         plantingYear, oldPlantingYear,  blockTrees, oldBlockTrees,
@@ -47,7 +61,7 @@ const validateEditedBlockData = (
         isDensityModeRegular, isOldDensityModeRegular, densityLength, oldDensityLength,
         densityWidth, oldDensityWidth, plantTypes, oldPlantTypes, clones, oldClones,
         sameTypeTreesList, oldSameTypeTreesList, remainingArea, oldRemainingArea,
-    }, errors, setErrors, dataToBeUpdated, resourceName
+    }, errors, setErrors, dataToBeUpdated, resourceName, resource, blockId,
     ) => {
         
         
@@ -91,8 +105,6 @@ const validateEditedBlockData = (
                
                   return false;
                }
-               
-               
                
                const farmlandData = {
                    plantTypes: {
@@ -144,8 +156,6 @@ const validateEditedBlockData = (
             return false;
         }
 
-
-
         
         if (!retrievedPlantingYear){
             setErrors({ ...errors,
@@ -191,6 +201,14 @@ const validateEditedBlockData = (
                    density: 'Comprimento e Largura inválidos.',
                });
                return false;                   
+           }
+
+           if (!areTotalTreesAndBlocksTreesConsistent(resource, retrievedTreesNumber, blockId)) {
+                setErrors({
+                    ...errors,
+                    blockTrees: 'A soma dos cajueiros dos blocos não pode ser superior ao total dos cajueiros do pomar.'
+                })
+                return false;
            }
 
         const farmlandData = {

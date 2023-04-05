@@ -174,6 +174,7 @@ const ConfirmData = ({
 
                 // find and update the block
                 let blockTobeUpdated = resource?.blocks.find(block=>block._id === blockId);
+
                 blockTobeUpdated.modifiedAt = new Date();
                 blockTobeUpdated.userName = customUserData?.name;
                 blockTobeUpdated.sameTypeTrees = newDataObject?.sameTypeTrees;

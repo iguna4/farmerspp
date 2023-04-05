@@ -613,7 +613,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
         }}
         messageStyle={{
-            fontSize: 18,
+            fontSize: 16,
             color: COLORS.grey,
             fontFamily: 'JosefinSans-Regular',
             lineHeight: 25,
@@ -641,11 +641,11 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
         cancelButtonStyle={{
             // width: 120,
-            marginRight: 15,
+            marginRight: 10,
             }}
     
             cancelButtonTextStyle={{
-                fontSize: 18,
+                fontSize: 14,
                 textAlign: 'center',
             //   fontWeight: 'bold',
                 fontFamily: 'JosefinSans-Bold',
@@ -653,11 +653,11 @@ export default function FarmlandRegistration ({ route, navigation }) {
     
             confirmButtonStyle={{
             // width: 120,
-            marginLeft: 15,
+            marginLeft: 10,
             }}
     
             confirmButtonTextStyle={{
-            fontSize: 18,
+            fontSize: 14,
             textAlign: 'center',
             //   fontWeight: 'bold',
             fontFamily: 'JosefinSans-Bold',

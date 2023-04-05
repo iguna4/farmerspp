@@ -413,12 +413,12 @@ export default function FarmlandBlockRegistration({
                     }}
                 />
                     
-                { ('usedArea' in errors)
+                {/* { ('usedArea' in errors)
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.usedArea}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText>{errors?.blockTrees && <Text></Text>}</FormControl.HelperText>
-                }
+                } */}
             </FormControl>
             </Box>
 
@@ -446,13 +446,13 @@ export default function FarmlandBlockRegistration({
                 }}
             />
                 
-            {
+            {/* {
                 ('blockTrees' in errors) 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.blockTrees}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText>{errors?.usedArea && <Text></Text>}</FormControl.HelperText>
-            }
+            } */}
             </FormControl>
             </Box>
         </Stack>

@@ -69,14 +69,15 @@ export default function InstitutionScreen ({ route, navigation }) {
             // height: "10%",
             width: '100%',
             paddingHorizontal: 5,
-            // paddingTop: 10,
+            paddingVertical: 10,
             backgroundColor: '#EBEBE4',
-            borderTopWidth: 0,
-            borderColor: '#EBEBE4',
-            borderBottomWidth: 3,
-            borderLeftWidth: 3,
-            borderRightWidth: 3,
+            // borderTopWidth: 0,
+            // borderColor: '#EBEBE4',
+            // borderBottomWidth: 3,
+            // borderLeftWidth: 3,
+            // borderRightWidth: 3,
             alignItems: 'center',
+            justifyContent: 'center',
           }}
       >
       <AwesomeAlert

@@ -228,9 +228,7 @@ const EditFarmlandData = ({
                 newData['consociatedCrops'] = validatedData?.consociatedCrops;
                 newData['totalArea'] = validatedData?.totalArea;
                 newData['trees'] = validatedData?.trees;
-    
-                // console.log('new Data: ', newData);
-    
+        
                 // old data
                 oldData['description'] = oldDescription;
                 oldData['consociatedCrops'] = oldConsociatedCrops;
@@ -247,7 +245,7 @@ const EditFarmlandData = ({
                 isDensityModeIrregular, isDensityModeRegular, densityLength,
                 densityWidth, plantTypes, clones, sameTypeTreesList, 
                 remainingArea, 
-            }, errors, setErrors, dataToBeUpdated, resourceName)) {
+            }, errors, setErrors, dataToBeUpdated, resourceName, resource, blockId)) {
                 return ;
             }
 
@@ -256,7 +254,7 @@ const EditFarmlandData = ({
                 isDensityModeIrregular, isDensityModeRegular, densityLength,
                 densityWidth, plantTypes, clones, sameTypeTreesList, 
                 remainingArea,
-            }, errors, setErrors, dataToBeUpdated, resourceName);
+            }, errors, setErrors, dataToBeUpdated, resourceName, resource, blockId);
             
             // incoming data
             newData['plantTypes'] = validatedData?.plantTypes;
@@ -274,9 +272,7 @@ const EditFarmlandData = ({
                 densityWidth, oldDensityWidth, plantTypes, oldPlantTypes, clones, oldClones,
                  sameTypeTreesList, oldSameTypeTreesList,
                 remainingArea, oldRemainingArea,
-            }, errors, setErrors, dataToBeUpdated, resourceName)) {
-
-
+            }, errors, setErrors, dataToBeUpdated, resourceName, resource, blockId)) {
                 return ;
             }
 
@@ -286,7 +282,7 @@ const EditFarmlandData = ({
                 isDensityModeIrregular, isDensityModeRegular, densityLength,
                 densityWidth, plantTypes, clones, sameTypeTreesList, 
                 remainingArea,
-            }, errors, setErrors, dataToBeUpdated, resourceName);
+            }, errors, setErrors, dataToBeUpdated, resourceName, blockId);
 
             // incoming data
             newData['plantingYear'] = validatedData?.plantingYear;
@@ -545,7 +541,7 @@ const EditFarmlandData = ({
                         usedArea: null,
                         treeDensity: null,
                         plantingYear: null,
-                    }))
+                    }));
                     setBlockTrees(parseInt(newNumber));
                 }}
             />
@@ -684,7 +680,7 @@ const EditFarmlandData = ({
                     textAlign="center"
                     keyboardType="numeric"
                     placeholder="Comprimento"
-                    value={densityLength?.toString()}
+                    value={densityLength ? densityLength?.toString() : ''}
                     onChangeText={newNumber=>{
                         setErrors(prev=>({
                             ...prev, 
@@ -729,7 +725,7 @@ const EditFarmlandData = ({
                 keyboardType="numeric"
                 textAlign="center"
                 placeholder="Largura"
-                value={densityWidth?.toString()}
+                value={densityWidth ? densityWidth?.toString() : ''}
                 onChangeText={newNumber=>{
                     setErrors(prev=>({
                         ...prev, 
@@ -901,10 +897,8 @@ const EditFarmlandData = ({
                             setErrors({
                                 ...errors,
                                 addedClone: null,
-                            })
+                            });
                             setAddedClone(newClone);
-                            // setIsSameTypeTreesUpdated(false);
-
                         }}
                         />
                 {   'addedClone' in errors ?
@@ -1067,7 +1061,7 @@ const EditFarmlandData = ({
                         textAlign="center"
                         keyboardType="numeric"
                         placeholder="Cajueiros"
-                        value={sameTypeTree.trees}
+                        value={sameTypeTree?.trees}
                         onChangeText={newTrees=>{
                             setErrors(prev=>({...prev, sameTypeTrees: null}));
                             setSameTypeTreesList(sameTypeTreesList.map((object)=>{

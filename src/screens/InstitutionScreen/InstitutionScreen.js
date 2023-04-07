@@ -85,14 +85,14 @@ export default function InstitutionScreen ({ route, navigation }) {
         showProgress={false}
         title="Fotografia"
         message="Pretendes carregar uma nova fotografia?"
-        closeOnTouchOutside={true}
-        closeOnHardwareBackPress={true}
+        closeOnTouchOutside={false}
+        closeOnHardwareBackPress={false}
         showCancelButton={true}
         showConfirmButton={true}
         cancelText="   Não   "
-        confirmText="   Sim!   "
+        confirmText="   Sim   "
         confirmButtonColor={COLORS.main}
-        cancelButtonColor={COLORS.grey}
+        cancelButtonColor={COLORS.danger}
         onCancelPressed={() => {
             setIsAddPhoto(false);
         }}
@@ -212,7 +212,9 @@ export default function InstitutionScreen ({ route, navigation }) {
               {/* <View> */}
             <TouchableOpacity
               onPress={()=>{
-                setIsAddPhoto(true);
+                if(customUserData?.role !== roles.provincialManager){
+                  setIsAddPhoto(!isAddPhoto);
+                }
               }}
               style={{
                 position: 'relative',

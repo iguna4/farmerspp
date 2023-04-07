@@ -647,7 +647,7 @@ export default function WelcomeScreen () {
                         }}
                     >
                         <Select.Item label={roles.fieldAgent} value={roles.fieldAgent} />
-                        <Select.Item label={roles.districtalSupervisor} value={roles.districtalSupervisor} />
+                        {/* <Select.Item label={roles.districtalSupervisor} value={roles.districtalSupervisor} /> */}
                         <Select.Item label={roles.provincialManager} value={roles.provincialManager} />
                         <Select.Item label={roles.coopManager} value={roles.coopManager} />
                     </Select>

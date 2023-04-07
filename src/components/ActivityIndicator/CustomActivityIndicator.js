@@ -34,7 +34,7 @@ const CustomActivityIndicator = ({ loadingActivitiyIndicator, setLoadingActivity
           />
           <Text style={{
             textAlign: 'center', fontSize: 12, color: COLORS.main, fontFamily: 'JosefinSans-Regular',
-          }}>ConnectCaju...</Text>
+          }}>Connect Caju...</Text>
     </View>
   )
 }

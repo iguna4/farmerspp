@@ -586,8 +586,8 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 
             {  customUserData?.role !== roles.provincialManager && 
                 <TouchableOpacity
-                    // disabled={farmland?.validated === resourceValidation.status.validated ? true : false}
-                    style={{
+                disabled={farmland?.status === resourceValidation.status.validated ? true : false}
+                style={{
 
                     }}
                     onPress={
@@ -599,7 +599,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Icon 
                         name="add-location-alt" 
                         size={30} 
-                        color={COLORS.mediumseagreen}
+                        color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.mediumseagreen } 
                         // color={farmland?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
                 </TouchableOpacity>
@@ -714,7 +714,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 
         customUserData?.role !== roles.provincialManager && 
                 <TouchableOpacity
-                    // disabled={farmland?.validated === resourceValidation.status.validated ? true : false}
+                    disabled={farmland?.status === resourceValidation.status.validated ? true : false}
                     style={{
 
                     }}
@@ -732,8 +732,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Icon 
                         name="add-location-alt" 
                         size={30} 
-                        color={COLORS.mediumseagreen}
-                        // color={farmland?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
+                        color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.mediumseagreen } 
                     />
                 </TouchableOpacity>
             }
@@ -804,6 +803,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
         </Box>
         <Box w="25%">
         <TouchableOpacity
+
             onPress={()=>{
                 if (farmland){
                     // make the block data form visible
@@ -1390,7 +1390,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 
 
 { (customUserData?.role === roles.provincialManager) && (farmland?.status === resourceValidation.status.pending ) &&
-<Stack direction="row" w="100%" style={{ paddingTop: 5,  }} space={6} >
+<Stack direction="row" w="100%" style={{ paddingVertical: 5,  }} space={3} >
         <Box w="50%"
             style={{
                 alignItems: 'center',
@@ -1412,7 +1412,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 <Text
                     style= {{
                         color: farmland.status === resourceValidation.status.validated ? COLORS.lightgrey : COLORS.main,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'JosefinSans-Bold',
                     }}
                 >
@@ -1423,7 +1423,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
         <Box w="50%"
             style={{
                 alignItems: 'center',
-                paddingRight: 10,
+                paddingRight: 5,
             }}
         >
             <TouchableOpacity
@@ -1442,7 +1442,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 <Text
                     style= {{
                         color: farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : COLORS.red,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'JosefinSans-Bold',
                     }}
                 >

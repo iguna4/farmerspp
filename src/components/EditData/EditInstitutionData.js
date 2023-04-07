@@ -300,7 +300,7 @@ const EditInstitutionData = ({
                     width="100%"
                     type="number"
                     placeholder={institutionNuit ? institutionNuit.toString() : 'Nenhum'}
-                    value={institutionNuit?.toString()}
+                    value={institutionNuit ? institutionNuit?.toString() : 'Nenhum'}
                     keyboardType="numeric"
                     onChangeText={newNuit=>{
                         setErrors((prev)=>({...prev, institutionNuit: ''}));

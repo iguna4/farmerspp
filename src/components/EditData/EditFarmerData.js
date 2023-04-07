@@ -404,7 +404,7 @@ const EditFarmerData = ({
                     type="telephoneNumber"
                     placeholder={primaryPhone ? primaryPhone?.toString() : 'Nenhum'}
                     keyboardType="numeric"
-                    value={primaryPhone?.toString()}
+                    value={primaryPhone ? primaryPhone?.toString() : ''}
                     onChangeText={newPhone=>{
                         setErrors((prev)=>({...prev, primaryPhone: ''}))                        
                         setPrimaryPhone(newPhone);
@@ -440,7 +440,7 @@ const EditFarmerData = ({
                     type="telephoneNumber"
                     placeholder={secondaryPhone ? secondaryPhone?.toString() : 'Nenhum'}
                     keyboardType="numeric"
-                    value={secondaryPhone?.toString()}
+                    value={secondaryPhone ? secondaryPhone?.toString() : ''}
                     onChangeText={(newPhone=>{
                         setErrors((prev)=>({...prev, secondaryPhone: ''}))
                         setSecondaryPhone(newPhone)

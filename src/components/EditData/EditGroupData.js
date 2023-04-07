@@ -670,7 +670,7 @@ const EditGroupData = ({
                     width="100%"
                     type="number"
                     placeholder="NUIT"
-                    value={groupNuit}
+                    value={groupNuit ? groupNuit.toString(): 'Nenhum'}
                     // isDisabled={groupType === '' ? true : false}
                     keyboardType="numeric"
                     onChangeText={newNuit=>{
@@ -801,7 +801,7 @@ const EditGroupData = ({
                 placeholder="Número de membros"
                 textAlign={'center'}
                 keyboardType="numeric"
-                value={groupMembersNumber?.toString()}
+                value={groupMembersNumber ? groupMembersNumber?.toString() : ''}
                 onChangeText={groupMembers=>{
                     setErrors((prev)=>({...prev, groupMembersNumber: ''}))                        
                     setGroupMembersNumber(groupMembers);
@@ -824,7 +824,7 @@ const EditGroupData = ({
                     placeholder="Número de mulheres"
                     textAlign={'center'}
                     isDisabled={groupMembersNumber === '' ? true : false}
-                    value={groupWomenNumber?.toString()}
+                    value={groupWomenNumber ? groupWomenNumber?.toString() : ''}
                     keyboardType="numeric"
                     onChangeText={womenNumber=>{
                         setErrors((prev)=>({...prev, groupWomenNumber: ''}));
@@ -877,7 +877,7 @@ const EditGroupData = ({
                 type="telephoneNumber"
                 placeholder={groupManagerPhone ? groupManagerPhone.toString() : 'Nenhum'}
                 keyboardType="numeric"
-                value={groupManagerPhone?.toString()}
+                value={groupManagerPhone ? groupManagerPhone?.toString() : ''}
                 onChangeText={newManagerPhone=>{
                     setErrors((prev)=>({...prev, groupManagerPhone: ''}))                        
                     setGroupManagerPhone(newManagerPhone);

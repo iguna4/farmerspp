@@ -971,7 +971,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
     >
 
 
-<Box w="100%"
+    <Box w="100%"
         style={{
             backgroundColor: COLORS.mediumseagreen,
             // borderTopLeftRadius: 20,
@@ -1027,17 +1027,19 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'JosefinSans-Bold'
 
                     }}            
                 >Área Total</Text>
             </Box>
-            <Box w="60%">
+            <Box 
+                // w="60%"
+            >
                 <Text 
                     style={{
                         color: COLORS.grey,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'JosefinSans-Regular',
                     }}
                 >
@@ -1047,20 +1049,22 @@ export default function FarmlandRegistration ({ route, navigation }) {
         </Stack>
         <CustomDivider thickness={2} bg={COLORS.lightgrey} />
         <Stack w="100%" direction="row" space={2} mb="1">
-            <Box w="35%">
+            <Box w="40%">
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'JosefinSans-Bold'
                     }}                
                 >Cajueiros</Text>
             </Box>
-            <Box w="60%">
+            <Box 
+                // w="60%"
+            >
                 <Text 
                     style={{
                         color: COLORS.grey,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'JosefinSans-Regular',
                     }}
                 >
@@ -1071,25 +1075,27 @@ export default function FarmlandRegistration ({ route, navigation }) {
         <CustomDivider thickness={2} bg={COLORS.lightgrey} />
 
         <Stack w="100%" direction="row" space={2}>
-            <Box w="35%">
+            <Box w="40%">
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'JosefinSans-Bold'
 
                     }}
-                >Consociação</Text>
+                >
+                    Consociação
+                </Text>
             </Box>
             <Box 
                 style={{
-                    width: '60%',
+                    // width: '65%',
                 }}
             >
                 <Text
                     style={{
                         color: COLORS.grey,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'JosefinSans-Regular',
                     }}
                 >
@@ -1112,7 +1118,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
         <Text
             style={{
                 color: COLORS.black,
-                fontSize: 16,
+                fontSize: 14,
                 fontFamily: 'JosefinSans-Regular',                
             }}
         >
@@ -1141,13 +1147,14 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     <Box w="100%"
                         style={{
                             backgroundColor: COLORS.mediumseagreen,
-                            padding: 6,
+                            paddingVertical: 3,
+                            paddingHorizontal: 6,
                             flexDirection: 'row',
                             // borderTopLeftRadius: 20,
                             // borderTopRightRadius: 20,
                         }}
                     >
-                        <Box w="70%"
+                        <Box w="85%"
                             style={{
                                 paddingLeft: 10,
                             }}
@@ -1156,13 +1163,12 @@ export default function FarmlandRegistration ({ route, navigation }) {
                                 style={{
                                     color: COLORS.ghostwhite,
                                     fontFamily: 'JosefinSans-Bold',
-                                    fontSize: 18,
+                                    fontSize: 16,
                                 }}
                             >Ano de Plantio: {block?.plantingYear}</Text>
                         </Box>
+
                         <Box w="15%">
-                        </Box>
-                        <Box w="10%">
                             <TouchableOpacity
                                 disabled={block?.position === (farmland?.blocks?.length - 1) ? false : true}
                                 onPress={()=>{
@@ -1194,16 +1200,27 @@ export default function FarmlandRegistration ({ route, navigation }) {
                                 alignItems={"center"}
                             >
                                 <Text
-                                    style={{ color: COLORS.black, fontFamily: 'JosefinSans-Bold', fontSize: 16, }}
-                                >Área (hectares)</Text>
+                                    style={{ 
+                                        color: COLORS.black, 
+                                        fontFamily: 'JosefinSans-Bold', 
+                                        fontSize: 14, }}
+                                >
+                                    Área (hectares)
+                                </Text>
                                 <Text>({block?.usedArea.toFixed(2)})</Text>
                             </Box>
                             <Box w="50%"
                              alignItems={"center"}
                             >
                                 <Text
-                                 style={{ color: COLORS.black, fontFamily: 'JosefinSans-Bold',  fontSize: 16, }}
-                                >Cajueiros (árvores)</Text>
+                                 style={{ 
+                                    color: COLORS.black, 
+                                    fontFamily: 'JosefinSans-Bold',  
+                                    fontSize: 14, 
+                                }}
+                                >
+                                    Cajueiros (árvores)
+                                </Text>
                                 <Text>({block?.trees})</Text>
                             </Box>
                         </Stack>
@@ -1220,15 +1237,25 @@ export default function FarmlandRegistration ({ route, navigation }) {
                                 alignItems={"center"}
                             >
                                 <Text
-                                style={{ color: COLORS.black, fontFamily: 'JosefinSans-Bold',  fontSize: 16, }}
-                                >Compasso (metros)</Text>
+                                style={{ 
+                                    color: COLORS.black, 
+                                    fontFamily: 'JosefinSans-Bold',  
+                                    fontSize: 14, 
+                                }}
+                                >
+                                    Compasso (metros)
+                                </Text>
                                 <Text>{block?.density?.mode === 'Regular' ? `(${block?.density?.mode}: ${block?.density?.length}x${block?.density?.width})` : `(${block?.density?.mode})`}</Text>
                             </Box>
                             <Box w="50%"
                              alignItems={"center"}
                             >
                                 <Text
-                                style={{ color: COLORS.black, fontFamily: 'JosefinSans-Bold',  fontSize: 16, }}
+                                    style={{ 
+                                        color: COLORS.black, 
+                                        fontFamily: 'JosefinSans-Bold',  
+                                        fontSize: 14, 
+                                    }}
                                 >
                                     Tipo de plantas
                                 </Text>

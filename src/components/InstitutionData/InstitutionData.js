@@ -788,6 +788,7 @@ const InstitutionData = ({ farmer })=>{
 
         customUserData?.role !== roles.provincialManager && 
                 <TouchableOpacity
+                disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                     style={{
 
                     }}
@@ -802,7 +803,7 @@ const InstitutionData = ({ farmer })=>{
                     <Icon 
                         name="add-location-alt" 
                         size={30} 
-                        color={COLORS.pantone}
+                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone }
                     />
                 </TouchableOpacity>
             }
@@ -1108,7 +1109,7 @@ const InstitutionData = ({ farmer })=>{
 
 
     { (customUserData?.role === roles.provincialManager) && (farmer?.status === resourceValidation.status.pending ) &&
-<Stack direction="row" w="100%" style={{ paddingTop: 5,  }} space={6} >
+<Stack direction="row" w="100%" style={{ paddingVertical: 5,  }} space={3} >
         <Box w="50%"
             style={{
                 alignItems: 'center',
@@ -1131,7 +1132,7 @@ const InstitutionData = ({ farmer })=>{
                 <Text
                     style= {{
                         color: farmer.status === resourceValidation.status.validated ? COLORS.lightgrey : COLORS.main,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'JosefinSans-Bold',
                     }}
                 >
@@ -1142,7 +1143,7 @@ const InstitutionData = ({ farmer })=>{
         <Box w="50%"
             style={{
                 alignItems: 'center',
-                paddingRight: 10,
+                paddingRight: 5,
             }}
         >
             <TouchableOpacity
@@ -1161,7 +1162,7 @@ const InstitutionData = ({ farmer })=>{
                 <Text
                     style= {{
                         color: farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : COLORS.red,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'JosefinSans-Bold',
                     }}
                 >

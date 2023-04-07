@@ -15,6 +15,7 @@ export const Actor = {
         birthDate: 'date',
         birthPlace: 'Address',
         address: 'Address',
+        geolocation: 'Coordinates?',
         assets: 'Assets[]',
         contact: 'Contact?',
         idDocument: 'IdDocument?',

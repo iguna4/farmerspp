@@ -201,7 +201,6 @@ export default function IndividualModal (
                         left: 0,
                         top: 4,
                         flexDirection: 'row',
-                        // justifyContent: 'center',
                         alignItems: 'center',
                     }}
                 >
@@ -209,7 +208,6 @@ export default function IndividualModal (
                         name="arrow-back-ios" 
                         color={COLORS.main}
                         size={25}
-                        // onPress={()=>{}}
                     /> 
                     <Text
                         style={{
@@ -247,7 +245,7 @@ export default function IndividualModal (
                 flex: 1, 
                 justifyContent: 'center', 
                 minHeight: '120%',
-                paddingVertical: 10,
+                paddingVertical: 40,
             }}
          >
         <Box 

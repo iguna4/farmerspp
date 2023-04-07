@@ -504,7 +504,7 @@ const EditFarmlandData = ({
                     keyboardType="numeric"
                     textAlign="center"
                     placeholder="Hectares"
-                    value={usedArea?.toString()}
+                    value={usedArea ? usedArea?.toFixed(2)?.toString() : ''}
                     onChangeText={newNumber=>{
                         setErrors(prev=>({
                             ...prev, 
@@ -533,7 +533,7 @@ const EditFarmlandData = ({
                 keyboardType="numeric"
                 textAlign="center"
                 placeholder="Cajueiros"
-                value={blockTrees?.toString()}
+                value={blockTrees ? blockTrees?.toString() : ''}
                 onChangeText={newNumber=>{
                     setErrors(prev=>({
                         ...prev, 
@@ -549,6 +549,9 @@ const EditFarmlandData = ({
             {
                 'blockTrees' in errors 
                 ? <FormControl.ErrorMessage 
+                    style={{
+                        paddingVertical: 5,
+                    }}
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.blockTrees}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
@@ -1197,7 +1200,7 @@ const EditFarmlandData = ({
                     keyboardType="numeric"
                     textAlign="center"
                     placeholder="Hectares"
-                    value={totalArea?.toString()}
+                    value={totalArea ? totalArea?.toString() : ''}
                     onChangeText={newNumber=>{
                         setErrors(prev=>({
                             ...prev, 
@@ -1227,7 +1230,7 @@ const EditFarmlandData = ({
                 keyboardType="numeric"
                 textAlign="center"
                 placeholder="Cajueiros"
-                value={trees?.toString()}
+                value={trees ? trees?.toString() : ''}
                 onChangeText={newNumber=>{
                     setErrors(prev=>({
                         ...prev, 
@@ -1253,12 +1256,6 @@ const EditFarmlandData = ({
         </Stack>
 
     }
-
-
-
-
-
-
         <Button
             title="Confirmar Dados"
             titleStyle={{
@@ -1273,11 +1270,7 @@ const EditFarmlandData = ({
             }}
             type="outline"
             onPress={()=>{
-
-
                 onConfirmUpdate(dataToBeUpdated, resourceName);
-
-
             }}
         />
         </ScrollView>

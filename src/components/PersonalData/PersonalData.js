@@ -13,7 +13,7 @@ import EditFarmerData from '../EditData/EditFarmerData';
 import { errorMessages } from '../../consts/errorMessages';
 import { roles } from '../../consts/roles';
 import ConfirmData from '../EditData/ConfirmData';
-
+import { useNavigation } from '@react-navigation/native';
 
 
 import { useUser } from '@realm/react';
@@ -29,6 +29,7 @@ const resourceMessage = 'resourceMessage';
 const PersonalData = ({ farmer, setRefresh })=>{
 
     const realm = useRealm();
+    const navigation = useNavigation();
     const user = useUser();
     const customUserData = user?.customData
     const invalidationMotives = realm.objects('InvalidationMotive').filtered(`resourceId == "${farmer?._id}"`);
@@ -856,9 +857,109 @@ const PersonalData = ({ farmer, setRefresh })=>{
             </Text>  
         </Box>
     </Stack>
+    <Box  py="4">
+        <CustomDivider />
+    </Box>
+
+    <Stack w="100%" direction="row" >
+            <Box w="75%">
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Bold',
+                        
+                    }}
+                    >
+                    Geolocalização
+                </Text>
+            </Box>
+            <Box w="25%">
+        {   
+
+        customUserData?.role !== roles.provincialManager && 
+                <TouchableOpacity
+                disabled={farmer?.status === resourceValidation.status.validated ? true : false}
+                    style={{
+
+                    }}
+                    onPress={
+                        ()=>{
+                            navigation.navigate('Geolocation', {
+                            resourceName: 'Farmer',
+                            resourceId: farmer._id,
+                            
+                        })
+                    }}
+                >
+                    <Icon 
+                        name="add-location-alt" 
+                        size={30} 
+                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone }
+                        />
+                </TouchableOpacity>
+            }
+            </Box>
+        </Stack>
+        { farmer?.geolocation?.latitude && farmer?.geolocation?.longitude &&
+<>
+        <Stack w="100%" direction="row">
+            <Box w="35%">
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                    Latitude
+                </Text>
+            </Box>
+            <Box>
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                    {farmer?.geolocation?.latitude}
+                </Text>
+            </Box>
+        </Stack>
+        <Stack w="100%" direction="row">
+            <Box w="35%">
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                    Longitude
+                </Text>
+            </Box>
+            <Box>
+                <Text                     
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}
+                    >
+                    {farmer?.geolocation?.longitude}
+                </Text>
+            </Box>
+        </Stack>
+</>
+}
+
+
     </Stack>
 
     <CustomDivider />
+
+
 
     <Stack direction="column" w="100%" style={{ paddingTop: 5,  }} >
         <Box w="100%">

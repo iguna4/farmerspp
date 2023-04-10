@@ -504,7 +504,7 @@ const EditFarmlandData = ({
                     keyboardType="numeric"
                     textAlign="center"
                     placeholder="Hectares"
-                    value={usedArea ? usedArea?.toFixed(2)?.toString() : ''}
+                    value={usedArea ? usedArea?.toString() : ''}
                     onChangeText={newNumber=>{
                         setErrors(prev=>({
                             ...prev, 
@@ -553,7 +553,7 @@ const EditFarmlandData = ({
                         paddingVertical: 5,
                     }}
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.blockTrees}</FormControl.ErrorMessage> 
+                _text={{ fontSize: 'xs', paddingRight: 10, }}>{errors?.blockTrees}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
             }
         </FormControl>

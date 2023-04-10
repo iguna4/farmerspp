@@ -34,6 +34,10 @@ const GeolocationScreen = ({ route, navigation })=>{
     let resource;
     let ownerType; // farmland ownertype (single, group, institution) 
 
+    if (resourceName === 'Farmer') {
+        resource = useObject('Actor', resourceId);
+    }
+
     if (resourceName === 'Group') {
         resource = useObject('Group', resourceId);
     }
@@ -194,7 +198,12 @@ const GeolocationScreen = ({ route, navigation })=>{
     }
 
     const navigateBack = ()=>{
-        if (resourceName === 'Group'){
+        if (resourceName === 'Farmer'){
+            navigation.navigate('Farmer', {
+                ownerId: resource?._id,
+            })
+        }
+        else if (resourceName === 'Group'){
             navigation.navigate('Group', {
                 ownerId: resource?._id,
             })

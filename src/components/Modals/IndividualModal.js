@@ -244,7 +244,7 @@ export default function IndividualModal (
             contentContainerStyle={{
                 flex: 1, 
                 justifyContent: 'center', 
-                minHeight: '120%',
+                minHeight: '140%',
                 paddingVertical: 40,
             }}
          >

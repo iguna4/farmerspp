@@ -27,8 +27,8 @@ const groupResourceMessage = 'groupResourceMessage';
 const GroupData = ({ farmer })=>{
 
     const realm = useRealm();
-    const user = useUser();
     const navigation = useNavigation();
+    const user = useUser();
     const customUserData = user?.customData;
     const invalidationMotives = realm.objects('InvalidationMotive').filtered(`resourceId == "${farmer?._id}"`);
 

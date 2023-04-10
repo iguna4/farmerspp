@@ -269,11 +269,13 @@ export default function WelcomeScreen () {
     }
         <Box mt="5" pl="4">
         {  isLoggingIn ?
-            <Icon 
+        <Box>
+            {/* <Icon 
                 name='lock-open'
                 size={30}
                 color={COLORS.main}
-                />
+                /> */}
+        </Box>
             :
             (
             <Box 

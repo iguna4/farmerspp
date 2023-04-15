@@ -1,6 +1,23 @@
 import {TouchableOpacity, View, Text,} from 'react-native';
 import React, { useState, useEffect, } from 'react';
 import {Avatar, Icon } from '@rneui/themed';
+import {  
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+  listenOrientationChange as lor,
+  removeOrientationListener as rol } 
+      from 'react-native-responsive-screen';
+
+import { 
+  responsiveFontSize,
+  responsiveScreenFontSize,
+  responsiveHeight,
+  responsiveWidth,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  useDimensionsChange,
+
+} from 'react-native-responsive-dimensions';
 
 import { Box, Center, Stack,  } from 'native-base';
 import { getInitials } from '../../helpers/getInitials';
@@ -41,9 +58,9 @@ const GroupItem = ({ item, route }) => {
    return (
     <View
       style={{
-        padding: 10,
-        marginVertical: 10,
-        minHeight: 100,
+        paddingHorizontal: wp('1%'),
+        marginVertical: hp('1%'),
+        minHeight: hp('17%'),
         width: '100%',
         flex: 1,
         borderTopColor: COLORS.fifth,
@@ -73,7 +90,7 @@ const GroupItem = ({ item, route }) => {
       >
         <Icon 
           name={item?.status === resourceValidation.status.pending ? 'pending-actions' : item?.status === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
-          size={30}
+          size={wp('6%')}
           color={item?.status === resourceValidation.status.pending ? COLORS.danger : item?.status === resourceValidation.status.validated ? COLORS.main : COLORS.red}
         />
       </Box>
@@ -81,7 +98,7 @@ const GroupItem = ({ item, route }) => {
       <Center w="15%" m="2">
 
       <Avatar 
-            size={60}
+            size={wp('16%')}
             rounded
             title={item.imageAlt}
             containerStyle={{ backgroundColor: COLORS.grey }}
@@ -100,7 +117,7 @@ const GroupItem = ({ item, route }) => {
 
       <Text 
         style={{
-          fontSize: 18,
+          fontSize: responsiveFontSize(2),
           fontFamily: 'JosefinSans-Bold',
           color: COLORS.main,
         }}
@@ -108,7 +125,7 @@ const GroupItem = ({ item, route }) => {
         {item?.name}
       <Text 
         style={{
-          fontSize: 14,
+          fontSize: responsiveFontSize(1.7),
           fontFamily: 'JosefinSans-Italic',
           color: COLORS.main,
           paddingTop: 6,
@@ -124,7 +141,7 @@ const GroupItem = ({ item, route }) => {
         <Stack direction="row">
               <Text 
                 style={{
-                  fontSize: 14,
+                  fontSize: responsiveFontSize(1.7),
                 fontFamily: 'JosefinSans-Italic',
                 }}
               >
@@ -136,7 +153,7 @@ const GroupItem = ({ item, route }) => {
             <Box w="50%" >
               <Text 
                 style={{
-                  fontSize: 14,
+                  fontSize: responsiveFontSize(1.7),
                 fontFamily: 'JosefinSans-Italic',
                 }}
               >
@@ -154,7 +171,7 @@ const GroupItem = ({ item, route }) => {
                 }}>
                     <Text 
                       style={{
-                        fontSize: 14,
+                        fontSize: responsiveFontSize(1.7),
                         fontFamily: 'JosefinSans-Italic',
                         marginHorizontal: 2,
                         paddingHorizontal: 5,
@@ -173,7 +190,7 @@ const GroupItem = ({ item, route }) => {
                       ? 'error-outline'
                       : 'dangerous'
                     }
-                          size={20}
+                          size={wp('6%')}
                           color={farmlandStatus === resourceValidation.status.pending ? COLORS.danger : farmlandStatus === resourceValidation.status.validated ? COLORS.main : COLORS.red}
                     />
                   {/* </Box> */}
@@ -190,14 +207,18 @@ const GroupItem = ({ item, route }) => {
   </Box>
   </Stack>
 
-  <Stack direction="row" w="100%" style={{ paddingTop: 5,  }} >
+  <Stack direction="row" w="100%" 
+    style={{ 
+      // paddingTop: 5,  
+    }} 
+    >
       <Box w="100%">
         <Text 
           style={{ 
             textAlign: 'right',
             color: COLORS.grey,
             fontFamily: 'JosefinSans-Italic',
-            fontSize: 12,
+            fontSize: responsiveFontSize(1.5),
           }}
           >
           Registo: {item.createdAt} por {item.user}

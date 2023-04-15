@@ -4,6 +4,23 @@ import { Box,  FormControl, Stack, Center, Separator, Thumbnail, List, ListItem 
 import { Avatar, Divider, Icon, Tooltip } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 import { v4 as uuidv4 } from 'uuid';
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+    listenOrientationChange as lor,
+    removeOrientationListener as rol } 
+        from 'react-native-responsive-screen';
+  
+  import { 
+    responsiveFontSize,
+    responsiveScreenFontSize,
+    responsiveHeight,
+    responsiveWidth,
+    responsiveScreenHeight,
+    responsiveScreenWidth,
+    useDimensionsChange,
+  
+  } from 'react-native-responsive-dimensions';
 
 import CustomDivider from '../Divider/CustomDivider';
 import { useNavigation } from '@react-navigation/native';
@@ -145,8 +162,6 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 
     }, [ farmland, autoRefresh, ])
 
-
-
     const validationAction = (realm, resourceId, flag)=>{
         realm.write(()=>{
             const foundFarmland = realm.objectForPrimaryKey('Farmland', `${resourceId}`);
@@ -232,7 +247,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
     return (
         <View
             style={{
-                paddingVertical: 10,
+                paddingVertical: hp('1%'),
             }}
         >
         <AwesomeAlert
@@ -337,8 +352,8 @@ const FarmlandData = ({ farmland, setRefresh })=>{
     >
         <CollapseHeader
             style={{                     
-                minHeight: 100,
-                paddingTop: 24,
+                height: hp('10%'),
+                paddingTop: 14,
                 backgroundColor: COLORS.mediumseagreen,
                 paddingHorizontal: 10,
             }}
@@ -353,7 +368,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             >
                 <Text
                     style={{ 
-                        fontSize: 14, 
+                        fontSize: responsiveFontSize(2), 
                         color: COLORS.ghostwhite,
                         fontFamily: 'JosefinSans-Bold',
 
@@ -363,7 +378,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 </Text>
                 <Text
                     style={{ 
-                        fontSize: 14, 
+                        fontSize: responsiveFontSize(1.6), 
                         color: COLORS.ghostwhite,
                         fontFamily: 'JosefinSans-Bold',
                         textAlign: 'right',
@@ -407,7 +422,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
         >
             <Icon 
                 name={farmland?.status === resourceValidation.status.pending ? 'pending-actions' : farmland?.status === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
-                size={25}
+                size={wp('6%')}
                 color={farmland?.status === resourceValidation.status.pending ? COLORS.danger : farmland?.status === resourceValidation.status.validated ? COLORS.mediumseagreen : COLORS.red}
             />
             <Text
@@ -425,7 +440,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.black,
-                            fontSize: 18,
+                            fontSize: responsiveFontSize(2),
                             fontFamily: 'JosefinSans-Bold',
                             
                         }}
@@ -1205,7 +1220,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
         }}
     > */}
         {
-        invalidationMotives?.length ?
+        invalidationMotives?.length > 0 ?
 
         (invalidationMotives?.length > 0 && invalidationMotives[0]?.messages?.length > 0) && 
             invalidationMotives[0]?.messages?.map((motive, index)=>(
@@ -1263,7 +1278,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             >
                 <Text
                 style={{
-                    fontSize: 14,
+                    fontSize: responsiveFontSize(1.6),
                     fontFamily: 'JosefinSans-Italic',
                     color: COLORS.black,
                     textAlign: 'left',
@@ -1274,12 +1289,12 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 <Text 
                     style={{ 
                         textAlign: 'right', 
-                        fontSize: 12, 
+                        fontSize: responsiveFontSize(1.6),
                         color: COLORS.black, 
                         paddingTop: 5,
                     }}
                 >
-                    ConnectCaju.
+                    Connect Caju.
                 </Text>
             </Box>
         }
@@ -1303,13 +1318,13 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 <TextInput 
                     style={{
                         borderWidth: 2,
-                        borderColor: COLORS.mediumseagreen,
+                        borderColor: COLORS.lightgrey,
                         borderRadius: 20,
                         padding: 10,
                         fontSize: 16,
                         backgroundColor: '#efefef',
                     }}
-                    placeholder="Mensagem para o usuário"
+                    placeholder={`Deixa uma mensagem para ${farmland?.userName?.split(' ')[0]}`}
                     multiline={true}
                     textAlignVertical="top"
                     numberOfLines={2}
@@ -1337,7 +1352,8 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 alignItems: 'baseline',
                 justifyContent: 'center',
             }}
-        >
+            >
+    {  message &&
             <Box
                 style={{
                     position: 'absolute',
@@ -1345,12 +1361,14 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     right: 10,
                     padding: 5,
                     borderRadius: 100,
+                    width: wp('10%'),
+                    height: hp('6%'),
                     borderWidth: 1,
                     borderColor: COLORS.mediumseagreen,
                     backgroundColor: COLORS.mediumseagreen,
                 }}
             >
-            <TouchableOpacity
+          <TouchableOpacity
                 onPress={()=>{
                     try{
                         addMessage(realm, farmland?._id, message);
@@ -1366,15 +1384,16 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             >
                 <Icon 
                     name="send" 
-                    size={35} 
+                    size={wp('6%')} 
                     color={COLORS.ghostwhite} 
                     iconStyle={{
                         transform: [{ rotate: '-45deg' }]
                     }}
                 />
             </TouchableOpacity>
-
             </Box>
+            }
+
         </Box>
         <Box w="0%">
 
@@ -1390,7 +1409,10 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 
 
 { (customUserData?.role === roles.provincialManager) && (farmland?.status === resourceValidation.status.pending ) &&
-<Stack direction="row" w="100%" style={{ paddingVertical: 5,  }} space={3} >
+    <Stack direction="row" w="100%" 
+        style={{ paddingVertical: 5,  }} 
+        space={3} 
+    >
         <Box w="50%"
             style={{
                 alignItems: 'center',

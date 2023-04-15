@@ -12,6 +12,7 @@ export const SprayingServiceProvider = {
      actorName: 'string?',
      year: { type: 'int', default: ()=>new Date().getFullYear()},
      beneficiaries: 'SprayingServiceBeneficiary[]',
+     status: 'string?', // active, inactive
      assets: 'Assets[]',
 
      status: { type: 'string', default: 'pending'}, // pending; active; inactive

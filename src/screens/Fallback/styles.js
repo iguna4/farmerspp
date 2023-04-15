@@ -2,6 +2,16 @@
 
 import { StyleSheet } from 'react-native';
 import COLORS from '../../consts/colors';
+import { 
+    responsiveFontSize,
+    responsiveScreenFontSize,
+    responsiveHeight,
+    responsiveWidth,
+    responsiveScreenHeight,
+    responsiveScreenWidth,
+    useDimensionsChange,
+
+} from 'react-native-responsive-dimensions';
 
 
 const styles = StyleSheet.create({
@@ -13,7 +23,7 @@ const styles = StyleSheet.create({
     },
     signInTitle: {
         fontFamily: 'JosefinSans-Bold',
-        fontSize: 18,
+        fontSize: responsiveFontSize(3),
         color: COLORS.main,
         textAlign: 'center',
     },

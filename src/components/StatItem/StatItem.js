@@ -1,6 +1,23 @@
 import {TouchableOpacity, View, Text,} from 'react-native';
 import React from 'react';
 import {Avatar } from '@rneui/themed';
+import {  
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+    listenOrientationChange as lor,
+    removeOrientationListener as rol } 
+        from 'react-native-responsive-screen';
+  
+  import { 
+    responsiveFontSize,
+    responsiveScreenFontSize,
+    responsiveHeight,
+    responsiveWidth,
+    responsiveScreenHeight,
+    responsiveScreenWidth,
+    useDimensionsChange,
+  
+  } from 'react-native-responsive-dimensions';
 
 import { Box, Center, Stack,  } from 'native-base';
 import { getInitials } from '../../helpers/getInitials';
@@ -17,7 +34,7 @@ export default function StatItem ({ item, route }){
   return (
     <View
       style={{
-        padding: 10,
+        paddingHorizontal: hp('1%'),
         marginVertical: 10,
         borderColor: COLORS.main,
         minHeight: 100,
@@ -35,16 +52,16 @@ export default function StatItem ({ item, route }){
     >   
 
     <Stack direction="row" w="100%">
-        <Center w="10%" m="1">
+        <Center w="20%" m="1">
             <Avatar 
-                size={40}
+                size={wp('16%')}
                 rounded
                 title={getInitials(item?.userName)}
                 containerStyle={{ backgroundColor: COLORS.grey }}
                 source={{ uri: 'http://localhost/not-set-yet'  }}
             />
         </Center>
-        <Box w="90%">
+        <Box w="80%">
 
         <TouchableOpacity
         onPress={()=>{
@@ -56,7 +73,7 @@ export default function StatItem ({ item, route }){
         >
             <Text 
                 style={{
-                    fontSize: 18,
+                    fontSize: responsiveFontSize(2),
                     fontFamily: 'JosefinSans-Bold',
                     color: COLORS.main,
                 }}
@@ -74,7 +91,7 @@ export default function StatItem ({ item, route }){
                         style={{ 
                             color: COLORS.black, 
                             fontFamily: 'JosefinSand-Bold',
-                            fontSize: 14,
+                            fontSize: responsiveFontSize(1.7),
                         }}
                     >Meta</Text>
                 </Box>
@@ -83,7 +100,7 @@ export default function StatItem ({ item, route }){
                         style={{ 
                             color: COLORS.black, 
                             fontFamily: 'JosefinSand-Bold',
-                            fontSize: 14,
+                            fontSize: responsiveFontSize(1.7),
                         }}
                     >Realização</Text>
                 </Box>
@@ -96,20 +113,27 @@ export default function StatItem ({ item, route }){
                         style={{ 
                             color: COLORS.black, 
                             fontFamily: 'JosefinSand-Bold',
-                            fontSize: 14,
+                            fontSize: responsiveFontSize(1.7),
                         }}
                     >Produtores</Text>
                 </Box>
                 <Box w="35%" alignItems={"center"}>
                     <Text
-                        style={{
-                            // textAlign: 'center',
-
+                        style={{ 
+                            // color: COLORS.black, 
+                            fontFamily: 'JosefinSand-Bold',
+                            fontSize: responsiveFontSize(1.7),
                         }}
                     >{item?.targetFarmers}</Text>
                 </Box>
                 <Box w="35%" alignItems={"center"}>
-                    <Text>{getPercentage(item?.registeredFarmers, item?.targetFarmers)}</Text>
+                    <Text
+                        style={{ 
+                            // color: COLORS.black, 
+                            fontFamily: 'JosefinSand-Bold',
+                            fontSize: responsiveFontSize(1.7),
+                        }}
+                    >{getPercentage(item?.registeredFarmers, item?.targetFarmers)}</Text>
                 </Box>
             </Stack>
             <Stack direction="row" w="100%" 
@@ -120,15 +144,27 @@ export default function StatItem ({ item, route }){
                         style={{ 
                             color: COLORS.black, 
                             fontFamily: 'JosefinSand-Bold',
-                            fontSize: 14,
+                            fontSize: responsiveFontSize(1.7),
                         }}
                     >Pomares</Text>
                 </Box>
                 <Box w="35%" alignItems={"center"}>
-                    <Text>{item?.targetFarmlands}</Text>
+                    <Text
+                        style={{ 
+                            // color: COLORS.black, 
+                            fontFamily: 'JosefinSand-Bold',
+                            fontSize: responsiveFontSize(1.7),
+                        }}
+                    >{item?.targetFarmlands}</Text>
                 </Box>
                 <Box w="35%" alignItems={"center"}>
-                    <Text>{getPercentage(item?.registeredFarmlands, item?.targetFarmlands)}</Text>
+                    <Text
+                        style={{ 
+                            // color: COLORS.black, 
+                            fontFamily: 'JosefinSand-Bold',
+                            fontSize: responsiveFontSize(1.7),
+                        }}
+                    >{getPercentage(item?.registeredFarmlands, item?.targetFarmlands)}</Text>
                 </Box>
             </Stack>
         </TouchableOpacity>

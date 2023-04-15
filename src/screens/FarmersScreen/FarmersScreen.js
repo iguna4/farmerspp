@@ -4,12 +4,28 @@
 import {
   FlatList,  InteractionManager,  ScrollView, 
   Switch, Image, SafeAreaView, Text, View, PermissionsAndroid, 
-  Animated, TouchableOpacity, SectionList, } from 'react-native';
+  Animated, TouchableOpacity, SectionList, ActivityIndicator, } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import {ListItem, Avatar, Icon, } from '@rneui/themed';
 import { Box, Center, Pressable, Stack } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
+import {  
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+  listenOrientationChange as lor,
+  removeOrientationListener as rol } 
+      from 'react-native-responsive-screen';
 
+import { 
+  responsiveFontSize,
+  responsiveScreenFontSize,
+  responsiveHeight,
+  responsiveWidth,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  useDimensionsChange,
+
+} from 'react-native-responsive-dimensions';
 
 import FarmerItem from '../../components/FarmerItem/FarmerItem';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
@@ -70,6 +86,10 @@ export default function FarmersScreen({ route, navigation }) {
   const groupsList = customizeItem(groups, farmlands, serviceProviders, customUserData, 'Grupo')
   const institutionsList = customizeItem(institutions, farmlands, serviceProviders, customUserData, 'Instituição');
   const filteredStats = stats?.filter(stat => (stat.userDistrict !== 'NA'));
+  // ------------------------------------------------------
+  
+  const [isLoading, setIsLoading] = useState(false);
+  const [isEndReached, setIsEndReached] = useState(false);
 
 
   // // ---------------------------------------------------------------------------- 
@@ -91,10 +111,8 @@ export default function FarmersScreen({ route, navigation }) {
     return statsByDistrict;
   }
 
-  const statsByDistrict = listStatsByDistrict(stats);
-  
+  const statsByDistrict = listStatsByDistrict(stats);  
   // //  ---------------------------------------------------------------------------------
-
 
 
   // // This state will be used to toggle between showing all items and only showing the current user's items
@@ -124,6 +142,16 @@ export default function FarmersScreen({ route, navigation }) {
   if (farmersList.length > 0){
     farmersList = farmersList
         ?.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt));
+  }
+
+  const handleEndReached = ()=>{
+    if(!isEndReached && !isLoading){
+      setIsLoading(true);
+      setTimeout(()=>{
+        setIsLoading(false);
+      }, 3000)
+
+    }
   }
 
 
@@ -301,7 +329,7 @@ export default function FarmersScreen({ route, navigation }) {
       <View
           style={{
             width: '100%',
-            paddingHorizontal: 15,
+            paddingHorizontal: wp('3%'),
             paddingTop: 5,
             backgroundColor: '#EBEBE4',
             borderTopWidth: 0,
@@ -320,7 +348,7 @@ export default function FarmersScreen({ route, navigation }) {
               <Text
                 style={{ 
                   fontFamily: 'JosefinSans-Bold', 
-                  fontSize: 18, 
+                  fontSize: responsiveFontSize(2),
                   color: COLORS.main, 
                 }}
               >
@@ -332,13 +360,13 @@ export default function FarmersScreen({ route, navigation }) {
                   <Text
                     style={{ 
                       fontFamily: 'JosefinSans-Regular', 
-                      fonSize: 14, 
+                      fonSize:responsiveFontSize(1.5), 
                     }}
                   >[{'Usuários:'}{' '}{filteredStats.length}]</Text>
                 </Center>
                 <Center>
                   <Text
-                    style={{ fontFamily: 'JosefinSans-Regular', fonSize: 14, }}
+                    style={{ fontFamily: 'JosefinSans-Regular', fonSize: responsiveFontSize(1.5),  }}
                   >[{'Distritos:'}{' '}{districts.length}]</Text>
                 </Center>
               </Stack>
@@ -365,7 +393,7 @@ export default function FarmersScreen({ route, navigation }) {
           <Text 
             style={{
               fontFamily: 'JosefinSans-Regular',
-              fontSize: 18,
+              fontSize: responsiveFontSize(2.5),
               textAlign: 'center',
               lineHeight: 30,
               color: COLORS.red,
@@ -429,7 +457,7 @@ export default function FarmersScreen({ route, navigation }) {
           style={{
             // minHeight: "15%",
             width: '100%',
-            paddingHorizontal: 15,
+            paddingHorizontal: wp('3%'),
             paddingTop: 5,
             backgroundColor: '#EBEBE4',
             borderTopWidth: 0,
@@ -461,7 +489,7 @@ export default function FarmersScreen({ route, navigation }) {
               <Text
                 style={{ 
                   fontFamily: 'JosefinSans-Bold', 
-                  fontSize: 18, 
+                  fontSize: responsiveFontSize(2), 
                   color: COLORS.main, 
                 }}
               >
@@ -473,13 +501,16 @@ export default function FarmersScreen({ route, navigation }) {
                   <Text
                     style={{ 
                       fontFamily: 'JosefinSans-Regular', 
-                      fonSize: 14, 
+                      fonSize: responsiveFontSize(1.5), 
                     }}
                   >[{'Produtores:'}{' '}{farmersList.length}]</Text>
                 </Center>
                 <Center>
                   <Text
-                    style={{ fontFamily: 'JosefinSans-Regular', fonSize: 14, }}
+                    style={{ 
+                      fontFamily: 'JosefinSans-Regular', 
+                      fonSize: responsiveFontSize(1.5), 
+                    }}
                   >[{'Parcelas:'}{' '}{farmlands.length}]</Text>
                 </Center>
               </Stack>
@@ -501,7 +532,7 @@ export default function FarmersScreen({ route, navigation }) {
               <Icon 
                   name="person-add" 
                   color={COLORS.ghostwhite}
-                  size={40}
+                  size={wp('12%')}
                   />
             </TouchableOpacity>
           </Box>
@@ -521,7 +552,7 @@ export default function FarmersScreen({ route, navigation }) {
           <Text 
             style={{
               fontFamily: 'JosefinSans-Regular',
-              fontSize: 18,
+              fontSize: responsiveFontSize(2.5),
               textAlign: 'center',
               lineHeight: 30,
             }}
@@ -539,15 +570,15 @@ export default function FarmersScreen({ route, navigation }) {
             alignItems="stretch" 
             w="100%" 
             style={{
-              marginBottom: 120,
-              marginTop: 10,
+              marginBottom: hp('10%'),
+              marginTop: hp('1%'),
             }}
           >
             <FlatList
 
               StickyHeaderComponent={()=>(
                 <Box style={{
-                  height: 100,
+                  height: hp('10%'),
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
@@ -557,6 +588,8 @@ export default function FarmersScreen({ route, navigation }) {
               stickyHeaderHiddenOnScroll={true}
               data={farmersList}
               keyExtractor={keyExtractor}
+              onEndReached={handleEndReached}
+              onEndReachedThreshold={0.1}
               renderItem={({ item })=>{
                 if(item.flag === 'Grupo'){
                   return <GroupItem  route={route} item={item} />
@@ -569,12 +602,21 @@ export default function FarmersScreen({ route, navigation }) {
                 }
               }
               }
-              ListFooterComponent={()=>(
-                <Box style={{
-                  height: 100,
-                  backgroundColor: COLORS.ghostwhite,
-                }}>
-                </Box>)
+              ListFooterComponent={()=>{
+                if (!isEndReached){
+                  return (
+                  <Box style={{
+                    height: hp('20%'),
+                    backgroundColor: COLORS.ghostwhite,
+                    // paddingBottom: 10,
+                  }}>
+                    { isLoading ? (<CustomActivityIndicator />) : null }
+                  </Box>
+
+                  )
+                }
+                return null;
+                }
               }
 
              />

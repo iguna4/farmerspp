@@ -4,6 +4,23 @@ import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from '@rneui/themed';
+import {  
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+  listenOrientationChange as lor,
+  removeOrientationListener as rol } 
+      from 'react-native-responsive-screen';
+
+import { 
+  responsiveFontSize,
+  responsiveScreenFontSize,
+  responsiveHeight,
+  responsiveWidth,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  useDimensionsChange,
+
+} from 'react-native-responsive-dimensions';
 
 import HomeStackScreen from '../Stacks/HomeStackScreen';
 import FarmersStackScreen from '../Stacks/FarmersStackScreen';
@@ -29,7 +46,7 @@ export default function AppTabs() {
         screenOptions={()=>({
           headerShown: false,
           tabBarStyle: {
-            minHeight: 60,
+            minHeight: hp('4%'),
             marginTop: 0,
           },
           tabBarIconStyle: {
@@ -40,7 +57,7 @@ export default function AppTabs() {
           tabBarShowLabel: false,
           tabBarHideOnKeyboard: 'true',
           tabBarLabelStyle: {
-            fontSize: 16,
+            fontSize: responsiveFontSize(16),
             fontFamily: 'JosefinSans-Bold',
           }
           
@@ -51,7 +68,7 @@ export default function AppTabs() {
               tabBarIcon: (tabInfo)=><Icon 
                         name="home" 
                         color={tabInfo.focused ? COLORS.main: COLORS.grey}
-                        size={50} />,
+                        size={wp('10%')} />,
               tabBarLabel: 'Painel',
             }}
             name="HomeStack"
@@ -62,7 +79,7 @@ export default function AppTabs() {
               tabBarIcon: (tabInfo)=><Icon 
                         name="people" 
                         color={tabInfo.focused ? COLORS.main: COLORS.grey} 
-                        size={50} />,
+                        size={wp('10%')} />,
               tabBarLabel: 'Produtores',
             }}
             name="FarmersStack"

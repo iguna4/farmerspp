@@ -3,6 +3,23 @@ import { View, Text, ScrollView, StyleSheet, SafeAreaView, TouchableOpacity, Ima
 import { Box, Stack, Center } from 'native-base';
 import { Icon } from '@rneui/base';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import {  
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+  listenOrientationChange as lor,
+  removeOrientationListener as rol } 
+      from 'react-native-responsive-screen';
+
+import { 
+  responsiveFontSize,
+  responsiveScreenFontSize,
+  responsiveHeight,
+  responsiveWidth,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  useDimensionsChange,
+
+} from 'react-native-responsive-dimensions';
 
 import FarmlandData from '../../components/FarmlandData/FarmlandData';
 import GroupData from '../../components/GroupData/GroupData';
@@ -91,7 +108,7 @@ export default function GroupScreen ({ route, navigation }) {
           style={{
             width: '100%',
             paddingHorizontal: 5,
-            // paddingTop: 10,
+            paddingVertical:hp('1%'),
             backgroundColor: '#EBEBE4',
             borderTopWidth: 0,
             borderColor: '#EBEBE4',
@@ -121,7 +138,7 @@ export default function GroupScreen ({ route, navigation }) {
                     <Icon 
                         name="arrow-back-ios" 
                         color={COLORS.main}
-                        size={25}
+                        size={wp('8%')}
                         // onPress={()=>{}}
                     /> 
                     <Text
@@ -131,7 +148,7 @@ export default function GroupScreen ({ route, navigation }) {
                             marginLeft: -10,
                         }}
                     >
-                        Voltar
+                        {/* Voltar */}
                     </Text>
                 </Pressable>
 
@@ -156,7 +173,7 @@ export default function GroupScreen ({ route, navigation }) {
               <Text
                 style={{ 
                   fontFamily: 'JosefinSans-Bold', 
-                  fontSize: 16, 
+                  fontSize: responsiveFontSize(2), 
                   color: COLORS.main, 
                 }}
               >
@@ -194,10 +211,10 @@ export default function GroupScreen ({ route, navigation }) {
           <Box w="100%"
             style={{
               alignItems: 'center',
-              marginTop: 60,
+              marginTop: hp('10%'),
               borderRadius: 30,
               borderWidth: 3,
-              borderColor: COLORS.grey,
+              borderColor: COLORS.pantone,
             }}
             >
             <TouchableOpacity
@@ -227,7 +244,7 @@ export default function GroupScreen ({ route, navigation }) {
 {            
      !farmer?.image &&   
      ( <>
-        <Icon name="account-circle" size={245} color={COLORS.grey} />
+        <Icon name="account-circle" size={wp('60%')} color={COLORS.grey} />
       </>
      )        
           }
@@ -236,7 +253,7 @@ export default function GroupScreen ({ route, navigation }) {
             <Text 
                 style={{
                   color: COLORS.main,
-                  fontSize: 24,
+                  fontSize: responsiveFontSize(2.5),
                   fontFamily: 'JosefinSans-Bold',
                   textAlign: 'center',
                   position: 'relative',
@@ -249,7 +266,7 @@ export default function GroupScreen ({ route, navigation }) {
                 style={{
                   
                   color: COLORS.main,
-                  fontSize: 12,
+                  fontSize: responsiveFontSize(1.6),
                   fontFamily: 'JosefinSans-Bold',
                   textAlign: 'center',
                   position: 'relative',
@@ -320,7 +337,11 @@ export default function GroupScreen ({ route, navigation }) {
                   flag: 'Grupo',
                 })}
               >
-                <Icon name="add-circle" color={COLORS.mediumseagreen} size={60} />
+                <Icon 
+                  name="add-circle" 
+                  color={COLORS.mediumseagreen} 
+                  size={wp('15%')} 
+                />
 
               </TouchableOpacity>
             </Box>            

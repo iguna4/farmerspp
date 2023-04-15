@@ -7,6 +7,23 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { Box, Stack, Center, } from 'native-base';
 import { Icon } from '@rneui/themed';
 import { useFocusEffect } from '@react-navigation/native';
+import {  
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+  listenOrientationChange as lor,
+  removeOrientationListener as rol } 
+      from 'react-native-responsive-screen';
+
+import { 
+  responsiveFontSize,
+  responsiveScreenFontSize,
+  responsiveHeight,
+  responsiveWidth,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  useDimensionsChange,
+
+} from 'react-native-responsive-dimensions';
 
 
 
@@ -252,29 +269,29 @@ export default function HomeScreen() {
           borderLeftWidth: 1,
           borderColor: '#EBEBE4',
           backgroundColor: '#EBEBE4',
-          borderBottomLeftRadius: 50,
-          borderBottomRightRadius: 50,
-          marginBottom: 10,
+          borderBottomLeftRadius: wp('15%'),
+          borderBottomRightRadius: wp('15%'),
+          marginBottom: hp('10%'),
         
           shadowColor: COLORS.main,       
         }}
       >
         <Box
           style={{
-            paddingHorizontal: 15,
+            paddingHorizontal: wp('5%'),
           }}
         >
         <Stack direction="row" w="100%" pb="4">
         <Box w="40%" alignItems={'center'}>
               <Image
-                style={{ width: 50, height: 50, borderRadius: 100, }}
+                style={{ width: wp('13%'), height: hp('8%'), borderRadius: 100, }}
                 source={require('../../../assets/images/iamLogo2.png')}
               />
               <Text
                 style={{
                   textAlign: 'center',
                   color: COLORS.main,
-                  fontSize: 18,
+                  fontSize: responsiveFontSize(2),
                   fontFamily: 'JosefinSans-Bold',
                 }}
               >IAM, IP</Text>
@@ -288,13 +305,13 @@ export default function HomeScreen() {
 
               }}
             >
-              <Icon name="account-circle" color={COLORS.main} size={50}  />
+              <Icon name="account-circle" color={COLORS.main} size={wp('15%')}  />
               <Text
                 style={{
                   textAlign: 'center',
                   color: COLORS.grey,
                   fontFamily: 'JosefinSans-Bold',
-                  fontSize: 18,
+                  fontSize: responsiveFontSize(2),
                 }}
                 >{customUserData?.name?.split(' ')[0]}</Text>
             </TouchableOpacity>
@@ -319,8 +336,8 @@ export default function HomeScreen() {
     contentContainerStyle={{
       flex: 1,
       justifyContent: 'center',
-      borderTopLeftRadius: 10,
-      borderTopRightRadius: 10,
+      borderTopLeftRadius: wp('10%'),
+      borderTopRightRadius: wp('10%'),
       padding: 10,
       // borderWidth: 1,
       // borderColor: COLORS.main,
@@ -332,7 +349,7 @@ export default function HomeScreen() {
 
     <View
       style={{
-        marginBottom: 10,
+        marginBottom: hp('2%'),
       }}
     >
 
@@ -342,8 +359,8 @@ export default function HomeScreen() {
           backgroundColor: COLORS.pantone,
           borderWidth: 1,
           borderColor: COLORS.pantone,
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
+          borderTopLeftRadius: wp('10%'),
+          borderTopRightRadius: wp('10%'),
         }}
       >
         <Box
@@ -355,7 +372,7 @@ export default function HomeScreen() {
         >
             <Text
               style={{
-                fontSize: 18,
+                fontSize: responsiveFontSize(2.5),
                 color: COLORS.ghostwhite,
                 fontFamily: 'JosefinSans-Bold',
                 textAlign: 'center',
@@ -366,17 +383,15 @@ export default function HomeScreen() {
             </Text>
 
           <Stack direction="row" w="100%">
-
             <Box 
               style={{
                 width: '40%',
                 // height: 100,
-               
               }}
               >
               <Text
                     style={{
-                      fontSize: 16,
+                      fontSize: responsiveFontSize(2),
                       fontFamily: 'JosefinSans-Bold',
                       textAlign: 'center',
                       color: COLORS.ghostwhite,
@@ -391,7 +406,7 @@ export default function HomeScreen() {
                   <Text
                     style={{
                       width: '50%',
-                      fontSize: 24,
+                      fontSize: responsiveFontSize(2),
                       fontFamily: 'JosefinSans-Regular',
                       textAlign: 'center',
                       color: COLORS.main,
@@ -420,7 +435,7 @@ export default function HomeScreen() {
               >
                   <Text
                     style={{
-                      fontSize: 16,
+                      fontSize: responsiveFontSize(2),
                       fontFamily: 'JosefinSans-Bold',
                       textAlign: 'center',
                       color: COLORS.ghostwhite,
@@ -433,7 +448,7 @@ export default function HomeScreen() {
                   <Text
                       style={{
                         width: '50%',
-                        fontSize: 24,
+                        fontSize: responsiveFontSize(2),
                         fontFamily: 'JosefinSans-Regular',
                         textAlign: 'center',
                         color: COLORS.main,
@@ -469,13 +484,13 @@ export default function HomeScreen() {
       <View 
         style={{ 
           flexDirection: 'row',
-          marginBottom: 10,
+          // marginBottom: hp('1%'),
         }}
       >
-        <Icon name="update" size={30} color={COLORS.danger} />
+        <Icon name="update" size={wp('10%')} color={COLORS.danger} />
         <Text
           style={{
-            fontSize: 18,
+            fontSize: responsiveFontSize(2),
             color: COLORS.danger,
             fontFamily: 'JosefinSans-Bold',    
             marginLeft: 10,           
@@ -634,8 +649,8 @@ export default function HomeScreen() {
         <View 
           style={{ 
             width: '100%',
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
+            borderTopLeftRadius: wp('10%'),
+            borderTopRightRadius: wp('10%'),
             shadowColor: COLORS.main,
             shadowOffset: {
                 width: 1,
@@ -651,10 +666,10 @@ export default function HomeScreen() {
             style={{
               backgroundColor: COLORS.main,
               width: '100%',
-              paddingHorizontal: 5,
+              paddingRight: wp('4%'),
               alignItems: 'center',
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
+              borderTopLeftRadius: wp('5%'),
+              borderTopRightRadius: wp('5%'),
             }}
           >
               <Box pb="2"
@@ -663,7 +678,7 @@ export default function HomeScreen() {
                 <Text
                   style={{
                     color: 'white',
-                    fontSize: 18,
+                    fontSize: responsiveFontSize(2.5),
                     fontFamily: 'JosefinSans-Bold',
                     textAlign: 'center',
                   }}
@@ -685,8 +700,8 @@ export default function HomeScreen() {
                   style={{
                     backgroundColor: isPerformanceButtonActive ? COLORS.second : COLORS.ghostwhite,
                     width: '100%',
-                    borderTopRightRadius: 10,
-                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: wp('2%'),
+                    borderTopLeftRadius: wp('2%'),
                     borderTopWidth: 1,
                     borderLeftWidth: 1,
                     borderRightWidth: 1,
@@ -699,7 +714,7 @@ export default function HomeScreen() {
                 <Text
                     style={{
                       color: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
-                      fontSize: 14,
+                      fontSize: responsiveFontSize(2),
                       fontFamily: 'JosefinSans-Bold',
                       paddingBottom: 5,
                       textAlign: 'center',
@@ -717,8 +732,8 @@ export default function HomeScreen() {
                   style={{
                     backgroundColor: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.second,
                     width: '100%',
-                    borderTopRightRadius: 10,
-                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: wp('2%'),
+                    borderTopLeftRadius: wp('2%'),
                     borderTopWidth: 1,
                     borderLeftWidth: 1,
                     borderRightWidth: 1,
@@ -735,7 +750,7 @@ export default function HomeScreen() {
                 <Text
                     style={{
                       color: isPerformanceButtonActive ? COLORS.danger : COLORS.ghostwhite,
-                      fontSize: 14,
+                      fontSize: responsiveFontSize(2),
                       fontFamily: 'JosefinSans-Bold',
                       paddingBottom: 5,
                       textAlign: 'center',
@@ -756,6 +771,7 @@ export default function HomeScreen() {
               <Text style={{
                 textAlign: 'center',
                 color: COLORS.black,
+                fontSize: responsiveFontSize(1.5),
                 fontFamily: 'JosefinSans-Bold',
               }}
               >
@@ -765,6 +781,7 @@ export default function HomeScreen() {
               style={{
                 textAlign: 'center',
                 color: COLORS.grey,
+                fontSize: responsiveFontSize(1.5),
                 fontFamily: 'JosefinSans-Bold',
               }}
               >
@@ -775,6 +792,7 @@ export default function HomeScreen() {
                 <Text style={{
                   textAlign: 'center',
                   color: COLORS.black,
+                  fontSize: responsiveFontSize(1.5),
                   fontFamily: 'JosefinSans-Bold',
                 }}
                 >
@@ -784,6 +802,7 @@ export default function HomeScreen() {
               style={{
                 textAlign: 'center',
                 color: COLORS.grey,
+                fontSize: responsiveFontSize(1.5),
                 fontFamily: 'JosefinSans-Bold',
               }}
               >
@@ -796,6 +815,7 @@ export default function HomeScreen() {
               textAlign: 'center',
               color: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
               fontFamily: 'JosefinSans-Bold',
+              fontSize: responsiveFontSize(1.5),
               paddingTop: 10,
             }}>
                 Provincial ({customUserData?.userProvince})
@@ -816,6 +836,7 @@ export default function HomeScreen() {
               <Text
                 style={{
                   fontFamily: 'JosefinSans-Regular',
+                  fontSize: responsiveFontSize(1.5),
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
                 }}             
                 >
@@ -838,6 +859,7 @@ export default function HomeScreen() {
               <Text
                 style={{
                   fontFamily: 'JosefinSans-Regular',
+                  fontSize: responsiveFontSize(1.5),
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
                 }}             
                 >
@@ -854,6 +876,7 @@ export default function HomeScreen() {
               textAlign: 'center',
               color: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
               fontFamily: 'JosefinSans-Bold',
+              fontSize: responsiveFontSize(1.5),
               paddingTop: 10,
             }}>
                 Distrital ({customUserData?.userDistrict})
@@ -873,6 +896,7 @@ export default function HomeScreen() {
               <Text
                 style={{
                   fontFamily: 'JosefinSans-Regular',
+                  fontSize: responsiveFontSize(1.5),
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
                 }}              
                 >
@@ -895,6 +919,7 @@ export default function HomeScreen() {
               <Text
                 style={{
                   fontFamily: 'JosefinSans-Regular',
+                  fontSize: responsiveFontSize(1.5),
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
                 }}             
                 >
@@ -910,6 +935,7 @@ export default function HomeScreen() {
               textAlign: 'center',
               color: isPerformanceButtonActive ? COLORS.ghostwhite : COLORS.lightdanger,
               fontFamily: 'JosefinSans-Bold',
+              fontSize: responsiveFontSize(1.5),
               paddingTop: 10,
             }}>
                 Individual ({customUserData?.name})
@@ -929,6 +955,7 @@ export default function HomeScreen() {
               <Text
                 style={{
                   fontFamily: 'JosefinSans-Regular',
+                  fontSize: responsiveFontSize(1.5),
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
 
                 }}              
@@ -952,6 +979,7 @@ export default function HomeScreen() {
               <Text
                 style={{
                   fontFamily: 'JosefinSans-Regular',
+                  fontSize: responsiveFontSize(1.5),
                   color: isPerformanceButtonActive ? COLORS.lightdanger : COLORS.ghostwhite,
                 }}              
                 >
@@ -973,6 +1001,7 @@ export default function HomeScreen() {
           <Text style={{
             textAlign: 'center',
             color: COLORS.black,
+            fontSize: responsiveFontSize(1.5),
             fontFamily: 'JosefinSans-Bold',
           }}
           >
@@ -982,6 +1011,7 @@ export default function HomeScreen() {
           style={{
             textAlign: 'center',
             color: COLORS.grey,
+            fontSize: responsiveFontSize(1.5),
             fontFamily: 'JosefinSans-Bold',
           }}
           >
@@ -992,6 +1022,7 @@ export default function HomeScreen() {
             <Text style={{
               textAlign: 'center',
               color: COLORS.black,
+              fontSize: responsiveFontSize(1.5),
               fontFamily: 'JosefinSans-Bold',
             }}
             >
@@ -1002,6 +1033,7 @@ export default function HomeScreen() {
             textAlign: 'center',
             color: COLORS.grey,
             fontFamily: 'JosefinSans-Bold',
+            fontSize: responsiveFontSize(1.5),
           }}
           >
             Até Dezembro {new Date().getFullYear()}  
@@ -1014,6 +1046,7 @@ export default function HomeScreen() {
           color: isPerformanceButtonActive ? COLORS.danger : COLORS.main,
           fontFamily: 'JosefinSans-Bold',
           paddingTop: 10,
+          fontSize: responsiveFontSize(1.5),
         }}>
             Provincial ({customUserData?.userProvince})
         </Text>            
@@ -1033,6 +1066,7 @@ export default function HomeScreen() {
             style={{
               fontFamily: 'JosefinSans-Regular',
               color: COLORS.ghostwhite,
+              fontSize: responsiveFontSize(1.5),
             }}              
             >
            {getPercentage(rpFarmlands, tpFarmlands)}
@@ -1055,6 +1089,7 @@ export default function HomeScreen() {
             style={{
               fontFamily: 'JosefinSans-Regular',
               color: COLORS.ghostwhite,
+              fontSize: responsiveFontSize(1.5),
             }}
             >
             {tpFarmlands}
@@ -1071,6 +1106,7 @@ export default function HomeScreen() {
           color: isPerformanceButtonActive ? COLORS.danger : COLORS.main,
           fontFamily: 'JosefinSans-Bold',
           paddingTop: 10,
+          fontSize: responsiveFontSize(1.5),
         }}>
             Distrital ({customUserData?.userDistrict})
         </Text>            
@@ -1090,6 +1126,7 @@ export default function HomeScreen() {
             style={{
               fontFamily: 'JosefinSans-Regular',
               color: COLORS.ghostwhite,
+              fontSize: responsiveFontSize(1.5),
             }}
             >
             {getPercentage(rdFarmlands, tdFarmlands)}
@@ -1112,6 +1149,7 @@ export default function HomeScreen() {
             style={{
               fontFamily: 'JosefinSans-Regular',
               color: COLORS.ghostwhite,
+              fontSize: responsiveFontSize(1.5),
             }}
             >
             {tdFarmlands}
@@ -1127,6 +1165,7 @@ export default function HomeScreen() {
           color: isPerformanceButtonActive ? COLORS.danger : COLORS.main,
           fontFamily: 'JosefinSans-Bold',
           paddingTop: 10,
+          fontSize: responsiveFontSize(1.5),
         }}>
             Individual ({customUserData?.name})
         </Text>            
@@ -1146,6 +1185,7 @@ export default function HomeScreen() {
             style={{
               fontFamily: 'JosefinSans-Regular',
               color: COLORS.ghostwhite,
+              fontSize: responsiveFontSize(1.5),
             }}
             >
             {getPercentage(ruFarmlands, tuFarmlands)}

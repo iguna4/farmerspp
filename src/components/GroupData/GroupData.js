@@ -4,7 +4,22 @@ import { Box,  FormControl, Stack, Center, Separator, Thumbnail, List, ListItem 
 import { Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 import { v4 as uuidv4 } from 'uuid';
-
+import {  
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+    listenOrientationChange as lor,
+    removeOrientationListener as rol } 
+        from 'react-native-responsive-screen';  
+import { 
+    responsiveFontSize,
+    responsiveScreenFontSize,
+    responsiveHeight,
+    responsiveWidth,
+    responsiveScreenHeight,
+    responsiveScreenWidth,
+    useDimensionsChange,
+  
+  } from 'react-native-responsive-dimensions';
 
 import CustomDivider from '../../components/Divider/CustomDivider';
 import COLORS from '../../consts/colors';
@@ -20,6 +35,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
+import { faSortNumericDesc } from '@fortawesome/free-solid-svg-icons';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const groupResourceMessage = 'groupResourceMessage';
@@ -298,11 +314,11 @@ const GroupData = ({ farmer })=>{
     >
         <CollapseHeader
             style={{                     
-                minHeight: 100,
-                paddingTop: 24,
+                height: hp('10%'),
+                paddingTop: 14,
                 backgroundColor: COLORS.pantone,
                 paddingHorizontal: 10,
-                marginVertical: 10,      
+                marginVertical: hp('1%'),      
             }}
             >
             <View
@@ -312,7 +328,7 @@ const GroupData = ({ farmer })=>{
                 >
                 <Text
                     style={{ 
-                        fontSize: 14, 
+                        fontSize: responsiveFontSize(2), 
                         color: COLORS.ghostwhite,
                         fontFamily: 'JosefinSans-Bold',
                     }}
@@ -321,7 +337,7 @@ const GroupData = ({ farmer })=>{
                 </Text>
                 <Text
                     style={{ 
-                        fontSize: 14, 
+                        fontSize: responsiveFontSize(2), 
                         color: COLORS.ghostwhite,
                         fontFamily: 'JosefinSans-Bold',
                         textAlign: 'right',
@@ -365,7 +381,7 @@ const GroupData = ({ farmer })=>{
     >
             <Icon 
                 name={farmer?.status === resourceValidation.status.pending ? 'pending-actions' : farmer?.status === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
-                size={25}
+                size={wp('6%')}
                 color={farmer?.status === resourceValidation.status.pending ? COLORS.danger : farmer?.status === resourceValidation.status.validated ? COLORS.pantone : COLORS.red}
             />
             <Text
@@ -1202,6 +1218,8 @@ const GroupData = ({ farmer })=>{
         }
 
         {
+        invalidationMotives?.length > 0 ?
+
         (invalidationMotives?.length > 0 && invalidationMotives[0]?.messages?.length > 0) && 
             invalidationMotives[0]?.messages?.map((motive, index)=>(
                 <Box 
@@ -1242,6 +1260,42 @@ const GroupData = ({ farmer })=>{
                     {/* </Box> */}
                 </Box>
             ))
+
+            :
+            <Box 
+                // key={index}
+                style={{
+                    flexGrow: 1,
+                    backgroundColor: COLORS.fourth,
+                    borderRadius: 20,
+                    paddingHorizontal: 5,
+                    paddingVertical: 5,
+                    marginVertical: 5,
+                    marginHorizontal: 5,
+                    alignItems: 'flex-end',
+                }}
+            >
+                <Text
+                style={{
+                    fontSize: responsiveFontSize(1.6),
+                    fontFamily: 'JosefinSans-Italic',
+                    color: COLORS.black,
+                    textAlign: 'left',
+                }}
+                >
+                    Dados incompletos.
+                </Text>
+                <Text 
+                    style={{ 
+                        textAlign: 'right', 
+                        fontSize: responsiveFontSize(1.6),
+                        color: COLORS.black, 
+                        paddingTop: 5,
+                    }}
+                >
+                    Connect Caju.
+                </Text>
+            </Box>
         }
 
 
@@ -1264,13 +1318,13 @@ const GroupData = ({ farmer })=>{
                 <TextInput 
                     style={{
                         borderWidth: 2,
-                        borderColor: COLORS.main,
+                        borderColor: COLORS.lightgrey,
                         borderRadius: 20,
                         padding: 10,
                         fontSize: 16,
                         backgroundColor: '#efefef',
                     }}
-                    placeholder="Mensagem para o usuário"
+                    placeholder={`Deixa uma mensagem para ${farmer?.userName?.split(' ')[0]}`}
                     multiline={true}
                     textAlignVertical="top"
                     numberOfLines={2}
@@ -1299,13 +1353,16 @@ const GroupData = ({ farmer })=>{
                 justifyContent: 'center',
             }}
         >
-            <Box
+{    message &&
+        <Box
                 style={{
                     position: 'absolute',
                     bottom: 10,
                     right: 10,
                     padding: 5,
                     borderRadius: 100,
+                    width: wp('10%'),
+                    height: hp('6%'),
                     borderWidth: 1,
                     borderColor: COLORS.main,
                     backgroundColor: COLORS.main,
@@ -1327,7 +1384,7 @@ const GroupData = ({ farmer })=>{
             >
                 <Icon 
                 name="send" 
-                size={35} 
+                size={wp('6%')} 
                 color={COLORS.ghostwhite} 
                 iconStyle={{
                     transform: [{ rotate: '-45deg' }]
@@ -1336,6 +1393,7 @@ const GroupData = ({ farmer })=>{
             </TouchableOpacity>
 
             </Box>
+        }
         </Box>
         <Box w="0%">
 

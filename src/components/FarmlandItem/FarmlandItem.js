@@ -1,6 +1,23 @@
 import {TouchableOpacity, View, Text,} from 'react-native';
 import React, { useState } from 'react';
 import {Icon, Avatar } from '@rneui/themed';
+import {  
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+  listenOrientationChange as lor,
+  removeOrientationListener as rol } 
+      from 'react-native-responsive-screen';
+
+import { 
+  responsiveFontSize,
+  responsiveScreenFontSize,
+  responsiveHeight,
+  responsiveWidth,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  useDimensionsChange,
+
+} from 'react-native-responsive-dimensions';
 
 import { Box, Center, Stack,  } from 'native-base';
 import { getInitials } from '../../helpers/getInitials';

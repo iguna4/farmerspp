@@ -6,6 +6,23 @@ import React, { useEffect, useRef, useState } from 'react';
 import {ListItem, Avatar, Icon, } from '@rneui/themed';
 import { Box, Center, Pressable, Stack } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
+import {  
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+  listenOrientationChange as lor,
+  removeOrientationListener as rol } 
+      from 'react-native-responsive-screen';
+
+import { 
+  responsiveFontSize,
+  responsiveScreenFontSize,
+  responsiveHeight,
+  responsiveWidth,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  useDimensionsChange,
+
+} from 'react-native-responsive-dimensions';
 
 import { roles } from '../../consts/roles';
 
@@ -48,6 +65,9 @@ export default function UserStat({ route, navigation  }) {
     const [farmlandList, setFarmlandList] = useState([]);
     
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isEndReached, setIsEndReached] = useState(false);
+
 
     const farmers = realm.objects('Actor').filtered("userId == $0", userId);
     // const serviceProviders = realm.objects('SprayingServiceProvider').filtered("userProvince == $0", customUserData?.userProvince);
@@ -151,6 +171,15 @@ export default function UserStat({ route, navigation  }) {
 
     const keyExtractor = (item, index)=>index.toString();
 
+    const handleEndReached = ()=>{
+      if(!isEndReached && !isLoading){
+        setIsLoading(true);
+        setTimeout(()=>{
+          setIsLoading(false);
+        }, 3000)
+  
+      }
+    }  
 
     useFocusEffect(
       React.useCallback(() => {
@@ -182,7 +211,7 @@ export default function UserStat({ route, navigation  }) {
           style={{
             width: '100%',
             paddingHorizontal: 15,
-            paddingTop: 5,
+            // paddingVertical: hp('1%'),
             backgroundColor: '#EBEBE4',
             borderTopWidth: 0,
             borderColor: '#EBEBE4',
@@ -197,7 +226,7 @@ export default function UserStat({ route, navigation  }) {
                 onPress={()=>navigation.goBack()}
             >
                 <Icon
-                    name="arrow-back-ios" size={35} color={COLORS.main}
+                    name="arrow-back-ios" size={wp('8%')} color={COLORS.main}
                 />
             </TouchableOpacity>
           </Box>
@@ -229,7 +258,7 @@ export default function UserStat({ route, navigation  }) {
                 }}
                 >
                 <Icon
-                    name="refresh" size={35} color={COLORS.main}
+                    name="refresh" size={wp('8%')} color={COLORS.main}
                     />
             </TouchableOpacity>
           </Center>
@@ -248,7 +277,7 @@ export default function UserStat({ route, navigation  }) {
           w="100%"
           alignItems={"center"}
           style={{
-            backgroundColor: COLORS.pantone,
+            backgroundColor: '#EBEBE4',
             paddingLeft: 5,
             paddingRight: 10,
           }}
@@ -278,7 +307,7 @@ export default function UserStat({ route, navigation  }) {
                 >
                     <Text
                       style={{
-                        color: COLORS.ghostwhite,
+                        color: COLORS.pantone,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Bold',
                       }}
@@ -312,12 +341,12 @@ export default function UserStat({ route, navigation  }) {
                         paddingVertical: 5,
                         // borderTopEndRadius: 20,
                         // borderTopLeftRadius: 20,
-                        backgroundColor: pendingFarmers ? COLORS.ghostwhite : COLORS.pantone,
+                        backgroundColor: pendingFarmers ? COLORS.ghostwhite : '#EBEBE4',
                       }}
                     >
                       <Text style={{
                         textAlign: 'center',
-                        color: pendingFarmers ? COLORS.main : COLORS.ghostwhite,
+                        color: pendingFarmers ? COLORS.main : COLORS.pantone,
                         fontSize: 10,
                         fontFamily: 'JosefinSans-Bold',
                       }}>
@@ -348,13 +377,13 @@ export default function UserStat({ route, navigation  }) {
                           paddingVertical: 5,
                           // borderTopEndRadius: 20,
                           // borderTopLeftRadius: 20,
-                          backgroundColor: invalidatedFarmers ? COLORS.ghostwhite : COLORS.pantone,
+                          backgroundColor: invalidatedFarmers ? COLORS.ghostwhite : '#EBEBE4',
                         }}
                       >
                         <Text 
                           style={{
                             textAlign: 'center',
-                            color: invalidatedFarmers ? COLORS.main : COLORS.ghostwhite,
+                            color: invalidatedFarmers ? COLORS.main : COLORS.pantone,
                             fontSize: 10,
                             fontFamily: 'JosefinSans-Bold',
                             marginRight: 5,
@@ -394,7 +423,7 @@ export default function UserStat({ route, navigation  }) {
 
                  <Text
                   style={{
-                    color: COLORS.ghostwhite,
+                    color: COLORS.pantone,
                     fontSize: 14,
                     fontFamily: 'JosefinSans-Bold',
                   }}
@@ -425,14 +454,14 @@ export default function UserStat({ route, navigation  }) {
                         paddingVertical: 5,
                         // borderTopEndRadius: 20,
                         // borderTopLeftRadius: 20,
-                        backgroundColor: pendingFarmlands ? COLORS.ghostwhite : COLORS.pantone,
+                        backgroundColor: pendingFarmlands ? COLORS.ghostwhite : '#EBEBE4',
 
                       }}
                     >
                       <Text 
                         style={{ 
                           textAling: 'center',  
-                          color: pendingFarmlands ? COLORS.main : COLORS.ghostwhite, 
+                          color: pendingFarmlands ? COLORS.main : COLORS.pantone, 
                           fontSize: 10,
                           fontFamily: 'JosefinSans-Bold',
                         }}
@@ -464,13 +493,13 @@ export default function UserStat({ route, navigation  }) {
                           paddingVertical: 5,
                           // borderTopEndRadius: 20,
                           // borderTopLeftRadius: 20,
-                          backgroundColor: invalidatedFarmlands ? COLORS.ghostwhite : COLORS.pantone,
+                          backgroundColor: invalidatedFarmlands ? COLORS.ghostwhite : '#EBEBE4',
 
                         }}
                       >
                         <Text style={{
                           textAlign: 'center',
-                          color: invalidatedFarmlands ? COLORS.main : COLORS.ghostwhite,
+                          color: invalidatedFarmlands ? COLORS.main : COLORS.pantone,
                           fontSize: 10,
                           fontFamily: 'JosefinSans-Bold',
                           marginRight: 4,
@@ -522,6 +551,8 @@ export default function UserStat({ route, navigation  }) {
 
             data={farmersList}
             keyExtractor={keyExtractor}
+            onEndReached={handleEndReached}
+            onEndReachedThreshold={0.1}
             renderItem={({ item })=>{
             if(item.flag === 'Grupo'){
                 return <GroupItem  route={route} item={item} />
@@ -534,12 +565,21 @@ export default function UserStat({ route, navigation  }) {
             }
             }
           }
-          ListFooterComponent={()=>(
-            <Box style={{
-              height: 100,
-              backgroundColor: COLORS.ghostwhite,
-            }}>
-            </Box>)
+          ListFooterComponent={()=>{
+            if (!isEndReached){
+              return (
+              <Box style={{
+                height: hp('20%'),
+                backgroundColor: COLORS.ghostwhite,
+                // paddingBottom: 10,
+              }}>
+                { isLoading ? (<CustomActivityIndicator />) : null }
+              </Box>
+
+              )
+            }
+            return null;
+            }
           }
         />
   }

@@ -3,6 +3,23 @@ import { View, Text, ScrollView, StyleSheet,  SafeAreaView, Image, Pressable, To
 import { Box, Stack, Center } from 'native-base';
 import { Icon } from '@rneui/base';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import {  
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+  listenOrientationChange as lor,
+  removeOrientationListener as rol } 
+      from 'react-native-responsive-screen';
+
+import { 
+  responsiveFontSize,
+  responsiveScreenFontSize,
+  responsiveHeight,
+  responsiveWidth,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  useDimensionsChange,
+
+} from 'react-native-responsive-dimensions';
 
 import styles from './styles';
 import FarmlandData from '../../components/FarmlandData/FarmlandData';
@@ -69,7 +86,7 @@ export default function InstitutionScreen ({ route, navigation }) {
             // height: "10%",
             width: '100%',
             paddingHorizontal: 5,
-            paddingVertical: 10,
+            paddingVertical:hp('1%'),
             backgroundColor: '#EBEBE4',
             // borderTopWidth: 0,
             // borderColor: '#EBEBE4',
@@ -125,7 +142,7 @@ export default function InstitutionScreen ({ route, navigation }) {
                     <Icon 
                         name="arrow-back-ios" 
                         color={COLORS.main}
-                        size={25}
+                        size={wp('8%')}
                         // onPress={()=>{}}
                     /> 
                     <Text
@@ -135,7 +152,7 @@ export default function InstitutionScreen ({ route, navigation }) {
                             marginLeft: -10,
                         }}
                     >
-                        Voltar
+                        {/* Voltar */}
                     </Text>
                 </Pressable>
 
@@ -162,7 +179,7 @@ export default function InstitutionScreen ({ route, navigation }) {
               <Text
                 style={{ 
                   fontFamily: 'JosefinSans-Bold', 
-                  fontSize: 16, 
+                  fontSize: responsiveFontSize(2), 
                   color: COLORS.main, 
                 }}
               >
@@ -203,10 +220,10 @@ export default function InstitutionScreen ({ route, navigation }) {
          <Box w="100%"
             style={{
               alignItems: 'center',
-              marginTop: 60,
+              marginTop: hp('10%'),
               borderRadius: 30,
               borderWidth: 3,
-              borderColor: COLORS.grey,
+              borderColor: COLORS.pantone,
             }}
             >
               {/* <View> */}
@@ -236,7 +253,7 @@ export default function InstitutionScreen ({ route, navigation }) {
 {            
      !farmer?.image &&   
      ( <>
-        <Icon name="account-circle" size={245} color={COLORS.grey} /> 
+        <Icon name="account-circle" size={wp('60%')} color={COLORS.grey} /> 
       </>
      )        
   }
@@ -246,7 +263,7 @@ export default function InstitutionScreen ({ route, navigation }) {
                 style={{
                   
                   color: COLORS.main,
-                  fontSize: 24,
+                  fontSize:  responsiveFontSize(2.5),
                   fontFamily: 'JosefinSans-Bold',
                   textAlign: 'center',
                   position: 'relative',
@@ -259,7 +276,7 @@ export default function InstitutionScreen ({ route, navigation }) {
                 style={{
                   
                   color: COLORS.main,
-                  fontSize: 12,
+                  fontSize:  responsiveFontSize(1.6),
                   fontFamily: 'JosefinSans-Bold',
                   textAlign: 'center',
                   position: 'relative',
@@ -329,7 +346,11 @@ export default function InstitutionScreen ({ route, navigation }) {
                   flag: 'Instituição',
                 })}
               >
-                <Icon name="add-circle" color={COLORS.mediumseagreen} size={60} />
+                <Icon 
+                  name="add-circle" 
+                  color={COLORS.mediumseagreen} 
+                  size={wp('15%')} 
+                />
 
               </TouchableOpacity>
             </Box>            

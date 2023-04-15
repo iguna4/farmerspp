@@ -5,7 +5,23 @@ import React, {useEffect, useState, useCallback } from 'react';
 import { Button, Icon, CheckBox } from '@rneui/themed';
 import { Box, Stack, FormControl, Center, Select, CheckIcon, ScrollView } from 'native-base';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import {  
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+    listenOrientationChange as lor,
+    removeOrientationListener as rol } 
+        from 'react-native-responsive-screen';
 
+import { 
+    responsiveFontSize,
+    responsiveScreenFontSize,
+    responsiveHeight,
+    responsiveWidth,
+    responsiveScreenHeight,
+    responsiveScreenWidth,
+    useDimensionsChange,
+
+} from 'react-native-responsive-dimensions';
 
 import styles from './styles';
 import { CustomInput } from '../../components/Inputs/CustomInput';
@@ -214,8 +230,8 @@ export default function WelcomeScreen () {
                 borderLeftWidth: 1,
                 borderColor: '#EBEBE4',
                 backgroundColor: '#EBEBE4',
-                borderBottomLeftRadius: 50,
-                borderBottomRightRadius: 50,
+                borderBottomLeftRadius: wp('15%'),
+                borderBottomRightRadius: wp('15%'),
                 shadowColor: COLORS.main,
                 shadowOffset: {
 
@@ -225,7 +241,11 @@ export default function WelcomeScreen () {
             <Box>
                 <Center w="100%" py="3">
                 <Image
-                    style={{ width: 60, height: 60, borderRadius: 100,  }}
+                    style={{ 
+                            width: responsiveWidth(16), 
+                            height: responsiveHeight(10), 
+                            borderRadius: 100,  
+                        }}
                     source={require('../../../assets/images/iamLogo2.png')}
                     />
                 {/* <Text
@@ -242,7 +262,7 @@ export default function WelcomeScreen () {
                 <Text
                     style={{
                     color: COLORS.main,
-                    fontSize: 18,
+                    fontSize: responsiveFontSize(2.5),
                     fontFamily: 'JosefinSans-Bold',
                     textAlign: 'center',
                     }}
@@ -260,19 +280,19 @@ export default function WelcomeScreen () {
             }}
     >
     { isLoggingIn &&        
-        <Center mt={'3'}>
+        <Center mt={hp('8%')}>
             <Text style={styles.signInTitle}>
                 Connect Caju 
             {/* {new Date().getFullYear()} */}
             </Text>
         </Center>
     }
-        <Box mt="5" pl="4">
+        <Box mt={hp('10%')} pl="4">
         {  isLoggingIn ?
         <Box>
             {/* <Icon 
                 name='lock-open'
-                size={30}
+                size={wp('10%')}
                 color={COLORS.main}
                 /> */}
         </Box>
@@ -285,12 +305,12 @@ export default function WelcomeScreen () {
             >
                 <Icon 
                     name='account-circle'
-                    size={40}
+                    size={wp('10%')}
                     color={COLORS.main}
                 />   
                 <Text
                     style={{
-                        fontSize: 18,
+                        fontSize: responsiveFontSize(2.5),
                         color: COLORS.main,
                         fontFamily: 'JosefinSans-Bold',
                         paddingHorizontal: 10,
@@ -340,8 +360,8 @@ export default function WelcomeScreen () {
                 alignItems: 'center',
                 justifyContent: 'center',
                 width: '100%',
-                marginBottom: 20,
-                paddingTop: 10,
+                marginBottom: hp('10%'),
+                paddingTop: hp('5%'),
             }}
         >
 
@@ -454,11 +474,20 @@ export default function WelcomeScreen () {
                     InputLeftElement={
                         signInWithPhone ?
                         (
-                            <Icon name="phone" color="grey" style={{ paddingLeft: 3 }} />
+                            <Icon 
+                                name="phone" 
+                                color="grey" 
+                                // size={30}
+                                style={{ paddingLeft: 3 }} 
+                            />
                         )
                         :
                         (
-                            <Icon name="email" color="grey" style={{ paddingLeft: 3 }} />
+                            <Icon 
+                                name="email" 
+                                color="grey" 
+                                style={{ paddingLeft: 3 }} 
+                            />
 
                         )
                     }
@@ -494,8 +523,8 @@ export default function WelcomeScreen () {
                         <Icon
                         name={showPassword ? 'visibility' : 'visibility-off'}
                         color={COLORS.grey}
-                        size={30}
-                        style={{ paddingRight: 3, }}
+                        size={20}
+                        style={{ paddingRight: 5, }}
                         type="material"
                         onPress={()=>setShowPassword(prev=>!prev)}
                         />
@@ -527,10 +556,10 @@ export default function WelcomeScreen () {
                     }
                     InputRightElement={
                         <Icon
-                        name={showPassword ?  'visibility-off' : 'visibility'}
+                        name={showPassword ?  'visibility' : 'visibility-off' }
                         color="grey"
-                        size={30}
-                        style={{ paddingRight: 3, }}
+                        size={20}
+                        style={{ paddingRight: 5, }}
                         type="material"
                         onPress={()=>setShowPassword(prev=>!prev)}
                         />
@@ -561,9 +590,10 @@ export default function WelcomeScreen () {
                     }
                     InputRightElement={
                         <Icon
-                        name={showPasswordConfirm ?  'visibility-off' : 'visibility' }
+                        name={showPasswordConfirm ?  'visibility' : 'visibility-off'  }
                         color={COLORS.grey}
-                        size={30}
+                        size={20}
+                        style={{ paddingRight: 5, }}
                         type="material"
                         onPress={()=>setShowPasswordConfirm(prev=>!prev)}
                         />

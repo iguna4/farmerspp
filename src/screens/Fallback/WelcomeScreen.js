@@ -242,7 +242,7 @@ export default function WelcomeScreen () {
                 <Center w="100%" py="3">
                 <Image
                     style={{ 
-                            width: responsiveWidth(16), 
+                            width: responsiveWidth(18), 
                             height: responsiveHeight(10), 
                             borderRadius: 100,  
                         }}
@@ -277,24 +277,25 @@ export default function WelcomeScreen () {
     <ScrollView
             contentContainerStyle={{
                 // alignItems: 'center',
+                minHeight: '100%',
             }}
     >
-    { isLoggingIn &&        
-        <Center mt={hp('8%')}>
+    { 
+    // isLoggingIn &&        
+    //     <Center mt="1/4">
+    //         <Text style={styles.signInTitle}>
+    //             Connect Caju 
+    //         {/* {new Date().getFullYear()} */}
+    //         </Text>
+    //     </Center>
+    }
+        <Box my="6" pl="4">
+        {  isLoggingIn ?
+        <Box>
             <Text style={styles.signInTitle}>
                 Connect Caju 
             {/* {new Date().getFullYear()} */}
             </Text>
-        </Center>
-    }
-        <Box mt={hp('10%')} pl="4">
-        {  isLoggingIn ?
-        <Box>
-            {/* <Icon 
-                name='lock-open'
-                size={wp('10%')}
-                color={COLORS.main}
-                /> */}
         </Box>
             :
             (
@@ -356,7 +357,7 @@ export default function WelcomeScreen () {
 
         <View
             style={{
-                flex: 1,
+                // flex: 1,
                 alignItems: 'center',
                 justifyContent: 'center',
                 width: '100%',

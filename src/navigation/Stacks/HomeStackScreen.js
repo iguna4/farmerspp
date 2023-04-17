@@ -18,7 +18,7 @@ export default function HomeStackScreen() {
           headerTitleAlign: 'center',
           headerTintColor: '#005000',
           headerTitleStyle: {
-              fontSize: 20,
+              fontSize: 16,
               fontWeight: 'bold',
               fontFamily: 'JosefinSans-Italic'
           },

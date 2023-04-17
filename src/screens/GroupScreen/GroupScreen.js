@@ -243,9 +243,17 @@ export default function GroupScreen ({ route, navigation }) {
 
 {            
      !farmer?.image &&   
-     ( <>
-        <Icon name="account-circle" size={wp('60%')} color={COLORS.grey} />
-      </>
+     ( <Box>
+        <Icon 
+          style={{
+            position: 'relative',
+            top: 10,
+          }}
+          name="account-circle" 
+          size={wp('60%')} 
+          color={COLORS.grey} 
+        />
+      </Box>
      )        
           }
             </TouchableOpacity>            

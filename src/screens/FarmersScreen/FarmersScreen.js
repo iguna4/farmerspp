@@ -457,8 +457,8 @@ export default function FarmersScreen({ route, navigation }) {
           style={{
             // minHeight: "15%",
             width: '100%',
-            paddingHorizontal: wp('3%'),
-            paddingTop: 5,
+            paddingHorizontal: 5,
+            paddingVertical: 10,
             backgroundColor: '#EBEBE4',
             borderTopWidth: 0,
             borderColor: '#EBEBE4',
@@ -484,7 +484,7 @@ export default function FarmersScreen({ route, navigation }) {
             />
           </Center>
 
-          <Box w="70%">
+          <Box w="65%">
             <Center>
               <Text
                 style={{ 
@@ -501,7 +501,7 @@ export default function FarmersScreen({ route, navigation }) {
                   <Text
                     style={{ 
                       fontFamily: 'JosefinSans-Regular', 
-                      fonSize: responsiveFontSize(1.5), 
+                      fonSize: responsiveFontSize(1), 
                     }}
                   >[{'Produtores:'}{' '}{farmersList.length}]</Text>
                 </Center>
@@ -509,7 +509,7 @@ export default function FarmersScreen({ route, navigation }) {
                   <Text
                     style={{ 
                       fontFamily: 'JosefinSans-Regular', 
-                      fonSize: responsiveFontSize(1.5), 
+                      fonSize: responsiveFontSize(1), 
                     }}
                   >[{'Parcelas:'}{' '}{farmlands.length}]</Text>
                 </Center>
@@ -517,24 +517,40 @@ export default function FarmersScreen({ route, navigation }) {
             </Center>
           </Box>
           <Box 
-            w="15%"
+            w="20%"
             style={{ 
               justifyContent: 'center',
-              borderRadius: 100,
-              borderWidth: 1,
-              borderColor: COLORS.main,
-              backgroundColor: COLORS.main,
+              alignItems: 'center',
+              // borderRadius: 100,
+              // borderWidth: 1,
+              // borderColor: COLORS.main,
+              // backgroundColor: COLORS.main,
+              // marginHorizontal: 5,
             }}
           >
-            <TouchableOpacity
-              onPress={addFarmer}
+            <Box
+              style={{ 
+                // width: '80%',
+                // height: '80%',
+                justifyContent: 'center',
+                borderRadius: 100,
+                borderWidth: 1,
+                borderColor: COLORS.main,
+                backgroundColor: COLORS.main,
+                // marginHorizontal: 5,
+              }}
             >
-              <Icon 
-                  name="person-add" 
-                  color={COLORS.ghostwhite}
-                  size={wp('12%')}
-                  />
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={addFarmer}
+              >
+                <Icon 
+                    name="person-add" 
+                    color={COLORS.ghostwhite}
+                    size={wp('12%')}
+                    />
+              </TouchableOpacity>
+
+            </Box>
           </Box>
         </Stack>
       </View>

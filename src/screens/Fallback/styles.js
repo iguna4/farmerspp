@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
         fontFamily: 'JosefinSans-Bold',
         fontSize: responsiveFontSize(3),
         color: COLORS.main,
-        textAlign: 'center',
+        textAlign: 'left',
+        paddingRight: 10,
     },
     signInSubTitle: {
         fontFamily: 'JosefinSans-Regular',

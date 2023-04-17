@@ -46,7 +46,7 @@ export default function AppTabs() {
         screenOptions={()=>({
           headerShown: false,
           tabBarStyle: {
-            minHeight: hp('4%'),
+            // minHeight: hp('2%'),
             marginTop: 0,
           },
           tabBarIconStyle: {

@@ -7,6 +7,23 @@ import React, {useState, useEffect, useCallback } from 'react';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
 import { Icon, Button, CheckBox } from '@rneui/themed';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import {  
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+    listenOrientationChange as lor,
+    removeOrientationListener as rol } 
+        from 'react-native-responsive-screen';
+  
+  import { 
+    responsiveFontSize,
+    responsiveScreenFontSize,
+    responsiveHeight,
+    responsiveWidth,
+    responsiveScreenHeight,
+    responsiveScreenWidth,
+    useDimensionsChange,
+  
+  } from 'react-native-responsive-dimensions';
 
 import administrativePosts from '../../consts/administrativePosts';
 import styles from './styles';
@@ -331,7 +348,7 @@ export default function FarmerRegistration({ route, navigation }) {
                         <Pressable
                             style={{
                                 position: 'absolute',
-                                left: 5,
+                                left: 0,
                                 top: 4,
                                 flexDirection: 'row',
                                 // justifyContent: 'center',
@@ -342,9 +359,9 @@ export default function FarmerRegistration({ route, navigation }) {
                             <Icon 
                                 name="arrow-back-ios" 
                                 color={COLORS.main}
-                                size={25}
+                                size={wp('8%')}
                             /> 
-                            <Text
+                            {/* <Text
                                 style={{
                                     color: COLORS.main,
                                     fontFamily: 'JosefinSans-Bold',
@@ -352,16 +369,16 @@ export default function FarmerRegistration({ route, navigation }) {
                                 }}
                             >
                                 Voltar
-                            </Text>
+                            </Text> */}
 
                         </Pressable>
                     </Box>
-                    <Box w="100%" alignItems={'center'} pt="1" pb="2">
+                    <Box w="100%" alignItems={'center'} pt="1" pb="6">
                         <Text 
                             style={{ 
                                 textAlign: 'center', 
                                 fontFamily: 'JosefinSans-Bold', 
-                                fontSize: 16, 
+                                fontSize: 16,
                                 color: COLORS.main,  
                             }}
                         >
@@ -372,7 +389,7 @@ export default function FarmerRegistration({ route, navigation }) {
 
                     </Box>
                 </Stack>
-                <Stack direction="row">
+                <Stack direction="row" pt="4">
                     <Box w="80%">
                         <Text style={styles.headerText}>
                             Registo
@@ -393,16 +410,16 @@ export default function FarmerRegistration({ route, navigation }) {
                 setFarmerType={setFarmerType}
             />
         </Box>
-</Box>      
+    </Box>      
         {/* Data collecting form  */}
-{
-    loadingActivitiyIndicator  && (
-        <CustomActivityIndicator 
-            loadingActivitiyIndicator={loadingActivitiyIndicator}
-            setLoadingActivityIndicator={setLoadingActivityIndicator}
-        />
-    )
-}
+    {
+        loadingActivitiyIndicator  && (
+            <CustomActivityIndicator 
+                loadingActivitiyIndicator={loadingActivitiyIndicator}
+                setLoadingActivityIndicator={setLoadingActivityIndicator}
+            />
+        )
+    }
 
 {/* {
    !loadingActivitiyIndicator && ( */}

@@ -149,23 +149,18 @@ const { useRealm, useQuery, useObject } = realmContext;
             style={{ flex: 1, }}
         >
 
-        <Stack w="100%"
-            style={{
-                // marginBottom: 10,
-            }}
-        >
+        <Stack w="100%" direction="row">
+            <Box w="90%">
+            </Box>
             <Box w="10%">
                 <Icon 
-                    name='arrow-back-ios' 
-                    color={COLORS.main} 
-                    size={35}  
+                    name='close' 
+                    color={COLORS.grey} 
+                    size={30}  
                     onPress={()=>{
                         setIsUserProfileVisible(false);
                     }}
                 />           
-            </Box>
-            <Box w="90%">
-            
             </Box>
         </Stack>
         

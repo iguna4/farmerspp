@@ -5,6 +5,23 @@ import { Icon, Button, CheckBox } from '@rneui/themed';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio  } from 'native-base';
 import { MultipleSelectList  } from 'react-native-dropdown-select-list';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import {  
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+    listenOrientationChange as lor,
+    removeOrientationListener as rol } 
+        from 'react-native-responsive-screen';
+  
+  import { 
+    responsiveFontSize,
+    responsiveScreenFontSize,
+    responsiveHeight,
+    responsiveWidth,
+    responsiveScreenHeight,
+    responsiveScreenWidth,
+    useDimensionsChange,
+  
+  } from 'react-native-responsive-dimensions';
 
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import styles from './styles';
@@ -738,10 +755,10 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 <Icon 
                     name="arrow-back-ios" 
                     color={COLORS.main}
-                    size={25}
+                    size={wp('8%')}
                     // onPress={()=>{}}
                 /> 
-                <Text
+                {/* <Text
                     style={{
                         color: COLORS.main,
                         fontFamily: 'JosefinSans-Bold',
@@ -749,7 +766,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     }}
                 >
                     Voltar
-                </Text>
+                </Text> */}
             </Pressable>
 
                     {/* <Icon 
@@ -780,7 +797,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     </Text>
                 </Box>
             </Stack>
-            <Stack direction="row" mt="2" >
+            <Stack direction="row" mt="6" >
                 <Box w="5%"></Box>
                 <Box w="80%" 
                 >

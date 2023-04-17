@@ -278,13 +278,18 @@ export default function HomeScreen() {
       >
         <Box
           style={{
-            paddingHorizontal: wp('5%'),
+            paddingVertical: 10,
+            paddingHorizontal: 5,
           }}
         >
-        <Stack direction="row" w="100%" pb="4">
+        <Stack 
+          direction="row" 
+          w="100%" 
+          // py="5"
+        >
         <Box w="40%" alignItems={'center'}>
               <Image
-                style={{ width: wp('13%'), height: hp('8%'), borderRadius: 100, }}
+                style={{ width: wp('14%'), height: hp('8%'), borderRadius: 100, }}
                 source={require('../../../assets/images/iamLogo2.png')}
               />
               <Text

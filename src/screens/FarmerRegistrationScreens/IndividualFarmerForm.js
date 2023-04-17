@@ -352,7 +352,7 @@ export default function IndividualFarmerForm({
                         max={new Date(2010, 0, 0)}
                         size="large"
                         
-                        // placement="right"
+                        placement="left start"
                         style={styles.datepicker}
                         date={birthDate}
                         dateService={localeDateService}

@@ -175,7 +175,7 @@ export default function GroupModal (
                         size={25}
                         // onPress={()=>{}}
                     /> 
-                    <Text
+                    {/* <Text
                         style={{
                             color: COLORS.main,
                             fontFamily: 'JosefinSans-Bold',
@@ -183,7 +183,7 @@ export default function GroupModal (
                         }}
                     >
                         Voltar
-                    </Text>
+                    </Text> */}
                 </Pressable>
             </Box>
             <Box w="80%">

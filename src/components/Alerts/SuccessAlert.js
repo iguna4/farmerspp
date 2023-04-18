@@ -81,7 +81,7 @@ function SuccessAlert({
                             size={25}
                             // onPress={()=>{}}
                         /> 
-                        <Text
+                        {/* <Text
                             style={{
                                 color: COLORS.main,
                                 fontFamily: 'JosefinSans-Bold',
@@ -89,7 +89,7 @@ function SuccessAlert({
                             }}
                         >
                             Voltar
-                        </Text>
+                        </Text> */}
                         </Pressable>
                     </Box>
                     <Box w="100%">

@@ -209,7 +209,7 @@ export default function IndividualModal (
                         color={COLORS.main}
                         size={25}
                     /> 
-                    <Text
+                    {/* <Text
                         style={{
                             color: COLORS.main,
                             fontFamily: 'JosefinSans-Bold',
@@ -217,7 +217,7 @@ export default function IndividualModal (
                         }}
                     >
                         Voltar
-                    </Text>
+                    </Text> */}
                 </Pressable>
 
 

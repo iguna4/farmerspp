@@ -172,7 +172,7 @@ export default function InstitutionModal (
                         size={25}
                         // onPress={()=>{}}
                     /> 
-                    <Text
+                    {/* <Text
                         style={{
                             color: COLORS.main,
                             fontFamily: 'JosefinSans-Bold',
@@ -180,7 +180,7 @@ export default function InstitutionModal (
                         }}
                     >
                         Voltar
-                    </Text>
+                    </Text> */}
                 </Pressable>
 
 

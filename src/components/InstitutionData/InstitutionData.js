@@ -366,7 +366,7 @@ const InstitutionData = ({ farmer })=>{
     <Stack w="100%" direction="column" pt="8" pb="4">
     <Stack w="100%" direction="row">
 
-<Box w="50%">
+<Box w="90%">
     <Text
         style={{
             color: '#000',
@@ -378,8 +378,8 @@ const InstitutionData = ({ farmer })=>{
             Instituição
         </Text>   
         </Box>
-        <Box w="25%"></Box>
-        <Box w="25%">
+        {/* <Box w="25%"></Box> */}
+        <Box w="10%">
     {/* {           
         customUserData?.role !== roles.provincialManager && 
         <TouchableOpacity
@@ -404,7 +404,7 @@ const InstitutionData = ({ farmer })=>{
         </Stack>     
 
         <Stack w="100%" direction="row" space={1}>
-            <Box w="35%" >
+            <Box w="50%" >
                 <Text
                     style={{
                         color: 'grey',
@@ -415,7 +415,7 @@ const InstitutionData = ({ farmer })=>{
                 {/* Instituição: */}
                 </Text>
             </Box>
-            <Box w="65%">
+            <Box w="50%">
                 <Text 
                     style={{
                         color: 'grey',
@@ -441,7 +441,7 @@ const InstitutionData = ({ farmer })=>{
 
         <Stack w="100%" direction="column" py="4">
         <Stack w="100%" direction="row" >
-                <Box w="50%">
+                <Box w="90%">
                     <Text
                         style={{
                             color: COLORS.black,
@@ -453,8 +453,8 @@ const InstitutionData = ({ farmer })=>{
                         Contacto
                     </Text>
                 </Box>
-                <Box w="25%"></Box>
-                <Box w="25%">
+                {/* <Box w="25%"></Box> */}
+                <Box w="10%">
             { 
             customUserData?.role !== roles.provincialManager && 
                 <TouchableOpacity
@@ -478,7 +478,7 @@ const InstitutionData = ({ farmer })=>{
                 </Box>
             </Stack>
             <Stack w="100%" direction="row" space={1}>
-            <Box w="35%">
+            <Box w="50%">
                 <Text
                     style={{
                         color: 'grey',
@@ -490,7 +490,7 @@ const InstitutionData = ({ farmer })=>{
                     Responsável
                 </Text>
                 </Box>
-                <Box w="65%" >
+                <Box w="50%" >
                     <Text style={{
                         color: 'grey',
                         fontSize: 14,
@@ -503,7 +503,7 @@ const InstitutionData = ({ farmer })=>{
             </Stack>
 
             <Stack w="100%" direction="row" space={1}>
-            <Box w="35%">
+            <Box w="50%">
                 <Text
                     style={{
                         color: 'grey',
@@ -515,7 +515,7 @@ const InstitutionData = ({ farmer })=>{
                     Telefone
                 </Text>
                 </Box>
-                <Box w="65%" >
+                <Box w="50%" >
 {   ((!farmer?.manager?.phone) || (farmer?.manager?.phone === 0)) &&
                  <Text style={{
                         color: 'grey',
@@ -545,7 +545,7 @@ const InstitutionData = ({ farmer })=>{
 
         <Stack w="100%" direction="column" py="4">
         <Stack w="100%" direction="row" >
-            <Box w="70%">
+            <Box w="90%">
                 <Text
                     style={{
                         color: COLORS.black,
@@ -557,8 +557,8 @@ const InstitutionData = ({ farmer })=>{
                     Endereço
                 </Text>
             </Box>
-            <Box w="5%"></Box>
-            <Box w="25%">
+            {/* <Box w="5%"></Box> */}
+            <Box w="10%">
         {/* {           
             customUserData?.role !== roles.provincialManager && 
             <TouchableOpacity
@@ -584,7 +584,7 @@ const InstitutionData = ({ farmer })=>{
 
 
         <Stack w="100%" direction="row" space={1}>
-            <Box w="35%">
+            <Box w="50%">
                 <Text
                     style={{
                         color: 'grey',
@@ -612,7 +612,7 @@ const InstitutionData = ({ farmer })=>{
     </Stack>
 
     <Stack w="100%" direction="row" space={1}>
-        <Box w="35%">
+        <Box w="50%">
             <Text
                 style={{
                     color: 'grey',
@@ -637,7 +637,7 @@ const InstitutionData = ({ farmer })=>{
     </Stack>
 
     <Stack w="100%" direction="row" space={1}>
-        <Box w="35%">
+        <Box w="50%">
             <Text
                     style={{
                         color: 'grey',
@@ -662,7 +662,7 @@ const InstitutionData = ({ farmer })=>{
     </Stack>
 
     <Stack w="100%" direction="row" space={1}>
-        <Box w="35%">
+        <Box w="50%">
             <Text
                 style={{
                     color: 'grey',
@@ -692,7 +692,7 @@ const InstitutionData = ({ farmer })=>{
 
     <Stack w="100%" direction="column" py="4">
     <Stack w="100%" direction="row" >
-            <Box w="70%">
+            <Box w="90%">
                 <Text
                     style={{
                         color: COLORS.black,
@@ -704,8 +704,8 @@ const InstitutionData = ({ farmer })=>{
                     Documentos
                 </Text>
             </Box>
-            <Box w="5%"></Box>
-            <Box w="25%">
+            {/* <Box w="5%"></Box> */}
+            <Box w="10%">
             {     
                 customUserData?.role !== roles.provincialManager && 
                 <TouchableOpacity
@@ -731,7 +731,7 @@ const InstitutionData = ({ farmer })=>{
 
 
         <Stack w="100%" direction="row" space={1}>
-            <Box w="35%">
+            <Box w="50%">
                 <Text
                     style={{
                         color: 'grey',
@@ -757,7 +757,7 @@ const InstitutionData = ({ farmer })=>{
     </Stack>
 
     <Stack w="100%" direction="row" space={1}>
-            <Box w="35%">
+            <Box w="50%">
                 <Text
                     style={{
                         color: 'grey',
@@ -787,7 +787,7 @@ const InstitutionData = ({ farmer })=>{
 
     <Stack w="100%" direction="column" py="4">
         <Stack w="100%" direction="row" >
-            <Box w="75%">
+            <Box w="90%">
                 <Text
                     style={{
                         color: COLORS.black,
@@ -799,7 +799,7 @@ const InstitutionData = ({ farmer })=>{
                     Geolocalização
                 </Text>
             </Box>
-            <Box w="25%">
+            <Box w="10%">
         {   
 
         customUserData?.role !== roles.provincialManager && 
@@ -829,7 +829,7 @@ const InstitutionData = ({ farmer })=>{
 { farmer?.geolocation?.latitude && farmer?.geolocation?.longitude &&
 <>
         <Stack w="100%" direction="row">
-            <Box w="35%">
+            <Box w="50%">
                 <Text                     
                     style={{
                         color: COLORS.grey,
@@ -853,7 +853,7 @@ const InstitutionData = ({ farmer })=>{
             </Box>
         </Stack>
         <Stack w="100%" direction="row">
-            <Box w="35%">
+            <Box w="50%">
                 <Text                     
                     style={{
                         color: COLORS.grey,

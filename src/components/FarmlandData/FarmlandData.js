@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, TextInput, ScrollView, SafeAreaView, FlatList, TouchableHighlight } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, ScrollView, SafeAreaView, FlatList, TouchableHighlight, DynamicColorIOS } from 'react-native';
 import { Box,  FormControl, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
 import { Avatar, Divider, Icon, Tooltip } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
@@ -436,7 +436,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 
         <Stack w="100%" direction="column" py="4">
             <Stack direction="row" mt="5">
-                <Box w="50%">
+                <Box w="90%">
                     <Text
                         style={{
                             color: COLORS.black,
@@ -448,10 +448,10 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                         Dados do Pomar
                     </Text>
                 </Box>
-                <Box w="25%">
+                {/* <Box w="25%">
                 
-                </Box>    
-                <Box w="25%">
+                </Box>     */}
+                <Box w="10%">
             {   customUserData?.role !== roles.provincialManager &&             
                 <TouchableOpacity
                     disabled={farmland?.status === resourceValidation.status.validated ? true : false}
@@ -481,7 +481,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: responsiveFontSize(1.8),
                             fontFamily: 'JosefinSans-Regular',
                             
                         }}
@@ -493,7 +493,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: responsiveFontSize(1.8),
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
@@ -506,7 +506,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: responsiveFontSize(1.8),
                             fontFamily: 'JosefinSans-Regular',
                             
                         }}
@@ -518,7 +518,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: responsiveFontSize(1.8),
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
@@ -533,7 +533,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: responsiveFontSize(1.8),
                             fontFamily: 'JosefinSans-Regular',
                             
                         }}
@@ -545,7 +545,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: responsiveFontSize(1.8),
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
@@ -559,7 +559,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: responsiveFontSize(1.8),
                             fontFamily: 'JosefinSans-Regular',
                             
                         }}
@@ -571,7 +571,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                         style={{
                             color: COLORS.grey,
-                            fontSize: 16,
+                            fontSize: responsiveFontSize(1.8),
                             fontFamily: 'JosefinSans-Regular',
                         }}                    
                         >
@@ -584,11 +584,11 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 
         <Stack w="100%" direction="column" py="4">
         <Stack w="100%" direction="row" >
-            <Box w="75%">
+            <Box w="90%">
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: responsiveFontSize(2),
                         fontFamily: 'JosefinSans-Bold',
                         
                     }} 
@@ -597,7 +597,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 </Text>
             </Box>
             {/* <Box w="25%"></Box> */}
-            <Box w="25%">
+            <Box w="10%">
 
             {  customUserData?.role !== roles.provincialManager && 
                 <TouchableOpacity
@@ -643,7 +643,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text
                          style={{
                             color: COLORS.grey,
-                            fontSize: 14,
+                            fontSize: responsiveFontSize(1.8),
                             fontFamily: 'JosefinSans-Regular',
                         }}  
                         >
@@ -654,7 +654,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text                     
                         style={{
                             color: COLORS.grey,
-                            fontSize: 14,
+                            fontSize: responsiveFontSize(1.8),
                             fontFamily: 'JosefinSans-Regular',
                         }}  
                         >
@@ -663,7 +663,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Text                     
                         style={{
                             color: COLORS.grey,
-                            fontSize: 14,
+                            fontSize: responsiveFontSize(1.8),
                             fontFamily: 'JosefinSans-Regular',
                         }}  
                         >
@@ -711,11 +711,11 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 
     <Stack w="100%" direction="column" py="4">
         <Stack w="100%" direction="row" >
-            <Box w="75%">
+            <Box w="90%">
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: responsiveFontSize(2),
                         fontFamily: 'JosefinSans-Bold',
                         
                     }}
@@ -724,7 +724,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 </Text>
             </Box>
             {/* <Box w="25%"></Box> */}
-            <Box w="25%">
+            <Box w="10%">
         {   
 
         customUserData?.role !== roles.provincialManager && 
@@ -759,7 +759,13 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 
         <Stack w="100%" direction="row">
             <Box w="40%">
-                <Text>
+                <Text
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: responsiveFontSize(1.8),
+                        fontFamily: 'JosefinSans-Regular',
+                    }}
+                >
                     Latitude
                 </Text>
             </Box>
@@ -767,7 +773,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 <Text                     
                     style={{
                         color: COLORS.grey,
-                        fontSize: 14,
+                        fontSize: responsiveFontSize(1.8),
                         fontFamily: 'JosefinSans-Regular',
                     }}  
                     >
@@ -779,7 +785,13 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 
         <Stack w="100%" direction="row">
         <Box w="40%">
-            <Text>
+            <Text
+                style={{
+                    color: COLORS.grey,
+                    fontSize: responsiveFontSize(1.8),
+                    fontFamily: 'JosefinSans-Regular',
+                }}
+            >
                 Longitude
             </Text>
         </Box>
@@ -787,7 +799,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             <Text                     
                 style={{
                     color: COLORS.grey,
-                    fontSize: 14,
+                    fontSize: responsiveFontSize(1.8),
                     fontFamily: 'JosefinSans-Regular',
                 }}  
                 >
@@ -804,7 +816,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
     { 
     !isAreaNotEnough && customUserData?.role !== roles.provincialManager && 
     <Stack  w="100%" direction="row" my="5">
-        <Box w="75%">
+        <Box w="90%">
             <Text
                 style={{
                     color: COLORS.black,
@@ -816,7 +828,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 Bloco de Cajueiros
             </Text>
         </Box>
-        <Box w="25%">
+        <Box w="10%">
         <TouchableOpacity
 
             onPress={()=>{
@@ -842,7 +854,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
         >
             <Text
                 style={{
-                    fontSize: 18,
+                    fontSize: responsiveFontSize(2),
                     color: COLORS.ghostwhite,
                     fontFamily: 'JosefinSans-Bold',
                 }}
@@ -868,6 +880,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 <Box key={index} mt="3"
                     style={{
                         marginBottom: 15,
+                        marginRight: 10,
                     }}
                 >
                     <Box
@@ -880,33 +893,46 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                         {/* <Box w="5%"></Box> */}
                         <Box w="10%"
                             style={{
-                                backgroundColor: COLORS.black,
-                                borderRadius: 100,
-                                justifyContent: 'center',
+                                // backgroundColor: COLORS.black,
+                                // borderRadius: 100,
+                                // justifyContent: 'center',
                                 alignItems: 'center',
-                                padding: 3,
+                                // padding: 1,
                             }}    
                         >
-                            <Text
+                            <Box
                                 style={{
-                                    color: COLORS.ghostwhite,
-                                    fontSize: 18,
-                                    fontFamily: 'JosefinSans-Regular',
-                                }}
-                            >{block?.position + 1}</Text>
+                                    backgroundColor: COLORS.black,
+                                    borderRadius: 100,
+                                    width: wp('6%'),
+                                    // justifyContent: 'center',
+                                    // alignItems: 'center',
+                                    // padding: 1,
+                                }}         
+                            >
+                                <Text
+                                    style={{
+                                        color: COLORS.ghostwhite,
+                                        fontSize: responsiveFontSize(2),
+                                        fontFamily: 'JosefinSans-Regular',
+                                        textAlign: 'center',
+                                    }}
+                                >{block?.position + 1}</Text>
+
+                            </Box>
                         </Box>
-                        <Box w="65%">
+                        <Box w="80%">
                             <Text
                                 style={{
                                     color: COLORS.black,
-                                    fontSize: 18,
+                                    fontSize: responsiveFontSize(2),
                                     fontFamily: 'JosefinSans-Bold',
                                 }}
                             >
                                 Ano de Plantio: {block.plantingYear}
                             </Text>
                         </Box>
-                        <Box w="25%">
+                        <Box w="10%">
                 {       
                     customUserData?.role !== roles.provincialManager && 
                         <TouchableOpacity
@@ -942,7 +968,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                             <Text
                                 style={{
                                     color: COLORS.grey,
-                                    fontSize: 16,
+                                    fontSize: responsiveFontSize(1.8),
                                     fontFamily: 'JosefinSans-Regular',
                                 }}
                             >
@@ -953,7 +979,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                 <Text
                                     style={{
                                         color: COLORS.grey,
-                                        fontSize: 16,
+                                        fontSize: responsiveFontSize(1.8),
                                         fontFamily: 'JosefinSans-Regular',
                                     }}
                                 >{block?.density?.mode === "Irregular" ? block?.density?.mode : block?.density?.mode === "Regular" ? `${block?.density?.mode} (${block?.density.length} por ${block?.density?.width} metros)` : ''} </Text>
@@ -970,7 +996,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                             <Text
                                 style={{
                                     color: COLORS.grey,
-                                    fontSize: 16,
+                                    fontSize: responsiveFontSize(1.8),
                                     fontFamily: 'JosefinSans-Regular',
                                 }}
                             >
@@ -981,7 +1007,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                 <Text
                                     style={{
                                         color: COLORS.grey,
-                                        fontSize: 16,
+                                        fontSize: responsiveFontSize(1.8),
                                         fontFamily: 'JosefinSans-Regular',
                                     }}
                                 >{block?.usedArea?.toFixed(2)} hectares</Text>
@@ -997,7 +1023,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                             <Text
                                 style={{
                                     color: COLORS.grey,
-                                    fontSize: 16,
+                                    fontSize: responsiveFontSize(1.8),
                                     fontFamily: 'JosefinSans-Regular',
                                 }}
                             >
@@ -1008,7 +1034,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                 <Text
                                     style={{
                                         color: COLORS.grey,
-                                        fontSize: 16,
+                                        fontSize: responsiveFontSize(1.8),
                                         fontFamily: 'JosefinSans-Regular',
                                     }}
                                 >{block?.trees} árvores</Text>
@@ -1019,16 +1045,16 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     {/* <CustomDivider /> */}
 
                     <Stack w="100%" direction="row" space={3}>
-                        <Box w="75%">
+                        <Box w="90%">
                             <Text
                                 style={{
                                     color: COLORS.black,
-                                    fontSize: 18,
+                                    fontSize: responsiveFontSize(2),
                                     fontFamily: 'JosefinSans-Bold',
                                 }}
                             >Tipos de planta</Text>
                         </Box>
-                        <Box w="25%">
+                        <Box w="10%">
                         {       
                         customUserData?.role !== roles.provincialManager && 
                         <TouchableOpacity
@@ -1073,7 +1099,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                             <Text
                                 style={{
                                     color: COLORS.grey,
-                                    fontSize: 16,
+                                    fontSize: responsiveFontSize(1.8),
                                     fontFamily: 'JosefinSans-Regular',
                                 }}
                             >
@@ -1084,7 +1110,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                                 <Text
                                     style={{
                                         color: COLORS.grey,
-                                        fontSize: 16,
+                                        fontSize: responsiveFontSize(1.8),
                                         fontFamily: 'JosefinSans-Regular',
                                     }}
                                 >{sameType?.trees} árvores</Text>
@@ -1206,7 +1232,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
     <Text style={{
         textAlign: 'left',
         color: COLORS.red,
-        fontSize: 16,
+        fontSize: 14,
         fontFamily: 'JosefinSans-Bold',
     }}>
         Motivo da invalidação
@@ -1240,10 +1266,11 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     {/* <Box> */}
                         <Text
                             style={{
-                                fontSize: 14,
+                                fontSize: responsiveFontSize(1.7),
                                 fontFamily: 'JosefinSans-Italic',
                                 color: COLORS.black,
                                 textAlign: 'left',
+                                lineHeight: 20,
                             }}
                         >
                              {motive.message ? motive.message : 'Dados incompletos.'}
@@ -1252,8 +1279,8 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                         <Text 
                             style={{ 
                                 textAlign: 'right', 
-                                fontSize: 12, 
-                                color: COLORS.black, 
+                                fontSize: responsiveFontSize(1.5),
+                                color: COLORS.grey, 
                                 paddingTop: 5,
                             }}
                         >
@@ -1290,7 +1317,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     style={{ 
                         textAlign: 'right', 
                         fontSize: responsiveFontSize(1.6),
-                        color: COLORS.black, 
+                        color: COLORS.grey, 
                         paddingTop: 5,
                     }}
                 >

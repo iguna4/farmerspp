@@ -369,7 +369,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
         <Stack w="100%" direction="column" pt="8" pb="4">
             <Stack w="100%" direction="row">
 
-            <Box w="50%">
+            <Box w="90%">
                 <Text
                     style={{
                         color: '#000',
@@ -381,8 +381,8 @@ const PersonalData = ({ farmer, setRefresh })=>{
                     Nascimento
                 </Text>
             </Box>
-            <Box w="25%"></Box>
-            <Box w="25%">
+            {/* <Box w="25%"></Box> */}
+            <Box w="10%">
         {               
         // customUserData?.role !== roles.provincialManager && 
         //         <TouchableOpacity
@@ -407,7 +407,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
         </Stack>
 
         <Stack w="100%" direction="row" space={1}>
-                <Box w="35%">
+                <Box w="50%">
                     <Text
                         style={{
                             color: 'grey',
@@ -418,7 +418,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                         >
                     Data:</Text>
                 </Box>
-                <Box w="65%">
+                <Box w="50%">
                     <Text                         
                         style={{
                             color: 'grey',
@@ -431,7 +431,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                 </Box>
         </Stack>
         <Stack w="100%" direction="row" space={1}>
-            <Box w="35%">
+            <Box w="50%">
                 <Text
                         style={{
                             color: 'grey',
@@ -461,7 +461,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
     !farmer?.birthPlace?.province?.includes('Estrangeiro') &&
     <>
     <Stack w="100%" direction="row" space={1}>
-        <Box w="35%">
+        <Box w="50%">
             <Text
                     style={{
                         color: 'grey',
@@ -486,7 +486,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
     </Stack>
 
     <Stack w="100%" direction="row" space={1}>
-        <Box w="35%">
+        <Box w="50%">
             <Text
                     style={{
                         color: 'grey',
@@ -518,7 +518,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
     <Stack w="100%" direction="column" py="4">
 
         <Stack w="100%" direction="row" >
-            <Box w="50%">
+            <Box w="90%">
                 <Text
                     style={{
                         color: COLORS.black,
@@ -530,8 +530,8 @@ const PersonalData = ({ farmer, setRefresh })=>{
                     Endereço
                 </Text>
             </Box>
-            <Box w="25%"></Box>
-            <Box w="25%">
+            {/* <Box w="25%"></Box> */}
+            <Box w="10%">
         {   
         customUserData?.role !== roles.provincialManager && 
             <TouchableOpacity
@@ -557,7 +557,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
         </Stack>
 
         <Stack w="100%" direction="row" space={1}>
-            <Box w="35%">
+            <Box w="50%">
                 <Text
                     style={{
                         color: 'grey',
@@ -585,7 +585,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
     </Stack>
 
     <Stack w="100%" direction="row" space={1}>
-        <Box w="35%">
+        <Box w="50%">
             <Text
                 style={{
                     color: 'grey',
@@ -610,7 +610,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
     </Stack>
 
     <Stack w="100%" direction="row" space={1}>
-        <Box w="35%">
+        <Box w="50%">
             <Text
                 style={{
                     color: 'grey',
@@ -635,7 +635,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
     </Stack>
 
     <Stack w="100%" direction="row" space={1}>
-        <Box w="35%">
+        <Box w="50%">
             <Text
                 style={{
                     color: 'grey',
@@ -665,7 +665,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
 
     <Stack w="100%" direction="column" py="4">
         <Stack w="100%" direction="row" >
-                <Box w="50%">
+                <Box w="90%">
                     <Text
                         style={{
                             color: COLORS.black,
@@ -677,8 +677,8 @@ const PersonalData = ({ farmer, setRefresh })=>{
                         Contacto
                     </Text>
                 </Box>
-                <Box w="25%"></Box>
-                <Box w="25%">
+                {/* <Box w="25%"></Box> */}
+                <Box w="10%">
             {    
                 customUserData?.role !== roles.provincialManager && 
                 <TouchableOpacity
@@ -704,7 +704,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
             </Stack>
 
         <Stack w="100%" direction="row" space={1}>
-            <Box w="35%">
+            <Box w="50%">
                 <Text
                     style={{
                         color: 'grey',
@@ -715,7 +715,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                     Telefone
                 </Text>  
             </Box>
-            <Box w="70%">
+            <Box w="50%">
                 {/* <Text 
                     style={{
                         color: 'grey',
@@ -760,7 +760,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
     <Stack w="100%" direction="column" py="4">
 
         <Stack w="100%" direction="row" >
-            <Box w="70%">
+            <Box w="90%">
                 <Text
                     style={{
                         color: COLORS.black,
@@ -772,8 +772,8 @@ const PersonalData = ({ farmer, setRefresh })=>{
                     Documentos de Identificação
                 </Text>
             </Box>
-            <Box w="5%"></Box>
-            <Box w="25%">
+            {/* <Box w="5%"></Box> */}
+            <Box w="10%">
         {           
             customUserData?.role !== roles.provincialManager && 
             <TouchableOpacity
@@ -799,7 +799,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
         </Stack>
 
         <Stack w="100%" direction="row" space={1}>
-            <Box w="35%">
+            <Box w="50%">
                 <Text
                     style={{
                         color: 'grey',
@@ -826,7 +826,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
     </Stack>
 
     <Stack w="100%" direction="row" space={1}>
-        <Box w="35%">
+        <Box w="50%">
             <Text
                 style={{
                     color: 'grey',
@@ -851,7 +851,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
     </Stack>
 
     <Stack w="100%" direction="row" space={1}>
-        <Box w="35%">
+        <Box w="50%">
             <Text
                 style={{
                     color: 'grey',
@@ -879,7 +879,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
     </Box>
 
     <Stack w="100%" direction="row" >
-            <Box w="75%">
+            <Box w="90%">
                 <Text
                     style={{
                         color: COLORS.black,
@@ -891,7 +891,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                     Geolocalização
                 </Text>
             </Box>
-            <Box w="25%">
+            <Box w="10%">
         {   
 
         customUserData?.role !== roles.provincialManager && 
@@ -921,7 +921,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
         { farmer?.geolocation?.latitude && farmer?.geolocation?.longitude &&
 <>
         <Stack w="100%" direction="row">
-            <Box w="35%">
+            <Box w="50%">
                 <Text                     
                     style={{
                         color: COLORS.grey,
@@ -945,7 +945,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
             </Box>
         </Stack>
         <Stack w="100%" direction="row">
-            <Box w="35%">
+            <Box w="50%">
                 <Text                     
                     style={{
                         color: COLORS.grey,

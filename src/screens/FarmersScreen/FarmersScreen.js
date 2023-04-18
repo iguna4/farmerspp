@@ -181,7 +181,7 @@ export default function FarmersScreen({ route, navigation }) {
       }
     }
 
-  }, [ showAll ]);
+  }, [ showAll, realm ]);
 
 
   useEffect(() => {

@@ -101,7 +101,7 @@ const validateGroupFarmerData = (
     }
     else if (parseInt(retrievedGroupWomenNumber) > parseInt(retrievedGroupMembersNumber)) {
         setErrors({ ...errors,
-            groupWomenNumber: 'Número mulheres superior ao total.',
+            groupWomenNumber: 'Número de mulheres superior ao total.',
         });
         return false;        
     }

@@ -632,8 +632,8 @@ export default function FarmersScreen({ route, navigation }) {
             alignItems="stretch" 
             w="100%" 
             style={{
-              marginBottom: hp('10%'),
-              marginTop: hp('1%'),
+              marginBottom: 5,
+              marginTop: 10,
             }}
           >
             <FlatList

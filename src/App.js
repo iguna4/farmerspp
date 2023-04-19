@@ -7,6 +7,10 @@ import { ThemeProvider } from '@rneui/themed';
 import {NativeBaseProvider } from 'native-base';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider,  } from '@ui-kitten/components';
+import { Provider as PaperProvider } from 'react-native-paper';
+
+import { pt, registerTranslation } from 'react-native-paper-dates'
+registerTranslation('pt', pt);
 
 
 import AppTabs from './navigation/Tabs/AppTabs';
@@ -56,7 +60,9 @@ export default function App() {
                   }}
                   fallback={<CustomActivityIndicator />}
                 >
-                  <AppTabs />
+                  <PaperProvider>
+                    <AppTabs />
+                  </PaperProvider>
                 </RealmProvider>
               </UserProvider>
             </AppProvider>

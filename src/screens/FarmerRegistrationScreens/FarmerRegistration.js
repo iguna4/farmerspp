@@ -304,6 +304,9 @@ export default function FarmerRegistration({ route, navigation }) {
       <ScrollView
         decelerationRate={'normal'}
         fadingEdgeLength={2}
+        keyboardDismissMode = 'on-drag'
+        keyboardShouldPersistTaps = 'handled'
+        // contentInsetAdjustmentBehavior = 'always'
       >
 
         {/* Data collecting form description */}

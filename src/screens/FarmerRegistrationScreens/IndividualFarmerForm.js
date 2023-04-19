@@ -2,11 +2,16 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 /* eslint-disable prettier/prettier */
-import { Text, SafeAreaView, ScrollView, TextInput, View } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import { Text, SafeAreaView, ScrollView, TextInput, View, Pressable } from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
 import { Icon, Button, CheckBox } from '@rneui/themed';
-import { Datepicker  } from '@ui-kitten/components';
+// import { Datepicker  } from '@ui-kitten/components';
+import { DatePickerModal } from 'react-native-paper-dates';
+import { pt, registerTranslation } from 'react-native-paper-dates'
+registerTranslation('pt', pt);
+
+
 
 import { CustomInput } from '../../components/Inputs/CustomInput';
 import administrativePosts from '../../consts/administrativePosts';
@@ -37,6 +42,18 @@ export default function IndividualFarmerForm({
     primaryPhone, setPrimaryPhone, secondaryPhone, setSecondaryPhone,
     nuit, setNuit, errors, setErrors,     
 }) {
+
+    const [openDatePicker, setOpenDatePicker] = useState(false);
+
+    const onDismissSingle = useCallback(()=>{
+        setOpenDatePicker(false);
+    }, [ setOpenDatePicker ]);
+
+    const onConfirmSingle = useCallback((params)=>{
+        setOpenDatePicker(false);
+        setBirthDate(params?.date);
+    }, [setOpenDatePicker, setBirthDate ]);
+
 
 
   return (
@@ -345,14 +362,63 @@ export default function IndividualFarmerForm({
     <Stack direction="row" mx="3" my="2" w="100%">
         <Box w="50%" px="1" pt="1" >
             <FormControl isRequired isInvalid={'birthDate' in errors}>
-                <FormControl.Label>Data</FormControl.Label>
-                    <Datepicker
+                <FormControl.Label>Data de Nasc.</FormControl.Label>
+                    <Box>
+                        <Pressable
+                            onPress={()=>setOpenDatePicker(true)}
+                        >
+                            <Box
+                                style={{
+                                    borderColor: COLORS.lightgrey,
+                                    borderWidth: 1,
+                                    borderRadius: 3,
+                                    height: 55,
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-around'
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontFamily: 'JosefinSans-Regular',
+                                        fontSize: 14,
+                                    }}
+                                >
+                                {birthDate ? `${birthDate.getDate()}/${birthDate.getMonth()+1}/${birthDate.getFullYear()}` :  "Data de nascimento"}
+                                </Text>
+                                <Icon 
+                                    name="date-range" 
+                                    size={35}
+                                    color={COLORS.main} 
+                                />                    
+                            </Box>
+                        </Pressable>
+                    </Box>
+                    <DatePickerModal
+                        locale="pt"
+                        mode="single"
+                        visible={openDatePicker}
+                        onDismiss={onDismissSingle}
+                        onConfirm={onConfirmSingle}
+                        date={birthDate}
+                        saveLabel="Confirmar"
+                        uppercase={false}
+                        label="Data de Nascimento"
+                        startYear={1930}
+                        endYear={2012}
+                    />
+            
+
+
+
+
+                    {/* <Datepicker
                         placeholder="Nascim."
                         min={new Date(1900, 0, 0)}
                         max={new Date(2010, 0, 0)}
                         size="large"
                         
-                        placement="left start"
+                        placement="top"
                         style={styles.datepicker}
                         date={birthDate}
                         dateService={localeDateService}
@@ -381,7 +447,7 @@ export default function IndividualFarmerForm({
                             setErrors(prev=>({...prev, birthDate: null }))
                             setBirthDate(nextDate)
                     }}
-                />
+                /> */}
                 {
                 'birthDate' in errors 
                 ? <FormControl.ErrorMessage 

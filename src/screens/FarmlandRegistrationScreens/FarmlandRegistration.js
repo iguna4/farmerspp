@@ -1004,7 +1004,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
         <Text
             style={{
                 color: COLORS.ghostwhite,
-                fontSize: 18,
+                fontSize: responsiveFontSize(1.6),
                 fontFamily: 'JosefinSans-Bold',
                 textAlign: 'center',
                 
@@ -1117,9 +1117,10 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     }}
                 >
                 {
-                    farmland?.consociatedCrops?.map((crop, index)=>(
-                        `${crop}; `
-                    ))
+                    // farmland?.consociatedCrops?.map((crop, index)=>(
+                    //     `${crop}; `
+                    // ))
+                    farmland?.consociatedCrops?.join('; ')
                 } 
                 </Text>
             </Box>

@@ -815,7 +815,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
 
     { 
     !isAreaNotEnough && customUserData?.role !== roles.provincialManager && 
-    <Stack  w="100%" direction="row" my="5">
+    <Stack  w="100%" direction="row" ml="5">
         <Box w="90%">
             <Text
                 style={{

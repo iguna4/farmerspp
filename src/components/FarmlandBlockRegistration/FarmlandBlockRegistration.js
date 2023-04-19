@@ -2,6 +2,23 @@ import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio  } from 'native-base';
 import { MultipleSelectList  } from 'react-native-dropdown-select-list';
+import {  
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+    listenOrientationChange as lor,
+    removeOrientationListener as rol } 
+        from 'react-native-responsive-screen';
+  
+  import { 
+    responsiveFontSize,
+    responsiveScreenFontSize,
+    responsiveHeight,
+    responsiveWidth,
+    responsiveScreenHeight,
+    responsiveScreenWidth,
+    useDimensionsChange,
+  
+  } from 'react-native-responsive-dimensions';
 
 import { Overlay, Icon, Button, CheckBox } from "@rneui/base";
 import COLORS from "../../consts/colors";
@@ -269,7 +286,7 @@ export default function FarmlandBlockRegistration({
           style={{ 
               textAlign: 'center',
               color: COLORS.ghostwhite,
-              fontSize: 24,
+              fontSize: responsiveFontSize(1.8),
               fontFamily: 'JosefinSans-Bold',
 
           }}
@@ -922,6 +939,7 @@ export default function FarmlandBlockRegistration({
                     fontSize: 14,
                     fontFamily: 'JosefinSans-Regular',
                     paddingLeft: 5, 
+                    marginLeft: 5,
                 }}
             >{errors?.sameTypeTrees}</Text>
             </Box>

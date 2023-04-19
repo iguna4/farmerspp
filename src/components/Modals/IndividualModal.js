@@ -64,6 +64,7 @@ export default function IndividualModal (
 
     const currentUserStat = useQuery('UserStat').filtered("userId == $0", customUserData?.userId)[0];
 
+
     // create a new actor with data received from the form
     const addFarmer = useCallback((farmerData, realm) =>{
     const {
@@ -346,7 +347,7 @@ export default function IndividualModal (
             </Box>
             <Box w="60%" style={styles.values}>
                 <Text style={styles.values}>
-                    {farmerData?.birthDate ? new Date(farmerData?.birthDate).toLocaleDateString() : 'Nenhum'}
+                    {farmerData?.birthDate ? `${new Date(farmerData?.birthDate).getDate()}/${new Date(farmerData?.birthDate).getMonth()+1}/${new Date(farmerData?.birthDate).getFullYear()}` : 'Nenhum'}
                 </Text>
             </Box>
         </Stack>

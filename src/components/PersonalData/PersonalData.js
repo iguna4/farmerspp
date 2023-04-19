@@ -426,7 +426,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                             // paddingLeft: 10,
                             fontFamily: 'JosefinSans-Regular',
                         }} >
-                        {new Date(farmer?.birthDate).toLocaleDateString()}{' '}({new Date().getFullYear() - new Date(farmer?.birthDate).getFullYear()} anos)
+                        {`${new Date(farmer?.birthDate).getDate()}/${new Date(farmer?.birthDate).getMonth()+1}/${new Date(farmer?.birthDate).getFullYear()}`}  ({new Date().getFullYear() - new Date(farmer?.birthDate).getFullYear()} anos)
                     </Text>
                 </Box>
         </Stack>

@@ -18,6 +18,7 @@ import {
   useDimensionsChange,
 
 } from 'react-native-responsive-dimensions';
+import Animated, { Layout, LightSpeedInLeft, LightSpeedOutRight, } from 'react-native-reanimated';
 
 import { Box, Center, Stack,  } from 'native-base';
 import { getInitials } from '../../helpers/getInitials';
@@ -53,7 +54,10 @@ const InstitutionItem = ({ item, route }) => {
 
 
   return (
-    <View
+    <Animated.View
+      // entering={LightSpeedInLeft}
+      exiting={LightSpeedOutRight}
+      // layout={Layout.springify()}
       style={{
         paddingHorizontal: 10,
         marginVertical: hp('1%'),
@@ -222,7 +226,7 @@ const InstitutionItem = ({ item, route }) => {
         </Text>
       </Box>
   </Stack>
-    </View>
+    </Animated.View>
   )
 }
 

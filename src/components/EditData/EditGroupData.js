@@ -298,7 +298,7 @@ const EditGroupData = ({
 
     <Overlay 
         overlayStyle={{ 
-            backgroundColor: 'ghostwhite', 
+            backgroundColor: COLORS.ghostwhite, 
             width: '90%',
             borderRadius: 10,
             // marginBottom: 10,
@@ -319,13 +319,13 @@ const EditGroupData = ({
                     <View
                         style={{ 
                             width: '100%', 
-                            backgroundColor: COLORS.pantone, 
+                            // backgroundColor: COLORS.pantone, 
                         }}
                     >
                         <Text
                             style={{ 
                                 textAlign: 'center',
-                                color: COLORS.ghostwhite,
+                                color: COLORS.black,
                                 fontSize: 18,
                                 paddingVertical: 5,
                                 fontFamily: 'JosefinSans-Bold',
@@ -346,11 +346,15 @@ const EditGroupData = ({
                                 setIsOverlayVisible(false);
                             }}
                             name="close" 
-                            size={30} 
-                            color={COLORS.ghostwhite} 
+                            size={25} 
+                            color={COLORS.grey} 
                         />
                     </View>
             <ScrollView
+                decelerationRate={'normal'}
+                fadingEdgeLength={2}
+                keyboardDismissMode = 'on-drag'
+                keyboardShouldPersistTaps = 'handled'
                 style={{
                     // flex: 1,
                     // minHeight: '100%',

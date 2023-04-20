@@ -289,7 +289,7 @@ export default function HomeScreen() {
         >
         <Box w="40%" alignItems={'center'}>
               <Image
-                style={{ width: wp('14%'), height: hp('8%'), borderRadius: 100, }}
+                style={{ width: 55, height: 55, borderRadius: 100, }}
                 source={require('../../../assets/images/iamLogo2.png')}
               />
               <Text

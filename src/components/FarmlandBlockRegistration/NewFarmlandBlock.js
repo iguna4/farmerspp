@@ -163,8 +163,11 @@ export default function NewFarmlandBlock({
 
         realm.write(()=>{
             farmland?.blocks?.push(block);
-            
-            farmland.status = resourceValidation.status.pending;
+
+            // only update the resource status to 'pending' only when blocksTrees == updatedTotalTrees
+            if ((blocksTrees === updatedTotalTrees)){
+                farmland.status = resourceValidation.status.pending;
+            }
             farmland.trees = updatedTotalTrees;
         });
 
@@ -227,7 +230,7 @@ export default function NewFarmlandBlock({
  return (
   <Overlay 
   overlayStyle={{ 
-      backgroundColor: 'ghostwhite', 
+      backgroundColor: COLORS.ghostwhite, 
       width: '95%',
       maxHeight: '95%',
       borderRadius: 10,
@@ -338,7 +341,7 @@ export default function NewFarmlandBlock({
   <View
       style={{ 
           width: '100%', 
-          backgroundColor: COLORS.mediumseagreen,
+        //   backgroundColor: COLORS.mediumseagreen,
           marginBottom: 10, 
           flexDirection: 'row',
       }}
@@ -347,8 +350,8 @@ export default function NewFarmlandBlock({
       <Text
           style={{ 
               textAlign: 'center',
-              color: COLORS.ghostwhite,
-              fontSize: responsiveFontSize(1.8),
+              color: COLORS.black,
+              fontSize: responsiveFontSize(2),
               fontFamily: 'JosefinSans-Bold',
 
           }}
@@ -366,13 +369,17 @@ export default function NewFarmlandBlock({
                 // }
             }}
         >
-          <Icon name="close" color={COLORS.ghostwhite} size={30} />
+          <Icon name="close" color={COLORS.grey} size={25} />
         </TouchableOpacity>
     </Box>
 
   </View>
 
     <ScrollView
+        decelerationRate={'normal'}
+        fadingEdgeLength={2}
+        keyboardDismissMode = 'on-drag'
+        keyboardShouldPersistTaps = 'handled'
         style={{
 
         }}
@@ -457,7 +464,7 @@ export default function NewFarmlandBlock({
                                 dropdownCloseIcon={plantingYear 
                                         ? <Icon 
                                             name="close" 
-                                            size={25} 
+                                            size={20} 
                                             color="grey" 
                                             onPress={()=>setPlantingYear('')} 
                                         /> 

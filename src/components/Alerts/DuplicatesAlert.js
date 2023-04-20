@@ -5,6 +5,7 @@ import { FlatList, Pressable, ScrollView, View, Text, SafeAreaView, TouchableOpa
 import { Icon, CheckBox, Overlay } from '@rneui/themed';
 import DuplicatesAlertItem from "./DuplicatesAlertItem";
 import COLORS from "../../consts/colors";
+import DangerAlert from "../LottieComponents/DangerAlert";
 
 import { user } from "../../consts/user";
 
@@ -33,31 +34,35 @@ const DuplicatesAlert = ({
       >
           <Box
             style={{ 
-              paddingVertical: 10,
+              paddingVertical: 5,
               paddingHorizontal: 1,
               justifyContent: 'center',
-              backgroundColor: COLORS.danger,
+              alignItems: 'center',
+              // backgroundColor: COLORS.danger,
             }}
           >
-            <Icon 
+            {/* <Icon 
               name="warning"
               color={COLORS.ghostwhite}
               size={45}
-            />
+            /> */}
+
+
+              <DangerAlert />
+
  
             <Text
               style={{
-                color: COLORS.ghostwhite,
+                color: COLORS.red,
                 fontSize: 20,
-                padding: 2,
-                lineHeight: 30,
+                paddingHorizontal: 2,
+                lineHeight: 25,
                 textAlign: 'center',
                 fontFamily: "JosefinSans-Regular",
               }}
             >
               O produtor que pretendes registar tem 
-              dados similares aos seguintes produtores 
-              já registados:
+              dados similares {suspectedDuplicates?.length > 1 ? "aos seguintes produtores já registados" : "ao seguinte produtor já registado"}:
             </Text>
           </Box>
 
@@ -69,8 +74,6 @@ const DuplicatesAlert = ({
         alignItems: 'center',
       }}
     >
-
-
     {
       suspectedDuplicates?.map((item)=>(
         <DuplicatesAlertItem 

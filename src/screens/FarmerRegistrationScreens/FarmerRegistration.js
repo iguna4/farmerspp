@@ -186,6 +186,7 @@ export default function FarmerRegistration({ route, navigation }) {
                     names: retrievedFarmerData.names,
                     birthDate: retrievedFarmerData.birthDate,
                     birthPlace: retrievedFarmerData.birthPlace,
+                    address: retrievedFarmerData.address,
                 }
                 
                 const uaid = generateUAID(uaidData);

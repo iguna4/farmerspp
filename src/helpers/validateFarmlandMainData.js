@@ -12,8 +12,6 @@ const validateFarmlandMainData = (
  const retrievedTreesNumber = trees ? parseInt(trees) : '';
  const retrievedTotalArea = totalArea ? parseFloat(totalArea): '';
 
-    
- 
  if (!retrievedFarmlandDescription) { 
      setErrors({ ...errors,
          description: 'Descreva a localização deste pomar.',
@@ -34,7 +32,6 @@ const validateFarmlandMainData = (
      return false;
  } 
 
-
  if (!retrievedTreesNumber){
      setErrors({ ...errors,
          trees: 'Indica número de cajueiros.',
@@ -48,8 +45,6 @@ const validateFarmlandMainData = (
      });
      return false;
  }
-
-
 
  const farmlandMainData = {
      description: retrievedFarmlandDescription,

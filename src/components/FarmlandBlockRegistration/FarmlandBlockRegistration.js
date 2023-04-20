@@ -166,7 +166,7 @@ export default function FarmlandBlockRegistration({
  return (
   <Overlay 
   overlayStyle={{ 
-      backgroundColor: 'ghostwhite', 
+      backgroundColor: COLORS.ghostwhite, 
       width: '95%',
       maxHeight: '95%',
       borderRadius: 10,
@@ -276,7 +276,7 @@ export default function FarmlandBlockRegistration({
   <View
       style={{ 
           width: '100%', 
-          backgroundColor: COLORS.mediumseagreen,
+        //   backgroundColor: COLORS.mediumseagreen,
           marginBottom: 10, 
           flexDirection: 'row',
       }}
@@ -285,8 +285,8 @@ export default function FarmlandBlockRegistration({
       <Text
           style={{ 
               textAlign: 'center',
-              color: COLORS.ghostwhite,
-              fontSize: responsiveFontSize(1.8),
+              color: COLORS.black,
+              fontSize: responsiveFontSize(2),
               fontFamily: 'JosefinSans-Bold',
 
           }}
@@ -303,13 +303,17 @@ export default function FarmlandBlockRegistration({
                 }
             }}
         >
-          <Icon name="close" color={COLORS.ghostwhite} size={30} />
+          <Icon name="close" color={COLORS.grey} size={25} />
         </TouchableOpacity>
     </Box>
 
   </View>
 
     <ScrollView
+        decelerationRate={'normal'}
+        fadingEdgeLength={2}
+        keyboardDismissMode = 'on-drag'
+        keyboardShouldPersistTaps = 'handled'
         style={{
 
         }}
@@ -365,7 +369,7 @@ export default function FarmlandBlockRegistration({
                                 dropdownCloseIcon={plantingYear 
                                         ? <Icon 
                                             name="close" 
-                                            size={25} 
+                                            size={20} 
                                             color="grey" 
                                             onPress={()=>setPlantingYear('')} 
                                         /> 

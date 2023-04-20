@@ -712,7 +712,12 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
 
 
-      <ScrollView>
+      <ScrollView
+        decelerationRate={'normal'}
+        fadingEdgeLength={2}
+        keyboardDismissMode = 'on-drag'
+        keyboardShouldPersistTaps = 'handled'
+      >
           <Box 
                 bg="#EBEBE4" 
                 w="100%" 
@@ -1004,7 +1009,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
         <Text
             style={{
                 color: COLORS.ghostwhite,
-                fontSize: responsiveFontSize(1.6),
+                fontSize: 15,
                 fontFamily: 'JosefinSans-Bold',
                 textAlign: 'center',
                 
@@ -1040,7 +1045,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
 
         <Stack w="100%" direction="row" space={2} mb="1">
-            <Box w="35%">
+            <Box w="40%">
                 <Text
                     style={{
                         color: COLORS.black,

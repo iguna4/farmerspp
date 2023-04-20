@@ -614,7 +614,12 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Icon 
                         name="add-location-alt" 
                         size={30} 
-                        color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.mediumseagreen } 
+                        color={
+                            farmland?.status === resourceValidation.status.validated 
+                            ? COLORS.lightgrey 
+                            : COLORS.mediumseagreen
+                            // farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.mediumseagreen 
+                        } 
                         // color={farmland?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
                 </TouchableOpacity>
@@ -747,7 +752,12 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     <Icon 
                         name="add-location-alt" 
                         size={30} 
-                        color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.mediumseagreen } 
+                        color={
+                            farmland?.status === resourceValidation.status.validated 
+                            ? COLORS.lightgrey 
+                            : COLORS.mediumseagreen
+                            // farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.mediumseagreen
+                         } 
                     />
                 </TouchableOpacity>
             }
@@ -809,18 +819,51 @@ const FarmlandData = ({ farmland, setRefresh })=>{
         </Stack>
 </>
 }
+    {
+    !farmland?.geolocation &&
+    (
+        <Stack  w="100%" direction="row" >
+        <Box w="40%">
+            <Text
+                style={{
+                    color: COLORS.grey,
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                }}  
+                >
+                {/*  */}
+            </Text>
+        </Box>
+        <Box w="60%">
+            <Text                     
+                style={{
+                    color: COLORS.grey,
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                }}  
+                >
+                (Nenhuma)
+            </Text>
+        </Box>
+        </Stack>
+        )
+
+    }
     </Stack>
+
+
+
 
     <CustomDivider />
 
     { 
     !isAreaNotEnough && customUserData?.role !== roles.provincialManager && 
-    <Stack  w="100%" direction="row" ml="5">
+    <Stack w="100%" direction="row" py="4" >
         <Box w="90%">
             <Text
                 style={{
                     color: COLORS.black,
-                    fontSize: 18,
+                    fontSize: responsiveFontSize(2),
                     fontFamily: 'JosefinSans-Bold',
                     
                 }}
@@ -838,7 +881,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                 }
             }}
         >
-            <Icon name="add-circle" size={35} color={COLORS.mediumseagreen} />
+            <Icon name="add-circle" size={30} color={COLORS.mediumseagreen} />
         </TouchableOpacity>
         </Box>
     </Stack>

@@ -242,8 +242,8 @@ export default function WelcomeScreen () {
                 <Center w="100%" py="3">
                 <Image
                     style={{ 
-                            width: responsiveWidth(18), 
-                            height: responsiveHeight(10), 
+                            width: 60, 
+                            height: 60, 
                             borderRadius: 100,  
                         }}
                     source={require('../../../assets/images/iamLogo2.png')}
@@ -783,7 +783,7 @@ export default function WelcomeScreen () {
             )
         }
 
-{ role.includes('AMPCM') && (userDistrict) &&
+{ role.includes('AMPCM') && (userDistrict) && !isLoggingIn &&
                 <Stack direction="row" w="100%">
                 <Box w="100%">
                     <FormControl isRequired my="3" isInvalid={'coop' in errors}>

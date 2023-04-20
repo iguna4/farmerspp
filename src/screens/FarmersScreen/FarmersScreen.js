@@ -226,6 +226,14 @@ export default function FarmersScreen({ route, navigation }) {
                 {name: districtFarmlands},
               );
             });
+
+            realm.subscriptions.update(mutableSubs => {
+              mutableSubs.removeByName(serviceProviderSubs);
+              mutableSubs.add(
+                realm.objects('SprayingServiceProvider').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+                {name: serviceProviderSubs},
+              );
+            });
     
           }
 
@@ -302,13 +310,7 @@ export default function FarmersScreen({ route, navigation }) {
         //       );
         //     });
     
-        //     realm.subscriptions.update(mutableSubs => {
-        //       mutableSubs.removeByName(serviceProviderSubs);
-        //       mutableSubs.add(
-        //         realm.objects('SprayingServiceProvider').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
-        //         {name: serviceProviderSubs},
-        //       );
-        //     });
+
             
         // }
         else if (customUserData?.role === roles.provincialManager) {
@@ -359,6 +361,7 @@ export default function FarmersScreen({ route, navigation }) {
     <SafeAreaView 
       style={{    
         flex: 1,
+        paddingBottom: 100,
         backgroundColor: 'ghostwhite',
       }}
     >
@@ -376,7 +379,7 @@ export default function FarmersScreen({ route, navigation }) {
           style={{
             width: '100%',
             paddingHorizontal: wp('3%'),
-            paddingTop: 5,
+            // paddingTop: 5,
             backgroundColor: '#EBEBE4',
             borderTopWidth: 0,
             borderColor: '#EBEBE4',
@@ -632,8 +635,8 @@ export default function FarmersScreen({ route, navigation }) {
             alignItems="stretch" 
             w="100%" 
             style={{
-              marginBottom: 5,
-              marginTop: 10,
+              marginBottom: 15,
+              // marginTop: 10,
             }}
           >
             <FlatList
@@ -668,9 +671,10 @@ export default function FarmersScreen({ route, navigation }) {
                 if (!isEndReached){
                   return (
                   <Box style={{
-                    height: hp('20%'),
+                    // height: 10,
                     backgroundColor: COLORS.ghostwhite,
-                    // paddingBottom: 10,
+                    paddingBottom: 15,
+                    marginBottom: 10,
                   }}>
                     { isLoading ? (<CustomActivityIndicator />) : null }
                   </Box>

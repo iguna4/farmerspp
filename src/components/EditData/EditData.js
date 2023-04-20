@@ -19,7 +19,7 @@ const EditData = ({
 
     <Overlay 
         overlayStyle={{ 
-            backgroundColor: 'ghostwhite', 
+            backgroundColor: COLORS.ghostwhite, 
             width: '90%',
             borderRadius: 10,
             paddingBottom: 50,
@@ -30,13 +30,13 @@ const EditData = ({
         <View
             style={{ 
                 width: '100%', 
-                backgroundColor: COLORS.main, 
+                // backgroundColor: COLORS.main, 
             }}
         >
             <Text
                 style={{ 
                     textAlign: 'center',
-                    color: COLORS.ghostwhite,
+                    color: COLORS.black,
                     fontSize: 18,
                     paddingVertical: 5,
                     fontFamily: 'JosefinSans-Bold',

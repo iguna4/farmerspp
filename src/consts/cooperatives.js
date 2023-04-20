@@ -2,323 +2,298 @@ export const cooperatives = {
 
         // Niassa
         Chimbunila: [
-            "coop 1", 
-            "coop 2",
+            "AMPCM", 
         ],
         Cuamba: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Lago: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         "Lichinga": [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Majune: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Mandimba: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Marrupa: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Maúa: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Mavago: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",  
         ],
         Mecanhelas: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Mecula: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Metarica: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Muembe: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         "N'gauma": [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Nipepe: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",  
         ],
         Sanga: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
 
         // Cabo Delgado
         Ancuabe: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Balama: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Chiúre: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Ibo: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Macomia: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",  
         ],
         Mecúfi: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Meluco: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Metuge: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         "Mocímboa da Praia": [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Montepuez: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Mueda: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",  
         ],
         Muidumbe: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Namuno: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",  
         ],
         Nangade: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Palma: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         "Pemba (Cidade)": [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Quissanga: [
-            "coop 1", 
-            "coop 2",  
+            "AMPCM",  
         ],
 
         // Nampula
         Angoche: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",
+            "Cooperativa Agrária de Nametoria", 
+            "Cooperativa Agrária Força da Mudança de Marrocane", 
+            "Cooperativa Agrária Olima Orera de Nacu",
+            "Cooperativa Agrária Dezasseis de Junho Aúbe",
+            "Uniao Distrital das Cooperativas de Angoche",
+            "Cooperativa Agrária de Napuala-A Limitada CAN",
+            "Cooperativa Agropecuária Muihanhaa",
+            "Cooperativa 1 de Maio Luáze",
+            "Cooperativa Agrária Nova Família de Siretene Limitada",
+            "Cooperativa Agrária Uchukuro Mali",
         ],
         Eráti: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",  
         ],
         "Ilha de Moçambique": [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Lalaua: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Larde: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Liúpo: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Malema: [
-            "coop 1", 
-            "coop 2",  
+            "AMPCM",
+            "Cooperativa Okhaliherana",
+            "Cooperativa M'misso",
+            "Cooperativa Agropecuária de Namitata-Sona Coop",
+            "Cooperativa Nutrição Malema Sede - Nutri Coop", 
         ],
         Meconta: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",
+            "Cooperativa União Faz A Força", 
         ],
         Mecubúri: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Memba: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Mogincual: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Mogovolas: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",
+            "Cooperativa das Mulheres Okupali Olima",
+            "Cooperativa Agrária de Muepane Limitada",
+            "Cooperativa Agrária de Nita",
+            "Cooperativa Wiwanana Walimi - Omuiwane Limitada",
+            "Cooperativa Agrária Ophenta Olima",
+            "Cooperativa Agrária das Mulheres de Nametil Sede",
+            "Cooperativa União de Mogovolas",
+            
         ],
         Moma: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",
+            "Cooperativa Agrária de Maculane",
+            "Centro de Serviços Cooperativos: CESCOOP",
+            "Cooperativa Agrária Ovaraana",
+            "Cooperativa Agropecuária para Desenvolvimentode Namiwi: CODANA",
+            "Cooperativa Agrária COCACHA",
+            "Cooperativa Agropecuária de Namiepe: COPANA",
+            "Cooperativa Agrária Okhaliherana",
+            "Cooperativa Agropecuária de Maculane: COOPAM",
+            
         ],
         Monapo: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",
+            "Cooperativa de Produtores de Nacololo",
+            "Cooperativa Ophavela",
+            "Cooperativa Agrária de Morreno, LDA",
+            "Cooperativa Nivenhe",
+            "Cooperativa Agropecuária de Ramiane Ituculo: CARI",
+            "Cooperativa Morreno",
         ],
         Mossuril: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",  
         ],
         Muecate: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Murrupula: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",
+            "Cooperativa Agrícola Wahala Alimi",	
+            "Cooperativa Agrária Wiwanana de Muihia",
         ],
         Nacala: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         "Nacala-a-Velha": [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Nacarôa: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         "Nampula": [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
 
         Rapale: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
+            "Cooperativa Agrária de Namaita",
         ],
         Ribaué: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
+            "Agropecuária de Namiconha",
+            "Vina COOP",
+            "Oruwerya COOP",
+            "COOP Xhoneia",
+            "HORTICOOP",
         ],
 
         // Zambezia
         "Alto Molócuè": [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",  
         ],
         Chinde: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",  
         ],
         Derre: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Gilé: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",
+            "Cooperativa Agrária de Nacarara", 
+            "Cooperativa de Produtores de Mamala Centro",
+            "Cooperativa Agropecuária de Mucaua", 
         ],
         Gurué: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Ile: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Inhassunge: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Luabo: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",  
         ],
         Lugela: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         "Maganja da Costa": [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",  
         ],
         Milange: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Mocuba: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Mocubela: [
-            "coop 1", 
-            "coop 2",   
+            "AMPCM",   
         ],
         Molumbo: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Mopeia: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Morrumbala: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
         Mulevala: [
-            "coop 1", 
-            "coop 2",    
+            "AMPCM",     
         ],
         Namacurra: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",  
         ],
         Namarroi: [
-            "coop 1", 
-            "coop 2",   
+            "AMPCM",   
         ],
         Nicoadala: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",  
         ],
         Pebane: [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM",
+            "Cooperativa Agropecuária Sete de Abril Tomeia Naburi",
+            "Cooperativa Agropecuária de Malema Pebane",
+            "Cooperativa 1 de Maio de Mulela Sede",
+            "Cooperativa Agropecuária de Alto Maganha",    
         ],
         "Quelimane (Cidade)": [
-            "coop 1", 
-            "coop 2", 
+            "AMPCM", 
         ],
     
 }

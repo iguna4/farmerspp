@@ -320,7 +320,7 @@ const EditFarmlandData = ({
 
     <Overlay 
         overlayStyle={{ 
-            backgroundColor: 'ghostwhite', 
+            backgroundColor: COLORS.ghostwhite, 
             width: '90%',
             maxHeight: '80%',
             borderRadius: 10,
@@ -341,13 +341,13 @@ const EditFarmlandData = ({
             <View
                 style={{ 
                     width: '100%', 
-                    backgroundColor: COLORS.mediumseagreen, 
+                    // backgroundColor: COLORS.mediumseagreen, 
                 }}
             >
                 <Text
                     style={{ 
                         textAlign: 'center',
-                        color: COLORS.ghostwhite,
+                        color: COLORS.black,
                         fontSize: 18,
                         paddingVertical: 5,
                         fontFamily: 'JosefinSans-Bold',
@@ -369,11 +369,15 @@ const EditFarmlandData = ({
                         setIsEditBlockVisible(false);
                     }}
                     name="close" 
-                    size={30} 
-                    color={COLORS.ghostwhite} 
+                    size={25} 
+                    color={COLORS.grey} 
                 />
             </View>
             <ScrollView
+                decelerationRate={'normal'}
+                fadingEdgeLength={2}
+                keyboardDismissMode = 'on-drag'
+                keyboardShouldPersistTaps = 'handled'
                 style={{
                     // flex: 1,
                     // minHeight: '100%',

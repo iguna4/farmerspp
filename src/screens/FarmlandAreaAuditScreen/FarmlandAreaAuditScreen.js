@@ -294,7 +294,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     
                     style={{
                         position: 'absolute',
-                        left: 5,
+                        left: 0,
                         top: 4,
                         flexDirection: 'row',
                         // justifyContent: 'center',
@@ -306,7 +306,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                         color={COLORS.main} 
                         size={25}  
                     />
-                    <Text
+                    {/* <Text
                         style={{
                             color: COLORS.main,
                             fontFamily: 'JosefinSans-Bold',
@@ -314,7 +314,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                         }}
                     >
                         Voltar
-                    </Text>
+                    </Text> */}
                 </Pressable>
             </Box>
             <Center w="100%">

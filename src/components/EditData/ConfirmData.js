@@ -149,7 +149,18 @@ const ConfirmData = ({
                 // resource.userProvince = newData?.province;
                 // resource.userDistrict = newData?.district;
 
-                resource.status = resourceValidation.status.pending;
+                // check blocksTrees and totalTrees consistency
+                // only update the resource status if there is consistency
+                // if (resource.status === resourceValidation.status.invalidated){
+                let blocksTrees = resource?.blocks?.map(block=>block?.trees).reduce((acc, el)=>acc + el, 0);
+                if (blocksTrees === resource.trees){
+                        resource.status = resourceValidation.status.pending;
+                // }
+                }
+                else {
+                    resource.status = resourceValidation.status.invalidated;
+                }
+
             }
 
             if (dataToBeUpdated === 'blockData' && resourceName === 'Farmland') {
@@ -164,10 +175,19 @@ const ConfirmData = ({
                 blockTobeUpdated.trees = newDataObject?.trees;
                 blockTobeUpdated.sameTypeTrees = [];
                 blockTobeUpdated.plantTypes = {};
-
+                
                 resource.modifiedAt = new Date();
                 resource.modifiedBy = customUserData?.name;
-                resource.status = resourceValidation.status.pending;
+                
+                // check blocksTrees and totalTrees consistency
+                // only update the resource status if there is consistency
+                if (resource.status === resourceValidation.status.invalidated){
+                    let blocksTrees = resource?.blocks?.map(block=>block?.trees).reduce((acc, el)=>acc + el, 0);
+                    if (blocksTrees === resource.trees){
+                        resource.status = resourceValidation.status.pending;
+                    }
+                }
+
             }
 
             if (dataToBeUpdated === 'plantType' && resourceName === 'Farmland') {
@@ -182,7 +202,16 @@ const ConfirmData = ({
 
                 resource.modifiedAt = new Date();
                 resource.modifiedBy = customUserData?.name;
-                resource.status = resourceValidation.status.pending;
+
+                // check blocksTrees and totalTrees consistency
+                // only update the resource status if there is consistency
+                if (resource.status === resourceValidation.status.invalidated){
+                    let blocksTrees = resource?.blocks?.map(block=>block?.trees).reduce((acc, el)=>acc + el, 0);
+                    if (blocksTrees === resource.trees){
+                        resource.status = resourceValidation.status.pending;
+                    }
+                }
+                // resource.status = resourceValidation.status.pending;
             }
         });
     }
@@ -218,13 +247,13 @@ const ConfirmData = ({
         <View
             style={{ 
                 width: '100%', 
-                backgroundColor: COLORS.main, 
+                // backgroundColor: COLORS.main, 
             }}
             >
             <Text
                 style={{ 
                     textAlign: 'center',
-                    color: COLORS.ghostwhite,
+                    color: COLORS.black,
                     fontSize: 18,
                     paddingVertical: 5,
                     fontFamily: 'JosefinSans-Bold',
@@ -244,8 +273,8 @@ const ConfirmData = ({
                     setIsConfirmDataVisible(false);
                 }}
                 name="close" 
-                size={30} 
-                color={COLORS.ghostwhite} 
+                size={25} 
+                color={COLORS.grey} 
                 />
         </View>
         

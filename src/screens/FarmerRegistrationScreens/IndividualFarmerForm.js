@@ -388,7 +388,7 @@ export default function IndividualFarmerForm({
                                 </Text>
                                 <Icon 
                                     name="date-range" 
-                                    size={35}
+                                    size={30}
                                     color={COLORS.main} 
                                 />                    
                             </Box>

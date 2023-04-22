@@ -1,6 +1,6 @@
 
 export const groupAffiliationStatus = {
- pendingAffiliation: 'Aguardando Legalização',
+ pendingAffiliation: 'Em processo de Legalização',
  affiliated: 'Legalizado',
  notAffiliated: 'Não Legalizado',
 }

@@ -1,7 +1,12 @@
 
 import 'react-native-get-random-values';
 import {  createRealmContext } from "@realm/react";
-import { PlantTypes, Assets, FarmlandBlock, SprayingServiceBeneficiary, Address, Contact, Density, IdDocument, Members, Name, Manager, Coordinates, InvalidationMessage, SameTypeTrees } from "./EmbbededSchemas";
+import { 
+    PlantTypes, Assets, FarmlandBlock, SprayingServiceBeneficiary, 
+    Address, Contact, Density, IdDocument, Members, Name, Manager, 
+    Coordinates, InvalidationMessage, SameTypeTrees, Membership,
+    SprayingService,
+} from "./EmbbededSchemas";
 import { Actor } from "./Actor";
 // import { ActorCategory } from './ActorCategory';
 import { Farmland } from "./Farmland";
@@ -11,16 +16,20 @@ import { Group } from "./Group";
 import { UserStat } from './UserStat';
 import { InvalidationMotive } from './InvalidationMotive';
 import { SprayingServiceProvider } from './SprayingServiceProvider';
+import { ActorMembership } from './ActorMembership';
+
 
 export const realmContext = createRealmContext({
     schema: [
         Actor,
-        // ActorCategory,
+        ActorMembership,
         Assets,
         SprayingServiceBeneficiary,
         SprayingServiceProvider,
+        SprayingService,
         FarmlandBlock,
         Group, 
+        Membership,
         Institution, 
         Members, 
         Address, 

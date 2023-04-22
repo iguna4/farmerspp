@@ -17,6 +17,7 @@ import { capitalize } from "./capitalize";
 
 const validateIndividualFarmerData = (
     {   isSprayingAgent,
+        isNotSprayingAgent,
         surname, 
         otherNames, 
         gender, 
@@ -33,11 +34,13 @@ const validateIndividualFarmerData = (
         primaryPhone,
         secondaryPhone,
         docType, docNumber, nuit,  
+        isGroupMember, isNotGroupMember,
     }, errors, setErrors,
     ) => {
 
     // sanitizing recieved data
-    const retrievedisSprayingAgent = isSprayingAgent;
+    const retrievedIsSprayingAgent = Boolean(isSprayingAgent);
+    const retrievedIsNotSprayingAgent = Boolean(isNotSprayingAgent);
     const retrievedSurname = capitalize(surname?.trim()); 
     const retrievedOtherNames = capitalize(otherNames?.trim());
     const retrievedGender = gender;
@@ -56,6 +59,8 @@ const validateIndividualFarmerData = (
     const retrievedDocType = docType;
     const retrievedDocNumber = docNumber;
     const retrievedNuit = nuit; 
+    const retrievedIsGroupMember = Boolean(isGroupMember);
+    const retrievedIsNotGroupMember = Boolean(isNotGroupMember);
 
     let asset =  {
         category: categories.farmer.category,
@@ -63,11 +68,18 @@ const validateIndividualFarmerData = (
         assetType: assetTypes.farmland,
     }; 
 
-
-
-       
     // validating each data and sending back
     // errorMessages if invalid data is found
+
+
+    if (!retrievedIsSprayingAgent && !retrievedIsNotSprayingAgent) {
+        setErrors({
+            ...errors,
+            isSprayingAgent: 'Indica se é ou não Provedor de Serviços de Pulverização'
+        });
+        return false;
+    }
+       
     if (!retrievedSurname){
         setErrors({ ...errors,
             surname: 'Apelido do produtor.',
@@ -127,6 +139,21 @@ const validateIndividualFarmerData = (
         });
         return false;                   
     }
+
+    if(
+        (retrievedPrimaryPhone === retrievedSecondaryPhone) 
+        &&
+        (retrievedPrimaryPhone !== 0) 
+       )
+       {
+        setErrors({
+         ...errors,
+         primaryPhone: 'Contacto principal não deve ser igual ao alternativo.',
+         secondaryPhone: 'Contacto principal não deve ser igual ao alternativo.',
+        });
+        return false;
+       }
+
 
     if ((retrievedSecondaryPhone === 0) || retrievedSecondaryPhone && 
         (
@@ -199,6 +226,15 @@ const validateIndividualFarmerData = (
         return false;
     }
     
+    if (!retrievedIsGroupMember && !retrievedIsNotGroupMember) {
+        setErrors({
+            ...errors,
+            isGroupMember: 'Indica se é ou não membro de uma organização'
+        });
+        return false;
+    }
+
+
     // binding all the sanitized and validated data within an object
     // that's returned for persistence's purpose.
     const farmerData = {
@@ -206,7 +242,7 @@ const validateIndividualFarmerData = (
             surname: retrievedSurname,   
             otherNames: retrievedOtherNames, 
         }, 
-        isSprayingAgent: retrievedisSprayingAgent,
+        isSprayingAgent: retrievedIsSprayingAgent,
         assets: [asset],
         gender: retrievedGender,
         familySize: retrievedFamilySize ? parseInt(retrievedFamilySize) : 0,
@@ -231,7 +267,8 @@ const validateIndividualFarmerData = (
             docType: retrievedDocType ? retrievedDocType : 'Nenhum', 
             docNumber: retrievedDocNumber ? retrievedDocNumber : 'Nenhum', 
             nuit: retrievedNuit ? parseInt(retrievedNuit) : 0,
-        }
+        },
+        isGroupMember: retrievedIsGroupMember,
     }       
     return farmerData;
 

@@ -41,6 +41,8 @@ const validateIndividualFarmerData = (
       const retrievedAddressOldAdminPost = addressOldAdminPost?.trim();
       const retrievedAddressOldVillage = addressOldVillage?.trim();
 
+    //   console.log('new phone:', retrievedPrimaryPhone)
+
       if (
        (retrievedAddressAdminPost === retrievedAddressOldAdminPost) 
        &&
@@ -70,16 +72,44 @@ const validateIndividualFarmerData = (
      }
 
      if ( dataToBeUpdated === 'contact' && resourceName == 'Farmer') {
-      const retrievedPrimaryPhone = primaryPhone;
-      const retrievedSecondaryPhone = secondaryPhone;
+      const retrievedPrimaryPhone = Number(parseInt(primaryPhone)) ? Number(parseInt(primaryPhone)) : 0;
+      const retrievedSecondaryPhone = Number(parseInt(secondaryPhone)) ? Number(parseInt(secondaryPhone)) : 0;
 
-      const retrievedOldPrimaryPhone = oldPrimaryPhone;
-      const retrievedOldSecondaryPhone = oldSecondaryPhone;
+      const retrievedOldPrimaryPhone = Number(parseInt(oldPrimaryPhone)) ? Number(parseInt(oldPrimaryPhone)) : 0;
+      const retrievedOldSecondaryPhone = Number(parseInt(oldSecondaryPhone)) ? Number(parseInt(oldSecondaryPhone)) : 0;
+
+        console.log('new prim:', retrievedPrimaryPhone)
+        console.log('new secon:', retrievedSecondaryPhone);
+        console.log('old prim:', retrievedOldPrimaryPhone);
+        console.log('old secon:', retrievedOldSecondaryPhone);
+
+      if(
+        (retrievedPrimaryPhone === retrievedOldPrimaryPhone) 
+        &&
+        (retrievedSecondaryPhone === retrievedOldSecondaryPhone)
+        &&
+        (retrievedPrimaryPhone === 0) 
+        &&
+        (retrievedSecondaryPhone === 0)
+       )
+       {
+        setErrors({
+         ...errors,
+         primaryPhone: 'Contacto actual não deve ser igual ao anterior.',
+         secondaryPhone: 'Contacto actual não deve ser igual ao anterior.'
+        });
+        return false;
+       }
+
 
       if(
        (retrievedPrimaryPhone === retrievedOldPrimaryPhone) 
        &&
        (retrievedSecondaryPhone === retrievedOldSecondaryPhone)
+       &&
+       (retrievedPrimaryPhone !== 0 || retrievedPrimaryPhone !== '') 
+       &&
+       (retrievedSecondaryPhone !== 0 || retrievedSecondaryPhone !== '')
       )
       {
        setErrors({
@@ -90,10 +120,95 @@ const validateIndividualFarmerData = (
        return false;
       }
 
-      if ( retrievedPrimaryPhone && (
+      if(
+        (retrievedPrimaryPhone === retrievedOldPrimaryPhone) 
+        &&
+        (retrievedPrimaryPhone !== 0 || retrievedPrimaryPhone !== '') 
+        &&
+        (retrievedSecondaryPhone === retrievedOldSecondaryPhone) 
+       )
+       {
+        setErrors({
+         ...errors,
+         primaryPhone: 'Contacto actual não deve ser igual ao anterior.',
+        //  secondaryPhone: 'Contacto actual não deve ser igual ao anterior.'
+        });
+        return false;
+       }
+
+       if(
+
+        (retrievedSecondaryPhone === retrievedOldSecondaryPhone)
+        &&
+        (retrievedSecondaryPhone !== 0 || retrievedSecondaryPhone !== '')
+        &&
+        (retrievedPrimaryPhone === retrievedOldPrimaryPhone) 
+       )
+       {
+        setErrors({
+         ...errors,
+        //  primaryPhone: 'Contacto actual não deve ser igual ao anterior.',
+         secondaryPhone: 'Contacto actual não deve ser igual ao anterior.'
+        });
+        return false;
+       }
+
+       if(
+        (retrievedPrimaryPhone === retrievedSecondaryPhone) 
+        &&
+        (retrievedPrimaryPhone !== 0) 
+       )
+       {
+        setErrors({
+         ...errors,
+         primaryPhone: 'Contacto principal não deve ser igual ao alternativo.',
+         secondaryPhone: 'Contacto principal não deve ser igual ao alternativo.',
+        });
+        return false;
+       }
+
+
+
+
+      if (
+        ((retrievedPrimaryPhone !== 0 ) || (retrievedSecondaryPhone !== 0))
+        &&
+        ((retrievedOldPrimaryPhone === 0) && (retrievedOldSecondaryPhone === 0))
+        ){
+
+            if ( (retrievedPrimaryPhone !== 0) && (
+                !Number.isInteger(parseInt(retrievedPrimaryPhone))  || 
+                retrievedPrimaryPhone?.toString().length !== 9       ||
+                parseInt(retrievedPrimaryPhone?.toString()[0]) !== 8 ||
+                [2,3,4,5,6,7].indexOf(parseInt(retrievedPrimaryPhone?.toString()[1])) < 0 )
+                ) {   
+                 
+                setErrors({ ...errors,
+                    primaryPhone: 'Número de telefone inválido.',
+                });
+                return false;                   
+            }
+
+            if ( (retrievedSecondaryPhone !== 0) && (
+                !Number.isInteger(parseInt(retrievedSecondaryPhone))  || 
+                retrievedSecondaryPhone?.toString().length !== 9       ||
+                parseInt(retrievedSecondaryPhone?.toString()[0]) !== 8 ||
+                [2,3,4,5,6,7].indexOf(parseInt(retrievedSecondaryPhone?.toString()[1])) < 0 )
+                ) {   
+                 
+                setErrors({ ...errors,
+                    secondaryPhone: 'Número de telefone inválido.',
+                });
+                return false;                   
+            }
+
+
+      }
+
+      if ( (retrievedPrimaryPhone !== 0 ) && retrievedSecondaryPhone === 0 && (
           !Number.isInteger(parseInt(retrievedPrimaryPhone))  || 
           retrievedPrimaryPhone?.toString().length !== 9       ||
-          parseInt(retrievedPrimaryPhone.toString()[0]) !== 8 ||
+          parseInt(retrievedPrimaryPhone?.toString()[0]) !== 8 ||
           [2,3,4,5,6,7].indexOf(parseInt(retrievedPrimaryPhone?.toString()[1])) < 0 )
           ) {   
            
@@ -103,7 +218,7 @@ const validateIndividualFarmerData = (
           return false;                   
       }
   
-      if ((retrievedSecondaryPhone === 0) || retrievedSecondaryPhone && 
+      if ((retrievedSecondaryPhone !== 0) && retrievedPrimaryPhone === 0 && 
           (
           !Number.isInteger(parseInt(retrievedSecondaryPhone))  || 
           retrievedSecondaryPhone?.toString().length !== 9       ||
@@ -111,8 +226,6 @@ const validateIndividualFarmerData = (
           [2,3,4,5,6,7].indexOf(parseInt(retrievedSecondaryPhone?.toString()[1])) < 0   
           )
       ){
-
-
           setErrors({ ...errors,
               secondaryPhone: 'Número de telefone inválido.',
           });

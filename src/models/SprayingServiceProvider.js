@@ -1,6 +1,6 @@
 /**
- *  Farmer schema for each individual farmer that owns
- *  cashew farmland
+ *  SprayingProviders are farmers who assist others 
+ * in terms cashew trees treatmet from diseases and plagues
  */
 
 export const SprayingServiceProvider = {
@@ -12,8 +12,10 @@ export const SprayingServiceProvider = {
      actorName: 'string?',
      year: { type: 'int', default: ()=>new Date().getFullYear()},
      beneficiaries: 'SprayingServiceBeneficiary[]',
-     status: 'string?', // active, inactive
+     isActive: { type: 'bool', default: true }, // if true, then this farmer is an active spraying service provider
+    //  status: 'string?', // active, inactive
      assets: 'Assets[]',
+     services: 'SprayingService[]',
 
      status: { type: 'string', default: 'pending'}, // pending; active; inactive
      checkedBy: 'string?',

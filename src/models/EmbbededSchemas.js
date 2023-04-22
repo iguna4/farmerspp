@@ -162,6 +162,26 @@ export const Assets = {
     assetType: 'string',
     assets: 'string[]',
 },
+};
+
+export const SprayingService = {
+    name: 'SprayingService',
+    embedded: true,
+    properties: {
+        year: { type: 'int', default: ()=>new Date().getFullYear() },
+        beneficiaries: 'string[]', // farmers id
+
+    }
+};
+
+export const Membership = {
+    name: 'Membership',
+    embedded: true,
+    properties: {
+        subscriptionYear: 'int?',
+        unsubscriptionYear: 'int?',
+        organizationId: 'string',
+    }
 }
 
 

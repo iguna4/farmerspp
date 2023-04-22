@@ -10,6 +10,7 @@ import { Icon, Button, CheckBox } from '@rneui/themed';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { pt, registerTranslation } from 'react-native-paper-dates'
 registerTranslation('pt', pt);
+import { KeyboardAwareScrollView, useMaskedTextInput } from 'react-native-keyboard-tools';
 
 
 
@@ -37,10 +38,11 @@ export default function IndividualFarmerForm({
     setAddressAdminPost, birthProvince, setBirthProvince, 
     birthDistrict, setBirthDistrict, birthAdminPost, setBirthAdminPost,
     birthDate, setBirthDate, docType, setDocType, 
-    docNumber, setDocNumber, isSprayingAgent, setIsSprayingAgent, 
+    docNumber, setDocNumber, isSprayingAgent, setIsSprayingAgent, isNotSprayingAgent, setIsNotSprayingAgent,
     surname, setSurname, otherNames, setOtherNames,
     primaryPhone, setPrimaryPhone, secondaryPhone, setSecondaryPhone,
-    nuit, setNuit, errors, setErrors,     
+    nuit, setNuit, isGroupMember, setIsGroupMember, isNotGroupMember, setIsNotGroupMember,
+    errors, setErrors,     
 }) {
 
     const [openDatePicker, setOpenDatePicker] = useState(false);
@@ -56,26 +58,80 @@ export default function IndividualFarmerForm({
 
 
 
+
+
   return (
     <Box px="3" my="6">
-        <Stack  direction="row" mx="3" w="100%">
-            <Box w="20%" px="1">
 
-            </Box>
-            <Box w="80%" px="1">
+        <Box w="100%" >
+        <FormControl isRequired isInvalid={'isSprayingAgent' in errors}>
+            <FormControl.Label>                
+                <Text
+                    style={{
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Regular',
+                        color: errors?.isSprayingAgent ? COLORS.red : COLORS.grey,
+                        paddingLeft: 15,
+                    }}
+                >
+                    É Provedor de Serviços de Pulverização?
+                </Text>
+            </FormControl.Label>
+
+        <Stack  direction="row" mx="3" w="100%">
+            <Box w="50%">
+                <CheckBox
+                        center
+                        fontFamily = 'JosefinSans-Regular'
+                        containerStyle={{
+                            backgroundColor: COLORS.ghostwhite,
+                        }}
+                        textStyle={{
+                            
+                            fontWeight: '100',
+                            color: isSprayingAgent ? COLORS.main : errors?.isSprayingAgent ? COLORS.red : COLORS.grey,
+                        }}
+                        title="Sim"
+                        checked={isSprayingAgent}
+                        checkedIcon={
+                            <Icon
+                                name="check-box"
+                                color={COLORS.main}
+                                size={30}
+                                iconStyle={{ marginRight: 1 }}
+                            />
+                        }
+                        uncheckedIcon={
+                            <Icon
+                                name="radio-button-unchecked"
+                                color={errors?.isSprayingAgent ? COLORS.red : COLORS.grey}
+                                size={30}
+                                iconStyle={{ marginRight: 1 }}
+                            />
+                        }
+                        onPress={() => {
+                            setIsNotSprayingAgent(false);
+                            setIsSprayingAgent(true);    
+                            setErrors({
+                                ...errors,
+                                isSprayingAgent: '',
+                            });                    
+                        }}
+                    />
+                </Box>
+            <Box w="50%" >
                 <CheckBox
                     center
-                    fontFamily = 'JosefinSans-Italic'
+                    fontFamily = 'JosefinSans-Regular'
                     containerStyle={{
                         backgroundColor: COLORS.ghostwhite,
                     }}
                     textStyle={{
-                        
                         fontWeight: '100',
-                        color: COLORS.main,
+                        color: isNotSprayingAgent ? COLORS.main : errors?.isSprayingAgent ? COLORS.red : COLORS.grey,
                     }}
-                    title="Provedor de Serviços de Pulverização"
-                    checked={isSprayingAgent}
+                    title="Não"
+                    checked={isNotSprayingAgent}
                     checkedIcon={
                         <Icon
                             name="check-box"
@@ -87,15 +143,33 @@ export default function IndividualFarmerForm({
                     uncheckedIcon={
                         <Icon
                             name="radio-button-unchecked"
-                            color={COLORS.main}
+                            color={errors?.isSprayingAgent ? COLORS.red : COLORS.grey}
                             size={30}
                             iconStyle={{ marginRight: 1 }}
                         />
                     }
-                    onPress={() => setIsSprayingAgent(!isSprayingAgent)}
+                    onPress={() => {
+                        setIsNotSprayingAgent(true);
+                        setIsSprayingAgent(false);
+                        setErrors({
+                            ...errors,
+                            isSprayingAgent: '',
+                        });
+                    }}
                 />
             </Box>
         </Stack>
+        {
+        'isSprayingAgent' in errors 
+        ? <FormControl.ErrorMessage 
+        leftIcon={<Icon name="error-outline" size={16} color="red" />}
+        _text={{ fontSize: 'xs'}}>{}</FormControl.ErrorMessage> 
+        : <FormControl.HelperText></FormControl.HelperText>
+        }
+        </FormControl>
+
+    </Box>
+        
         <Box w="100%" alignItems="center">
             <FormControl isRequired my="1" isInvalid={'surname' in errors}>
                 <FormControl.Label>Apelido</FormControl.Label>
@@ -715,6 +789,133 @@ export default function IndividualFarmerForm({
             </Box>
             </Stack>
         </Box>
+
+        {/* Organization */}
+
+        <CustomDivider
+            marginVertical="2"
+            thickness={2}
+            bg={COLORS.main}
+        />
+            
+        <Center>
+            <Text 
+                style={styles.formSectionDescription}
+            >
+                Organização
+            </Text>
+        </Center>
+
+        <Box w="100%" py="2">
+        <FormControl isRequired isInvalid={'isGroupMember' in errors}>
+            <FormControl.Label>                
+                <Text
+                    style={{
+                        fontSize: 15,
+                        fontFamily: 'JosefinSans-Regular',
+                        color: errors?.isGroupMember ? COLORS.red : COLORS.grey,
+                        paddingLeft: 15,
+                        lineHeight: 25,
+                    }}
+                >
+                    Pertence a alguma organização (Grupo, Associação, Cooperativa ou EMC)?
+                </Text>
+            </FormControl.Label>
+
+        <Stack  direction="row" mx="3" w="100%">
+            <Box w="50%">
+                <CheckBox
+                        center
+                        fontFamily = 'JosefinSans-Regular'
+                        containerStyle={{
+                            backgroundColor: COLORS.ghostwhite,
+                        }}
+                        textStyle={{
+                            
+                            fontWeight: '100',
+                            color: isGroupMember ? COLORS.main : errors?.isGroupMember ? COLORS.red : COLORS.grey,
+                        }}
+                        title="Sim"
+                        checked={isGroupMember}
+                        checkedIcon={
+                            <Icon
+                                name="check-box"
+                                color={COLORS.main}
+                                size={30}
+                                iconStyle={{ marginRight: 1 }}
+                            />
+                        }
+                        uncheckedIcon={
+                            <Icon
+                                name="radio-button-unchecked"
+                                color={errors?.isGroupMember ? COLORS.red : COLORS.grey}
+                                size={30}
+                                iconStyle={{ marginRight: 1 }}
+                            />
+                        }
+                        onPress={() => {
+                            setIsNotGroupMember(false);
+                            setIsGroupMember(true);    
+                            setErrors({
+                                ...errors,
+                                isGroupMember: '',
+                            });                    
+                        }}
+                    />
+                </Box>
+            <Box w="50%" >
+                <CheckBox
+                    center
+                    fontFamily = 'JosefinSans-Regular'
+                    containerStyle={{
+                        backgroundColor: COLORS.ghostwhite,
+                    }}
+                    textStyle={{
+                        fontWeight: '100',
+                        color: isNotGroupMember ? COLORS.main : errors?.isGroupMember ? COLORS.red : COLORS.grey,
+                    }}
+                    title="Não"
+                    checked={isNotGroupMember}
+                    checkedIcon={
+                        <Icon
+                            name="check-box"
+                            color={COLORS.main}
+                            size={30}
+                            iconStyle={{ marginRight: 1 }}
+                        />
+                    }
+                    uncheckedIcon={
+                        <Icon
+                            name="radio-button-unchecked"
+                            color={errors?.isGroupMember ? COLORS.red : COLORS.grey}
+                            size={30}
+                            iconStyle={{ marginRight: 1 }}
+                        />
+                    }
+                    onPress={() => {
+                        setIsNotGroupMember(true);
+                        setIsGroupMember(false);
+                        setErrors({
+                            ...errors,
+                            isGroupMember: '',
+                        });
+                    }}
+                />
+            </Box>
+        </Stack>
+        {
+        'isGroupMember' in errors 
+        ? <FormControl.ErrorMessage 
+        leftIcon={<Icon name="error-outline" size={16} color="red" />}
+        _text={{ fontSize: 'xs'}}>{}</FormControl.ErrorMessage> 
+        : <FormControl.HelperText></FormControl.HelperText>
+        }
+        </FormControl>
+
+    </Box>
+
+
+
     </Box>
   );
 }

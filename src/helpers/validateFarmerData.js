@@ -2,6 +2,8 @@
 const validateFarmerData = (
     {   surname, 
         otherNames, 
+        isSprayingAgent,
+        isNotSprayingAgent,
         birthDate, 
         gender, 
         birthProvince,
@@ -34,6 +36,16 @@ const validateFarmerData = (
     const retrievedDocType = docType;
     const retrievedDocNumber = docNumber;
     const retrievedNuit = nuit; 
+    const retrievedIsSprayingAgent = Boolean(isSprayingAgent);
+    const retrievedIsNotSprayingAgent = Boolean(isNotSprayingAgent);
+
+    if (!retrievedIsSprayingAgent && !retrievedIsNotSprayingAgent) {
+        setErrors({
+            ...errors,
+            isSprayingAgent: 'Indica se é ou não Provedor de Serviços de Pulverização'
+        });
+        return false;
+    }
        
     if (!retrievedSurname){
         setErrors({ ...errors,

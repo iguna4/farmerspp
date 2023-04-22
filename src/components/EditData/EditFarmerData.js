@@ -238,12 +238,12 @@ const EditFarmerData = ({
                             style={{ 
                                 textAlign: 'center',
                                 color: COLORS.black,
-                                fontSize: 18,
+                                fontSize: 16,
                                 paddingVertical: 5,
                                 fontFamily: 'JosefinSans-Bold',
                                 
                             }}
-                        >{ownerName}</Text>
+                        >{overlayTitle}</Text>
                     </View>
 
                     <View
@@ -273,7 +273,7 @@ const EditFarmerData = ({
                     // marginVertical: 10,
                 }}
             >
-            <Box>
+            {/* <Box>
                 <Text
                     style={{ 
                         textAlign: 'center',
@@ -284,7 +284,7 @@ const EditFarmerData = ({
                         
                     }}
                 >{overlayTitle}</Text>
-            </Box>
+            </Box> */}
 
     {/* update the farmer idDocuments */}
 

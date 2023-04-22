@@ -142,7 +142,7 @@ const EditGroupData = ({
             setGroupName(resource?.name);
             setGroupType(resource?.type);
             setGroupGoals(resource?.assets?.map(asset=>asset.subcategory));
-            setOverlayTitle('Actualizar Tipo de Grupo');
+            setOverlayTitle('Actualizar Tipo de Organização');
 
             setOldGroupName(resource?.name);
             setOldGroupType(resource?.type);
@@ -326,12 +326,12 @@ const EditGroupData = ({
                             style={{ 
                                 textAlign: 'center',
                                 color: COLORS.black,
-                                fontSize: 18,
+                                fontSize: 16,
                                 paddingVertical: 5,
                                 fontFamily: 'JosefinSans-Bold',
                                 
                             }}
-                        >{ownerName}</Text>
+                        >{overlayTitle}</Text>
                     </View>
 
                     <View
@@ -361,7 +361,7 @@ const EditGroupData = ({
                     // marginVertical: 10,
                 }}
             >
-            <Box>
+            {/* <Box>
                 <Text
                     style={{ 
                         textAlign: 'center',
@@ -372,7 +372,7 @@ const EditGroupData = ({
                         
                     }}
                 >{overlayTitle}</Text>
-            </Box>
+            </Box> */}
 
     {/* update the group data */}
 
@@ -381,11 +381,11 @@ const EditGroupData = ({
     (dataToBeUpdated === 'groupType' && resourceName === 'Group') &&
     <Stack direction="column">
         <FormControl isRequired my="3" isInvalid={'groupType' in errors}>
-            <FormControl.Label>Tipo de grupo</FormControl.Label>
+            <FormControl.Label>Tipo de organização</FormControl.Label>
             <Select
                 selectedValue={groupType}
                 accessibilityLabel="Grupo"
-                placeholder="Tipo de grupo "
+                placeholder="Tipo de organização "
                 minHeight={55}
                 _selectedItem={{
                     bg: 'teal.600',

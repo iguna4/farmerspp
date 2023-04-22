@@ -67,8 +67,9 @@ const validateGroupFarmerData = (
     if ((!retrievedIsGroupActive && !retrievedIsGroupInactive) || (retrievedIsGroupActive && retrievedIsGroupInactive)) {
         setErrors({
             ...errors, 
-            operationalStatus: 'Escolha um estado de funcionamento'
-        })
+            isGroupActive: 'Escolha um estado de funcionamento'
+        });
+        return false;
     }
 
 

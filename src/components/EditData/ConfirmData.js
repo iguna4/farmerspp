@@ -254,7 +254,7 @@ const ConfirmData = ({
                 style={{ 
                     textAlign: 'center',
                     color: COLORS.black,
-                    fontSize: 18,
+                    fontSize: 16,
                     paddingVertical: 5,
                     fontFamily: 'JosefinSans-Bold',
                     
@@ -325,10 +325,20 @@ const ConfirmData = ({
                newDataObject.sameTypeTrees?.map(same=>(
                     <Stack key={same.treeType} direction="row">
                         <Box w="60%">
-                            <Text><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}
+                            ><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
                         </Box>
                         <Box w="40%">
-                            <Text>{same?.trees} árvores</Text>
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{same?.trees} árvores</Text>
                         </Box>   
                     </Stack>
                )
@@ -346,12 +356,12 @@ const ConfirmData = ({
         {/* <Text
             style={{
                 color: COLORS.black,
-                fontSize: 18,
+                fontSize: 16,
                 fontFamily: 'JosefinSans-Bold',
                 paddingBottom: 5,
             }}
         >
-            Dados Actuais do Bloco
+            Dados Actuais do Parcela
         </Text> */}
 
         {/* <Stack direction="row">
@@ -410,35 +420,65 @@ const ConfirmData = ({
         <Text
             style={{
                 color: COLORS.black,
-                fontSize: 18,
+                fontSize: 16,
                 fontFamily: 'JosefinSans-Bold',
                 paddingBottom: 5,
             }}
         >
-            Dados Anteriores do Bloco
+            Dados Anteriores da Parcela
         </Text>
         <Stack direction="row">
             <Box w="50%">
-                <Text>Ano de plantio</Text>
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Ano de plantio</Text>
             </Box>
             <Box w="50%">
-               <Text>{oldDataObject?.plantingYear}</Text>
+               <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}           
+               >{oldDataObject?.plantingYear}</Text>
             </Box>
         </Stack>
         <Stack direction="row">
             <Box w="50%">
-                <Text>Área aproveitada</Text>
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Área aproveitada</Text>
             </Box>
             <Box w="50%">
-               <Text>{oldDataObject?.usedArea ? `${oldDataObject?.usedArea} hectares` : 'Nenhum'}</Text>
+               <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}           
+               >{oldDataObject?.usedArea ? `${oldDataObject?.usedArea} hectares` : 'Nenhum'}</Text>
             </Box>
         </Stack>
         <Stack direction="row">
             <Box w="50%">
-                <Text>Compasso</Text>
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Compasso</Text>
             </Box>
             <Box w="50%">
-                <Text>
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >
                     {oldDataObject.density?.mode ? oldDataObject.density.mode : 'Nenhum'}
                     {oldDataObject.density?.mode === 'Regular' && `(${oldDataObject.density?.width} x ${oldDataObject.density?.length} metros)`}
                 </Text>
@@ -462,10 +502,20 @@ const ConfirmData = ({
 
         <Stack direction="row">
             <Box w="50%">
-                <Text>Cajueiros</Text>
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Cajueiros</Text>
             </Box>
             <Box w="50%">
-                <Text>{oldDataObject.trees ? `${oldDataObject.trees} árvores` : 'Nenhum'}</Text>
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{oldDataObject.trees ? `${oldDataObject.trees} árvores` : 'Nenhum'}</Text>
             </Box>
         </Stack>
    
@@ -500,35 +550,65 @@ const ConfirmData = ({
         <Text
             style={{
                 color: COLORS.black,
-                fontSize: 18,
+                fontSize: 16,
                 fontFamily: 'JosefinSans-Bold',
                 paddingBottom: 5,
             }}
         >
-            Dados Actuais do Bloco
+            Dados Actuais do Parcela
         </Text>
         <Stack direction="row">
             <Box w="50%">
-                <Text>Ano de plantio</Text>
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}
+                >Ano de plantio</Text>
             </Box>
             <Box w="50%">
-               <Text>{newDataObject?.plantingYear}</Text>
+               <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}
+               >{newDataObject?.plantingYear}</Text>
             </Box>
         </Stack>
         <Stack direction="row">
             <Box w="50%">
-                <Text>Área aproveitada</Text>
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}
+                >Área aproveitada</Text>
             </Box>
             <Box w="50%">
-            <Text>{newDataObject?.usedArea ? `${newDataObject?.usedArea} hectares` : 'Nenhum'}</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}
+            >{newDataObject?.usedArea ? `${newDataObject?.usedArea} hectares` : 'Nenhum'}</Text>
             </Box>
         </Stack>
         <Stack direction="row">
             <Box w="50%">
-                <Text>Compasso</Text>
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}
+                >Compasso</Text>
             </Box>
             <Box w="50%">
-                <Text>
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}        
+                >
                     {newDataObject.density?.mode ? newDataObject.density.mode : 'Nenhum'}
                     {newDataObject.density?.mode === 'Regular' && `(${newDataObject.density?.width} x ${newDataObject.density?.length} metros)`}
                 </Text>
@@ -554,10 +634,20 @@ const ConfirmData = ({
 
         <Stack direction="row">
             <Box w="50%">
-                <Text>Cajueiros</Text>
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Cajueiros</Text>
             </Box>
             <Box w="50%">
-                <Text>{newDataObject.trees ? `${newDataObject.trees} árvores` : 'Nenhum'}</Text>
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{newDataObject.trees ? `${newDataObject.trees} árvores` : 'Nenhum'}</Text>
             </Box>
         </Stack>
         {/* <Stack direction="row"> */}
@@ -598,7 +688,7 @@ const ConfirmData = ({
      <Text
          style={{
              color: COLORS.black,
-             fontSize: 18,
+             fontSize: 16,
              fontFamily: 'JosefinSans-Bold',
              paddingBottom: 5,
          }}
@@ -607,34 +697,74 @@ const ConfirmData = ({
      </Text>
      <Stack direction="row">
          <Box w="50%">
-             <Text>Descrição</Text>
+             <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}         
+             >Descrição</Text>
          </Box>
          <Box w="50%">
-             <Text>{oldDataObject?.description ? oldDataObject?.description : 'Nenhuma' }</Text>
-         </Box>
-     </Stack>
-     <Stack direction="row">
-         <Box w="50%">
-             <Text>Culturas consociadas</Text>
-         </Box>
-         <Box w="50%">
-            <Text>{oldDataObject?.consociatedCrops?.length > 0 ? oldDataObject?.consociatedCrops?.join('; ') : 'Nenhuma'}</Text>
-         </Box>
-     </Stack>
-     <Stack direction="row">
-         <Box w="50%">
-             <Text>Área total</Text>
-         </Box>
-         <Box w="50%">
-            <Text>{oldDataObject?.totalArea ? oldDataObject?.totalArea : 'Nenhuma'}</Text>
+             <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}             
+             >{oldDataObject?.description ? oldDataObject?.description : 'Nenhuma' }</Text>
          </Box>
      </Stack>
      <Stack direction="row">
          <Box w="50%">
-             <Text>N° de cajueiros</Text>
+             <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}             
+             >Culturas consociadas</Text>
          </Box>
          <Box w="50%">
-            <Text>{oldDataObject?.trees ? oldDataObject?.trees : 'Nenhum'}</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{oldDataObject?.consociatedCrops?.length > 0 ? oldDataObject?.consociatedCrops?.join('; ') : 'Nenhuma'}</Text>
+         </Box>
+     </Stack>
+     <Stack direction="row">
+         <Box w="50%">
+             <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}             
+             >Área total</Text>
+         </Box>
+         <Box w="50%">
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{oldDataObject?.totalArea ? oldDataObject?.totalArea : 'Nenhuma'}</Text>
+         </Box>
+     </Stack>
+     <Stack direction="row">
+         <Box w="50%">
+             <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}             
+             >N° de cajueiros</Text>
+         </Box>
+         <Box w="50%">
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{oldDataObject?.trees ? oldDataObject?.trees : 'Nenhum'}</Text>
          </Box>
      </Stack>
 
@@ -649,7 +779,7 @@ const ConfirmData = ({
      <Text
          style={{
              color: COLORS.black,
-             fontSize: 18,
+             fontSize: 16,
              fontFamily: 'JosefinSans-Bold',
              paddingBottom: 5,
          }}
@@ -659,34 +789,74 @@ const ConfirmData = ({
  
      <Stack direction="row">
          <Box w="50%">
-             <Text>Descrição</Text>
+             <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}             
+             >Descrição</Text>
          </Box>
          <Box w="50%">
-             <Text>{newDataObject?.description ? newDataObject?.description : 'Nenhuma' }</Text>
-         </Box>
-     </Stack>
-     <Stack direction="row">
-         <Box w="50%">
-             <Text>Culturas consociadas</Text>
-         </Box>
-         <Box w="50%">
-            <Text>{newDataObject?.consociatedCrops?.length > 0 ? newDataObject?.consociatedCrops?.join('; ') : 'Nenhuma'}</Text>
-         </Box>
-     </Stack>
-     <Stack direction="row">
-         <Box w="50%">
-             <Text>Área total</Text>
-         </Box>
-         <Box w="50%">
-            <Text>{newDataObject?.totalArea ? newDataObject?.totalArea : 'Nenhuma'}</Text>
+             <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}             
+             >{newDataObject?.description ? newDataObject?.description : 'Nenhuma' }</Text>
          </Box>
      </Stack>
      <Stack direction="row">
          <Box w="50%">
-             <Text>N° de cajueiros</Text>
+             <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}             
+             >Culturas consociadas</Text>
          </Box>
          <Box w="50%">
-            <Text>{newDataObject?.trees ? newDataObject?.trees : 'Nenhum'}</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{newDataObject?.consociatedCrops?.length > 0 ? newDataObject?.consociatedCrops?.join('; ') : 'Nenhuma'}</Text>
+         </Box>
+     </Stack>
+     <Stack direction="row">
+         <Box w="50%">
+             <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}             
+             >Área total</Text>
+         </Box>
+         <Box w="50%">
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{newDataObject?.totalArea ? newDataObject?.totalArea : 'Nenhuma'}</Text>
+         </Box>
+     </Stack>
+     <Stack direction="row">
+         <Box w="50%">
+             <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}             
+             >N° de cajueiros</Text>
+         </Box>
+         <Box w="50%">
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{newDataObject?.trees ? newDataObject?.trees : 'Nenhum'}</Text>
          </Box>
      </Stack> 
      </Box>
@@ -708,35 +878,65 @@ const ConfirmData = ({
     <Text
         style={{
             color: COLORS.black,
-            fontSize: 18,
+            fontSize: 16,
             fontFamily: 'JosefinSans-Bold',
             paddingBottom: 5,
         }}
     >
-        Tipo de Grupo Anterior
+        Tipo de Organização Anterior
     </Text>
     <Stack direction="row">
         <Box w="50%">
-            <Text>Nome</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >Nome</Text>
         </Box>
         <Box w="50%">
-            <Text>{oldDataObject?.name ? oldDataObject?.name : 'Nenhum' }</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{oldDataObject?.name ? oldDataObject?.name : 'Nenhum' }</Text>
         </Box>
     </Stack>
     <Stack direction="row">
         <Box w="50%">
-            <Text>Tipo</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >Tipo</Text>
         </Box>
         <Box w="50%">
-            <Text>{oldDataObject?.type ? oldDataObject?.type : 'Nenhum'}</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{oldDataObject?.type ? oldDataObject?.type : 'Nenhum'}</Text>
         </Box>
     </Stack>
     <Stack direction="row">
         <Box w="50%">
-            <Text>Finalidade</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >Finalidade</Text>
         </Box>
         <Box w="50%">
-            <Text>{oldDataObject?.goals?.length > 0 ? oldDataObject?.goals?.join('; ') : 'Nenhuma'}</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{oldDataObject?.goals?.length > 0 ? oldDataObject?.goals?.join('; ') : 'Nenhuma'}</Text>
         </Box>
     </Stack>
 
@@ -751,36 +951,66 @@ const ConfirmData = ({
     <Text
         style={{
             color: COLORS.black,
-            fontSize: 18,
+            fontSize: 16,
             fontFamily: 'JosefinSans-Bold',
             paddingBottom: 5,
         }}
     >
-        Tipo de Grupo Actual
+        Tipo de Organização Actual
     </Text>
 
     <Stack direction="row">
         <Box w="50%">
-            <Text>Nome</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >Nome</Text>
         </Box>
         <Box w="50%">
-            <Text>{newDataObject?.name ? newDataObject?.name : 'Nenhum' }</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{newDataObject?.name ? newDataObject?.name : 'Nenhum' }</Text>
         </Box>
     </Stack>
     <Stack direction="row">
         <Box w="50%">
-            <Text>Tipo</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >Tipo</Text>
         </Box>
         <Box w="50%">
-            <Text>{newDataObject?.type ? newDataObject?.type : 'Nenhum'}</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{newDataObject?.type ? newDataObject?.type : 'Nenhum'}</Text>
         </Box>
     </Stack>
     <Stack direction="row">
         <Box w="50%">
-            <Text>Finalidade</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >Finalidade</Text>
         </Box>
         <Box w="50%">
-            <Text>{newDataObject?.goals?.length > 0 ? newDataObject?.goals?.join('; ') : 'Nenhuma'}</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{newDataObject?.goals?.length > 0 ? newDataObject?.goals?.join('; ') : 'Nenhuma'}</Text>
         </Box>
     </Stack>
 
@@ -801,7 +1031,7 @@ const ConfirmData = ({
     <Text
         style={{
             color: COLORS.black,
-            fontSize: 18,
+            fontSize: 16,
             fontFamily: 'JosefinSans-Bold',
             paddingBottom: 5,
         }}
@@ -810,44 +1040,95 @@ const ConfirmData = ({
     </Text>
     <Stack direction="row">
         <Box w="50%">
-            <Text>Situação Legal</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >Situação Legal</Text>
         </Box>
         <Box w="50%">
-            <Text>{oldDataObject?.legalStatus ? oldDataObject?.legalStatus : 'Nenhum' }</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{oldDataObject?.legalStatus ? oldDataObject?.legalStatus : 'Nenhum' }</Text>
         </Box>
     </Stack>
     <Stack direction="row">
         <Box w="50%">
-            <Text>Ano de Criação</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >Ano de Criação</Text>
         </Box>
         <Box w="50%">
-            <Text>{oldDataObject?.creationYear ? oldDataObject?.creationYear : 'Nenhum'}</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{oldDataObject?.creationYear ? oldDataObject?.creationYear : 'Nenhum'}</Text>
         </Box>
     </Stack>
     <Stack direction="row">
         <Box w="50%">
-            <Text>Ano de Legalização</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >Ano de Legalização</Text>
         </Box>
         <Box w="50%">
-            <Text>{oldDataObject?.affiliationYear ? oldDataObject?.affiliationYear : 'Nenhum'}</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{oldDataObject?.affiliationYear ? oldDataObject?.affiliationYear : 'Nenhum'}</Text>
         </Box>
     </Stack>
 
     <Stack direction="row">
         <Box w="50%">
-            <Text>NUIT</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >NUIT</Text>
         </Box>
         <Box w="50%">
-            <Text>{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
         </Box>
     </Stack>
 
     <Stack direction="row">
         <Box w="50%">
-            <Text>Alvará</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >Alvará</Text>
         </Box>
         <Box w="50%">
-            <Text>{oldDataObject?.licence ? oldDataObject?.licence : 'Nenhum'}</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            
+            >{oldDataObject?.licence ? oldDataObject?.licence : 'Nenhum'}</Text>
         </Box>
     </Stack>
 
@@ -863,7 +1144,7 @@ const ConfirmData = ({
     <Text
         style={{
             color: COLORS.black,
-            fontSize: 18,
+            fontSize: 16,
             fontFamily: 'JosefinSans-Bold',
             paddingBottom: 5,
         }}
@@ -873,44 +1154,94 @@ const ConfirmData = ({
 
     <Stack direction="row">
         <Box w="50%">
-            <Text>Situação Legal</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >Situação Legal</Text>
         </Box>
         <Box w="50%">
-            <Text>{newDataObject?.legalStatus ? newDataObject?.legalStatus : 'Nenhum' }</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{newDataObject?.legalStatus ? newDataObject?.legalStatus : 'Nenhum' }</Text>
         </Box>
     </Stack>
     <Stack direction="row">
         <Box w="50%">
-            <Text>Ano de Criação</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >Ano de Criação</Text>
         </Box>
         <Box w="50%">
-            <Text>{newDataObject?.creationYear ? newDataObject?.creationYear : 'Nenhum'}</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{newDataObject?.creationYear ? newDataObject?.creationYear : 'Nenhum'}</Text>
         </Box>
     </Stack>
     <Stack direction="row">
         <Box w="50%">
-            <Text>Ano de Legalização</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >Ano de Legalização</Text>
         </Box>
         <Box w="50%">
-            <Text>{newDataObject?.affiliationYear ? newDataObject?.affiliationYear : 'Nenhum'}</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{newDataObject?.affiliationYear ? newDataObject?.affiliationYear : 'Nenhum'}</Text>
         </Box>
     </Stack>
 
     <Stack direction="row">
         <Box w="50%">
-            <Text>NUIT</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >NUIT</Text>
         </Box>
         <Box w="50%">
-            <Text>{newDataObject?.nuit ? newDataObject.nuit : 'Nenhum'}</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{newDataObject?.nuit ? newDataObject.nuit : 'Nenhum'}</Text>
         </Box>
     </Stack>
 
     <Stack direction="row">
         <Box w="50%">
-            <Text>Alvará</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingTop: 2,
+                }}            
+            >Alvará</Text>
         </Box>
         <Box w="50%">
-            <Text>{newDataObject?.licence ? newDataObject?.licence : 'Nenhum'}</Text>
+            <Text
+                style={{
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 2,
+                }}            
+            >{newDataObject?.licence ? newDataObject?.licence : 'Nenhum'}</Text>
         </Box>
     </Stack>
     </Box>
@@ -927,33 +1258,63 @@ const ConfirmData = ({
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         paddingBottom: 5,
                     }}
                 >Efectividade Anterior</Text>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Modo de Funcionamento</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Modo de Funcionamento</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{oldDataObject?.operationalStatus ? 'Activo' : 'Inactivo' }</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{oldDataObject?.operationalStatus ? 'Activo' : 'Inactivo' }</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Total de Membros</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Total de Membros</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{oldDataObject?.total ? oldDataObject?.total : 0}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{oldDataObject?.total ? oldDataObject?.total : 0}</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Total de Mulheres </Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Total de Mulheres </Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{oldDataObject?.women ? oldDataObject?.women : 0}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{oldDataObject?.women ? oldDataObject?.women : 0}</Text>
                     </Box>
                 </Stack>
 
@@ -968,7 +1329,7 @@ const ConfirmData = ({
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         paddingBottom: 5,
                     }}
@@ -976,26 +1337,56 @@ const ConfirmData = ({
 
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Modo de Funcionamento</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Modo de Funcionamento</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{newDataObject?.operationalStatus ? 'Activo' : 'Inactivo'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{newDataObject?.operationalStatus ? 'Activo' : 'Inactivo'}</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Total de Membros</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Total de Membros</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{newDataObject?.total ? newDataObject?.total : 0}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{newDataObject?.total ? newDataObject?.total : 0}</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Total de Mulheres</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Total de Mulheres</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{newDataObject?.women ? newDataObject?.women : 0}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{newDataObject?.women ? newDataObject?.women : 0}</Text>
                     </Box>
                 </Stack>
             </Box>
@@ -1014,25 +1405,45 @@ const ConfirmData = ({
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         paddingBottom: 5,
                     }}
                 >Contacto Anterior</Text>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Nome do Presidente</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Nome do Presidente</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{oldDataObject?.fullname ? oldDataObject?.fullname : 'Nenhum' }</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{oldDataObject?.fullname ? oldDataObject?.fullname : 'Nenhum' }</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Número de telemóvel</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Número de telemóvel</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{oldDataObject?.phone ? oldDataObject?.phone : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{oldDataObject?.phone ? oldDataObject?.phone : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
                 {/* <Stack direction="row">
@@ -1055,7 +1466,7 @@ const ConfirmData = ({
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         paddingBottom: 5,
                     }}
@@ -1063,18 +1474,38 @@ const ConfirmData = ({
 
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Nome do Presidente</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Nome do Presidente</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{newDataObject?.fullname ? newDataObject?.fullname : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{newDataObject?.fullname ? newDataObject?.fullname : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Número de telemóvel</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Número de telemóvel</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{newDataObject?.phone ? newDataObject?.phone : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{newDataObject?.phone ? newDataObject?.phone : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
                 {/* <Stack direction="row">
@@ -1102,25 +1533,45 @@ const ConfirmData = ({
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         paddingBottom: 5,
                     }}
                 >Contacto Anterior</Text>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Nome do Responsável</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Nome do Responsável</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{oldDataObject?.fullname ? oldDataObject?.fullname : 'Nenhum' }</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{oldDataObject?.fullname ? oldDataObject?.fullname : 'Nenhum' }</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Número de telemóvel</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Número de telemóvel</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{oldDataObject?.phone ? oldDataObject?.phone : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{oldDataObject?.phone ? oldDataObject?.phone : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
                 {/* <Stack direction="row">
@@ -1143,7 +1594,7 @@ const ConfirmData = ({
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         paddingBottom: 5,
                     }}
@@ -1151,18 +1602,38 @@ const ConfirmData = ({
 
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Nome do Responsável</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Nome do Responsável</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{newDataObject?.fullname ? newDataObject?.fullname : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{newDataObject?.fullname ? newDataObject?.fullname : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Número de telemóvel</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Número de telemóvel</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{newDataObject?.phone ? newDataObject?.phone : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{newDataObject?.phone ? newDataObject?.phone : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
                 {/* <Stack direction="row">
@@ -1189,25 +1660,45 @@ const ConfirmData = ({
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         paddingBottom: 5,
                     }}
                 >Documentação Anterior</Text>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>NUIT da instituição</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >NUIT da instituição</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum' }</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum' }</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Número do alvará</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Número do alvará</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{oldDataObject?.licence ? oldDataObject?.licence : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{oldDataObject?.licence ? oldDataObject?.licence : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
                 {/* <Stack direction="row">
@@ -1230,7 +1721,7 @@ const ConfirmData = ({
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         paddingBottom: 5,
                     }}
@@ -1238,18 +1729,38 @@ const ConfirmData = ({
 
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>NUIT da instituição</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >NUIT da instituição</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Número do alvará</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Número do alvará</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{newDataObject?.licence ? newDataObject?.licence : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{newDataObject?.licence ? newDataObject?.licence : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
                 {/* <Stack direction="row">
@@ -1276,33 +1787,63 @@ const ConfirmData = ({
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         paddingBottom: 5,
                     }}
                 >Documentos de Identificação Anteriores</Text>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Tipo do documento</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Tipo do documento</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{oldDataObject?.docType ? oldDataObject?.docType : 'Nenhum' }</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{oldDataObject?.docType ? oldDataObject?.docType : 'Nenhum' }</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Número do documento</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Número do documento</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{oldDataObject?.docNumber ? oldDataObject?.docNumber : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{oldDataObject?.docNumber ? oldDataObject?.docNumber : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>NUIT</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >NUIT</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
 
@@ -1317,7 +1858,7 @@ const ConfirmData = ({
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         paddingBottom: 5,
                     }}
@@ -1325,26 +1866,56 @@ const ConfirmData = ({
 
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Tipo do documento</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Tipo do documento</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{newDataObject?.docType ? newDataObject?.docType : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{newDataObject?.docType ? newDataObject?.docType : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Número do documento</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Número do documento</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{newDataObject?.docNumber ? newDataObject?.docNumber : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{newDataObject?.docNumber ? newDataObject?.docNumber : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>NUIT</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >NUIT</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
             </Box>
@@ -1362,25 +1933,45 @@ const ConfirmData = ({
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         paddingBottom: 5,
                     }}
                 >Contacto Anterior</Text>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Telemóvel principal</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Telemóvel principal</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{oldDataObject?.primaryPhone ? oldDataObject?.primaryPhone : 'Nenhum' }</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{oldDataObject?.primaryPhone ? oldDataObject?.primaryPhone : 'Nenhum' }</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Telemóvel alternativo</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Telemóvel alternativo</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{oldDataObject?.secondaryPhone ? oldDataObject?.secondaryPhone : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{oldDataObject?.secondaryPhone ? oldDataObject?.secondaryPhone : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
 
@@ -1389,13 +1980,11 @@ const ConfirmData = ({
                         paddingVertical: 20,
                     }}
                 > 
-
-
                 </Box>
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         paddingBottom: 5,
                     }}
@@ -1403,18 +1992,38 @@ const ConfirmData = ({
 
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Telemóvel principal</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Telemóvel principal</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{newDataObject?.primaryPhone ? newDataObject?.primaryPhone : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{newDataObject?.primaryPhone ? newDataObject?.primaryPhone : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="50%">
-                        <Text>Telemóvel alternativo</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Telemóvel alternativo</Text>
                     </Box>
                     <Box w="50%">
-                        <Text>{newDataObject?.secondaryPhone ? newDataObject?.secondaryPhone : 'Nenhum'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{newDataObject?.secondaryPhone ? newDataObject?.secondaryPhone : 'Nenhum'}</Text>
                     </Box>
                 </Stack>
             </Box>
@@ -1432,25 +2041,45 @@ const ConfirmData = ({
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         paddingBottom: 5,
                     }}
                 >Endereço Anterior</Text>
                 <Stack direction="row">
                     <Box w="40%">
-                        <Text>Posto Admin.</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Posto Admin.</Text>
                     </Box>
                     <Box w="60%">
-                        <Text>{oldDataObject?.adminPost}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{oldDataObject?.adminPost}</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="40%">
-                        <Text>Localidade</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}            
+                        >Localidade</Text>
                     </Box>
                     <Box w="60%">
-                        <Text>{oldDataObject?.village}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}        
+                        >{oldDataObject?.village}</Text>
                     </Box>
                 </Stack>
 
@@ -1465,7 +2094,7 @@ const ConfirmData = ({
                 <Text
                     style={{
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'JosefinSans-Bold',
                         paddingBottom: 5,
                     }}
@@ -1473,18 +2102,38 @@ const ConfirmData = ({
 
                 <Stack direction="row">
                     <Box w="40%">
-                        <Text>Posto Admin.</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}                
+                        >Posto Admin.</Text>
                     </Box>
                     <Box w="60%">
-                        <Text>{newDataObject?.adminPost}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}            
+                        >{newDataObject?.adminPost}</Text>
                     </Box>
                 </Stack>
                 <Stack direction="row">
                     <Box w="40%">
-                        <Text>Localidade</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Bold',
+                                paddingTop: 2,
+                            }}                    
+                        >Localidade</Text>
                     </Box>
                     <Box w="60%">
-                        <Text>{newDataObject?.village}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                paddingTop: 2,
+                            }}
+                        >{newDataObject?.village}</Text>
                     </Box>
                 </Stack>
             </Box>

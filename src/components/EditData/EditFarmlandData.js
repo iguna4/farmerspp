@@ -187,7 +187,7 @@ const EditFarmlandData = ({
                 setIsOldDensityModeRegular(false);
             }
 
-            setOverlayTitle('Actualizar bloco de cajueiros.');
+            setOverlayTitle('Actualizar parcela de cajueiros.');
             
             setOldPlantingYear(block?.plantingYear);
             setOldUsedArea(block?.usedArea);
@@ -348,12 +348,12 @@ const EditFarmlandData = ({
                     style={{ 
                         textAlign: 'center',
                         color: COLORS.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         paddingVertical: 5,
                         fontFamily: 'JosefinSans-Bold',
                         
                     }}
-                >{ownerName}</Text>
+                >{overlayTitle}</Text>
             </View>
 
             <View
@@ -384,7 +384,7 @@ const EditFarmlandData = ({
                     // marginVertical: 10,
                 }}
             >
-            <Box>
+            {/* <Box>
                 <Text
                     style={{ 
                         textAlign: 'center',
@@ -395,7 +395,7 @@ const EditFarmlandData = ({
                         
                     }}
                 >{overlayTitle}</Text>
-            </Box>
+            </Box> */}
 
     {/* update the farmland block data */}
 
@@ -476,7 +476,7 @@ const EditFarmlandData = ({
                         textAlign: 'right',
                     }}
                 >
-                    {resource?.blocks?.length} blocos;             
+                    {resource?.blocks?.length} parcelas;             
                 </Text>
                 <Text
                     style={{
@@ -772,7 +772,7 @@ const EditFarmlandData = ({
 
                 }}
             >
-                Este bloco tem...
+                Esta parcela tem...
             </Text>
             <Text
                 style={{

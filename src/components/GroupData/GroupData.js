@@ -406,11 +406,11 @@ const GroupData = ({ farmer })=>{
                     
                 }}
             >
-                {farmer?.type}
+               Organização 
             </Text>        
 
         </Box>
-        {/* <Box w="25%"></Box> */}
+        {/* <Box w="40%"><Text>{farmer?.type}</Text></Box> */}
         <Box w="10%">
     {      
         customUserData?.role !== roles.provincialManager && 
@@ -435,6 +435,33 @@ const GroupData = ({ farmer })=>{
         }
         </Box>
         </Stack>
+
+        <Stack w="100%" direction="row" space={1}>
+                <Box w="50%" >
+                    <Text
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                            
+                        }}
+                        >
+                    Tipo
+                    </Text>
+            </Box>
+            <Box w="50%">
+                <Text 
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}
+                >
+                {farmer?.type} 
+                </Text>
+            </Box>
+        </Stack>
+
 
         <Stack w="100%" direction="row" space={1}>
                 <Box w="50%" >

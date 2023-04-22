@@ -55,6 +55,7 @@ const districtGroupFarmers = 'districtGroupFarmers';
 const districtInstitutionFarmers = 'districtInstitutionFarmers';
 const districtFarmlands = 'districtFarmlands';
 const serviceProviderSubs = 'serviceProviderSubs';
+const actorMembershipSubs = 'actorMembershipSubs';
 
 const provincialStats = 'provincialStats';
 
@@ -235,6 +236,15 @@ export default function FarmersScreen({ route, navigation }) {
               );
             });
     
+            realm.subscriptions.update(mutableSubs => {
+              mutableSubs.removeByName(actorMembershipSubs);
+              mutableSubs.add(
+                realm.objects('ActorMembership').filtered(`userDistrict == "${user?.customData?.userDistrict}"`),
+                {name: actorMembershipSubs},
+              );
+            });
+    
+
           }
 
 
@@ -560,7 +570,7 @@ export default function FarmersScreen({ route, navigation }) {
                       fontFamily: 'JosefinSans-Regular', 
                       fonSize: responsiveFontSize(1), 
                     }}
-                  >[{'Parcelas:'}{' '}{fetchedFarmlands.length}]</Text>
+                  >[{'Pomares:'}{' '}{fetchedFarmlands.length}]</Text>
                 </Center>
               </Stack>
             </Center>

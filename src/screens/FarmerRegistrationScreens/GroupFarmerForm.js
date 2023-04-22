@@ -46,38 +46,30 @@ export default function GroupFarmerForm({
     <Box px="3" my="6">
         <Box w="100%" alignItems="center">
             <Box w="100%">
-                {/* <Text
-                    style={{
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        color: COLORS.grey,
-                        paddingHorizontal: 15,
-                    }}
-                >Este grupo é...</Text> */}
-             <FormControl isRequired my="1" isInvalid={'operationalStatus' in errors}>
+             <FormControl isRequired my="1" isInvalid={'isGroupActive' in errors}>
             <FormControl.Label>                
                 <Text
                     style={{
                         fontSize: 16,
                         fontFamily: 'JosefinSans-Regular',
-                        color: COLORS.grey,
+                        color: errors.isGroupActive ? COLORS.red : COLORS.grey,
                         paddingHorizontal: 15,
                     }}
-                >Este grupo é...</Text>
+                >Esta organização é...</Text>
             </FormControl.Label>
             <Stack  direction="row" mx="3" w="100%">
                 <Box w="50%" px="1">
                 <CheckBox
                         center
-                        fontFamily = 'JosefinSans-Italic'
+                        fontFamily = 'JosefinSans-Regular'
                         containerStyle={{
                             backgroundColor: COLORS.ghostwhite,
                         }}
                         textStyle={{
                             fontWeight: '120',
-                            color: COLORS.main,
+                            color: isGroupActive ? COLORS.main : errors.isGroupActive ? COLORS.red : COLORS.grey,
                         }}
-                        title="Activo"
+                        title="Activa"
                         checked={isGroupActive}
                         checkedIcon={
                             <Icon
@@ -90,31 +82,34 @@ export default function GroupFarmerForm({
                         uncheckedIcon={
                             <Icon
                                 name="radio-button-unchecked"
-                                color={COLORS.main}
+                                color={errors?.isGroupActive ? COLORS.red : COLORS.grey}
                                 size={30}
                                 iconStyle={{ marginRight: 1 }}
                             />
                         }
                         onPress={() => {
                             setIsGroupInactive(false);
-                            setIsGroupActive(true)
-                        
+                            setIsGroupActive(true);
+                            setErrors({
+                                ...errors,
+                                isGroupActive: '',
+                            });
                         }}
                         />
                 </Box>
                 <Box w="50%" px="1">
                     <CheckBox
                         center
-                        fontFamily = 'JosefinSans-Italic'
+                        fontFamily = 'JosefinSans-Regular'
                         containerStyle={{
                             backgroundColor: COLORS.ghostwhite,
                         }}
                         textStyle={{
                             
                             fontWeight: '120',
-                            color: COLORS.main,
+                            color: isGroupInactive ? COLORS.main : errors.isGroupActive ? COLORS.red : COLORS.grey,
                         }}
-                        title="Inactivo"
+                        title="Inactiva"
                         checked={isGroupInactive}
                         checkedIcon={
                             <Icon
@@ -127,23 +122,27 @@ export default function GroupFarmerForm({
                         uncheckedIcon={
                             <Icon
                                 name="radio-button-unchecked"
-                                color={COLORS.main}
+                                color={errors?.isGroupActive ? COLORS.red : COLORS.grey}
                                 size={30}
                                 iconStyle={{ marginRight: 1 }}
                             />
                         }
                         onPress={() => {
                             setIsGroupInactive(true);
-                            setIsGroupActive(false);                        
+                            setIsGroupActive(false);    
+                            setErrors({
+                                ...errors,
+                                isGroupActive: '',
+                            });                  
                         }}
                         />
                     </Box>
                 </Stack>    
                 {
-                'operationalStatus' in errors 
+                'isGroupActive' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.operationalStatus}</FormControl.ErrorMessage> 
+                _text={{ fontSize: 'xs'}}>{}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
                 }
                 </FormControl>
@@ -155,7 +154,7 @@ export default function GroupFarmerForm({
             <Stack direction="row" mx="3" w="100%">
             <Box w="50%" px="1">
                 <FormControl isRequired my="3" isInvalid={'groupType' in errors}>
-                    <FormControl.Label>Tipo de grupo</FormControl.Label>
+                    <FormControl.Label>Tipo de organização</FormControl.Label>
                     <Select
                         selectedValue={groupType}
                         accessibilityLabel="Grupo"

@@ -716,6 +716,70 @@ const PersonalData = ({ farmer, setRefresh })=>{
                 </Text>  
             </Box>
             <Box w="50%">
+            { (farmer?.contact?.primaryPhone !== 0 && farmer?.contact?.secondaryPhone !== 0) &&
+                <>
+                    <Text 
+                        style={{
+                            color: 'grey',
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}  
+                    >
+                        {farmer?.contact?.primaryPhone} 
+                    </Text>  
+                    <Text 
+                        style={{
+                            color: 'grey',
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}  
+                    >
+                        {farmer?.contact?.primaryPhone} 
+                    </Text>                 
+                </>
+            }
+
+            {
+                (farmer?.contact?.primaryPhone !== 0 && farmer?.contact?.secondaryPhone === 0) &&
+                    <Text 
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                        {farmer?.contact?.primaryPhone} 
+                    </Text> 
+            }
+
+            {
+                (farmer?.contact?.primaryPhone === 0 && farmer?.contact?.secondaryPhone !== 0) &&
+                    <Text 
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                        {farmer?.contact?.secondaryPhone} 
+                    </Text> 
+            }
+
+
+            {
+                (farmer?.contact?.primaryPhone === 0 && farmer?.contact?.secondaryPhone === 0) &&
+                    <Text 
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                        Nenhum 
+                    </Text> 
+            }
+
+
                 {/* <Text 
                     style={{
                         color: 'grey',
@@ -723,33 +787,17 @@ const PersonalData = ({ farmer, setRefresh })=>{
                         fontFamily: 'JosefinSans-Regular',
                     }}  
                 >
-                    {!(farmer?.contact?.primaryPhone || farmer?.contact?.secondaryPhone) && '(Nenhum).'}    
-                </Text>  */}
-                {/* { farmer?.contact?.primaryPhone !== 0  && */}
-                <Text 
-                    style={{
-                        color: 'grey',
-                        fontSize: 14,
-                        // paddingLeft: 10,
-                        fontFamily: 'JosefinSans-Regular',
-                    }}  
-                >
-                    {farmer?.contact?.primaryPhone !== 0 ? farmer?.contact?.primaryPhone : 'Nenhum'} (principal)
+                    {farmer?.contact?.primaryPhone !== 0 ? farmer?.contact?.primaryPhone : 'Nenhum'} 
                 </Text>
-                {/* } */}
-                {/* {
-                farmer?.contact?.secondaryPhone !== 0 && */}
                 <Text 
                     style={{
                         color: 'grey',
                         fontSize: 14,
-                        // paddingLeft: 10,
                         fontFamily: 'JosefinSans-Regular',
                     }}  
                     >
-                    {farmer?.contact?.secondaryPhone !== 0 ? farmer?.contact?.secondaryPhone: 'Nenhum'} (alternativo)
-                </Text>    
-                {/* } */}
+                    {farmer?.contact?.secondaryPhone !== 0 ? farmer?.contact?.secondaryPhone: 'Nenhum'} 
+                </Text>     */}
             </Box>
         </Stack>
 

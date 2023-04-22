@@ -24,6 +24,7 @@ import {
     useDimensionsChange,
   
   } from 'react-native-responsive-dimensions';
+import { KeyboardAwareScrollView, useMaskedTextInput } from 'react-native-keyboard-tools';
 
 import administrativePosts from '../../consts/administrativePosts';
 import styles from './styles';
@@ -81,11 +82,14 @@ export default function FarmerRegistration({ route, navigation }) {
     const [docNumber, setDocNumber] = useState('');
 
     const [isSprayingAgent, setIsSprayingAgent] = useState(false);
+    const [isNotSprayingAgent, setIsNotSprayingAgent] = useState(false);
     const [surname, setSurname] = useState('');
     const [otherNames, setOtherNames] = useState('');
     const [primaryPhone, setPrimaryPhone] = useState(null);
     const [secondaryPhone, setSecondaryPhone] = useState(null);
     const [nuit, setNuit] = useState(null);
+    const [isGroupMember, setIsGroupMember] = useState(false);
+    const [isNotGroupMember, setIsNotGroupMember] = useState(false);
 
     const [errors, setErrors] = useState({});
     const [farmerData, setFarmerData] = useState({});
@@ -152,6 +156,7 @@ export default function FarmerRegistration({ route, navigation }) {
         if (farmerType === "Indivíduo"){
             farmerData = {
                isSprayingAgent,
+               isNotSprayingAgent,
                surname,   
                otherNames, 
                gender,
@@ -168,7 +173,9 @@ export default function FarmerRegistration({ route, navigation }) {
                secondaryPhone,
                docType, 
                docNumber, 
-               nuit
+               nuit,
+               isGroupMember,
+               isNotGroupMember,
            }
             if (!validateIndividualFarmerData(farmerData, errors, setErrors)) {
                 setErrorAlert(true)
@@ -302,13 +309,21 @@ export default function FarmerRegistration({ route, navigation }) {
         
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView
+      {/* <ScrollView
         decelerationRate={'normal'}
         fadingEdgeLength={2}
         keyboardDismissMode = 'on-drag'
         keyboardShouldPersistTaps = 'handled'
         // contentInsetAdjustmentBehavior = 'always'
-      >
+      > */}
+        <KeyboardAwareScrollView
+            decelerationRate={'normal'}
+            fadingEdgeLength={2}
+            keyboardDismissMode = 'on-drag'
+            keyboardShouldPersistTaps = 'handled'
+        >
+
+        
 
         {/* Data collecting form description */}
      <Box>
@@ -461,7 +476,9 @@ export default function FarmerRegistration({ route, navigation }) {
             docNumber={docNumber}
             setDocNumber={setDocNumber}
             isSprayingAgent={isSprayingAgent}
+            isNotSprayingAgent={isNotSprayingAgent}
             setIsSprayingAgent={setIsSprayingAgent}
+            setIsNotSprayingAgent={setIsNotSprayingAgent}
             surname={surname}
             setSurname={setSurname}
             otherNames={otherNames}
@@ -472,6 +489,10 @@ export default function FarmerRegistration({ route, navigation }) {
             setSecondaryPhone={setSecondaryPhone}
             nuit={nuit}
             setNuit={setNuit}
+            isGroupMember={isGroupMember}
+            isNotGroupMember={isNotGroupMember}
+            setIsGroupMember={setIsGroupMember}
+            setIsNotGroupMember={setIsNotGroupMember}
             errors={errors}
             setErrors={setErrors} 
         />
@@ -611,6 +632,8 @@ farmerType === "Instituição" && (
             setDocType={setDocType}
             setDocNumber={setDocNumber}
             setNuit={setNuit}
+            setIsGroupMember={setIsGroupMember}
+            isGroupMember={isGroupMember}
 
             setFarmerItem={setFarmerItem}
             farmerItem={farmerItem}
@@ -695,7 +718,8 @@ farmerType === "Instituição" && (
         />
       </Box>
     </Box>
-    </ScrollView>
+    {/* </ScrollView> */}
+    </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 }

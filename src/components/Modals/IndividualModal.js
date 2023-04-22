@@ -153,21 +153,53 @@ export default function IndividualModal (
             const serviceProvider = await realm.create('SprayingServiceProvider', sprayingProviderObject);
         })
 
-    }, [ realm, actor])
+    }, [ realm, actor]);
+
+
+    const addActorMembership = useCallback((actor, realm)=>{
+
+        const actorMembershipObject = {
+            _id: uuidv4(),
+            actorId: actor?._id,
+            names: actor?.names?.otherNames + ' ' + actor?.names?.surname,
+
+            userName: customUserData?.name,
+            userId: customUserData?.userId,
+            userDistrict: customUserData?.userDistrict,
+            userProvince: customUserData?.userProvince,
+        }
+
+        realm.write(async ()=>{
+            const actorMembership = await realm.create('ActorMembership', actorMembershipObject);
+        })
+
+    }, [ realm, actor]);
 
 
     useEffect(()=>{
 
-        if(isActorSaved && farmerData?.isSprayingAgent) {
-            try {
-                addSprayingServiceProvider(actor, realm);
+        if(isActorSaved) {
+            if(farmerData?.isSprayingAgent){
+                try {
+                    addSprayingServiceProvider(actor, realm);
+                    
+                } catch (error) {
+                    console.log('Could not save actor as spraying service provider:', {cause: error });
+                }
+            }
+
+            if(farmerData?.isGroupMember){
+                try {
+                    addActorMembership(actor, realm);
+                    
+                } catch (error) {
+                    console.log('Could not save actor as member of an organization:', {cause: error });
+                }
+            }
                 
-            } catch (error) {
-                console.log('Could not save actor category:', {cause: error });
-            }
-            finally {
-                setIsActorSaved(false);
-            }
+            // finally {
+            setIsActorSaved(false);
+            // }
         }
 
                 
@@ -279,10 +311,10 @@ export default function IndividualModal (
         />
         
         <Stack direction="row" w="100%" my="1">
-            <Box w="40%">
+            <Box w="50%">
                 <Text style={styles.keys}>Nome Completo:</Text>
             </Box>
-            <Box w="60%" style={styles.values}>
+            <Box w="50%" style={styles.values}>
                 <Box>
                     <Text style={styles.values}>
                         {farmerData?.names?.surname} (Apelido)
@@ -299,25 +331,42 @@ export default function IndividualModal (
             bg="grey"
             />
         <Stack direction="row" w="100%" my="1">
-            <Box w="40%">
+            <Box w="50%">
                 <Text style={styles.keys}>Provedor de Serviços:</Text>
             </Box>
-            <Box w="60%" style={styles.values}>
+            <Box w="50%" style={styles.values}>
                 <Text style={styles.values}>
                     {farmerData?.isSprayingAgent ? 'Sim' : 'Não'}
                 </Text>
             </Box>                    
         </Stack>
+
         <CustomDivider
             marginVertical="1"
             thickness={1}
             bg="grey"
             />
         <Stack direction="row" w="100%" my="1">
-            <Box w="40%">
+            <Box w="50%">
+                <Text style={styles.keys}>Membro de organização:</Text>
+            </Box>
+            <Box w="50%" style={styles.values}>
+                <Text style={styles.values}>
+                    {farmerData?.isGroupMember ? 'Sim' : 'Não'}
+                </Text>
+            </Box>                    
+        </Stack>
+
+        <CustomDivider
+            marginVertical="1"
+            thickness={1}
+            bg="grey"
+            />
+        <Stack direction="row" w="100%" my="1">
+            <Box w="50%">
                 <Text style={styles.keys}>Género:</Text>
             </Box>
-            <Box w="60%" style={styles.values}>
+            <Box w="50%" style={styles.values}>
                 <Text style={styles.values}>{farmerData?.gender}</Text>
             </Box>
         </Stack>
@@ -328,10 +377,10 @@ export default function IndividualModal (
             bg="grey"
             />
         <Stack direction="row" w="100%" my="1">
-            <Box w="40%">
+            <Box w="50%">
                 <Text style={styles.keys}>Agregado Familiar:</Text>
             </Box>
-            <Box w="60%" style={styles.values}>
+            <Box w="50%" style={styles.values}>
                 <Text style={styles.values}>{farmerData?.familySize} (membros)</Text>
             </Box>
         </Stack>
@@ -342,10 +391,10 @@ export default function IndividualModal (
             bg="grey"
             />
         <Stack direction="row" w="100%" my="1">
-            <Box w="40%">
+            <Box w="50%">
                 <Text style={styles.keys}>Data Nascimento:</Text>
             </Box>
-            <Box w="60%" style={styles.values}>
+            <Box w="50%" style={styles.values}>
                 <Text style={styles.values}>
                     {farmerData?.birthDate ? `${new Date(farmerData?.birthDate).getDate()}/${new Date(farmerData?.birthDate).getMonth()+1}/${new Date(farmerData?.birthDate).getFullYear()}` : 'Nenhum'}
                 </Text>
@@ -357,10 +406,10 @@ export default function IndividualModal (
             bg="grey"
             />
         <Stack direction="row" w="100%" my="1">
-            <Box w="40%">
+            <Box w="50%">
                 <Text style={styles.keys}>Residência:</Text>
             </Box>
-            <Box w="60%">
+            <Box w="50%">
                 <Box>
                     <Text style={styles.values}>
                         {farmerData?.address?.province} (província)
@@ -383,12 +432,12 @@ export default function IndividualModal (
             bg="grey"
             />
         <Stack direction="row" w="100%" my="1">
-            <Box w="40%">
+            <Box w="50%">
                 <Text style={styles.keys}>
                     Telemóveis:
                 </Text>
             </Box>
-            <Box w="60%">
+            <Box w="50%">
             { farmerData?.contact?.primaryPhone && farmerData?.contact?.secondaryPhone ?
                 (
                     <Box>
@@ -444,12 +493,12 @@ export default function IndividualModal (
             bg="grey"
             />
         <Stack direction="row" w="100%" my="1">
-            <Box w="40%">
+            <Box w="50%">
                 <Text style={styles.keys}>
                     Local Nascimento:
                 </Text>
             </Box>
-            <Box w="60%">
+            <Box w="50%">
         {
             !farmerData?.birthPlace?.province?.includes('Estrangeiro') ?
             (
@@ -484,10 +533,10 @@ export default function IndividualModal (
             bg="grey"
             />
         <Stack direction="row" w="100%" my="1">
-            <Box w="40%">
+            <Box w="50%">
                 <Text style={styles.keys}>Doc. Identificação:</Text>
             </Box>
-            <Box w="60%">
+            <Box w="50%">
                     { farmerData?.idDocument?.docNumber !== 'Nenhum' ?
                         (<Text style={styles.values}>
                             {farmerData?.idDocument?.docNumber} ({farmerData?.idDocument?.docType})
@@ -502,10 +551,10 @@ export default function IndividualModal (
             </Box>
         </Stack>
         <Stack direction="row" w="100%" my="1">
-            <Box w="40%">
+            <Box w="50%">
                 
             </Box>
-            <Box w="60%">
+            <Box w="50%">
             { farmerData?.idDocument?.nuit ?
                 (<Text style={styles.values}>{farmerData?.idDocument?.nuit} (NUIT)</Text>)
                 :

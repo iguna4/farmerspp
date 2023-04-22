@@ -868,7 +868,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     
                 }}
             >
-                Bloco de Cajueiros
+                Parcela de Cajueiros
             </Text>
         </Box>
         <Box w="10%">
@@ -901,7 +901,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     color: COLORS.ghostwhite,
                     fontFamily: 'JosefinSans-Bold',
                 }}
-            >Blocos com cajueiros</Text>
+            >Parcelas com cajueiros</Text>
         </Box>
         {
          normalizeBlockList(farmland?.blocks)?.length === 0 &&
@@ -913,7 +913,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             textAlign: 'center',
             padding: 30,
         }}
-         >Nenhum bloco de cajueiros associado a esta área!</Text>
+         >Nenhuma percela de cajueiros associado a esta área!</Text>
 
         }
 
@@ -1172,7 +1172,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
                     padding: 20,
                 }}
             >
-                Actualizar os tipos de planta para este bloco de cajueiros
+                Actualizar os tipos de planta para este parcela de cajueiros
             </Text>
                     
         }

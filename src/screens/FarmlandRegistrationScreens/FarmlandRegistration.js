@@ -1344,7 +1344,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     padding: 10,
                 }}
             >
-                Adiciona bloco {farmland?.blocks?.length + 1}
+                Adiciona Parcela {farmland?.blocks?.length + 1}
          </Text>    
         </Box>
     }

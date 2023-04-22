@@ -78,11 +78,6 @@ const validateIndividualFarmerData = (
       const retrievedOldPrimaryPhone = Number(parseInt(oldPrimaryPhone)) ? Number(parseInt(oldPrimaryPhone)) : 0;
       const retrievedOldSecondaryPhone = Number(parseInt(oldSecondaryPhone)) ? Number(parseInt(oldSecondaryPhone)) : 0;
 
-        console.log('new prim:', retrievedPrimaryPhone)
-        console.log('new secon:', retrievedSecondaryPhone);
-        console.log('old prim:', retrievedOldPrimaryPhone);
-        console.log('old secon:', retrievedOldSecondaryPhone);
-
       if(
         (retrievedPrimaryPhone === retrievedOldPrimaryPhone) 
         &&

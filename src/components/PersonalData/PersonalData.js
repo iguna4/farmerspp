@@ -51,6 +51,16 @@ const PersonalData = ({ farmer, setRefresh })=>{
     const customUserData = user?.customData
     const invalidationMotives = realm.objects('InvalidationMotive').filtered(`resourceId == "${farmer?._id}"`);
 
+    // an array length 0 or 1 of actor
+    const membership = realm.objects('ActorMembership').filtered(`actorId == "${farmer?._id}"`);
+    let member;
+    
+    if (membership?.length > 0) {
+        // retrieve the only actor membership object
+        member = membership[0];
+    }
+
+
     // console.log('messages: ', JSON.stringify(invalidationMotives));
 
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
@@ -1021,6 +1031,94 @@ const PersonalData = ({ farmer, setRefresh })=>{
 
 
     </Stack>
+
+
+
+    <Box  py="4">
+        <CustomDivider />
+    </Box>
+
+    <Stack w="100%" direction="row" >
+            <Box w="90%">
+                <Text
+                    style={{
+                        color: COLORS.black,
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Bold',
+                        
+                    }}
+                    >
+                    Adesão à Organização 
+                </Text>
+            </Box>
+            <Box w="10%">
+        {   
+
+        // customUserData?.role !== roles.provincialManager && 
+                <TouchableOpacity
+                // disabled={farmer?.status === resourceValidation.status.validated ? true : false}
+                    style={{
+
+                    }}
+                    onPress={
+                        ()=>{
+                            navigation.navigate('Membership', {
+                            resourceName: 'Farmer',
+                            resourceId: farmer._id,
+                            
+                        })
+                    }}
+                >
+                    <Icon 
+                        name="group-work" 
+                        size={30} 
+                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone }
+                        />
+                </TouchableOpacity>
+            }
+            </Box>
+        </Stack>
+    { member && (!member?.membership || member?.membership?.length === 0) &&
+    <>
+        <Stack w="100%" direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }} 
+                >Membro de organização</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }} 
+                >Sim</Text>
+            </Box>
+
+        </Stack>
+        <Box w="100%" py="4">
+            <Text                     
+                style={{
+                    color: COLORS.red,
+                    fontSize: 15,
+                    fontFamily: 'JosefinSans-Regular',
+                    textAlign: 'center',
+                    paddingHorizontal: 10,
+                    lineHeight: 25,
+                }}  
+                >
+                Especifica a organização a qual este produtor aderiu.
+            </Text>
+        </Box>
+    </>
+    }
+
+
 
     <CustomDivider />
 

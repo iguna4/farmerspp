@@ -54,8 +54,8 @@ const validateIndividualFarmerData = (
     const retrievedAddressDistrict = addressDistrict?.trim();
     const retrievedAddressAdminPost = addressAdminPost?.trim();
     const retrievedAddressVillage = addressVillage?.trim();
-    const retrievedPrimaryPhone = primaryPhone;
-    const retrievedSecondaryPhone = secondaryPhone;
+    const retrievedPrimaryPhone = Number(parseInt(primaryPhone)) ? Number(parseInt(primaryPhone)) : 0;
+    const retrievedSecondaryPhone = Number(parseInt(secondaryPhone)) ? Number(parseInt(secondaryPhone)) : 0;
     const retrievedDocType = docType;
     const retrievedDocNumber = docNumber;
     const retrievedNuit = nuit; 
@@ -70,6 +70,8 @@ const validateIndividualFarmerData = (
 
     // validating each data and sending back
     // errorMessages if invalid data is found
+    // console.log('prim phone:', retrievedPrimaryPhone);
+    // console.log('second phone:', retrievedSecondaryPhone);
 
 
     if (!retrievedIsSprayingAgent && !retrievedIsNotSprayingAgent) {
@@ -128,7 +130,7 @@ const validateIndividualFarmerData = (
         return false;
     }
 
-    if ( retrievedPrimaryPhone && (
+    if ( retrievedPrimaryPhone !== 0 && (
         !Number.isInteger(parseInt(retrievedPrimaryPhone))  || 
         retrievedPrimaryPhone?.toString().length !== 9       ||
         parseInt(retrievedPrimaryPhone.toString()[0]) !== 8 ||
@@ -139,6 +141,19 @@ const validateIndividualFarmerData = (
         });
         return false;                   
     }
+
+    if ( retrievedSecondaryPhone !== 0 && (
+        !Number.isInteger(parseInt(retrievedSecondaryPhone))  || 
+        retrievedSecondaryPhone?.toString().length !== 9       ||
+        parseInt(retrievedSecondaryPhone.toString()[0]) !== 8 ||
+        [2,3,4,5,6,7].indexOf(parseInt(retrievedSecondaryPhone?.toString()[1])) < 0 )
+        ) {      
+        setErrors({ ...errors,
+            secondaryPhone: 'Número de telefone inválido.',
+        });
+        return false;                   
+    }
+
 
     if(
         (retrievedPrimaryPhone === retrievedSecondaryPhone) 
@@ -155,19 +170,21 @@ const validateIndividualFarmerData = (
        }
 
 
-    if ((retrievedSecondaryPhone === 0) || retrievedSecondaryPhone && 
-        (
-        !Number.isInteger(parseInt(retrievedSecondaryPhone))  || 
-        retrievedSecondaryPhone?.toString().length !== 9       ||
-        parseInt(retrievedSecondaryPhone?.toString()[0]) !== 8 ||
-        [2,3,4,5,6,7].indexOf(parseInt(retrievedSecondaryPhone?.toString()[1])) < 0   
-        )
-    ){
-        setErrors({ ...errors,
-            secondaryPhone: 'Número de telefone inválido.',
-        });
-        return false;               
-    }
+    // if ((retrievedSecondaryPhone === 0) && retrievedSecondaryPhone !== 0 && 
+    //     (
+    //     !Number.isInteger(parseInt(retrievedSecondaryPhone))  || 
+    //     retrievedSecondaryPhone?.toString().length !== 9       ||
+    //     parseInt(retrievedSecondaryPhone?.toString()[0]) !== 8 ||
+    //     [2,3,4,5,6,7].indexOf(parseInt(retrievedSecondaryPhone?.toString()[1])) < 0   
+    //     )
+    // ){
+    //     setErrors({ ...errors,
+    //         secondaryPhone: 'Número de telefone inválido.',
+    //     });
+    //     return false;               
+    // }
+
+
     if (!retrievedBirthProvince){
         setErrors({ ...errors,
             birthProvince: 'Província onde o produtor nasceu.',

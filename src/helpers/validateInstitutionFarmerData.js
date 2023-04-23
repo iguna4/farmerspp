@@ -31,7 +31,7 @@ const validateInstitutionFarmerData = (
     const retrievedInstitutionProvince = institutionProvince?.trim();
     const retrievedInstitutionDistrict = institutionDistrict?.trim();
     const retrievedInstitutionManagerName = capitalize(institutionManagerName?.trim());
-    const retrievedInstitutionManagerPhone = institutionManagerPhone;
+    const retrievedInstitutionManagerPhone = Number(parseInt(institutionManagerPhone)) ? Number(parseInt(institutionManagerPhone)) : 0;
     const retrievedInstitutionNuit = institutionNuit; 
     const retrievedIsPrivateInstitution = isPrivateInstitution;
     const retrievedInstitutionLicence = institutionLicence?.trim();   
@@ -80,7 +80,7 @@ const validateInstitutionFarmerData = (
         return false;
     }
 
-    if ((retrievedInstitutionManagerPhone === 0) ||  retrievedInstitutionManagerPhone && (
+    if (retrievedInstitutionManagerPhone !== 0 && (
         !Number.isInteger(parseInt(retrievedInstitutionManagerPhone))  || 
         retrievedInstitutionManagerPhone?.toString().length !== 9       ||
         parseInt(retrievedInstitutionManagerPhone.toString()[0]) !== 8 ||

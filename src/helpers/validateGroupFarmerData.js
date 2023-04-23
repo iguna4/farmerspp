@@ -44,7 +44,7 @@ const validateGroupFarmerData = (
     const retrievedGroupAdminPost = groupAdminPost?.trim();
     const retrievedGroupVillage = groupVillage?.trim();
     const retrievedGroupManagerName = capitalize(groupManagerName.trim());
-    const retrievedGroupManagerPhone = parseInt(groupManagerPhone);
+    const retrievedGroupManagerPhone = Number(parseInt(groupManagerPhone)) ? Number(parseInt(groupManagerPhone)) : 0;
        
     
     //  normalize asset array
@@ -197,7 +197,7 @@ const validateGroupFarmerData = (
     }
 
 
-    if ((retrievedGroupManagerPhone === 0) || retrievedGroupManagerPhone  && (
+    if (retrievedGroupManagerPhone !== 0 && (
         !Number.isInteger(parseInt(retrievedGroupManagerPhone))  || 
         retrievedGroupManagerPhone?.toString().length !== 9       ||
         parseInt(retrievedGroupManagerPhone.toString()[0]) !== 8 ||

@@ -13,7 +13,8 @@ export const institutions = [
 export const groups = [
     "Associação",
     "Cooperativa",
-    "Grupo de Produtores"
+    "Grupo de Produtores",
+    "Outro",
 ];
 
 export const publicInstitutions = [

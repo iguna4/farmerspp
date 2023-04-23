@@ -141,7 +141,7 @@ export default function IndividualModal (
         const sprayingProviderObject = {
             _id: uuidv4(),
             actorId: actor?._id,
-            names: actor?.names?.otherNames + ' ' + actor?.names?.surname,
+            actorName: actor?.names?.otherNames + ' ' + actor?.names?.surname,
 
             userName: customUserData?.name,
             userId: customUserData?.userId,
@@ -161,7 +161,7 @@ export default function IndividualModal (
         const actorMembershipObject = {
             _id: uuidv4(),
             actorId: actor?._id,
-            names: actor?.names?.otherNames + ' ' + actor?.names?.surname,
+            actorName: actor?.names?.otherNames + ' ' + actor?.names?.surname,
 
             userName: customUserData?.name,
             userId: customUserData?.userId,

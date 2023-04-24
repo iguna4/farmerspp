@@ -1065,6 +1065,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                             navigation.navigate('Membership', {
                             resourceName: 'Farmer',
                             resourceId: farmer._id,
+                            farmerName: `${farmer.names.otherNames} ${farmer.names.surname}`,
                             
                         })
                     }}

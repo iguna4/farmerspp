@@ -4,9 +4,10 @@
 import {
  FlatList,  InteractionManager,  ScrollView, 
  Switch, Image, SafeAreaView, Text, View, PermissionsAndroid, 
- TouchableOpacity, SectionList, ActivityIndicator, } from 'react-native';
+ TextInput,
+ TouchableOpacity, SectionList, ActivityIndicator, Platform } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import {ListItem, Avatar, Icon, } from '@rneui/themed';
+import {ListItem, Avatar, Icon, SearchBar } from '@rneui/themed';
 import { Box, Center, Pressable, Stack } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
 import {  
@@ -27,7 +28,7 @@ import {
 
 } from 'react-native-responsive-dimensions';
 import Animated, { Layout, LightSpeedInLeft, LightSpeedOutRight, } from 'react-native-reanimated';
-
+import Toast from 'react-native-toast-message';
 
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import COLORS from '../../consts/colors';
@@ -36,20 +37,46 @@ import { realmContext } from '../../models/realmContext';
 import { useUser } from '@realm/react';
 import { roles } from '../../consts/roles';
 import { useCallback } from 'react';
+import CustomDivider from '../../components/Divider/CustomDivider';
+// import { TextInput } from 'react-native-paper';
 const { useRealm, useQuery } = realmContext; 
 
 
 
-function MemberGroupItem ({ item, farmerId, autoRefresh, setAutoRefresh }){
+function MemberGroupItem ({ 
+ item, farmerId, autoRefresh, 
+ setAutoRefresh, 
+ setCountIdOccurrence, countIdOccurrence,
+ isFarmerAdded,
+ setIsFarmerAdded,
+ isFarmerRemoved,
+ setIsFarmerRemoved,
+ farmerName,
+}){
 
  const realm = useRealm();
  const user = useUser();
  let customUserData = user.customData;
 
- const currentGroup = realm.objectForPrimaryKey('Group', item._id);
+ const currentGroup = realm.objectForPrimaryKey('Group', item?._id);
 
  const [isFarmerAlreadyAdded, setIsFarmerAlreadyAdded] = useState(false);
 
+ const showRemovedFarmerToast = () => {
+  Toast.show({
+    type: 'removedFarmerFromGroup',
+    text1: 'Remoção da organização',
+    props: { message: `Anotada retirada de ${farmerName} da ${currentGroup?.type}: ${currentGroup?.name}!`},
+  });
+ }
+
+ const showAddedFarmerToast = () => {
+  Toast.show({
+    type: 'addedFarmerToGroup',
+    text1: 'Adesão à organização',
+    props: { message: `Anotada adesão de ${farmerName} a ${currentGroup?.type}: ${currentGroup?.name}!`},
+  });
+ }
  // remove the farmer from the group
  const removeFarmerFromGroup = (farmerId, currentGroup)=>{
 
@@ -61,7 +88,7 @@ function MemberGroupItem ({ item, farmerId, autoRefresh, setAutoRefresh }){
       currentGroup?.members.push(updatedFarmerIds[i]);
      }
      setAutoRefresh(!autoRefresh);
-
+     setIsFarmerRemoved(true);
    })
   } catch (error) {
     console.log('The farmer could not be deleted from the group!');
@@ -76,6 +103,7 @@ function MemberGroupItem ({ item, farmerId, autoRefresh, setAutoRefresh }){
      realm.write(()=>{
        currentGroup?.members.push(farmerId);
        setAutoRefresh(!autoRefresh);
+       setIsFarmerAdded(true);
      })
     } catch (error) {
       console.log('The farmer could not be added to the group!');     
@@ -97,69 +125,57 @@ function MemberGroupItem ({ item, farmerId, autoRefresh, setAutoRefresh }){
 
  return (
   <Animated.View
-      // entering={LightSpeedInLeft}
       exiting={LightSpeedOutRight}
-      // layout={Layout.springify()}
       style={{
         paddingHorizontal: 10,
-        // paddingVertical: 4,
         marginVertical: hp('1%'),
-        // backgroundColor: COLORS.sixth,
-        borderColor: isFarmerAlreadyAdded ? COLORS.main : COLORS.lightgrey,
-        borderWidth: isFarmerAlreadyAdded ? 1 : 0,
-        borderTopEndRadius: 10,
-        borderTopLeftRadius: 10,
-        // borderColor: COLORS.main,
         minHeight: hp('10%'),
         width: '100%',
         flex: 1,
-        // shadowColor: COLORS.main,
         shadowOffset: {
           width: 0,
           height: 3,
         },
-        // shadowOpacity: 0.27,
-        // shadowRadius: 4.65,
-
-        // elevation: 3,
 
       }}
   
   >
-   <TouchableOpacity
-      // disabled={toggleButtonState}
-      onPress={()=>{
-
-       if (!currentGroup.members?.find(id=>id === farmerId)) {
-        addFarmerToGroup(farmerId, currentGroup);
-       }
-       else{
-        removeFarmerFromGroup(farmerId, currentGroup);
-       }
-
-       // setToggleButtonState(!toggleButtonState);
-      }}
-   >
-
     <Stack direction="row" w="100%">
-       <Box w="10%"
+     <Box w="10%"
         style={{
          height: '100%',
          justifyContent: 'center',
          alignItems: 'center',
-         // borderWidth: 1,
          marginTop: 5,
         }}
+     >
+      <TouchableOpacity
+        onPress={()=>{
+         if (!currentGroup.members?.find(id=>id === farmerId)) {
+          addFarmerToGroup(farmerId, currentGroup);
+          // show the sucess (for adding farmer to the group) toast message
+          showAddedFarmerToast();
+         }
+         else{
+          removeFarmerFromGroup(farmerId, currentGroup);
+          // show the error (for removing farmer from the group) toast message
+          showRemovedFarmerToast();
+         }
+         // reset the counter to zero
+         setCountIdOccurrence(0);
+        }}
        >
-        {
-         isFarmerAlreadyAdded ?
-          <Icon name="check-box" size={30} color={COLORS.main}  />
-          :
-          <Icon name="add-box" size={30} color={COLORS.lightgrey}  />
+          {
+           isFarmerAlreadyAdded ?
+            <Icon name="check-box" size={30} color={COLORS.main}  />
+            :
+            <Icon name="add-box" size={30} color={COLORS.lightgrey}  />
 
-        }
-       </Box>
-       <Box w="90%">
+          }
+       </TouchableOpacity>
+     </Box>
+
+       <Box w="80%">
           <Text
            style={{
             fontSize: 16,
@@ -173,7 +189,7 @@ function MemberGroupItem ({ item, farmerId, autoRefresh, setAutoRefresh }){
            style={{
             fontSize: 14,
             fontFamily: 'JosefinSans-Regular',
-            color: COLORS.grey,
+            color: COLORS.black,
             paddingLeft: 10,
 
            }}
@@ -182,30 +198,45 @@ function MemberGroupItem ({ item, farmerId, autoRefresh, setAutoRefresh }){
            <Box w="50%">
             <Text
                style={{
-                fontSize: 14,
+                fontSize: 13,
                 fontFamily: 'JosefinSans-Regular',
                 color: COLORS.grey,
                 paddingLeft: 10,
      
                }}
-            >Membros declarados: {item?.declaredMembers}</Text>
+            >Declarados: {item?.declaredMembers}</Text>
            </Box>
            <Box w="50%">
             <Text
               style={{
-               fontSize: 14,
+               fontSize: 13,
                fontFamily: 'JosefinSans-Regular',
-               color: COLORS.grey,
+               color: isFarmerAlreadyAdded ? COLORS.main : COLORS.grey,
                paddingLeft: 10,
     
               }}   
-            >Membros registados: {item?.registeredMembers}</Text>
+            >Registados: {item?.members?.length}</Text>
            </Box>
           </Stack>
        </Box>
-    </Stack>
-   </TouchableOpacity>
+       <Box w="10%"
+        style={{
+         height: '100%',
+         justifyContent: 'center',
+         alignItems: 'center',
+         marginTop: 5,
+        }}
+     >
+      <TouchableOpacity
+        onPress={()=>{
 
+        }}
+       >
+        <Icon name="arrow-forward-ios" size={20} color={isFarmerAlreadyAdded ? COLORS.main : COLORS.lightgrey}  />
+       </TouchableOpacity>
+     </Box>
+    </Stack>
+    {/* <CustomDivider /> */}
   </Animated.View>
  )
 }
@@ -217,15 +248,29 @@ export default function MembershipScreen({ route, navigation }) {
  const realm = useRealm();
  const user = useUser();
  let customUserData = user.customData;
- const farmerId = route?.params?.resourceId  // get the farmer id from the previous screen
+ const farmerId = route?.params?.resourceId;  // get the farmer id from the previous screen
+ const farmerName = route?.params.farmerName;
 
  const groups = realm.objects('Group').filtered("userDistrict == $0", customUserData?.userDistrict);
 
- const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
+ // const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
  const [groupsList, setGroupsList] = useState([]);
  const [isEndReached, setIsEndReached] = useState(false);
  const [isLoading, setIsLoading] = useState(false);
  const [autoRefresh, setAutoRefresh] = useState(false);
+ const [isFarmerAdded, setIsFarmerAdded] = useState(false);
+ const [isFarmerRemoved, setIsFarmerRemoved] = useState(false);
+ 
+ // all IDs of farmers whom have already been registered in any of the groups.
+ // this array of ids helps check whether the current farmer is already regitered in any of the groups
+ const [countIdOccurrence, setCountIdOccurrence] = useState(0);
+ // search an organization (group)
+ const [search, setSearch] = useState("");
+
+ const updateSearch = (search) => {
+  setSearch(search);
+};
+
 
  const handleEndReached = ()=>{
    if(!isEndReached ){
@@ -237,40 +282,50 @@ export default function MembershipScreen({ route, navigation }) {
    }
  }
 
+ const priorizeSelectedGroups = (groupsList)=>{
+
+ }
+
  useEffect(()=>{
+  // this turn the fetched realm group into a iterable data structure
+  // of which items are group objects with customized properties
+  setGroupsList(groups?.map((group)=>{
+   return group;
+ }));
 
-  setGroupsList(groups?.map((group)=>({
-   _id: group._id,
-   type: group.type,
-   name: group.name,
-   manager: group.manager,
-   declaredMembers: group.numberOfMembers?.total,
-   registeredMembers: group.members?.length,
-  })))
+ if (groupsList.length > 0){
+  // reset the counter to zero before new countings
+  // setCountIdOccurrence(0);
+  groupsList.map((group)=>{
+   if (group.members.indexOf(farmerId) >= 0) {
+    setCountIdOccurrence(prev=>prev + 1);
+   }
+  })
+ }
 
- }, [  setAutoRefresh, autoRefresh ]);
+ }, [   autoRefresh ]);
+
 
 
 
  const keyExtractor = (item, index)=>index.toString();
 
- useFocusEffect(
-   React.useCallback(() => {
-     const task = InteractionManager.runAfterInteractions(() => {
-       setLoadingActivityIndicator(true);
-     });
-     return () => task.cancel();
-   }, [])
- );
+ // useFocusEffect(
+ //   React.useCallback(() => {
+ //     const task = InteractionManager.runAfterInteractions(() => {
+ //       setLoadingActivityIndicator(true);
+ //     });
+ //     return () => task.cancel();
+ //   }, [])
+ // );
 
 
-
- if (loadingActivitiyIndicator) {
-   return <CustomActivityIndicator 
-       loadingActivitiyIndicator={loadingActivitiyIndicator}
-       setLoadingActivityIndicator={setLoadingActivityIndicator}
-   />
- }
+ // if (loadingActivitiyIndicator) {
+ //   return <CustomActivityIndicator 
+ //       loadingActivitiyIndicator={loadingActivitiyIndicator}
+ //       setLoadingActivityIndicator={setLoadingActivityIndicator}
+ //   />
+ // }
 
 
  return (
@@ -288,6 +343,7 @@ export default function MembershipScreen({ route, navigation }) {
      <View
          style={{
            width: '100%',
+           minHeight: 50,
            paddingHorizontal: wp('3%'),
            // paddingTop: 5,
            backgroundColor: '#EBEBE4',
@@ -298,52 +354,195 @@ export default function MembershipScreen({ route, navigation }) {
            borderRightWidth: 3,
          }}
      >
-       <Stack direction="row" w="100%"  >
-         <Center w="15%">
-         </Center>
+        <Stack
+          direction="row" w="100%"
+        >
+          <Box>
+          <Pressable
+                onPress={()=>navigation.goBack()
+                }
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 4,
+                        flexDirection: 'row',
+                        // justifyContent: 'center',
+                        // alignItems: 'center',
+                    }}
+                >
+                    <Icon 
+                        name="arrow-back-ios" 
+                        color={COLORS.main}
+                        size={wp('8%')}
+                        // onPress={()=>{}}
+                    /> 
+                    <Text
+                        style={{
+                            color: COLORS.main,
+                            fontFamily: 'JosefinSans-Bold',
+                            marginLeft: -10,
+                        }}
+                    >
+                        {/* Voltar */}
+                    </Text>
+                </Pressable>
+          </Box>
 
-         <Box w="70%">
-           <Center>
-             <Text
-               style={{ 
-                 fontFamily: 'JosefinSans-Bold', 
-                 fontSize: responsiveFontSize(2),
-                 color: COLORS.main, 
-               }}
-             >
-               
-             </Text>
+          <Box w="100%" 
+           style={{
+            alignItems:'center',
+            justifyContent: 'center',
+           }}
+          >
+            <Center w="90%"
+            >
+              <SearchBar
+                // lightTheme
+                style={{
+                 
+                }}
+                platform={Platform.OS.android}
+                placeholder="Type Here..."
+                onChangeText={updateSearch}
+                value={search}
+                clearIcon
+                containerStyle={{
+                 display: 'none',
+                 // flex: 1,
+                 width: '100%',
+                 // height: 50,
+                 // backgroundColor: '#EBEBE4',
+                }}
+                clearButtonMode="always"
+                // icon={{ type: 'font-awesome', name: 'search' }}
+              />
+            </Center>
+          </Box>
 
-             <Stack direction="row" space={2} my="1">
-               <Center>
-                 <Text
-                   style={{ 
-                     fontFamily: 'JosefinSans-Regular', 
-                     fonSize:responsiveFontSize(1.5), 
-                   }}
-                 >[{'Usuários:'}{' '}]</Text>
-               </Center>
-               <Center>
-                 <Text
-                   style={{ fontFamily: 'JosefinSans-Regular', fonSize: responsiveFontSize(1.5),  }}
-                 >[{'Distritos:'}{' '}]</Text>
-               </Center>
-             </Stack>
-           </Center>
-         </Box>
-         <Box 
-           w="15%"
-         >
-
-         </Box>
-       </Stack>
+        </Stack>
      </View>
+
+    <CustomDivider />
+     <Box 
+      w="100%" 
+      px="4" 
+      py="3"
+      style={{
+       // backgroundColor: '#EBEBE4',
+      }}
+     >
+ { countIdOccurrence === 0 &&    
+ 
+ <Box w="100%"
+ style={{
+  paddingHorizontal: 5,
+  flexDirection: 'row',
+ }}
+>
+
+   <Box w="20%" 
+     style={{
+      justifyContent: 'center',
+      alignitems: 'center',
+      // paddingRight: 30,
+     }}
+    >
+      <Icon name="group-add" size={50} color={COLORS.grey} />
+     </Box>
+     <Box
+      w="80%"
+      style={{
+       marginLeft: 10,
+       justifyContent: 'center',
+       // alignitems: 'center',
+      }}
+     >
+           <Text
+            style={{
+             color: COLORS.black,
+             fontSize: 16,
+             fontFamily: 'JosefinSans-Bold',
+             lineHeight: 20,
+            }} 
+          >
+         
+           {farmerName}
+          </Text>
+            <Text
+            style={{
+             // paddingLeft: 10,
+             color: COLORS.red,
+             fontSize: 16,
+             fontFamily: 'JosefinSans-Regular',
+             lineHeight: 20,
+            }}
+           >
+             Marca a organização 
+         </Text>
+        </Box>
+    </Box>
+
+        }
+     
+
+   { countIdOccurrence > 0 && 
+   <Box w="100%"
+    style={{
+     paddingHorizontal: 5,
+     flexDirection: 'row',
+    }}
+   >
+
+    <Box w="20%" 
+     style={{
+      justifyContent: 'center',
+      alignitems: 'center',
+      // paddingRight: 30,
+     }}
+    >
+      <Icon name="group-work" size={50} color={COLORS.main} />
+     </Box>
+     <Box
+      w="80%"
+      style={{
+       marginLeft: 10,
+       justifyContent: 'center',
+       // alignitems: 'center',
+      }}
+     >
+         <Text
+            style={{
+             color: COLORS.black,
+             fontSize: 16,
+             fontFamily: 'JosefinSans-Bold',
+             lineHeight: 20,
+            }} 
+          >
+           {farmerName}
+         </Text>
+         <Text
+          style={{
+           // paddingLeft: 10,
+           color: COLORS.grey,
+           fontSize: 16,
+           fontFamily: 'JosefinSans-Regular',
+           lineHeight: 20,
+          }}
+         > 
+          aderiu a {countIdOccurrence} {countIdOccurrence === 1 ? "organização" : "organizações"} 
+          </Text>
+     </Box>
+     </Box>       
+     }
+     </Box>
+     
+     <CustomDivider />
 
      <Box 
             alignItems="stretch" 
             w="100%" 
             style={{
-              marginBottom: 15,
+              marginBottom: 40,
               // marginTop: 10,
             }}
           >
@@ -369,6 +568,13 @@ export default function MembershipScreen({ route, navigation }) {
                  setAutoRefresh={setAutoRefresh} 
                  item={item} 
                  farmerId={farmerId} 
+                 countIdOccurrence={countIdOccurrence}
+                 setCountIdOccurrence={setCountIdOccurrence}
+                 isFarmerAdded={isFarmerAdded}
+                 setIsFarmerAdded={setIsFarmerAdded}
+                 isFarmerRemoved={isFarmerRemoved}
+                 setIsFarmerRemoved={setIsFarmerRemoved}
+                 farmerName={farmerName}
                />
               }}
               ListFooterComponent={()=>{
@@ -377,8 +583,8 @@ export default function MembershipScreen({ route, navigation }) {
                   <Box style={{
                     // height: 10,
                     backgroundColor: COLORS.ghostwhite,
-                    paddingBottom: 15,
-                    marginBottom: 10,
+                    // paddingBottom: 45,
+                    marginBottom: 140,
                   }}>
                     { isLoading ? (<CustomActivityIndicator />) : null }
                   </Box>

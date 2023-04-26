@@ -44,7 +44,7 @@ const { useRealm, useQuery, useObject } = realmContext;
 const farmlandResourceMessage = 'farmlandResourceMessage';
 
 
-const FarmlandData = ({ farmland, setRefresh })=>{
+const FarmlandData = ({ farmland, setRefresh, refresh })=>{
 
 
     const realm = useRealm();
@@ -149,7 +149,9 @@ const FarmlandData = ({ farmland, setRefresh })=>{
         const blocksAreas = farmland?.blocks?.map((block)=>block?.usedArea).reduce((acc, el)=>acc + el, 0);
         if ((totalArea - blocksAreas) <= 0.02) {
             setIsAreaNotEnough(true);
+            console.log('conformity checked');
         }  
+        console.log('conformity not checked');
     }
 
     useEffect(()=>{
@@ -160,7 +162,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
         //     console.log('a new block being addded');
         // }
 
-    }, [ farmland, autoRefresh, ])
+    }, [ farmland, autoRefresh, refresh ])
 
     const validationAction = (realm, resourceId, flag)=>{
         realm.write(()=>{
@@ -857,7 +859,8 @@ const FarmlandData = ({ farmland, setRefresh })=>{
     <CustomDivider />
 
     { 
-    !isAreaNotEnough && customUserData?.role !== roles.provincialManager && 
+    // !isAreaNotEnough && 
+    customUserData?.role !== roles.provincialManager && 
     <Stack w="100%" direction="row" py="4" >
         <Box w="90%">
             <Text
@@ -1653,6 +1656,7 @@ const FarmlandData = ({ farmland, setRefresh })=>{
         setAutoRefresh={setAutoRefresh}
         autoRefresh={autoRefresh}
 
+
     />
     )
 }
@@ -1669,6 +1673,13 @@ const FarmlandData = ({ farmland, setRefresh })=>{
             resource={farmland}
             resourceName={'Farmland'}
             blockId={blockId}
+
+            // refresh={refresh}
+            // setRefresh={setRefresh}
+            // setAutoRefresh={setAutoRefresh}
+            // autoRefresh={autoRefresh}
+            // checkAreasConformity={checkAreasConformity}
+            // farmland={farmland}
         />
     }
 

@@ -10,6 +10,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import {ListItem, Avatar, Icon, SearchBar } from '@rneui/themed';
 import { Box, Center, Pressable, Stack } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
+import { v4 as uuidv4 } from 'uuid';
+
 import {  
  widthPercentageToDP as wp,
  heightPercentageToDP as hp,
@@ -38,6 +40,7 @@ import { useUser } from '@realm/react';
 import { roles } from '../../consts/roles';
 import { useCallback } from 'react';
 import CustomDivider from '../../components/Divider/CustomDivider';
+import { getInitials } from '../../helpers/getInitials';
 // import { TextInput } from 'react-native-paper';
 const { useRealm, useQuery } = realmContext; 
 
@@ -59,36 +62,59 @@ function MemberGroupItem ({
  let customUserData = user.customData;
 
  const currentGroup = realm.objectForPrimaryKey('Group', item?._id);
+ const membership = realm.objects('ActorMembership').filtered(`actorId == "${farmerId}"`);
+ let member;
+
+ if (membership.length > 0){
+    member = membership[0];
+ }
+
+//  console.log('member1:', member);
 
  const [isFarmerAlreadyAdded, setIsFarmerAlreadyAdded] = useState(false);
 
  const showRemovedFarmerToast = () => {
   Toast.show({
     type: 'removedFarmerFromGroup',
-    text1: 'Remoção da organização',
-    props: { message: `Anotada retirada de ${farmerName} da ${currentGroup?.type}: ${currentGroup?.name}!`},
+    text1: `Remoção da ${currentGroup?.type}`,
+    props: { message: `Retirado da ${currentGroup?.type} ${currentGroup?.name}.`},
   });
  }
 
  const showAddedFarmerToast = () => {
   Toast.show({
     type: 'addedFarmerToGroup',
-    text1: 'Adesão à organização',
-    props: { message: `Anotada adesão de ${farmerName} a ${currentGroup?.type}: ${currentGroup?.name}!`},
+    text1: `Adesão à ${currentGroup?.type}`,
+    props: { message: `Adicionado à ${currentGroup?.type} ${currentGroup?.name}.`},
   });
  }
  // remove the farmer from the group
- const removeFarmerFromGroup = (farmerId, currentGroup)=>{
+ const removeFarmerFromGroup = (realm, farmerId, currentGroup)=>{
 
   try {
    realm.write(()=>{
+
+    // remvoe the farmer id from the group
      const updatedFarmerIds = currentGroup.members?.filter((id)=>(id !== farmerId));
-     currentGroup.members = []
+     currentGroup.members = [];
      for (let i = 0; i < updatedFarmerIds?.length; i++){
       currentGroup?.members.push(updatedFarmerIds[i]);
      }
-     setAutoRefresh(!autoRefresh);
-     setIsFarmerRemoved(true);
+     
+    //  remove the group object from the farmer membership
+     if (membership?.length > 0){
+       let member = membership[0];
+       const updatedMemberships = member.membership?.filter((memb)=>(memb.organizationId !== currentGroup?._id));
+       console.log('member:', JSON.stringify(updatedMemberships));
+       member.membership = [];
+       for (let i = 0; i < updatedMemberships?.length; i++){
+        member?.membership.push(updatedMemberships[i]);
+      }
+      
+    }
+    
+    setAutoRefresh(!autoRefresh);
+    setIsFarmerRemoved(true);
    })
   } catch (error) {
     console.log('The farmer could not be deleted from the group!');
@@ -97,18 +123,51 @@ function MemberGroupItem ({
  }
 
  // add the farmer to the group
- const addFarmerToGroup = (farmerId, currentGroup)=>{
+ const addFarmerToGroup = (realm, farmerId, currentGroup)=>{
 
     try {
-     realm.write(()=>{
+     realm.write(async ()=>{
+
+      // add the farmer id to the group
        currentGroup?.members.push(farmerId);
-       setAutoRefresh(!autoRefresh);
-       setIsFarmerAdded(true);
-     })
-    } catch (error) {
-      console.log('The farmer could not be added to the group!');     
-    }
- }
+       
+       //  update the actor membership
+      // in case they membership is already created
+      // the the group object to the farmer membership
+      if(membership?.length > 0){
+          let member = membership[0];
+          member.membership.push({
+            subscriptionYear: new Date().getFullYear(),
+            organizationId: currentGroup?._id,
+          });
+      }
+      else {
+        // create the actor member from scratch
+        const actorMembershipObject = {
+          _id: uuidv4(),
+          actorId: farmerId,
+          actorName: farmerName,
+          membership: [{
+            subscriptionYear: new Date().getFullYear(),
+            organizationId: currentGroup?._id,
+          }],
+  
+          userName: customUserData?.name,
+          userId: customUserData?.userId,
+          userDistrict: customUserData?.userDistrict,
+          userProvince: customUserData?.userProvince,
+        }
+  
+        const actorMembership = await realm.create('ActorMembership', actorMembershipObject);
+      }
+      setAutoRefresh(!autoRefresh);
+      setIsFarmerAdded(true);
+    })
+  } catch (error) {
+    console.log('The farmer could not be added to the group!', { cause: error });     
+  }
+}
+
 
 // call this every time the currentGroup object changes
  useEffect(()=>{
@@ -121,7 +180,7 @@ function MemberGroupItem ({
    setIsFarmerAlreadyAdded(false);
   }
 
- }, [ currentGroup ])
+ }, [ currentGroup ]);
 
  return (
   <Animated.View
@@ -152,12 +211,15 @@ function MemberGroupItem ({
       <TouchableOpacity
         onPress={()=>{
          if (!currentGroup.members?.find(id=>id === farmerId)) {
-          addFarmerToGroup(farmerId, currentGroup);
+
+          // add the actor as one of member of this group
+          addFarmerToGroup(realm, farmerId, currentGroup);
+
           // show the sucess (for adding farmer to the group) toast message
           showAddedFarmerToast();
          }
          else{
-          removeFarmerFromGroup(farmerId, currentGroup);
+          removeFarmerFromGroup(realm, farmerId, currentGroup);
           // show the error (for removing farmer from the group) toast message
           showRemovedFarmerToast();
          }
@@ -178,7 +240,7 @@ function MemberGroupItem ({
        <Box w="80%">
           <Text
            style={{
-            fontSize: 16,
+            fontSize: 15,
             fontFamily: 'JosefinSans-Bold',
             color: isFarmerAlreadyAdded ? COLORS.main : COLORS.black,
             paddingLeft: 10,
@@ -204,7 +266,7 @@ function MemberGroupItem ({
                 paddingLeft: 10,
      
                }}
-            >Declarados: {item?.declaredMembers}</Text>
+            >Declarados: {item?.numberOfMembers.total}</Text>
            </Box>
            <Box w="50%">
             <Text
@@ -249,10 +311,10 @@ export default function MembershipScreen({ route, navigation }) {
  const user = useUser();
  let customUserData = user.customData;
  const farmerId = route?.params?.resourceId;  // get the farmer id from the previous screen
- const farmerName = route?.params.farmerName;
+//  const farmerName = route?.params.farmerName;
 
  const groups = realm.objects('Group').filtered("userDistrict == $0", customUserData?.userDistrict);
-
+ const farmer = realm.objectForPrimaryKey('Actor', farmerId);
  // const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
  const [groupsList, setGroupsList] = useState([]);
  const [isEndReached, setIsEndReached] = useState(false);
@@ -265,7 +327,8 @@ export default function MembershipScreen({ route, navigation }) {
  // this array of ids helps check whether the current farmer is already regitered in any of the groups
  const [countIdOccurrence, setCountIdOccurrence] = useState(0);
  // search an organization (group)
- const [search, setSearch] = useState("");
+ const [searchText, setSearchText] = useState("");
+//  const [filteredGroups, setFilteredGroups] = useState([]);
 
  const updateSearch = (search) => {
   setSearch(search);
@@ -286,7 +349,11 @@ export default function MembershipScreen({ route, navigation }) {
 
  }
 
+
+
+
  useEffect(()=>{
+
   // this turn the fetched realm group into a iterable data structure
   // of which items are group objects with customized properties
   setGroupsList(groups?.map((group)=>{
@@ -306,27 +373,7 @@ export default function MembershipScreen({ route, navigation }) {
  }, [   autoRefresh ]);
 
 
-
-
  const keyExtractor = (item, index)=>index.toString();
-
- // useFocusEffect(
- //   React.useCallback(() => {
- //     const task = InteractionManager.runAfterInteractions(() => {
- //       setLoadingActivityIndicator(true);
- //     });
- //     return () => task.cancel();
- //   }, [])
- // );
-
-
- // if (loadingActivitiyIndicator) {
- //   return <CustomActivityIndicator 
- //       loadingActivitiyIndicator={loadingActivitiyIndicator}
- //       setLoadingActivityIndicator={setLoadingActivityIndicator}
- //   />
- // }
-
 
  return (
    <SafeAreaView 
@@ -343,7 +390,7 @@ export default function MembershipScreen({ route, navigation }) {
      <View
          style={{
            width: '100%',
-           minHeight: 50,
+           minHeight: 60,
            paddingHorizontal: wp('3%'),
            // paddingTop: 5,
            backgroundColor: '#EBEBE4',
@@ -363,28 +410,16 @@ export default function MembershipScreen({ route, navigation }) {
                 }
                     style={{
                         position: 'absolute',
-                        left: 0,
-                        top: 4,
+                        left: -10,
+                        top: 5,
                         flexDirection: 'row',
-                        // justifyContent: 'center',
-                        // alignItems: 'center',
                     }}
                 >
                     <Icon 
                         name="arrow-back-ios" 
                         color={COLORS.main}
                         size={wp('8%')}
-                        // onPress={()=>{}}
                     /> 
-                    <Text
-                        style={{
-                            color: COLORS.main,
-                            fontFamily: 'JosefinSans-Bold',
-                            marginLeft: -10,
-                        }}
-                    >
-                        {/* Voltar */}
-                    </Text>
                 </Pressable>
           </Box>
 
@@ -396,42 +431,31 @@ export default function MembershipScreen({ route, navigation }) {
           >
             <Center w="90%"
             >
-              <SearchBar
-                // lightTheme
+              <TextInput 
+
+                placeholder='procure um grupo'
                 style={{
-                 
+                  width: '100%',
+                  backgroundColor: COLORS.ghostwhite,
+                  borderRadius: 10,
+                  color: COLORS.black,
+                  borderWidth: 1,
+                  borderColor: COLORS.lightgrey,
                 }}
-                platform={Platform.OS.android}
-                placeholder="Type Here..."
-                onChangeText={updateSearch}
-                value={search}
-                clearIcon
-                containerStyle={{
-                 display: 'none',
-                 // flex: 1,
-                 width: '100%',
-                 // height: 50,
-                 // backgroundColor: '#EBEBE4',
-                }}
-                clearButtonMode="always"
-                // icon={{ type: 'font-awesome', name: 'search' }}
+                value={searchText}
+                onChangeText={(text)=>setSearchText(text)}
               />
             </Center>
           </Box>
 
         </Stack>
      </View>
-
     <CustomDivider />
      <Box 
       w="100%" 
       px="4" 
       py="3"
-      style={{
-       // backgroundColor: '#EBEBE4',
-      }}
      >
- { countIdOccurrence === 0 &&    
  
  <Box w="100%"
  style={{
@@ -444,10 +468,15 @@ export default function MembershipScreen({ route, navigation }) {
      style={{
       justifyContent: 'center',
       alignitems: 'center',
-      // paddingRight: 30,
      }}
     >
-      <Icon name="group-add" size={50} color={COLORS.grey} />
+      <Avatar 
+        size={wp('16%')}
+        rounded
+        title={getInitials(farmer?.names?.surname)}
+        containerStyle={{ backgroundColor: COLORS.grey }}
+        source={{ uri: farmer.image ? farmer.image : 'htt://localhost/not-set-yet', }}
+      />
      </Box>
      <Box
       w="80%"
@@ -460,80 +489,28 @@ export default function MembershipScreen({ route, navigation }) {
            <Text
             style={{
              color: COLORS.black,
-             fontSize: 16,
+             fontSize: 15,
              fontFamily: 'JosefinSans-Bold',
-             lineHeight: 20,
+            //  lineHeight: 20,
             }} 
           >
          
-           {farmerName}
+           {`${farmer?.names?.otherNames} ${farmer?.names?.surname}`}
           </Text>
             <Text
             style={{
              // paddingLeft: 10,
-             color: COLORS.red,
-             fontSize: 16,
+             color: countIdOccurrence === 0 ? COLORS.red : COLORS.main,
+             fontSize: 14,
              fontFamily: 'JosefinSans-Regular',
-             lineHeight: 20,
+            //  lineHeight: 20,
             }}
            >
-             Marca a organização 
+            { countIdOccurrence === 0 ? "Marca a organização" : `aderiu a ${countIdOccurrence} ${countIdOccurrence === 1 ? "organização" : "organizações"}` }
          </Text>
         </Box>
     </Box>
 
-        }
-     
-
-   { countIdOccurrence > 0 && 
-   <Box w="100%"
-    style={{
-     paddingHorizontal: 5,
-     flexDirection: 'row',
-    }}
-   >
-
-    <Box w="20%" 
-     style={{
-      justifyContent: 'center',
-      alignitems: 'center',
-      // paddingRight: 30,
-     }}
-    >
-      <Icon name="group-work" size={50} color={COLORS.main} />
-     </Box>
-     <Box
-      w="80%"
-      style={{
-       marginLeft: 10,
-       justifyContent: 'center',
-       // alignitems: 'center',
-      }}
-     >
-         <Text
-            style={{
-             color: COLORS.black,
-             fontSize: 16,
-             fontFamily: 'JosefinSans-Bold',
-             lineHeight: 20,
-            }} 
-          >
-           {farmerName}
-         </Text>
-         <Text
-          style={{
-           // paddingLeft: 10,
-           color: COLORS.grey,
-           fontSize: 16,
-           fontFamily: 'JosefinSans-Regular',
-           lineHeight: 20,
-          }}
-         > 
-          aderiu a {countIdOccurrence} {countIdOccurrence === 1 ? "organização" : "organizações"} 
-          </Text>
-     </Box>
-     </Box>       
-     }
      </Box>
      
      <CustomDivider />
@@ -542,7 +519,7 @@ export default function MembershipScreen({ route, navigation }) {
             alignItems="stretch" 
             w="100%" 
             style={{
-              marginBottom: 40,
+              marginBottom: 50,
               // marginTop: 10,
             }}
           >
@@ -574,7 +551,7 @@ export default function MembershipScreen({ route, navigation }) {
                  setIsFarmerAdded={setIsFarmerAdded}
                  isFarmerRemoved={isFarmerRemoved}
                  setIsFarmerRemoved={setIsFarmerRemoved}
-                 farmerName={farmerName}
+                 farmerName={`${farmer?.names?.otherNames} ${farmer?.names?.surname}`}
                />
               }}
               ListFooterComponent={()=>{
@@ -584,7 +561,7 @@ export default function MembershipScreen({ route, navigation }) {
                     // height: 10,
                     backgroundColor: COLORS.ghostwhite,
                     // paddingBottom: 45,
-                    marginBottom: 140,
+                    marginBottom: 180,
                   }}>
                     { isLoading ? (<CustomActivityIndicator />) : null }
                   </Box>

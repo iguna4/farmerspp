@@ -290,7 +290,7 @@ export default function FarmlandBlockRegistration({
               fontFamily: 'JosefinSans-Bold',
 
           }}
-      >Bloco {foundFarmland?.blocks?.length + 1}</Text>
+      >Parcela {foundFarmland?.blocks?.length + 1}</Text>
     </Box>
     <Box w="10%">
         <TouchableOpacity 
@@ -348,7 +348,7 @@ export default function FarmlandBlockRegistration({
                         textAlign: 'right',
                     }}
                 >
-                    Quais dos {(totalArea - areaFlag).toFixed(2)} hectares?
+                    Quais dos {(totalArea - areaFlag).toFixed(1)} hectares?
                 </Text>
             </Box>  
         </Stack>

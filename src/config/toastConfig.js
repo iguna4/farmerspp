@@ -13,7 +13,7 @@ import COLORS from '../consts/colors';
     <View style={{ 
       minHeight: 60, 
       width: '100%', 
-      backgroundColor: COLORS.moderatelimegreen,
+      backgroundColor: COLORS.ghostwhite,
       paddingHorizontal: 5,
      flexDirection: 'row',
     }}>
@@ -24,14 +24,18 @@ import COLORS from '../consts/colors';
           padding: 5,
          }}
         >
-          <Icon name="check-box" color={COLORS.ghostwhite} size={20} />
+          <Icon 
+          name="check-circle-outline" 
+          color={COLORS.moderatelimegreen} 
+          size={40} 
+        />
         </View>
         <View>
           <Text
             style={{
               fontSize: 16,
               fontFamily: 'JosefinSans-Bold',
-              color: COLORS.ghostwhite,
+              color: COLORS.moderatelimegreen,
               paddingHorizontal: 5,
             }}
           >{text1}</Text>
@@ -39,7 +43,7 @@ import COLORS from '../consts/colors';
             style={{
               fontSize: 15,
               fontFamily: 'JosefinSans-Regular',
-              color: COLORS.ghostwhite,
+              color: COLORS.moderatelimegreen,
               paddingRight: 5,
             }}
           >{props.message}</Text>
@@ -51,7 +55,7 @@ import COLORS from '../consts/colors';
    <View style={{ 
      minHeight: 60, 
      width: '100%', 
-     backgroundColor: COLORS.danger,
+     backgroundColor: COLORS.ghostwhite,
      paddingHorizontal: 5,
     flexDirection: 'row',
    }}>
@@ -62,14 +66,14 @@ import COLORS from '../consts/colors';
          padding: 5,
         }}
        >
-         <Icon name="dangerous" color={COLORS.ghostwhite} size={20} />
+         <Icon name="warning" color={COLORS.danger} size={40} />
        </View>
        <View>
          <Text
            style={{
              fontSize: 16,
              fontFamily: 'JosefinSans-Bold',
-             color: COLORS.ghostwhite,
+             color: COLORS.danger,
              paddingRight: 5,
            }}
          >{text1}</Text>
@@ -77,7 +81,7 @@ import COLORS from '../consts/colors';
            style={{
              fontSize: 15,
              fontFamily: 'JosefinSans-Regular',
-             color: COLORS.ghostwhite,
+             color: COLORS.danger,
              paddingHorizontal: 5,
            }}
          >{props.message}</Text>

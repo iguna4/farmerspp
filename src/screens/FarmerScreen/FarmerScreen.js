@@ -134,9 +134,10 @@ export default function FarmerScreen ({ route, navigation }) {
           >
 
           <Pressable
-                onPress={()=>navigation.goBack()
-                  // .navigate('Farmers')
-                }
+                onPress={()=>{
+                  navigation.goBack();
+                  setRefresh(!refresh);
+                }}
                     style={{
                         position: 'absolute',
                         left: 0,
@@ -305,7 +306,11 @@ export default function FarmerScreen ({ route, navigation }) {
           marginTop: 40,
         }}
     >
-        <PersonalData farmer={farmer} setRefresh={setRefresh} />
+        <PersonalData 
+          setRefresh={setRefresh} 
+          refresh={refresh} 
+          farmer={farmer} 
+        />
     </View>
 
     <Box 
@@ -338,12 +343,15 @@ export default function FarmerScreen ({ route, navigation }) {
 
 {     
   customUserData?.role !== roles.provincialManager &&  
-      <Stack direction="row" w="100%">
-          <Box w="70%">
+      <Stack direction="row" w="100%" p="4">
+          <Box w="20%">
 
           </Box>
-          <Box w="30%" 
-              alignItems={'center'}
+          <Box w="80%" 
+              // alignItems={'center'}
+              style={{
+                alignItems: 'flex-end',
+              }}
             >
 
               <TouchableOpacity
@@ -351,17 +359,48 @@ export default function FarmerScreen ({ route, navigation }) {
                   flexDirection: 'row'
 
                 }}
-                onPress={()=>navigation.navigate('FarmlandForm1', {
+                onPress={()=>{
+                  navigation.navigate('FarmlandForm1', {
                   ownerId: farmer._id,
                   ownerName: `${farmer?.names?.otherNames} ${farmer?.names?.surname}`,
                   flag: 'Indivíduo',
-                })}
+                })
+                setRefresh(!refresh);
+              }}
               >
-                <Icon 
+                {/* <Icon 
                   name="add-circle" 
                   color={COLORS.mediumseagreen} 
                   size={wp('15%')} 
-                />
+                /> */}
+
+                <Box
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 100,
+                        borderWidth: 2,
+                        borderColor: COLORS.mediumseagreen,
+                        padding: 4,
+            
+                    }}
+                >
+                    <Icon name="save" size={25} color={COLORS.mediumseagreen} />
+                    {/* </Box> */}
+                    <Text
+                        style={{
+                            color: COLORS.mediumseagreen,
+                            fontSize: 18,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingLeft: 5,
+                        }}
+                    >
+                        Registar Pomar
+                    </Text>
+
+                </Box>
+
 
               </TouchableOpacity>
             </Box>            
@@ -371,7 +410,12 @@ export default function FarmerScreen ({ route, navigation }) {
 
         {
             farmlands?.map((farmland)=>
-            (<FarmlandData key={farmland?._id} farmland={farmland} setRefresh={setRefresh} />))
+            (<FarmlandData 
+              key={farmland?._id} 
+              farmland={farmland} 
+              setRefresh={setRefresh} 
+              refresh={refresh}  
+            />))
         }
         </Box>
         <PhotoModal 

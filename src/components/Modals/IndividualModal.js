@@ -277,8 +277,8 @@ export default function IndividualModal (
             contentContainerStyle={{
                 flex: 1, 
                 justifyContent: 'center', 
-                minHeight: '140%',
-                paddingVertical: 40,
+                minHeight: '150%',
+                paddingVertical: 50,
             }}
          >
         <Box 

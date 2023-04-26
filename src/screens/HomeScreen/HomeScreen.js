@@ -203,12 +203,17 @@ export default function HomeScreen() {
     //     realm.delete(realm.objects("UserStat"));
     //   });
 
+    //   realm.write(() => {
+    //     // Delete all instances of Cat from the realm.
+    //     realm.delete(realm.objects("ActorMembership"));
+    //   });
+
 
     //   realm.write(() => {
     //     // Delete all instances of Cat from the realm.
     //     realm.delete(realm.objects("SprayingServiceProvider"));
     //   });
-    // }, [ realm ])
+    // }, [ realm ]);
     
 
     // deleteAllTypesObjects();

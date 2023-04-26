@@ -327,12 +327,15 @@ export default function GroupScreen ({ route, navigation }) {
 
 {        
    customUserData?.role !== roles.provincialManager &&  
-      <Stack direction="row" w="100%">
-            <Box w="70%">
+      <Stack direction="row" w="100%" p="4">
+            <Box w="20%">
 
             </Box>
-            <Box w="30%" 
-              alignItems={'center'}
+            <Box w="80%" 
+              // alignItems={'e'}
+              style={{
+                alignItems: 'flex-end',
+              }}
             >
 
               <TouchableOpacity
@@ -345,12 +348,38 @@ export default function GroupScreen ({ route, navigation }) {
                   flag: 'Grupo',
                 })}
               >
-                <Icon 
+                {/* <Icon 
                   name="add-circle" 
                   color={COLORS.mediumseagreen} 
                   size={wp('15%')} 
-                />
+                /> */}
 
+                <Box
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 100,
+                        borderWidth: 2,
+                        borderColor: COLORS.mediumseagreen,
+                        padding: 4,
+            
+                    }}
+                >
+                    <Icon name="save" size={25} color={COLORS.mediumseagreen} />
+                    {/* </Box> */}
+                    <Text
+                        style={{
+                            color: COLORS.mediumseagreen,
+                            fontSize: 18,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingLeft: 5,
+                        }}
+                    >
+                        Registar Pomar
+                    </Text>
+
+                </Box>
               </TouchableOpacity>
             </Box>            
           </Stack>

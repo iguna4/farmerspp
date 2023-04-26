@@ -1,6 +1,6 @@
 /**
- *  Farmer schema for each individual farmer that owns
- *  cashew farmland
+ *  
+ *  ActorMembership identifies the actor within an organization
  */
 
 export const ActorMembership = {

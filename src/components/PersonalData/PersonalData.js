@@ -43,7 +43,7 @@ const { useRealm, useQuery, useObject } = realmContext;
 
 const resourceMessage = 'resourceMessage';
 
-const PersonalData = ({ farmer, setRefresh })=>{
+const PersonalData = ({ farmer, setRefresh, refresh })=>{
 
     const realm = useRealm();
     const navigation = useNavigation();
@@ -59,9 +59,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
         // retrieve the only actor membership object
         member = membership[0];
     }
-
-
-    // console.log('messages: ', JSON.stringify(invalidationMotives));
+    // console.log('member:', member);
 
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
     const [isConfirmDataVisible, setIsConfirmDataVisible] = useState(false);
@@ -87,12 +85,6 @@ const PersonalData = ({ farmer, setRefresh })=>{
     // ---------------------------------------------
     const [dataToBeUpdated, setDataToBeUpdated] = useState('');
 
-
-    // ----------------------------------------------------
-    // const [errors, setErrors] = useState({});
-    // const [overlayTitle, setOverlayTitle] = useState('');
-
-    // -----------------------------------------------------
     
     //  update address
     const [addressProvince, setAddressProvince] = useState('');
@@ -1038,7 +1030,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
         <CustomDivider />
     </Box>
 
-    <Stack w="100%" direction="row" >
+    <Stack w="100%" direction="row" pb="4">
             <Box w="90%">
                 <Text
                     style={{
@@ -1065,7 +1057,7 @@ const PersonalData = ({ farmer, setRefresh })=>{
                             navigation.navigate('Membership', {
                             resourceName: 'Farmer',
                             resourceId: farmer._id,
-                            farmerName: `${farmer.names.otherNames} ${farmer.names.surname}`,
+                            // farmerName: `${farmer.names.otherNames} ${farmer.names.surname}`,
                             
                         })
                     }}
@@ -1080,6 +1072,48 @@ const PersonalData = ({ farmer, setRefresh })=>{
             </Box>
         </Stack>
     { member && (!member?.membership || member?.membership?.length === 0) &&
+    <>
+        <Stack w="100%" direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }} 
+                >Membro de organização</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }} 
+                >Sim</Text>
+            </Box>
+
+        </Stack>
+        <Box w="100%" py="4">
+            <Text                     
+                style={{
+                    color: COLORS.red,
+                    fontSize: 15,
+                    fontFamily: 'JosefinSans-Regular',
+                    textAlign: 'center',
+                    paddingHorizontal: 10,
+                    lineHeight: 25,
+                }}  
+                >
+                Especifica a organização a qual este produtor aderiu.
+            </Text>
+        </Box>
+    </>
+    }
+
+
+{ member && (member?.membership?.length > 0) &&
+    
     <>
         <Stack w="100%" direction="row">
             <Box w="50%">

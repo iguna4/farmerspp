@@ -26,6 +26,13 @@ const ConfirmData = ({
     resource,
 
     blockId,
+
+    // setAutoRefresh,
+    // autoRefresh,
+    // refresh,
+    // setRefresh,
+    // checkAreasConformity,
+    // farmland,
 })=>{
 
     const realm = useRealm();
@@ -214,10 +221,13 @@ const ConfirmData = ({
                 // resource.status = resourceValidation.status.pending;
             }
         });
+        // setAutoRefresh(!autoRefresh);
+        // setRefresh(!refresh);
     }
 
     const toggleOverlay = () => {
         setIsConfirmDataVisible(!isConfirmDataVisible);
+        // setAutoRefresh(!autoRefresh);
       };
 
     return (
@@ -2168,13 +2178,15 @@ const ConfirmData = ({
             onPress={()=>{
 
                 try {
-                    onUpdateData(resource, newDataObject, realm, dataToBeUpdated, resourceName)
+                    onUpdateData(resource, newDataObject, realm, dataToBeUpdated, resourceName);
                 } catch (error) {
                     console.log('Could not update data', { cause: error })
                     
                 }
                 finally{
                     setIsConfirmDataVisible(false);
+                    
+                    // checkAreasConformity(farmland);
                     // toggleOverlay();
                     // setIsOverlayVisible(false);
                 }

@@ -54,6 +54,7 @@ import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 import { errorMessages } from '../../consts/errorMessages';
 import { resourceValidation } from '../../consts/resourceValidation';
+import { ordinalNumberings } from '../../consts/ordinalNumberings';
 const {useRealm, useQuery, useObject} = realmContext;
 
 
@@ -806,9 +807,6 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 <Box w="5%"></Box>
                 <Box w="80%" 
                 >
-                    <Text style={styles.headerText}>
-                        Registo
-                    </Text>
                     <Text style={{
                         fontSize: 16,
                         fontFamily: 'JosefinSans-Regular',
@@ -823,14 +821,32 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 <Box w="5%"></Box>
             </Stack>
           </Box>
-{
-    loadingActivitiyIndicator && (
-        <CustomActivityIndicator 
-        loadingActivitiyIndicator={loadingActivitiyIndicator}
-        setLoadingActivityIndicator={setLoadingActivityIndicator}
-        />
-    )
-}
+
+    {
+        loadingActivitiyIndicator && (
+            <CustomActivityIndicator 
+            loadingActivitiyIndicator={loadingActivitiyIndicator}
+            setLoadingActivityIndicator={setLoadingActivityIndicator}
+            />
+        )
+    }
+
+          <Box w="100%" p="4">
+            <Text style={styles.headerText}>
+                Registo de pomar
+            </Text>
+            <Text
+                style={{
+                    color: COLORS.red,
+                    fontSize: 15,
+                    fontFamily: 'JosefinSans-Regular',
+                    paddingTop: 5,
+                }}
+            >
+                Introduza dados genéricos deste pomar.
+            </Text>
+          </Box>
+
 
 { 
 
@@ -1302,10 +1318,27 @@ export default function FarmlandRegistration ({ route, navigation }) {
     <Box
         style={{
             alignItems: 'flex-end',
-            padding: 20,
-            flexDirection: 'row-reverse',
+            paddingHorizontal: 20,
+            paddingBottom: 20,
+            // flexDirection: 'row-reverse',
         }}
     >
+    { farmland &&
+        <Box>
+            <Text
+                style={{
+                    fontSize: 15,
+                    fontFamily: 'JosefinSans-Regular',
+                    color: COLORS.red,
+                    // textAlign: 'right',
+                    padding: 10,
+                }}
+            >
+                Adicionar a {ordinalNumberings[(farmland?.blocks?.length + 1)]} parcela!
+            </Text>    
+        </Box>
+    }
+
 
         <Box>
             <TouchableOpacity
@@ -1323,31 +1356,42 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     }
                 }}
             >
-                <Box 
+                <Box
                     style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
                         borderRadius: 100,
-                        backgroundColor: COLORS.mediumseagreen,
+                        borderWidth: 2,
+                        borderColor: COLORS.mediumseagreen,
+                        padding: 4,
+            
                     }}
                 >
-                    <Icon name="add" size={45} color={COLORS.ghostwhite} />
+
+                    {/* <Box 
+                        style={{
+                            borderRadius: 100,
+                            backgroundColor: COLORS.mediumseagreen,
+                        }}
+                    > */}
+                    <Icon name={!farmland ? "add" : "add"} size={25} color={COLORS.mediumseagreen} />
+                    {/* </Box> */}
+                    <Text
+                        style={{
+                            color: COLORS.mediumseagreen,
+                            fontSize: 18,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingLeft: 5,
+                        }}
+                    >
+                        {!farmland ? "Adicionar Pomar" : "Adicionar Parcela"}
+                    </Text>
+
                 </Box>
             </TouchableOpacity>
         </Box>
-{ farmland &&
-       <Box>
-            <Text
-                style={{
-                    fontSize: 18,
-                    fontFamily: 'JosefinSans-Regular',
-                    color: COLORS.mediumseagreen,
-                    textAlign: 'right',
-                    padding: 10,
-                }}
-            >
-                Adiciona Parcela {farmland?.blocks?.length + 1}
-         </Text>    
-        </Box>
-    }
+
     </Box>
 
 

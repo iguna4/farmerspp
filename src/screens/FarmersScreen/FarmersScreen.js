@@ -686,7 +686,7 @@ export default function FarmersScreen({ route, navigation }) {
                     paddingBottom: 15,
                     marginBottom: 10,
                   }}>
-                    { isLoading ? (<CustomActivityIndicator />) : null }
+                    {/* { isLoading ? (<CustomActivityIndicator />) : null } */}
                   </Box>
 
                   )

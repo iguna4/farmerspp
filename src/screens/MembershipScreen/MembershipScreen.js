@@ -298,7 +298,6 @@ function MemberGroupItem ({
        </TouchableOpacity>
      </Box>
     </Stack>
-    {/* <CustomDivider /> */}
   </Animated.View>
  )
 }
@@ -311,7 +310,6 @@ export default function MembershipScreen({ route, navigation }) {
  const user = useUser();
  let customUserData = user.customData;
  const farmerId = route?.params?.resourceId;  // get the farmer id from the previous screen
-//  const farmerName = route?.params.farmerName;
 
  const groups = realm.objects('Group').filtered("userDistrict == $0", customUserData?.userDistrict);
  const farmer = realm.objectForPrimaryKey('Actor', farmerId);

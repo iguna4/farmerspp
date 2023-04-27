@@ -22,10 +22,13 @@ export function CustomInput({
     secureTextEntry,
     onChangeText,
     autoCapitalize,
+    autoFocus,
     keyboardType,
     onFocus,
     isDisabled,
     textAlign,
+    maxLength,
+    multiline,
      ...props
 }) {
     return (
@@ -52,6 +55,10 @@ export function CustomInput({
             keyboardType={keyboardType ? keyboardType : 'default'}
             onChangeText={onChangeText}
             onFocus={onFocus}
+            maxLength={maxLength && maxLength}
+            multiline={Boolean(multiline)}
+            autoFocus={autoFocus}
+
         />
     );
 }

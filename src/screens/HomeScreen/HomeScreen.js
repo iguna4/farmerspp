@@ -366,11 +366,11 @@ export default function HomeScreen() {
       <View 
         style={{ 
           width: '100%',
-          backgroundColor: COLORS.pantone,
-          borderWidth: 1,
-          borderColor: COLORS.pantone,
-          borderTopLeftRadius: wp('10%'),
-          borderTopRightRadius: wp('10%'),
+          // backgroundColor: COLORS.pantone,
+          // borderWidth: 1,
+          // borderColor: COLORS.pantone,
+          // borderTopLeftRadius: wp('10%'),
+          // borderTopRightRadius: wp('10%'),
         }}
       >
         <Box
@@ -383,7 +383,7 @@ export default function HomeScreen() {
             <Text
               style={{
                 fontSize: responsiveFontSize(2.5),
-                color: COLORS.ghostwhite,
+                color: COLORS.black,
                 fontFamily: 'JosefinSans-Bold',
                 textAlign: 'center',
                 
@@ -404,7 +404,7 @@ export default function HomeScreen() {
                       fontSize: responsiveFontSize(2),
                       fontFamily: 'JosefinSans-Bold',
                       textAlign: 'center',
-                      color: COLORS.ghostwhite,
+                      color: COLORS.grey,
                     }}
                   >
                     Usuários
@@ -419,7 +419,7 @@ export default function HomeScreen() {
                       fontSize: responsiveFontSize(2),
                       fontFamily: 'JosefinSans-Regular',
                       textAlign: 'center',
-                      color: COLORS.main,
+                      color: COLORS.grey,
                       borderRadius: 100,
                       borderWidth: 1,
                       backgroundColor: COLORS.ghostwhite,
@@ -448,7 +448,7 @@ export default function HomeScreen() {
                       fontSize: responsiveFontSize(2),
                       fontFamily: 'JosefinSans-Bold',
                       textAlign: 'center',
-                      color: COLORS.ghostwhite,
+                      color: COLORS.grey,
                     }}
                   >
                     Distritos
@@ -461,7 +461,7 @@ export default function HomeScreen() {
                         fontSize: responsiveFontSize(2),
                         fontFamily: 'JosefinSans-Regular',
                         textAlign: 'center',
-                        color: COLORS.main,
+                        color: COLORS.grey,
                         borderRadius: 100,
                         borderWidth: 1,
                         backgroundColor: COLORS.ghostwhite,
@@ -484,10 +484,29 @@ export default function HomeScreen() {
 
 {/* provincial goals in terms of farmers and farmlands registrations  */}
 
+<View
+  style={{
+    width: '100%',
+    backgroundColor: COLORS.ghostwhite,
+    marginVertical: 10,
+    // paddingVertical: 4,
+    paddingHorizontal: 5,
+    borderColor: '#005000',
+    shadowColor: "#005000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    elevation: 3,
+    opacity: 1,
+  }}
+>
 
     <View
     style={{
-      // padding: 10,
+      // paddingTop: 30,
     }}
     >
 
@@ -526,7 +545,7 @@ export default function HomeScreen() {
           </Text>
           <Text
             style={{
-              fontSize: 25,
+              fontSize: 18,
               fontFamily: 'JosefinSans-Regular',
               textAlign: 'center',
               color: COLORS.danger,
@@ -551,7 +570,7 @@ export default function HomeScreen() {
           </Text>
           <Text
             style={{
-              fontSize: 25,
+              fontSize: 18,
               fontFamily: 'JosefinSans-Regular',
               textAlign: 'center',
               color: COLORS.danger,
@@ -565,20 +584,42 @@ export default function HomeScreen() {
 
 
     </View>
+</View>
 
-    <CustomDivider thickness={2} bg={COLORS.danger} />
+    {/* <CustomDivider thickness={2} bg={COLORS.danger} /> */}
     {/*  provincial achievments in terms of farmers and farmlands registrations */}
+
+<View
+  style={{
+    width: '100%',
+    backgroundColor: COLORS.ghostwhite,
+    marginVertical: 10,
+    // paddingVertical: 4,
+    paddingHorizontal: 5,
+    borderColor: '#005000',
+    shadowColor: "#005000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    elevation: 3,
+    opacity: 1,
+  }}
+>
 
     <View 
         style={{ 
           flexDirection: 'row',
-          marginBottom: 10,
+          // marginBottom: 10,
+          // paddingTop: 30,
         }}
       >
         <Icon name="done-outline" size={30} color={COLORS.lightdanger} />
         <Text
           style={{
-            fontSize: 18,
+            fontSize: responsiveFontSize(2),
             color: COLORS.lightdanger,
             fontFamily: 'JosefinSans-Bold',    
             marginLeft: 10,           
@@ -605,7 +646,7 @@ export default function HomeScreen() {
           </Text>
           <Text
             style={{
-              fontSize: 25,
+              fontSize: 18,
               fontFamily: 'JosefinSans-Regular',
               textAlign: 'center',
               color: COLORS.lightdanger,
@@ -630,7 +671,7 @@ export default function HomeScreen() {
           </Text>
           <Text
             style={{
-              fontSize: 25,
+              fontSize: 18,
               fontFamily: 'JosefinSans-Regular',
               textAlign: 'center',
               color: COLORS.lightdanger,
@@ -641,7 +682,8 @@ export default function HomeScreen() {
           </Text>
         </Box>
       </Stack>
-      <CustomDivider thickness={2} bg={COLORS.lightdanger} />
+</View>
+      {/* <CustomDivider thickness={2} bg={COLORS.lightdanger} /> */}
 
 </ScrollView>
 }

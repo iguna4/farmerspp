@@ -83,13 +83,21 @@ export default function UserItem({ userItem }){
     }, [ userStat ]);
 
 
+    useEffect(()=>{
+        if (parseInt(targetFarmers) > 0 && (parseInt(targetFarmlands) <= parseInt(targetFarmers) || !parseInt(targetFarmlands))) {
+            setTargetFarmlands(targetFarmers);
+        }
+
+    }, [ targetFarmers ]);
+
+
     return (
     <Box
         style={{
             flex: 1,
             backgroundColor: COLORS.ghostwhite,
             marginVertical: 10,
-            paddingVertical: 10,
+            paddingVertical: 4,
             paddingHorizontal: 5,
             borderColor: '#005000',
             shadowColor: "#005000",
@@ -112,8 +120,8 @@ export default function UserItem({ userItem }){
             <Text
                 style={{
                 fontFamily: 'JosefinSans-Bold',
-                fontSize: 16,
-                color: COLORS.grey
+                fontSize: 14,
+                color: COLORS.black
                 }}     
             >
                 {userItem?.name}
@@ -122,9 +130,10 @@ export default function UserItem({ userItem }){
         <Box w="20%"
             style={{
                 alignItems: 'center',
+                justifyContent:'center',
             }}
         >
-        <FormControl isRequired my="3" isInvalid={'errorMessage' in errors}>
+        <FormControl isRequired my="1" isInvalid={'errorMessage' in errors}>
             <CustomInput
                 width="90%"
                 keyboardType="numeric"
@@ -148,10 +157,11 @@ export default function UserItem({ userItem }){
         <Box w="20%"
             style={{
                 alignItems: 'center',
+                justifyContent:'center',
             }}
         >
 
-        <FormControl isRequired my="3" isInvalid={'errorMessage' in errors}>
+        <FormControl isRequired my="1" isInvalid={'errorMessage' in errors}>
             <CustomInput
                 width="90%"
                 keyboardType="numeric"
@@ -199,7 +209,7 @@ export default function UserItem({ userItem }){
             >
                 <Icon 
                     name={(!update && !reset) ? "mode-edit" : reset ? "restore" : "save"}
-                    size={30}
+                    size={25}
                     color={COLORS.main}
                 />
             </TouchableOpacity>

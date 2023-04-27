@@ -127,9 +127,9 @@ export default function InstitutionScreen ({ route, navigation }) {
           >
 
         <Pressable
-                onPress={()=>navigation.goBack()
-                  // .navigate('Farmers')
-                }
+                onPress={()=>{
+                  navigation.navigate('Farmers');
+                }}
                     style={{
                         position: 'absolute',
                         left: 0,

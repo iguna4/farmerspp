@@ -1,11 +1,28 @@
 
 import React, { useState, useEffect, useCallback } from "react";
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { Overlay, Icon, Button } from "@rneui/base";
 import { Box, Center, CheckIcon, FormControl, Select, Stack } from "native-base";
 import AwesomeAlert from 'react-native-awesome-alerts';
+import {  
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+    listenOrientationChange as lor,
+    removeOrientationListener as rol } 
+        from 'react-native-responsive-screen';
+   
+   import { 
+    responsiveFontSize,
+    responsiveScreenFontSize,
+    responsiveHeight,
+    responsiveWidth,
+    responsiveScreenHeight,
+    responsiveScreenWidth,
+    useDimensionsChange,
+   
+   } from 'react-native-responsive-dimensions';
 
-import CustomActivityIndicator from "../ActivityIndicator/CustomActivityIndicator";
+// import CustomActivityIndicator from "../ActivityIndicator/CustomActivityIndicator";
 import COLORS from "../../consts/colors";
 import districts from "../../consts/districts";
 
@@ -116,26 +133,60 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
         <Stack w="100%" py="4" direction="row" 
 
         >
-            <Box w="10%">
-                <Icon 
+            <Box>
+            <Pressable
+                onPress={()=>{
+                    setIsGoalUpdateVisible(false);
+                }}
+    
+                style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    flexDirection: 'row',
+                }}
+            >
+                 <Icon 
+                        name="arrow-back-ios" 
+                        color={COLORS.main}
+                        size={wp('8%')}
+                    /> 
+                </Pressable>
+
+                {/* <Icon 
                     name='arrow-back-ios' 
                     color={COLORS.main} 
                     size={35}  
                     onPress={()=>{
                         setIsGoalUpdateVisible(false);
                     }}
-                />           
+                />            */}
             </Box>
-            <Box w="90%">
+            <Box w="100%"
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
                 <Text
                     style={{
                         textAlign: 'center',
                         color: COLORS.main,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'JosefinSans-Bold',
                     }}
                 >
-                    Actualização de Meta ({customUserData?.userProvince})
+                    Actualização de Meta
+                </Text>  
+                <Text
+                    style={{
+                        textAlign: 'center',
+                        color: COLORS.main,
+                        fontSize: 15,
+                        fontFamily: 'JosefinSans-Bold',
+                    }}
+                >
+                    ({customUserData?.userProvince})
                 </Text>            
             </Box>
         </Stack>
@@ -294,7 +345,7 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                         style={{
                             textAlign: 'center',
                             fontFamily: 'JosefinSans-Bold',
-                            fontSize: 16,
+                            fontSize: 14,
                             color: COLORS.ghostwhite,
                         }}
                     >
@@ -308,7 +359,7 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                             color: COLORS.ghostwhite,
                         }}
                     >
-                        (Produtores)
+                        Produtores
                     </Text>
                 </Box>
                 <Box w="20%">
@@ -316,7 +367,7 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                         style={{
                             textAlign: 'center',
                             fontFamily: 'JosefinSans-Bold',
-                            fontSize: 16,
+                            fontSize: 14,
                             color: COLORS.ghostwhite,
                         }}
                     >
@@ -330,7 +381,7 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                             color: COLORS.ghostwhite,
                         }}
                     >
-                        (Parcelas)
+                        Parcelas
                     </Text>
                 </Box>
 
@@ -343,7 +394,7 @@ export default function UserGoalEdit({ isGoalUpdateVisible, setIsGoalUpdateVisib
                         style={{
                             textAlign: 'center',
                             fontFamily: 'JosefinSans-Bold',
-                            fontSize: 16,
+                            fontSize: 14,
                             color: COLORS.ghostwhite,
                         }}
                     >

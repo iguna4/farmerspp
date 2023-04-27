@@ -818,7 +818,7 @@ export default function IndividualFarmerForm({
                         lineHeight: 25,
                     }}
                 >
-                    Pertence a alguma organização (Grupo, Associação, Cooperativa ou EMC)?
+                    Pertence a alguma organização (Associação, Cooperativa, EMC, ou Grupo)?
                 </Text>
             </FormControl.Label>
 

@@ -66,7 +66,6 @@ export default function FarmlandRegistration ({ route, navigation }) {
     const user = useUser()
     const customUserData = user?.customData;
     const [farmlandId, setFarmlandId] = useState('');
-    // const [farmlandMainData, setFarmlandMainData] = useState({ });
 
     const currentUserStat = useQuery('UserStat').filtered("userId == $0", customUserData?.userId)[0];
     const farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
@@ -81,7 +80,6 @@ export default function FarmlandRegistration ({ route, navigation }) {
         return ;
     }
     
-
     const [isCoordinatesModalVisible, setIsCoordinatesModalVisible] = useState(false);
     const [loadingButton, setLoadingButton] = useState(false);
 
@@ -140,8 +138,6 @@ export default function FarmlandRegistration ({ route, navigation }) {
     const [errors, setErrors] = useState({});
     
     // // ---------------------------------------------
-
-
 
 
     const toggleOverlay = () => {
@@ -265,19 +261,6 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
     }, [realm, farmlandId, farmland]);
 
-    // check if all trees have been counted in the blocks
-    // const checkTreesConformity = (farmlandId, realm)=>{
-    //     console.log('farmlandId:', farmlandId);
-    //     const farmland = realm.objectForPrimaryKey('Farmland', farmlandId?.toString());
-
-    //     if (farmland){
-    //         const blocksTrees = farmland?.blocks?.map(block=>parseInt(block?.trees))?.reduce((acc, el)=>acc + el, 0);
-    //         const totalTrees = parseInt(farmland?.trees); 
-    //         return blocksTrees === totalTrees;       
-    //     }
-    //     return false;
-
-    // }
 
     const checkBlockConformity = (farmlandId, realm) =>{
 
@@ -314,6 +297,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
             return false;
         }
+        // this block of code is no longer used
+        // the blocksAreas and totalAreas are not longer compared to each other at this point of the logic
         if (blocksAreas > totalArea){
             setAlert(true);
             setTitleAlert(errorMessages.blockAreaConformityError.title);
@@ -617,7 +602,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
             show={errorAlert}
             showProgress={false}
             title="Dados Obrigatórios"
-            message="Os campos obrigatórios devem ser BEM preenchidos!"
+            message="Os campos obrigatórios devem ser bem preenchidos!"
             closeOnTouchOutside={false}
             closeOnHardwareBackPress={false}
             showCancelButton={false}
@@ -704,16 +689,12 @@ export default function FarmlandRegistration ({ route, navigation }) {
             showConfirmButton={showConfirmButton}
             cancelText={cancelText}
             confirmText={confirmText}
-            cancelButtonColor={COLORS.main}
-            confirmButtonColor={(logFlag?.includes('inconsistencies') || logFlag?.includes('no blocks') ) ? COLORS.danger : COLORS.danger}
+            cancelButtonColor={COLORS.danger}
+            confirmButtonColor={(logFlag?.includes('inconsistencies') || logFlag?.includes('no blocks') ) ? COLORS.main : COLORS.main}
             onCancelPressed={()=>{
-                setAlert(false);
-            }}
-            onConfirmPressed={() => {
                 if (logFlag?.includes('inconsistencies') || logFlag?.includes('no blocks')){
                     try {
                         invalidateFarmland(farmlandId, invalidationMessage, realm);
-                        
                         // navigation.goBack();
                         navigateBack();
                     }
@@ -721,6 +702,19 @@ export default function FarmlandRegistration ({ route, navigation }) {
                         console.log('could not finish invalidation task: ', { cause: error });
                     }
                 }
+                setAlert(false);
+            }}
+            onConfirmPressed={() => {
+                // if (logFlag?.includes('inconsistencies') || logFlag?.includes('no blocks')){
+                //     try {
+                //         invalidateFarmland(farmlandId, invalidationMessage, realm);
+                //         // navigation.goBack();
+                //         navigateBack();
+                //     }
+                //     catch(error){
+                //         console.log('could not finish invalidation task: ', { cause: error });
+                //     }
+                // }
                 setAlert(false);
             }}
         />
@@ -806,7 +800,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     </Text>  
                 </Box>
                 <Center w="15%">
-                    <FontAwesomeIcon icon={faTree} size={35} color="grey" />
+                    <FontAwesomeIcon icon={faTree} size={30} color="grey" />
                 </Center>
                 <Box w="5%"></Box>
             </Stack>
@@ -851,6 +845,9 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 <CustomInput
                     width="100%"
                     type="text"
+                    maxLength={50}
+                    multiline={true}
+                    autoFocus={true}
                     placeholder="Descrição da localização"
                     value={description}
                     onChangeText={newDescription=>{
@@ -1004,9 +1001,9 @@ export default function FarmlandRegistration ({ route, navigation }) {
     <Box w="100%"
         style={{
             backgroundColor: COLORS.mediumseagreen,
-            // borderTopLeftRadius: 20,
-            // borderTopRightRadius: 20,
-            marginTop: 40,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            marginTop: 30,
             padding: 10,
             position: 'relative',
             top: -5,
@@ -1024,7 +1021,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
             }}
         >{ownerName}</Text>
 
-        <Box
+        {/* <Box
             style={{
                 position: 'absolute',
                 top: 6,
@@ -1038,7 +1035,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
             }}
         >
             <Icon name="approval" size={30} color={COLORS.mediumseagreen} />
-        </Box>
+        </Box> */}
     </Box>
 
 
@@ -1148,7 +1145,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
         <Text
             style={{
-                color: COLORS.black,
+                color: COLORS.grey,
                 fontSize: 14,
                 fontFamily: 'JosefinSans-Regular',                
             }}
@@ -1172,12 +1169,12 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 <Box
                     style={{
                         borderBottomWidth: 2,
-                        borderBottomColor: COLORS.mediumseagreen,
+                        borderBottomColor: COLORS.main,
                     }}
                 >
                     <Box w="100%"
                         style={{
-                            backgroundColor: COLORS.mediumseagreen,
+                            backgroundColor: COLORS.main,
                             paddingVertical: 3,
                             paddingHorizontal: 6,
                             flexDirection: 'row',
@@ -1356,19 +1353,19 @@ export default function FarmlandRegistration ({ route, navigation }) {
                         alignItems: 'center',
                         borderRadius: 100,
                         borderWidth: 2,
-                        borderColor: COLORS.mediumseagreen,
+                        borderColor: !farmland ? COLORS.mediumseagreen : COLORS.main,
                         padding: 4,
             
                     }}
                 >
 
-                    <Icon name={!farmland ? "add" : "add"} size={25} color={COLORS.mediumseagreen} />
+                    <Icon name={!farmland ? "add" : "add"} size={25} color={!farmland ? COLORS.mediumseagreen : COLORS.main} />
                     <Text
                         style={{
-                            color: COLORS.mediumseagreen,
-                            fontSize: 18,
+                            color: !farmland ? COLORS.mediumseagreen : COLORS.main,
+                            fontSize: 16,
                             fontFamily: 'JosefinSans-Bold',
-                            paddingLeft: 5,
+                            // paddingLeft: 3,
                         }}
                     >
                         {!farmland ? "Adicionar Pomar" : "Adicionar Parcela"}
@@ -1403,7 +1400,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                         }}
                     >
                     <Text
-                        style={{ fontSize: 18, color: COLORS.red, fontFamily: 'JosefinSans-Bold', }}
+                        style={{ fontSize: 16, color: COLORS.red, fontFamily: 'JosefinSans-Bold', }}
                     >
                         Concluir Registo
                     </Text>
@@ -1485,8 +1482,9 @@ export default function FarmlandRegistration ({ route, navigation }) {
             isCoordinatesModalVisible={isCoordinatesModalVisible}
             setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}
             farmlandId={farmlandId}
-            // farmerItem={{ flag: flag, }} // just for navigation purpose
-            flag={'farmland'}           
+            flag={'farmland'}      
+            farmlandOwnerType={flag}     
+            ownerId={ownerId}
         />
       </Box>
       </ScrollView>

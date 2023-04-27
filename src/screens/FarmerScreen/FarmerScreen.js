@@ -135,8 +135,8 @@ export default function FarmerScreen ({ route, navigation }) {
 
           <Pressable
                 onPress={()=>{
-                  navigation.goBack();
-                  setRefresh(!refresh);
+                  navigation.navigate('Farmers');
+                  // setRefresh(!refresh);
                 }}
                     style={{
                         position: 'absolute',

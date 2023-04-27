@@ -10,13 +10,17 @@ function SuccessAlert({
     isCoordinatesModalVisible, 
     setIsCoordinatesModalVisible, 
     farmlandId,
-    farmerItem,
-    // navigateBack,
-    flag,
+    farmerItem, // an object with 3 properties: ownerId, ownerName and, flag=Individuo/Grupo/Instituicao
+    farmlandOwnerType, // the farmland owner type (Farmer, Group or Institution)
+    ownerId, // the ownerId (farmland owner) is used after a successful farmland registration
+    flag, // the flag here refers to the resourceType (farmer= Single, Group or Institution); (farmland)
     }) {
 
     const navigation = useNavigation();
 
+
+    // after any successful actor/farmland registration
+    // the backward icon takes the user back to the respective registered actor main screen
     const navigateBack = ()=>{
         if (flag === 'farmer'){
             if (farmerItem.flag === 'Grupo'){
@@ -34,10 +38,26 @@ function SuccessAlert({
                     ownerId: farmerItem.ownerId,
                 });
             }
-
         }
-        else if(flag === 'farmland') {
-
+        else if(flag === 'farmland') { 
+            // after a successful farmland registration
+            // find out which actor type is the owner of the farmland
+            // take the user back to the current actor screen
+            if (farmlandOwnerType === 'Grupo'){
+                navigation.navigate('Group', {
+                    ownerId: ownerId,
+                });
+            }
+            else if (farmlandOwnerType === 'Indivíduo'){
+                navigation.navigate('Farmer', {
+                    ownerId: ownerId,
+                });
+            }
+            else if(farmlandOwnerType === 'Instituição') {
+                navigation.navigate('Institution', {
+                    ownerId: ownerId,
+                });
+            }
         }
     }
 
@@ -75,21 +95,12 @@ function SuccessAlert({
                                 alignItems: 'center',
                             }}
                         >
-                        <Icon 
-                            name="arrow-back-ios" 
-                            color={COLORS.main}
-                            size={25}
-                            // onPress={()=>{}}
-                        /> 
-                        {/* <Text
-                            style={{
-                                color: COLORS.main,
-                                fontFamily: 'JosefinSans-Bold',
-                                marginLeft: -10,
-                            }}
-                        >
-                            Voltar
-                        </Text> */}
+                            <Icon 
+                                name="arrow-back-ios" 
+                                color={COLORS.main}
+                                size={25}
+                                // onPress={()=>{}}
+                            /> 
                         </Pressable>
                     </Box>
                     <Box w="100%">

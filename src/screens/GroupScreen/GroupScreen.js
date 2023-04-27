@@ -123,9 +123,9 @@ export default function GroupScreen ({ route, navigation }) {
         >
           <Box>
           <Pressable
-                onPress={()=>navigation.goBack()
-                  // .navigate('Farmers')
-                }
+                onPress={()=>{
+                  navigation.navigate('Farmers');
+                }}
                     style={{
                         position: 'absolute',
                         left: 0,

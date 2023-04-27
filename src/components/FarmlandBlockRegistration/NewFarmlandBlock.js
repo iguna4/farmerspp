@@ -29,8 +29,6 @@ import { CustomInput } from "../Inputs/CustomInput";
 
 import { v4 as uuidv4 } from 'uuid';
 
-// import { useUser } from '@realm/react';
-
 import { TouchableOpacity } from "react-native";
 import validateBlockData from "../../helpers/validateBlockData";
 import AwesomeAlert from "react-native-awesome-alerts";
@@ -225,8 +223,6 @@ export default function NewFarmlandBlock({
 
     }, [ clones, plantTypes]);
 
-    // console.log('errors:', errors);
-
 
  return (
   <Overlay 
@@ -248,10 +244,6 @@ export default function NewFarmlandBlock({
     <View
     style={{ 
         width: '100%', 
-        // marginBottom: 10, 
-        // flex: 1,
-        // height: '80%',
-        // flexDirection: 'row',
     }}
     >
         <View
@@ -266,8 +258,6 @@ export default function NewFarmlandBlock({
         <View
             style={{ 
                 width: '100%', 
-                // marginBottom: 10, 
-                // flex: 1,
                 flexDirection: 'row',
             }}
         >
@@ -278,7 +268,6 @@ export default function NewFarmlandBlock({
                         color: COLORS.black,
                         fontSize: responsiveFontSize(2),
                         fontFamily: 'JosefinSans-Bold',
-
                     }}
                 >
                     Insuficiência da área
@@ -378,7 +367,6 @@ export default function NewFarmlandBlock({
                     fontFamily: 'JosefinSans-Regular',
                     textAlign: 'center',
                     lineHeight: 20,
-                    // height: '30%',
                 }}
             >
                 Este pomar não tem área suficiente para uma nova parcela de cajueiros.
@@ -416,9 +404,6 @@ export default function NewFarmlandBlock({
                         paddingVertical: 4,
                         borderColor: COLORS.mediumseagreen,
                         flexDirection: 'row',
-                        // justifyContent: 'center',
-                        // alignItems: 'center',
-
                     }}
                 >
                     <Icon name="arrow-back" size={28} color={COLORS.mediumseagreen}  />
@@ -428,8 +413,6 @@ export default function NewFarmlandBlock({
                             color: COLORS.mediumseagreen,
                             fontSize: 18,
                             fontFamily: 'JosefinSans-Bold',
-                            // paddingVertical: 4,
-
                         }}
                     >Voltar</Text>
                 </View>
@@ -607,7 +590,7 @@ export default function NewFarmlandBlock({
                             textAlign: 'right',
                         }}
                     >
-                        {farmland?.blocks?.length} blocos;             
+                        {farmland?.blocks?.length} {farmland?.blocks?.length <= 1 ? 'parcela': 'parcelas'}             
                     </Text>
                     <Text
                         style={{

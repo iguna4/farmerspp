@@ -82,17 +82,6 @@ export default function FarmlandBlockRegistration({
     const [treeRedFlag, setTreeRedFlag] = useState(false);
     const [areaRedFlag, setAreaRedFlag] = useState(false);
 
-    // ------------------------------------------
-    // const [alert, setAlert] = useState(false);
-    // const [messageAlert, setMessageAlert] = useState('');
-    // const [titleAlert, setTitleAlert] = useState('');
-    // const [cancelText, setCancelText] = useState('');
-    // const [confirmText, setConfirmText] = useState('');
-    // const [showCancelButton, setShowCancelButton] = useState(false);
-    // const [showConfirmButton, setShowConfirmButton] = useState(false);
-
-    // const [errors, setErrors] = useState({});
-    
     // ---------------------------------------------
    
     const toggleOverlay = () => {
@@ -143,7 +132,7 @@ export default function FarmlandBlockRegistration({
         let mergedSameTypeTrees = [];
         const filteredPlantTypes = plantTypes.filter(plantType=>!plantType.includes('enxer'));
         if (plantTypes.filter(plantType=>plantType.includes('enxer')).length > 0){
-            selectedClones = clones?.map(clone=>`Clone: ${clone}`);
+            selectedClones = clones?.filter(clone => clone !== 'Outro')?.map(clone=>`Clone: ${clone}`);
             mergedSameTypeTrees = filteredPlantTypes.concat(selectedClones);
         }
         else{
@@ -836,6 +825,8 @@ export default function FarmlandBlockRegistration({
             : <FormControl.HelperText></FormControl.HelperText>
             }     
         </FormControl>
+
+{clones?.find(clone => clone === "Outro") &&
         <Box w="100%" alignItems={"center"} style={{
             flexDirection: 'row'
         }}>
@@ -913,7 +904,7 @@ export default function FarmlandBlockRegistration({
             </Box>
 
         </Box>
-
+}
         </>
     )        
     }
@@ -922,19 +913,13 @@ export default function FarmlandBlockRegistration({
     <Box 
         w="100%" 
         my="5"
-        style={{ 
-            // borderWidth: 2, 
-            // borderColor: COLORS.mediumseagreen,
-            // // borderTopEndRadius: 20,
-            // borderTopLeftRadius: 20,
-            // borderTopRightRadius: 20,
-
-        }}
     >
       
       {
-        (errors?.sameTypeTrees) && <Box style={{
+        (errors?.sameTypeTrees) && 
+        <Box style={{
                 flexDirection: 'row',
+                paddingHorizontal: 10,
             }}>
                 <Icon name="error-outline" size={26} color="red" />
                 <Text
@@ -952,14 +937,6 @@ export default function FarmlandBlockRegistration({
         <Box 
             w="100%"
             mb="2"
-            style={{
-                // backgroundColor: COLORS.mediumseagreen,
-                // borderTopLeftRadius: 20,
-                // borderTopRightRadius: 20,
-                // borderWidth: 2, 
-                // borderColor: COLORS.mediumseagreen,
-
-            }}
         >
             <Stack direction="row" space={2} >
                 <Box w="65%">
@@ -985,16 +962,13 @@ export default function FarmlandBlockRegistration({
         </Box>
 
 
-        { sameTypeTreesList?.map((sameTypeTree, index)=>(
+        {
+        // sameTypeTreesList?.length > 1 &&
+         sameTypeTreesList?.map((sameTypeTree, index)=>(
                 <Box 
                     w="100%" 
                     key={index} 
-                    // px="5" 
                     mb="1"
-                    style={{
-                        // borderColor: COLORS.lightgrey,
-                        // borderWidth: 2,
-                    }}
                 >
                     <Stack 
                         direction="row" 
@@ -1039,6 +1013,66 @@ export default function FarmlandBlockRegistration({
                     </Stack>
                 </Box>
             ))
+        //     :
+        //     sameTypeTreesList?.length === 1 ?
+        //      <Box 
+        //         w="100%" 
+        //         key={index} 
+        //         mb="1"
+        //     >
+        //     <Stack 
+        //         direction="row" 
+        //         w="100%" 
+        //         space={2} 
+        //         // mt="1"
+        //     >
+        //         <Box w="65%"
+        //             style={{ 
+        //                 justifyContent: 'center',
+        //             }}
+        //         >
+        //             <Text
+        //                 style={{
+        //                     fontSize: 16,
+        //                     fontFamily: 'JosefinSans-Regular',
+        //                     color: COLORS.grey,
+        //                 }}
+        //             >
+        //                 <Icon name="arrow-forward" color={COLORS.grey} size={10} /> {sameTypeTreesList[0]?.treeType}
+        //             </Text>
+        //         </Box>
+        //         <Box w="35%">
+        //         <Text
+        //             style={{
+        //                 fontSize: 16,
+        //                 fontFamily: 'JosefinSans-Regular',
+        //                 color: COLORS.grey,
+        //             }}
+        //         >
+        //             {sameTypeTreesList[0]?.trees}
+        //             </Text>
+        //             {/* <CustomInput
+        //                 width="90%"
+        //                 textAlign="center"
+        //                 keyboardType="numeric"
+        //                 placeholder="Cajueiros"
+        //                 value={sameTypeTree?.trees}
+        //                 onChangeText={newTrees=>{
+        //                     setErrors(prev=>({...prev, sameTypeTrees: ''}));
+        //                     setSameTypeTreesList(sameTypeTreesList.map((object)=>{
+        //                         if (object?.treeType === sameTypeTree?.treeType){
+        //                             object.trees = newTrees;
+        //                         }
+        //                         return object;
+        //                     }));
+
+        //                 }}
+        //             /> */}
+        //         </Box>
+        //     </Stack>
+        // </Box>
+        // :
+        // <></>
         }
     </Box>
 }
@@ -1048,7 +1082,7 @@ export default function FarmlandBlockRegistration({
 
     </View>
   <Button
-      title="Salvar Bloco"
+      title="Salvar Parcela"
       titleStyle={{
           color: COLORS.ghostwhite,
           fontFamily: 'JosefinSans-Bold',

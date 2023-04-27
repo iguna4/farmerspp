@@ -943,7 +943,7 @@ const villages = {
         "Dulanha",
         "Sabelua",
     ],
-    "Mocuba": [
+    "Mocuba (Sede)": [
         "Mocuba (Cidade)",
         "Munhiba", 
     ],

@@ -265,6 +265,20 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
     }, [realm, farmlandId, farmland]);
 
+    // check if all trees have been counted in the blocks
+    // const checkTreesConformity = (farmlandId, realm)=>{
+    //     console.log('farmlandId:', farmlandId);
+    //     const farmland = realm.objectForPrimaryKey('Farmland', farmlandId?.toString());
+
+    //     if (farmland){
+    //         const blocksTrees = farmland?.blocks?.map(block=>parseInt(block?.trees))?.reduce((acc, el)=>acc + el, 0);
+    //         const totalTrees = parseInt(farmland?.trees); 
+    //         return blocksTrees === totalTrees;       
+    //     }
+    //     return false;
+
+    // }
+
     const checkBlockConformity = (farmlandId, realm) =>{
 
         const farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
@@ -762,34 +776,10 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     name="arrow-back-ios" 
                     color={COLORS.main}
                     size={wp('8%')}
-                    // onPress={()=>{}}
                 /> 
-                {/* <Text
-                    style={{
-                        color: COLORS.main,
-                        fontFamily: 'JosefinSans-Bold',
-                        marginLeft: -10,
-                    }}
-                >
-                    Voltar
-                </Text> */}
+
             </Pressable>
 
-                    {/* <Icon 
-                        onPress={()=>{
-                            if (farmlandId ){
-                                if(checkBlockConformity(farmlandId, realm)){
-                                    setIsCoordinatesModalVisible(true)
-                                }
-                            }
-                            else {
-                                navigation.goBack();
-                            }   
-                        }}
-                        name="arrow-back-ios" 
-                        color={COLORS.main}
-                        size={35}
-                    /> */}
                 </Box>
                 <Box w="100%" alignItems={'center'} >
                     <Text 
@@ -835,7 +825,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
             <Text style={styles.headerText}>
                 Registo de pomar
             </Text>
-            <Text
+        {  !farmland &&
+          <Text
                 style={{
                     color: COLORS.red,
                     fontSize: 15,
@@ -845,6 +836,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
             >
                 Introduza dados genéricos deste pomar.
             </Text>
+        }
           </Box>
 
 
@@ -1340,6 +1332,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
     }
 
 
+{ 
         <Box>
             <TouchableOpacity
                 onPress={()=>{
@@ -1369,14 +1362,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     }}
                 >
 
-                    {/* <Box 
-                        style={{
-                            borderRadius: 100,
-                            backgroundColor: COLORS.mediumseagreen,
-                        }}
-                    > */}
                     <Icon name={!farmland ? "add" : "add"} size={25} color={COLORS.mediumseagreen} />
-                    {/* </Box> */}
                     <Text
                         style={{
                             color: COLORS.mediumseagreen,
@@ -1391,7 +1377,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 </Box>
             </TouchableOpacity>
         </Box>
-
+}
     </Box>
 
 

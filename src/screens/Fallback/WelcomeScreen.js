@@ -248,17 +248,6 @@ export default function WelcomeScreen () {
                         }}
                     source={require('../../../assets/images/iamLogo2.png')}
                     />
-                {/* <Text
-                    style={{
-                        color: COLORS.main,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingTop: 6,
-                        textAlign: 'center',
-                    }}
-                    >
-                    Instituto de Amêndoas de Moçambique, IP
-                </Text> */}
                 <Text
                     style={{
                     color: COLORS.main,
@@ -280,21 +269,12 @@ export default function WelcomeScreen () {
                 minHeight: '100%',
             }}
     >
-    { 
-    // isLoggingIn &&        
-    //     <Center mt="1/4">
-    //         <Text style={styles.signInTitle}>
-    //             Connect Caju 
-    //         {/* {new Date().getFullYear()} */}
-    //         </Text>
-    //     </Center>
-    }
+
         <Box my="6" pl="4">
         {  isLoggingIn ?
         <Box>
             <Text style={styles.signInTitle}>
                 Connect Caju 
-            {/* {new Date().getFullYear()} */}
             </Text>
         </Box>
             :
@@ -335,8 +315,8 @@ export default function WelcomeScreen () {
             showConfirmButton={showConfirmButton}
             cancelText={cancelText}
             confirmText={confirmText}
-            cancelButtonColor="#DD6B55"
-            confirmButtonColor={COLORS.danger}
+            cancelButtonColor={COLORS.danger}
+            confirmButtonColor={COLORS.main}
             onCancelPressed={()=>{
                 setAlert(false);
                 seterrorFlag(null);

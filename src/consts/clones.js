@@ -65,6 +65,7 @@ const clones = [
 "PJJEM2",
 "PJJEM6",
 "2.7NASS",
+"Outro",
 ]
 
 const cloneList = clones.map((clone, index)=>({key: `${index}`, value: `${clone}`}));

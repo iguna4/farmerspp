@@ -14,7 +14,7 @@ export const groups = [
     "Associação",
     "Cooperativa",
     "Grupo de Produtores",
-    "Outro",
+    "Escola na Machamba do Camponês",
 ];
 
 export const publicInstitutions = [

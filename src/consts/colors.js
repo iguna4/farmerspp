@@ -19,6 +19,10 @@ const COLORS = {
     emerald: '#50c878',
     pantone: '#008759',
     verylightgrey: '#f7f7f7',
+    darkyGreen: '#013220',
+    lightGreen: '#99EDC3',
+    salmon: '#ED7014',
+    marron: '#800000',
 };
 
 

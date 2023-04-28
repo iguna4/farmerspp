@@ -182,6 +182,10 @@ function MemberGroupItem ({
 
  }, [ currentGroup ]);
 
+
+
+ 
+
  return (
   <Animated.View
       exiting={LightSpeedOutRight}
@@ -329,7 +333,7 @@ export default function MembershipScreen({ route, navigation }) {
 //  const [filteredGroups, setFilteredGroups] = useState([]);
 
  const updateSearch = (search) => {
-  setSearch(search);
+  setSearchText(search);
 };
 
 
@@ -404,7 +408,11 @@ export default function MembershipScreen({ route, navigation }) {
         >
           <Box>
           <Pressable
-                onPress={()=>navigation.goBack()
+                onPress={()=>{
+                  navigation.navigate('Farmer', {
+                    ownerId: farmerId,
+                  })
+                }
                 }
                     style={{
                         position: 'absolute',

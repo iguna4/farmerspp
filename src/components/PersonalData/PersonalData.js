@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, TouchableOpacity, TextInput, Text, ScrollView, SafeAreaView, FlatList } from 'react-native';
+import { View, TouchableOpacity, TextInput, Text, ScrollView, InteractionManager, SafeAreaView, FlatList } from 'react-native';
 import { Box,  FormControl, Stack, } from 'native-base';
 import { Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 import { v4 as uuidv4 } from 'uuid';
-// import Textarea from 'react-native-textarea';
+import { useFocusEffect } from '@react-navigation/native';
 import {  
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -38,6 +38,7 @@ import { realmContext } from '../../models/realmContext';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { resourceValidation } from '../../consts/resourceValidation';
 import validateInvalidationMessage from '../../helpers/validateInvalidationMessage';
+import CustomActivityIndicator from '../ActivityIndicator/CustomActivityIndicator';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 
@@ -193,6 +194,29 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
 
         clearInterval(interval);
     }, [ realm, user, message, invalidationMotives, autoRefresh, isCollapseOn ]);
+
+
+    const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
+
+    useFocusEffect(
+      React.useCallback(() => {
+        const task = InteractionManager.runAfterInteractions(() => {
+          setLoadingActivityIndicator(true);
+        });
+        return () => task.cancel();
+      }, [])
+    );
+  
+  
+  
+    if (loadingActivitiyIndicator) {
+      return <CustomActivityIndicator
+          loadingActivitiyIndicator={loadingActivitiyIndicator}
+          setLoadingActivityIndicator={setLoadingActivityIndicator}
+      />
+    }
+
+
 
     return (
         <>
@@ -969,7 +993,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
             </Box>
         </Stack>
         { farmer?.geolocation?.latitude && farmer?.geolocation?.longitude &&
-<>
+    <>
         <Stack w="100%" direction="row">
             <Box w="50%">
                 <Text                     
@@ -1018,13 +1042,9 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                 </Text>
             </Box>
         </Stack>
-</>
-}
-
-
+    </>
+    }
     </Stack>
-
-
 
     <Box  py="4">
         <CustomDivider />

@@ -79,6 +79,9 @@ export default function FarmerScreen ({ route, navigation }) {
     // }, [ navigation ]);
 
 
+    
+
+
 
 
     return (

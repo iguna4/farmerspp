@@ -12,10 +12,11 @@ import COLORS from '../consts/colors';
   addedFarmerToGroup: ({ text1, props})=>(
     <View style={{ 
       minHeight: 60, 
-      width: '100%', 
-      backgroundColor: COLORS.ghostwhite,
+      width: '90%', 
+      backgroundColor:  COLORS.lightGreen,
       paddingHorizontal: 5,
      flexDirection: 'row',
+     borderRadius: 20,
     }}>
         <View
          style={{
@@ -26,7 +27,7 @@ import COLORS from '../consts/colors';
         >
           <Icon 
           name="check-circle-outline" 
-          color={COLORS.moderatelimegreen} 
+          color={COLORS.darkyGreen} 
           size={40} 
         />
         </View>
@@ -35,7 +36,7 @@ import COLORS from '../consts/colors';
             style={{
               fontSize: 16,
               fontFamily: 'JosefinSans-Bold',
-              color: COLORS.moderatelimegreen,
+              color: COLORS.darkyGreen,
               paddingHorizontal: 5,
             }}
           >{text1}</Text>
@@ -43,7 +44,7 @@ import COLORS from '../consts/colors';
             style={{
               fontSize: 15,
               fontFamily: 'JosefinSans-Regular',
-              color: COLORS.moderatelimegreen,
+              color: COLORS.darkyGreen,
               paddingRight: 5,
             }}
           >{props.message}</Text>
@@ -54,10 +55,11 @@ import COLORS from '../consts/colors';
   removedFarmerFromGroup: ({ text1, props})=>(
    <View style={{ 
      minHeight: 60, 
-     width: '100%', 
-     backgroundColor: COLORS.ghostwhite,
+     width: '90%', 
+     backgroundColor: COLORS.salmon,
      paddingHorizontal: 5,
     flexDirection: 'row',
+    borderRadius: 20,
    }}>
        <View
         style={{
@@ -66,14 +68,14 @@ import COLORS from '../consts/colors';
          padding: 5,
         }}
        >
-         <Icon name="warning" color={COLORS.danger} size={40} />
+         <Icon name="warning" color={COLORS.marron} size={40} />
        </View>
        <View>
          <Text
            style={{
              fontSize: 16,
              fontFamily: 'JosefinSans-Bold',
-             color: COLORS.danger,
+             color: COLORS.marron,
              paddingRight: 5,
            }}
          >{text1}</Text>
@@ -81,7 +83,7 @@ import COLORS from '../consts/colors';
            style={{
              fontSize: 15,
              fontFamily: 'JosefinSans-Regular',
-             color: COLORS.danger,
+             color: COLORS.marron,
              paddingHorizontal: 5,
            }}
          >{props.message}</Text>

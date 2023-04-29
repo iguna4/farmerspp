@@ -12,11 +12,11 @@ import COLORS from '../consts/colors';
   addedFarmerToGroup: ({ text1, props})=>(
     <View style={{ 
       minHeight: 60, 
-      width: '90%', 
+      width: '100%', 
       backgroundColor:  COLORS.lightGreen,
       paddingHorizontal: 5,
      flexDirection: 'row',
-     borderRadius: 20,
+     borderRadius: 10,
     }}>
         <View
          style={{
@@ -55,11 +55,11 @@ import COLORS from '../consts/colors';
   removedFarmerFromGroup: ({ text1, props})=>(
    <View style={{ 
      minHeight: 60, 
-     width: '90%', 
+     width: '100%', 
      backgroundColor: COLORS.salmon,
      paddingHorizontal: 5,
     flexDirection: 'row',
-    borderRadius: 20,
+    borderRadius: 10,
    }}>
        <View
         style={{
@@ -90,6 +90,4 @@ import COLORS from '../consts/colors';
        </View>
    </View>
  )
-
-
 }

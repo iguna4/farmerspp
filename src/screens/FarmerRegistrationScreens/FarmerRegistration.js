@@ -101,8 +101,8 @@ export default function FarmerRegistration({ route, navigation }) {
     const [groupName, setGroupName] = useState('');
     const [groupAdminPost, setGroupAdminPost] = useState('');
     const [groupVillage, setGroupVillage] = useState('');
-    const [groupManagerName, setGroupManagerName] = useState('');
-    const [groupManagerPhone, setGroupManagerPhone] = useState('');
+    // const [groupManagerName, setGroupManagerName] = useState('');
+    // const [groupManagerPhone, setGroupManagerPhone] = useState('');
     const [groupOperatingLicence, setGroupOperatingLicence] = useState('');
     const [groupNuit, setGroupNuit] = useState('');
     const [groupAffiliationYear, setGroupAffiliationYear] = useState('');
@@ -251,8 +251,8 @@ export default function FarmerRegistration({ route, navigation }) {
                 groupDistrict: customUserData?.userDistrict,
                 groupAdminPost,
                 groupVillage,
-                groupManagerName,
-                groupManagerPhone,
+                // groupManagerName,
+                // groupManagerPhone,
             }
             if (!validateGroupFarmerData(farmerData, errors, setErrors, farmerType)) {
                 setErrorAlert(true)
@@ -354,7 +354,7 @@ export default function FarmerRegistration({ route, navigation }) {
                 closeOnHardwareBackPress={false}
                 showCancelButton={false}
                 showConfirmButton={true}
-                confirmText="   OK!   "
+                confirmText="   OK   "
                 confirmButtonColor="#DD6B55"
                 onConfirmPressed={() => {
                     setErrorAlert(false);
@@ -548,10 +548,10 @@ farmerType === "Instituição" && (
         setGroupAdminPost={setGroupAdminPost}
         groupVillage={groupVillage}
         setGroupVillage={setGroupVillage}
-        groupManagerName={groupManagerName}
-        setGroupManagerName={setGroupManagerName}
-        groupManagerPhone={groupManagerPhone}
-        setGroupManagerPhone={setGroupManagerPhone}
+        // groupManagerName={groupManagerName}
+        // setGroupManagerName={setGroupManagerName}
+        // groupManagerPhone={groupManagerPhone}
+        // setGroupManagerPhone={setGroupManagerPhone}
         groupOperatingLicence={groupOperatingLicence}
         setGroupOperatingLicence={setGroupOperatingLicence}
         groupNuit={groupNuit}
@@ -663,8 +663,8 @@ farmerType === "Instituição" && (
                 setGroupAffiliationYear={setGroupAffiliationYear} 
                 setGroupAdminPost={setGroupAdminPost}
                 setGroupVillage={setGroupVillage}
-                setGroupManagerName={setGroupManagerName}
-                setGroupManagerPhone={setGroupManagerPhone}
+                // setGroupManagerName={setGroupManagerName}
+                // setGroupManagerPhone={setGroupManagerPhone}
                 setGroupOperatingLicence={setGroupOperatingLicence}
                 setGroupNuit={setGroupNuit}
                 setGroupMembersNumber={setGroupMembersNumber}

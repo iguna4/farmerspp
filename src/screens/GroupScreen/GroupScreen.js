@@ -268,7 +268,7 @@ export default function GroupScreen ({ route, navigation }) {
                   top: -50,
                 }}
                 >
-                    {farmer?.manager?.fullname}
+                    {farmer?.name} 
                 </Text>
                 <Text
                 style={{
@@ -281,7 +281,8 @@ export default function GroupScreen ({ route, navigation }) {
                   top: -50,
                 }}                
                 >
-                    (Responsável)</Text>
+                   {farmer?.type}
+                </Text>
     
     
     </Box>

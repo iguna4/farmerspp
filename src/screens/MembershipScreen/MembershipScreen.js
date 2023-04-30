@@ -31,6 +31,8 @@ import {
 } from 'react-native-responsive-dimensions';
 import Animated, { Layout, LightSpeedInLeft, LightSpeedOutRight, } from 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import COLORS from '../../consts/colors';
@@ -69,23 +71,23 @@ function MemberGroupItem ({
     member = membership[0];
  }
 
-//  console.log('member1:', member);
-
+ 
  const [isFarmerAlreadyAdded, setIsFarmerAlreadyAdded] = useState(false);
+
 
  const showRemovedFarmerToast = () => {
   Toast.show({
     type: 'removedFarmerFromGroup',
-    text1: `Remoção da ${currentGroup?.type}`,
-    props: { message: `Retirado da ${currentGroup?.type} ${currentGroup?.name}.`},
+    text1: `Retirada de ${currentGroup?.type}`,
+    props: { message: `Retirado de ${currentGroup?.type} ${currentGroup?.name}.`},
   });
  }
 
  const showAddedFarmerToast = () => {
   Toast.show({
     type: 'addedFarmerToGroup',
-    text1: `Adesão à ${currentGroup?.type}`,
-    props: { message: `Adicionado à ${currentGroup?.type} ${currentGroup?.name}.`},
+    text1: `Adesão a ${currentGroup?.type}`,
+    props: { message: `Adicionado a ${currentGroup?.type} ${currentGroup?.name}.`},
   });
  }
  // remove the farmer from the group
@@ -329,12 +331,14 @@ export default function MembershipScreen({ route, navigation }) {
  // this array of ids helps check whether the current farmer is already regitered in any of the groups
  const [countIdOccurrence, setCountIdOccurrence] = useState(0);
  // search an organization (group)
- const [searchText, setSearchText] = useState("");
-//  const [filteredGroups, setFilteredGroups] = useState([]);
 
- const updateSearch = (search) => {
-  setSearchText(search);
-};
+const [searchQuery, setSearchQuery] = useState("");
+const [selectedId, setSelectedId] = useState(null);
+const [isSearching, setIsSearching] = useState(false);
+
+const filtererdItems = groupsList.filter((item)=>{
+ return ((item.type.toLowerCase().includes(searchQuery.toLowerCase())) || (item.name.toLowerCase().includes(searchQuery.toLowerCase())))
+});
 
 
  const handleEndReached = ()=>{
@@ -406,120 +410,140 @@ export default function MembershipScreen({ route, navigation }) {
         <Stack
           direction="row" w="100%"
         >
-          <Box>
-          <Pressable
-                onPress={()=>{
+          <Box w="10%">
+            <Pressable
+              onPress={()=>{
+                if (isSearching){
+                  setIsSearching(false);
+                }
+                else {
                   navigation.navigate('Farmer', {
                     ownerId: farmerId,
                   })
                 }
-                }
-                    style={{
-                        position: 'absolute',
-                        left: -10,
-                        top: 5,
-                        flexDirection: 'row',
-                    }}
-                >
-                    <Icon 
-                        name="arrow-back-ios" 
-                        color={COLORS.main}
-                        size={wp('8%')}
-                    /> 
-                </Pressable>
+              }}
+              style={{
+                  position: 'absolute',
+                  left: -10,
+                  top: 5,
+                  flexDirection: 'row',
+              }}
+            >
+              <Icon 
+                  name="arrow-back-ios" 
+                  color={COLORS.main}
+                  size={wp('8%')}
+              /> 
+            </Pressable>
           </Box>
 
-          <Box w="100%" 
+          <Box w="90%" 
            style={{
-            alignItems:'center',
-            justifyContent: 'center',
-           }}
-          >
-            <Center w="90%"
+             alignItems:'center',
+             justifyContent: 'center',
+            }}
             >
-              <TextInput 
+      { isSearching ?
 
-                placeholder='procure um grupo'
+              <TextInput 
+                autoFocus={isSearching ? true : false}
+                placeholder='Procurar '
+                placeholderTextColor={COLORS.lightgrey}
                 style={{
                   width: '100%',
                   backgroundColor: COLORS.ghostwhite,
-                  borderRadius: 10,
-                  color: COLORS.black,
+                  borderRadius: 30,
+                  color: COLORS.grey,
+                  fontFamily: 'JosefinSans-Regular',
                   borderWidth: 1,
+                  textAlign:'left',
+                  paddingLeft: 20,
+                  fontSize: 16,
                   borderColor: COLORS.lightgrey,
                 }}
-                value={searchText}
-                onChangeText={(text)=>setSearchText(text)}
+                value={searchQuery}
+                onFocus={()=>{
+                  // setIsFocused(true);
+                }}
+                onEndEditing={()=>{
+                  // setIsFocused(false);
+                }}
+                onChangeText={(text)=>setSearchQuery(text)}
+
               />
-            </Center>
+              :
+              <Box 
+                w="100%" 
+              >
+              
+              <Box w="100%"
+              style={{
+                flexDirection: 'row',
+              }}
+              >
+              
+             <Box
+              w="80%"
+              style={{
+               justifyContent: 'center',
+              }}
+             >
+                   <Text
+                    style={{
+                     color: COLORS.black,
+                     fontSize: 15,
+                     fontFamily: 'JosefinSans-Bold',
+                    //  lineHeight: 20,
+                    }} 
+                  >
+                 
+                   {`${farmer?.names?.otherNames} ${farmer?.names?.surname}`}
+                  </Text>
+                    <Text
+                    style={{
+                     // paddingLeft: 10,
+                     color: countIdOccurrence === 0 ? COLORS.red : COLORS.main,
+                     fontSize: 14,
+                     fontFamily: 'JosefinSans-Regular',
+                    //  lineHeight: 20,
+                    }}
+                   >
+                    { countIdOccurrence === 0 ? "Marca a organização" : `aderiu a ${countIdOccurrence} ${countIdOccurrence === 1 ? "organização" : "organizações"}` }
+                 </Text>
+                </Box>
+            </Box>
+        
+             </Box>
+        }
           </Box>
+
+    { !isSearching &&
+          <Box
+            w="10%"
+            style={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+            }}
+          >
+            <TouchableOpacity
+              onPress={()=>{
+                setIsSearching(!isSearching);
+              }}
+            >
+              <FontAwesomeIcon 
+                icon={faMagnifyingGlass} 
+                size={28} 
+                color={COLORS.main}
+                rotation={90} 
+              />
+            </TouchableOpacity>
+          </Box>
+      }
 
         </Stack>
      </View>
-    <CustomDivider />
-     <Box 
-      w="100%" 
-      px="4" 
-      py="3"
-     >
- 
- <Box w="100%"
- style={{
-  paddingHorizontal: 5,
-  flexDirection: 'row',
- }}
->
 
-   <Box w="20%" 
-     style={{
-      justifyContent: 'center',
-      alignitems: 'center',
-     }}
-    >
-      <Avatar 
-        size={wp('16%')}
-        rounded
-        title={getInitials(farmer?.names?.surname)}
-        containerStyle={{ backgroundColor: COLORS.grey }}
-        source={{ uri: farmer.image ? farmer.image : 'htt://localhost/not-set-yet', }}
-      />
-     </Box>
-     <Box
-      w="80%"
-      style={{
-       marginLeft: 10,
-       justifyContent: 'center',
-       // alignitems: 'center',
-      }}
-     >
-           <Text
-            style={{
-             color: COLORS.black,
-             fontSize: 15,
-             fontFamily: 'JosefinSans-Bold',
-            //  lineHeight: 20,
-            }} 
-          >
-         
-           {`${farmer?.names?.otherNames} ${farmer?.names?.surname}`}
-          </Text>
-            <Text
-            style={{
-             // paddingLeft: 10,
-             color: countIdOccurrence === 0 ? COLORS.red : COLORS.main,
-             fontSize: 14,
-             fontFamily: 'JosefinSans-Regular',
-            //  lineHeight: 20,
-            }}
-           >
-            { countIdOccurrence === 0 ? "Marca a organização" : `aderiu a ${countIdOccurrence} ${countIdOccurrence === 1 ? "organização" : "organizações"}` }
-         </Text>
-        </Box>
-    </Box>
-
-     </Box>
-     
-     <CustomDivider />
 
      <Box 
             alignItems="stretch" 
@@ -541,7 +565,10 @@ export default function MembershipScreen({ route, navigation }) {
                 </Box>
               )}
               stickyHeaderHiddenOnScroll={true}
-              data={groupsList}
+              data={
+                // groupsList
+                filtererdItems
+              }
               keyExtractor={keyExtractor}
               onEndReached={handleEndReached}
               onEndReachedThreshold={0.1}

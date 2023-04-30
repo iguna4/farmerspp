@@ -41,8 +41,8 @@ export default function GroupModal (
         setGroupAffiliationYear, 
         setGroupAdminPost, 
         setGroupVillage,
-        setGroupManagerName, 
-        setGroupManagerPhone,
+        // setGroupManagerName, 
+        // setGroupManagerPhone,
         setGroupOperatingLicence, 
         setGroupNuit, 
         setGroupMembersNumber,
@@ -76,7 +76,7 @@ export default function GroupModal (
         affiliationYear,
         numberOfMembers,
         assets,
-        manager,
+        // manager,
         licence,
         nuit,
     } = farmerData;
@@ -93,7 +93,7 @@ export default function GroupModal (
             address,
             numberOfMembers,
             assets,
-            manager,
+            // manager,
             licence,
             nuit,
             userDistrict: customUserData?.userDistrict,
@@ -361,13 +361,13 @@ export default function GroupModal (
 }
 
 
-    <CustomDivider
+    {/* <CustomDivider
         marginVertical="1"
         thickness={1}
         bg="grey"
-    />
+    /> */}
 
-    <Stack direction="row" w="100%" my="1">
+    {/* <Stack direction="row" w="100%" my="1">
         <Box w="40%">
             <Text style={styles.keys}>Contacto:</Text>
         </Box>
@@ -383,7 +383,7 @@ export default function GroupModal (
             }
             </Text>
         </Box>
-    </Stack>
+    </Stack> */}
     <CustomDivider
         marginVertical="1"
         thickness={1}
@@ -435,8 +435,8 @@ export default function GroupModal (
                     setGroupAffiliationYear(''); 
                     setGroupAdminPost('');
                     setGroupVillage('');
-                    setGroupManagerName('');
-                    setGroupManagerPhone('');
+                    // setGroupManagerName('');
+                    // setGroupManagerPhone('');
                     setGroupOperatingLicence(''); 
                     setGroupNuit(''); 
                     setGroupMembersNumber('')

@@ -58,14 +58,14 @@ export const customizeItem = (farmersList, farmlandsList, serviceProviders,  cus
                                 _id: item?._id,
                                 operationalStatus: item?.operationalStatus,
                                 image: item?.image ? item?.image : 'htt://localhost/not-set-yet',
-                                imageAlt: getInitials(item?.manager.fullname),
+                                imageAlt: getInitials(item?.name),
                                 name: item?.name,
                                 type: item?.type,
-                                manager: item?.manager?.fullname,
-                                phone:
-                                        (item?.manager.phone && item?.manager.phone)
-                                                ? `${item?.manager.phone}`
-                                                : 'Nenhum',
+                                // manager: 'Nao indicado - customizeItem', //item?.manager?.fullname,
+                                // phone: '84444444',
+                                        // (item?.manager.phone && item?.manager.phone)
+                                        //         ? `${item?.manager.phone}`
+                                        //         : 'Nenhum',
                                 assets: assets,
                                 creationYear: item?.creationYear,
                                 legalStatus: item?.legalStatus,

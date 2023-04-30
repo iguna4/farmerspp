@@ -17,8 +17,8 @@ export const Institution = {
         licence: {type: 'string?', default: ''},
         image: { type: 'string', default: '' },
         assets: 'Assets[]',
-        Geolocation: 'Coordinates?', // to be removed. It's a mistake.
         geolocation: 'Coordinates?',
+
         userDistrict: 'string?',
         userProvince: 'string?',
         userId: 'string',

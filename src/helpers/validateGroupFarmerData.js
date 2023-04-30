@@ -23,8 +23,8 @@ const validateGroupFarmerData = (
         groupVillage,
         groupProvince,
         groupDistrict, 
-        groupManagerName,
-        groupManagerPhone, 
+        // groupManagerName,
+        // groupManagerPhone, 
     }, errors, setErrors,
     ) => {
     const retrievedIsGroupActive = isGroupActive;
@@ -43,8 +43,8 @@ const validateGroupFarmerData = (
     const retrievedGroupDistrict = groupDistrict?.trim();
     const retrievedGroupAdminPost = groupAdminPost?.trim();
     const retrievedGroupVillage = groupVillage?.trim();
-    const retrievedGroupManagerName = capitalize(groupManagerName.trim());
-    const retrievedGroupManagerPhone = Number(parseInt(groupManagerPhone)) ? Number(parseInt(groupManagerPhone)) : 0;
+    // const retrievedGroupManagerName = capitalize(groupManagerName.trim());
+    // const retrievedGroupManagerPhone = Number(parseInt(groupManagerPhone)) ? Number(parseInt(groupManagerPhone)) : 0;
        
     
     //  normalize asset array
@@ -189,25 +189,25 @@ const validateGroupFarmerData = (
         return false;
     }
 
-    if ((!retrievedGroupManagerName) || (retrievedGroupManagerName?.split(' ').length <= 1)){
-        setErrors({ ...errors,
-            groupManagerName: 'Indica nome completo do gerente.',
-        });
-        return false;
-    }
+    // if ((!retrievedGroupManagerName) || (retrievedGroupManagerName?.split(' ').length <= 1)){
+    //     setErrors({ ...errors,
+    //         groupManagerName: 'Indica nome completo do gerente.',
+    //     });
+    //     return false;
+    // }
 
 
-    if (retrievedGroupManagerPhone !== 0 && (
-        !Number.isInteger(parseInt(retrievedGroupManagerPhone))  || 
-        retrievedGroupManagerPhone?.toString().length !== 9       ||
-        parseInt(retrievedGroupManagerPhone.toString()[0]) !== 8 ||
-        [2,3,4,5,6,7].indexOf(parseInt(retrievedGroupManagerPhone?.toString()[1])) < 0 )
-        ) {      
-        setErrors({ ...errors,
-            groupManagerPhone: 'Número de telefone inválido.',
-        });    
-        return false;                   
-    }    
+    // if (retrievedGroupManagerPhone !== 0 && (
+    //     !Number.isInteger(parseInt(retrievedGroupManagerPhone))  || 
+    //     retrievedGroupManagerPhone?.toString().length !== 9       ||
+    //     parseInt(retrievedGroupManagerPhone.toString()[0]) !== 8 ||
+    //     [2,3,4,5,6,7].indexOf(parseInt(retrievedGroupManagerPhone?.toString()[1])) < 0 )
+    //     ) {      
+    //     setErrors({ ...errors,
+    //         groupManagerPhone: 'Número de telefone inválido.',
+    //     });    
+    //     return false;                   
+    // }    
 
     // console.log('assets:',JSON.stringify(normalizeAssets(retrivedGroupGoals)))
     
@@ -230,10 +230,10 @@ const validateGroupFarmerData = (
             total: retrievedGroupMembersNumber ? parseInt(retrievedGroupMembersNumber) : 0,
             women: retrievedGroupWomenNumber ? parseInt(retrievedGroupWomenNumber) : 0,
         },
-        manager: {
-            fullname: retrievedGroupManagerName,
-            phone: retrievedGroupManagerPhone ? parseInt(retrievedGroupManagerPhone) : 0,
-        },
+        // manager: {
+        //     fullname: retrievedGroupManagerName,
+        //     phone: retrievedGroupManagerPhone ? parseInt(retrievedGroupManagerPhone) : 0,
+        // },
         licence: retrievedGroupOperatingLicence,
         nuit: retrievedGroupNuit ? parseInt(retrievedGroupNuit) : 0,
     }

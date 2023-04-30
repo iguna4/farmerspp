@@ -21,14 +21,17 @@ export const Actor = {
         idDocument: 'IdDocument?',
         image: { type: 'string', default: '' },
 
+        // user info (user who creates data resource)
         userDistrict: 'string?',
         userProvince: 'string?',
         userId: 'string',
         userName: 'string?',
 
+        // validation properties (pending, invalidated, validated)
         status: { type: 'string', default: 'pending'},
         checkedBy: 'string?',
         
+        // dates (creation and modification dates)
         createdAt: { type: 'date', default: Date()},
         modifiedAt: { type: 'date', default: Date()},
         modifiedBy: 'string?',

@@ -150,14 +150,14 @@ const EditGroupData = ({
                 
         }
 
-        if (dataToBeUpdated === 'groupManager' && resourceName === 'Group'){
-            setGroupManagerName(resource?.manager.fullname);
-            setGroupManagerPhone(resource?.manager.phone);
-            setOverlayTitle('Actualizar Contacto.');
+        // if (dataToBeUpdated === 'groupManager' && resourceName === 'Group'){
+        //     setGroupManagerName(resource?.manager.fullname);
+        //     setGroupManagerPhone(resource?.manager.phone);
+        //     setOverlayTitle('Actualizar Contacto.');
 
-            setOldGroupManagerName(resource?.manager.fullname);
-            setOldGroupManagerPhone(resource?.manager.phone);
-        }
+        //     setOldGroupManagerName(resource?.manager.fullname);
+        //     setOldGroupManagerPhone(resource?.manager.phone);
+        // }
 
         if (dataToBeUpdated === 'groupMembers' && resourceName === 'Group') {
             setIsGroupActive(Boolean(resource?.operationalStatus) ? true : false);
@@ -213,8 +213,8 @@ const EditGroupData = ({
             groupWomenNumber, oldGroupWomenNumber,
 
             // user chaning group contact
-            groupManagerName, oldGroupManagerName,
-            groupManagerPhone, oldGroupManagerPhone,
+            // groupManagerName, oldGroupManagerName,
+            // groupManagerPhone, oldGroupManagerPhone,
         }, errors, setErrors, dataToBeUpdated, resourceName);
 
         const newData = {};
@@ -258,19 +258,19 @@ const EditGroupData = ({
             setOldDataObject(oldData);
         }
 
-        if (dataToBeUpdated === 'groupManager' && resourceName === 'Group') {
+        // if (dataToBeUpdated === 'groupManager' && resourceName === 'Group') {
 
-            // new incoming data
-            newData['fullname'] = validatedData?.fullname ? validatedData?.fullname?.trim() : '';
-            newData['phone'] = validatedData?.phone ? Number(parseInt(validatedData?.phone)) : 0;
+        //     // new incoming data
+        //     newData['fullname'] = validatedData?.fullname ? validatedData?.fullname?.trim() : '';
+        //     newData['phone'] = validatedData?.phone ? Number(parseInt(validatedData?.phone)) : 0;
 
             // old data
-            oldData['fullname'] = oldGroupManagerName ? oldGroupManagerName?.trim() : '';
-            oldData['phone'] = oldGroupManagerPhone ? Number(parseInt(oldGroupManagerPhone)) : 0;
+            // oldData['fullname'] = oldGroupManagerName ? oldGroupManagerName?.trim() : '';
+            // oldData['phone'] = oldGroupManagerPhone ? Number(parseInt(oldGroupManagerPhone)) : 0;
         
-            setNewDataObject(newData);
-            setOldDataObject(oldData);
-        }
+        //     setNewDataObject(newData);
+        //     setOldDataObject(oldData);
+        // }
 
         if (dataToBeUpdated === 'groupMembers' && resourceName === 'Group') {
 
@@ -849,64 +849,64 @@ const EditGroupData = ({
 
 
     {
-        (dataToBeUpdated === 'groupManager' && resourceName === 'Group') &&
-        <Stack direction="column">
+    //     (dataToBeUpdated === 'groupManager' && resourceName === 'Group') &&
+    //     <Stack direction="column">
           
-          <FormControl isRequired my="1" isInvalid={'groupManagerName' in errors}>
-            <FormControl.Label>Nome do Presidente</FormControl.Label>
-            <CustomInput
-                width="100%"
-                type="text"
-                autoCapitalize="words"
-                placeholder="Nome completo do Presidente"
-                value={groupManagerName}
-                onChangeText={newManagerName=>{
-                    setErrors(prev=>({...prev, groupManagerName: ''}))
-                    setGroupManagerName(newManagerName)
-                }}
-            />
-            {
-            'groupManagerName' in errors 
-            ? <FormControl.ErrorMessage 
-            leftIcon={<Icon name="error-outline" size={16} color="red" />}
-            _text={{ fontSize: 'xs'}}>{errors?.groupManagerName}</FormControl.ErrorMessage> 
-            : <FormControl.HelperText></FormControl.HelperText>
-            }
-        </FormControl>
+    //       <FormControl isRequired my="1" isInvalid={'groupManagerName' in errors}>
+    //         <FormControl.Label>Nome do Presidente</FormControl.Label>
+    //         <CustomInput
+    //             width="100%"
+    //             type="text"
+    //             autoCapitalize="words"
+    //             placeholder="Nome completo do Presidente"
+    //             value={groupManagerName}
+    //             onChangeText={newManagerName=>{
+    //                 setErrors(prev=>({...prev, groupManagerName: ''}))
+    //                 setGroupManagerName(newManagerName)
+    //             }}
+    //         />
+    //         {
+    //         'groupManagerName' in errors 
+    //         ? <FormControl.ErrorMessage 
+    //         leftIcon={<Icon name="error-outline" size={16} color="red" />}
+    //         _text={{ fontSize: 'xs'}}>{errors?.groupManagerName}</FormControl.ErrorMessage> 
+    //         : <FormControl.HelperText></FormControl.HelperText>
+    //         }
+    //     </FormControl>
 
-        <FormControl  isInvalid={'groupManagerPhone' in errors}>
-            <FormControl.Label>Telemóvel do Presidente</FormControl.Label>
-            <CustomInput
-                width="100%"
-                type="telephoneNumber"
-                placeholder={groupManagerPhone ? groupManagerPhone.toString() : 'Nenhum'}
-                keyboardType="numeric"
-                value={groupManagerPhone ? groupManagerPhone?.toString() : ''}
-                onChangeText={newManagerPhone=>{
-                    setErrors((prev)=>({...prev, groupManagerPhone: ''}))                        
-                    setGroupManagerPhone(newManagerPhone);
-                }}
-                InputLeftElement={
-                    <Icon
-                        name="phone"
-                        color="grey"
-                        size={25}
-                        type="material"
-                    />
-                }
-            />
-            {
-            'groupManagerPhone' in errors 
-            ? <FormControl.ErrorMessage 
-            leftIcon={<Icon name="error-outline" size={16} color="red" />}
-            _text={{ fontSize: 'xs'}}>{errors?.groupManagerPhone}</FormControl.ErrorMessage> 
-            : <FormControl.HelperText></FormControl.HelperText>
-            }
-        </FormControl>
+    //     <FormControl  isInvalid={'groupManagerPhone' in errors}>
+    //         <FormControl.Label>Telemóvel do Presidente</FormControl.Label>
+    //         <CustomInput
+    //             width="100%"
+    //             type="telephoneNumber"
+    //             placeholder={groupManagerPhone ? groupManagerPhone.toString() : 'Nenhum'}
+    //             keyboardType="numeric"
+    //             value={groupManagerPhone ? groupManagerPhone?.toString() : ''}
+    //             onChangeText={newManagerPhone=>{
+    //                 setErrors((prev)=>({...prev, groupManagerPhone: ''}))                        
+    //                 setGroupManagerPhone(newManagerPhone);
+    //             }}
+    //             InputLeftElement={
+    //                 <Icon
+    //                     name="phone"
+    //                     color="grey"
+    //                     size={25}
+    //                     type="material"
+    //                 />
+    //             }
+    //         />
+    //         {
+    //         'groupManagerPhone' in errors 
+    //         ? <FormControl.ErrorMessage 
+    //         leftIcon={<Icon name="error-outline" size={16} color="red" />}
+    //         _text={{ fontSize: 'xs'}}>{errors?.groupManagerPhone}</FormControl.ErrorMessage> 
+    //         : <FormControl.HelperText></FormControl.HelperText>
+    //         }
+    //     </FormControl>
 
    
 
-    </Stack>
+    // </Stack>
 
     }
 
@@ -946,8 +946,8 @@ const EditGroupData = ({
                     isGroupActive, isGroupInactive, isOldGroupActive,
                     isOldGroupInactive, groupMembersNumber, oldGroupMembersNumber,
                     groupWomenNumber, oldGroupWomenNumber,
-                    groupManagerName, oldGroupManagerName,
-                    groupManagerPhone, oldGroupManagerPhone,
+                    // groupManagerName, oldGroupManagerName,
+                    // groupManagerPhone, oldGroupManagerPhone,
                 }, errors, setErrors, dataToBeUpdated, resourceName)) {
                     return ;
                 }

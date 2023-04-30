@@ -149,8 +149,8 @@ const GroupItem = ({ item, route }) => {
                 fontFamily: 'JosefinSans-Italic',
                 }}
               >
-               {item?.type?.includes('Grupo') ? 'Representante: ' : 'Presidente: '} 
-              {item.manager}
+               {/* {item?.type?.includes('Grupo') ? 'Representante: ' : 'Presidente: '}  */}
+              {item.legalStatus}
               </Text>
         </Stack>
         <Stack direction="row">
@@ -161,7 +161,7 @@ const GroupItem = ({ item, route }) => {
                 fontFamily: 'JosefinSans-Italic',
                 }}
               >
-                Tel: {item.phone}
+                Ano de criação: {item.creationYear}
               </Text>
             </Box>
             {/* <Box w="50%"> */}

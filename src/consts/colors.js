@@ -22,6 +22,7 @@ const COLORS = {
     darkyGreen: '#013220',
     lightGreen: '#99EDC3',
     salmon: '#ED7014',
+    lightSalmon: '#FFA07A',
     marron: '#800000',
 };
 

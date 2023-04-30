@@ -28,7 +28,8 @@ export default function GroupFarmerForm({
     route, navigation,
     groupType, setGroupType, groupName, setGroupName, 
     groupAdminPost, setGroupAdminPost, groupVillage, setGroupVillage,
-    groupManagerName, setGroupManagerName, groupManagerPhone, setGroupManagerPhone,
+    // groupManagerName, setGroupManagerName, 
+    // groupManagerPhone, setGroupManagerPhone,
     groupOperatingLicence, setGroupOperatingLicence, groupNuit, setGroupNuit,
     groupAffiliationYear, setGroupAffiliationYear, 
     groupMembersNumber, setGroupMembersNumber, groupWomenNumber, setGroupWomenNumber,
@@ -671,7 +672,7 @@ export default function GroupFarmerForm({
 
         </Box>
 
-        <Box w="100%" alignItems="center">
+        {/* <Box w="100%" alignItems="center">
             <FormControl isRequired my="1" isInvalid={'groupManagerName' in errors}>
                 <FormControl.Label>Nome do {groupType?.includes('Grupo') ? "Representante" : "Presidente"}</FormControl.Label>
                 <CustomInput
@@ -732,7 +733,7 @@ export default function GroupFarmerForm({
 
 
 
-    </Box>
+    </Box> */}
     </Box>
   );
 }

@@ -47,6 +47,13 @@ const GroupData = ({ farmer })=>{
     const user = useUser();
     const customUserData = user?.customData;
     const invalidationMotives = realm.objects('InvalidationMotive').filtered(`resourceId == "${farmer?._id}"`);
+    
+
+    let groupManager;
+    if(farmer.manager){
+      groupManager = realm.objectForPrimaryKey('Actor', farmer.manager);
+    }
+
 
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
     const [isConfirmDataVisible, setIsConfirmDataVisible] = useState(false);
@@ -72,24 +79,12 @@ const GroupData = ({ farmer })=>{
 
 
     // -----------------------------------------------
-
-  
-      // update institution manager personal data
-      const [ groupManagerPhone, setGroupManagerPhone  ] = useState('');
-      const [ groupManagerName, setGroupManagerName ] = useState('');
-  
-      const [oldGroupManagerPhone, setOldGroupManagerPhone ] = useState('');
-      const [oldGroupManagerName, setOldGroupManagerName ] = useState('');
-  
-
+    const [oldGroupManagerPhone, setOldGroupManagerPhone ] = useState('');
+    const [oldGroupManagerName, setOldGroupManagerName ] = useState('');
 
     
     const [newDataObject, setNewDataObject] = useState({});
     const [oldDataObject, setOldDataObject] = useState({});
-
-
-    // -----------------------------------------------
-
 
     // ------------------------------------------------ 
     // group members data
@@ -544,8 +539,13 @@ const GroupData = ({ farmer })=>{
                         }}
                         onPress={
                             ()=>{
-                                setIsOverlayVisible(!isOverlayVisible);
-                                setDataToBeUpdated('groupManager');
+                                // setIsOverlayVisible(!isOverlayVisible);
+                                // setDataToBeUpdated('groupManager');
+                                navigation.navigate('GroupRepresentative', {
+                                    groupId: farmer?._id,
+                                    district: farmer?.address?.district
+                                });
+                                
                             }
                         }
                     >
@@ -578,7 +578,7 @@ const GroupData = ({ farmer })=>{
                         fontFamily: 'JosefinSans-Regular',
                     }}
                     >
-                        {farmer?.manager?.fullname}
+                        {groupManager ? `${groupManager?.names.otherNames} ${groupManager?.names.surname}` : "(Nenhum)"}
                     </Text>
                 </Box>
             </Stack>
@@ -596,10 +596,76 @@ const GroupData = ({ farmer })=>{
                 </Text>
                 </Box>
                 <Box w="50%" >
-{   ((!farmer?.manager?.phone) || (farmer?.manager?.phone === 0)) &&
+
+                { (groupManager?.contact?.primaryPhone !== 0 && groupManager?.contact?.secondaryPhone !== 0) &&
+                <>
+                    <Text 
+                        style={{
+                            color: 'grey',
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}  
+                    >
+                        {groupManager?.contact?.primaryPhone} 
+                    </Text>  
+                    <Text 
+                        style={{
+                            color: 'grey',
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}  
+                    >
+                        {groupManager?.contact?.secondaryPhone} 
+                    </Text>                 
+                </>
+            }
+
+            {
+                (groupManager?.contact?.primaryPhone !== 0 && groupManager?.contact?.secondaryPhone === 0) &&
+                    <Text 
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                        {groupManager?.contact?.primaryPhone} 
+                    </Text> 
+            }
+
+            {
+                (groupManager?.contact?.primaryPhone === 0 && groupManager?.contact?.secondaryPhone !== 0) &&
+                    <Text 
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                        {groupManager?.contact?.secondaryPhone} 
+                    </Text> 
+            }
+
+
+            {
+                (groupManager?.contact?.primaryPhone === 0 && groupManager?.contact?.secondaryPhone === 0) &&
+                    <Text 
+                    style={{
+                        color: 'grey',
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
+                    }}  
+                    >
+                        Nenhum 
+                    </Text> 
+            }
+
+
+
+{/* {   ((!farmer?.manager?.phone) || (farmer?.manager?.phone === 0)) &&
                  <Text style={{
                         color: COLORS.grey,
-                        fontSize: 13,
+                        fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }}
                     >
@@ -615,7 +681,7 @@ const GroupData = ({ farmer })=>{
                 }}>
                     {farmer?.manager?.phone}
                 </Text>
-}
+} */}
                 </Box>
             </Stack>
         </Stack>
@@ -1526,10 +1592,10 @@ const GroupData = ({ farmer })=>{
         setOldDataObject={setOldDataObject}
 
         // the institution manager personal data
-        groupManagerPhone={groupManagerPhone}
-        setGroupManagerPhone={setGroupManagerPhone}
-        groupManagerName={groupManagerName}
-        setGroupManagerName={setGroupManagerName}
+        // groupManagerPhone={groupManagerPhone}
+        // setGroupManagerPhone={setGroupManagerPhone}
+        // groupManagerName={groupManagerName}
+        // setGroupManagerName={setGroupManagerName}
         oldGroupManagerPhone={oldGroupManagerPhone}
         setOldGroupManagerPhone={setOldGroupManagerPhone}
         oldGroupManagerName={oldGroupManagerName}

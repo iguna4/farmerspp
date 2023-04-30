@@ -760,7 +760,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                             fontFamily: 'JosefinSans-Regular',
                         }}  
                     >
-                        {farmer?.contact?.primaryPhone} 
+                        {farmer?.contact?.secondaryPhone} 
                     </Text>                 
                 </>
             }

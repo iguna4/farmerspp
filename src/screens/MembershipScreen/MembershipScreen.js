@@ -79,7 +79,7 @@ function MemberGroupItem ({
   Toast.show({
     type: 'removedFarmerFromGroup',
     text1: `Retirada de ${currentGroup?.type}`,
-    props: { message: `Retirado de ${currentGroup?.type} ${currentGroup?.name}.`},
+    props: { message: `Retirado de ${currentGroup?.type}.`},
   });
  }
 
@@ -87,7 +87,7 @@ function MemberGroupItem ({
   Toast.show({
     type: 'addedFarmerToGroup',
     text1: `Adesão a ${currentGroup?.type}`,
-    props: { message: `Adicionado a ${currentGroup?.type} ${currentGroup?.name}.`},
+    props: { message: `Adicionado a ${currentGroup?.type}.`},
   });
  }
  // remove the farmer from the group
@@ -96,7 +96,7 @@ function MemberGroupItem ({
   try {
    realm.write(()=>{
 
-    // remvoe the farmer id from the group
+    // remove the farmer id from the group
      const updatedFarmerIds = currentGroup.members?.filter((id)=>(id !== farmerId));
      currentGroup.members = [];
      for (let i = 0; i < updatedFarmerIds?.length; i++){
@@ -107,7 +107,7 @@ function MemberGroupItem ({
      if (membership?.length > 0){
        let member = membership[0];
        const updatedMemberships = member.membership?.filter((memb)=>(memb.organizationId !== currentGroup?._id));
-       console.log('member:', JSON.stringify(updatedMemberships));
+      //  console.log('member:', JSON.stringify(updatedMemberships));
        member.membership = [];
        for (let i = 0; i < updatedMemberships?.length; i++){
         member?.membership.push(updatedMemberships[i]);
@@ -244,6 +244,25 @@ function MemberGroupItem ({
      </Box>
 
        <Box w="80%">
+         <TouchableOpacity
+           onPress={()=>{
+           if (!currentGroup.members?.find(id=>id === farmerId)) {
+
+             // add the actor as one of member of this group
+             addFarmerToGroup(realm, farmerId, currentGroup);
+
+             // show the sucess (for adding farmer to the group) toast message
+             showAddedFarmerToast();
+           }
+           else{
+             removeFarmerFromGroup(realm, farmerId, currentGroup);
+             // show the error (for removing farmer from the group) toast message
+             showRemovedFarmerToast();
+           }
+           // reset the counter to zero
+           setCountIdOccurrence(0);
+           }}
+      >
           <Text
            style={{
             fontSize: 15,
@@ -252,7 +271,10 @@ function MemberGroupItem ({
             paddingLeft: 10,
 
            }}
-          >{item?.type}: {item?.name}</Text>
+          >
+
+
+            {item?.type}: {item?.name}</Text>
            <Text
            style={{
             fontSize: 14,
@@ -261,7 +283,9 @@ function MemberGroupItem ({
             paddingLeft: 10,
 
            }}
-          >{item?.type === 'Cooperativa' ? 'Presidente' : 'Representante'}: {item?.manager?.fullname}</Text>
+           >
+            {item?.type === 'Cooperativa' ? 'Presidente' : 'Representante'}: {item?.manager?.fullname}
+          </Text>
           <Stack direction="row" w="100%">
            <Box w="50%">
             <Text
@@ -270,9 +294,9 @@ function MemberGroupItem ({
                 fontFamily: 'JosefinSans-Regular',
                 color: COLORS.grey,
                 paddingLeft: 10,
-     
-               }}
-            >Declarados: {item?.numberOfMembers.total}</Text>
+                
+              }}
+              >Declarados: {item?.numberOfMembers.total}</Text>
            </Box>
            <Box w="50%">
             <Text
@@ -281,11 +305,13 @@ function MemberGroupItem ({
                fontFamily: 'JosefinSans-Regular',
                color: isFarmerAlreadyAdded ? COLORS.main : COLORS.grey,
                paddingLeft: 10,
-    
+               
               }}   
-            >Registados: {item?.members?.length}</Text>
+              >Registados: {item?.members?.length}</Text>
            </Box>
           </Stack>
+            
+        </TouchableOpacity>
        </Box>
        <Box w="10%"
         style={{
@@ -493,7 +519,6 @@ const filtererdItems = groupsList.filter((item)=>{
                      color: COLORS.black,
                      fontSize: 15,
                      fontFamily: 'JosefinSans-Bold',
-                    //  lineHeight: 20,
                     }} 
                   >
                  
@@ -501,11 +526,9 @@ const filtererdItems = groupsList.filter((item)=>{
                   </Text>
                     <Text
                     style={{
-                     // paddingLeft: 10,
                      color: countIdOccurrence === 0 ? COLORS.red : COLORS.main,
                      fontSize: 14,
                      fontFamily: 'JosefinSans-Regular',
-                    //  lineHeight: 20,
                     }}
                    >
                     { countIdOccurrence === 0 ? "Marca a organização" : `aderiu a ${countIdOccurrence} ${countIdOccurrence === 1 ? "organização" : "organizações"}` }

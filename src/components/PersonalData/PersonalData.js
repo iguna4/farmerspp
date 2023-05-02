@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, TouchableOpacity, TextInput, Text, ScrollView, InteractionManager, SafeAreaView, FlatList } from 'react-native';
+import { View, TouchableOpacity, Modal, TextInput, Text, ScrollView, InteractionManager, SafeAreaView, FlatList } from 'react-native';
 import { Box,  FormControl, Stack, } from 'native-base';
 import { Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
@@ -22,6 +22,7 @@ import {
     useDimensionsChange,
   
   } from 'react-native-responsive-dimensions';
+  import Tooltip from 'react-native-walkthrough-tooltip'
 
 import CustomDivider from '../../components/Divider/CustomDivider';
 import COLORS from '../../consts/colors';
@@ -31,7 +32,8 @@ import { errorMessages } from '../../consts/errorMessages';
 import { roles } from '../../consts/roles';
 import ConfirmData from '../EditData/ConfirmData';
 import { useNavigation } from '@react-navigation/native';
-
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEllipsisVertical, faPeopleGroup, faEye, } from '@fortawesome/free-solid-svg-icons';
 
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
@@ -60,12 +62,12 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
         // retrieve the only actor membership object
         member = membership[0];
     }
-    // console.log('member:', member);
 
+    
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
     const [isConfirmDataVisible, setIsConfirmDataVisible] = useState(false);
 
-
+    
     const [autoRefresh, setAutoRefresh] = useState(false);
     const [isCollapseOn, setIsCallapseOne] = useState(false);
 
@@ -116,7 +118,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
     const [oldDataObject, setOldDataObject] = useState({});
 
     // -----------------------------------------------
-
+    
     // idDocument
     const [docNumber, setDocNumber] = useState('');
     const [docType, setDocType] = useState('');
@@ -125,13 +127,19 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
     const [oldDocNumber, setOldDocNumber] = useState('')
     const [oldDocType, setOldDocType] = useState('');
     const [oldNuit, setOldNuit] = useState('');
+    
+    const [isEllipsisVisible, setIsEllipsisVisible] = useState(false);
+    // ---------------------------------------------------------------
+    
+
+
+
 
 
     // ---------------------------------------------------
     const validationAction = (realm, resourceId, flag)=>{
         realm.write(()=>{
             const foundFarmer = realm.objectForPrimaryKey('Actor', `${resourceId}`);
-            // console.log('foundFarmer: ', JSON.stringify(foundFarmer));
             if (flag === 'validate'){
                 foundFarmer.status = resourceValidation.status.validated;
                 foundFarmer.checkedBy = customUserData?.name;
@@ -150,7 +158,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
         } 
 
         const validatedMessage = validateInvalidationMessage(newMessage, errors, setErrors);
-
+        
         const invalidationMotive = realm.objects('InvalidationMotive').filtered(`resourceId == "${newResourceId}"`);
         const newMessageObject = {
             position: (invalidationMotive[0] && invalidationMotive[0]?.messages?.length > 0) ? invalidationMotive[0]?.messages?.length + 1 : 0,
@@ -1064,34 +1072,114 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                 </Text>
             </Box>
             <Box w="10%">
-        {   
+    
+{customUserData?.role !== roles.provincialManager && 
+            <Tooltip
+                isVisible={isEllipsisVisible}
+                disableShadow={true}
+                placement="left"
+                childContentSpacing={4}
+                content={<Box
+                    style={{
+                        flexDirection: 'column',
+                        minWidth: 200,
+                        // height: 80,
+                    }}
+                >
+                    <Box>
+                        <TouchableOpacity
+                            onPress={()=>{
+                                navigation.navigate('Membership', {
+                                    resourceName: 'Farmer',
+                                    resourceId: farmer._id,
+                                });
+                                setIsEllipsisVisible(false);
+                            }}
+                        >
+                            <Box
+                                style={{
+                                flexDirection: 'row',
+                                width: '100%',
+                                alignItems: 'center',
+                                paddingLeft: 10,
+                                paddingVertical: 10,
+                                // height: 80,
+                            }}  
+                            >
+                                <FontAwesomeIcon icon={faPeopleGroup} size={20} color={COLORS.grey} />
+                                <Text
+                                    style={{
+                                        fontSize: 15,
+                                        fontFamily: 'JosefinSans-Regular',
+                                        color: COLORS.grey,
+                                        paddingLeft: 20,
+                                    }}
+                                >Aderir a uma organização</Text>
+                            </Box>
+                        </TouchableOpacity>
+                    </Box>
+                    <CustomDivider />
+                    <Box>
+                        <TouchableOpacity
+                            onPress={()=>{
+                                navigation.navigate('FarmerGroups', {
+                                    farmerId: farmer._id,
+                                });
+                                setIsEllipsisVisible(false);
 
-        // customUserData?.role !== roles.provincialManager && 
+                            }}
+                        >
+                            <Box
+                                style={{
+                                    flexDirection: 'row',
+                                    width: '100%',
+                                    alignItems: 'center',
+                                    paddingLeft: 10,
+                                    paddingVertical: 10,
+                                    // height: 80,
+                                }} 
+                            >
+                                <FontAwesomeIcon icon={faEye} size={20} color={COLORS.grey} />
+                                <Text
+                                    style={{
+                                        fontSize: 15,
+                                        fontFamily: 'JosefinSans-Regular',
+                                        color: COLORS.grey,
+                                        paddingLeft: 20,
+                                    }}
+                                >Ver organizações</Text>
+                            </Box>
+                        </TouchableOpacity>
+                    </Box>
+                </Box>}
+                onClose={()=>setIsEllipsisVisible(false)}
+            >
+
                 <TouchableOpacity
-                // disabled={farmer?.status === resourceValidation.status.validated ? true : false}
                     style={{
 
                     }}
                     onPress={
                         ()=>{
-                            navigation.navigate('Membership', {
-                            resourceName: 'Farmer',
-                            resourceId: farmer._id,
-                            // farmerName: `${farmer.names.otherNames} ${farmer.names.surname}`,
-                            
-                        })
+                            setIsEllipsisVisible(true);
                     }}
                 >
-                    <Icon 
-                        name="group-work" 
-                        size={30} 
+                <Box>
+                    <FontAwesomeIcon 
+                        icon={faEllipsisVertical} 
+                        size={20} 
                         color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone }
-                        />
+                        fade 
+                    />
+
+                </Box>
                 </TouchableOpacity>
-            }
+            </Tooltip>
+}
+            
             </Box>
         </Stack>
-    { member && (!member?.membership || member?.membership?.length === 0) &&
+    {member &&  (member?.membership?.length === 0) &&
     <>
         <Stack w="100%" direction="row">
             <Box w="50%">
@@ -1132,9 +1220,9 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
     }
 
 
-{ member && (member?.membership?.length > 0) &&
-    
-    <>
+{member && (member?.membership?.length > 0) &&
+
+    <Box  pb="4">
         <Stack w="100%" direction="row">
             <Box w="50%">
                 <Text
@@ -1143,7 +1231,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }} 
-                >Membro de organização</Text>
+                >Membro</Text>
             </Box>
             <Box w="50%">
                 <Text
@@ -1152,26 +1240,11 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
                     }} 
-                >Sim</Text>
+                >{member?.membership?.length} {member?.membership?.length == 1 ? 'organização' : 'organizações'}</Text>
             </Box>
-
         </Stack>
-        <Box w="100%" py="4">
-            <Text                     
-                style={{
-                    color: COLORS.red,
-                    fontSize: 15,
-                    fontFamily: 'JosefinSans-Regular',
-                    textAlign: 'center',
-                    paddingHorizontal: 10,
-                    lineHeight: 25,
-                }}  
-                >
-                Especifica a organização a qual este produtor aderiu.
-            </Text>
-        </Box>
-    </>
-    }
+    </Box>
+}
 
 
 
@@ -1603,6 +1676,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                 resourceName={'Farmer'}
             />
     }
+
 
 
     </CollapseBody>

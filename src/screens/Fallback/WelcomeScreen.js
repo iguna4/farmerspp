@@ -144,6 +144,7 @@ export default function WelcomeScreen () {
 
         } catch (error) {
             setAlert(true);
+            console.log('error: ', { cause: error })
             seterrorFlag(error);
             return ;
         }

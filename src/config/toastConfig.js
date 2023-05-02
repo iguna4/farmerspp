@@ -14,23 +14,12 @@ import COLORS from '../consts/colors';
       minHeight: 60, 
       width: '100%', 
       backgroundColor:  COLORS.lightGreen,
-      paddingHorizontal: 5,
+      paddingHorizontal: 10,
      flexDirection: 'row',
      borderRadius: 10,
+     justifyContent: 'space-between',
     }}>
-        <View
-         style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: 5,
-         }}
-        >
-          <Icon 
-          name="check-circle-outline" 
-          color={COLORS.darkyGreen} 
-          size={40} 
-        />
-        </View>
+
         <View>
           <Text
             style={{
@@ -49,6 +38,19 @@ import COLORS from '../consts/colors';
             }}
           >{props.message}</Text>
         </View>
+        <View
+         style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 5,
+         }}
+        >
+          <Icon 
+          name="check-circle-outline" 
+          color={COLORS.darkyGreen} 
+          size={40} 
+        />
+        </View>
     </View>
   ),
 
@@ -57,19 +59,12 @@ import COLORS from '../consts/colors';
      minHeight: 60, 
      width: '100%', 
      backgroundColor: COLORS.lightSalmon,
-     paddingHorizontal: 5,
+     paddingHorizontal: 10,
     flexDirection: 'row',
     borderRadius: 10,
+    justifyContent: 'space-between',
    }}>
-       <View
-        style={{
-         justifyContent: 'center',
-         alignItems: 'center',
-         padding: 5,
-        }}
-       >
-         <Icon name="warning" color={COLORS.marron} size={40} />
-       </View>
+
        <View>
          <Text
            style={{
@@ -88,6 +83,15 @@ import COLORS from '../consts/colors';
            }}
          >{props.message}</Text>
        </View>
+       <View
+        style={{
+         justifyContent: 'center',
+         alignItems: 'center',
+         padding: 5,
+        }}
+       >
+         <Icon name="warning" color={COLORS.marron} size={40} />
+       </View>
    </View>
  ),
 
@@ -96,23 +100,13 @@ import COLORS from '../consts/colors';
     minHeight: 60, 
     width: '100%', 
     backgroundColor:  COLORS.lightGreen,
-    paddingHorizontal: 5,
+    paddingHorizontal: 10,
    flexDirection: 'row',
    borderRadius: 10,
+   justifyContent: 'space-between',
+
   }}>
-      <View
-       style={{
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 5,
-       }}
-      >
-        <Icon 
-        name="check-circle-outline" 
-        color={COLORS.darkyGreen} 
-        size={40} 
-      />
-      </View>
+
       <View>
         <Text
           style={{
@@ -130,6 +124,19 @@ import COLORS from '../consts/colors';
             paddingRight: 5,
           }}
         >{props.message}</Text>
+      </View>
+      <View
+       style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 5,
+       }}
+      >
+        <Icon 
+        name="check-circle-outline" 
+        color={COLORS.darkyGreen} 
+        size={40} 
+      />
       </View>
   </View>
 )

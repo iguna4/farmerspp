@@ -6,7 +6,7 @@ import {
  Switch, Image, SafeAreaView, Text, View, PermissionsAndroid, 
  TextInput,
  TouchableOpacity, SectionList, ActivityIndicator, Platform } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {ListItem, Avatar, Icon, SearchBar } from '@rneui/themed';
 import { Box, Center, Pressable, Stack } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
@@ -42,7 +42,6 @@ import COLORS from '../../consts/colors';
 import { realmContext } from '../../models/realmContext';
 import { useUser } from '@realm/react';
 import { roles } from '../../consts/roles';
-import { useCallback } from 'react';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import { getInitials } from '../../helpers/getInitials';
 import GroupRepresentativeItem from '../../components/GroupRepresentativeItem/GroupRepresentativeItem';
@@ -119,13 +118,29 @@ const customizeFarmerItem = (farmer)=>{
     setFarmersList(farmers?.map(farmer=>farmer)?.filter(farmer=>farmer.address.district === filterKey));
   }
 
- }, [  ]);
+ }, [ realm ]);
+
+ const updateGroupManager = useCallback(()=>{
+  realm.write(()=>{
+    if (selectedId){
+      // update the group manager
+      group.manager = selectedId;
+    }
+    
+    // add the manager to the group in case is not yes a member
+    if(selectedId && !(group.members.find(memberId => memberId === selectedId))){
+      group.members.push(selectedId);
+    }
+    
+  });
+ }, [ selectedId ])
 
   useEffect(()=>{
     // update the group manager property
-    realm.write(()=>{
-      group.manager = selectedId;
-    });
+    if (selectedId){
+      updateGroupManager();
+    }
+
   }, [ selectedId, ]);
 
 
@@ -304,7 +319,6 @@ const customizeFarmerItem = (farmer)=>{
             </TouchableOpacity>
           </Box>
       }
-
         </Stack>
      </View>
 
@@ -341,6 +355,7 @@ const customizeFarmerItem = (farmer)=>{
                   item={item} 
                   isSelected={isSelected}
                   setSelectedId={setSelectedId}
+                  selectedId={selectedId}
                 />
               }}
               ListFooterComponent={()=>{

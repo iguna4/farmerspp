@@ -15,6 +15,8 @@ import UserStat from '../../screens/UserStatScreen/UserStat';
 import GeolocationScreen from '../../screens/GeolocationScreen/GeolocationScreen';
 import MembershipScreen from '../../screens/MembershipScreen/MembershipScreen';
 import GroupRepresentativeScreen from '../../screens/GroupRepresentantiveScreen/GroupRepresentativeScreen';
+import GroupMembersScreen from '../../screens/GroupMembersScreen/GroupMembersScreen';
+import FarmerGroupsScreen from '../../screens/FarmerGroupsScreen/FarmerGroupsScreen';
 
 const FarmersStack = createNativeStackNavigator();
 
@@ -45,6 +47,8 @@ export default function FarmersStackScreen() {
         <FarmersStack.Screen name="Institution" component={InstitutionScreen} />
         <FarmersStack.Screen name="Membership" component={MembershipScreen} />
         <FarmersStack.Screen name="GroupRepresentative" component={GroupRepresentativeScreen} />
+        <FarmersStack.Screen name="GroupMembers" component={GroupMembersScreen} />
+        <FarmersStack.Screen name="FarmerGroups" component={FarmerGroupsScreen} />
 
       </FarmersStack.Navigator>
   );

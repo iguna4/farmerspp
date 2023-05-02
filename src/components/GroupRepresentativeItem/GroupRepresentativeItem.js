@@ -45,6 +45,7 @@ export default function GroupRepresentativeItem({
  item,
  isSelected,
  setSelectedId,
+ selectedId
 }){
 
 
@@ -86,8 +87,10 @@ export default function GroupRepresentativeItem({
      >
       <TouchableOpacity
         onPress={() => {
-         setSelectedId(item._id);
-         showAddedGroupManagerToast();
+          if (selectedId !== item._id){
+            setSelectedId(item._id);
+            showAddedGroupManagerToast();
+          }
         }}
        >
           {
@@ -100,6 +103,15 @@ export default function GroupRepresentativeItem({
      </Box>
 
        <Box w="80%">
+       <TouchableOpacity
+        onPress={() => {
+          if (selectedId !== item._id){
+            setSelectedId(item._id);
+            showAddedGroupManagerToast();
+          }
+        }}
+       >
+
           <Text
            style={{
             fontSize: 15,
@@ -122,6 +134,7 @@ export default function GroupRepresentativeItem({
           >
            {item?.adminPost}
           </Text>
+        </TouchableOpacity>
        </Box>
        <Box w="10%"
         style={{

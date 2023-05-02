@@ -20,6 +20,10 @@ import {
     useDimensionsChange,
   
   } from 'react-native-responsive-dimensions';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEllipsisVertical, faPeopleGroup, faEye, } from '@fortawesome/free-solid-svg-icons';
+import Tooltip from 'react-native-walkthrough-tooltip'
+
 
 import CustomDivider from '../../components/Divider/CustomDivider';
 import COLORS from '../../consts/colors';
@@ -122,6 +126,12 @@ const GroupData = ({ farmer })=>{
     const [groupGoals, setGroupGoals] = useState([]);
     const [oldGroupGoals, setOldGroupGoals] = useState([]);
 
+
+    // ------------------------------------------------
+    const [isEllipsisVisible, setIsEllipsisVisible] = useState(false);
+
+
+    // ------------------------------------------------
 
     const validationAction = (realm, resourceId, flag)=>{
         realm.write(()=>{
@@ -705,24 +715,135 @@ const GroupData = ({ farmer })=>{
             <Box w="10%">
         {                
             customUserData?.role !== roles.provincialManager && 
-                <TouchableOpacity
-                    disabled={farmer?.status === resourceValidation.status.validated ? true : false}
+
+            <Tooltip
+                isVisible={isEllipsisVisible}
+                disableShadow={true}
+                placement="left"
+                childContentSpacing={4}
+                content={<Box
                     style={{
+                        flexDirection: 'column',
+                        minWidth: 200,
+                        // height: 80,
+                    }}
+                >
+                    <Box>
+                        <TouchableOpacity
+                            onPress={()=>{
+                                setIsOverlayVisible(!isOverlayVisible);
+                                setDataToBeUpdated('groupMembers');
+                                setIsEllipsisVisible(false);
+                            }}
+                        >
+                            <Box
+                                style={{
+                                flexDirection: 'row',
+                                width: '100%',
+                                alignItems: 'center',
+                                paddingLeft: 10,
+                                paddingVertical: 10,
+                                // height: 80,
+                            }}  
+                            >
+                                {/* <FontAwesomeIcon icon={faPeopleGroup} size={20} color={COLORS.grey} /> */}
+                                
+                                <Icon 
+                                    name="edit" 
+                                    size={20} 
+                                    color={COLORS.grey} 
+                                />
+                                <Text
+                                    style={{
+                                        fontSize: 15,
+                                        fontFamily: 'JosefinSans-Regular',
+                                        color: COLORS.grey,
+                                        paddingLeft: 20,
+                                    }}
+                                >Actualizar números</Text>
+                            </Box>
+                        </TouchableOpacity>
+                    </Box>
+                    <CustomDivider />
+                    <Box>
+                        <TouchableOpacity
+                            onPress={()=>{
+                                navigation.navigate('GroupMembers', {
+                                    groupId: farmer._id,
+                                });
+                                setIsEllipsisVisible(false);
+                            }}
+                        >
+                            <Box
+                                style={{
+                                    flexDirection: 'row',
+                                    width: '100%',
+                                    alignItems: 'center',
+                                    paddingLeft: 10,
+                                    paddingVertical: 10,
+                                    // height: 80,
+                                }} 
+                            >
+                                <FontAwesomeIcon icon={faEye} size={20} color={COLORS.grey} />
+                                <Text
+                                    style={{
+                                        fontSize: 15,
+                                        fontFamily: 'JosefinSans-Regular',
+                                        color: COLORS.grey,
+                                        paddingLeft: 20,
+                                    }}
+                                >Ver membros</Text>
+                            </Box>
+                        </TouchableOpacity>
+                    </Box>
+                </Box>}
+                onClose={()=>setIsEllipsisVisible(false)}
+            >
+
+                <TouchableOpacity
+                    style={{
+
                     }}
                     onPress={
                         ()=>{
-                            setIsOverlayVisible(!isOverlayVisible);
-                            setDataToBeUpdated('groupMembers');
-                        }
-                    }
+                            setIsEllipsisVisible(true);
+                    }}
                 >
-                    <Icon 
-                        // name="home" 
-                        name="edit" 
+                <Box>
+                    <FontAwesomeIcon 
+                        icon={faEllipsisVertical} 
                         size={20} 
                         color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone } 
+                        fade 
                     />
+
+                </Box>
                 </TouchableOpacity>
+            </Tooltip>
+            
+
+                // <TouchableOpacity
+                //     disabled={farmer?.status === resourceValidation.status.validated ? true : false}
+                //     style={{
+                //     }}
+                //     onPress={
+                //         ()=>{
+                //             setIsOverlayVisible(!isOverlayVisible);
+                //             setDataToBeUpdated('groupMembers');
+                //         }
+                //     }
+                // >
+
+                // <Box>
+                //     <FontAwesomeIcon 
+                //         icon={faEllipsisVertical} 
+                //         size={20} 
+                //         color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone } 
+                //         fade 
+                //     />
+
+                // </Box>
+                // </TouchableOpacity>
             }
             </Box>
         </Stack>
@@ -762,7 +883,7 @@ const GroupData = ({ farmer })=>{
                             fontFamily: 'JosefinSans-Regular',
                         }}
                         >
-                    Total
+                    Total declarado
                     </Text>
             </Box>
             <Box w="50%">

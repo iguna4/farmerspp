@@ -56,7 +56,7 @@ export function MemberItem({ item, isGroupManager, }) {
      borderWidth: isGroupManager ? 5 : 0,
      borderColor: isGroupManager ? COLORS.main : '',
      width: '45%',
-     height: 150,
+     minHeight: 150,
      shadowOffset: {
        width: 0,
        height: 3,
@@ -95,10 +95,6 @@ export function MemberItem({ item, isGroupManager, }) {
     <View
     style={{
      padding: 5,
-    //  width: '100%',
-     // position: 'relative',
-     // top: 10,
-     // left: 12,
     }}
    >
     <View
@@ -127,7 +123,7 @@ export function MemberItem({ item, isGroupManager, }) {
 
     <Text
        style={{
-        fontSize: 13,
+        fontSize: 10,
         color: COLORS.black,
         fontFamily: 'JosefinSans-Italic',
                }}
@@ -137,7 +133,7 @@ export function MemberItem({ item, isGroupManager, }) {
 
     <Text
        style={{
-        fontSize: 12,
+        fontSize: 10,
         color: COLORS.grey,
         fontFamily: 'JosefinSans-Regular',
         textAlign: 'right',

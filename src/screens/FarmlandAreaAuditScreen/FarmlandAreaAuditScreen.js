@@ -24,6 +24,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { InteractionManager } from "react-native";
 import CustomActivityIndicator from "../../components/ActivityIndicator/CustomActivityIndicator";
 import { Pressable } from "react-native";
+import { calculatePolygonArea } from "../../helpers/calculatePolygonArea";
 const {useRealm, useObject, useQuery } = realmContext;
 
 
@@ -35,6 +36,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     const [rejectGeoAlert, setRejectGeoAlert] = useState(false);
     const [failedGeoLocationRequest, setFailedGeoLocationRequest] = useState(false);
     const [permissionGranted, setPermissionGranted] = useState(false);
+    const [isCalculatedArea, setIsCalculatedArea] = useState(false);
+    const [area, setArea] = useState(null);
 
     const [currentCoordinates, setCurrentCoordinates] = useState({
         latitude: -1,
@@ -152,7 +155,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 }
             );
         }
-        setPermissionGranted(false);
+        // setPermissionGranted(false);
 
     }
     
@@ -194,6 +197,29 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
           return () => task.cancel();
         }, [])
       );
+
+    // organize the coordinates point objects 
+    const handleCalculateArea = ()=>{
+        let coordinates = farmland.extremeCoordinates;
+
+        points = coordinates?.map((point)=>{
+            return {
+                lat: point?.latitude,
+                lng: point?.longitude,
+            }
+        });
+
+        return calculatePolygonArea(points);
+    };
+
+
+    // save the area that has been calculated
+    const  saveAuditedArea = (area)=>{
+        realm.write(()=>{
+            farmland.auditedArea = parseFloat(area);        
+        })
+    };
+
     
       if (loadingActivitiyIndicator) {
         return <CustomActivityIndicator 
@@ -221,12 +247,38 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
           closeOnHardwareBackPress={false}
           showCancelButton={false}
           showConfirmButton={true}
-          confirmText="   OK!   "
+          confirmText="   OK   "
           confirmButtonColor="#DD6B55"
           onConfirmPressed={() => {
             setFailedGeoLocationRequest(false);
           }}
         />
+
+
+    <AwesomeAlert
+          show={isCalculatedArea}
+          showProgress={false}
+          title="Área?"
+          message={`${area} hectares`}
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={true}
+          showConfirmButton={true}
+          confirmText=" Confirmar "
+          cancelText=" Rejeitar  "
+          confirmButtonColor={COLORS.main}
+          cancelButtonColor="#DD6B55"
+          onConfirmPressed={() => {
+            saveAuditedArea(area); // save the auditedarea
+            setIsCalculatedArea(false);
+            navigateBack();
+          }}
+          onCancelPressed={()=>{
+            setIsCalculatedArea(false);
+          }}
+        />
+        
+
 
 
         <AwesomeAlert
@@ -238,7 +290,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
           closeOnHardwareBackPress={false}
           showCancelButton={false}
           showConfirmButton={true}
-          confirmText="   OK!   "
+          confirmText="   OK   "
           confirmButtonColor={COLORS.main}
           onConfirmPressed={() => {
             setConfirmGeoAlert(false);
@@ -254,8 +306,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
           closeOnHardwareBackPress={false}
           showCancelButton={true}
           showConfirmButton={true}
-          cancelText="Sim"
-          confirmText="Não"
+          cancelText="  Sim  "
+          confirmText="  Não  "
           cancelButtonColor="#DD6B55"
           confirmButtonColor={COLORS.main}
           onCancelPressed={() => {
@@ -294,7 +346,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     
                     style={{
                         position: 'absolute',
-                        left: 0,
+                        left: 4,
                         top: 4,
                         flexDirection: 'row',
                         // justifyContent: 'center',
@@ -304,7 +356,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     <Icon 
                         name='arrow-back-ios' 
                         color={COLORS.main} 
-                        size={25}  
+                        size={30}  
                     />
                     {/* <Text
                         style={{
@@ -347,10 +399,10 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             // }}
         >
             <Stack direction="row"
-                py="1"
+                // py="1"
                 px="3"
             >
-                <Box  w={farmland?.extremeCoordinates.length === 0 ? "100%" : "80%"}
+                <Box  w={farmland?.extremeCoordinates.length === 0 ? "100%" : "50%"}
                     style={{
                         // flex: 1,
                         justifyContent: 'center',
@@ -359,10 +411,10 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     <Text
                         style={{
                             fontFamily: 'JosefinSans-Bold',
-                            fontSize: 16,
+                            fontSize: 14,
                             color: COLORS.black,
-                            lineHeight: 25,
-                            textAlign: 'center',
+                            lineHeight: 20,
+                            // textAlign: 'center',
                             paddingTop: 20,
                         }}
                     >
@@ -370,8 +422,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     </Text>
                 </Box>
 
-                <Box w={farmland?.extremeCoordinates.length === 0 ? "0%" : "20%"}
-                    alignItems={'center'}
+                <Box w={farmland?.extremeCoordinates.length === 0 ? "0%" : "50%"}
+                    alignItems={'flex-end'}
                     style={{
                         flex: 1,
                         justifyContent: 'center'
@@ -446,8 +498,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             <Box
                 w="30%" 
             >
-                <Stack direction="column">
-
+        <Stack direction="column">
             <Box 
                 style={{
                     justifyContent: 'center',
@@ -492,7 +543,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             <Box w="15%" alignItems={"center"}>
             </Box>
         </Stack>
-        </Center>
+    </Center>
     }
 
     <FlatList
@@ -514,9 +565,11 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
 
         <TouchableOpacity
         onPress={()=>{
-                navigation.navigate('FarmlandAreaAudit', {
-                    farmlandId,
-                })
+                // navigation.navigate('FarmlandAreaAudit', {
+                //     farmlandId,
+                // })
+                setArea(handleCalculateArea().toFixed(1));
+                setIsCalculatedArea(true);
             }}
             >
         <Box

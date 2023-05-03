@@ -72,7 +72,7 @@ export function MemberItem({ item, isGroupManager, }) {
       <View
        style={{
         width: '100%',
-        height: '100%',
+        height: '70%',
         backgroundColor: COLORS.lightgrey,
        }}
       >
@@ -86,38 +86,7 @@ export function MemberItem({ item, isGroupManager, }) {
          }}
          resizeMode="cover"
         >
-       <View
-        style={{
-         padding: 5,
-         // position: 'relative',
-         // top: 10,
-         // left: 12,
-        }}
-       >
-          <Text
-           style={{
-            fontSize: 14,
-            color: COLORS.black,
-            fontFamily: 'JosefinSans-Italic',
-            
-            zIndex: 10,
-           }}
-           >
-           {item.names.otherNames} {item.names.surname}
-          </Text>
 
-          <Text
-           style={{
-            fontSize: 12,
-            color: COLORS.grey,
-            fontFamily: 'JosefinSans-Regular',
-            textAlign: 'right',
-            zIndex: 10,
-           }}
-           >
-           ({new Date().getFullYear() - new Date(item.birthDate).getFullYear()} anos)
-          </Text>
-       </View>
         </ImageBackground>
    }
 
@@ -126,6 +95,7 @@ export function MemberItem({ item, isGroupManager, }) {
     <View
     style={{
      padding: 5,
+    //  width: '100%',
      // position: 'relative',
      // top: 10,
      // left: 12,
@@ -133,42 +103,49 @@ export function MemberItem({ item, isGroupManager, }) {
    >
     <View
      style={{
-      position: 'absolute',
-      top: 45,
-      left: 40,
-      
+        justifyContent: 'center',
+        alignItems: 'center',   
+        // width: '100%',   
+       
      }}
     >
      <FontAwesomeIcon icon={faUserTie} size={90} color={COLORS.grey} />
     </View>
-      <Text
+    </View>
+   }
+      </View>
+   <View
+   style={{
+    minHeight: '30%',
+    width: '100%',
+    borderWidth: 1,
+    borderColor: COLORS.lightgrey,
+    paddingHorizontal: 5,
+
+   }}
+   >
+
+    <Text
        style={{
-        fontSize: 14,
+        fontSize: 13,
         color: COLORS.black,
         fontFamily: 'JosefinSans-Italic',
-        
-        zIndex: 10,
-       }}
+               }}
        >
        {item.names.otherNames} {item.names.surname}
-      </Text>
+    </Text>
 
-      <Text
+    <Text
        style={{
         fontSize: 12,
         color: COLORS.grey,
         fontFamily: 'JosefinSans-Regular',
         textAlign: 'right',
-        zIndex: 10,
        }}
        >
        ({new Date().getFullYear() - new Date(item.birthDate).getFullYear()} anos)
-      </Text>
-    
-    
-    </View>
-   }
-      </View>
+    </Text>
+   </View>
 
     </TouchableOpacity>
    
@@ -213,7 +190,6 @@ export default function GroupMembersScreen({ navigation, route }) {
       minHeight: '100%', 
       backgroundColor: COLORS.ghostwhite,
       // margin: 20,
-
   }}
 >
 
@@ -311,11 +287,12 @@ export default function GroupMembersScreen({ navigation, route }) {
        style={{
         padding: 10,
         // justifyContent: 'center',
-        alignItems: 'center',
+        // alignItems: 'center',
 
        }}
       >
 
+{ membersList?.length > 0 ?
       <FlatList
        numColumns={2}
        horizontal={false}
@@ -347,7 +324,38 @@ export default function GroupMembersScreen({ navigation, route }) {
        </Box>)
       }} 
     />
+    : 
+    <View
+      style={{
+        height: '80%',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Text
+        style={{ 
+          fontFamily: 'JosefinSans-Bold', 
+          fontSize: 16, 
+          color: COLORS.black, 
+          textAlign: 'center',
 
+        }}
+      >
+         {group?.name}
+      </Text>
+      <Text
+        style={{
+          paddingHorizontal: 30,
+          fontSize: 14,
+          fontFamily: 'JosefinSans-Regular',
+          color: COLORS.black,
+          textAlign: 'center',
+          lineHeight: 25,
+        }}
+      >Não tem ainda produtor registado</Text>
+    </View>
+
+}
   </View>
 
 

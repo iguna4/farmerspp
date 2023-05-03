@@ -74,7 +74,7 @@ export function FarmerGroupItem({ item }) {
       <View
        style={{
         width: '100%',
-        height: '100%',
+        height: '70%',
         backgroundColor: COLORS.lightgrey,
        }}
       >
@@ -88,38 +88,7 @@ export function FarmerGroupItem({ item }) {
          }}
          resizeMode="cover"
         >
-       <View
-        style={{
-         padding: 5,
-         // position: 'relative',
-         // top: 10,
-         // left: 12,
-        }}
-       >
-          <Text
-           style={{
-            fontSize: 20,
-            color: COLORS.black,
-            fontFamily: 'JosefinSans-Bold',
-            
-            zIndex: 10,
-           }}
-           >
-           {item?.name}
-          </Text>
 
-          <Text
-           style={{
-            fontSize: 15,
-            color: COLORS.grey,
-            fontFamily: 'JosefinSans-Regular',
-            textAlign: 'right',
-            zIndex: 10,
-           }}
-           >
-           ({item?.type})
-          </Text>
-       </View>
         </ImageBackground>
    }
 
@@ -128,16 +97,10 @@ export function FarmerGroupItem({ item }) {
     <View
     style={{
      padding: 10,
-     // position: 'relative',
-     // top: 10,
-     // left: 12,
     }}
    >
     <View
      style={{
-      // position: 'absolute',
-      // top: 45,
-      // left: 40,
       justifyContent: 'center',
       alignItems: 'center',
       
@@ -145,44 +108,45 @@ export function FarmerGroupItem({ item }) {
     >
       <FontAwesomeIcon icon={faPeopleGroup} size={120} color={COLORS.grey} />
     </View>
-      <Text
-       style={{
-        fontSize: 20,
-        color: COLORS.black,
-        fontFamily: 'JosefinSans-Bold',
-        
-        zIndex: 10,
-       }}
-       >
-       {item?.name} 
-      </Text>
-
-      <Text
-       style={{
-        fontSize: 15,
-        color: COLORS.grey,
-        fontFamily: 'JosefinSans-Regular',
-        textAlign: 'right',
-        zIndex: 10,
-       }}
-       >
-       ({item?.type})
-      </Text>
-    
     
     </View>
    }
-    <View
-      style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-      }}
-    >
+
+<View
+  style={{
+    minHeight: '30%',
+    width: '100%',
+    borderWidth: 1,
+    borderColor: COLORS.lightgrey,
+    paddingHorizontal: 10,
+  }}
+>
+      <Text
+       style={{
+        fontSize: 18,
+        color: COLORS.black,
+        fontFamily: 'JosefinSans-Bold',
+       }}
+       >
+       {item?.name}{' '}
+        <Text
+        style={{
+          fontSize: 14,
+          color: COLORS.grey,
+          fontFamily: 'JosefinSans-Regular',
+          // textAlign: 'right',
+        }}
+        >
+        ({item?.type})
+        </Text>
+      </Text>
+
+    
+
       <Stack direction="row"
         style={{
-          paddingHorizontal: 10,
-          paddingBottom: 4,
+          // paddingHorizontal: 10,
+          paddingTop: 4,
         }}
       >
         <Box w="50%">
@@ -207,7 +171,9 @@ export function FarmerGroupItem({ item }) {
         </Box>
       </Stack>
 
-    </View>
+</View>
+
+ 
       </View>
 
     </TouchableOpacity>

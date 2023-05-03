@@ -1,12 +1,13 @@
 
 export const secrets = {
     baseUrl: "https://realm.mongodb.com",
-    appID: 'connectcaju_app-wkmdw',
+    appID: 'connectcaju__app-kstla', // the most recently created app
+    // appID: 'connectcaju_app-wkmdw',
     // appID: 'connectcaju__platform__app-ynzaw',
     // appID: 'connectcaju-platform-app-ljalr', // this is the second dev mode app
     // appID: 'farmers-app-hxnkd', // this is the very first dev mode app
     serviceName: 'mongodb-atlas',
-    databaseName: 'connectcaju_database',
+    databaseName: 'connectcaju_db',
     // databaseName: 'ccajuDB', // this database is for the second dev mode app
     // databaseName: 'connectcaju__platform__database',
     userCollectionName: 'User',

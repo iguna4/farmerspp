@@ -162,7 +162,7 @@ const customizeFarmerItem = (farmer)=>{
      <View
          style={{
            width: '100%',
-           minHeight: 60,
+          height: 50,
            paddingHorizontal: wp('3%'),
            // paddingTop: 5,
            backgroundColor: '#EBEBE4',
@@ -227,7 +227,7 @@ const customizeFarmerItem = (farmer)=>{
               placeholderTextColor={COLORS.lightgrey}
               style={{
                 width: '100%',
-                backgroundColor: COLORS.ghostwhite,
+                backgroundColor: 'white',//COLORS.ghostwhite,
                 borderRadius: 30,
                 color: COLORS.grey,
                 fontFamily: 'JosefinSans-Regular',
@@ -235,7 +235,7 @@ const customizeFarmerItem = (farmer)=>{
                 textAlign:'left',
                 paddingLeft: 20,
                 fontSize: 16,
-                borderColor: COLORS.lightgrey,
+                borderColor: 'white',//COLORS.lightgrey,
               }}
               value={searchQuery}
               onFocus={()=>{
@@ -327,7 +327,7 @@ const customizeFarmerItem = (farmer)=>{
             w="100%" 
             style={{
               marginBottom: 50,
-              // marginTop: 10,
+              marginTop: 20,
             }}
           >
             <FlatList

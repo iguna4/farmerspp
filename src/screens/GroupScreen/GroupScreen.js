@@ -329,10 +329,10 @@ export default function GroupScreen ({ route, navigation }) {
 {        
    customUserData?.role !== roles.provincialManager &&  
       <Stack direction="row" w="100%" p="4">
-            <Box w="20%">
+            <Box w="50%">
 
             </Box>
-            <Box w="80%" 
+            <Box w="50%" 
               // alignItems={'e'}
               style={{
                 alignItems: 'flex-end',
@@ -367,12 +367,12 @@ export default function GroupScreen ({ route, navigation }) {
             
                     }}
                 >
-                    <Icon name="save" size={25} color={COLORS.mediumseagreen} />
+                    <Icon name="save" size={20} color={COLORS.mediumseagreen} />
                     {/* </Box> */}
                     <Text
                         style={{
                             color: COLORS.mediumseagreen,
-                            fontSize: 18,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Bold',
                             paddingLeft: 5,
                         }}

@@ -285,6 +285,8 @@ export default function FarmerGroupsScreen({ navigation, route }) {
                   fontSize: 14, 
                   color: COLORS.main, 
                 }}
+                numberOfLines={1}
+                ellipsizeMode={'tail'}
               >
                 {actorName}
               </Text>

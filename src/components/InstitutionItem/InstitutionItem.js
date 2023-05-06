@@ -63,22 +63,23 @@ const InstitutionItem = ({ item, route }) => {
         marginVertical: hp('1%'),
         // backgroundColor: COLORS.sixth,
         borderTopColor: COLORS.sixth,
-        borderTopWidth: 10,
+        // borderTopWidth: 2,
         borderTopEndRadius: 10,
         borderTopLeftRadius: 10,
         borderColor: COLORS.main,
-        minHeight: hp('17%'),
+        height: 110,
         width: '100%',
+        backgroundColor: '#F5F5F5',
         flex: 1,
         shadowColor: COLORS.main,
         shadowOffset: {
           width: 0,
           height: 3,
         },
-        shadowOpacity: 0.27,
-        shadowRadius: 4.65,
+        // shadowOpacity: 0.27,
+        // shadowRadius: 4.65,
 
-        elevation: 3,
+        // elevation: 3,
 
       }}
     >   
@@ -125,6 +126,8 @@ const InstitutionItem = ({ item, route }) => {
           fontFamily: 'JosefinSans-Bold',
           color: COLORS.main,
         }}
+        numberOfLines={1}
+        ellipsizeMode={'tail'}
         >
         {item?.type === 'Outro' ? 'Empresa': `${item?.type}`}{' '}{item?.name}
       <Text 
@@ -149,6 +152,8 @@ const InstitutionItem = ({ item, route }) => {
                   fontSize: responsiveFontSize(1.7),
                   fontFamily: 'JosefinSans-Italic',
                 }}
+                numberOfLines={1}
+                ellipsizeMode={'tail'}
                 >
                 Responsável: {item.manager}
             </Text>
@@ -168,7 +173,7 @@ const InstitutionItem = ({ item, route }) => {
               <Box 
                 style={{
                   flexDirection: 'row',
-                  borderWidth: 1,
+                  // borderWidth: 1,
                   borderRadius: 20,
                   borderColor: farmlandStatus === resourceValidation.status.pending ? COLORS.danger : farmlandStatus === resourceValidation.status.validated ? COLORS.main : COLORS.red,
                   justifyContent: 'space-between',

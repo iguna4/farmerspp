@@ -546,10 +546,14 @@ export default function FarmersScreen({ route, navigation }) {
           <Box w="65%">
             <Center>
               <Text
+                numberOfLines={1}
+                ellipsizeMode={'tail'}
                 style={{ 
                   fontFamily: 'JosefinSans-Bold', 
                   fontSize: responsiveFontSize(2), 
                   color: COLORS.main, 
+                  // numberOfLines: 1,
+                  // ellipsizeMode: 'tail',
                 }}
               >
                 { !showAll ? customUserData?.userDistrict : customUserData?.name}

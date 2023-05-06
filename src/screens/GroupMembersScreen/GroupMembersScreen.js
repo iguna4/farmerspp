@@ -56,7 +56,7 @@ export function MemberItem({ item, isGroupManager, }) {
      borderWidth: isGroupManager ? 5 : 0,
      borderColor: isGroupManager ? COLORS.main : '',
      width: '45%',
-     minHeight: 150,
+     height: 150,
      shadowOffset: {
        width: 0,
        height: 3,
@@ -112,11 +112,15 @@ export function MemberItem({ item, isGroupManager, }) {
       </View>
    <View
    style={{
-    minHeight: '30%',
+    height: '30%',
     width: '100%',
-    borderWidth: 1,
+    borderTopWidth: 0,
+    borderBottomWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
     borderColor: COLORS.lightgrey,
     paddingHorizontal: 5,
+    // marginTop: -5,
 
    }}
    >
@@ -126,8 +130,10 @@ export function MemberItem({ item, isGroupManager, }) {
         fontSize: 10,
         color: COLORS.black,
         fontFamily: 'JosefinSans-Italic',
-               }}
-       >
+      }}
+      numberOfLines={1}
+      ellipsizeMode={'tail'}
+    >
        {item.names.otherNames} {item.names.surname}
     </Text>
 
@@ -239,6 +245,8 @@ export default function GroupMembersScreen({ navigation, route }) {
                   fontSize: 14, 
                   color: COLORS.main, 
                 }}
+                numberOfLines={1}
+                ellipsizeMode={'tail'}
               >
                 {group?.name}
               </Text>

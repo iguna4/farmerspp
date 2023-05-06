@@ -337,16 +337,14 @@ export default function InstitutionScreen ({ route, navigation }) {
 {        
     customUserData?.role !== roles.provincialManager &&  
         <Stack direction="row" w="100%" p="4">
-            <Box w="20%">
+            <Box w="50%">
 
             </Box>
-            <Box w="80%" 
-              // alignItems={'center'}
+            <Box w="50%" 
               style={{
                 alignItems: 'flex-end',
               }}
             >
-
               <TouchableOpacity
                 style={{
                   flexDirection: 'row'
@@ -357,12 +355,6 @@ export default function InstitutionScreen ({ route, navigation }) {
                   flag: 'Instituição',
                 })}
               >
-                {/* <Icon 
-                  name="add-circle" 
-                  color={COLORS.mediumseagreen} 
-                  size={wp('15%')} 
-                /> */}
-
                 <Box
                     style={{
                         flexDirection: 'row',
@@ -375,12 +367,12 @@ export default function InstitutionScreen ({ route, navigation }) {
             
                     }}
                 >
-                    <Icon name="save" size={25} color={COLORS.mediumseagreen} />
+                    <Icon name="save" size={20} color={COLORS.mediumseagreen} />
                     {/* </Box> */}
                     <Text
                         style={{
                             color: COLORS.mediumseagreen,
-                            fontSize: 18,
+                            fontSize: 14,
                             fontFamily: 'JosefinSans-Bold',
                             paddingLeft: 5,
                         }}

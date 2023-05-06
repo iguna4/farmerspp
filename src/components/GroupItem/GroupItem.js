@@ -64,11 +64,12 @@ const GroupItem = ({ item, route }) => {
       style={{
         paddingHorizontal: wp('1%'),
         marginVertical: hp('1%'),
-        minHeight: hp('17%'),
+        height: 110,
         width: '100%',
+        backgroundColor: '#F5F5F5',
         flex: 1,
         borderTopColor: COLORS.fifth,
-        borderTopWidth: 10,
+        // borderTopWidth: 2,
         borderTopEndRadius: 10,
         borderTopLeftRadius: 10,
         borderColor: COLORS.main,
@@ -77,10 +78,10 @@ const GroupItem = ({ item, route }) => {
           width: 0,
           height: 3,
         },
-        shadowOpacity: 0.27,
-        shadowRadius: 4.65,
+        // shadowOpacity: 0.27,
+        // shadowRadius: 4.65,
 
-        elevation: 3,
+        // elevation: 3,
 
       }}
     >
@@ -125,6 +126,8 @@ const GroupItem = ({ item, route }) => {
           fontFamily: 'JosefinSans-Bold',
           color: COLORS.main,
         }}
+        numberOfLines={1}
+        ellipsizeMode={'tail'}
       >
         {item?.name}
       <Text 
@@ -132,9 +135,10 @@ const GroupItem = ({ item, route }) => {
           fontSize: responsiveFontSize(1.7),
           fontFamily: 'JosefinSans-Italic',
           color: COLORS.main,
-          paddingTop: 6,
-          
+          paddingTop: 6,          
         }}
+        numberOfLines={1}
+        ellipsizeMode={'tail'}
         >
         {' '}({item?.type})
         </Text>
@@ -161,14 +165,14 @@ const GroupItem = ({ item, route }) => {
                 fontFamily: 'JosefinSans-Italic',
                 }}
               >
-                Ano de criação: {item.creationYear}
+                Criação: {item.creationYear}
               </Text>
             </Box>
             {/* <Box w="50%"> */}
             {/* <Stack direction="row"> */}
                 <Box style={{
                   flexDirection: 'row',
-                  borderWidth: 1,
+                  // borderWidth: 1,
                   borderRadius: 20,
                   borderColor: farmlandStatus === resourceValidation.status.pending ? COLORS.danger : farmlandStatus === resourceValidation.status.validated ? COLORS.main : COLORS.red,
                   justifyContent: 'space-between',

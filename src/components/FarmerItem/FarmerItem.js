@@ -67,11 +67,12 @@ const FarmerItem = ({ item, route, farmerType }) => {
       style={{
         paddingHorizontal: 10,
         marginVertical: hp('1%'),
-        minHeight: hp('17%'),
+        height: 110,
         width: '100%',
+        backgroundColor: '#F5F5F5',
         flex: 1,
         borderTopColor: COLORS.second,
-        borderTopWidth: 10,
+        // borderTopWidth: 2,
         borderTopEndRadius: 10,
         borderTopLeftRadius: 10,
         borderColor: COLORS.main,
@@ -80,10 +81,10 @@ const FarmerItem = ({ item, route, farmerType }) => {
           width: 0,
           height: 3,
         },
-        shadowOpacity: 0.27,
-        shadowRadius: 4.65,
+        // shadowOpacity: 0.27,
+        // shadowRadius: 4.65,
 
-        elevation: 3,
+        // elevation: 3,
 
       }}
     >
@@ -145,6 +146,8 @@ const FarmerItem = ({ item, route, farmerType }) => {
           fontFamily: 'JosefinSans-Bold',
           color: COLORS.main,
         }}
+        numberOfLines={1}
+        ellipsizeMode={'tail'}
         >
         {item.name}
       <Text 
@@ -172,11 +175,13 @@ const FarmerItem = ({ item, route, farmerType }) => {
             {
               item.assets?.map((asset, index)=>(
                 <Text 
-                key={index}
+                  key={index}
                   style={{
                     fontSize: responsiveFontSize(1.7),
                     fontFamily: 'JosefinSans-Italic',
                   }}
+                  numberOfLines={1}
+                  ellipsizeMode={'tail'}
                   >
                   {asset.category} {asset.subcategory}
                 </Text>
@@ -201,7 +206,7 @@ const FarmerItem = ({ item, route, farmerType }) => {
                 // w="30%"
                 style={{
                   flexDirection: 'row',
-                  borderWidth: 1,
+                  // borderWidth: 1,
                   borderRadius: 20,
                   borderColor: farmlandStatus === resourceValidation.status.pending ? COLORS.danger : farmlandStatus === resourceValidation.status.validated ? COLORS.main : COLORS.red,
                   justifyContent: 'space-between',

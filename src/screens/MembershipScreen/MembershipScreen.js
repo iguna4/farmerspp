@@ -33,6 +33,7 @@ import Animated, { Layout, LightSpeedInLeft, LightSpeedOutRight, } from 'react-n
 import Toast from 'react-native-toast-message';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { useNavigation } from '@react-navigation/native';
 
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import COLORS from '../../consts/colors';
@@ -62,6 +63,7 @@ function MemberGroupItem ({
  const realm = useRealm();
  const user = useUser();
  let customUserData = user.customData;
+ const navigation = useNavigation();
 
  const currentGroup = realm.objectForPrimaryKey('Group', item?._id);
  const membership = realm.objects('ActorMembership').filtered(`actorId == "${farmerId}"`);
@@ -269,13 +271,13 @@ function MemberGroupItem ({
             fontFamily: 'JosefinSans-Bold',
             color: isFarmerAlreadyAdded ? COLORS.main : COLORS.black,
             paddingLeft: 10,
-
            }}
+           numberOfLines={1}
+           ellipsizeMode={'tail'}
           >
-
-
-            {item?.type}: {item?.name}</Text>
-           <Text
+            {item?.type}: {item?.name}
+          </Text>
+           {/* <Text
            style={{
             fontSize: 14,
             fontFamily: 'JosefinSans-Regular',
@@ -283,9 +285,11 @@ function MemberGroupItem ({
             paddingLeft: 10,
 
            }}
+           numberOfLines={1}
+           ellipsizeMode={'tail'}
            >
             {item?.type === 'Cooperativa' ? 'Presidente' : 'Representante'}: {item?.manager?.fullname}
-          </Text>
+          </Text> */}
           <Stack direction="row" w="100%">
            <Box w="50%">
             <Text
@@ -322,8 +326,11 @@ function MemberGroupItem ({
         }}
      >
       <TouchableOpacity
+        disabled={isFarmerAlreadyAdded  ? false : true}
         onPress={()=>{
-
+          navigation.navigate('GroupMembers', {
+            groupId: item._id
+          })
         }}
        >
         <Icon name="arrow-forward-ios" size={20} color={isFarmerAlreadyAdded ? COLORS.main : COLORS.lightgrey}  />
@@ -422,7 +429,7 @@ const filtererdItems = groupsList.filter((item)=>{
      <View
          style={{
            width: '100%',
-           minHeight: 60,
+           height: 50,
            paddingHorizontal: wp('3%'),
            // paddingTop: 5,
            backgroundColor: '#EBEBE4',
@@ -477,7 +484,7 @@ const filtererdItems = groupsList.filter((item)=>{
                 placeholderTextColor={COLORS.lightgrey}
                 style={{
                   width: '100%',
-                  backgroundColor: COLORS.ghostwhite,
+                  backgroundColor: 'white',//COLORS.ghostwhite,
                   borderRadius: 30,
                   color: COLORS.grey,
                   fontFamily: 'JosefinSans-Regular',
@@ -485,7 +492,7 @@ const filtererdItems = groupsList.filter((item)=>{
                   textAlign:'left',
                   paddingLeft: 20,
                   fontSize: 16,
-                  borderColor: COLORS.lightgrey,
+                  borderColor: 'white',//COLORS.lightgrey,
                 }}
                 value={searchQuery}
                 onFocus={()=>{
@@ -520,6 +527,8 @@ const filtererdItems = groupsList.filter((item)=>{
                      fontSize: 15,
                      fontFamily: 'JosefinSans-Bold',
                     }} 
+                    numberOfLines={1}
+                    ellipsizeMode={'tail'}
                   >
                  
                    {`${farmer?.names?.otherNames} ${farmer?.names?.surname}`}
@@ -573,7 +582,7 @@ const filtererdItems = groupsList.filter((item)=>{
             w="100%" 
             style={{
               marginBottom: 50,
-              // marginTop: 10,
+              marginTop: 20,
             }}
           >
             <FlatList

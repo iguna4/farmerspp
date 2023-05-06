@@ -204,12 +204,15 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
 
         points = coordinates?.map((point)=>{
             return {
-                lat: point?.latitude,
-                lng: point?.longitude,
+                lat: parseFloat(point?.latitude),
+                lng: parseFloat(point?.longitude),
             }
         });
+        const area = calculatePolygonArea(points); 
+        setArea(Number(area));
+        // console.log('new area:', area);
 
-        return calculatePolygonArea(points);
+        return area;
     };
 
 
@@ -227,6 +230,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             setLoadingActivityIndicator={setLoadingActivityIndicator}
         />
       }
+
+      console.log('area....', area)
     
 
     return (
@@ -258,8 +263,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     <AwesomeAlert
           show={isCalculatedArea}
           showProgress={false}
-          title="Área?"
-          message={`${area} hectares`}
+          title="Área"
+          message={`${Number(area)} hectares`}
           closeOnTouchOutside={true}
           closeOnHardwareBackPress={false}
           showCancelButton={true}
@@ -568,13 +573,13 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 // navigation.navigate('FarmlandAreaAudit', {
                 //     farmlandId,
                 // })
-                setArea(handleCalculateArea().toFixed(1));
+                handleCalculateArea();
                 setIsCalculatedArea(true);
             }}
             >
         <Box
             style={{
-                borderWidth: 2,
+                borderWidth: 1,
                 borderColor: COLORS.main,
                 borderRadius: 30,
                 paddingHorizontal: 20,
@@ -584,7 +589,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         >
             <Text
                 style={{ 
-                    fontSize: 20, 
+                    fontSize: 16, 
                     fontFamily: 'JosefinSans-Bold', 
                     color: COLORS.main,
                     textAlign: 'center',

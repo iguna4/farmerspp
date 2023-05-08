@@ -73,6 +73,7 @@ export default function GroupRepresentativeItem({
           width: 0,
           height: 3,
         },
+        backgroundColor: '#F5F5F5',
 
       }}
   >
@@ -118,8 +119,9 @@ export default function GroupRepresentativeItem({
             fontFamily: 'JosefinSans-Bold',
             color: COLORS.black,
             paddingLeft: 10,
-
            }}
+           numberOfLines={1}
+           ellipsizeMode="tail"
           >
            {item?.names?.otherNames} {item?.names?.surname}
           </Text>

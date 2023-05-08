@@ -302,6 +302,17 @@ export default function InstitutionScreen ({ route, navigation }) {
         marginTop: 40,
       }}
     >
+        <Text
+          style={{
+            color: COLORS.black,
+            fontSize: 16,
+            fontFamily: 'JosefinSans-Bold',
+            textAlign: 'right',
+            padding: 10,
+            letterSpacing: 5,
+          }}
+        >{farmer?.identifier}</Text>
+
         <InstitutionData farmer={farmer} />
     </View>
 

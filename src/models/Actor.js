@@ -10,6 +10,7 @@ export const Actor = {
         _id: 'string',
         names: 'Name',
         uaid: 'string', //uaid: unique actor id  => <Firstname first 2 characters>.<birthDate in milliseconds>.<birthPlace CEP>.<Lastname first 2 characters>
+        identifier: 'string?',
         gender: 'string',
         familySize: 'int',
         birthDate: 'date',

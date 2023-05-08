@@ -52,6 +52,7 @@ import COLORS from '../../consts/colors';
 
 
 import { realmContext } from '../../models/realmContext';
+import { generateUniqueNumber } from '../../helpers/generateUniqueNumber';
 const {useRealm} = realmContext;
 
 
@@ -153,7 +154,13 @@ export default function FarmerRegistration({ route, navigation }) {
         let farmerData;
         let retrievedFarmerData;
 
+
+
+
         if (farmerType === "Indivíduo"){
+
+
+
             farmerData = {
                isSprayingAgent,
                isNotSprayingAgent,
@@ -182,7 +189,21 @@ export default function FarmerRegistration({ route, navigation }) {
                 return ;
             }
             retrievedFarmerData = validateIndividualFarmerData(farmerData, errors, setErrors);
+
+            // generate actor identifier
+            let identifier = generateUniqueNumber(retrievedFarmerData.birthPlace, 'Indivíduo');
+            let foundIdentierMatches = realm.objects('Actor').filtered(`identifier == $0`, identifier);
+
+            // keep checking until no match is found
+            while (foundIdentierMatches?.length > 0){
+                identifier = generateUniqueNumber(retrievedFarmerData.birthPlace, 'Indivíduo');
+                foundIdentierMatches = realm.objects('Actor').filtered(`identifier == $0`, identifier);
+            };
+
+            retrievedFarmerData['identifier'] = identifier;
+
             
+            // console.log('single actor data object: ', JSON.stringify(retrievedFarmerData));
             setFarmerData(retrievedFarmerData);
             
             // not allowed if the user decided to proceed
@@ -195,9 +216,15 @@ export default function FarmerRegistration({ route, navigation }) {
                     birthPlace: retrievedFarmerData.birthPlace,
                     address: retrievedFarmerData.address,
                 }
+
+                // const otherNames = retrievedFarmerData.names.otherNames.substr(0, 2);
+                // const username = retrievedFarmerData.names.surname.substr(0, 2);
+                // const birthDate = retrievedFarmerData.birthDate;
+                // const birthPlace = retrievedFarmerData.birthPlace;
                 
                 const uaid = generateUAID(uaidData);
                 let suspected = realm.objects('Actor').filtered(`uaid == $0`, uaid);
+                // let foundSuspects = realm.objects('Actor').filtered(`otherNames`)
                 
                 // get more evidence on the duplication attempt
                 suspected = detectDuplicates(retrievedFarmerData, suspected);
@@ -207,6 +234,8 @@ export default function FarmerRegistration({ route, navigation }) {
                     return ;
                 }
             }
+
+
 
         }
         else if (farmerType === "Instituição"){
@@ -230,6 +259,22 @@ export default function FarmerRegistration({ route, navigation }) {
                 return ;
             }
             retrievedFarmerData = validateInstitutionFarmerData(farmerData, errors, setErrors);
+
+            // generate actor identifier
+            let identifier = generateUniqueNumber(retrievedFarmerData.address, 'Instituição');
+            let foundIdentierMatches = realm.objects('Institution').filtered(`identifier == $0`, identifier);
+
+            // keep checking until no match is found
+            while (foundIdentierMatches?.length > 0){
+                identifier = generateUniqueNumber(retrievedFarmerData.address, 'Instituição');
+                foundIdentierMatches = realm.objects('Institution').filtered(`identifier == $0`, identifier);
+            };
+
+            retrievedFarmerData['identifier'] = identifier;
+
+            
+            // console.log('single actor data object: ', JSON.stringify(retrievedFarmerData));
+            setFarmerData(retrievedFarmerData);
 
             setFarmerData(retrievedFarmerData)
         }
@@ -259,6 +304,21 @@ export default function FarmerRegistration({ route, navigation }) {
                 return ;
             }
             retrievedFarmerData = validateGroupFarmerData(farmerData, errors, setErrors, farmerType);
+
+            // generate actor identifier
+            let identifier = generateUniqueNumber(retrievedFarmerData.address, 'Grupo');
+            let foundIdentierMatches = realm.objects('Group').filtered(`identifier == $0`, identifier);
+
+            // keep checking until no match is found
+            while (foundIdentierMatches?.length > 0){
+                identifier = generateUniqueNumber(retrievedFarmerData.address, 'Grupo');
+                foundIdentierMatches = realm.objects('Group').filtered(`identifier == $0`, identifier);
+            };
+
+            // console.log('identifier:', identifier);
+
+            retrievedFarmerData['identifier'] = identifier;
+
             setFarmerData(retrievedFarmerData)
 
         }

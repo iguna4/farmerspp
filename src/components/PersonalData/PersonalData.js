@@ -1082,7 +1082,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                 content={<Box
                     style={{
                         flexDirection: 'column',
-                        minWidth: 200,
+                        minWidth: 250,
                         // height: 80,
                     }}
                 >

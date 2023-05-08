@@ -10,6 +10,7 @@ export const Group = {
         _id: 'string',
         type: 'string',
         name: 'string',
+        identifier: 'string?', 
         creationYear: 'int?',
         affiliationYear: 'int?',
         legalStatus: 'string?',

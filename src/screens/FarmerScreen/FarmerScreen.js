@@ -300,15 +300,26 @@ export default function FarmerScreen ({ route, navigation }) {
 ))     
     }
     </Box>
+
     
     {/* 
         Personal Data Child Component
-    */}
+      */}
     <View
         style={{
           marginTop: 40,
         }}
     >
+        <Text
+          style={{
+            color: COLORS.black,
+            fontSize: 16,
+            fontFamily: 'JosefinSans-Bold',
+            textAlign: 'right',
+            padding: 10,
+            letterSpacing: 5,
+          }}
+        >{farmer?.identifier}</Text>
         <PersonalData 
           setRefresh={setRefresh} 
           refresh={refresh} 

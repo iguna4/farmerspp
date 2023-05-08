@@ -151,13 +151,17 @@ const customizeFarmerItem = (farmer)=>{
    <SafeAreaView 
      style={{    
        flex: 1,
-       paddingBottom: 100,
+      //  paddingBottom: 0,
        backgroundColor: 'ghostwhite',
      }}
    >
 
 
-<View>
+<View
+  style={{
+    
+  }}
+>
 
      <View
          style={{
@@ -171,6 +175,7 @@ const customizeFarmerItem = (farmer)=>{
            borderBottomWidth: 3,
            borderLeftWidth: 3,
            borderRightWidth: 3,
+          //  marginBottom: 20,
          }}
      >
         <Stack
@@ -272,6 +277,8 @@ const customizeFarmerItem = (farmer)=>{
                    fontSize: 15,
                    fontFamily: 'JosefinSans-Bold',
                   }} 
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
                 >
                
                  {`${group?.name}`}
@@ -327,7 +334,7 @@ const customizeFarmerItem = (farmer)=>{
             w="100%" 
             style={{
               marginBottom: 50,
-              marginTop: 20,
+              // marginTop: 20,
             }}
           >
             <FlatList

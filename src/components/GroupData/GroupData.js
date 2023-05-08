@@ -128,8 +128,8 @@ const GroupData = ({ farmer })=>{
 
 
     // ------------------------------------------------
-    const [isEllipsisVisible, setIsEllipsisVisible] = useState(false);
-
+    const [membersEllipsisVisible, setMembersEllipsisVisible] = useState(false);
+    const [managerEllipsisVisible, setManagerEllipsisVisible] = useState(false);
 
     // ------------------------------------------------
 
@@ -207,6 +207,12 @@ const GroupData = ({ farmer })=>{
         clearInterval(interval);
 
     }, [ realm, user, message, invalidationMotives, autoRefresh, isCollapseOn ]);
+
+    const handleDeleteRepresentative = (group)=>{
+        realm.write(()=>{
+            group.manager = null;
+        })
+    }
 
 
 
@@ -535,36 +541,158 @@ const GroupData = ({ farmer })=>{
                             
                         }}
                         >
-                        Contacto
+                        Representação
                     </Text>
                 </Box>
                 {/* <Box w="25%"></Box> */}
                 <Box w="10%">
             {    
             customUserData?.role !== roles.provincialManager && 
-
-                <TouchableOpacity
-                        disabled={farmer?.status === resourceValidation.status.validated ? true : false}
-                        style={{
-                        }}
-                        onPress={
-                            ()=>{
-                                // setIsOverlayVisible(!isOverlayVisible);
-                                // setDataToBeUpdated('groupManager');
+            <Tooltip
+                isVisible={managerEllipsisVisible}
+                disableShadow={true}
+                placement="left"
+                childContentSpacing={4}
+                content={<Box
+                    style={{
+                        flexDirection: 'column',
+                        minWidth: 250,
+                        // height: 80,
+                    }}
+                >
+                    <Box>
+                        <TouchableOpacity
+                            onPress={()=>{
                                 navigation.navigate('GroupRepresentative', {
                                     groupId: farmer?._id,
                                     district: farmer?.address?.district
                                 });
+                                setManagerEllipsisVisible(false);
+                            }}
+                        >
+                            <Box
+                                style={{
+                                flexDirection: 'row',
+                                width: '100%',
+                                alignItems: 'center',
+                                paddingLeft: 10,
+                                paddingVertical: 10,
+                                // height: 80,
+                            }}  
+                            >
+                                {/* <FontAwesomeIcon icon={faPeopleGroup} size={20} color={COLORS.grey} /> */}
                                 
-                            }
-                        }
-                    >
-                        <Icon 
-                            name="edit"
-                            size={20} 
-                            color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone }
-                        />
-                    </TouchableOpacity>
+                                <Icon 
+                                    name="edit" 
+                                    size={20} 
+                                    color={COLORS.grey} 
+                                />
+                                <Text
+                                    style={{
+                                        fontSize: 15,
+                                        fontFamily: 'JosefinSans-Regular',
+                                        color: COLORS.grey,
+                                        paddingLeft: 20,
+                                    }}
+                                >Actualizar representação</Text>
+                            </Box>
+                        </TouchableOpacity>
+                    </Box>
+
+                    <CustomDivider />
+                    <Box>
+                        <TouchableOpacity
+                            disabled={farmer?.manager ? false : true}
+                            onPress={()=>{
+                                // navigation.navigate('GroupMembers', {
+                                //     groupId: farmer._id,
+                                // });
+                                
+                                // navigation.navigate('GroupRepresentative', {
+                                //     groupId: farmer?._id,
+                                //     district: farmer?.address?.district
+                                // });
+
+                                handleDeleteRepresentative(farmer)
+
+                                setManagerEllipsisVisible(false);
+                            }}
+                        >
+                            <Box
+                                style={{
+                                    flexDirection: 'row',
+                                    width: '100%',
+                                    alignItems: 'center',
+                                    paddingLeft: 10,
+                                    paddingVertical: 10,
+                                    // height: 80,
+                                }} 
+                            >
+                                <Icon 
+                                    name="delete" 
+                                    size={20} 
+                                    color={farmer?.manager ? COLORS.grey : COLORS.lightgrey} 
+                                />
+                                
+                                {/* <FontAwesomeIcon icon={faEye} size={20} color={COLORS.grey} /> */}
+                                <Text
+                                    style={{
+                                        fontSize: 15,
+                                        fontFamily: 'JosefinSans-Regular',
+                                        color: farmer?.manager ? COLORS.grey : COLORS.lightgrey,
+                                        paddingLeft: 20,
+                                    }}
+                                >Apagar representação</Text>
+                            </Box>
+                        </TouchableOpacity>
+                    </Box>
+                </Box>
+            }
+                onClose={()=>setManagerEllipsisVisible(false)}
+            >
+
+                <TouchableOpacity
+                    style={{
+
+                    }}
+                    onPress={
+                        ()=>{
+                            setManagerEllipsisVisible(true);
+                    }}
+                >
+                <Box>
+                    <FontAwesomeIcon 
+                        icon={faEllipsisVertical} 
+                        size={20} 
+                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone } 
+                        fade 
+                    />
+
+                </Box>
+                </TouchableOpacity>
+            </Tooltip>
+                // <TouchableOpacity
+                //         disabled={farmer?.status === resourceValidation.status.validated ? true : false}
+                //         style={{
+                //         }}
+                //         onPress={
+                //             ()=>{
+                //                 // setIsOverlayVisible(!isOverlayVisible);
+                //                 // setDataToBeUpdated('groupManager');
+                //                 navigation.navigate('GroupRepresentative', {
+                //                     groupId: farmer?._id,
+                //                     district: farmer?.address?.district
+                //                 });
+                                
+                //             }
+                //         }
+                //     >
+                //         <Icon 
+                //             name="edit"
+                //             size={20} 
+                //             color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone }
+                //         />
+                //     </TouchableOpacity>
             }
                 </Box>
             </Stack>
@@ -575,18 +703,21 @@ const GroupData = ({ farmer })=>{
                         color: COLORS.grey,
                         fontSize: 14,
                         fontFamily: 'JosefinSans-Regular',
-                        
                     }}
-                    >
+
+                >
                     {farmer?.type?.includes('Grupo') ? 'Representante:' : 'Presidente:'}
                 </Text>
                 </Box>
                 <Box w="50%" >
-                    <Text style={{
-                        color: COLORS.grey,
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                    }}
+                    <Text 
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                        }}
+                        numberOfLines={2}
+                        ellipsizeMode={"tail"}
                     >
                         {groupManager ? `${groupManager?.names.otherNames} ${groupManager?.names.surname}` : "(Nenhum)"}
                     </Text>
@@ -717,14 +848,14 @@ const GroupData = ({ farmer })=>{
             customUserData?.role !== roles.provincialManager && 
 
             <Tooltip
-                isVisible={isEllipsisVisible}
+                isVisible={membersEllipsisVisible}
                 disableShadow={true}
                 placement="left"
                 childContentSpacing={4}
                 content={<Box
                     style={{
                         flexDirection: 'column',
-                        minWidth: 200,
+                        minWidth: 250,
                         // height: 80,
                     }}
                 >
@@ -733,7 +864,7 @@ const GroupData = ({ farmer })=>{
                             onPress={()=>{
                                 setIsOverlayVisible(!isOverlayVisible);
                                 setDataToBeUpdated('groupMembers');
-                                setIsEllipsisVisible(false);
+                                setMembersEllipsisVisible(false);
                             }}
                         >
                             <Box
@@ -771,7 +902,7 @@ const GroupData = ({ farmer })=>{
                                 navigation.navigate('GroupMembers', {
                                     groupId: farmer._id,
                                 });
-                                setIsEllipsisVisible(false);
+                                setMembersEllipsisVisible(false);
                             }}
                         >
                             <Box
@@ -797,7 +928,7 @@ const GroupData = ({ farmer })=>{
                         </TouchableOpacity>
                     </Box>
                 </Box>}
-                onClose={()=>setIsEllipsisVisible(false)}
+                onClose={()=>setMembersEllipsisVisible(false)}
             >
 
                 <TouchableOpacity
@@ -806,7 +937,7 @@ const GroupData = ({ farmer })=>{
                     }}
                     onPress={
                         ()=>{
-                            setIsEllipsisVisible(true);
+                            setMembersEllipsisVisible(true);
                     }}
                 >
                 <Box>

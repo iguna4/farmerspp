@@ -497,8 +497,11 @@ const FarmlandData = ({ farmland, setRefresh, refresh })=>{
                             color: COLORS.grey,
                             fontSize: responsiveFontSize(1.8),
                             fontFamily: 'JosefinSans-Regular',
-                        }}                    
-                        >
+                        }}  
+                        numberOfLines={2}
+                        ellipsizeMode={"tail"}
+
+                    >
                         {farmland?.description}
                     </Text>
                 </Box>

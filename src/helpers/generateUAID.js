@@ -1,5 +1,6 @@
 
 import { ceps } from '../consts/ceps';
+// import { generateUniqueNumber } from './generateUniqueNumber';
 
 export const generateUAID = ({ names, birthDate, birthPlace })=>{
     const fNameInitials = names.otherNames?.slice(0,2).toLowerCase();
@@ -21,6 +22,11 @@ export const generateUAID = ({ names, birthDate, birthPlace })=>{
     else  {
         birthPlaceCode = ceps[`${birthPlace?.adminPost}`]
     }
+
+    // generate for the farmer
+    // const uniqueNumber = generateUniqueNumber(birthPlaceCode, 'farmer');
+
+    // console.log('unique number:', uniqueNumber);
 
 
     return `${fNameInitials}.${date}.${birthPlaceCode}.${lNameInitials}`;

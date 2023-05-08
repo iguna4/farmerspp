@@ -25,6 +25,7 @@ import { user } from '../../consts/user';
 import { realmContext } from '../../models/realmContext';
 import COLORS from '../../consts/colors';
 import { groupAffiliationStatus } from '../../consts/groupAffiliationStatus';
+import { generateUniqueNumber } from '../../helpers/generateUniqueNumber';
 const {useRealm, useObject, useQuery } = realmContext;
 
 export default function GroupModal (
@@ -64,29 +65,33 @@ export default function GroupModal (
 
     // const currentUserStat = useObject('UserStat', customUserData?.userId);
     const currentUserStat = useQuery('UserStat').filtered("userId == $0", customUserData?.userId)[0];
-
+    
     const addGroup = useCallback((farmerData, realm) =>{
-    const {
-        operationalStatus,
-        type, 
-        name, 
-        address, 
-        creationYear,
-        legalStatus,
-        affiliationYear,
-        numberOfMembers,
-        assets,
-        // manager,
-        licence,
-        nuit,
-    } = farmerData;
+        const {
+            operationalStatus,
+            type, 
+            name, 
+            address, 
+            identifier,
+            creationYear,
+            legalStatus,
+            affiliationYear,
+            numberOfMembers,
+            assets,
+            // manager,
+            licence,
+            nuit,
+        } = farmerData;
 
+        
+    
     realm.write(async ()=>{
         const newGroup = await realm.create('Group', {
             _id: uuidv4(),
             operationalStatus,
             type,
             name,
+            identifier,
             creationYear,
             legalStatus,
             affiliationYear,

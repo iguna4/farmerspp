@@ -27,6 +27,7 @@ import { user } from '../../consts/user';
 
 import { realmContext } from '../../models/realmContext';
 import COLORS from '../../consts/colors';
+import { generateUniqueNumber } from '../../helpers/generateUniqueNumber';
 const {useRealm, useObject, useQuery} = realmContext;
 
 export default function InstitutionModal (
@@ -66,25 +67,27 @@ export default function InstitutionModal (
     // const currentUserStat = useObject('UserStat', customUserData?.userId);
     const currentUserStat = useQuery('UserStat').filtered("userId == $0", customUserData?.userId)[0];
 
-
-
+    
     const addInstitution = useCallback((farmerData, realm) =>{
     const {
         type, 
         name, 
         // private: private,
         assets,
+        identifier,
         address, 
         manager,
         nuit,
         licence,
     } = farmerData;
 
+
     realm.write(async ()=>{
         const newInstitution = await realm.create('Institution', {
             _id: uuidv4(),
             type,
             name,
+            identifier,
             private: farmerData?.private,
             assets,
             address,

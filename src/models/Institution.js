@@ -11,6 +11,7 @@ export const Institution = {
         type: 'string',
         private: { type: 'bool', default: false},
         name: 'string',
+        identifier: 'string?', 
         address: 'Address',
         manager: 'Manager',
         nuit: { type: 'int?', default: 0},

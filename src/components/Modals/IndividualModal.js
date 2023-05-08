@@ -19,6 +19,7 @@ import categories from '../../consts/categories';
 import { assetTypes } from '../../consts/assetTypes';
 import { useEffect } from 'react';
 import COLORS from '../../consts/colors';
+import { generateUniqueNumber } from '../../helpers/generateUniqueNumber';
 const {useRealm, useQuery, useObject } = realmContext;
 
 export default function IndividualModal (
@@ -72,20 +73,24 @@ export default function IndividualModal (
         isSprayingAgent, 
         gender, 
         familySize,
+        identifier,
         assets,
         birthDate, birthPlace, address,
         contact, idDocument,
     } = farmerData;
 
-    // generate the universally farmer identifier
+    // use this to check potential farmer duplicates
     const uaid = generateUAID({ names, birthDate, birthPlace });
-    
+
+    // // assign actor identification code
+    // const identifier = generateUniqueNumber(birthPlace, 'farmer');
+
     realm.write(async ()=>{
         const newFarmer = await realm.create('Actor', {
             _id: uuidv4(),
             names,
             uaid,
-            // isSprayingAgent,
+            identifier,
             gender,
             familySize,
             birthDate,

@@ -791,12 +791,16 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 <Box w="5%"></Box>
                 <Box w="80%" 
                 >
-                    <Text style={{
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Regular',
-                        color: 'grey',
-                    }}>
-                        Proprietário: {ownerName}
+                    <Text 
+                        style={{
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                            color: 'grey',
+                        }}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                    >
+                        {ownerName}
                     </Text>  
                 </Box>
                 <Center w="15%">
@@ -1196,7 +1200,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                                 style={{
                                     color: COLORS.ghostwhite,
                                     fontFamily: 'JosefinSans-Bold',
-                                    fontSize: 16,
+                                    fontSize: 15,
                                 }}
                                 numberOfLines={1}
                                 ellipsizeMode="head"
@@ -1358,7 +1362,12 @@ export default function FarmlandRegistration ({ route, navigation }) {
                         }}
                     >
                     <Text
-                        style={{ fontSize: 14, color: COLORS.red, fontFamily: 'JosefinSans-Bold', }}
+                        style={{ 
+                            fontSize: 13, 
+                            color: COLORS.red, 
+                            fontFamily: 'JosefinSans-Bold', 
+                            textAlign: 'center'
+                        }}
                     >
                         Concluir Registo
                     </Text>
@@ -1414,8 +1423,9 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     <Text
                         style={{
                             color: !farmland ? COLORS.mediumseagreen : COLORS.main,
-                            fontSize: 14,
+                            fontSize: 13,
                             fontFamily: 'JosefinSans-Bold',
+                            textAlign: 'center',
                             // paddingLeft: 3,
                         }}
                     >

@@ -203,7 +203,7 @@ function MemberGroupItem ({
           width: 0,
           height: 3,
         },
-
+        backgroundColor: '#F5F5F5',
       }}
   
   >

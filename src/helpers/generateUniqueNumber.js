@@ -19,11 +19,11 @@ export const generateUniqueNumber = (birthPlace, category) => {
  }
 
 
- const secondDigit = birthPlaceCode.substr(1, 1);
- const fourthDigit = birthPlaceCode.substr(3, 1);
- const timestamp = JSON.stringify(Date.now()).substr(-4, 4);
- const random = JSON.stringify(Math.floor(Math.random() * 1000000)); // generate a random number between 0 and 999999
- const uniqueNumber = Number(`${timestamp}${random}`.substr(0, 6)); // combine the timestamp and random number and take the first 9 digits
+ let secondDigit = birthPlaceCode.substr(1, 1);
+ let fourthDigit = birthPlaceCode.substr(3, 1);
+ let timestamp = JSON.stringify(Date.now()).substr(-5, 4);
+ let random = JSON.stringify(Math.floor(Math.random() * 100000000)); // generate a random number between 0 and 999999
+ let uniqueNumber = Number(`${timestamp}${random}`.substr(0, 6)); // combine the timestamp and random number and take the first 9 digits
  let categoryNumber;
  
  // console.log('random:', random);
@@ -46,5 +46,13 @@ export const generateUniqueNumber = (birthPlace, category) => {
   categoryNumber = '7';
  }
 
- return `${categoryNumber}${secondDigit}${fourthDigit}${uniqueNumber}`;
+ let identifier = `${categoryNumber}${secondDigit}${fourthDigit}${uniqueNumber}`;
+ while(identifier.length !== 9){
+
+    const newRandom = JSON.stringify(Math.floor(Math.random() * 1000000)); // generate a random number between 0 and 999999
+    identifier = `${identifier}${newRandom}`.substr(0, 9);
+
+ }
+
+ return identifier
 }

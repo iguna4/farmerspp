@@ -437,7 +437,7 @@ export default function WelcomeScreen () {
                 <FormControl.Label>{signInWithPhone ? 'Número de Telefone' : 'Endereço Electrónico'}</FormControl.Label>
                 <CustomInput
                     width="100%"
-                    autoFocus={isLoggingIn ? true: false}
+                    // autoFocus={isLoggingIn ? true: false}
                     placeholder={signInWithPhone ? "Número de Telefone" : "Endereço Electrónico"}
                     type={signInWithPhone ? "telephoneNumber" : "emailAddress"}
                     keyboardType={signInWithPhone ? "numeric" : ""}

@@ -62,8 +62,13 @@ export default function GroupRepresentativeScreen({ route, navigation }) {
  const [isEndReached, setIsEndReached] = useState(false);
  const [isLoading, setIsLoading] = useState(false);
 
+ let thisActorMembership = [];
+
 //  the id of the farmer who is selected as group representative 
  const [selectedId, setSelectedId] = useState(null);
+ const [actorMembership, setActorMembership] = useState(null);
+ const [selectedFarmer, setSelectedFarmer] = useState(null);
+
  const [isFocused, setIsFocused] = useState(false);
  const [isSearching, setIsSearching] = useState(false);
 
@@ -105,6 +110,21 @@ const customizeFarmerItem = (farmer)=>{
 };
 
 
+useEffect(()=>{
+  if(selectedId) {
+    thisActorMembership = realm.objects('ActorMembership').filtered(`actorId == $0`, selectedId);
+
+    if(thisActorMembership?.length > 0){
+      setActorMembership(thisActorMembership[0]);
+    } 
+
+    // const foundFarmer = farmersList?.find(farmer => farmer?._id === selectedId);
+    // console.log('foundFarmer')
+    // setSelectedFarmer(foundFarmer);
+  }
+}, [ selectedId ])
+
+
  useEffect(()=>{
   // filter farmers by the group adminPost, else do it by the group distrct
   if (group?.address.adminPost !== 'NA') {
@@ -121,7 +141,7 @@ const customizeFarmerItem = (farmer)=>{
  }, [ realm ]);
 
  const updateGroupManager = useCallback(()=>{
-  realm.write(()=>{
+  realm.write(async ()=>{
     if (selectedId){
       // update the group manager
       group.manager = selectedId;
@@ -131,6 +151,38 @@ const customizeFarmerItem = (farmer)=>{
     if(selectedId && !(group.members.find(memberId => memberId === selectedId))){
       group.members.push(selectedId);
     }
+
+    // update this actor membership to the group is appointed as representative
+    if (thisActorMembership.length > 0 && !(thisActorMembership[0].membership.find(membership => membership?.organizationId === groupId))) {
+      
+      thisActorMembership[0]?.membership.push({
+        subscriptionYear: new Date().getFullYear(),
+        organizationId: groupId,
+      });
+    }
+    else {
+      // find the farmer to extract actorName from
+      const foundFarmer = farmersList?.find(farmer => farmer?._id === selectedId);
+
+        // create the actor member from scratch
+        const actorMembershipObject = {
+          _id: uuidv4(),
+          actorId: selectedId,
+          actorName: `${foundFarmer?.names?.otherNames} ${foundFarmer?.names?.surname}`,
+          membership: [{
+            subscriptionYear: new Date().getFullYear(),
+            organizationId: groupId,
+          }],
+  
+          userName: customUserData?.name,
+          userId: customUserData?.userId,
+          userDistrict: customUserData?.userDistrict,
+          userProvince: customUserData?.userProvince,
+        }
+  
+        const actorMembership = await realm.create('ActorMembership', actorMembershipObject);
+    }
+
     
   });
  }, [ selectedId ])

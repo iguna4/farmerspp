@@ -359,7 +359,7 @@ export default function InstitutionFarmerForm({
                 width="100%"
                 type="telephoneNumber"
                 placeholder="Telemóvel"
-                keyboardType="numeric"
+                keyboardType="phone-pad"
                 value={institutionManagerPhone}
                 onChangeText={newManagerPhone=>{
                     setErrors((prev)=>({...prev, institutionManagerPhone: ''}))                        

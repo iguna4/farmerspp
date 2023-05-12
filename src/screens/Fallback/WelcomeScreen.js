@@ -38,6 +38,7 @@ import { errorMessages } from '../../consts/errorMessages';
 import { useFocusEffect } from '@react-navigation/native';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { cooperatives } from '../../consts/cooperatives';
+import OtpVerification from '../../components/OtpVerification/OtpVerification';
 // import { CheckBox } from '@rneui/base';
 
 
@@ -68,8 +69,8 @@ export default function WelcomeScreen () {
     
     const [errors, setErrors] = useState({});
     
-    const [signInWithPhone, setSignInWithPhone] = useState(false);
-    const [signInPhone, setSignInPhone] = useState(null);
+    // const [signInWithPhone, setSignInWithPhone] = useState(false);
+    // const [signInPhone, setSignInPhone] = useState(null);
     const [role, setRole] = useState(roles.fieldAgent);
     const [userProvince, setUserProvince] = useState('');
     const [userDistrict, setUserDistrict] = useState('');
@@ -77,6 +78,11 @@ export default function WelcomeScreen () {
     const [coop, setCoop] = useState('');
        
     const [phone, setPhone] = useState(null);
+
+    // ----------------------------------------------------
+
+    const [isOTPVisible, setIsOTPVisible] = useState(false);
+    // ---------------------------------------------------
 
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
@@ -374,98 +380,42 @@ export default function WelcomeScreen () {
             </FormControl>
         )}
 
-        {
-            isLoggingIn &&
-                (
-                    <Stack
-                        direction="row"
-                        style={{
-                            // paddingBottom: -20,
-                            marginBottom: -25,
-                        }}
-                    >
-                        <Box
-                            style={{
-                                width: '50%',
-                            }} 
-                        >
-
-                        </Box>
-                        <Box
-                            style={{
-                                width: '50%',
-                                
-                            }}
-                        >
-                            {/* <CheckBox
-                                center
-                                fontFamily = 'JosefinSans-Italic'
-                                containerStyle={{
-                                    backgroundColor: COLORS.ghostwhite,
-                                }}
-                                textStyle={{
-                                    
-                                    fontWeight: '100',
-                                    color: COLORS.main,
-                                }}
-                                title="Com número de telefone"
-                                checked={signInWithPhone}
-                                checkedIcon={
-                                    <Icon
-                                        name="check-box"
-                                        color={COLORS.main}
-                                        size={20}
-                                        iconStyle={{ marginRight: 1 }}
-                                    />
-                                }
-                                uncheckedIcon={
-                                    <Icon
-                                        name="radio-button-unchecked"
-                                        color={COLORS.main}
-                                        size={20}
-                                        iconStyle={{ marginRight: 1 }}
-                                    />
-                                }
-                                onPress={() => setSignInWithPhone(!signInWithPhone)}
-                            /> */}
-                        </Box>
-                    </Stack>
-                )
-            }
 
             <FormControl isRequired isInvalid={'email' in errors}>
-                <FormControl.Label>{signInWithPhone ? 'Número de Telefone' : 'Endereço Electrónico'}</FormControl.Label>
+                <FormControl.Label>{
+                // signInWithPhone ? 'Número de Telefone' : 
+                'Endereço Electrónico'}</FormControl.Label>
                 <CustomInput
                     width="100%"
                     // autoFocus={isLoggingIn ? true: false}
-                    placeholder={signInWithPhone ? "Número de Telefone" : "Endereço Electrónico"}
-                    type={signInWithPhone ? "telephoneNumber" : "emailAddress"}
-                    keyboardType={signInWithPhone ? "numeric" : ""}
-                    value={signInWithPhone ? signInPhone : email}
+                    placeholder={"Endereço Electrónico"}
+                    type={"emailAddress"}
+                    keyboardType={'email-address'}
+                    value={email}
                     onChangeText={(value)=>{
-                        if (signInWithPhone) {
-                            setErrors(prev=>({
-                                ...prev,
-                                signInPhone: null,
-                            }));
-                            setSignInPhone(parseInt(value));
-                        }
-                        else {
+                        // if (signInWithPhone) {
+                        //     setErrors(prev=>({
+                        //         ...prev,
+                        //         signInPhone: null,
+                        //     }));
+                        //     setSignInPhone(parseInt(value));
+                        // }
+                        // else {
                             setErrors((prev)=>({...prev, email: ''}));
                             setEmail(value?.toLowerCase()?.trim());
-                        }
+                        // }
                     }}
                     InputLeftElement={
-                        signInWithPhone ?
-                        (
-                            <Icon 
-                                name="phone" 
-                                color="grey" 
-                                // size={30}
-                                style={{ paddingLeft: 3 }} 
-                            />
-                        )
-                        :
+                        // signInWithPhone ?
+                        // (
+                        //     <Icon 
+                        //         name="phone" 
+                        //         color="grey" 
+                        //         // size={30}
+                        //         style={{ paddingLeft: 3 }} 
+                        //     />
+                        // )
+                        // :
                         (
                             <Icon 
                                 name="email" 
@@ -482,12 +432,12 @@ export default function WelcomeScreen () {
                 _text={{ fontSize: 'xs'}}>{errors?.email}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
             }
-            { 'signInPhone' in errors 
+            {/* { 'signInPhone' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.signInPhone}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
-            }
+            } */}
             </FormControl>
             {
                 isLoggingIn &&
@@ -604,7 +554,7 @@ export default function WelcomeScreen () {
                     width="100%"
                     type="telephoneNumber"
                     placeholder="Telemóvel"
-                    keyboardType="numeric"
+                    keyboardType="phone-pad"
                     value={phone}
                     onChangeText={(newPhone)=>{
                         setErrors(prev=>({...prev, phone: ''}))
@@ -822,31 +772,8 @@ export default function WelcomeScreen () {
         <Button 
             title={isLoggingIn ? " Entrar" : "Registar-se"} 
             onPress={ async ()=> {
-                
-                setLoadingActivityIndicator(true);
+                // setLoadingActivityIndicator(true);
                 if (isLoggingIn){
-
-                    if(signInWithPhone) {
-                        try {
-                            MongoClient.connect(secrets.mongoURI, function(err, db) {
-                            if(!err) {
-                                console.log("We are connected");
-                            }
-                            });
-                            // const mongo = app.currentUser.mongoClient(secrets.serviceName);
-                            // const collection = mongo.db(secrets.databaseName).collection(secrets.userCollectionName);
-                           
-                           
-                            // const result = await collection.findOne({ phone: signInPhone });
-                            // console.log('found User:', result);
-                            return ;
-                            
-                        } catch (error) {
-                            setAlert(true);
-                            seterrorFlag(error);
-                            return ;                       
-                        }
-                    }
                     app?.currentUser?.logOut();
                     try{
                         // await signIn();
@@ -860,9 +787,9 @@ export default function WelcomeScreen () {
                     }   
                 }   
                 else {
+                    // setIsOTPVisible(true);
                     await onSignUp(name, email, password, passwordConfirm, phone, role, userDistrict, userProvince, coop);
                 } 
-
             }} 
             type="outline"
                 containerStyle={{
@@ -930,6 +857,10 @@ export default function WelcomeScreen () {
         
         </View>
         </ScrollView>
+        <OtpVerification 
+            isOTPVisible={isOTPVisible}
+            setIsOTPVisible={setIsOTPVisible}
+        />
     </SafeAreaView>
     </>
   )

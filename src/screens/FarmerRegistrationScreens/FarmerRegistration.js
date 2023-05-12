@@ -191,12 +191,12 @@ export default function FarmerRegistration({ route, navigation }) {
             retrievedFarmerData = validateIndividualFarmerData(farmerData, errors, setErrors);
 
             // generate actor identifier
-            let identifier = generateUniqueNumber(retrievedFarmerData.birthPlace, 'Indivíduo');
+            let identifier = generateUniqueNumber(retrievedFarmerData.address, 'Indivíduo');
             let foundIdentierMatches = realm.objects('Actor').filtered(`identifier == $0`, identifier);
 
             // keep checking until no match is found
             while (foundIdentierMatches?.length > 0){
-                identifier = generateUniqueNumber(retrievedFarmerData.birthPlace, 'Indivíduo');
+                identifier = generateUniqueNumber(retrievedFarmerData.address, 'Indivíduo');
                 foundIdentierMatches = realm.objects('Actor').filtered(`identifier == $0`, identifier);
             };
 

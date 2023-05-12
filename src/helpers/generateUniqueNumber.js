@@ -1,35 +1,17 @@
 import { actorCategory } from "../consts/actorCategories";
-import { ceps } from "../consts/ceps";
+import districtCodes from "../consts/districtCodes";
 
-export const generateUniqueNumber = (birthPlace, category) => {
-
- let birthPlaceCode;
- if (
-     birthPlace?.province?.includes('Estrangeiro') || 
-     birthPlace?.province === 'Maputo' || 
-     birthPlace?.district?.includes('Cidade')
- ) {
-     birthPlaceCode = ceps[`${birthPlace?.district}`]
- }
- else if (birthPlace?.province?.includes('Cidade')) {
-     birthPlaceCode = ceps[`${birthPlace?.province}`]
- }
- else  {
-     birthPlaceCode = ceps[`${birthPlace?.adminPost}`]
- }
+export const generateUniqueNumber = (address, category) => {
 
 
- let secondDigit = birthPlaceCode.substr(1, 1);
- let fourthDigit = birthPlaceCode.substr(3, 1);
- let timestamp = JSON.stringify(Date.now()).substr(-5, 4);
- let random = JSON.stringify(Math.floor(Math.random() * 100000000)); // generate a random number between 0 and 999999
- let uniqueNumber = Number(`${timestamp}${random}`.substr(0, 6)); // combine the timestamp and random number and take the first 9 digits
+ let addressCode = districtCodes[address?.province][address?.district];
+
+ let timestamp = JSON.stringify(Date.now()).substr(-5, 5);
+ let random = JSON.stringify(Math.floor(Math.random() * 900000000 + 100000000));
+ let uniqueNumber =`${timestamp}${random}`.substr(0, 6); // combine the timestamp and random number and take the first 9 digits
  let categoryNumber;
  
- // console.log('random:', random);
- // console.log('timestamp:', timestamp);
- // console.log('secondDigit:', secondDigit);
- // console.log('fourthDigit', fourthDigit);
+
  if(category === actorCategory.single){
   categoryNumber = '1';
  }
@@ -39,20 +21,22 @@ export const generateUniqueNumber = (birthPlace, category) => {
  else if (category === actorCategory.company){
   categoryNumber = '3';
  }
- else if (category === actorCategory.processor){
-  categoryNumber = '3';
- }
  else {
   categoryNumber = '7';
  }
 
- let identifier = `${categoryNumber}${secondDigit}${fourthDigit}${uniqueNumber}`;
+ let identifier = `${categoryNumber}${addressCode}${uniqueNumber}`;
+
  while(identifier.length !== 9){
 
-    const newRandom = JSON.stringify(Math.floor(Math.random() * 1000000)); // generate a random number between 0 and 999999
-    identifier = `${identifier}${newRandom}`.substr(0, 9);
+    random = JSON.stringify(Math.floor(Math.random() * 1000000)); // generate a random number between 0 and 999999
+    timestamp = JSON.stringify(Date.now()).substr(-5, 5);
+    uniqueNumber = `${timestamp}${random}`.substr(0, 6);
+    identifier = `${categoryNumber}${addressCode}${uniqueNumber}`;
 
  }
+
+//  console.log('identifier:', identifier);
 
  return identifier
 }

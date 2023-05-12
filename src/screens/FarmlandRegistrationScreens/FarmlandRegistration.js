@@ -929,7 +929,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 <FormControl.Label>Área Total Declarada</FormControl.Label>
                 <CustomInput
                     width="100%"
-                    keyboardType="numeric"
+                    keyboardType="decimal-pad"
                     textAlign="center"
                     placeholder="Hectares"
                     value={totalArea}

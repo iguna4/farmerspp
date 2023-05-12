@@ -139,6 +139,52 @@ import COLORS from '../consts/colors';
       />
       </View>
   </View>
+),
+
+userSignUp: ({ text1, props})=>(
+  <View style={{ 
+    minHeight: 60, 
+    width: '100%', 
+    backgroundColor:  '#F5F5F5',
+    paddingHorizontal: 10,
+   flexDirection: 'row',
+   borderRadius: 10,
+   justifyContent: 'space-between',
+
+  }}>
+
+      <View>
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: 'JosefinSans-Bold',
+            color: COLORS.darkyGreen,
+            paddingHorizontal: 5,
+          }}
+        >{text1}</Text>
+        <Text
+          style={{
+            fontSize: 15,
+            fontFamily: 'JosefinSans-Regular',
+            color: COLORS.darkyGreen,
+            paddingRight: 5,
+          }}
+        >{props.message}</Text>
+      </View>
+      <View
+       style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 5,
+       }}
+      >
+        <Icon 
+        name="check-circle-outline" 
+        color={COLORS.darkyGreen} 
+        size={40} 
+      />
+      </View>
+  </View>
 )
 
 

@@ -365,7 +365,7 @@ export default function IndividualFarmerForm({
                     width="100%"
                     type="telephoneNumber"
                     placeholder="Telemóvel"
-                    keyboardType="numeric"
+                    keyboardType="phone-pad"
                     value={primaryPhone}
                     onChangeText={newPhone=>{
                         setErrors((prev)=>({...prev, primaryPhone: ''}))                        
@@ -396,7 +396,7 @@ export default function IndividualFarmerForm({
                     width="100%"
                     type="telephoneNumber"
                     placeholder="Telemóvel"
-                    keyboardType="numeric"
+                    keyboardType="phone-pad"
                     value={secondaryPhone}
                     onChangeText={(newPhone=>{
                         setErrors((prev)=>({...prev, secondaryPhone: ''}))

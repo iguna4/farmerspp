@@ -410,8 +410,12 @@ const administrativePosts = {
     "Pebane (Sede)", 
   ],
   "Quelimane (Cidade)": [
+    "Posto Admin. 1-Sede",
+    "Posto Admin. 2",
+    "Posto Admin. 3",
+    "Posto Admin. 4",
+    "Posto Admin. 5",
     "Maquival",
-    "Urbano",
   ],
 
   // Maputo-Cidade

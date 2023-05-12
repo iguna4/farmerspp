@@ -13,5 +13,6 @@ export const crops =[
     {key: '12', value: 'Mapira'},
     {key: '13', value: 'Milho'},
     {key: '14', value: 'Soja'},
+    {key: '15', value: 'Outras'},
 
 ]

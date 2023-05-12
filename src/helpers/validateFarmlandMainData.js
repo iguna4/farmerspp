@@ -3,14 +3,33 @@ const validateFarmlandMainData = (
  {   
      description, 
      consociatedCrops, 
+     otherConsociatedCrops,
      trees,
      totalArea,
  }, errors, setErrors,
  ) => {
  const retrievedFarmlandDescription = description?.trim();
- const retrievedConsociatedCrops = [...consociatedCrops];
  const retrievedTreesNumber = trees ? parseInt(trees) : '';
  const retrievedTotalArea = totalArea ? parseFloat(totalArea): '';
+
+ let retrievedConsociatedCrops; 
+//  chech if there are other crops that the user typed
+// if there some, concat them with the ones that were selected
+ if (consociatedCrops?.find(crop => crop === 'Outras') && otherConsociatedCrops?.length > 0){
+    let allCrops = consociatedCrops.filter(crop => crop !== 'Outras')
+    retrievedConsociatedCrops = allCrops.concat(otherConsociatedCrops);
+ }
+ else if (consociatedCrops?.find(crop => crop === 'Outras') && otherConsociatedCrops?.length == 0){
+    setErrors({
+        ...errors,
+        newCrop: 'Indica outra cultura',
+    });
+    return false;
+ }
+ else {
+    retrievedConsociatedCrops =  [...consociatedCrops];
+ }
+ 
 
  if (!retrievedFarmlandDescription) { 
      setErrors({ ...errors,

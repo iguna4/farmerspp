@@ -9,6 +9,7 @@ import { Input, Box, Stack } from 'native-base';
 
 
 import styles from './styles';
+import COLORS from '../../consts/colors';
 
 export function CustomInput({
     placeholder,
@@ -29,6 +30,7 @@ export function CustomInput({
     textAlign,
     maxLength,
     multiline,
+    borderColor,
      ...props
 }) {
     return (
@@ -44,7 +46,7 @@ export function CustomInput({
             InputLeftElement={InputLeftElement}
             InputRightElement={InputRightElement}
             isDisabled={isDisabled ? isDisabled : false }
-            // borderColor="#005000"
+            // borderColor={borderColor}
             borderWidth={1}
             color="#555555"
             fontFamily="JosefinSans-Regular"
@@ -58,6 +60,11 @@ export function CustomInput({
             maxLength={maxLength && maxLength}
             multiline={Boolean(multiline)}
             autoFocus={autoFocus}
+
+            style={{
+                borderColor: borderColor ? borderColor : '',
+                borderWidth: borderColor ? 1 : 0,
+            }}
 
         />
     );

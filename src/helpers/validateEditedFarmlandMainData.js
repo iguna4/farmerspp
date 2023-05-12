@@ -41,10 +41,10 @@ const validateEditedFarmlandMainData = (
 
       const retrievedBlocks = [...blocks];
 
-      console.log(`area: ${retrievedTotalArea} - ${retrievedOldTotalArea}`);
-      console.log(`description: ${retrievedDescription} - ${retrievedOldDescription}`);
-      console.log(`trees: ${retrievedTrees} - ${retrievedOldTrees}`);
-      console.log(`crops: ${retrievedConsociatedCrops} - ${retrievedOldConsociatedCrops}`);
+    //   console.log(`area: ${retrievedTotalArea} - ${retrievedOldTotalArea}`);
+    //   console.log(`description: ${retrievedDescription} - ${retrievedOldDescription}`);
+    //   console.log(`trees: ${retrievedTrees} - ${retrievedOldTrees}`);
+    //   console.log(`crops: ${retrievedConsociatedCrops} - ${retrievedOldConsociatedCrops}`);
 
       if (
        (retrievedDescription === retrievedOldDescription) 

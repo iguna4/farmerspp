@@ -74,7 +74,6 @@ export default function GroupRepresentativeItem({
           height: 3,
         },
         backgroundColor: '#F5F5F5',
-
       }}
   >
     <Stack direction="row" w="100%">

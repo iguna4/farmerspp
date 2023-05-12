@@ -84,6 +84,10 @@ export default function FarmlandRegistration ({ route, navigation }) {
     const [loadingButton, setLoadingButton] = useState(false);
 
     const [consociatedCrops, setConsociatedCrops] = useState([]);
+    const [otherConsociatedCrops, setOtherConsociatedCrops] = useState([]);
+    const [newCrop, setNewCrop] = useState('');
+
+
     const [description, setDescription] = useState('');
     const [plantingYear, setPlantingYear] = useState('');
     const [trees, setTrees] = useState('');
@@ -362,6 +366,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
         let farmlandMainData = {
             description, 
             consociatedCrops, 
+            otherConsociatedCrops,
             totalArea,
             trees,
         }
@@ -918,6 +923,128 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 <FormControl.HelperText></FormControl.HelperText>
                 }
             </FormControl>
+
+            {/* show all the newCrops that are typed by the user */}
+            {
+                otherConsociatedCrops.length > 0 &&
+
+                <Box
+                    style={{
+                        flexDirection: 'row',
+                        width: '100%',
+                        minHeight: 30,
+                        backgroundColor: COLORS.grey,
+                        borderRadius: 5,
+                    }}
+                >
+                    <Box
+                        w="90%"
+
+                        style={{
+                            padding: 5,
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontFamily: 'JosefinSans-Regular',
+                                fontSize: 13,
+                                textAlign: 'left',
+                                color: COLORS.ghostwhite,
+                                lineHeight: 20,
+                            }}
+                        >
+                            [ {otherConsociatedCrops.join('; ')} ]
+                        </Text>
+                    </Box>
+                    <Box
+                        w="10%"
+                        style={{
+                            alignItems: 'flex-end',
+                            justifyContent: 'flex-start',
+                            padding: 2,
+                        }}
+                    >
+                        <TouchableOpacity
+                            onPress={()=>{
+                                setOtherConsociatedCrops([]);
+                            }}
+                        >
+                            <Icon 
+                                name="close" 
+                                color={COLORS.ghostwhite} 
+                                size={20} 
+                            />
+                        </TouchableOpacity>
+
+                    </Box>
+                </Box>
+            }
+
+{/* Show this only when the user chooses 'Outras' option in the consociatedCrops */}
+{ consociatedCrops?.find(crop => crop === 'Outras') &&
+        <Box
+            style={{
+
+            }}
+        >
+        <Stack direction="row" w="100%" space={2}>
+            <Box w="80%">
+            <FormControl isRequired my="2" isInvalid={'newCrop' in errors}>
+                <FormControl.Label>Outras culturas</FormControl.Label>
+                <CustomInput
+                    width="100%"
+                    keyboardType="default"
+                    textAlign="center"
+                    placeholder="Outra cultura"
+                    borderColor={errors?.newCrop ? 'red' : ''}
+                    value={newCrop}
+                    onChangeText={crop=>{
+                        setErrors(prev=>({...prev, newCrop: ''}))
+                        setNewCrop(crop)
+                    }}
+                />
+                    
+                {
+                    'newCrop' in errors 
+                ? <FormControl.ErrorMessage 
+                leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                _text={{ fontSize: 'xs'}}>{errors?.newCrop}</FormControl.ErrorMessage> 
+                : <FormControl.HelperText></FormControl.HelperText>
+                }
+            </FormControl>
+            </Box>
+
+        <Box w="20%"
+            style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingTop: errors?.newCrop ? 10 : 20,
+                // borderWidth: 1,
+            }}
+        >
+
+            <TouchableOpacity
+                onPress={()=>{
+                    if (newCrop !== '' && !otherConsociatedCrops?.find(crop => crop?.toLowerCase() === newCrop?.toLowerCase())){
+                        setOtherConsociatedCrops(prev => [...prev, newCrop]);
+                        setNewCrop('');
+                    }
+                    else {
+                        setErrors(prev =>({prev, newCrop: 'Indica outra cultura'}))
+                    }
+                }}
+            >
+                <Icon name="arrow-circle-up" size={40} color={COLORS.mediumseagreen}  />
+            </TouchableOpacity>               
+
+            </Box>
+        </Stack>  
+        </Box>
+}
+
+
+
         <Box
             style={{
 

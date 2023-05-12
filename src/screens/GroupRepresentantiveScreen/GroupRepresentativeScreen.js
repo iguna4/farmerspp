@@ -262,15 +262,6 @@ useEffect(()=>{
             /> 
           </Pressable>
           </Box>
-          {/* } */}
-
-          
-          {/* <KeyboardAwareScrollView
-            decelerationRate={'fast'}
-            fadingEdgeLength={2}
-            keyboardDismissMode = 'interactive'
-            keyboardShouldPersistTaps = 'always'
-          > */}
           <Box w="90%" 
            style={{
             alignItems:'center',

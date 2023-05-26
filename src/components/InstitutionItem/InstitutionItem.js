@@ -129,7 +129,7 @@ const InstitutionItem = ({ item, route }) => {
         numberOfLines={1}
         ellipsizeMode={'tail'}
         >
-        {item?.type === 'Outro' ? 'Empresa': `${item?.type}`}{' '}{item?.name}
+        {item?.name}
       <Text 
         style={{
           fontSize: responsiveFontSize(1.7),
@@ -139,7 +139,7 @@ const InstitutionItem = ({ item, route }) => {
           
         }}
         >
-        {' '}({item?.isPrivate ? 'Instituição Privada' : 'Instituição Pública'})
+        {' '}({item?.type === 'Outra' ? 'Instituição' :  item?.type})
         </Text>
       </Text>
       </Box>

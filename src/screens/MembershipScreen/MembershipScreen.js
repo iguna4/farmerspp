@@ -98,27 +98,43 @@ function MemberGroupItem ({
   try {
    realm.write(()=>{
 
+    // add the unsubscription year
+    // let foundMembership = membership[0]?.membership?.find(memb=>memb?.organizationId === currentGroup?._id);
+    // foundMembership.unsubscriptionYear = new Date().getFullYear();
+
+
     // remove the farmer id from the group
      const updatedFarmerIds = currentGroup.members?.filter((id)=>(id !== farmerId));
      currentGroup.members = [];
      for (let i = 0; i < updatedFarmerIds?.length; i++){
       currentGroup?.members.push(updatedFarmerIds[i]);
      }
+
+    const currentActorMemberships = member?.membership;
+
+    // check if there is any membership of this actor
+    if (currentActorMemberships && currentActorMemberships?.length > 0){
+      // find the organization object that the actor want to unsubscribe from
+      const membershipToDelete = currentActorMemberships.find(memb => memb.organizationId === currentGroup?._id);
+      const index = currentActorMemberships.findIndex(memb => memb.organizationId === membershipToDelete.organizationId);
+
+      // remove that organization object from
+      currentActorMemberships.splice(index, 1);
+    }
      
     //  remove the group object from the farmer membership
-     if (membership?.length > 0){
-       let member = membership[0];
-       const updatedMemberships = member.membership?.filter((memb)=>(memb.organizationId !== currentGroup?._id));
-      //  console.log('member:', JSON.stringify(updatedMemberships));
-       member.membership = [];
-       for (let i = 0; i < updatedMemberships?.length; i++){
-        member?.membership.push(updatedMemberships[i]);
-      }
-      
-    }
+    //  if (membership?.length > 0){
+    //    let member = membership[0];
+    //    const updatedMemberships = member?.membership?.filter((memb)=>(memb?.organizationId !== currentGroup?._id));
+    //    member.membership = [];
+    //    for (let i = 0; i < updatedMemberships?.length; i++){
+    //        member?.membership.push(updatedMemberships[i]);
+    //     }
     
-    setAutoRefresh(!autoRefresh);
-    setIsFarmerRemoved(true);
+    //   }
+      setAutoRefresh(!autoRefresh);
+      setIsFarmerRemoved(true);
+      
    })
   } catch (error) {
     console.log('The farmer could not be deleted from the group!');
@@ -142,6 +158,7 @@ function MemberGroupItem ({
           let member = membership[0];
           member.membership.push({
             subscriptionYear: new Date().getFullYear(),
+            unsubscriptionYear: null,
             organizationId: currentGroup?._id,
           });
       }
@@ -153,6 +170,7 @@ function MemberGroupItem ({
           actorName: farmerName,
           membership: [{
             subscriptionYear: new Date().getFullYear(),
+            unsubscriptionYear: null,
             organizationId: currentGroup?._id,
           }],
   

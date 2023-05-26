@@ -7,7 +7,7 @@ export const institutions = [
     "Estabelecimento Prisional",
     "Confissão Religiosa",
     "Empresa",
-    "Outro",
+    "Outra",
 ];
 
 export const groups = [
@@ -23,7 +23,7 @@ export const publicInstitutions = [
     "Escola Primária (EPC)",
     "Escola Secundária",
     "Estabelecimento Prisional",
-    "Outro",
+    "Outra",
 ];
 
 export const privateInstitutions = [

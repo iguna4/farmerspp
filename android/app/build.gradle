@@ -84,6 +84,10 @@ project.ext.react = [
 
 apply from: "../../node_modules/react-native/react.gradle"
 
+// react-native-background-geolocation
+Project background_geolocation = project(':react-native-background-geolocation')
+apply from: "${background_geolocation.projectDir}/app.gradle"
+
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices

@@ -32,62 +32,20 @@ export default function InstitutionFarmerForm({
     setIsInstitutionPrivate, setIsInstitutionPublic,
  }) {
 
+    useEffect(()=>{
+        if (institutionType === ''){
+            setInstitutionName('');
+        }
+    }, [ institutionType ]);
+
        
   return (
  <Box px="3" my="6">
-        {/* <Stack  direction="row" mx="3" w="100%">
-            <Box w="20%" px="1">
-
-            </Box>
-            <Box w="80%" px="1">
-                <CheckBox
-                    center
-                    fontFamily = 'JosefinSans-Italic'
-                    containerStyle={{
-                        backgroundColor: 'ghostwhite',
-                    }}
-                    textStyle={{
-                        
-                        fontWeight: '100',
-                        color: '#005000',
-                    }}
-                    title="É uma instituição privada?"
-                    checked={isPrivateInstitution}
-                    checkedIcon={
-                        <Icon
-                            name="check-box"
-                            // type="material"
-                            color="#005000"
-                            size={30}
-                            iconStyle={{ marginRight: 5 }}
-                        />
-                    }
-                    uncheckedIcon={
-                        <Icon
-                            name="radio-button-unchecked"
-                            // type="material"
-                            color="#005000"
-                            size={30}
-                            iconStyle={{ marginRight: 5 }}
-                        />
-                    }
-                    onPress={() => setIsPrivateInstitution(!isPrivateInstitution)}
-                />
-            </Box>
-        </Stack> */}
 
     <Box w="100%" alignItems="center">
 
     <Box w="100%">
-                {/* <Text
-                    style={{
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        color: COLORS.grey,
-                        paddingHorizontal: 15,
-                    }}
-                >Este grupo é...</Text> */}
-             <FormControl isRequired my="1" isInvalid={'isPrivateInstitution' in errors}>
+        <FormControl isRequired my="1" isInvalid={'isPrivateInstitution' in errors}>
             <FormControl.Label>                
                 <Text
                     style={{
@@ -245,17 +203,17 @@ export default function InstitutionFarmerForm({
                         placeholder="Nome da Instituição"
                         value={institutionName}
                         onChangeText={newInstitutionName=>{
-                            setErrors(prev=>({...prev, institutionName: ''}))
-                            setInstitutionName(newInstitutionName)
+                            setErrors(prev=>({...prev, institutionName: ''}));
+                            setInstitutionName(newInstitutionName);
                         }}
                     />
-                               {
+            {
                 'institutionName' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.institutionName}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
-                }
+            }
             </FormControl>
             </Box>
         </Stack>

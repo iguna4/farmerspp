@@ -1097,7 +1097,7 @@ const FarmlandData = ({ farmland, setRefresh, refresh })=>{
                         <Box w="90%">
                             <Text
                                 style={{
-                                    color: COLORS.black,
+                                    color: COLORS.grey,
                                     fontSize: responsiveFontSize(2),
                                     fontFamily: 'JosefinSans-Bold',
                                 }}

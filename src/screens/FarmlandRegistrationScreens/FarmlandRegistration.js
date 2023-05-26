@@ -805,7 +805,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                         numberOfLines={1}
                         ellipsizeMode="tail"
                     >
-                        {ownerName}
+                        {ownerName?.includes('Outra') ? `Instituição ${ownerName?.slice(6)}` : ownerName}
                     </Text>  
                 </Box>
                 <Center w="15%">
@@ -1195,7 +1195,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 >Área Total</Text>
             </Box>
             <Box 
-                // w="60%"
+                w="60%"
             >
                 <Text 
                     style={{
@@ -1220,7 +1220,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 >Cajueiros</Text>
             </Box>
             <Box 
-                // w="60%"
+                w="60%"
             >
                 <Text 
                     style={{
@@ -1249,9 +1249,10 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 </Text>
             </Box>
             <Box 
-                style={{
-                    // width: '65%',
-                }}
+                w="60%"
+                // style={{
+                //     width: '60%',
+                // }}
             >
                 <Text
                     style={{

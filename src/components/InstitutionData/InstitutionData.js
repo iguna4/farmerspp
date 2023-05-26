@@ -378,28 +378,8 @@ const InstitutionData = ({ farmer })=>{
             Instituição
         </Text>   
         </Box>
-        {/* <Box w="25%"></Box> */}
+
         <Box w="10%">
-    {/* {           
-        customUserData?.role !== roles.provincialManager && 
-        <TouchableOpacity
-                disabled={farmer?.status === resourceValidation.status.validated ? true : false}
-                style={{
-                }}
-                onPress={
-                    ()=>{
-                        setIsOverlayVisible(!isOverlayVisible);
-                    }
-                }
-            >
-                <Icon 
-                    // name="home" 
-                    name="edit" 
-                    size={20} 
-                    color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
-                    />
-            </TouchableOpacity>
-        } */}
         </Box>
         </Stack>     
 
@@ -423,7 +403,7 @@ const InstitutionData = ({ farmer })=>{
                         fontFamily: 'JosefinSans-Regular',
                     }}
                 >
-                {farmer?.type} {farmer?.name} 
+                {farmer?.type !== 'Outra' ? `${farmer?.type} ${farmer?.name}` : `${farmer?.name}`}  
                 </Text>
                 <Text 
                     style={{

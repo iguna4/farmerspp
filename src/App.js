@@ -51,7 +51,12 @@ export default function App() {
           <ApplicationProvider {...eva} theme={eva.light}>
 
 
-            <AppProvider id={secrets.appID} baseUrl={secrets.baseUrl}>
+            <AppProvider
+              // id={`${process.env.appID}`} 
+              // baseUrl={`${process.env.baseUrl}`}
+              id={secrets.appID} 
+              baseUrl={secrets.baseUrl}
+            >
               <UserProvider 
                 fallback={<WelcomeScreen />}
               >

@@ -230,7 +230,7 @@ export default function NewFarmlandBlock({
       backgroundColor: COLORS.ghostwhite, 
       width: '95%',
       maxHeight: '95%',
-      minHeight: '50%',
+      minHeight: '40%',
       borderRadius: 10,
       paddingBottom: 5,
   }}
@@ -246,7 +246,7 @@ export default function NewFarmlandBlock({
         width: '100%', 
     }}
     >
-        <View
+        {/* <View
             style={{
                 position: 'absolute',
                 top: -20,
@@ -254,7 +254,7 @@ export default function NewFarmlandBlock({
             }}
         >
             <DangerAlert />
-        </View>
+        </View> */}
         <View
             style={{ 
                 width: '100%', 
@@ -363,7 +363,7 @@ export default function NewFarmlandBlock({
             <Text
                 style={{
                     color: COLORS.grey,
-                    fontSize: 18,
+                    fontSize: 15,
                     fontFamily: 'JosefinSans-Regular',
                     textAlign: 'center',
                     lineHeight: 20,
@@ -371,10 +371,21 @@ export default function NewFarmlandBlock({
             >
                 Este pomar não tem área suficiente para uma nova parcela de cajueiros.
             </Text>
+ 
+        </View>
+
+        <View
+            style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingHorizontal: 30,
+                paddingTop: 15,
+            }}
+        >
             <Text
                 style={{
                     color: COLORS.red,
-                    fontSize: 18,
+                    fontSize: 15,
                     fontFamily: 'JosefinSans-Regular',
                     textAlign: 'center',
                     lineHeight: 25,
@@ -384,11 +395,12 @@ export default function NewFarmlandBlock({
                 ({remainingArea?.toFixed(1)} hectares disponíveis) 
             </Text>
         </View>
+
         <View
             style={{
                 justifyContent: 'center',
                 alignItems: 'center',
-                paddingTop: 60,
+                paddingTop: 30,
             }}
         >
             <TouchableOpacity
@@ -398,20 +410,20 @@ export default function NewFarmlandBlock({
             >
                 <View
                     style={{
-                        borderWidth: 3,
-                        borderRadius: 100,
+                        // borderWidth: 3,
+                        // borderRadius: 100,
                         paddingHorizontal: 15,
                         paddingVertical: 4,
-                        borderColor: COLORS.mediumseagreen,
+                        // borderColor: COLORS.mediumseagreen,
                         flexDirection: 'row',
                     }}
                 >
-                    <Icon name="arrow-back" size={28} color={COLORS.mediumseagreen}  />
+                    <Icon name="arrow-back" size={25} color={COLORS.mediumseagreen}  />
 
                     <Text
                         style={{
                             color: COLORS.mediumseagreen,
-                            fontSize: 18,
+                            fontSize: 15,
                             fontFamily: 'JosefinSans-Bold',
                         }}
                     >Voltar</Text>

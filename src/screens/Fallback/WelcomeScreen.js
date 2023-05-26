@@ -125,8 +125,17 @@ export default function WelcomeScreen () {
 
             const creds = Realm.Credentials.emailPassword(email, password);
             const newUser = await app.logIn(creds);
-            const mongo = newUser.mongoClient(secrets.serviceName);
-            const collection = mongo.db(secrets.databaseName).collection(secrets.userCollectionName);
+            const mongo = newUser.mongoClient(
+                // `${process.env.serviceName}`
+                secrets.serviceName
+                );
+            const collection = mongo.db(
+                // `${process.env.databaseName}`
+                secrets.databaseName
+                ).collection(
+                    // `${process.env.userCollectionName}`
+                    secrets.userCollectionName
+                );
 
             // pack the validated user data and save it into the database
             const validatedUserdata = {

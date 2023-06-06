@@ -7442,6 +7442,18 @@ react-native-modal@^13.0.1:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
 
+react-native-otp-textinput@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/react-native-otp-textinput/-/react-native-otp-textinput-1.0.1.tgz"
+  integrity sha512-fTtZ9+rWFVRbVNo8JAzZCiXIZSWaoReydVvY/EiJUzkO1zYckJNs1qpoz38GVj6lojH7yZcGeDvhcrB/H/0AFA==
+  dependencies:
+    prop-types "^15.6.2"
+
+react-native-otp-verify@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.npmjs.org/react-native-otp-verify/-/react-native-otp-verify-1.1.5.tgz"
+  integrity sha512-DsZ5RCKcr1E785KR/yfA6Ii+EwuYSSAAaj2/ngoyVZCHV1c+7lJkkNSnyq6qErLvZ/JfCYEXDzADsAFk17yDOA==
+
 react-native-paper-dates@^0.15.1:
   version "0.15.1"
   resolved "https://registry.npmjs.org/react-native-paper-dates/-/react-native-paper-dates-0.15.1.tgz"

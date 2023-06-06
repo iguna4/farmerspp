@@ -236,7 +236,7 @@ const { useRealm, useQuery, useObject } = realmContext;
                         color: COLORS.grey,
                     }}
                     >
-                    ({customUserData?.role})
+                    ({customUserData?.role?.includes(roles.coopManager) ? roles.coopManager : customUserData?.role})
                 </Text>
             {/* </Box> */}
 

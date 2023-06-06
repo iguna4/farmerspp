@@ -36,6 +36,9 @@ import GroupItem from '../../components/GroupItem/GroupItem';
 import FarmerItem from '../../components/FarmerItem/FarmerItem';
 import InstitutionItem from '../../components/InstitutionItem/InstitutionItem';
 import FarmlandItem from '../../components/FarmlandItem/FarmlandItem';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faUserTie, faPeopleGroup, faInstitution, faRefresh } from '@fortawesome/free-solid-svg-icons';
+
 const { useRealm, useQuery } = realmContext; 
 
 
@@ -230,21 +233,34 @@ export default function UserStat({ route, navigation  }) {
                 />
             </TouchableOpacity>
           </Box>
-
           <Box w="70%">
-            <Center>
-              <Text
-                style={{ 
-                  fontFamily: 'JosefinSans-Bold', 
-                  fontSize: 18, 
-                  color: COLORS.main, 
-                }}
-              >
-                {userName}
-              </Text>
+            <TouchableOpacity
+              style={{
+                width: '100%',
+              }}
+              onPress={()=>{
+                setRefresh(!refresh);
+                setPendingFarmers(false);
+                setPendingFarmlands(false);
+                setInvalidatedFarmers(false);
+                setInvalidatedFarmlands(false);
+              }}
+            >
+              <Center>
+                <Text
+                  style={{ 
+                    fontFamily: 'JosefinSans-Bold', 
+                    fontSize: 18, 
+                    color: COLORS.main, 
+                  }}
+                >
+                  {userName}
+                </Text>
 
-            </Center>
-          </Box>
+              </Center>
+              </TouchableOpacity>
+            </Box>
+
           <Center 
             w="15%"
           >
@@ -257,9 +273,11 @@ export default function UserStat({ route, navigation  }) {
                   setInvalidatedFarmlands(false)
                 }}
                 >
-                <Icon
+                  {/* faRefresh */}
+                  <FontAwesomeIcon icon={faRefresh} size={25} color={COLORS.main} />
+                {/* <Icon
                     name="refresh" size={wp('8%')} color={COLORS.main}
-                    />
+                    /> */}
             </TouchableOpacity>
           </Center>
         </Stack>

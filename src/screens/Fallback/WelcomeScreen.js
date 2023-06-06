@@ -145,7 +145,7 @@ export default function WelcomeScreen () {
                 email,
                 password,
                 phone,
-                role: role?.includes('AMPC') ? `${role} [${coop}]` : role,
+                role: (role?.includes(roles.coopManager) && coop !== 'AMPCM' ) ? `${role} [${coop}]` : role,
                 userDistrict,
                 userProvince,
                 image: '',
@@ -622,9 +622,9 @@ export default function WelcomeScreen () {
                         }}
                     >
                         <Select.Item label={roles.fieldAgent} value={roles.fieldAgent} />
-                        {/* <Select.Item label={roles.districtalSupervisor} value={roles.districtalSupervisor} /> */}
                         <Select.Item label={roles.provincialManager} value={roles.provincialManager} />
                         <Select.Item label={roles.coopManager} value={roles.coopManager} />
+                        <Select.Item label={roles.ampcmSupervisor} value={roles.ampcmSupervisor} />
                     </Select>
                     {
                         'role' in errors 
@@ -725,15 +725,15 @@ export default function WelcomeScreen () {
             )
         }
 
-{ role.includes('AMPCM') && (userDistrict) && !isLoggingIn &&
+{ role.includes(roles.coopManager) && (userDistrict) && !isLoggingIn &&
                 <Stack direction="row" w="100%">
                 <Box w="100%">
                     <FormControl isRequired my="3" isInvalid={'coop' in errors}>
-                        <FormControl.Label>Nome da Cooperativa</FormControl.Label>
+                        <FormControl.Label>Nome da Entidade</FormControl.Label>
                         <Select
                             selectedValue={coop}
-                            accessibilityLabel="Escolha sua cooperativa"
-                            placeholder="Escolha sua cooperativa"
+                            accessibilityLabel="Escolha sua entidade"
+                            placeholder="Escolha sua entidade"
                             _selectedItem={{
                                 bg: 'teal.600',
                                 fontSize: 'lg',
@@ -810,19 +810,38 @@ export default function WelcomeScreen () {
         </Stack>
 
         <Stack w="100%" direction="row" pb="8">
-            <Box 
-                w="50%" 
+            {/* <Box 
+                w="0%" 
                 alignItems="center"
                 >
-
-            </Box>
-            <Box 
-                pr={5} 
-                w="50%" 
-                alignItems="center"
-                >
+                
+            </Box> */}
 
 {    isLoggingIn &&
+        <Box                 
+            alignItems="center"
+            w="100%" 
+            pt="-3"
+        >
+            <Box 
+                px={5} 
+                style={{
+                    flexDirection: 'row',
+                }}
+            >
+            
+
+            <Text
+                style={{ 
+                    textAlign: 'center',
+                    fontSize: 16,
+                    color: COLORS.grey,
+                    fontFamily: 'JosefinSans-Regular',
+                    marginHorizontal: 5,
+                }}
+            >
+                    Ainda não tem conta?
+            </Text>
             <Pressable onPress={()=>{
                 setLoadingActivityIndicator(true);
                 setIsLoggingIn(prevState => !prevState)
@@ -834,34 +853,59 @@ export default function WelcomeScreen () {
                         fontSize: 16,
                         color: COLORS.main,
                         fontFamily: 'JosefinSans-Regular',
-                        textDecoration: 'underline',
+                        marginHorizontal: 5,
                     }}
                 >
                     Criar conta
                 </Text>
             </Pressable>
+            </Box>
+        </Box>
 }
 
 {    !isLoggingIn &&
-            <Pressable onPress={()=>{
-                setLoadingActivityIndicator(true);
-                setIsLoggingIn(prevState => !prevState)
+        <Box                 
+            alignItems="center"
+            w="100%" 
+            pt="-3"
+        >
+            <Box 
+                px={5} 
+                style={{
+                    flexDirection: 'row',
                 }}
             >
-                <Text 
+                <Text
                     style={{ 
                         textAlign: 'center',
                         fontSize: 16,
-                        color: COLORS.main,
+                        color: COLORS.grey,
                         fontFamily: 'JosefinSans-Regular',
-                        textDecoration: 'underline',
+                        marginHorizontal: 5,
                     }}
-                    >
-                    Fazer Login
+                >
+                    Já tem conta?
                 </Text>
-            </Pressable>
-}        
+                <Pressable onPress={()=>{
+                    setLoadingActivityIndicator(true);
+                    setIsLoggingIn(prevState => !prevState)
+                    }}
+                >
+                    <Text 
+                        style={{ 
+                            textAlign: 'center',
+                            fontSize: 16,
+                            color: COLORS.main,
+                            fontFamily: 'JosefinSans-Regular',
+                            textDecoration: 'underline',
+                        }}
+                        >
+                        Fazer Login
+                    </Text>
+                </Pressable>
             </Box>
+        </Box>
+}        
             </Stack>
         
         </View>

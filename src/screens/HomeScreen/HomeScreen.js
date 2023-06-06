@@ -230,7 +230,7 @@ export default function HomeScreen() {
       );
     });
 
-    if (customUserData?.role?.includes(roles.provincialManager)) {
+    if (customUserData?.role?.includes(roles.provincialManager) || customUserData?.role?.includes(roles.ampcmSupervisor) ) {
       setIsFieldAgent(false);
 
     }
@@ -340,7 +340,7 @@ export default function HomeScreen() {
 
 {/* Province users and districts */}
 {
-  !isFieldAgent && 
+  (!isFieldAgent && (customUserData?.role === roles.provincialManager))  && 
 
   <ScrollView
     contentContainerStyle={{

@@ -5,6 +5,8 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import { Icon, } from '@rneui/themed';
 import COLORS from '../consts/colors';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faWarning } from '@fortawesome/free-solid-svg-icons';
 
   // toastConfig customized the toast messages
   export const toastConfig = {
@@ -13,7 +15,7 @@ import COLORS from '../consts/colors';
     <View style={{ 
       minHeight: 60, 
       width: '100%', 
-      backgroundColor:  COLORS.lightGreen,
+      backgroundColor:  COLORS.white,
       paddingHorizontal: 10,
      flexDirection: 'row',
      borderRadius: 10,
@@ -58,7 +60,7 @@ import COLORS from '../consts/colors';
    <View style={{ 
      minHeight: 60, 
      width: '100%', 
-     backgroundColor: COLORS.lightSalmon,
+     backgroundColor: COLORS.white,
      paddingHorizontal: 10,
     flexDirection: 'row',
     borderRadius: 10,
@@ -70,7 +72,7 @@ import COLORS from '../consts/colors';
            style={{
              fontSize: 16,
              fontFamily: 'JosefinSans-Bold',
-             color: COLORS.marron,
+             color: COLORS.darkyGreen,
              paddingRight: 5,
            }}
          >{text1}</Text>
@@ -78,7 +80,7 @@ import COLORS from '../consts/colors';
            style={{
              fontSize: 15,
              fontFamily: 'JosefinSans-Regular',
-             color: COLORS.marron,
+             color: COLORS.darkyGreen,
              paddingHorizontal: 5,
            }}
          >{props.message}</Text>
@@ -90,7 +92,7 @@ import COLORS from '../consts/colors';
          padding: 5,
         }}
        >
-         <Icon name="warning" color={COLORS.marron} size={40} />
+         <FontAwesomeIcon icon={faWarning} color={COLORS.darkyGreen} size={40} />
        </View>
    </View>
  ),
@@ -99,7 +101,7 @@ import COLORS from '../consts/colors';
   <View style={{ 
     minHeight: 60, 
     width: '100%', 
-    backgroundColor:  COLORS.lightGreen,
+    backgroundColor:  COLORS.white,
     paddingHorizontal: 10,
    flexDirection: 'row',
    borderRadius: 10,
@@ -145,7 +147,7 @@ userSignUp: ({ text1, props})=>(
   <View style={{ 
     minHeight: 60, 
     width: '100%', 
-    backgroundColor:  '#F5F5F5',
+    backgroundColor:  COLORS.white,
     paddingHorizontal: 10,
    flexDirection: 'row',
    borderRadius: 10,

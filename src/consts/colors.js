@@ -10,6 +10,7 @@ const COLORS = {
     lightgrey: 'lightgrey',
     ghostwhite: 'ghostwhite',
     black: '#000',
+    white: '#fff',
     danger: '#DD6B55',
     lightdanger: '#00AA99',
     red: 'red',

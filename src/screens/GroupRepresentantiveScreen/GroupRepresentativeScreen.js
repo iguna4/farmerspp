@@ -275,7 +275,7 @@ useEffect(()=>{
               placeholderTextColor={COLORS.lightgrey}
               style={{
                 width: '100%',
-                backgroundColor: 'white',//COLORS.ghostwhite,
+                backgroundColor: COLORS.white,
                 borderRadius: 30,
                 color: COLORS.grey,
                 fontFamily: 'JosefinSans-Regular',
@@ -283,7 +283,7 @@ useEffect(()=>{
                 textAlign:'left',
                 paddingLeft: 20,
                 fontSize: 16,
-                borderColor: 'white',//COLORS.lightgrey,
+                borderColor: COLORS.white,
               }}
               value={searchQuery}
               onFocus={()=>{

@@ -94,6 +94,7 @@ export default function FarmersScreen({ route, navigation }) {
   const [fetchedFarmers, setFetchedFarmers] = useState([]);
   const [fetchedGroups, setFetchedGroups] = useState([]);
   const [fetchedInstitutions, setFetchedInstitutions] = useState([]);
+  const [refresh, setRefresh] = useState(false);
   // const [fetchedFarmlands, setFetchedFarmlands] = useState([]);
 
 
@@ -156,6 +157,10 @@ export default function FarmersScreen({ route, navigation }) {
     farmersList = farmersList
         ?.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt));
   }
+
+  useEffect(()=>{
+
+  }, [ refresh])
 
 
   useEffect(() => {
@@ -373,20 +378,24 @@ export default function FarmersScreen({ route, navigation }) {
           </Center>
 
           <Box w="65%">
-            <Center>
-              <Text
-                numberOfLines={1}
-                ellipsizeMode={'tail'}
-                style={{ 
-                  fontFamily: 'JosefinSans-Bold', 
-                  fontSize: responsiveFontSize(2), 
-                  color: COLORS.main, 
+            <Center w="100%">
+              <TouchableOpacity
+                onPress={()=>{
+                  setRefresh(!refresh);
                 }}
               >
-                {customUserData?.userDistrict}
-              </Text>
-
-
+                <Text
+                  numberOfLines={1}
+                  ellipsizeMode={'tail'}
+                  style={{ 
+                    fontFamily: 'JosefinSans-Bold', 
+                    fontSize: responsiveFontSize(2), 
+                    color: COLORS.main, 
+                  }}
+                >
+                  {customUserData?.userDistrict}
+                </Text>
+              </TouchableOpacity>
             </Center>
           </Box>
           <Box 

@@ -22,6 +22,7 @@ import {
     useDimensionsChange,
 
 } from 'react-native-responsive-dimensions';
+import NetInfo from "@react-native-community/netinfo";
 
 import styles from './styles';
 import { CustomInput } from '../../components/Inputs/CustomInput';
@@ -164,6 +165,16 @@ export default function WelcomeScreen () {
             return ;
         }
     }, [app, email, password]);
+
+
+    useEffect(()=>{
+        const unsubscribe = NetInfo.addEventListener((state) => {
+            console.log('netInfo', state);
+          });
+          return () => {
+            unsubscribe();
+          };
+    }, [ ])
 
 
     useEffect(()=>{

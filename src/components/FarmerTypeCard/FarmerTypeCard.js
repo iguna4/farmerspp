@@ -13,7 +13,7 @@ import { faRing, faUserTie } from '@fortawesome/free-solid-svg-icons';
 
 
 
-export function FarmerTypeCard({ route, item }) {
+export function FarmerTypeCard({ route, item,  }) {
 
  const navigation = useNavigation();
 

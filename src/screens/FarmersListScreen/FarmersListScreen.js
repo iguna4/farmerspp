@@ -56,6 +56,8 @@ const userFarmlands = 'userFarmlands';
 
 const DrawerLayout = ({ route, navigation, farmerType }) =>{
 
+  // const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(true);
+
  return (
   <View
    style={{
@@ -127,12 +129,32 @@ const DrawerLayout = ({ route, navigation, farmerType }) =>{
      </View>
 
      {/* district's */}
-     <View>
-
+     <View >
 
      </View>
     </View>
    }
+
+    <View
+      style={{
+        height: '70%',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+     >
+
+        <CustomActivityIndicator
+          backgroundColor={COLORS.fourth}
+       />
+       <Text
+        style={{
+          color: COLORS.main,
+          fontSize: 15,
+          fontFamily: 'JosefinSans-Regular',
+          textAlign: 'center',
+        }}
+       >Desenvolvimento em curso . . .</Text>
+     </View>
 
   </View>
  )

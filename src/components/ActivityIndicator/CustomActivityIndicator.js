@@ -5,7 +5,7 @@ import styles from './style'
 import COLORS from '../../consts/colors';
 
 
-const CustomActivityIndicator = ({ loadingActivitiyIndicator, setLoadingActivityIndicator }) => {
+const CustomActivityIndicator = ({ loadingActivitiyIndicator, setLoadingActivityIndicator, backgroundColor }) => {
     
     // const startLoading = ()=>{
         // setLoadingActivityIndicator(true);
@@ -19,14 +19,23 @@ const CustomActivityIndicator = ({ loadingActivitiyIndicator, setLoadingActivity
     }
     
     return (
-    <View style={styles.container}>
+    <View style={{
+      flex: 1,
+      justifyContent: 'center',
+      textAlign: 'center',
+      // paddingTop: 5,
+      backgroundColor: backgroundColor ? backgroundColor : 'ghostwhite',
+      padding: 8,
+  }}>
         <ActivityIndicator
             //visibility of Overlay Loading Spinner
             visible={loadingActivitiyIndicator}
             //Text with the Spinner
             // textContent={'Connect Caju...'}
             //Text style of the Spinner Text
-            textStyle={styles.spinnerTextStyle}
+            textStyle={{
+              color: COLORS.main,
+          }}
             
             size={'large'} 
             color={COLORS.main} 

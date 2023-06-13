@@ -95,8 +95,6 @@ export default function FarmersScreen({ route, navigation }) {
   const [fetchedGroups, setFetchedGroups] = useState([]);
   const [fetchedInstitutions, setFetchedInstitutions] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  // const [fetchedFarmlands, setFetchedFarmlands] = useState([]);
-
 
   const districts =  Array.from(new Set(stats.map((stat)=>stat?.userDistrict))).filter(district=>district !== 'NA');
 
@@ -462,7 +460,7 @@ export default function FarmersScreen({ route, navigation }) {
           else if (item?.farmerType === 'Instituição') {
             item['total'] = institutions?.length;
           }    
-          return <FarmerTypeCard  route={route}  item={item} /> 
+          return <FarmerTypeCard  route={route}  item={item}  /> 
         }}
         ListFooterComponent={()=>{ 
         return (<Box

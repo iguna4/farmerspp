@@ -258,19 +258,6 @@ const EditGroupData = ({
             setOldDataObject(oldData);
         }
 
-        // if (dataToBeUpdated === 'groupManager' && resourceName === 'Group') {
-
-        //     // new incoming data
-        //     newData['fullname'] = validatedData?.fullname ? validatedData?.fullname?.trim() : '';
-        //     newData['phone'] = validatedData?.phone ? Number(parseInt(validatedData?.phone)) : 0;
-
-            // old data
-            // oldData['fullname'] = oldGroupManagerName ? oldGroupManagerName?.trim() : '';
-            // oldData['phone'] = oldGroupManagerPhone ? Number(parseInt(oldGroupManagerPhone)) : 0;
-        
-        //     setNewDataObject(newData);
-        //     setOldDataObject(oldData);
-        // }
 
         if (dataToBeUpdated === 'groupMembers' && resourceName === 'Group') {
 
@@ -361,20 +348,6 @@ const EditGroupData = ({
                     // marginVertical: 10,
                 }}
             >
-            {/* <Box>
-                <Text
-                    style={{ 
-                        textAlign: 'center',
-                        color: COLORS.black,
-                        fontSize: 18,
-                        paddingVertical: 15,
-                        fontFamily: 'JosefinSans-Bold',
-                        
-                    }}
-                >{overlayTitle}</Text>
-            </Box> */}
-
-    {/* update the group data */}
 
 
 {
@@ -673,8 +646,8 @@ const EditGroupData = ({
                 <CustomInput
                     width="100%"
                     type="number"
-                    placeholder="NUIT"
-                    value={groupNuit ? groupNuit.toString(): 'Nenhum'}
+                    placeholder={groupNuit ? groupNuit.toString(): 'Nenhum'}
+                    value={groupNuit}
                     // isDisabled={groupType === '' ? true : false}
                     keyboardType="numeric"
                     onChangeText={newNuit=>{

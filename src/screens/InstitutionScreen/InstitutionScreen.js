@@ -155,21 +155,6 @@ export default function InstitutionScreen ({ route, navigation }) {
                         {/* Voltar */}
                     </Text>
                 </Pressable>
-
-
-        {/* <Pressable
-            onPress={()=>navigation.goBack()
-              // navigate('Farmers')
-            }
-        >
-
-          <Icon 
-              name="arrow-back-ios" 
-              color={COLORS.main}
-              size={35}
-              
-              />
-            </Pressable> */}
           </Box>
 
           <Box w="100%" 

@@ -10,7 +10,6 @@ const { useRealm } = realmContext;
 export const customizeItem = (farmersList, farmlandsList, serviceProviders,  customUserData, flag) => {
 
         return farmersList?.map((item) => {
-                
                 const farmlands = farmlandsList?.filter(farmland=>farmland.farmerId === item._id);
                 const isServiceProvider = serviceProviders?.filter(provider=>provider?.actorId === item?._id);
                 const { assets } = item;
@@ -40,7 +39,7 @@ export const customizeItem = (farmersList, farmlandsList, serviceProviders,  cus
                                 farmlands: farmlands?.length ? farmlands?.length : 0,
                                 farmlandsList: farmlands,
                                 // createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
-                                createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth() + 1}-${new Date(item?.createdAt).getFullYear()}`,
+                                sortingKey: item?.modifiedAt,                                createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth() + 1}-${new Date(item?.createdAt).getFullYear()}`,
                                 modifiedAt: `${new Date(item?.modifiedAt).getDate()}-${new Date(item?.modifiedAt).getMonth() + 1}-${new Date(item?.modifiedAt).getFullYear()}`,
                                 user: (item?.userName === customUserData?.name)
                                         ? 'mim'
@@ -75,6 +74,7 @@ export const customizeItem = (farmersList, farmlandsList, serviceProviders,  cus
                                 farmlandsList: farmlands,
                                 // createdAt: `${new Date(item?.createdAt).getDate()}-${months[new Date(item?.createdAt).getMonth()]}-${new Date(item?.createdAt).getFullYear()}`,
                                 createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth() + 1}-${new Date(item?.createdAt).getFullYear()}`,
+                                sortingKey: item?.modifiedAt,
                                 modifiedAt: `${new Date(item?.modifiedAt).getDate()}-${new Date(item?.modifiedAt).getMonth() + 1}-${new Date(item?.modifiedAt).getFullYear()}`,
                                 user: (item?.userName === customUserData?.name)
                                         ? 'mim'
@@ -103,6 +103,7 @@ export const customizeItem = (farmersList, farmlandsList, serviceProviders,  cus
                                 farmlands: farmlands?.length ? farmlands?.length : 0,
                                 farmlandsList: farmlands,
                                 createdAt: `${new Date(item?.createdAt).getDate()}-${new Date(item?.createdAt).getMonth() + 1}-${new Date(item?.createdAt).getFullYear()}`,
+                                sortingKey: item?.modifiedAt,
                                 modifiedAt: `${new Date(item?.modifiedAt).getDate()}-${new Date(item?.modifiedAt).getMonth() + 1}-${new Date(item?.modifiedAt).getFullYear()}`,
                                 user: (item?.userName === customUserData?.name)
                                         ? 'mim'
@@ -117,5 +118,6 @@ export const customizeItem = (farmersList, farmlandsList, serviceProviders,  cus
                 //         item['flag'] = flag;
                 //     return item;
         })
+        .sort((item1, item2)=>new Date(item2?.sortingKey).getTime() - new Date(item1?.sortingKey).getTime());
 
 }

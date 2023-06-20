@@ -149,18 +149,12 @@ const FarmlandData = ({ farmland, setRefresh, refresh })=>{
         const blocksAreas = farmland?.blocks?.map((block)=>block?.usedArea).reduce((acc, el)=>acc + el, 0);
         if ((totalArea - blocksAreas) <= 0.02) {
             setIsAreaNotEnough(true);
-            console.log('conformity checked');
         }  
-        console.log('conformity not checked');
     }
 
     useEffect(()=>{
 
         checkAreasConformity(farmland);
-
-        // if (isNewBlockVisible) {
-        //     console.log('a new block being addded');
-        // }
 
     }, [ farmland, autoRefresh, refresh ])
 

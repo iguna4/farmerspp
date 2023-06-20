@@ -110,7 +110,7 @@ export const cooperatives = {
             "Cooperativa Agrária Força da Mudança de Marrocane", 
             "Cooperativa Agrária Olima Orera de Nacu",
             "Cooperativa Agrária Dezasseis de Junho Aúbe",
-            "Uniao Distrital das Cooperativas de Angoche",
+            "União Distrital das Cooperativas de Angoche",
             "Cooperativa Agrária de Napuala-A Limitada CAN",
             "Cooperativa Agropecuária Muihanhaa",
             "Cooperativa 1 de Maio Luáze",

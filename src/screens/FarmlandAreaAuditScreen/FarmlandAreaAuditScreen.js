@@ -1,12 +1,9 @@
 
 import React, { useCallback, useEffect, useState } from "react";
-import { 
-    View, Text, SafeAreaView, Switch, FlatList, ScrollView, TouchableOpacity, PermissionsAndroid, Alert } from 'react-native';
+import { View, Text, SafeAreaView, FlatList, ScrollView, TouchableOpacity, PermissionsAndroid, Alert } from 'react-native';
 import { Stack, Box, Center } from "native-base";
 import Geolocation from 'react-native-geolocation-service';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import BackgroundGeolocation, 
-    { Location, Subscription, } from "react-native-background-geolocation";
 
 
 import LottieAddButton from '../../components/Buttons/LottieAddButton';
@@ -50,80 +47,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
     const [isMapVisible, setIsMapVisible] = useState(false);
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
-    // react-native-background-geolocation
-    const [enabled, setEnabled] = useState(false);
-    const [location, setLocation] = useState(null);
-    const [refreshLocation, setRefreshLocation] = useState(false)
 
     const farmland = useObject('Farmland', farmlandId);
-
-    useEffect(()=>{
-
-    // if (refreshLocation) {
-        
-        // 1. Subscribe to events
-        const onLocation = BackgroundGeolocation.onLocation((location) =>{
-            setLocation({lat: parseFloat(location.coords.latitude), lng: parseFloat(location.coords.longitude)});
-            console.log('[location]', location);
-        })
-
-        const onMotionChange = BackgroundGeolocation.onMotionChange((event)=>{
-            console.log('[onMotionChange]', event);
-        })
-
-        const onActivityChange = BackgroundGeolocation.onActivityChange((event)=>{
-            console.log('[onActivityChange]', event);
-        })
-
-        const onProviderChange = BackgroundGeolocation.onProviderChange((event)=>{
-            console.log('[onProviderChange]', event);
-        })
-
-        // 2.  ready the plugin
-        BackgroundGeolocation.ready({
-            // Geolocation config
-            desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
-            distanceFilter: 10,
-
-            // Activity Recognition
-            stopTimeout: 5,
-
-            // Application config
-            debug: true,
-            logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE,
-            stopOnTerminate: false,
-            startOnBoot: true,
-
-
-        }).then((state)=>{
-            setEnabled(state.enabled);
-            console.log("- BackgroundGeolocation is configured and ready: ", state.enabled)
-        })
-
-        return () => {
-            // Remove BackgroundGeolocation event-subscribers when the View is removed or refreshed
-            // during development live-reload. Without this, event-listeners will accumulate with
-            // each refresh during live-reload.
-            onLocation.remove();
-            onMotionChange.remove();
-            onActivityChange.remove();
-            onProviderChange.remove();
-        }
-    // }
-
-    }, [ refreshLocation ]);
-
-    useEffect(()=>{
-            if (enabled) {
-                BackgroundGeolocation.start();
-            }
-            else {
-                BackgroundGeolocation.stop();
-                setLocation(null);
-            }
-    }, [ enabled, refreshLocation ])
-
-
 
     // request the permission to use the device position coordinates
     const requestLocationPermission = async () => {
@@ -142,10 +67,11 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                     setPermissionGranted(true)
                     setConfirmGeoAlert(true);
-                    // subscribeLocation();
+                    subscribeLocation();
                     console.log("You can use the app");
                 } else {
                     setPermissionGranted(false)
+                    // setRejectGeoAlert(true);
                     console.log("Location Permission Denied");
                 }
             } catch (err) {
@@ -229,13 +155,15 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 }
             );
         }
+        // setPermissionGranted(false);
+
     }
     
 
     useEffect(() => {
         requestLocationPermission();
         return () => {
-        //   Geolocation.clearWatch(watchID);
+          Geolocation.clearWatch(watchID);
         };
     }, [ navigation ]);
     
@@ -282,6 +210,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         });
         const area = calculatePolygonArea(points); 
         setArea(Number(area));
+        // console.log('new area:', area);
 
         return area;
     };
@@ -300,7 +229,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             loadingActivitiyIndicator={loadingActivitiyIndicator}
             setLoadingActivityIndicator={setLoadingActivityIndicator}
         />
-      }   
+      }
+    
 
     return (
         <SafeAreaView
@@ -404,12 +334,17 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         <Stack
             direction="row" 
             w="100%"
+            // pt="3"
             bg="#EBEBE4"
+
         >
             <Box>
                 <Pressable
                     onPress={()=>{
+
                         navigateBack();
+
+                        // navigation.navigate("Farmers");
                     }} 
                     
                     style={{
@@ -417,6 +352,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                         left: 4,
                         top: 4,
                         flexDirection: 'row',
+                        // justifyContent: 'center',
                         alignItems: 'center',
                     }}
                 >
@@ -425,6 +361,15 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                         color={COLORS.main} 
                         size={30}  
                     />
+                    {/* <Text
+                        style={{
+                            color: COLORS.main,
+                            fontFamily: 'JosefinSans-Bold',
+                            marginLeft: -10,
+                        }}
+                    >
+                        Voltar
+                    </Text> */}
                 </Pressable>
             </Box>
             <Center w="100%">
@@ -439,20 +384,30 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     Geolocalização
                 </Text>
             </Center>
-
         </Stack>
-
         </Box>
 
         <Box
+            // bg="#EBEBE4" 
             w="100%" 
             px="3" 
+            
+            // style={{
+            //     borderBottomRightRadius: 50,
+            //     borderBottomLeftRadius: 50,
+            //     borderBottomWidth: 2,
+            //     borderLeftWidth: 2,
+            //     borderRightWidth: 2,
+            //     borderColor: '#EBEBE4',
+            // }}
         >
             <Stack direction="row"
+                // py="1"
                 px="3"
             >
                 <Box  w={farmland?.extremeCoordinates.length === 0 ? "100%" : "50%"}
                     style={{
+                        // flex: 1,
                         justifyContent: 'center',
                     }}
                 >
@@ -468,13 +423,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     >
                         Pontos extremos da área do pomar
                     </Text>
-                    <Switch 
-                        value={enabled}
-                        onValueChange={setEnabled}
-                     />
                 </Box>
-
-
 
                 <Box w={farmland?.extremeCoordinates.length === 0 ? "0%" : "50%"}
                     alignItems={'flex-end'}
@@ -487,10 +436,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                     farmland?.extremeCoordinates.length > 0 &&
                         <TouchableOpacity
                             onPress={
-                                async ()=> {
-                                    await getGeolocation();
-                                    setRefreshLocation(!refreshLocation);
-                                }
+                                async ()=> await getGeolocation()
                             }
                         >
                             <GeoPin />
@@ -499,23 +445,20 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 </Box>
             </Stack>
         </Box>
-        <Box
-            style={{
-                width: '100%',
-                paddingHorizontal: 10,
-            }}
-        >
-
-        {/* { extremeLocations?.map(loc=>             */}
-            <Text>
-                ponto: {location?.lat}; {location?.lng}
-            </Text>
-            {/* ) */}
-        {/* } */}
-        </Box>
-
     {    farmland?.extremeCoordinates.length === 0 &&   
         <Center style={{ minHeight: 300, }}>
+        {/* <Stack direction="row" space={4}>
+            <Box w="15%" alignItems={"center"}>
+            </Box>
+            <Box
+                w="30%" 
+            >
+
+            <Stack
+                // w="100%"
+                direction="column"
+            > */}
+
             <Box 
                 // alignItems={"center"}
                 style={{
@@ -535,11 +478,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             }}
             >
                 <TouchableOpacity
-                    onPress={async ()=> {
-                        await getGeolocation();
-                        setRefreshLocation(!refreshLocation);
-                    }}
-                >
+                    onPress={async ()=> await getGeolocation()}
+                    >
                     {/* <GeoPin /> */}
                     <Icon name="location-pin" size={60} color={COLORS.main} />
                 </TouchableOpacity>
@@ -554,7 +494,59 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 Pontos extremos
                 </Text>
             </Box>
-
+                {/* 
+            </Stack>
+            </Box>
+            <Box w="10%" alignItems={"center"}>
+            </Box>
+            <Box
+                w="30%" 
+            >
+        <Stack direction="column">
+            <Box 
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 100,
+                    borderWidth: 10,
+                    borderColor: COLORS.main,
+                    shadowColor: COLORS.main,
+                    shadowOffset: {
+                        width: 0,
+                        height: 3,
+                    },
+                    shadowOpacity: 0.5,
+                    shadowRadius: 1.65,
+                    elevation: 3,
+                }}
+                >
+                <TouchableOpacity
+                    onPress={ ()=> {
+                        setLoadingActivityIndicator(true);
+                        getCurrentPosition();
+                        setIsMapVisible(true);
+                    }}
+                    >
+                    <Icon name="map" size={60} color={COLORS.main} />
+                </TouchableOpacity>
+            </Box>
+            <Box w="100%">
+                <Text
+                style={{
+                    color: COLORS.grey,
+                    fontSize: 15,
+                    fontFamily: 'JosefinSans-Regular',
+                    textAlign: 'center',
+                }}
+                >
+                    Parcela no mapa
+                </Text>
+            </Box>
+            </Stack>
+            </Box>
+            <Box w="15%" alignItems={"center"}>
+            </Box>
+        </Stack> */}
     </Center>
     }
 

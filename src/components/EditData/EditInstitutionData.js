@@ -211,20 +211,6 @@ const EditInstitutionData = ({
                     // marginVertical: 10,
                 }}
             >
-            {/* <Box>
-                <Text
-                    style={{ 
-                        textAlign: 'center',
-                        color: COLORS.black,
-                        fontSize: 18,
-                        paddingVertical: 15,
-                        fontFamily: 'JosefinSans-Bold',
-                        
-                    }}
-                >{overlayTitle}</Text>
-            </Box> */}
-
-    {/* update the mamager personal data */}
 
     {
         (dataToBeUpdated === 'institutionManager' && resourceName === 'Institution') &&
@@ -259,7 +245,7 @@ const EditInstitutionData = ({
                 type="telephoneNumber"
                 placeholder={institutionManagerPhone ? institutionManagerPhone.toString() : 'Nenhum'}
                 keyboardType="numeric"
-                value={institutionManagerPhone?.toString()}
+                value={institutionManagerPhone !== 0 && institutionManagerPhone?.toString()}
                 onChangeText={newManagerPhone=>{
                     setErrors((prev)=>({...prev, institutionManagerPhone: ''}))                        
                     setInstitutionManagerPhone(newManagerPhone);
@@ -304,7 +290,7 @@ const EditInstitutionData = ({
                     width="100%"
                     type="number"
                     placeholder={institutionNuit ? institutionNuit.toString() : 'Nenhum'}
-                    value={institutionNuit ? institutionNuit?.toString() : 'Nenhum'}
+                    value={institutionNuit}
                     keyboardType="numeric"
                     onChangeText={newNuit=>{
                         setErrors((prev)=>({...prev, institutionNuit: ''}));

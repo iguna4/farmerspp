@@ -183,7 +183,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
             plantingYear: retrievedBlockData?.plantingYear,
             density:  retrievedBlockData?.density,
             trees: retrievedBlockData?.trees,
-            usedArea: Number(retrievedBlockData?.usedArea.toFixed(2)),
+            usedArea: Number(retrievedBlockData?.usedArea.toFixed(1)),
             sameTypeTrees: retrievedBlockData?.sameTypeTrees,
             plantTypes: retrievedBlockData?.plantTypes,
             userName: customUserData?.name,
@@ -272,7 +272,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
         const blocksTrees = farmland?.blocks?.map(block=>parseInt(block?.trees))?.reduce((acc, el)=>acc + el, 0);
         const blocksAreas =  farmland?.blocks?.map(block=>parseFloat(block?.usedArea))?.reduce((acc, el)=>acc + el, 0);
-        const totalArea = Number(farmland?.totalArea.toFixed(2));
+        const totalArea = Number(farmland?.totalArea.toFixed(1));
         const totalTrees = parseInt(farmland?.trees);
         if ((blocksTrees === 0 && totalTrees > 0) && (blocksAreas === 0 && totalArea > 0)) {
 
@@ -458,7 +458,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 description,
                 consociatedCrops,
                 trees,
-                totalArea: Number(totalArea.toFixed(2)),
+                totalArea: Number(totalArea.toFixed(1)),
                 farmerId: owner._id,
                 userDistrict: customUserData?.userDistrict,
                 userProvince: customUserData?.userProvince,
@@ -1062,7 +1062,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     value={totalArea}
                     onChangeText={newNumber=>{
                         setErrors(prev=>({...prev, totalArea: ''}))
-                        setTotalArea(newNumber)
+                        setTotalArea(Number(newNumber))
                     }}
                 />
                     
@@ -1204,7 +1204,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                         fontFamily: 'JosefinSans-Regular',
                     }}
                 >
-                    {farmland?.totalArea} hectares
+                    {Number(farmland?.totalArea.toFixed(1))} hectares
                 </Text>
             </Box>
         </Stack>
@@ -1375,7 +1375,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                                 >
                                     Área (hectares)
                                 </Text>
-                                <Text>({block?.usedArea.toFixed(2)})</Text>
+                                <Text>({Number(block?.usedArea.toFixed(1))})</Text>
                             </Box>
                             <Box w="50%"
                              alignItems={"center"}

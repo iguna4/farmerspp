@@ -24,6 +24,6 @@
     else if the farmer was born in one of the provincial capitals, then get the code associated to that province;
     else get the code associated to the administrative post in which the farmer was born.
 
-  
+  ## Decision 2: 
 
 

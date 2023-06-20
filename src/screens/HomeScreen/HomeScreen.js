@@ -24,6 +24,7 @@ import {
   useDimensionsChange,
 
 } from 'react-native-responsive-dimensions';
+import Toast from 'react-native-toast-message';
 
 
 
@@ -37,18 +38,18 @@ import UserProfile from '../../components/UserProfile/UserProfile';
 import { getPercentage } from '../../helpers/getPercentage';
 
 
-import { useUser } from '@realm/react';
+import { useUser, useApp } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 const { useRealm, useQuery, useObject } = realmContext; 
 
-
+// sync subscription by this name
 const userStats = 'userStats';
 
 
-export default function HomeScreen() {
+export default function HomeScreen({ route, navigation }) {
   const realm = useRealm();
   const user = useUser();
-  const customUserData = user?.customData;
+  const customUserData = user?.customData;  
 
   const [isPerformanceButtonActive, setIsPerformanceButtonActive] = useState(false)
   const [isUserProfileVisible, setIsUserProfileVisible] = useState(false);
@@ -57,8 +58,6 @@ export default function HomeScreen() {
 
   const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
- 
-  
   const provincialUserStats = useQuery('UserStat').filtered(`userProvince == "${customUserData?.userProvince}" && userDistrict != "NA"`);
 
   // --------------------------------------------------------
@@ -105,7 +104,7 @@ export default function HomeScreen() {
             tFarmlands: stat.targetFarmlands,
           }
         )
-      });
+  });
 
   const rWholeDistrict = 
     provincialUserStats
@@ -165,60 +164,7 @@ export default function HomeScreen() {
     const tuFarmlands = tCurrentUser.map((stat)=>stat.tFarmlands).reduce((ac, cur)=>(ac+cur), 0);
     const ruFarmlands = rCurrentUser.map((stat)=>stat.rFarmlands).reduce((ac, cur)=>(ac+cur), 0);
     //---------------------------------------------------------------------- 
-
-    // const deleteAllTypesObjects = useCallback(()=>{
-
-    //   realm.write(() => {
-    //     // Delete all instances of Cat from the realm.
-    //     realm.delete(realm.objects("Actor"));
-    //   });
-
-    //   realm.write(() => {
-    //     // Delete all instances of Cat from the realm.
-    //     realm.delete(realm.objects("Farmland"));
-    //   });
-
-    //   realm.write(() => {
-    //     // Delete all instances of Cat from the realm.
-    //     realm.delete(realm.objects("InvalidationMotive"));
-    //   });
-
-    //   realm.write(() => {
-    //     // Delete all instances of Cat from the realm.
-    //     realm.delete(realm.objects("SprayingServiceProvider"));
-    //   });
-
-    //   realm.write(() => {
-    //     // Delete all instances of Cat from the realm.
-    //     realm.delete(realm.objects("Group"));
-    //   });
-
-    //   realm.write(() => {
-    //     // Delete all instances of Cat from the realm.
-    //     realm.delete(realm.objects("Institution"));
-    //   });
-
-    //   realm.write(() => {
-    //     // Delete all instances of Cat from the realm.
-    //     realm.delete(realm.objects("UserStat"));
-    //   });
-
-    //   realm.write(() => {
-    //     // Delete all instances of Cat from the realm.
-    //     realm.delete(realm.objects("ActorMembership"));
-    //   });
-
-
-    //   realm.write(() => {
-    //     // Delete all instances of Cat from the realm.
-    //     realm.delete(realm.objects("SprayingServiceProvider"));
-    //   });
-    // }, [ realm ]);
-    
-
-    // deleteAllTypesObjects();
-    // -----------------------------------------------------------------------------------
-
+  
 
   useEffect(() => {
 
@@ -230,7 +176,7 @@ export default function HomeScreen() {
       );
     });
 
-    if (customUserData?.role?.includes(roles.provincialManager)) {
+    if (customUserData?.role?.includes(roles.provincialManager) || customUserData?.role?.includes(roles.ampcmSupervisor) ) {
       setIsFieldAgent(false);
 
     }
@@ -242,7 +188,6 @@ export default function HomeScreen() {
     useCallback(() => {
       const task = InteractionManager.runAfterInteractions(() => {
         setLoadingActivityIndicator(true);
-      // Expensive task
     });
 
     return () => task.cancel();
@@ -340,7 +285,7 @@ export default function HomeScreen() {
 
 {/* Province users and districts */}
 {
-  !isFieldAgent && 
+  (!isFieldAgent && (customUserData?.role === roles.provincialManager))  && 
 
   <ScrollView
     contentContainerStyle={{

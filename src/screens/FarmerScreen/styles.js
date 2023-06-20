@@ -22,8 +22,8 @@ import {
 const styles = StyleSheet.create({
 
     images: {
-      width: wp('67%'),
-      height: hp('40%'),
+      width: 200,
+      height: 200,
       borderColor: COLORS.main,
       // borderWidth: 2,
       marginHorizontal: 3,

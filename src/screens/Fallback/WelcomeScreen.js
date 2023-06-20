@@ -1,8 +1,8 @@
 import { 
-    Pressable, SafeAreaView, Text, View, Image, InteractionManager,
+    Pressable, SafeAreaView, Text, View, Image, InteractionManager, StatusBar, TextInput,
 } from 'react-native';
 import React, {useEffect, useState, useCallback } from 'react';
-import { Button, Icon, CheckBox } from '@rneui/themed';
+import { Button, Icon, CheckBox, BottomSheet } from '@rneui/themed';
 import { Box, Stack, FormControl, Center, Select, CheckIcon, ScrollView } from 'native-base';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import {  
@@ -23,11 +23,13 @@ import {
 
 } from 'react-native-responsive-dimensions';
 
+
 import styles from './styles';
 import { CustomInput } from '../../components/Inputs/CustomInput';
 import validateUserData from '../../helpers/validateUserData';
 import districts from '../../consts/districts';
 import COLORS from '../../consts/colors';
+import { useNavigation } from '@react-navigation/native';
 
 
 import { Realm, useApp } from '@realm/react';
@@ -35,14 +37,12 @@ import { secrets } from '../../secrets';
 import { BSON } from 'realm';
 import { roles } from '../../consts/roles';
 import { errorMessages } from '../../consts/errorMessages';
-import { useFocusEffect } from '@react-navigation/native';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { cooperatives } from '../../consts/cooperatives';
 import OtpVerification from '../../components/OtpVerification/OtpVerification';
-// import { CheckBox } from '@rneui/base';
+import OtpInput from '../../components/OtpVerification/OtpInput';
+import OTPInputField from '../../components/OTPComponents/OTPInputField';
 
-
-// import  { MongoClient } from 'mongodb';
 
 
 export default function WelcomeScreen () {
@@ -65,12 +65,9 @@ export default function WelcomeScreen () {
     const [showConfirmButton, setShowConfirmButton] = useState(false);
     const [errorFlag, seterrorFlag] = useState(null);
 
-    // ---------------------------------------------
-    
+    // ---------------------------------------------   
     const [errors, setErrors] = useState({});
     
-    // const [signInWithPhone, setSignInWithPhone] = useState(false);
-    // const [signInPhone, setSignInPhone] = useState(null);
     const [role, setRole] = useState(roles.fieldAgent);
     const [userProvince, setUserProvince] = useState('');
     const [userDistrict, setUserDistrict] = useState('');
@@ -80,9 +77,15 @@ export default function WelcomeScreen () {
     const [phone, setPhone] = useState(null);
 
     // ----------------------------------------------------
+    const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
 
-    const [isOTPVisible, setIsOTPVisible] = useState(false);
+    const toggleBottomSheet = ()=>{
+        setBottomSheetVisible(!bottomSheetVisible);
+    }
     // ---------------------------------------------------
+
+    // -------------------------------------------
+    // const [connectionStatus, setConnectionStatus] = useState(false)
 
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
@@ -107,7 +110,6 @@ export default function WelcomeScreen () {
 
         // validate user data and return nothing if any error is found
         if (!validateUserData(userData, errors, setErrors)) {
-            // setInvalidDataAlert(true);
             return ;
         }
         
@@ -119,23 +121,14 @@ export default function WelcomeScreen () {
         // try to register new user
         try {
             // remove any current user
-            app?.currentUser?.logOut();
+            // app?.currentUser?.logOut();
 
             await app.emailPasswordAuth.registerUser({email, password});
 
             const creds = Realm.Credentials.emailPassword(email, password);
             const newUser = await app.logIn(creds);
-            const mongo = newUser.mongoClient(
-                // `${process.env.serviceName}`
-                secrets.serviceName
-                );
-            const collection = mongo.db(
-                // `${process.env.databaseName}`
-                secrets.databaseName
-                ).collection(
-                    // `${process.env.userCollectionName}`
-                    secrets.userCollectionName
-                );
+            const mongo = newUser.mongoClient(secrets.serviceName);
+            const collection = mongo.db(secrets.databaseName).collection(secrets.userCollectionName);
 
             // pack the validated user data and save it into the database
             const validatedUserdata = {
@@ -145,7 +138,7 @@ export default function WelcomeScreen () {
                 email,
                 password,
                 phone,
-                role: role?.includes('AMPC') ? `${role} [${coop}]` : role,
+                role: (role?.includes(roles.coopManager) && coop !== 'AMPCM' ) ? `${role} [${coop}]` : role,
                 userDistrict,
                 userProvince,
                 image: '',
@@ -184,7 +177,6 @@ export default function WelcomeScreen () {
             setCancelText(errorMessages.network.cancelText);
         }
         else if (alert && errorFlag?.toString()?.includes(errorMessages.signUp.logFlag)){
-            // Alert message
             setTitleAlert(errorMessages.signUp.title);
             setMessageAlert(errorMessages.signUp.message);
             setShowCancelButton(errorMessages.signUp.showCancelButton);
@@ -213,15 +205,6 @@ export default function WelcomeScreen () {
     }, [userProvince, errors, isLoggingIn]);
 
 
-    // useFocusEffect(
-    //     React.useCallback(() => {
-    //       const task = InteractionManager.runAfterInteractions(() => {
-    //         setLoadingActivityIndicator(true);
-    //       });
-    //       return () => task.cancel();
-    //     }, [])
-    //   );
-    
       if (loadingActivitiyIndicator) {
         return <CustomActivityIndicator 
             loadingActivitiyIndicator={loadingActivitiyIndicator}
@@ -230,12 +213,9 @@ export default function WelcomeScreen () {
       }
     
 
-
-
-
   return (
     <>
-    {/* <StatusBar barStyle="dark-content" backgroundColor="#EBEBE4" /> */}
+    <StatusBar style="auto" />
     <SafeAreaView style={styles.loginContainer}>
 
         <View
@@ -280,12 +260,15 @@ export default function WelcomeScreen () {
 
 
     <ScrollView
-            contentContainerStyle={{
-                // alignItems: 'center',
-                minHeight: '100%',
-            }}
+        contentContainerStyle={{
+            minHeight: '100%',
+        }}
     >
 
+
+        {/* ---------------------------------------
+            Show the "Connect Caju" label if the user is signing in, else show the "Novo usuario" text
+        */}
         <Box my="6" pl="4">
         {  isLoggingIn ?
         <Box>
@@ -293,8 +276,8 @@ export default function WelcomeScreen () {
                 Connect Caju 
             </Text>
         </Box>
-            :
-            (
+        :
+        (
             <Box 
                 style={{
                     flexDirection: 'row',
@@ -316,9 +299,11 @@ export default function WelcomeScreen () {
                     Novo usuário
                 </Text>
             </Box>
-            )
+        )
         }
        </Box>
+
+
 
         <AwesomeAlert
             show={alert}
@@ -351,6 +336,9 @@ export default function WelcomeScreen () {
             }}
         />
 
+        {/*------------------------------------
+          Data form (for signing in and up)
+        */}
         <View
             style={{
                 // flex: 1,
@@ -392,39 +380,18 @@ export default function WelcomeScreen () {
 
             <FormControl isRequired isInvalid={'email' in errors}>
                 <FormControl.Label>{
-                // signInWithPhone ? 'Número de Telefone' : 
                 'Endereço Electrónico'}</FormControl.Label>
                 <CustomInput
                     width="100%"
-                    // autoFocus={isLoggingIn ? true: false}
                     placeholder={"Endereço Electrónico"}
                     type={"emailAddress"}
                     keyboardType={'email-address'}
                     value={email}
                     onChangeText={(value)=>{
-                        // if (signInWithPhone) {
-                        //     setErrors(prev=>({
-                        //         ...prev,
-                        //         signInPhone: null,
-                        //     }));
-                        //     setSignInPhone(parseInt(value));
-                        // }
-                        // else {
                             setErrors((prev)=>({...prev, email: ''}));
                             setEmail(value?.toLowerCase()?.trim());
-                        // }
                     }}
                     InputLeftElement={
-                        // signInWithPhone ?
-                        // (
-                        //     <Icon 
-                        //         name="phone" 
-                        //         color="grey" 
-                        //         // size={30}
-                        //         style={{ paddingLeft: 3 }} 
-                        //     />
-                        // )
-                        // :
                         (
                             <Icon 
                                 name="email" 
@@ -441,12 +408,7 @@ export default function WelcomeScreen () {
                 _text={{ fontSize: 'xs'}}>{errors?.email}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
             }
-            {/* { 'signInPhone' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.signInPhone}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-            } */}
+
             </FormControl>
             {
                 isLoggingIn &&
@@ -622,9 +584,9 @@ export default function WelcomeScreen () {
                         }}
                     >
                         <Select.Item label={roles.fieldAgent} value={roles.fieldAgent} />
-                        {/* <Select.Item label={roles.districtalSupervisor} value={roles.districtalSupervisor} /> */}
                         <Select.Item label={roles.provincialManager} value={roles.provincialManager} />
                         <Select.Item label={roles.coopManager} value={roles.coopManager} />
+                        <Select.Item label={roles.ampcmSupervisor} value={roles.ampcmSupervisor} />
                     </Select>
                     {
                         'role' in errors 
@@ -725,15 +687,15 @@ export default function WelcomeScreen () {
             )
         }
 
-{ role.includes('AMPCM') && (userDistrict) && !isLoggingIn &&
+        { role.includes(roles.coopManager) && (userDistrict) && !isLoggingIn &&
                 <Stack direction="row" w="100%">
                 <Box w="100%">
                     <FormControl isRequired my="3" isInvalid={'coop' in errors}>
-                        <FormControl.Label>Nome da Cooperativa</FormControl.Label>
+                        <FormControl.Label>Nome da Entidade</FormControl.Label>
                         <Select
                             selectedValue={coop}
-                            accessibilityLabel="Escolha sua cooperativa"
-                            placeholder="Escolha sua cooperativa"
+                            accessibilityLabel="Escolha sua entidade"
+                            placeholder="Escolha sua entidade"
                             _selectedItem={{
                                 bg: 'teal.600',
                                 fontSize: 'lg',
@@ -756,9 +718,7 @@ export default function WelcomeScreen () {
                                     <Select.Item key={coop} label={coop} value={coop} />
                                 ))
                             }
-                            {/* <Select.Item label={roles.districtalSupervisor} value={roles.districtalSupervisor} />
-                            <Select.Item label={roles.provincialManager} value={roles.provincialManager} />
-                            <Select.Item label={roles.coopManager} value={roles.coopManager} /> */}
+
                         </Select>
                         {
                             'coop' in errors 
@@ -781,13 +741,15 @@ export default function WelcomeScreen () {
         <Button 
             title={isLoggingIn ? " Entrar" : "Registar-se"} 
             onPress={ async ()=> {
-                // setLoadingActivityIndicator(true);
                 if (isLoggingIn){
-                    app?.currentUser?.logOut();
+                    // app?.currentUser?.logOut();
                     try{
-                        // await signIn();
-                        const creds = Realm.Credentials.emailPassword(email, password);
-                        await app?.logIn(creds);
+                        if (!app?.currentUser){
+                            const creds = Realm.Credentials.emailPassword(email, password);
+                            await app?.logIn(creds);
+
+                        }
+                        return app.currentUser;
                     }
                     catch(error){
                         setAlert(true);
@@ -796,7 +758,6 @@ export default function WelcomeScreen () {
                     }   
                 }   
                 else {
-                    // setIsOTPVisible(true);
                     await onSignUp(name, email, password, passwordConfirm, phone, role, userDistrict, userProvince, coop);
                 } 
             }} 
@@ -810,19 +771,55 @@ export default function WelcomeScreen () {
         </Stack>
 
         <Stack w="100%" direction="row" pb="8">
-            <Box 
-                w="50%" 
-                alignItems="center"
-                >
-
-            </Box>
-            <Box 
-                pr={5} 
-                w="50%" 
-                alignItems="center"
-                >
 
 {    isLoggingIn &&
+        <Box                 
+            alignItems="center"
+            w="100%" 
+            pt="-3"
+        >
+            <Box
+                style={{
+                    paddingTop: 10,
+                    paddingBottom: 20,
+                }}
+            >
+                <Pressable
+                    disabled
+
+                    onPress={
+                        // toggleBottomSheet
+                        ()=>{}
+                    }
+                >
+                    <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Regular',
+                            color: COLORS.grey,
+                        }}
+                    >Esqueceu Senha</Text>
+                </Pressable>
+            </Box>
+
+            <Box 
+                px={5} 
+                style={{
+                    flexDirection: 'row',
+                }}
+            >
+            
+
+            <Text
+                style={{ 
+                    textAlign: 'center',
+                    fontSize: 16,
+                    color: COLORS.grey,
+                    fontFamily: 'JosefinSans-Regular',
+                    marginHorizontal: 5,
+                }}
+            >
+                    Ainda não tem conta?
+            </Text>
             <Pressable onPress={()=>{
                 setLoadingActivityIndicator(true);
                 setIsLoggingIn(prevState => !prevState)
@@ -834,42 +831,113 @@ export default function WelcomeScreen () {
                         fontSize: 16,
                         color: COLORS.main,
                         fontFamily: 'JosefinSans-Regular',
-                        textDecoration: 'underline',
+                        marginHorizontal: 5,
                     }}
                 >
                     Criar conta
                 </Text>
             </Pressable>
+            </Box>
+        </Box>
 }
 
 {    !isLoggingIn &&
-            <Pressable onPress={()=>{
-                setLoadingActivityIndicator(true);
-                setIsLoggingIn(prevState => !prevState)
+        <Box                 
+            alignItems="center"
+            w="100%" 
+            pt="-3"
+        >
+            <Box 
+                px={5} 
+                style={{
+                    flexDirection: 'row',
                 }}
             >
-                <Text 
+                <Text
                     style={{ 
                         textAlign: 'center',
                         fontSize: 16,
-                        color: COLORS.main,
+                        color: COLORS.grey,
                         fontFamily: 'JosefinSans-Regular',
-                        textDecoration: 'underline',
+                        marginHorizontal: 5,
                     }}
-                    >
-                    Fazer Login
+                >
+                    Já tem conta?
                 </Text>
-            </Pressable>
-}        
+                <Pressable onPress={()=>{
+                    setLoadingActivityIndicator(true);
+                    setIsLoggingIn(prevState => !prevState)
+                    }}
+                >
+                    <Text 
+                        style={{ 
+                            textAlign: 'center',
+                            fontSize: 16,
+                            color: COLORS.main,
+                            fontFamily: 'JosefinSans-Regular',
+                            textDecoration: 'underline',
+                        }}
+                        >
+                        Fazer Login
+                    </Text>
+                </Pressable>
             </Box>
+        </Box>
+}        
             </Stack>
         
         </View>
         </ScrollView>
-        <OtpVerification 
-            isOTPVisible={isOTPVisible}
-            setIsOTPVisible={setIsOTPVisible}
-        />
+
+        <BottomSheet
+            isVisible={bottomSheetVisible} 
+            onBackdropPress={toggleBottomSheet}
+            containerStyle={{
+                // backgroundColor: COLORS.fourth,
+                // height: "50%",
+            }}
+        >
+            <View
+                style={{
+                    backgroundColor: COLORS.fourth,
+                    paddingVertical: 20,
+                    paddingHorizontal: 10,
+                    height: 250,
+                }}
+            >
+                {/* <OTPInputField /> */}
+                <Text
+                    style={{
+                        fontSize: 18,
+                        color: COLORS.grey,
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingBottom: 20,
+                    }}
+                >
+                    Número de telefone
+                </Text>
+                <View
+                    style={{
+                        paddingVertical: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <TextInput 
+                        style={{
+                            borderWidth: 1,
+                            borderColor: COLORS.fourth,
+                            width: 300,
+                            borderRadius: 5,
+                            backgroundColor: COLORS.ghostwhite,
+                        }}
+            
+                        // onFocus={}
+                    />
+                </View>
+
+            </View>
+        </BottomSheet>
     </SafeAreaView>
     </>
   )

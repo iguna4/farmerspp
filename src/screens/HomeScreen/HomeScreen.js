@@ -1,7 +1,7 @@
 
 import {
   View, Text, InteractionManager,
-  SafeAreaView, Image, TouchableOpacity, ScrollView
+  SafeAreaView, Image, TouchableOpacity, ScrollView, AppState,
 } from 'react-native';
 import React, { useCallback, useState, useEffect } from 'react';
 import { Box, Stack, Center, } from 'native-base';
@@ -25,6 +25,7 @@ import {
 
 } from 'react-native-responsive-dimensions';
 import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -62,6 +63,8 @@ export default function HomeScreen({ route, navigation }) {
 
   // --------------------------------------------------------
   const districts =  Array.from(new Set(provincialUserStats.map((stat)=>stat?.userDistrict)));
+
+  // -------------------------------------------------------------
 
   // --------------------------------------------------------
   // get extract stats from whole province
@@ -181,7 +184,7 @@ export default function HomeScreen({ route, navigation }) {
 
     }
 
-  }, [ user, realm, ])
+  }, [ user, realm, ]);
 
 
   useFocusEffect(

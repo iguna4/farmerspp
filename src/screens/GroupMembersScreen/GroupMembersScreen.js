@@ -133,6 +133,7 @@ export function MemberItem({ item, isGroupManager, }) {
       }}
       numberOfLines={1}
       ellipsizeMode={'tail'}
+    // eslint-disable-next-line prettier/prettier
     >
        {item.names.otherNames} {item.names.surname}
     </Text>

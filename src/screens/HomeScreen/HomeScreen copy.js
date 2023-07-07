@@ -159,7 +159,7 @@ export default function HomeScreen() {
     />
   }
   
-
+  // console.log('Welcome Component: app is shifting from background to foreground and vice-versa');
 
   return (
     <SafeAreaView

@@ -63,6 +63,11 @@ export default function App() {
                 <RealmProvider 
                   sync={{
                     flexible: true,
+                    existingRealmFileBehavior: {
+                      type: 'openImmediately',
+                      timeOut: 1000,
+                      timeOutBehavior: 'openLocalRealm',
+                    },
                     onError: (_, error)=>{
                       console.log('Error:', error);
                     }

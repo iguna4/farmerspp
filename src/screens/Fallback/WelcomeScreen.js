@@ -211,6 +211,8 @@ export default function WelcomeScreen () {
             setLoadingActivityIndicator={setLoadingActivityIndicator}
         />
       }
+
+    //   console.log('Welcome Component: app is shifting from background to foreground and vice-versa');
     
 
   return (

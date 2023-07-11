@@ -52,8 +52,6 @@ export default function App() {
 
 
             <AppProvider
-              // id={`${process.env.appID}`} 
-              // baseUrl={`${process.env.baseUrl}`}
               id={secrets.appID} 
               baseUrl={secrets.baseUrl}
             >

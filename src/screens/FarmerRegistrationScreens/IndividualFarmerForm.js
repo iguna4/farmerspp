@@ -11,12 +11,15 @@ import { DatePickerModal } from 'react-native-paper-dates';
 import { pt, registerTranslation } from 'react-native-paper-dates'
 registerTranslation('pt', pt);
 import { KeyboardAwareScrollView, useMaskedTextInput } from 'react-native-keyboard-tools';
+import { Dropdown } from 'react-native-element-dropdown';
 
 
 
 import { CustomInput } from '../../components/Inputs/CustomInput';
 import administrativePosts from '../../consts/administrativePosts';
 import provinces from '../../consts/provinces';
+import provinces2 from '../../consts/provinces2';
+
 import districts from '../../consts/districts';
 import villages from '../../consts/villages';
 import idDocTypes from '../../consts/idDocTypes';
@@ -27,6 +30,7 @@ import countries from '../../consts/countries';
 import COLORS from '../../consts/colors';
 
 import { realmContext } from '../../models/realmContext';
+import DropdownComponent from '../../components/Dropdown/DropdownComponent';
 const {useRealm} = realmContext;
 
 
@@ -481,47 +485,6 @@ export default function IndividualFarmerForm({
                         startYear={1930}
                         endYear={2012}
                     />
-            
-
-
-
-
-                    {/* <Datepicker
-                        placeholder="Nascim."
-                        min={new Date(1900, 0, 0)}
-                        max={new Date(2010, 0, 0)}
-                        size="large"
-                        
-                        placement="top"
-                        style={styles.datepicker}
-                        date={birthDate}
-                        dateService={localeDateService}
-                        // {...localePickerState}
-                        accessoryLeft={
-                            !birthDate 
-                                &&  <Icon 
-                                        name="date-range" 
-                                        size={20}
-                                        color={COLORS.main} 
-                                    />
-                        }
-
-                        accessoryRight={
-                            birthDate 
-                                && <Icon 
-                                        name="close" 
-                                        size={20} 
-                                        color={COLORS.grey} 
-                                        onPress={()=>setBirthDate(null)} 
-                                    /> 
-                                    
-                        }
-
-                        onSelect={nextDate => {
-                            setErrors(prev=>({...prev, birthDate: null }))
-                            setBirthDate(nextDate)
-                    }}
-                /> */}
                 {
                 'birthDate' in errors 
                 ? <FormControl.ErrorMessage 
@@ -536,6 +499,7 @@ export default function IndividualFarmerForm({
         <Box w="50%" px="1">
             <FormControl isRequired isInvalid={'birthProvince' in errors}>
                 <FormControl.Label>Província</FormControl.Label>
+
                     <Select
                         selectedValue={birthProvince}
                         accessibilityLabel="Escolha uma província"

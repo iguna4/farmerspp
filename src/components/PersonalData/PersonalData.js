@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prettier/prettier */
+/* eslint-disable semi */
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, TouchableOpacity, Modal, TextInput, Text, ScrollView, InteractionManager, SafeAreaView, FlatList } from 'react-native';
 import { Box,  FormControl, Stack, } from 'native-base';
@@ -5,6 +8,12 @@ import { Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 import { v4 as uuidv4 } from 'uuid';
 import { useFocusEffect } from '@react-navigation/native';
+import {
+    Menu,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+  } from 'react-native-popup-menu';
 import {  
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -1074,107 +1083,170 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
             <Box w="10%">
     
 {customUserData?.role !== roles.provincialManager && 
-            <Tooltip
-                isVisible={isEllipsisVisible}
-                disableShadow={true}
-                placement="left"
-                childContentSpacing={4}
-                content={<Box
-                    style={{
-                        flexDirection: 'column',
-                        minWidth: 250,
-                        // height: 80,
-                    }}
-                >
-                    <Box>
-                        <TouchableOpacity
-                            onPress={()=>{
-                                navigation.navigate('Membership', {
-                                    resourceName: 'Farmer',
-                                    resourceId: farmer._id,
-                                });
-                                setIsEllipsisVisible(false);
-                            }}
-                        >
-                            <Box
-                                style={{
-                                flexDirection: 'row',
-                                width: '100%',
-                                alignItems: 'center',
-                                paddingLeft: 10,
-                                paddingVertical: 10,
-                                // height: 80,
-                            }}  
-                            >
-                                <FontAwesomeIcon icon={faPeopleGroup} size={20} color={COLORS.grey} />
-                                <Text
-                                    style={{
-                                        fontSize: 15,
-                                        fontFamily: 'JosefinSans-Regular',
-                                        color: COLORS.grey,
-                                        paddingLeft: 20,
-                                    }}
-                                >Aderir a uma organização</Text>
-                            </Box>
-                        </TouchableOpacity>
-                    </Box>
-                    <CustomDivider />
-                    <Box>
-                        <TouchableOpacity
-                            onPress={()=>{
-                                navigation.navigate('FarmerGroups', {
-                                    farmerId: farmer._id,
-                                });
-                                setIsEllipsisVisible(false);
-
-                            }}
-                        >
-                            <Box
-                                style={{
-                                    flexDirection: 'row',
-                                    width: '100%',
-                                    alignItems: 'center',
-                                    paddingLeft: 10,
-                                    paddingVertical: 10,
-                                    // height: 80,
-                                }} 
-                            >
-                                <FontAwesomeIcon icon={faEye} size={20} color={COLORS.grey} />
-                                <Text
-                                    style={{
-                                        fontSize: 15,
-                                        fontFamily: 'JosefinSans-Regular',
-                                        color: COLORS.grey,
-                                        paddingLeft: 20,
-                                    }}
-                                >Ver organizações</Text>
-                            </Box>
-                        </TouchableOpacity>
-                    </Box>
-                </Box>}
-                onClose={()=>setIsEllipsisVisible(false)}
+    <Menu>
+    <MenuTrigger style={{ width: 700, }}>
+        <Box>
+            <FontAwesomeIcon 
+                icon={faEllipsisVertical} 
+                size={20} 
+                color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone }
+                fade 
+            />
+        </Box>
+    </MenuTrigger>
+    <MenuOptions>
+      <MenuOption>
+        <Box
+            style={{
+                flexDirection: 'row',
+                justifyContent: "center"
+            }}
+        >
+            <Box w="20%"
+                style={{
+                    justifyContent: "center",
+                    alignItems: "center"
+                }}
             >
-
-                <TouchableOpacity
+            <FontAwesomeIcon icon={faPeopleGroup} size={20} color={COLORS.grey} />
+            </Box>
+            <Box w="80%">
+                <Text
                     style={{
-
-                    }}
-                    onPress={
-                        ()=>{
-                            setIsEllipsisVisible(true);
+                        fontSize: 15,
+                        fontFamily: 'JosefinSans-Regular',
+                        color: COLORS.grey,
+                        paddingLeft: 20,
                     }}
                 >
-                <Box>
-                    <FontAwesomeIcon 
-                        icon={faEllipsisVertical} 
-                        size={20} 
-                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone }
-                        fade 
-                    />
+                    Aderir a uma organização
+                </Text>
+            </Box>
+        </Box>
+      </MenuOption>
+      <CustomDivider />
+      <MenuOption>
+        <Box
+            style={{
+                flexDirection: 'row',
+                
+            }}
+        >
+            <FontAwesomeIcon icon={faEye} size={20} color={COLORS.grey} />
+            <Text
+                style={{
+                    fontSize: 15,
+                    fontFamily: 'JosefinSans-Regular',
+                    color: COLORS.grey,
+                    paddingLeft: 20,
+                }}
+            >Ver organizações</Text>
+        </Box>
+      </MenuOption>
+      <CustomDivider />
+    </MenuOptions>
+  </Menu>
+            // <Tooltip
+            //     isVisible={isEllipsisVisible}
+            //     disableShadow={true}
+            //     placement="left"
+            //     childContentSpacing={4}
+            //     content={<Box
+            //         style={{
+            //             flexDirection: 'column',
+            //             minWidth: 250,
+            //             // height: 80,
+            //         }}
+            //     >
+            //         <Box>
+            //             <TouchableOpacity
+            //                 onPress={()=>{
+            //                     navigation.navigate('Membership', {
+            //                         resourceName: 'Farmer',
+            //                         resourceId: farmer._id,
+            //                     });
+            //                     setIsEllipsisVisible(false);
+            //                 }}
+            //             >
+            //                 <Box
+            //                     style={{
+            //                     flexDirection: 'row',
+            //                     width: '100%',
+            //                     alignItems: 'center',
+            //                     paddingLeft: 10,
+            //                     paddingVertical: 10,
+            //                     // height: 80,
+            //                 }}  
+            //                 >
+            //                     <FontAwesomeIcon icon={faPeopleGroup} size={20} color={COLORS.grey} />
+            //                     <Text
+            //                         style={{
+            //                             fontSize: 15,
+            //                             fontFamily: 'JosefinSans-Regular',
+            //                             color: COLORS.grey,
+            //                             paddingLeft: 20,
+            //                         }}
+            //                     >Aderir a uma organização</Text>
+            //                 </Box>
+            //             </TouchableOpacity>
+            //         </Box>
+            //         <CustomDivider />
+            //         <Box>
+            //             <TouchableOpacity
+            //                 onPress={()=>{
+            //                     navigation.navigate('FarmerGroups', {
+            //                         farmerId: farmer._id,
+            //                     });
+            //                     setIsEllipsisVisible(false);
 
-                </Box>
-                </TouchableOpacity>
-            </Tooltip>
+            //                 }}
+            //             >
+            //                 <Box
+            //                     style={{
+            //                         flexDirection: 'row',
+            //                         width: '100%',
+            //                         alignItems: 'center',
+            //                         paddingLeft: 10,
+            //                         paddingVertical: 10,
+            //                         // height: 80,
+            //                     }} 
+            //                 >
+            //                     <FontAwesomeIcon icon={faEye} size={20} color={COLORS.grey} />
+            //                     <Text
+            //                         style={{
+            //                             fontSize: 15,
+            //                             fontFamily: 'JosefinSans-Regular',
+            //                             color: COLORS.grey,
+            //                             paddingLeft: 20,
+            //                         }}
+            //                     >Ver organizações</Text>
+            //                 </Box>
+            //             </TouchableOpacity>
+            //         </Box>
+            //     </Box>}
+            //     onClose={()=>setIsEllipsisVisible(false)}
+            // >
+
+            //     <TouchableOpacity
+            //         style={{
+
+            //         }}
+            //         onPress={
+            //             ()=>{
+            //                 setIsEllipsisVisible(true);
+            //         }}
+            //     >
+            //     <Box>
+            //         <FontAwesomeIcon 
+            //             icon={faEllipsisVertical} 
+            //             size={20} 
+            //             color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone }
+            //             fade 
+            //         />
+
+            //     </Box>
+            //     </TouchableOpacity>
+            // </Tooltip>
 }
             
             </Box>

@@ -21,7 +21,7 @@ import elementTheme from './elementTheme';
 import nbTheme from './nbTheme';
 import WelcomeScreen from './screens/Fallback/WelcomeScreen';
 import CustomActivityIndicator from './components/ActivityIndicator/CustomActivityIndicator';
-
+import { MenuProvider } from 'react-native-popup-menu';
 // import {enableLatestRenderer} from 'react-native-maps';
 
 
@@ -50,10 +50,8 @@ export default function App() {
         <ThemeProvider theme={elementTheme}>   
           <ApplicationProvider {...eva} theme={eva.light}>
 
-
+            <MenuProvider>
             <AppProvider
-              // id={`${process.env.appID}`} 
-              // baseUrl={`${process.env.baseUrl}`}
               id={secrets.appID} 
               baseUrl={secrets.baseUrl}
             >
@@ -80,7 +78,7 @@ export default function App() {
                 </RealmProvider>
               </UserProvider>
             </AppProvider>
-
+            </MenuProvider>
 
           </ApplicationProvider>
         </ThemeProvider>

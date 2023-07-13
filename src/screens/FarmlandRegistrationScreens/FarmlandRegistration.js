@@ -884,10 +884,11 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     }}
                     data={crops}
                     notFoundText={'Tipo de cultura não encontrada'}
+                    maxHeight={400}
                     save="value"
                     arrowicon={
                         <Icon 
-                        size={45} 
+                        // size={45} 
                         name="arrow-drop-down" 
                         color={COLORS.main} 
                         />
@@ -901,18 +902,32 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     }
                     fontFamily='JosefinSans-Regular'
                     dropdownTextStyles={{
-                        fontSize: 18,
+                        fontSize: 16,
+                        color: COLORS.black,
+                        padding: 5,
                     }}
                     inputStyles={{
                         fontSize: 16,
                         color: '#A8A8A8',
                     }}
                     boxStyles={{
-                        borderRadius: 4,
                         minHeight: 55,
+                        borderRadius: 5,
+                        borderColor: COLORS.lightgrey,
                     }}
                     label="Culturas"
                     placeholder="Culturas consociadas"
+                    badgeStyles={{
+                        backgroundColor: COLORS.main,                        
+                    }}
+                    badgeTextStyles={{
+                        fontSize: 16
+                    }}
+                    checkBoxStyles={{
+                        color: COLORS.main,
+                        // backgroundColor: COLORS.main,
+                        fontSize: 34,
+                    }}
                 />
                 {
                 'consociatedCrops' in errors 

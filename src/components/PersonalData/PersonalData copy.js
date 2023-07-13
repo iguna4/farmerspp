@@ -41,9 +41,6 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import { resourceValidation } from '../../consts/resourceValidation';
 import validateInvalidationMessage from '../../helpers/validateInvalidationMessage';
 import CustomActivityIndicator from '../ActivityIndicator/CustomActivityIndicator';
-import { PopMenuWrapper, PopupMenu } from '../PopupMenu/PopupMenu';
-import { Platform } from 'react-native';
-import { StatusBar } from 'react-native';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 
@@ -1077,26 +1074,19 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
             <Box w="10%">
     
 {customUserData?.role !== roles.provincialManager && 
-
             <Tooltip
                 isVisible={isEllipsisVisible}
                 disableShadow={true}
                 placement="left"
                 childContentSpacing={4}
-                topAdjustment={Platform.OS === 'android' ? -StatusBar.currentHeight : 0 }
                 content={<Box
                     style={{
                         flexDirection: 'column',
-                        minWidth: "80%",
-                        minHeight: 120,
-                        justifyContent: 'center',
+                        minWidth: 250,
+                        // height: 80,
                     }}
                 >
-                    <Box
-                        style={{
-                            justifyContent: 'center',
-                        }}
-                    >
+                    <Box>
                         <TouchableOpacity
                             onPress={()=>{
                                 navigation.navigate('Membership', {
@@ -1119,7 +1109,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                                 <FontAwesomeIcon icon={faPeopleGroup} size={20} color={COLORS.grey} />
                                 <Text
                                     style={{
-                                        fontSize: 16,
+                                        fontSize: 15,
                                         fontFamily: 'JosefinSans-Regular',
                                         color: COLORS.grey,
                                         paddingLeft: 20,
@@ -1129,11 +1119,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                         </TouchableOpacity>
                     </Box>
                     <CustomDivider />
-                    <Box
-                        style={{
-                            justifyContent: 'center',
-                        }}
-                    >
+                    <Box>
                         <TouchableOpacity
                             onPress={()=>{
                                 navigation.navigate('FarmerGroups', {
@@ -1156,7 +1142,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                                 <FontAwesomeIcon icon={faEye} size={20} color={COLORS.grey} />
                                 <Text
                                     style={{
-                                        fontSize: 16,
+                                        fontSize: 15,
                                         fontFamily: 'JosefinSans-Regular',
                                         color: COLORS.grey,
                                         paddingLeft: 20,

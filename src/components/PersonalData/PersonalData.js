@@ -1177,56 +1177,6 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                 </Box>}
                 onClose={()=>setIsEllipsisVisible(false)}
             >
-
-            //                 }}
-            //             >
-            //                 <Box
-            //                     style={{
-            //                         flexDirection: 'row',
-            //                         width: '100%',
-            //                         alignItems: 'center',
-            //                         paddingLeft: 10,
-            //                         paddingVertical: 10,
-            //                         // height: 80,
-            //                     }} 
-            //                 >
-            //                     <FontAwesomeIcon icon={faEye} size={20} color={COLORS.grey} />
-            //                     <Text
-            //                         style={{
-            //                             fontSize: 15,
-            //                             fontFamily: 'JosefinSans-Regular',
-            //                             color: COLORS.grey,
-            //                             paddingLeft: 20,
-            //                         }}
-            //                     >Ver organizações</Text>
-            //                 </Box>
-            //             </TouchableOpacity>
-            //         </Box>
-            //     </Box>}
-            //     onClose={()=>setIsEllipsisVisible(false)}
-            // >
-
-            //     <TouchableOpacity
-            //         style={{
-
-            //         }}
-            //         onPress={
-            //             ()=>{
-            //                 setIsEllipsisVisible(true);
-            //         }}
-            //     >
-            //     <Box>
-            //         <FontAwesomeIcon 
-            //             icon={faEllipsisVertical} 
-            //             size={20} 
-            //             color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone }
-            //             fade 
-            //         />
-
-            //     </Box>
-            //     </TouchableOpacity>
-            // </Tooltip>
-}
             
             </Box>
         </Stack>

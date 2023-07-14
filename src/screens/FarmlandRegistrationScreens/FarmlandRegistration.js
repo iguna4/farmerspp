@@ -613,7 +613,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
             showCancelButton={false}
             showConfirmButton={true}
             confirmText="   OK!   "
-            confirmButtonColor="#DD6B55"
+            confirmButtonColor={COLORS.danger}
             onConfirmPressed={() => {
                 setErrorAlert(false);
             }}
@@ -1498,6 +1498,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                         style={{ 
                             borderWidth: 2, 
                             borderColor: COLORS.red, 
+                            backgroundColor: COLORS.red,
                             borderRadius: 100, 
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -1507,7 +1508,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     <Text
                         style={{ 
                             fontSize: 13, 
-                            color: COLORS.red, 
+                            color: COLORS.ghostwhite, 
                             fontFamily: 'JosefinSans-Bold', 
                             textAlign: 'center'
                         }}
@@ -1557,6 +1558,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                         borderRadius: 100,
                         borderWidth: 2,
                         borderColor: !farmland ? COLORS.mediumseagreen : COLORS.main,
+                        backgroundColor: !farmland ? COLORS.mediumseagreen : COLORS.main,
                         padding: 4,
             
                     }}
@@ -1565,7 +1567,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     {/* <Icon name={!farmland ? "add" : "add"} size={20} color={!farmland ? COLORS.mediumseagreen : COLORS.main} /> */}
                     <Text
                         style={{
-                            color: !farmland ? COLORS.mediumseagreen : COLORS.main,
+                            color: !farmland ? COLORS.ghostwhite : COLORS.ghostwhite,
                             fontSize: 13,
                             fontFamily: 'JosefinSans-Bold',
                             textAlign: 'center',

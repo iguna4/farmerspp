@@ -2156,19 +2156,6 @@ const ConfirmData = ({
                 fontFamily: 'JosefinSans-Bold',
             }}
             iconPosition="right"
-            // icon={
-            // <Icon
-            //     name="save"
-            //     type="font-awesome"
-            //     color="white"
-            //     size={25}
-            //     iconStyle={{ 
-            //         marginRight: 10,
-            //         // color: COLORS.ghostwhite,
-            //         paddingHorizontal: 10,
-            //      }}
-            // />
-            // }
             containerStyle={{
                 backgroundColor: COLORS.pantone,
                 borderRadius: 10,

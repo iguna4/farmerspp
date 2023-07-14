@@ -579,7 +579,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         <Box
             style={{
                 borderWidth: 1,
-                borderColor: COLORS.main,
+                borderColor: COLORS.second,
+                backgroundColor: COLORS.second,
                 borderRadius: 30,
                 paddingHorizontal: 20,
                 paddingVertical: 10,
@@ -590,7 +591,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
                 style={{ 
                     fontSize: 16, 
                     fontFamily: 'JosefinSans-Bold', 
-                    color: COLORS.main,
+                    color: COLORS.ghostwhite,
                     textAlign: 'center',
                 }}
                 >

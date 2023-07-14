@@ -152,13 +152,18 @@ export default function InstitutionFarmerForm({
                 <FormControl isRequired my="3" isInvalid={'institutionType' in errors}>
                     <FormControl.Label>Tipo de Instituição</FormControl.Label>
                     <Select
+                        isDisabled={!isInstitutionPrivate && !isInstitutionPublic ? true : false}
                         selectedValue={institutionType}
                         accessibilityLabel="Tipo de Instituição"
-                        placeholder="Escolha uma instituição"
+                        placeholder={"Escolha uma instituição"}
                         minHeight={55}
                         dropdownCloseIcon={institutionType 
                                             ? <Icon name="close" size={20} color="grey" onPress={()=>setInstitutionType('')} /> 
-                                            : <Icon size={45} name="arrow-drop-down" color="#005000" />
+                                            : <Icon 
+                                                // size={45} 
+                                                name="arrow-drop-down" 
+                                                color="#005000" 
+                                            />
                                         }
                         _selectedItem={{
                             bg: 'teal.600',
@@ -234,7 +239,11 @@ export default function InstitutionFarmerForm({
                     }}
                     dropdownCloseIcon={institutionAdminPost 
                                     ? <Icon name="close" size={20} color="grey" onPress={()=>setInstitutionAdminPost('')} /> 
-                                    : <Icon size={45} name="arrow-drop-down" color="#005000" />
+                                    : <Icon 
+                                        // size={45} 
+                                        name="arrow-drop-down" 
+                                        color="#005000" 
+                                    />
                                 }
                     mt={1}
                     onValueChange={newAdminPost => {
@@ -271,7 +280,11 @@ export default function InstitutionFarmerForm({
                     }}
                     dropdownCloseIcon={institutionVillage 
                                     ? <Icon name="close" size={20} color="grey" onPress={()=>setInstitutionVillage('')} /> 
-                                    : <Icon size={45} name="arrow-drop-down" color="#005000" />
+                                    : <Icon 
+                                        // size={45} 
+                                        name="arrow-drop-down" 
+                                        color="#005000" 
+                                    />
                                 }
                     mt={1}
                     onValueChange={newVillage => setInstitutionVillage(newVillage)}

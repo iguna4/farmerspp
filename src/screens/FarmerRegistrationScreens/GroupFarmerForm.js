@@ -6,14 +6,14 @@ import { Text, SafeAreaView, ScrollView, TextInput, View } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
 import { Icon, Button, CheckBox } from '@rneui/themed';
-import { MultipleSelectList  } from 'react-native-dropdown-select-list';
+import { MultipleSelectList, SelectList  } from 'react-native-dropdown-select-list';
 
 import { CustomInput } from '../../components/Inputs/CustomInput';
 import villages from '../../consts/villages';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import styles from './styles';
 
-import { fullYears, getFullYears, localeDateService, useDatepickerState } from '../../helpers/dates';
+import { fullYears, getFullYears, getFullYears2, localeDateService, useDatepickerState } from '../../helpers/dates';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { groups, institutions } from '../../consts/farmerTypes';
 import { groupPurposes } from '../../consts/groupPurposes';
@@ -21,7 +21,7 @@ import { groupPurposes } from '../../consts/groupPurposes';
 
 import { realmContext } from '../../models/realmContext';
 import COLORS from '../../consts/colors';
-import { groupAffiliationStatus } from '../../consts/groupAffiliationStatus';
+import { groupAffiliationStatus, groupAffiliationStatus2 } from '../../consts/groupAffiliationStatus';
 const {useRealm} = realmContext;
 
 export default function GroupFarmerForm({ 
@@ -150,12 +150,10 @@ export default function GroupFarmerForm({
 
             </Box>
 
-
-
             <Stack direction="row" mx="3" w="100%">
             <Box w="50%" px="1">
                 <FormControl isRequired my="3" isInvalid={'groupType' in errors}>
-                    <FormControl.Label>Tipo de organização</FormControl.Label>
+                    <FormControl.Label>Tipo de organiz.</FormControl.Label>
                     <Select
                         selectedValue={groupType}
                         accessibilityLabel="Grupo"
@@ -169,7 +167,11 @@ export default function GroupFarmerForm({
                         mt={1}
                         dropdownCloseIcon={groupType 
                                             ? <Icon name="close" size={25} color="grey" onPress={()=>setGroupType('')} /> 
-                                            : <Icon size={45} name="arrow-drop-down" color={COLORS.main} />
+                                            : <Icon 
+                                                // size={45} 
+                                                name="arrow-drop-down" 
+                                                color={COLORS.main} 
+                                            />
                                         }
                         onValueChange={newGroupType => {
                             setErrors((prev)=>({...prev, groupType: ''}));
@@ -283,33 +285,43 @@ export default function GroupFarmerForm({
                     data={groupPurposes}
                     notFoundText={'Finalidade não encontrada'}
                     placeholder="Finalidade de grupo"
+                    searchPlaceholder='Seleccionar finalidades'
                     save="value"
                     label="Finalidade de grupo"
+                    badgeStyles={{
+                        backgroundColor: COLORS.main,                        
+                    }}
+                    badgeTextStyles={{
+                        fontSize: 16
+                    }}
                     arrowicon={
                         <Icon 
-                            size={45} 
+                            // size={45} 
                             name="arrow-drop-down" 
                             color={COLORS.main} 
                             />
                         }
                         closeicon={
                             <Icon 
-                            name="close" 
-                            size={20} 
-                            color="grey" 
+                                name="close" 
+                                size={20} 
+                                color="grey" 
                             />
                     }
                     fontFamily='JosefinSans-Regular'
                     dropdownTextStyles={{
-                        fontSize: 18,
+                        fontSize: 16,
+                        color: COLORS.black,
+                        padding: 5,
                     }}
                     inputStyles={{
-                        fontSize: 16,
-                        color: '#A8A8A8',
+                        fontSize: 15,
+                        color: groupGoals?.length > 0 ? COLORS.black : COLORS.grey,
                     }}
                     boxStyles={{
-                        borderRadius: 4,
                         minHeight: 55,
+                        borderRadius: 5,
+                        borderColor: COLORS.lightgrey,
                     }}
                 />
             {
@@ -353,7 +365,51 @@ export default function GroupFarmerForm({
             <Box w="50%" px="1">
                 <FormControl isRequired my="1" isInvalid={'groupCreationYear' in errors}>
                     <FormControl.Label>Ano de criação</FormControl.Label>
-                    <Select
+                    <SelectList
+                        data={getFullYears2}
+                        setSelected={newYear => {
+                            setErrors((prev)=>({...prev, groupCreationYear: ''}));
+                            setGroupCreationYear(newYear);
+                        }}
+                        save="value"
+                        placeholder='Escolher ano'
+                        searchPlaceholder='Procurar ano'
+                        maxHeight={400}
+                        fontFamily='JosefinSans-Regular'
+                        notFoundText='Ano não encontrado'
+                        dropdownTextStyles={{
+                            fontSize: 16,
+                            color: COLORS.black,
+                            padding: 5,
+                        }}
+                        arrowicon={
+                            <Icon 
+                            // size={35} 
+                            name="arrow-drop-down" 
+                            color={COLORS.main} 
+                            />
+                        }
+                        closeicon={
+                            <Icon 
+                                name="close" 
+                                size={20} 
+                                color={COLORS.grey}
+                            />
+                        }
+                        inputStyles={{
+                            fontSize: 15,
+                            color: groupCreationYear ? COLORS.black : COLORS.grey,
+                        }}
+                        boxStyles={{
+                            minHeight: 55,
+                            borderRadius: 5,
+                            borderColor: COLORS.lightgrey,
+                            marginTop: 5,
+                        }}
+
+                        
+                    />
+                    {/* <Select
                         selectedValue={groupCreationYear}
                         accessibilityLabel="Escolha o ano"
                         placeholder="Escolha o ano"
@@ -387,7 +443,7 @@ export default function GroupFarmerForm({
                             <Select.Item key={index} label={`${year}`} value={year} />
                         ))
                     }
-                    </Select>
+                    </Select> */}
                 {
                 'groupCreationYear' in errors 
                 ? <FormControl.ErrorMessage 
@@ -400,7 +456,54 @@ export default function GroupFarmerForm({
             <Box w="50%" px="1">
                 <FormControl isRequired my="1" isInvalid={'groupLegalStatus' in errors}>
                     <FormControl.Label>Situação Legal</FormControl.Label>
-                    <Select
+                    <SelectList 
+                        data={groupAffiliationStatus2}
+                        setSelected={status => {
+                            setErrors((prev)=>({
+                                ...prev, 
+                                groupCreationYear: '',
+                                groupLegalStatus: ''
+                            }));
+                            setGroupLegalStatus(status);
+                        }}
+
+                        save="value"
+                        placeholder='Escolher situação'
+                        searchPlaceholder='Escolher situação'
+                        maxHeight={400}
+                        fontFamily='JosefinSans-Regular'
+                        notFoundText='Situação não encontrada'
+                        dropdownTextStyles={{
+                            fontSize: 16,
+                            color: COLORS.black,
+                            padding: 5,
+                        }}
+                        arrowicon={
+                            <Icon 
+                            // size={35} 
+                            name="arrow-drop-down" 
+                            color={COLORS.main} 
+                            />
+                        }
+                        closeicon={
+                            <Icon 
+                                name="close" 
+                                size={20} 
+                                color={COLORS.grey}
+                            />
+                        }
+                        inputStyles={{
+                            fontSize: 15,
+                            color: groupLegalStatus ? COLORS.black : COLORS.grey,
+                        }}
+                        boxStyles={{
+                            minHeight: 55,
+                            borderRadius: 5,
+                            borderColor: COLORS.lightgrey,
+                            marginTop: 5,
+                        }}
+                    />
+                    {/* <Select
                         selectedValue={groupLegalStatus}
                         accessibilityLabel="Escolha a situação"
                         placeholder="Escolha a situação"
@@ -436,7 +539,7 @@ export default function GroupFarmerForm({
                         <Select.Item label={groupAffiliationStatus.notAffiliated} value={groupAffiliationStatus.notAffiliated} />
                         <Select.Item label={groupAffiliationStatus.pendingAffiliation} value={groupAffiliationStatus.pendingAffiliation} />
                         <Select.Item label={groupAffiliationStatus.affiliated} value={groupAffiliationStatus.affiliated} />
-                    </Select>
+                    </Select> */}
                 {
                 'groupLegalStatus' in errors 
                 ? <FormControl.ErrorMessage 
@@ -459,7 +562,52 @@ export default function GroupFarmerForm({
             <Box w="50%" px="1">
                 <FormControl isRequired my="1" isInvalid={'groupAffiliationYear' in errors}>
                     <FormControl.Label>Ano de legalização</FormControl.Label>
-                    <Select
+
+                        <SelectList 
+                            data={getFullYears2}
+                            setSelected={newYear => {
+                                setErrors((prev)=>({...prev, groupAffiliationYear: ''}));
+                                setGroupAffiliationYear(newYear);
+                            }}
+
+                            save="value"
+                            placeholder='Escolher ano'
+                            searchPlaceholder='Escolher ano'
+                            maxHeight={400}
+                            fontFamily='JosefinSans-Regular'
+                            notFoundText='Ano não encontrado'
+                            dropdownTextStyles={{
+                                fontSize: 16,
+                                color: COLORS.black,
+                                padding: 5,
+                            }}
+                            arrowicon={
+                                <Icon 
+                                // size={35} 
+                                name="arrow-drop-down" 
+                                color={COLORS.main} 
+                                />
+                            }
+                            closeicon={
+                                <Icon 
+                                    name="close" 
+                                    size={20} 
+                                    color={COLORS.grey}
+                                />
+                            }
+                            inputStyles={{
+                                fontSize: 15,
+                                color: groupAffiliationYear ? COLORS.black : COLORS.grey,
+                            }}
+                            boxStyles={{
+                                minHeight: 55,
+                                borderRadius: 5,
+                                borderColor: COLORS.lightgrey,
+                                marginTop: 5,
+                            }}
+                        />
+
+                    {/* <Select
                         selectedValue={groupAffiliationYear}
                         accessibilityLabel="Escolha o ano"
                         placeholder="Escolha o ano"
@@ -493,7 +641,7 @@ export default function GroupFarmerForm({
                             <Select.Item key={index} label={`${year}`} value={year} />
                         ))
                     }
-                    </Select>
+                    </Select> */}
                 {
                 'groupAffiliationYear' in errors 
                 ? <FormControl.ErrorMessage 
@@ -616,7 +764,11 @@ export default function GroupFarmerForm({
                     }}
                     dropdownCloseIcon={groupAdminPost 
                                     ? <Icon name="close" size={25} color="grey" onPress={()=>setGroupAdminPost('')} /> 
-                                    : <Icon size={45} name="arrow-drop-down" color={COLORS.main} />
+                                    : <Icon 
+                                        // size={45} 
+                                        name="arrow-drop-down" 
+                                        color={COLORS.main} 
+                                    />
                                 }
                     mt={1}
                     onValueChange={newAdminPost => {
@@ -654,7 +806,11 @@ export default function GroupFarmerForm({
                     }}
                     dropdownCloseIcon={groupVillage
                                     ? <Icon name="close" size={25} color="grey" onPress={()=>setGroupVillage('')} /> 
-                                    : <Icon size={45} name="arrow-drop-down" color={COLORS.main} />
+                                    : <Icon 
+                                        // size={45} 
+                                        name="arrow-drop-down" 
+                                        color={COLORS.main} 
+                                    />
                                 }
                     mt={1}
                     onValueChange={newVillage => setGroupVillage(newVillage)}

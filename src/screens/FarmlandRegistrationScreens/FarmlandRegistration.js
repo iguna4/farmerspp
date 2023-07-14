@@ -918,15 +918,15 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     label="Culturas"
                     placeholder="Culturas consociadas"
                     badgeStyles={{
-                        backgroundColor: COLORS.main,                        
+                        backgroundColor: COLORS.mediumseagreen,                        
                     }}
                     badgeTextStyles={{
                         fontSize: 16
                     }}
                     checkBoxStyles={{
-                        color: COLORS.main,
+                        // color: COLORS.main,
                         // backgroundColor: COLORS.main,
-                        fontSize: 34,
+                        // fontSize: 34,
                     }}
                 />
                 {

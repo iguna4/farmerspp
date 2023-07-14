@@ -36,3 +36,10 @@ export const privateInstitutions = [
     "Empresa",
     "Outra",  
 ];
+
+export const groups2 = [
+    { key: 1, value: "Associação"},
+    { key: 2, value: "Cooperativa"},
+    { key: 3, value: "Grupo de Produtores"},
+    { key: 4, value: "Escola na Machamba do Camponês"},
+];

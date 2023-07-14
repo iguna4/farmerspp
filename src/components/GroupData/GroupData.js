@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, TextInput, ScrollView, SafeAreaView, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, ScrollView, SafeAreaView, FlatList, Platform, StatusBar } from 'react-native';
 import { Box,  FormControl, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
 import { Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
@@ -552,12 +552,19 @@ const GroupData = ({ farmer })=>{
                 isVisible={managerEllipsisVisible}
                 disableShadow={true}
                 placement="left"
-                childContentSpacing={4}
+                // childContentSpacing={4}
+                topAdjustment={Platform.OS === 'android' ? -StatusBar.currentHeight : 0 }
+                tooltipStyle={{
+
+                }}
                 content={<Box
                     style={{
+                        flex: 1,
                         flexDirection: 'column',
-                        minWidth: 250,
-                        // height: 80,
+                        minWidth: "80%",
+                        minHeight: 120,
+                        justifyContent: 'center',
+        
                     }}
                 >
                     <Box>
@@ -575,13 +582,10 @@ const GroupData = ({ farmer })=>{
                                 flexDirection: 'row',
                                 width: '100%',
                                 alignItems: 'center',
-                                paddingLeft: 10,
-                                paddingVertical: 10,
+                                padding: 10,
                                 // height: 80,
                             }}  
-                            >
-                                {/* <FontAwesomeIcon icon={faPeopleGroup} size={20} color={COLORS.grey} /> */}
-                                
+                            >                                
                                 <Icon 
                                     name="edit" 
                                     size={20} 
@@ -589,7 +593,7 @@ const GroupData = ({ farmer })=>{
                                 />
                                 <Text
                                     style={{
-                                        fontSize: 15,
+                                        fontSize: 16,
                                         fontFamily: 'JosefinSans-Regular',
                                         color: COLORS.grey,
                                         paddingLeft: 20,
@@ -623,8 +627,7 @@ const GroupData = ({ farmer })=>{
                                     flexDirection: 'row',
                                     width: '100%',
                                     alignItems: 'center',
-                                    paddingLeft: 10,
-                                    paddingVertical: 10,
+                                    padding: 10,
                                     // height: 80,
                                 }} 
                             >
@@ -637,7 +640,7 @@ const GroupData = ({ farmer })=>{
                                 {/* <FontAwesomeIcon icon={faEye} size={20} color={COLORS.grey} /> */}
                                 <Text
                                     style={{
-                                        fontSize: 15,
+                                        fontSize: 16,
                                         fontFamily: 'JosefinSans-Regular',
                                         color: farmer?.manager ? COLORS.grey : COLORS.lightgrey,
                                         paddingLeft: 20,
@@ -851,12 +854,14 @@ const GroupData = ({ farmer })=>{
                 isVisible={membersEllipsisVisible}
                 disableShadow={true}
                 placement="left"
+                topAdjustment={Platform.OS === 'android' ? -StatusBar.currentHeight : 0 }
                 childContentSpacing={4}
                 content={<Box
                     style={{
                         flexDirection: 'column',
-                        minWidth: 250,
-                        // height: 80,
+                        minWidth: "80%",
+                        minHeight: 120,
+                        justifyContent: 'center',
                     }}
                 >
                     <Box>
@@ -886,7 +891,7 @@ const GroupData = ({ farmer })=>{
                                 />
                                 <Text
                                     style={{
-                                        fontSize: 15,
+                                        fontSize: 16,
                                         fontFamily: 'JosefinSans-Regular',
                                         color: COLORS.grey,
                                         paddingLeft: 20,
@@ -918,7 +923,7 @@ const GroupData = ({ farmer })=>{
                                 <FontAwesomeIcon icon={faEye} size={20} color={COLORS.grey} />
                                 <Text
                                     style={{
-                                        fontSize: 15,
+                                        fontSize: 16,
                                         fontFamily: 'JosefinSans-Regular',
                                         color: COLORS.grey,
                                         paddingLeft: 20,

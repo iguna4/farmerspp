@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Text, SafeAreaView, StyleSheet, ScrollView, TextInput, View } from 'react-native';
 import { Overlay, Icon, Button, CheckBox } from "@rneui/base";
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
-import { MultipleSelectList  } from 'react-native-dropdown-select-list';
+import { MultipleSelectList, SelectList  } from 'react-native-dropdown-select-list';
 
 import ConfirmData from './ConfirmData';
 import COLORS from "../../consts/colors";
@@ -18,7 +18,7 @@ import idDocTypes from '../../consts/idDocTypes';
 import { CustomInput } from '../Inputs/CustomInput';
 import { fullYears, getFullYears, localeDateService, useDatepickerState } from '../../helpers/dates';
 import { groupPurposes } from '../../consts/groupPurposes';
-import { groups, institutions } from '../../consts/farmerTypes';
+import { groups, groups2, institutions } from '../../consts/farmerTypes';
 import { groupAffiliationStatus } from '../../consts/groupAffiliationStatus';
 
 
@@ -355,7 +355,54 @@ const EditGroupData = ({
     <Stack direction="column">
         <FormControl isRequired my="3" isInvalid={'groupType' in errors}>
             <FormControl.Label>Tipo de organização</FormControl.Label>
-            <Select
+
+            <SelectList
+                data={groups2}
+                setSelected={newGroupType => {
+                    setErrors((prev)=>({...prev, groupType: ''}));
+                    setGroupType(newGroupType)
+                }}
+                save="value"
+                placeholder='Escolher organização'
+                searchPlaceholder='Procurar organização'
+                maxHeight={400}
+                fontFamily='JosefinSans-Regular'
+                notFoundText='Organização não encontrada'
+                defaultOption={{ key: 10, value: oldGroupType }}
+                dropdownTextStyles={{
+                    fontSize: 16,
+                    color: COLORS.black,
+                    padding: 5,
+                }}
+                arrowicon={
+                    <Icon 
+                    // size={35} 
+                    name="arrow-drop-down" 
+                    color={COLORS.main} 
+                    />
+                }
+                closeicon={
+                    <Icon 
+                        name="close" 
+                        size={20} 
+                        color={COLORS.grey}
+                    />
+                }
+                inputStyles={{
+                    fontSize: 15,
+                    color: COLORS.black,
+                }}
+                boxStyles={{
+                    minHeight: 55,
+                    borderRadius: 5,
+                    borderColor: COLORS.lightgrey,
+                    marginTop: 5,
+                }}
+
+                
+            />
+
+            {/* <Select
                 selectedValue={groupType}
                 accessibilityLabel="Grupo"
                 placeholder="Tipo de organização "
@@ -380,7 +427,7 @@ const EditGroupData = ({
                     <Select.Item key={index} label={group} value={group} />
                 ))  
                 }
-            </Select>
+            </Select> */}
             {
             'groupType' in errors 
             ? <FormControl.ErrorMessage 
@@ -422,11 +469,18 @@ const EditGroupData = ({
                     data={groupPurposes}
                     notFoundText={'Finalidade não encontrada'}
                     placeholder="Finalidade de grupo"
+                    searchPlaceholder='Escolher finalidades'
                     save="value"
                     label="Finalidade de grupo"
+                    badgeStyles={{
+                        backgroundColor: COLORS.pantone,                        
+                    }}
+                    badgeTextStyles={{
+                        fontSize: 16
+                    }}
                     arrowicon={
                         <Icon 
-                            size={45} 
+                            // size={45} 
                             name="arrow-drop-down" 
                             color={COLORS.pantone} 
                             />
@@ -440,15 +494,18 @@ const EditGroupData = ({
                     }
                     fontFamily='JosefinSans-Regular'
                     dropdownTextStyles={{
-                        fontSize: 18,
+                        fontSize: 16,
+                        color: COLORS.black,
+                        padding: 5,
                     }}
                     inputStyles={{
                         fontSize: 16,
                         color: '#A8A8A8',
                     }}
                     boxStyles={{
-                        borderRadius: 4,
                         minHeight: 55,
+                        borderRadius: 5,
+                        borderColor: COLORS.lightgrey,
                     }}
                 />
             {
@@ -885,12 +942,6 @@ const EditGroupData = ({
 
 
 
-
- 
-
-
-
-
         <Button
             title="Confirmar Dados"
             titleStyle={{
@@ -900,7 +951,7 @@ const EditGroupData = ({
             iconPosition="right"
 
             containerStyle={{
-                backgroundColor: COLORS.second,
+                backgroundColor: COLORS.pantone,
                 borderRadius: 10,
                 // color: COLORS.ghostwhite,
             }}

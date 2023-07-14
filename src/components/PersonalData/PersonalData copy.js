@@ -1,6 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable prettier/prettier */
-/* eslint-disable semi */
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, TouchableOpacity, Modal, TextInput, Text, ScrollView, InteractionManager, SafeAreaView, FlatList } from 'react-native';
 import { Box,  FormControl, Stack, } from 'native-base';
@@ -8,12 +5,6 @@ import { Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 import { v4 as uuidv4 } from 'uuid';
 import { useFocusEffect } from '@react-navigation/native';
-import {
-    Menu,
-    MenuOptions,
-    MenuOption,
-    MenuTrigger,
-  } from 'react-native-popup-menu';
 import {  
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -50,9 +41,6 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import { resourceValidation } from '../../consts/resourceValidation';
 import validateInvalidationMessage from '../../helpers/validateInvalidationMessage';
 import CustomActivityIndicator from '../ActivityIndicator/CustomActivityIndicator';
-import { PopMenuWrapper, PopupMenu } from '../PopupMenu/PopupMenu';
-import { Platform } from 'react-native';
-import { StatusBar } from 'react-native';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 
@@ -1086,26 +1074,19 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
             <Box w="10%">
     
 {customUserData?.role !== roles.provincialManager && 
-
             <Tooltip
                 isVisible={isEllipsisVisible}
                 disableShadow={true}
                 placement="left"
                 childContentSpacing={4}
-                topAdjustment={Platform.OS === 'android' ? -StatusBar.currentHeight : 0 }
                 content={<Box
                     style={{
                         flexDirection: 'column',
-                        minWidth: "80%",
-                        minHeight: 120,
-                        justifyContent: 'center',
+                        minWidth: 250,
+                        // height: 80,
                     }}
                 >
-                    <Box
-                        style={{
-                            justifyContent: 'center',
-                        }}
-                    >
+                    <Box>
                         <TouchableOpacity
                             onPress={()=>{
                                 navigation.navigate('Membership', {
@@ -1128,7 +1109,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                                 <FontAwesomeIcon icon={faPeopleGroup} size={20} color={COLORS.grey} />
                                 <Text
                                     style={{
-                                        fontSize: 16,
+                                        fontSize: 15,
                                         fontFamily: 'JosefinSans-Regular',
                                         color: COLORS.grey,
                                         paddingLeft: 20,
@@ -1138,11 +1119,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                         </TouchableOpacity>
                     </Box>
                     <CustomDivider />
-                    <Box
-                        style={{
-                            justifyContent: 'center',
-                        }}
-                    >
+                    <Box>
                         <TouchableOpacity
                             onPress={()=>{
                                 navigation.navigate('FarmerGroups', {
@@ -1165,7 +1142,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                                 <FontAwesomeIcon icon={faEye} size={20} color={COLORS.grey} />
                                 <Text
                                     style={{
-                                        fontSize: 16,
+                                        fontSize: 15,
                                         fontFamily: 'JosefinSans-Regular',
                                         color: COLORS.grey,
                                         paddingLeft: 20,
@@ -1178,54 +1155,26 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                 onClose={()=>setIsEllipsisVisible(false)}
             >
 
-            //                 }}
-            //             >
-            //                 <Box
-            //                     style={{
-            //                         flexDirection: 'row',
-            //                         width: '100%',
-            //                         alignItems: 'center',
-            //                         paddingLeft: 10,
-            //                         paddingVertical: 10,
-            //                         // height: 80,
-            //                     }} 
-            //                 >
-            //                     <FontAwesomeIcon icon={faEye} size={20} color={COLORS.grey} />
-            //                     <Text
-            //                         style={{
-            //                             fontSize: 15,
-            //                             fontFamily: 'JosefinSans-Regular',
-            //                             color: COLORS.grey,
-            //                             paddingLeft: 20,
-            //                         }}
-            //                     >Ver organizações</Text>
-            //                 </Box>
-            //             </TouchableOpacity>
-            //         </Box>
-            //     </Box>}
-            //     onClose={()=>setIsEllipsisVisible(false)}
-            // >
+                <TouchableOpacity
+                    style={{
 
-            //     <TouchableOpacity
-            //         style={{
+                    }}
+                    onPress={
+                        ()=>{
+                            setIsEllipsisVisible(true);
+                    }}
+                >
+                <Box>
+                    <FontAwesomeIcon 
+                        icon={faEllipsisVertical} 
+                        size={20} 
+                        color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone }
+                        fade 
+                    />
 
-            //         }}
-            //         onPress={
-            //             ()=>{
-            //                 setIsEllipsisVisible(true);
-            //         }}
-            //     >
-            //     <Box>
-            //         <FontAwesomeIcon 
-            //             icon={faEllipsisVertical} 
-            //             size={20} 
-            //             color={farmer?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmer?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone }
-            //             fade 
-            //         />
-
-            //     </Box>
-            //     </TouchableOpacity>
-            // </Tooltip>
+                </Box>
+                </TouchableOpacity>
+            </Tooltip>
 }
             
             </Box>

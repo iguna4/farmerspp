@@ -570,7 +570,7 @@ const EditFarmerData = ({
             // />
             // }
             containerStyle={{
-                backgroundColor: COLORS.second,
+                backgroundColor: COLORS.pantone,
                 borderRadius: 10,
                 // color: COLORS.ghostwhite,
             }}

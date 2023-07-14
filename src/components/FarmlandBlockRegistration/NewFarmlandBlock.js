@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio  } from 'native-base';
-import { MultipleSelectList  } from 'react-native-dropdown-select-list';
+import { MultipleSelectList, SelectList  } from 'react-native-dropdown-select-list';
 import {  
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -22,7 +22,7 @@ import {
 
 import { Overlay, Icon, Button, CheckBox } from "@rneui/base";
 import COLORS from "../../consts/colors";
-import { getFullYears } from "../../helpers/dates";
+import { getFullYears, getFullYears2 } from "../../helpers/dates";
 import { plantingTypes } from "../../consts/plantingTypes";
 import cloneList from "../../consts/clones";
 import { CustomInput } from "../Inputs/CustomInput";
@@ -656,7 +656,52 @@ export default function NewFarmlandBlock({
                 <Box w="45%" px="1">
                     <FormControl isRequired my="1" isInvalid={'plantingYear' in errors}>
                         <FormControl.Label>Ano de plantio</FormControl.Label>
-                            <Select
+                            <SelectList
+                            data={getFullYears2}
+                            setSelected={newYear => {
+                                setErrors((prev)=>({...prev, plantingYear: ''}));
+                                setPlantingYear(newYear);
+                            }}
+                            save="value"
+                            placeholder='Escolher ano'
+                            searchPlaceholder='Procurar ano'
+                            maxHeight={400}
+                            fontFamily='JosefinSans-Regular'
+                            notFoundText='Ano não encontrado'
+                            dropdownTextStyles={{
+                                fontSize: 16,
+                                color: COLORS.black,
+                                padding: 5,
+                            }}
+                            arrowicon={
+                                <Icon 
+                                // size={35} 
+                                name="arrow-drop-down" 
+                                color={COLORS.mediumseagreen} 
+                                />
+                            }
+                            closeicon={
+                                <Icon 
+                                    name="close" 
+                                    size={20} 
+                                    color={COLORS.grey}
+                                />
+                            }
+                            inputStyles={{
+                                fontSize: 15,
+                                color: plantingYear ? COLORS.black : COLORS.grey,
+                            }}
+                            boxStyles={{
+                                minHeight: 55,
+                                borderRadius: 5,
+                                borderColor: COLORS.lightgrey,
+                                marginTop: 5,
+                            }}
+
+                        />
+
+
+                            {/* <Select
                                 selectedValue={plantingYear}
                                 accessibilityLabel="Ano de plantio"
                                 placeholder="Escolha o ano"
@@ -690,7 +735,7 @@ export default function NewFarmlandBlock({
                                         <Select.Item key={index} label={`${year}`} value={year} />
                                     ))
                                 }
-                            </Select>
+                            </Select> */}
                         {
                             'plantingYear' in errors 
                         ? <FormControl.ErrorMessage 
@@ -1028,11 +1073,18 @@ export default function NewFarmlandBlock({
                     data={plantingTypes}
                     notFoundText={'Tipo de planta não encontrado'}
                     placeholder="Tipo de plantas"
+                    searchPlaceholder='Seleccionar tipo de plantas'
                     save="value"
                     label="Tipo de plantas"
+                    badgeStyles={{
+                        backgroundColor: COLORS.mediumseagreen,                        
+                    }}
+                    badgeTextStyles={{
+                        fontSize: 16
+                    }}
                     arrowicon={
                         <Icon 
-                            size={45} 
+                            // size={45} 
                             name="arrow-drop-down" 
                             color={COLORS.mediumseagreen} 
                             />
@@ -1046,15 +1098,18 @@ export default function NewFarmlandBlock({
                     }
                     fontFamily='JosefinSans-Regular'
                     dropdownTextStyles={{
-                        fontSize: 18,
+                        fontSize: 16,
+                        color: COLORS.black,
+                        padding: 5,
                     }}
                     inputStyles={{
                         fontSize: 16,
                         color: '#A8A8A8',
                     }}
                     boxStyles={{
-                        borderRadius: 4,
                         minHeight: 55,
+                        borderRadius: 5,
+                        borderColor: COLORS.lightgrey,
                     }}
                     />
                 {

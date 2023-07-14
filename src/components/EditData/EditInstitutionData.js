@@ -338,7 +338,7 @@ const EditInstitutionData = ({
             }}
             iconPosition="right"
             containerStyle={{
-                backgroundColor: COLORS.second,
+                backgroundColor: COLORS.pantone,
                 borderRadius: 10,
                 // color: COLORS.ghostwhite,
             }}

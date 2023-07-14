@@ -184,7 +184,7 @@ export default function FarmlandBlockRegistration({
             // color: COLORS.ghostwhite,
             fontWeight: 'bold',
             marginBottom: 5,
-            // backgroundColor: COLORS.mediumseagreen,
+            // backgroundColor: COLORS.main,
             width: '100%',
             textAlign: 'center',
 
@@ -265,7 +265,7 @@ export default function FarmlandBlockRegistration({
   <View
       style={{ 
           width: '100%', 
-        //   backgroundColor: COLORS.mediumseagreen,
+        //   backgroundColor: COLORS.main,
           marginBottom: 10, 
           flexDirection: 'row',
       }}
@@ -324,7 +324,7 @@ export default function FarmlandBlockRegistration({
                 <Text
                     style={{
                         fontSize: 14,
-                        color: treeRedFlag ? COLORS.red : COLORS.mediumseagreen,
+                        color: treeRedFlag ? COLORS.red : COLORS.main,
                         fontFamily: 'JosefinSans-Regular',
                         textAlign: 'right',
                     }}
@@ -332,7 +332,7 @@ export default function FarmlandBlockRegistration({
                 <Text
                     style={{
                         fontSize: 14,
-                        color: areaRedFlag ? COLORS.red : COLORS.mediumseagreen,
+                        color: areaRedFlag ? COLORS.red : COLORS.main,
                         fontFamily: 'JosefinSans-Regular',
                         textAlign: 'right',
                     }}
@@ -367,7 +367,7 @@ export default function FarmlandBlockRegistration({
                                 <Icon 
                                 // size={35} 
                                 name="arrow-drop-down" 
-                                color={COLORS.mediumseagreen} 
+                                color={COLORS.main} 
                                 />
                             }
                             closeicon={
@@ -410,7 +410,7 @@ export default function FarmlandBlockRegistration({
                                         : <Icon 
                                             size={40} 
                                             name="arrow-drop-down" 
-                                            color={COLORS.mediumseagreen} 
+                                            color={COLORS.main} 
                                         />
                                     }
                                 mt={1}
@@ -594,14 +594,14 @@ export default function FarmlandBlockRegistration({
                 }}
                 textStyle={{
                     fontWeight: '120',
-                    color: isDensityModeRegular ? COLORS.mediumseagreen : COLORS.grey,
+                    color: isDensityModeRegular ? COLORS.main : COLORS.grey,
                 }}
                 title="Regular"
                 checked={isDensityModeRegular}
                 checkedIcon={
                     <Icon
                         name="check-box"
-                        color={COLORS.mediumseagreen}
+                        color={COLORS.main}
                         size={30}
                         iconStyle={{ marginRight: 1 }}
                     />
@@ -636,14 +636,14 @@ export default function FarmlandBlockRegistration({
                 textStyle={{
                     
                     fontWeight: '120',
-                    color: isDensityModeIrregular ? COLORS.mediumseagreen : COLORS.grey,
+                    color: isDensityModeIrregular ? COLORS.main : COLORS.grey,
                 }}
                 title="Irregular"
                 checked={isDensityModeIrregular}
                 checkedIcon={
                     <Icon
                         name="check-box"
-                        color={COLORS.mediumseagreen}
+                        color={COLORS.main}
                         size={30}
                         iconStyle={{ marginRight: 1 }}
                     />
@@ -785,7 +785,7 @@ export default function FarmlandBlockRegistration({
             save="value"
             label="Tipo de plantas"
             badgeStyles={{
-                backgroundColor: COLORS.mediumseagreen,                        
+                backgroundColor: COLORS.main,                        
             }}
             badgeTextStyles={{
                 fontSize: 16
@@ -794,7 +794,7 @@ export default function FarmlandBlockRegistration({
                 <Icon 
                     // size={45} 
                     name="arrow-drop-down" 
-                    color={COLORS.mediumseagreen} 
+                    color={COLORS.main} 
                     />
                 }
                 closeicon={
@@ -847,7 +847,7 @@ export default function FarmlandBlockRegistration({
                 save="value"
                 label="Clones"
                 badgeStyles={{
-                    backgroundColor: COLORS.mediumseagreen,                        
+                    backgroundColor: COLORS.main,                        
                 }}
                 badgeTextStyles={{
                     fontSize: 16
@@ -856,7 +856,7 @@ export default function FarmlandBlockRegistration({
                     <Icon 
                         // size={45} 
                         name="arrow-drop-down" 
-                        color={COLORS.mediumseagreen} 
+                        color={COLORS.main} 
                     />
                 }
                 closeicon={
@@ -939,8 +939,8 @@ export default function FarmlandBlockRegistration({
                         marginTop: 10,
                         padding: 5,
                         borderRadius: 100,
-                        backgroundColor: COLORS.mediumseagreen,
-                        borderColor: COLORS.mediumseagreen,
+                        backgroundColor: COLORS.main,
+                        borderColor: COLORS.main,
                         borderWidth: 1,
                     }}
 
@@ -1007,7 +1007,7 @@ export default function FarmlandBlockRegistration({
                 <Box w="65%">
                     <Text
                         style={{
-                            color: COLORS.mediumseagreen,
+                            color: COLORS.main,
                             fontSize: 16,
                             fontFamily: 'JosefinSans-Bold',
                         }}
@@ -1016,7 +1016,7 @@ export default function FarmlandBlockRegistration({
                 <Box w="35%">
                     <Text
                         style={{
-                            color: COLORS.mediumseagreen,
+                            color: COLORS.main,
                             fontSize: 16,
                             fontFamily: 'JosefinSans-Bold',
                         }}
@@ -1155,7 +1155,7 @@ export default function FarmlandBlockRegistration({
       iconPosition="right"
 
       containerStyle={{
-          backgroundColor: COLORS.mediumseagreen,
+          backgroundColor: COLORS.main,
           borderRadius: 10,
 
       }}

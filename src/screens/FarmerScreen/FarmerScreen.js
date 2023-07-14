@@ -31,6 +31,8 @@ import PhotoModal from '../../components/Modals/PhotoModal';
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 import { roles } from '../../consts/roles';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faTree } from '@fortawesome/free-solid-svg-icons';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const singleFarmer = 'singleFarmer';
@@ -400,7 +402,8 @@ export default function FarmerScreen ({ route, navigation }) {
             
                     }}
                 >
-                    <Icon name="save" size={20} color={COLORS.mediumseagreen} />
+                    <FontAwesomeIcon icon={faTree} size={20} color={COLORS.mediumseagreen} />
+                    {/* <Icon name="save" size={20} color={COLORS.mediumseagreen} /> */}
                     {/* </Box> */}
                     <Text
                         style={{

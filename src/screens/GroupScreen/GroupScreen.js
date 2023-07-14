@@ -31,6 +31,8 @@ import { realmContext } from '../../models/realmContext';
 import { useEffect } from 'react';
 import { roles } from '../../consts/roles';
 import { useUser } from '@realm/react';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faTree } from '@fortawesome/free-solid-svg-icons';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const group = 'group';
@@ -379,7 +381,8 @@ export default function GroupScreen ({ route, navigation }) {
             
                     }}
                 >
-                    <Icon name="save" size={20} color={COLORS.mediumseagreen} />
+                    <FontAwesomeIcon icon={faTree} size={20} color={COLORS.mediumseagreen} />
+                    {/* <Icon name="save" size={20} color={COLORS.mediumseagreen} /> */}
                     {/* </Box> */}
                     <Text
                         style={{

@@ -3,11 +3,11 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Text, TouchableOpacity, SafeAreaView, StyleSheet, ScrollView, TextInput, View } from 'react-native';
 import { Overlay, Icon, Button, CheckBox } from "@rneui/base";
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
-import { MultipleSelectList  } from 'react-native-dropdown-select-list';
+import { MultipleSelectList, SelectList  } from 'react-native-dropdown-select-list';
 
 import ConfirmData from './ConfirmData';
 import COLORS from "../../consts/colors";
-import { getFullYears } from "../../helpers/dates";
+import { getFullYears, getFullYears2 } from "../../helpers/dates";
 import { plantingTypes } from "../../consts/plantingTypes";
 import cloneList from "../../consts/clones";
 
@@ -341,7 +341,7 @@ const EditFarmlandData = ({
             <View
                 style={{ 
                     width: '100%', 
-                    // backgroundColor: COLORS.mediumseagreen, 
+                    // backgroundColor: COLORS.pantone, 
                 }}
             >
                 <Text
@@ -406,7 +406,53 @@ const EditFarmlandData = ({
             <Box w="50%">
                 <FormControl isRequired my="1" isInvalid={'plantingYear' in errors}>
                     <FormControl.Label>Ano de plantio</FormControl.Label>
-                        <Select
+
+                        <SelectList
+                            data={getFullYears2}
+                            setSelected={newYear => {
+                                setErrors((prev)=>({...prev, plantingYear: ''}));
+                                setPlantingYear(newYear);
+                            }}
+                            save="value"
+                            placeholder='Escolher ano'
+                            searchPlaceholder='Procurar ano'
+                            maxHeight={400}
+                            fontFamily='JosefinSans-Regular'
+                            notFoundText='Ano não encontrado'
+                            dropdownTextStyles={{
+                                fontSize: 16,
+                                color: COLORS.black,
+                                padding: 5,
+                            }}
+                            arrowicon={
+                                <Icon 
+                                // size={35} 
+                                name="arrow-drop-down" 
+                                color={COLORS.main} 
+                                />
+                            }
+                            closeicon={
+                                <Icon 
+                                    name="close" 
+                                    size={20} 
+                                    color={COLORS.grey}
+                                />
+                            }
+                            inputStyles={{
+                                fontSize: 15,
+                                color: COLORS.black,
+                            }}
+                            boxStyles={{
+                                minHeight: 55,
+                                borderRadius: 5,
+                                borderColor: COLORS.lightgrey,
+                                marginTop: 5,
+                            }}
+
+                            
+                        />
+
+                        {/* <Select
                             selectedValue={plantingYear}
                             accessibilityLabel="Ano de plantio"
                                 placeholder="Escolha o ano"
@@ -426,7 +472,7 @@ const EditFarmlandData = ({
                                     : <Icon 
                                         size={40} 
                                         name="arrow-drop-down" 
-                                        color={COLORS.mediumseagreen} 
+                                        color={COLORS.pantone} 
                                     />
                                 }
                             mt={1}
@@ -440,7 +486,7 @@ const EditFarmlandData = ({
                                     <Select.Item key={index} label={`${year}`} value={year} />
                                 ))
                             }
-                        </Select>
+                        </Select> */}
                     {
                         'plantingYear' in errors 
                     ? <FormControl.ErrorMessage 
@@ -461,7 +507,7 @@ const EditFarmlandData = ({
                 <Text
                     style={{
                         fontSize: 14,
-                        color: false ? COLORS.red : COLORS.mediumseagreen,
+                        color: false ? COLORS.red : COLORS.pantone,
                         fontFamily: 'JosefinSans-Regular',
                         textAlign: 'right',
                     }}
@@ -471,7 +517,7 @@ const EditFarmlandData = ({
                 <Text
                     style={{
                         fontSize: 14,
-                        color: false ? COLORS.red : COLORS.mediumseagreen,
+                        color: false ? COLORS.red : COLORS.pantone,
                         fontFamily: 'JosefinSans-Regular',
                         textAlign: 'right',
                     }}
@@ -481,7 +527,7 @@ const EditFarmlandData = ({
                 <Text
                     style={{
                         fontSize: 14,
-                        color: false ? COLORS.red : COLORS.mediumseagreen,
+                        color: false ? COLORS.red : COLORS.pantone,
                         fontFamily: 'JosefinSans-Regular',
                         textAlign: 'right',
                     }}
@@ -491,7 +537,7 @@ const EditFarmlandData = ({
                 <Text
                     style={{
                         fontSize: 14,
-                        color: false ? COLORS.red : COLORS.mediumseagreen,
+                        color: false ? COLORS.red : COLORS.pantone,
                         fontFamily: 'JosefinSans-Regular',
                         textAlign: 'right',
                     }}
@@ -584,14 +630,14 @@ const EditFarmlandData = ({
                         }}
                         textStyle={{
                             fontWeight: '120',
-                            color: isDensityModeRegular ? COLORS.mediumseagreen : COLORS.grey,
+                            color: isDensityModeRegular ? COLORS.pantone : COLORS.grey,
                         }}
                         title="Regular"
                         checked={isDensityModeRegular}
                         checkedIcon={
                             <Icon
                                 name="check-box"
-                                color={COLORS.mediumseagreen}
+                                color={COLORS.pantone}
                                 size={30}
                                 iconStyle={{ marginRight: 1 }}
                             />
@@ -629,14 +675,14 @@ const EditFarmlandData = ({
                         textStyle={{
                             
                             fontWeight: '120',
-                            color: isDensityModeIrregular ? COLORS.mediumseagreen : COLORS.grey,
+                            color: isDensityModeIrregular ? COLORS.pantone : COLORS.grey,
                         }}
                         title="Irregular"
                         checked={isDensityModeIrregular}
                         checkedIcon={
                             <Icon
                                 name="check-box"
-                                color={COLORS.mediumseagreen}
+                                color={COLORS.pantone}
                                 size={30}
                                 iconStyle={{ marginRight: 1 }}
                             />
@@ -767,7 +813,7 @@ const EditFarmlandData = ({
                 style={{
                     textAlign: 'right',
                     fontSize: 14,
-                    color: COLORS.mediumseagreen,
+                    color: COLORS.pantone,
                     fontFamily: 'JosefinSans-Regular',
 
                 }}
@@ -778,7 +824,7 @@ const EditFarmlandData = ({
                 style={{
                     textAlign: 'right',
                     fontSize: 14,
-                    color: COLORS.mediumseagreen,
+                    color: COLORS.pantone,
                     fontFamily: 'JosefinSans-Regular',
                 }}
             >
@@ -799,13 +845,21 @@ const EditFarmlandData = ({
             data={plantingTypes}
             notFoundText={'Tipo de planta não encontrado'}
             placeholder="Tipo de plantas"
+            searchPlaceholder='Escolher tipos de plantas'
             save="value"
-            label="Tipo de plantas"
+            label="Tipos de plantas"
+            badgeStyles={{
+                backgroundColor: COLORS.pantone,                        
+            }}
+            badgeTextStyles={{
+                fontSize: 16
+            }}
+
             arrowicon={
                 <Icon 
-                    size={45} 
+                    // size={45} 
                     name="arrow-drop-down" 
-                    color={COLORS.mediumseagreen} 
+                    color={COLORS.pantone} 
                     />
                 }
                 closeicon={
@@ -817,15 +871,18 @@ const EditFarmlandData = ({
             }
             fontFamily='JosefinSans-Regular'
             dropdownTextStyles={{
-                fontSize: 18,
+                fontSize: 16,
+                color: COLORS.black,
+                padding: 5,
             }}
             inputStyles={{
                 fontSize: 16,
                 color: '#A8A8A8',
             }}
             boxStyles={{
-                borderRadius: 4,
                 minHeight: 55,
+                borderRadius: 5,
+                borderColor: COLORS.lightgrey,
             }}
             />
         {
@@ -858,7 +915,7 @@ const EditFarmlandData = ({
                     <Icon 
                         size={45} 
                         name="arrow-drop-down" 
-                        color={COLORS.mediumseagreen} 
+                        color={COLORS.pantone} 
                     />
                 }
                 closeicon={
@@ -936,8 +993,8 @@ const EditFarmlandData = ({
                         marginTop: 10,
                         padding: 5,
                         borderRadius: 100,
-                        backgroundColor: COLORS.mediumseagreen,
-                        borderColor: COLORS.mediumseagreen,
+                        backgroundColor: COLORS.pantone,
+                        borderColor: COLORS.pantone,
                         borderWidth: 1,
                     }}
 
@@ -1001,11 +1058,11 @@ const EditFarmlandData = ({
             w="100%"
             mb="2"
             style={{
-                // backgroundColor: COLORS.mediumseagreen,
+                // backgroundColor: COLORS.pantone,
                 // borderTopLeftRadius: 20,
                 // borderTopRightRadius: 20,
                 // borderWidth: 2, 
-                // borderColor: COLORS.mediumseagreen,
+                // borderColor: COLORS.pantone,
 
             }}
         >
@@ -1013,7 +1070,7 @@ const EditFarmlandData = ({
                 <Box w="65%">
                     <Text
                         style={{
-                            color: COLORS.mediumseagreen,
+                            color: COLORS.pantone,
                             fontSize: 16,
                             fontFamily: 'JosefinSans-Bold',
                         }}
@@ -1024,7 +1081,7 @@ const EditFarmlandData = ({
                 <Box w="35%">
                     <Text
                         style={{
-                            color: COLORS.mediumseagreen,
+                            color: COLORS.pantone,
                             fontSize: 16,
                             fontFamily: 'JosefinSans-Bold',
                         }}

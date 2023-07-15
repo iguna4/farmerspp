@@ -1177,7 +1177,8 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                 </Box>}
                 onClose={()=>setIsEllipsisVisible(false)}
             >
-            
+</Tooltip>
+}
             </Box>
         </Stack>
     {member &&  (member?.membership?.length === 0) &&

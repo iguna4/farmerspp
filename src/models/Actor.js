@@ -33,8 +33,8 @@ export const Actor = {
         checkedBy: 'string?',
         
         // dates (creation and modification dates)
-        createdAt: { type: 'date', default: Date()},
-        modifiedAt: { type: 'date', default: Date()},
+        createdAt: { type: 'date', default: ()=>new Date()},
+        modifiedAt: { type: 'date', default: ()=>new Date()},
         modifiedBy: 'string?',
     },
 }

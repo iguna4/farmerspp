@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet,  SafeAreaView, Image, Pressable, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet,  SafeAreaView, Image, Pressable, TouchableOpacity, Dimensions } from 'react-native';
 import { Box, Stack, Center } from 'native-base';
 import { Icon } from '@rneui/base';
 import AwesomeAlert from 'react-native-awesome-alerts';
@@ -33,6 +33,7 @@ import { useUser } from '@realm/react';
 import { roles } from '../../consts/roles';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
+import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const institution = 'institution';
@@ -41,6 +42,7 @@ const institutionFarmlands = 'institutionFarmlands';
 
 export default function InstitutionScreen ({ route, navigation }) {
     const ownerId = route.params.ownerId;
+    const farmersIDs = route.params?.farmersIDs;
     const realm = useRealm();
     const user = useUser();
     const customUserData = user?.customData;
@@ -48,8 +50,20 @@ export default function InstitutionScreen ({ route, navigation }) {
     const [isAddPhoto, setIsAddPhoto] = useState(false);
     const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
     const farmlands = realm.objects("Farmland").filtered('farmerId == $0', ownerId);
+    const [currentNode, setCurrentNode] = useState({next: null, prev: null, current: null });
+    const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
     const keyExtractor = (item, index)=>index.toString();
+
+    useEffect(()=>{
+
+      if(farmersIDs?.length > 0){
+        current = farmersIDs.find((node)=>node.current === ownerId);
+        setCurrentNode(current);
+      }
+
+    }, [ ownerId  ]);
+
 
     useEffect(() => {
       realm.subscriptions.update(mutableSubs => {
@@ -70,9 +84,12 @@ export default function InstitutionScreen ({ route, navigation }) {
 
     }, [realm ]);
 
-    // useEffect(()=>{
-
-    // }, [ navigation ]);
+    if (loadingActivitiyIndicator) {
+      return <CustomActivityIndicator
+          loadingActivitiyIndicator={loadingActivitiyIndicator}
+          setLoadingActivityIndicator={setLoadingActivityIndicator}
+      />
+    }
 
     return (
         <SafeAreaView 
@@ -198,6 +215,68 @@ export default function InstitutionScreen ({ route, navigation }) {
 
         </Stack>
       </View>
+
+
+      <Box
+          style={{
+            position: 'absolute',
+            top: Dimensions.get('window').height / 2,
+            left: 0,
+            zIndex: 10,
+          }}
+        >
+{   currentNode?.prev &&
+     <TouchableOpacity
+            style={{
+              height: 60,
+              width: 30,
+              // backgroundColor: COLORS.lightgrey,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={()=>{
+              setLoadingActivityIndicator(true);
+              navigation.navigate('Institution', {
+                ownerId: currentNode?.prev,
+                farmersIDs,
+              });
+            }}
+          >
+            <Icon name="arrow-back-ios" size={40} color={COLORS.lightgrey} />
+          </TouchableOpacity>}
+        </Box>
+
+
+      <Box
+        style={{
+          position: 'absolute',
+          top: Dimensions.get('window').height / 2,
+          right: 0,
+          zIndex: 10,
+        }}
+      >
+      {currentNode?.next &&
+          <TouchableOpacity
+            style={{
+              height: 60,
+              width: 30,
+              // backgroundColor: COLORS.lightgrey,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={()=>{
+              setLoadingActivityIndicator(true);
+              navigation.navigate('Institution', {
+                ownerId: currentNode?.next,
+                farmersIDs,
+              })
+            }}
+          >
+            <Icon name="arrow-forward-ios" size={40} color={COLORS.lightgrey} />
+          </TouchableOpacity>}
+        </Box>
+
+
       <ScrollView
             contentContainerStyle={{
                 // paddingVertical: 15,

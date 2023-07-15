@@ -28,8 +28,8 @@ export const Institution = {
         status: { type: 'string', default: 'pending'},
         checkedBy: 'string?',
 
-        createdAt: { type: 'date', default: Date()},
-        modifiedAt: { type: 'date', default: Date()},
+        createdAt: { type: 'date', default: ()=>new Date()},
+        modifiedAt: { type: 'date', default: ()=>new Date()},
         modifiedBy: 'string?',
     },
 }

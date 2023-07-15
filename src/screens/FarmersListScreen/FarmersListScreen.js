@@ -37,6 +37,7 @@ import { roles } from '../../consts/roles';
 import { Icon } from '@rneui/base';
 import { faEllipsisVertical, faInstitution, faPeopleGroup, faPerson, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { extractIDs } from '../../helpers/extractIDs';
 
 const { useRealm, useQuery } = realmContext; 
 
@@ -178,24 +179,27 @@ const FarmersListScreen = ({ route, navigation}) => {
  let farmers; 
  let farmlands;
  let serviceProviders;
+ let farmersIDs; // IDs to be used for swiping between farmers' screen
  if (farmerType === 'Indivíduo') {
   farmers = realm.objects('Actor').filtered("userDistrict == $0", customUserData?.userDistrict);
   serviceProviders = realm.objects('SprayingServiceProvider').filtered("userDistrict == $0", customUserData?.userDistrict);
   farmlands = realm.objects('Farmland').filtered("userDistrict == $0" , customUserData?.userDistrict);
-  farmers = customizeItem(farmers, farmlands, serviceProviders, customUserData, 'Indivíduo')
+  farmers = customizeItem(farmers, farmlands, serviceProviders, customUserData, 'Indivíduo');
+  farmersIDs = extractIDs(farmers);
  }
  else if (farmerType === 'Grupo'){
   farmers = realm.objects('Group').filtered("userDistrict == $0", customUserData?.userDistrict);
   serviceProviders = realm.objects('SprayingServiceProvider').filtered("userDistrict == $0", customUserData?.userDistrict);
   farmlands = realm.objects('Farmland').filtered("userDistrict == $0" , customUserData?.userDistrict);
-  farmers = customizeItem(farmers, farmlands, serviceProviders, customUserData, 'Grupo')
-
+  farmers = customizeItem(farmers, farmlands, serviceProviders, customUserData, 'Grupo');
+  farmersIDs = extractIDs(farmers);
  }
  else if (farmerType === 'Instituição') {
   farmers = realm.objects('Institution').filtered("userDistrict == $0", customUserData?.userDistrict);
   serviceProviders = realm.objects('SprayingServiceProvider').filtered("userDistrict == $0", customUserData?.userDistrict);
   farmlands = realm.objects('Farmland').filtered("userDistrict == $0" , customUserData?.userDistrict);
-  farmers = customizeItem(farmers, farmlands, serviceProviders, customUserData, 'Instituição')
+  farmers = customizeItem(farmers, farmlands, serviceProviders, customUserData, 'Instituição');
+  farmersIDs = extractIDs(farmers);
  }
 
  const [showAll, setShowAll] = useState(false);
@@ -606,6 +610,11 @@ useEffect(()=>{
               onEndReached={handleEndReached}
               onEndReachedThreshold={0.1}
               renderItem={({ item })=>{
+
+                // add all the IDs to each item to allow swiping between screens...
+                // when the user open any item from the list
+                item.farmersIDs = farmersIDs;
+
                 if(item.flag === 'Grupo'){
                   return <GroupItem  route={route} item={item} />
                 }

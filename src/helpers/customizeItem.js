@@ -9,15 +9,37 @@ const { useRealm } = realmContext;
 
 export const customizeItem = (farmersList, farmlandsList, serviceProviders,  customUserData, flag) => {
 
-        return farmersList?.map((item) => {
+        let farmersIds = [];
+        let groupsIds = [];
+        let institutionsIds = [];
+
+        return farmersList?.map((item, index) => {
                 const farmlands = farmlandsList?.filter(farmland=>farmland.farmerId === item._id);
                 const isServiceProvider = serviceProviders?.filter(provider=>provider?.actorId === item?._id);
                 const { assets } = item;
-                // console.log('assets: ', JSON.stringify(assets));
+                let newItem = {};
+
+                // // retrieve the Id of the next farmer in the list
+                // if (farmersList[index + 1]) {
+                //         newItem = {
+                //                 ...newItem,
+                //                 nextFarmerId: farmersList[index + 1]._id,
+                //         }
+                // }
+
+                // // retrieve the Id of the previous farmer in the list
+                // if(farmersList[index - 1]) {
+                //         newItem = {
+                //                 ...newItem,
+                //                 previousFarmerId: farmersList[index - 1]._id,
+                //         }
+                // }
+
 
                 if (flag === 'Indivíduo') {
 
-                        const newItem = {
+                         newItem = {
+                                ...newItem,
                                 _id: item?._id,
                                 image:
                                         item?.image
@@ -53,7 +75,8 @@ export const customizeItem = (farmersList, farmlandsList, serviceProviders,  cus
 
                 }
                 else if (flag === 'Grupo') {
-                        const newItem = {
+                        newItem = {
+                                ...newItem,
                                 _id: item?._id,
                                 operationalStatus: item?.operationalStatus,
                                 image: item?.image ? item?.image : 'htt://localhost/not-set-yet',
@@ -87,7 +110,8 @@ export const customizeItem = (farmersList, farmlandsList, serviceProviders,  cus
                         return newItem;
                 }
                 else if (flag === 'Instituição') {
-                        const newItem = {
+                        newItem = {
+                                ...newItem,
                                 _id: item?._id,
                                 image: item?.image ? item?.image : 'htt://localhost/not-set-yet',
                                 imageAlt: getInitials(item?.manager.fullname),

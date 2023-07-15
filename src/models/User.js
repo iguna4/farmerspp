@@ -17,8 +17,8 @@ export const User = {
         role: 'string?',
         userProvince: 'string?',
         userDistrict: 'string?',
-        lastLoginAt: {type: 'date', default: Date() },
-        createdAt: { type: 'date', default: Date() },
+        lastLoginAt: {type: 'date', default: ()=>new Date()},
+        createdAt: { type: 'date', default: ()=>new Date() },
     }
 }
 

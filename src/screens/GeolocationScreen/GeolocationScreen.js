@@ -22,6 +22,8 @@ import MapModal from "../../components/Modals/MapModal";
 import { useFocusEffect } from "@react-navigation/native";
 import { InteractionManager } from "react-native";
 import CustomActivityIndicator from "../../components/ActivityIndicator/CustomActivityIndicator";
+import { SuccessToast } from "../../components/Toast/SuccessToast";
+import { SuccessLottie } from "../../components/LottieComponents/SuccessLottie";
 const {useRealm, useObject, useQuery } = realmContext;
 
 
@@ -33,6 +35,8 @@ const GeolocationScreen = ({ route, navigation })=>{
     const resourceId = route.params?.resourceId;
     let resource;
     let ownerType; // farmland ownertype (single, group, institution) 
+    const [ successLottieVisibile, setSuccessLottieVisible ] = useState(false); // controlling the success toast component
+    const [ areCoordinatesConfirmed, setAreCoordinatesConfirmed] = useState(false);
 
     if (resourceName === 'Farmer') {
         resource = useObject('Actor', resourceId);
@@ -233,6 +237,30 @@ const GeolocationScreen = ({ route, navigation })=>{
             // navigation.goBack();
         }
     }
+
+
+
+    useEffect(()=>{
+        // if true, the SuccessLottie Overlay should show up and 
+        // the AwesomeAlert should disappear
+        if (areCoordinatesConfirmed){
+            setAreCoordinatesConfirmed(false);
+            setSuccessLottieVisible(true);
+        }
+
+        // The SuccessLottie Overlay should show up for 2 seconds
+        // And disappear by its own
+        if (successLottieVisibile && !areCoordinatesConfirmed){
+            setTimeout(()=>{
+                setSuccessLottieVisible(false);
+                navigateBack();
+            }, 3000)
+        }
+
+    }, [ successLottieVisibile, areCoordinatesConfirmed ]);
+
+
+    
     
 
     useEffect(() => {
@@ -306,9 +334,14 @@ const GeolocationScreen = ({ route, navigation })=>{
             });
 
             // navigate back to the respective farmer screen.
-            navigateBack();
+            // navigateBack();
 
+            // call off the AwesomeAlert
             setAreCoordinatesPicked(false);
+
+            // activate the SuccessLottie Overlay
+            setAreCoordinatesConfirmed(true);
+
           }}
           onCancelPressed={()=>{
             setAreCoordinatesPicked(false);
@@ -319,6 +352,7 @@ const GeolocationScreen = ({ route, navigation })=>{
             });
           }}
         />
+
 
 
 
@@ -361,6 +395,18 @@ const GeolocationScreen = ({ route, navigation })=>{
             setRejectGeoAlert(false);
           }}
         />
+
+        {/* 
+            Controlling the success modal 
+        */}
+
+        { successLottieVisibile &&   
+            <SuccessLottie 
+                successLottieVisible={successLottieVisibile} 
+                setSuccessLottieVisible={setSuccessLottieVisible} 
+            />      
+        }
+
 
 <Box
     style={{

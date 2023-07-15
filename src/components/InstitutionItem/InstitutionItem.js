@@ -114,6 +114,7 @@ const InstitutionItem = ({ item, route }) => {
       onPress={()=>{
         navigation.navigate('Institution', {
           ownerId: item._id,
+          farmersIDs: item?.farmersIDs,
         })
       }}  
       >

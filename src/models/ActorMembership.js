@@ -21,8 +21,8 @@ export const ActorMembership = {
      userId: 'string',
      userName: 'string?',
 
-     createdAt: { type: 'date', default: Date()},
-     modifiedAt: { type: 'date', default: Date()},
+     createdAt: { type: 'date', default: ()=>new Date()},
+     modifiedAt: { type: 'date', default: ()=>new Date()},
 
  },
 }

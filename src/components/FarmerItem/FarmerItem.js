@@ -40,6 +40,9 @@ const FarmerItem = ({ item, route, farmerType }) => {
    const navigation = useNavigation();
    const [farmlandStatus, setFarmlandStatus] = useState('');
 
+  //  console.log("IDs: ", item.farmersIDs);
+
+
    useEffect(()=>{
 
     if (item?.farmlandsList?.length > 0) {
@@ -137,6 +140,7 @@ const FarmerItem = ({ item, route, farmerType }) => {
         onPress={()=>{
           navigation.navigate('Farmer', {
             ownerId: item._id,
+            farmersIDs: item?.farmersIDs,
           })
         }}
         >

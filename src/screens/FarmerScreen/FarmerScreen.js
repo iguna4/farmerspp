@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image, SafeAreaView, FlatList, Pressable, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image, SafeAreaView, FlatList, Pressable, StyleSheet, Platform } from 'react-native';
 import { Box, Stack, Center, } from 'native-base';
 import { Divider, Icon, Avatar } from '@rneui/base';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -33,6 +33,8 @@ import { realmContext } from '../../models/realmContext';
 import { roles } from '../../consts/roles';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
+import { Dimensions } from 'react-native';
+import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const singleFarmer = 'singleFarmer';
@@ -41,6 +43,7 @@ const ownFarmlands = 'ownFarmlands';
 
 export default function FarmerScreen ({ route, navigation }) {
     const ownerId = route.params.ownerId;
+    const farmersIDs = route.params?.farmersIDs;
     const realm = useRealm();
     const user = useUser();
     const customUserData = user?.customData;
@@ -49,12 +52,24 @@ export default function FarmerScreen ({ route, navigation }) {
     const [isAddPhoto, setIsAddPhoto] = useState(false);
     const [isPhotoModalVisible, setIsPhotoModalVisible] = useState(false);
     const [refresh, setRefresh] = useState(false);
+    const [currentNode, setCurrentNode] = useState({next: null, prev: null, current: null });
+    const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
     // ------------------------------------------------------------------------
     // Editing Single Farmer Data
     
 
 
     // ----------------------------------------------------------------------
+
+    useEffect(()=>{
+
+      if(farmersIDs?.length > 0){
+        current = farmersIDs.find((node)=>node.current === ownerId);
+        setCurrentNode(current);
+      }
+
+    }, [ ownerId  ]);
+
 
     useEffect(() => {
       realm.subscriptions.update(mutableSubs => {
@@ -81,7 +96,12 @@ export default function FarmerScreen ({ route, navigation }) {
     // }, [ navigation ]);
 
 
-    
+    if (loadingActivitiyIndicator) {
+      return <CustomActivityIndicator 
+          loadingActivitiyIndicator={loadingActivitiyIndicator}
+          setLoadingActivityIndicator={setLoadingActivityIndicator}
+      />
+    }
 
 
 
@@ -115,6 +135,8 @@ export default function FarmerScreen ({ route, navigation }) {
               setIsPhotoModalVisible(true);
             }}
           />
+
+
 
       <View
           style={{
@@ -214,7 +236,66 @@ export default function FarmerScreen ({ route, navigation }) {
         </Stack>
       </View>
 
-      
+        <Box
+          style={{
+            position: 'absolute',
+            top: Dimensions.get('window').height / 2,
+            left: 0,
+            zIndex: 10,
+          }}
+        >
+{   currentNode?.prev &&
+     <TouchableOpacity
+            style={{
+              height: 60,
+              width: 30,
+              // backgroundColor: COLORS.lightgrey,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={()=>{
+              setLoadingActivityIndicator(true);
+              navigation.navigate('Farmer', {
+                ownerId: currentNode?.prev,
+                farmersIDs,
+              });
+            }}
+          >
+            <Icon name="arrow-back-ios" size={40} color={COLORS.lightgrey} />
+          </TouchableOpacity>}
+        </Box>
+
+
+      <Box
+        style={{
+          position: 'absolute',
+          top: Dimensions.get('window').height / 2,
+          right: 0,
+          zIndex: 10,
+        }}
+      >
+      {currentNode?.next &&
+          <TouchableOpacity
+            style={{
+              height: 60,
+              width: 30,
+              // backgroundColor: COLORS.lightgrey,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={()=>{
+              setLoadingActivityIndicator(true);
+              navigation.navigate('Farmer', {
+                ownerId: currentNode?.next,
+                farmersIDs,
+              })
+            }}
+          >
+            <Icon name="arrow-forward-ios" size={40} color={COLORS.lightgrey} />
+          </TouchableOpacity>}
+        </Box>
+
+
       <ScrollView
         contentContainerStyle={{
             // paddingVertical: 15,

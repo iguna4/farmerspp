@@ -116,6 +116,7 @@ const GroupItem = ({ item, route }) => {
       onPress={()=>{
         navigation.navigate('Group', {
           ownerId: item._id,
+          farmersIDs: item?.farmersIDs,
         })
       }}    
     >

@@ -345,7 +345,7 @@ export default function InstitutionScreen ({ route, navigation }) {
         }}
         name="account-circle" 
         size={wp('60%')} 
-        color={COLORS.grey} 
+        color={COLORS.lightgrey} 
       />
     </Box>
    )            

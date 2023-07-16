@@ -349,7 +349,7 @@ export default function GroupScreen ({ route, navigation }) {
           }}
           name="account-circle" 
           size={wp('60%')} 
-          color={COLORS.grey} 
+          color={COLORS.lightgrey} 
         />
       </Box>
      )        

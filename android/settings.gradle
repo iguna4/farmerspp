@@ -10,5 +10,8 @@ if (settings.hasProperty("newArchEnabled") && settings.newArchEnabled == "true")
     project(":ReactAndroid:hermes-engine").projectDir = file('../node_modules/react-native/ReactAndroid/hermes-engine')
 }
 
+
+// include ':react-native-image-zoom'
+// project(':react-native-image-zoom').projectDir = file('../node_modules/react-native-image-zoom/android')
 // include ':@react-native-community_datetimepicker'
 // project(':@react-native-community_datetimepicker').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/datetimepicker/android')

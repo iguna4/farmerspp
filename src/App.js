@@ -5,6 +5,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import { ThemeProvider, ListItem, Avatar, Icon, } from '@rneui/themed';
 import {NativeBaseProvider, Box, Center, Pressable, Stack } from 'native-base';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider,  } from '@ui-kitten/components';
@@ -46,11 +47,12 @@ export default function App() {
     <>
     <StatusBar barStyle="dark-content" backgroundColor="#EBEBE4" />
     <SafeAreaProvider>
+      <GestureHandlerRootView style={{ flex: 1, }}>
       <NativeBaseProvider theme={nbTheme}>
         <ThemeProvider theme={elementTheme}>   
           <ApplicationProvider {...eva} theme={eva.light}>
 
-
+          
             <AppProvider
               id={secrets.appID} 
               baseUrl={secrets.baseUrl}
@@ -83,6 +85,7 @@ export default function App() {
           </ApplicationProvider>
         </ThemeProvider>
       </NativeBaseProvider>
+    </GestureHandlerRootView>
     </SafeAreaProvider>
     {/* 
         The Toast component is used here so to make it usable anywhere with the whole app

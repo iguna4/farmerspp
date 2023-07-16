@@ -51,7 +51,7 @@ export default function InstitutionFarmerForm({
                     style={{
                         fontSize: 16,
                         fontFamily: 'JosefinSans-Regular',
-                        color: COLORS.grey,
+                        color: errors?.isPrivateInstitution ? COLORS.red : COLORS.grey,
                         paddingHorizontal: 15,
                     }}
                 >Esta instituição é...</Text>
@@ -66,7 +66,7 @@ export default function InstitutionFarmerForm({
                         }}
                         textStyle={{
                             fontWeight: '120',
-                            color: COLORS.main,
+                            color: isInstitutionPrivate ? COLORS.main : errors?.isPrivateInstitution ? COLORS.red : COLORS.grey,
                         }}
                         title="Privada"
                         checked={isInstitutionPrivate}
@@ -81,7 +81,7 @@ export default function InstitutionFarmerForm({
                         uncheckedIcon={
                             <Icon
                                 name="radio-button-unchecked"
-                                color={COLORS.main}
+                                color={errors?.isPrivateInstitution ? COLORS.red : COLORS.grey}
                                 size={30}
                                 iconStyle={{ marginRight: 1 }}
                             />
@@ -91,6 +91,10 @@ export default function InstitutionFarmerForm({
                             setIsInstitutionPublic(false)
                             setIsPrivateInstitution(true);
                             setInstitutionType('');
+                            setErrors({
+                                ...errors,
+                                isPrivateInstitution: '',
+                            });  
                         }}
                         />
                 </Box>
@@ -104,7 +108,7 @@ export default function InstitutionFarmerForm({
                         textStyle={{
                             
                             fontWeight: '120',
-                            color: COLORS.main,
+                            color: isInstitutionPublic ? COLORS.main : errors?.isPrivateInstitution ? COLORS.red: COLORS.grey,
                         }}
                         title="Pública"
                         checked={isInstitutionPublic}
@@ -119,7 +123,7 @@ export default function InstitutionFarmerForm({
                         uncheckedIcon={
                             <Icon
                                 name="radio-button-unchecked"
-                                color={COLORS.main}
+                                color={errors?.isPrivateInstitution ? COLORS.red : COLORS.grey}
                                 size={30}
                                 iconStyle={{ marginRight: 1 }}
                             />
@@ -129,7 +133,11 @@ export default function InstitutionFarmerForm({
                             setIsInstitutionPublic(true);        
                             setIsPrivateInstitution(false);  
                             setInstitutionType('');     
-                            setInstitutionLicence('');         
+                            setInstitutionLicence('');  
+                            setErrors({
+                                ...errors,
+                                isPrivateInstitution: '',
+                            });      
                         }}
                         />
                     </Box>
@@ -138,7 +146,7 @@ export default function InstitutionFarmerForm({
                 'isPrivateInstitution' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.isPrivateInstitution}</FormControl.ErrorMessage> 
+                _text={{ fontSize: 'xs'}}>{}</FormControl.ErrorMessage> 
                 : <FormControl.HelperText></FormControl.HelperText>
                 }
                 </FormControl>

@@ -233,7 +233,8 @@ export default function GroupScreen ({ route, navigation }) {
             style={{
               height: 60,
               width: 30,
-              // backgroundColor: COLORS.lightgrey,
+              backgroundColor: COLORS.lightgrey,
+              opacity: .5,
               justifyContent: 'center',
               alignItems: 'center',
             }}
@@ -245,7 +246,7 @@ export default function GroupScreen ({ route, navigation }) {
               });
             }}
           >
-            <Icon name="arrow-back-ios" size={40} color={COLORS.lightgrey} />
+            <Icon name="arrow-back-ios" size={40} color={COLORS.ghostwhite} />
           </TouchableOpacity>}
         </Box>
 
@@ -263,7 +264,8 @@ export default function GroupScreen ({ route, navigation }) {
             style={{
               height: 60,
               width: 30,
-              // backgroundColor: COLORS.lightgrey,
+              backgroundColor: COLORS.lightgrey,
+              opacity: .5,
               justifyContent: 'center',
               alignItems: 'center',
             }}
@@ -275,7 +277,7 @@ export default function GroupScreen ({ route, navigation }) {
               })
             }}
           >
-            <Icon name="arrow-forward-ios" size={40} color={COLORS.lightgrey} />
+            <Icon name="arrow-forward-ios" size={40} color={COLORS.ghostwhite} />
           </TouchableOpacity>}
         </Box>
 

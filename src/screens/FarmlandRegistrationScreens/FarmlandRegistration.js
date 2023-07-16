@@ -831,13 +831,13 @@ export default function FarmlandRegistration ({ route, navigation }) {
         {  !farmland &&
           <Text
                 style={{
-                    color: COLORS.red,
+                    color: COLORS.mediumseagreen,
                     fontSize: 15,
                     fontFamily: 'JosefinSans-Regular',
                     paddingTop: 5,
                 }}
             >
-                Introduza dados genéricos deste pomar.
+                Introduza dados do pomar.
             </Text>
         }
           </Box>
@@ -1467,7 +1467,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 style={{
                     fontSize: 15,
                     fontFamily: 'JosefinSans-Regular',
-                    color: COLORS.red,
+                    color: COLORS.main,
                     textAlign: 'right',
                     // padding: 10,
                 }}

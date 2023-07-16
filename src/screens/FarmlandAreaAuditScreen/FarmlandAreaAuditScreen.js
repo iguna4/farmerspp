@@ -25,6 +25,7 @@ import { InteractionManager } from "react-native";
 import CustomActivityIndicator from "../../components/ActivityIndicator/CustomActivityIndicator";
 import { Pressable } from "react-native";
 import { calculatePolygonArea } from "../../helpers/calculatePolygonArea";
+import { SuccessLottie } from "../../components/LottieComponents/SuccessLottie";
 const {useRealm, useObject, useQuery } = realmContext;
 
 
@@ -46,7 +47,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
 
     const [isMapVisible, setIsMapVisible] = useState(false);
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
-
+    const [ successLottieVisibile, setSuccessLottieVisible ] = useState(false); // controlling the success toast component
+    const [isCalculatedAreaConfirmed, setIsCalculatedAreaConfirmed] = useState(false);
 
     const farmland = useObject('Farmland', farmlandId);
 
@@ -223,6 +225,25 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         })
     };
 
+    useEffect(()=>{
+        // if true, the SuccessLottie Overlay should show up and 
+        // the AwesomeAlert should disappear
+        if (isCalculatedAreaConfirmed){
+            setIsCalculatedAreaConfirmed(false);
+            setSuccessLottieVisible(true);
+        }
+
+        // The SuccessLottie Overlay should show up for 2 seconds
+        // And disappear by its own
+        if (successLottieVisibile && !isCalculatedAreaConfirmed){
+            setTimeout(()=>{
+                navigateBack();
+                setSuccessLottieVisible(false);
+            }, 3000)
+        }
+
+    }, [ successLottieVisibile, isCalculatedAreaConfirmed ]);
+
     
       if (loadingActivitiyIndicator) {
         return <CustomActivityIndicator 
@@ -274,7 +295,8 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
           onConfirmPressed={() => {
             saveAuditedArea(area); // save the auditedarea
             setIsCalculatedArea(false);
-            navigateBack();
+            setIsCalculatedAreaConfirmed(true)
+            // navigateBack();
           }}
           onCancelPressed={()=>{
             setIsCalculatedArea(false);
@@ -323,6 +345,14 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             setRejectGeoAlert(false);
           }}
         />
+
+    { successLottieVisibile &&   
+            <SuccessLottie 
+                successLottieVisible={successLottieVisibile} 
+                setSuccessLottieVisible={setSuccessLottieVisible} 
+            />      
+        }
+
 
 
     <Box

@@ -96,13 +96,6 @@ export default function FarmerScreen ({ route, navigation }) {
     // }, [ navigation ]);
 
 
-    if (loadingActivitiyIndicator) {
-      return <CustomActivityIndicator 
-          loadingActivitiyIndicator={loadingActivitiyIndicator}
-          setLoadingActivityIndicator={setLoadingActivityIndicator}
-      />
-    }
-
 
 
 
@@ -249,10 +242,16 @@ export default function FarmerScreen ({ route, navigation }) {
             style={{
               height: 60,
               width: 30,
-              backgroundColor: COLORS.lightgrey,
+              backgroundColor: COLORS.fourth,
               opacity: .5,
               justifyContent: 'center',
               alignItems: 'center',
+              shadowColor: "#470000",
+              shadowOffset: {
+                width: 0, height: 1
+              },
+              shadowOpacity: .2,
+              elevation: 1,
             }}
             onPress={()=>{
               setLoadingActivityIndicator(true);
@@ -280,10 +279,16 @@ export default function FarmerScreen ({ route, navigation }) {
             style={{
               height: 60,
               width: 30,
-              backgroundColor: COLORS.lightgrey,
+              backgroundColor: COLORS.fourth,
               opacity: .5,
               justifyContent: 'center',
               alignItems: 'center',
+              shadowColor: "#470000",
+              shadowOffset: {
+                width: 0, height: 1
+              },
+              shadowOpacity: .2,
+              elevation: 1,
             }}
             onPress={()=>{
               setLoadingActivityIndicator(true);
@@ -297,10 +302,15 @@ export default function FarmerScreen ({ route, navigation }) {
           </TouchableOpacity>}
         </Box>
 
-
-      <ScrollView
+  {  loadingActivitiyIndicator ?
+     <CustomActivityIndicator 
+        loadingActivitiyIndicator={loadingActivitiyIndicator}
+        setLoadingActivityIndicator={setLoadingActivityIndicator}
+    />
+    :
+    <ScrollView
         contentContainerStyle={{
-            // paddingVertical: 15,
+          // paddingVertical: 15,
             padding: 5,
             // marginBottom: 60,
         }}
@@ -526,6 +536,7 @@ export default function FarmerScreen ({ route, navigation }) {
           setIsPhotoModalVisible={setIsPhotoModalVisible}
         />
         </ScrollView>
+    }
 </SafeAreaView>
     )
 };

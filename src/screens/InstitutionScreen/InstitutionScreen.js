@@ -84,12 +84,12 @@ export default function InstitutionScreen ({ route, navigation }) {
 
     }, [realm ]);
 
-    if (loadingActivitiyIndicator) {
-      return <CustomActivityIndicator
-          loadingActivitiyIndicator={loadingActivitiyIndicator}
-          setLoadingActivityIndicator={setLoadingActivityIndicator}
-      />
-    }
+    // if (loadingActivitiyIndicator) {
+    //   return <CustomActivityIndicator
+    //       loadingActivitiyIndicator={loadingActivitiyIndicator}
+    //       setLoadingActivityIndicator={setLoadingActivityIndicator}
+    //   />
+    // }
 
     return (
         <SafeAreaView 
@@ -230,10 +230,16 @@ export default function InstitutionScreen ({ route, navigation }) {
             style={{
               height: 60,
               width: 30,
-              backgroundColor: COLORS.lightgrey,
+              backgroundColor: COLORS.fourth,
               opacity: .5,
               justifyContent: 'center',
               alignItems: 'center',
+              shadowColor: "#470000",
+              shadowOffset: {
+                width: 0, height: 1
+              },
+              shadowOpacity: .2,
+              elevation: 1,
             }}
             onPress={()=>{
               setLoadingActivityIndicator(true);
@@ -261,10 +267,16 @@ export default function InstitutionScreen ({ route, navigation }) {
             style={{
               height: 60,
               width: 30,
-              backgroundColor: COLORS.lightgrey,
+              backgroundColor: COLORS.fourth,
               opacity: .5,
               justifyContent: 'center',
               alignItems: 'center',
+              shadowColor: "#470000",
+              shadowOffset: {
+                width: 0, height: 1
+              },
+              shadowOpacity: .2,
+              elevation: 1,
             }}
             onPress={()=>{
               setLoadingActivityIndicator(true);
@@ -277,8 +289,13 @@ export default function InstitutionScreen ({ route, navigation }) {
             <Icon name="arrow-forward-ios" size={40} color={COLORS.ghostwhite} />
           </TouchableOpacity>}
         </Box>
-
-
+  
+      {  loadingActivitiyIndicator ?
+      <CustomActivityIndicator 
+          loadingActivitiyIndicator={loadingActivitiyIndicator}
+          setLoadingActivityIndicator={setLoadingActivityIndicator}
+      />
+      :
       <ScrollView
             contentContainerStyle={{
                 // paddingVertical: 15,
@@ -481,6 +498,7 @@ export default function InstitutionScreen ({ route, navigation }) {
           setIsPhotoModalVisible={setIsPhotoModalVisible}
         />
         </ScrollView>
+    }
 </SafeAreaView>
     )
 }

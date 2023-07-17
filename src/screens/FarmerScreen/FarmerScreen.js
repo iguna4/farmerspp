@@ -141,7 +141,7 @@ export default function FarmerScreen ({ route, navigation }) {
             }}
             onConfirmPressed={() => {
               setIsAddPhoto(false);
-              setIsPhotoModalVisible(true);
+              // setIsPhotoModalVisible(true);
             }}
           />
 
@@ -345,7 +345,8 @@ export default function FarmerScreen ({ route, navigation }) {
           <TouchableOpacity
             onPress={()=>{
               if(customUserData?.role !== roles.provincialManager){
-                setIsAddPhoto(!isAddPhoto);
+                // setIsAddPhoto(!isAddPhoto);
+                setIsPhotoModalVisible(true);
                 // handlePresentModalPress();
               }
             }}

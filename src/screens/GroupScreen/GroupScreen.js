@@ -120,7 +120,7 @@ export default function GroupScreen ({ route, navigation }) {
         }}
         onConfirmPressed={() => {
           setIsAddPhoto(false);
-          setIsPhotoModalVisible(true);
+          // setIsPhotoModalVisible(true);
         }}
       />
 
@@ -318,7 +318,8 @@ export default function GroupScreen ({ route, navigation }) {
             <TouchableOpacity
               onPress={()=>{
                 if(customUserData?.role !== roles.provincialManager){
-                  setIsAddPhoto(!isAddPhoto);
+                  // setIsAddPhoto(!isAddPhoto);
+                  setIsPhotoModalVisible(true);
                 }
               }}
               style={{

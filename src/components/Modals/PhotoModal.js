@@ -11,6 +11,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import COLORS from "../../consts/colors";
 
 import { useUser } from "@realm/react";
+import { roles } from "../../consts/roles";
 
 function PhotoModal({ 
     realm, 
@@ -19,6 +20,7 @@ function PhotoModal({
     isPhotoModalVisible, 
     setIsPhotoModalVisible,
     updateUserImage,
+    userRole,
     }) {
 
     const navigation = useNavigation();
@@ -108,7 +110,7 @@ function PhotoModal({
         }
         
         setIsPhotoModalVisible(false);
-        
+
     }, [ photoOwner ]);
 
       const launchNativeImageLibrary = () => {
@@ -193,38 +195,60 @@ function PhotoModal({
             >
 
 
-            <Box w="20%"
-                style={{
-                    position: 'absolute',
-                    top: -20,
-                    right: -40,
-                    zIndex: 1,
-                }}
-            >
-                <TouchableOpacity
-                style={{ flexDirection: 'row' }}
-                    onPress={()=>{
-                        setIsPhotoModalVisible(false);
-                        if (photoOwnerType === 'Grupo') {
-                            navigation.navigate('Group', {
-                                ownerId: photoOwner?._id,
-                            })
-                        } 
-                        else if (photoOwnerType === 'Indivíduo') {
-                            navigation.navigate('Farmer', {
-                                ownerId: photoOwner?._id,
-                            })
-                        } 
-                        else if (photoOwnerType === 'Instituição') {
-                            navigation.navigate('Institution', {
-                                ownerId: photoOwner?._id,
-                            })
-                        }
-                    }}                            
+
+
+                <Box 
+                    style={{
+                        position: 'absolute',
+                        top: -20,
+                        left: 0,
+                        zIndex: 1,
+                    }}
                 >
-                    <Icon name='close' color={COLORS.ghostwhite} size={30}  />
-                </TouchableOpacity>
-            </Box>
+                    <TouchableOpacity
+                    style={{ flexDirection: 'row' }}
+                        onPress={()=>{
+                            setIsPhotoModalVisible(false);
+                            if (photoOwnerType === 'Grupo') {
+                                navigation.navigate('Group', {
+                                    ownerId: photoOwner?._id,
+                                })
+                            } 
+                            else if (photoOwnerType === 'Indivíduo') {
+                                navigation.navigate('Farmer', {
+                                    ownerId: photoOwner?._id,
+                                })
+                            } 
+                            else if (photoOwnerType === 'Instituição') {
+                                navigation.navigate('Institution', {
+                                    ownerId: photoOwner?._id,
+                                })
+                            }
+                        }}                            
+                    >
+                        <Icon name='close' color={COLORS.ghostwhite} size={30}  />
+                    </TouchableOpacity>
+                </Box>
+                <Box
+                    style={{
+                        // position: 'absolute',
+                        // top: -20,
+                        // left: 30,
+                        // zIndex: 1,
+                        // alignItems: 'center',
+                    }}
+                    >
+                    <Text
+                        style={{
+                            marginTop: -20,
+                            fontSize: 20,
+                            fontFamily: 'JosefinSans-Bold',
+                            color: COLORS.ghostwhite,
+                        }}
+                    >Foto {photoOwnerType === 'Indivíduo' ? 'do Produtor' : photoOwnerType === 'Grupo' ? 'Organização' : 'Instituição'}</Text>
+                </Box>
+
+
 
         <Box
             style={{
@@ -308,11 +332,12 @@ function PhotoModal({
                                 onPress={()=>{
                                     launchNativeCamera();
                                 }}
+                                disabled={userRole === roles.coopManager || userRole === roles.provincialManager}
                             >
                                 <Icon 
                                     name="photo-camera" 
                                     size={40}  
-                                    color={COLORS.main}
+                                    color={(userRole === roles.coopManager || userRole === roles.provincialManager) ? COLORS.lightgrey : COLORS.main }
                                 />
                             </TouchableOpacity>
                             <Text
@@ -331,11 +356,12 @@ function PhotoModal({
                             onPress={()=>{
                                 launchNativeImageLibrary()
                             }}
+                            disabled={userRole === roles.coopManager || userRole === roles.provincialManager}
                         >
                             <Icon 
                                 name="photo-library" 
                                 size={40} 
-                                color={COLORS.main} 
+                                color={(userRole === roles.coopManager || userRole === roles.provincialManager) ? COLORS.lightgrey : COLORS.main } 
                                 />
                         </TouchableOpacity>
                             <Text
@@ -354,12 +380,12 @@ function PhotoModal({
                             onPress={()=>{
                                deletePhoto(photoOwner, realm);
                             }}
-                            disabled={!photoOwner?.image}
+                            disabled={!photoOwner?.image || (userRole === roles.coopManager || userRole === roles.provincialManager)}
                         >
                             <Icon 
                                 name="delete" 
                                 size={40} 
-                                color={!photoOwner?.image ? COLORS.lightgrey : COLORS.danger} 
+                                color={(!photoOwner?.image || (userRole === roles.coopManager || userRole === roles.provincialManager))  ? COLORS.lightgrey : COLORS.danger} 
                                 />
                         </TouchableOpacity>
                             <Text

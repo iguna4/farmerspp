@@ -317,10 +317,10 @@ export default function GroupScreen ({ route, navigation }) {
             >
             <TouchableOpacity
               onPress={()=>{
-                if(customUserData?.role !== roles.provincialManager){
+                // if(customUserData?.role !== roles.provincialManager){
                   // setIsAddPhoto(!isAddPhoto);
                   setIsPhotoModalVisible(true);
-                }
+                // }
               }}
               style={{
                 position: 'relative',
@@ -512,6 +512,7 @@ export default function GroupScreen ({ route, navigation }) {
           photoOwnerType={'Grupo'}
           isPhotoModalVisible={isPhotoModalVisible}
           setIsPhotoModalVisible={setIsPhotoModalVisible}
+          userRole={customUserData?.role}
         />
         </ScrollView>
     }

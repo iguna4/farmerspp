@@ -314,10 +314,10 @@ export default function InstitutionScreen ({ route, navigation }) {
               {/* <View> */}
             <TouchableOpacity
               onPress={()=>{
-                if(customUserData?.role !== roles.provincialManager){
+                // if(customUserData?.role !== roles.provincialManager){
                   // setIsAddPhoto(!isAddPhoto);
                   setIsPhotoModalVisible(true);
-                }
+                // }
               }}
               style={{
                 position: 'relative',
@@ -497,6 +497,7 @@ export default function InstitutionScreen ({ route, navigation }) {
           photoOwnerType={'Instituição'}
           isPhotoModalVisible={isPhotoModalVisible}
           setIsPhotoModalVisible={setIsPhotoModalVisible}
+          userRole={customUserData?.role}
         />
         </ScrollView>
     }

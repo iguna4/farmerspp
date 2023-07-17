@@ -344,11 +344,11 @@ export default function FarmerScreen ({ route, navigation }) {
         >
           <TouchableOpacity
             onPress={()=>{
-              if(customUserData?.role !== roles.provincialManager){
+              // if(customUserData?.role !== roles.provincialManager){
                 // setIsAddPhoto(!isAddPhoto);
                 setIsPhotoModalVisible(true);
                 // handlePresentModalPress();
-              }
+              // }
             }}
             style={{
               position: 'relative',
@@ -627,6 +627,7 @@ export default function FarmerScreen ({ route, navigation }) {
           photoOwnerType={'Indivíduo'}
           isPhotoModalVisible={isPhotoModalVisible}
           setIsPhotoModalVisible={setIsPhotoModalVisible}
+          userRole={customUserData?.role}
         />
         </ScrollView>
     }

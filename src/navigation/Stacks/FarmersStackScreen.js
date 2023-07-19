@@ -18,6 +18,7 @@ import GroupRepresentativeScreen from '../../screens/GroupRepresentantiveScreen/
 import GroupMembersScreen from '../../screens/GroupMembersScreen/GroupMembersScreen';
 import FarmerGroupsScreen from '../../screens/FarmerGroupsScreen/FarmerGroupsScreen';
 import FarmersListScreen from '../../screens/FarmersListScreen/FarmersListScreen';
+import DuplicatesAlert from '../../components/Alerts/DuplicatesAlert';
 
 const FarmersStack = createNativeStackNavigator();
 
@@ -51,6 +52,7 @@ export default function FarmersStackScreen() {
         <FarmersStack.Screen name="GroupMembers" component={GroupMembersScreen} />
         <FarmersStack.Screen name="FarmerGroups" component={FarmerGroupsScreen} />
         <FarmersStack.Screen name="FarmersList" component={FarmersListScreen} />
+        {/* <FarmersStack.Screen name="Duplicates" component={DuplicatesAlert} /> */}
 
       </FarmersStack.Navigator>
   );

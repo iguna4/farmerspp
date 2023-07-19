@@ -316,7 +316,7 @@ const FarmersListScreen = ({ route, navigation}) => {
 
         }
 
-      else if (customUserData?.role === roles.provincialManager || customUserData?.role === roles.ampcmSupervisor) {
+      else if (customUserData?.role === roles.provincialManager || customUserData?.role === roles.coopManager) {
                   
         realm.subscriptions.update(mutableSubs => {
           mutableSubs.removeByName(provincialStats);

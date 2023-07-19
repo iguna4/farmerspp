@@ -186,17 +186,10 @@ function PhotoModal({
                 marginTop: 40,
                 alignItems: 'center' ,
                 marginHorizontal: 10,
-                // backgroundColor: COLORS.black,
                 width: '100%',
                 height: '100%',
-                // opacity: .6,
-
                 }}
             >
-
-
-
-
                 <Box 
                     style={{
                         position: 'absolute',
@@ -231,11 +224,6 @@ function PhotoModal({
                 </Box>
                 <Box
                     style={{
-                        // position: 'absolute',
-                        // top: -20,
-                        // left: 30,
-                        // zIndex: 1,
-                        // alignItems: 'center',
                     }}
                     >
                     <Text

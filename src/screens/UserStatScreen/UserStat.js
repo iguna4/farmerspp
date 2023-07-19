@@ -195,12 +195,12 @@ export default function UserStat({ route, navigation  }) {
   
   
   
-    if (loadingActivitiyIndicator) {
-      return <CustomActivityIndicator 
-          loadingActivitiyIndicator={loadingActivitiyIndicator}
-          setLoadingActivityIndicator={setLoadingActivityIndicator}
-      />
-    }
+    // if (loadingActivitiyIndicator) {
+    //   return <CustomActivityIndicator 
+    //       loadingActivitiyIndicator={loadingActivitiyIndicator}
+    //       setLoadingActivityIndicator={setLoadingActivityIndicator}
+    //   />
+    // }
     
 
     return (
@@ -551,239 +551,244 @@ export default function UserStat({ route, navigation  }) {
     >
 
 
-{   
-  !(pendingFarmers || invalidatedFarmers || pendingFarmlands || invalidatedFarmlands) &&
+{    loadingActivitiyIndicator ?
 
-    <FlatList
+  <Box
+    style={{
+      alignItems: 'center',
+      height: '100%',
+    }}
+  >
+    <CustomActivityIndicator 
+          loadingActivitiyIndicator={loadingActivitiyIndicator}
+          setLoadingActivityIndicator={setLoadingActivityIndicator}
+      />
+  </Box>
+    :
 
-          StickyHeaderComponent={()=>(
-              <Box style={{
-                height: 100,
+    <>
+{      !(pendingFarmers || invalidatedFarmers || pendingFarmlands || invalidatedFarmlands) &&
+    
+        <FlatList
+    
+              StickyHeaderComponent={()=>(
+                  <Box style={{
+                    height: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                    {/* <Text>Hello! Here is the sticky header!</Text> */}
+                  </Box>
+                )}
+                stickyHeaderHiddenOnScroll={true}
+    
+                data={farmersList}
+                keyExtractor={keyExtractor}
+                onEndReached={handleEndReached}
+                onEndReachedThreshold={0.1}
+                renderItem={({ item })=>{
+                if(item.flag === 'Grupo'){
+                    return <GroupItem  route={route} item={item} />
+                }
+                else if (item.flag === 'Indivíduo'){
+                    return <FarmerItem  route={route} navigation={navigation} item={item} />
+                }
+                else if (item.flag === 'Instituição'){
+                    return <InstitutionItem  route={route}  item={item} />
+                }
+                }
+              }
+              ListFooterComponent={()=>{
+                if (!isEndReached){
+                  return (
+                  <Box style={{
+                    height: hp('20%'),
+                    backgroundColor: COLORS.ghostwhite,
+                    // paddingBottom: 10,
+                  }}>
+                    { isLoading ? (<CustomActivityIndicator />) : null }
+                  </Box>
+    
+                  )
+                }
+                return null;
+                }
+              }
+            />
+}
+{            (pendingFarmers) &&
+              <FlatList
+          
+                    StickyHeaderComponent={()=>(
+                        <Box style={{
+                          height: 100,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                          {/* <Text>Hello! Here is the sticky header!</Text> */}
+                        </Box>
+                      )}
+                      stickyHeaderHiddenOnScroll={true}
+          
+                      data={filteredResources(farmersList, 'pendingFarmers')}
+                      keyExtractor={keyExtractor}
+                      renderItem={({ item })=>{
+                      if(item.flag === 'Grupo'){
+                          return <GroupItem  route={route} item={item} />
+                      }
+                      else if (item.flag === 'Indivíduo'){
+                          return <FarmerItem  route={route} navigation={navigation} item={item} />
+                      }
+                      else if (item.flag === 'Instituição'){
+                          return <InstitutionItem  route={route}  item={item} />
+                      }
+                      }
+                    }
+                    ListFooterComponent={()=>(
+                      <Box style={{
+                        height: 100,
+                        backgroundColor: COLORS.ghostwhite,
+                      }}>
+                      </Box>)
+                    }
+                  />
+}
+  
+{                  (invalidatedFarmers) &&
+                
+                    <FlatList
+                
+                          StickyHeaderComponent={()=>(
+                              <Box style={{
+                                height: 100,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                                {/* <Text>Hello! Here is the sticky header!</Text> */}
+                              </Box>
+                            )}
+                            stickyHeaderHiddenOnScroll={true}
+                
+                            data={filteredResources(farmersList, 'invalidatedFarmers')}
+                            keyExtractor={keyExtractor}
+                            renderItem={({ item })=>{
+                            if(item.flag === 'Grupo'){
+                                return <GroupItem  route={route} item={item} />
+                            }
+                            else if (item.flag === 'Indivíduo'){
+                                return <FarmerItem  route={route} navigation={navigation} item={item} />
+                            }
+                            else if (item.flag === 'Instituição'){
+                                return <InstitutionItem  route={route}  item={item} />
+                            }
+                            }
+                          }
+                          ListFooterComponent={()=>(
+                            <Box style={{
+                              height: 100,
+                              backgroundColor: COLORS.ghostwhite,
+                            }}>
+                            </Box>)
+                          }
+                        />
+}
+
+
+{                        (pendingFarmlands) &&
+                      
+                          <FlatList
+                      
+                                StickyHeaderComponent={()=>(
+                                    <Box style={{
+                                      height: 100,
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
+                                      {/* <Text>Hello! Here is the sticky header!</Text> */}
+                                    </Box>
+                                  )}
+                                  stickyHeaderHiddenOnScroll={true}
+                      
+                                  data={filteredResources(farmlandList, 'pendingFarmlands')}
+                                  keyExtractor={keyExtractor}
+                                  renderItem={({ item })=>{
+                                      return <FarmlandItem  route={route} item={item} />
+                                  }
+                                }
+                                ListFooterComponent={()=>(
+                                  <Box style={{
+                                    height: 100,
+                                    backgroundColor: COLORS.ghostwhite,
+                                  }}>
+                                  </Box>)
+                                }
+                              />
+}
+
+{                              (invalidatedFarmlands) &&
+                            
+                                <FlatList
+                            
+                                      StickyHeaderComponent={()=>(
+                                          <Box style={{
+                                            height: 100,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                          }}>
+                                            {/* <Text>Hello! Here is the sticky header!</Text> */}
+                                          </Box>
+                                        )}
+                                        stickyHeaderHiddenOnScroll={true}
+                            
+                                        data={filteredResources(farmlandList, 'invalidatedFarmlands')}
+                                        keyExtractor={keyExtractor}
+                                        renderItem={({ item })=>{
+                                            return <FarmlandItem  route={route} item={item} />
+                                        }
+                                      }
+                                      ListFooterComponent={()=>(
+                                        <Box style={{
+                                          height: 100,
+                                          backgroundColor: COLORS.ghostwhite,
+                                        }}>
+                                        </Box>)
+                                      }
+                                    />
+}
+
+{      (pendingFarmers && filteredResources(farmersList, 'pendingFarmers').length === 0) && 
+          <Box
+              style={{
                 justifyContent: 'center',
                 alignItems: 'center',
-              }}>
-                {/* <Text>Hello! Here is the sticky header!</Text> */}
-              </Box>
-            )}
-            stickyHeaderHiddenOnScroll={true}
+                padding: 10,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontFamily: 'JosefinSans-Regular',
+                  textAlign: 'center',
+                  lineHeight: 30,
+                  color: COLORS.black,
+                }}
+              >
+                Nenhum registo de produtor aguarda validação !</Text>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontFamily: 'JosefinSans-Regular',
+                    textAlign: 'center',
+                    lineHeight: 30,
+                    color: COLORS.grey,
+                  }}
+                >
+                  (Usuário: {userName})
+                </Text>
+            </Box>
+}
 
-            data={farmersList}
-            keyExtractor={keyExtractor}
-            onEndReached={handleEndReached}
-            onEndReachedThreshold={0.1}
-            renderItem={({ item })=>{
-            if(item.flag === 'Grupo'){
-                return <GroupItem  route={route} item={item} />
-            }
-            else if (item.flag === 'Indivíduo'){
-                return <FarmerItem  route={route} navigation={navigation} item={item} />
-            }
-            else if (item.flag === 'Instituição'){
-                return <InstitutionItem  route={route}  item={item} />
-            }
-            }
-          }
-          ListFooterComponent={()=>{
-            if (!isEndReached){
-              return (
-              <Box style={{
-                height: hp('20%'),
-                backgroundColor: COLORS.ghostwhite,
-                // paddingBottom: 10,
-              }}>
-                { isLoading ? (<CustomActivityIndicator />) : null }
-              </Box>
-
-              )
-            }
-            return null;
-            }
-          }
-        />
-  }
-
-{   
-  (pendingFarmers) &&
-
-    <FlatList
-
-          StickyHeaderComponent={()=>(
-              <Box style={{
-                height: 100,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                {/* <Text>Hello! Here is the sticky header!</Text> */}
-              </Box>
-            )}
-            stickyHeaderHiddenOnScroll={true}
-
-            data={filteredResources(farmersList, 'pendingFarmers')}
-            keyExtractor={keyExtractor}
-            renderItem={({ item })=>{
-            if(item.flag === 'Grupo'){
-                return <GroupItem  route={route} item={item} />
-            }
-            else if (item.flag === 'Indivíduo'){
-                return <FarmerItem  route={route} navigation={navigation} item={item} />
-            }
-            else if (item.flag === 'Instituição'){
-                return <InstitutionItem  route={route}  item={item} />
-            }
-            }
-          }
-          ListFooterComponent={()=>(
-            <Box style={{
-              height: 100,
-              backgroundColor: COLORS.ghostwhite,
-            }}>
-            </Box>)
-          }
-        />
-  }
-
-{   
-  (invalidatedFarmers) &&
-
-    <FlatList
-
-          StickyHeaderComponent={()=>(
-              <Box style={{
-                height: 100,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                {/* <Text>Hello! Here is the sticky header!</Text> */}
-              </Box>
-            )}
-            stickyHeaderHiddenOnScroll={true}
-
-            data={filteredResources(farmersList, 'invalidatedFarmers')}
-            keyExtractor={keyExtractor}
-            renderItem={({ item })=>{
-            if(item.flag === 'Grupo'){
-                return <GroupItem  route={route} item={item} />
-            }
-            else if (item.flag === 'Indivíduo'){
-                return <FarmerItem  route={route} navigation={navigation} item={item} />
-            }
-            else if (item.flag === 'Instituição'){
-                return <InstitutionItem  route={route}  item={item} />
-            }
-            }
-          }
-          ListFooterComponent={()=>(
-            <Box style={{
-              height: 100,
-              backgroundColor: COLORS.ghostwhite,
-            }}>
-            </Box>)
-          }
-        />
-  }
-
-
-
-{   
-  (pendingFarmlands) &&
-
-    <FlatList
-
-          StickyHeaderComponent={()=>(
-              <Box style={{
-                height: 100,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                {/* <Text>Hello! Here is the sticky header!</Text> */}
-              </Box>
-            )}
-            stickyHeaderHiddenOnScroll={true}
-
-            data={filteredResources(farmlandList, 'pendingFarmlands')}
-            keyExtractor={keyExtractor}
-            renderItem={({ item })=>{
-                return <FarmlandItem  route={route} item={item} />
-            }
-          }
-          ListFooterComponent={()=>(
-            <Box style={{
-              height: 100,
-              backgroundColor: COLORS.ghostwhite,
-            }}>
-            </Box>)
-          }
-        />
-  }
-
-
-{   
-  (invalidatedFarmlands) &&
-
-    <FlatList
-
-          StickyHeaderComponent={()=>(
-              <Box style={{
-                height: 100,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                {/* <Text>Hello! Here is the sticky header!</Text> */}
-              </Box>
-            )}
-            stickyHeaderHiddenOnScroll={true}
-
-            data={filteredResources(farmlandList, 'invalidatedFarmlands')}
-            keyExtractor={keyExtractor}
-            renderItem={({ item })=>{
-                return <FarmlandItem  route={route} item={item} />
-            }
-          }
-          ListFooterComponent={()=>(
-            <Box style={{
-              height: 100,
-              backgroundColor: COLORS.ghostwhite,
-            }}>
-            </Box>)
-          }
-        />
-  }
-
-
-{ (pendingFarmers && filteredResources(farmersList, 'pendingFarmers').length === 0) && 
-    <Box
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: 10,
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 18,
-            fontFamily: 'JosefinSans-Regular',
-            textAlign: 'center',
-            lineHeight: 30,
-            color: COLORS.black,
-          }}
-        >
-          Nenhum registo de produtor aguarda validação !</Text>
-          <Text
-            style={{
-              fontSize: 14,
-              fontFamily: 'JosefinSans-Regular',
-              textAlign: 'center',
-              lineHeight: 30,
-              color: COLORS.grey,
-            }}
-          >
-            (Usuário: {userName})
-          </Text>
-      </Box>
-  }
-
-
-{ (invalidatedFarmers && filteredResources(farmersList, 'invalidatedFarmers').length === 0) && 
+{(invalidatedFarmers && filteredResources(farmersList, 'invalidatedFarmers').length === 0) && 
     <Box
         style={{
           justifyContent: 'center',
@@ -813,75 +818,73 @@ export default function UserStat({ route, navigation  }) {
             (Usuário: {userName})
           </Text>
       </Box>
-  }
+}
 
-
-{ (invalidatedFarmlands && filteredResources(farmlandList, 'invalidatedFarmlands').length === 0) && 
-    <Box
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: 10,
-        }}
-      >
-        <Text
+{  (invalidatedFarmlands && filteredResources(farmlandList, 'invalidatedFarmlands').length === 0) && 
+      <Box
           style={{
-            fontSize: 18,
-            fontFamily: 'JosefinSans-Regular',
-            textAlign: 'center',
-            lineHeight: 30,
-            color: COLORS.black,
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 10,
           }}
         >
-          Nenhum registo de pomar encontra-se invalidado !</Text>
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 18,
               fontFamily: 'JosefinSans-Regular',
               textAlign: 'center',
               lineHeight: 30,
-              color: COLORS.grey,
+              color: COLORS.black,
             }}
           >
-            (Usuário: {userName})
-          </Text>
-      </Box>
-  }
-
-
-{ (pendingFarmlands && filteredResources(farmlandList, 'pendingFarmlands').length === 0) && 
-    <Box
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: 10,
-        }}
-      >
-        <Text
+            Nenhum registo de pomar encontra-se invalidado !</Text>
+            <Text
+              style={{
+                fontSize: 14,
+                fontFamily: 'JosefinSans-Regular',
+                textAlign: 'center',
+                lineHeight: 30,
+                color: COLORS.grey,
+              }}
+            >
+              (Usuário: {userName})
+            </Text>
+        </Box>
+}
+{  (pendingFarmlands && filteredResources(farmlandList, 'pendingFarmlands').length === 0) && 
+      <Box
           style={{
-            fontSize: 18,
-            fontFamily: 'JosefinSans-Regular',
-            textAlign: 'center',
-            lineHeight: 30,
-            color: COLORS.black,
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 10,
           }}
         >
-          Nenhum registo de pomar aguarda validação !</Text>
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 18,
               fontFamily: 'JosefinSans-Regular',
               textAlign: 'center',
               lineHeight: 30,
-              color: COLORS.grey,
+              color: COLORS.black,
             }}
           >
-            (Usuário: {userName})
-          </Text>
-      </Box>
-  }
+            Nenhum registo de pomar aguarda validação !</Text>
+            <Text
+              style={{
+                fontSize: 14,
+                fontFamily: 'JosefinSans-Regular',
+                textAlign: 'center',
+                lineHeight: 30,
+                color: COLORS.grey,
+              }}
+            >
+              (Usuário: {userName})
+            </Text>
+        </Box>
+}
 
-
+      </>
+    }
     </Box>
 </View>
 

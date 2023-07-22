@@ -42,6 +42,7 @@ import { useUser } from '@realm/react';
 import { roles } from '../../consts/roles';
 import StatItem from '../../components/StatItem/StatItem';
 import FarmerTypeCard from '../../components/FarmerTypeCard/FarmerTypeCard';
+import CustomDivider from '../../components/Divider/CustomDivider';
 const { useRealm, useQuery } = realmContext; 
 
 
@@ -450,6 +451,7 @@ export default function FarmersScreen({ route, navigation }) {
         keyExtractor={keyExtractor}
         // onEndReached={handleEndReached}
         onEndReachedThreshold={0.1}
+        ItemSeparatorComponent={()=><CustomDivider thickness={2} />}
         renderItem={({ item })=>{   
           if (item?.farmerType === 'Grupo'){
             item['total'] = groups?.length;
@@ -465,7 +467,7 @@ export default function FarmersScreen({ route, navigation }) {
         ListFooterComponent={()=>{ 
         return (<Box
           style={{
-          paddingBottom: 150,
+          paddingBottom: 100,
           }}
         >
           <Text></Text>

@@ -29,7 +29,7 @@ export const errorMessages = {
 
     farmlandWithNoBlockError : {
         title: 'Parcelas com cajueiros',
-        message: 'Este pomar não tem ainda parcelas de cajueiros. Pretendes adicionar parcela?',
+        message: 'Este pomar ainda não tem parcelas de cajueiros. Pretendes adicionar parcela?',
         logFlag: 'Farmland with no blocks',
         showCancelButton: true,
         showConfirmButton: true,

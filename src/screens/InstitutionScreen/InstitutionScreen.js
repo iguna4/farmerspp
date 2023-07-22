@@ -84,12 +84,6 @@ export default function InstitutionScreen ({ route, navigation }) {
 
     }, [realm ]);
 
-    // if (loadingActivitiyIndicator) {
-    //   return <CustomActivityIndicator
-    //       loadingActivitiyIndicator={loadingActivitiyIndicator}
-    //       setLoadingActivityIndicator={setLoadingActivityIndicator}
-    //   />
-    // }
 
     return (
         <SafeAreaView 
@@ -102,16 +96,10 @@ export default function InstitutionScreen ({ route, navigation }) {
 
       <View
           style={{
-            // height: "10%",
             width: '100%',
             paddingHorizontal: 5,
             paddingVertical:hp('1%'),
             backgroundColor: '#EBEBE4',
-            // borderTopWidth: 0,
-            // borderColor: '#EBEBE4',
-            // borderBottomWidth: 3,
-            // borderLeftWidth: 3,
-            // borderRightWidth: 3,
             alignItems: 'center',
             justifyContent: 'center',
           }}
@@ -134,16 +122,13 @@ export default function InstitutionScreen ({ route, navigation }) {
         }}
         onConfirmPressed={() => {
           setIsAddPhoto(false);
-          // setIsPhotoModalVisible(true);
         }}
       />
 
         <Stack
           direction="row" w="100%"
         >
-          <Box
-            // style={{ justifyContent: 'center'}}
-          >
+          <Box >
 
         <Pressable
                 onPress={()=>{
@@ -154,7 +139,6 @@ export default function InstitutionScreen ({ route, navigation }) {
                         left: 0,
                         top: 4,
                         flexDirection: 'row',
-                        // justifyContent: 'center',
                         alignItems: 'center',
                     }}
                 >
@@ -162,17 +146,7 @@ export default function InstitutionScreen ({ route, navigation }) {
                         name="arrow-back-ios" 
                         color={COLORS.main}
                         size={wp('8%')}
-                        // onPress={()=>{}}
                     /> 
-                    <Text
-                        style={{
-                            color: COLORS.main,
-                            fontFamily: 'JosefinSans-Bold',
-                            marginLeft: -10,
-                        }}
-                    >
-                        {/* Voltar */}
-                    </Text>
                 </Pressable>
           </Box>
 
@@ -298,7 +272,6 @@ export default function InstitutionScreen ({ route, navigation }) {
       :
       <ScrollView
             contentContainerStyle={{
-                // paddingVertical: 15,
                 padding: 5,
             }}
       >
@@ -311,13 +284,9 @@ export default function InstitutionScreen ({ route, navigation }) {
               borderColor: COLORS.pantone,
             }}
             >
-              {/* <View> */}
             <TouchableOpacity
               onPress={()=>{
-                // if(customUserData?.role !== roles.provincialManager){
-                  // setIsAddPhoto(!isAddPhoto);
                   setIsPhotoModalVisible(true);
-                // }
               }}
               style={{
                 position: 'relative',
@@ -416,7 +385,6 @@ export default function InstitutionScreen ({ route, navigation }) {
             color: COLORS.black,
             textAlign: 'center',
             fontFamily: 'JosefinSans-Bold',
-            // paddingVertical: 5,
         }}>
           Pomares
         </Text>
@@ -449,6 +417,8 @@ export default function InstitutionScreen ({ route, navigation }) {
                 onPress={()=>navigation.navigate('FarmlandForm1', {
                   ownerId: farmer?._id,
                   ownerName: `${farmer?.type} ${farmer?.name}`,
+                  ownerImage: farmer?.image,
+                  ownerAddress: farmer?.address,
                   flag: 'Instituição',
                 })}
               >
@@ -465,8 +435,6 @@ export default function InstitutionScreen ({ route, navigation }) {
                     }}
                 >
                     <FontAwesomeIcon icon={faTree} size={20} color={COLORS.mediumseagreen} />
-                    {/* <Icon name="save" size={20} color={COLORS.mediumseagreen} /> */}
-                    {/* </Box> */}
                     <Text
                         style={{
                             color: COLORS.mediumseagreen,

@@ -105,12 +105,6 @@ export default function FarmerScreen ({ route, navigation }) {
 
     }, [realm, refresh ]);
 
-    // useEffect(()=>{
-
-    // }, [ navigation ]);
-
-
-
 
 
     return (
@@ -141,7 +135,6 @@ export default function FarmerScreen ({ route, navigation }) {
             }}
             onConfirmPressed={() => {
               setIsAddPhoto(false);
-              // setIsPhotoModalVisible(true);
             }}
           />
 
@@ -149,7 +142,6 @@ export default function FarmerScreen ({ route, navigation }) {
 
       <View
           style={{
-            // height: "10%",
             width: '100%',
             paddingHorizontal: 5,
             paddingVertical:hp('1%'),
@@ -165,21 +157,17 @@ export default function FarmerScreen ({ route, navigation }) {
         <Stack
           direction="row" w="100%"
         >
-          <Box 
-            // style={{ justifyContent: 'center'}}
-          >
+          <Box>
 
           <Pressable
                 onPress={()=>{
                   navigation.navigate('Farmers');
-                  // setRefresh(!refresh);
                 }}
                     style={{
                         position: 'absolute',
                         left: 0,
                         top: 4,
                         flexDirection: 'row',
-                        // justifyContent: 'center',
                         alignItems: 'center',
                     }}
                 >
@@ -187,31 +175,8 @@ export default function FarmerScreen ({ route, navigation }) {
                         name="arrow-back-ios" 
                         color={COLORS.main}
                         size={wp('8%')}
-                        // onPress={()=>{}}
                     /> 
-                    <Text
-                        style={{
-                            color: COLORS.main,
-                            fontFamily: 'JosefinSans-Bold',
-                            marginLeft: -10,
-                        }}
-                    >
-                        {/* Voltar */}
-                    </Text>
                 </Pressable>
-
-
-            {/* <Pressable
-                onPress={()=>navigation.goBack()
-                  // .navigate('Farmers')
-                }
-            >
-                <Icon 
-                    name="arrow-back-ios" 
-                    color={COLORS.main}
-                    size={35}
-                    />
-            </Pressable> */}
           </Box>
 
           <Box w="100%">
@@ -326,9 +291,7 @@ export default function FarmerScreen ({ route, navigation }) {
     :
     <ScrollView
         contentContainerStyle={{
-          // paddingVertical: 15,
             padding: 5,
-            // marginBottom: 60,
         }}
       >
 
@@ -344,11 +307,7 @@ export default function FarmerScreen ({ route, navigation }) {
         >
           <TouchableOpacity
             onPress={()=>{
-              // if(customUserData?.role !== roles.provincialManager){
-                // setIsAddPhoto(!isAddPhoto);
                 setIsPhotoModalVisible(true);
-                // handlePresentModalPress();
-              // }
             }}
             style={{
               position: 'relative',
@@ -365,7 +324,6 @@ export default function FarmerScreen ({ route, navigation }) {
                 width: 200,
                 height: 200,
                 borderColor: COLORS.main,
-                // borderWidth: 2,
                 marginHorizontal: 3,
                 borderRadius: 120,
               }}
@@ -497,7 +455,6 @@ export default function FarmerScreen ({ route, navigation }) {
 
           </Box>
           <Box w="50%" 
-              // alignItems={'center'}
               style={{
                 alignItems: 'flex-end',
               }}
@@ -512,17 +469,13 @@ export default function FarmerScreen ({ route, navigation }) {
                   navigation.navigate('FarmlandForm1', {
                   ownerId: farmer._id,
                   ownerName: `${farmer?.names?.otherNames} ${farmer?.names?.surname}`,
+                  ownerImage: farmer?.image || '',
+                  ownerAddress: farmer?.address,
                   flag: 'Indivíduo',
                 })
                 setRefresh(!refresh);
               }}
               >
-                {/* <Icon 
-                  name="add-circle" 
-                  color={COLORS.mediumseagreen} 
-                  size={wp('15%')} 
-                /> */}
-
                 <Box
                     style={{
                         flexDirection: 'row',
@@ -536,8 +489,6 @@ export default function FarmerScreen ({ route, navigation }) {
                     }}
                 >
                     <FontAwesomeIcon icon={faTree} size={20} color={COLORS.mediumseagreen} />
-                    {/* <Icon name="save" size={20} color={COLORS.mediumseagreen} /> */}
-                    {/* </Box> */}
                     <Text
                         style={{
                             color: COLORS.mediumseagreen,

@@ -1,12 +1,8 @@
 import React, { useState, useEffect,  } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { Box, Center, NativeBaseProvider, Stack } from "native-base";
 import { FlatList, Pressable, ScrollView, View, Text, SafeAreaView, TouchableOpacity} from "react-native";
 import { Icon, CheckBox, Overlay } from '@rneui/themed';
 import DuplicatesAlertItem from "./DuplicatesAlertItem";
 import COLORS from "../../consts/colors";
-
-
 
 
 

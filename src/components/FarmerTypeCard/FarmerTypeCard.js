@@ -20,55 +20,33 @@ export function FarmerTypeCard({ route, item,  }) {
 
  return (
 
-   <View
-   style={{
-     alignItems: 'center',
-     justifyContent: 'center',
-     width: '100%',
-   }}
-   >
 
      <TouchableOpacity
       onPress={()=>{
-       navigation.navigate('FarmersList', { farmerType: item?.farmerType  });
+        navigation.navigate('FarmersList', { farmerType: item?.farmerType  });
       }}
       style={{
-        // alignItems: 'center',
-        // justifyContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
         width: '100%',
       }}
      >
-       <View
-        style={{
-         width: '100%',
-         flexDirection: 'row',
-         // backgroundColor: item?.backgroundColor,
-         borderColor: item.color,
-        //  borderWidth: 2,
-         marginVertical: 20,
-        }}
-       >
-
-
     {
-   <View
-     style={{
-      flexDirection: 'row',
-      paddingVertical: 5,
-      paddingHorizontal: 5,
-      width: '100%',
-     }}
-   >
+      <View
+        style={{
+        marginVertical: 20,
+        paddingHorizontal: 5,
+        flexDirection: 'row',
+        paddingVertical: 5,
+        width: '100%',
+      }}
+    >
       <View
        style={{
           justifyContent: 'center',
           alignItems: 'center',
           width: "25%",  
-          // borderRadius: 100,
-          // borderWidth: 2,
-          // borderColor: item?.color,
-          // marginHorizontal: 5,
-          // padding: 10,
   
        }}
       >
@@ -80,26 +58,15 @@ export function FarmerTypeCard({ route, item,  }) {
          padding: 10,
         }}
       >
-        <View
+        {/* <View
          style={{
           position: 'absolute',
-          right: -10,
-          top: 0,
+          right: -100,
+          bottom: 20,
          }}
         >
-         <Text
-          style={{
-           fontSize: 16,
-           fontFamily: 'JosefinSans-Bold',
-           textAlign: 'right',
-           letterSpacing: 3,
-           color: COLORS.red,
-          }}
- 
-         >
-          {item?.total}
-         </Text>
-        </View>
+
+        </View> */}
          <FontAwesomeIcon icon={item?.icon} size={50} color={item?.color} />
       </View>
       </View>
@@ -111,6 +78,24 @@ export function FarmerTypeCard({ route, item,  }) {
       flexDirection: 'column'
      }}
     >
+      <View
+        style={{
+          position: 'absolute',
+          top: 30,
+          left: -10,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 18,
+            fontFamily: 'JosefinSans-Bold',
+            textAlign: 'left',
+            color: COLORS.grey,
+          }}
+        >
+          {Intl.NumberFormat().format(item?.total)}
+        </Text>
+      </View>
      <View
       style={{
        width: '100%',
@@ -118,12 +103,6 @@ export function FarmerTypeCard({ route, item,  }) {
        paddingRight: 5,
       }}
      >
-      {/* <View 
-       style={{
-        width: '20%'
-       }}
-      >
-       </View> */}
 
        <View 
        style={{
@@ -149,6 +128,7 @@ export function FarmerTypeCard({ route, item,  }) {
           fontSize: 14,
           fontFamily: 'JosefinSans-Italic',
           textAlign: 'left',
+          color: COLORS.grey,
           
          }}
          numberOfLines={2}
@@ -173,12 +153,8 @@ export function FarmerTypeCard({ route, item,  }) {
 
    </View>
     }
-    </View>
    
-     </TouchableOpacity>
-   </View>
-   
-   // </Animated.View>
+     </TouchableOpacity>   
  )
 }
 

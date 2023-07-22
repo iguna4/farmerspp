@@ -2,33 +2,10 @@ import React, { useState, useEffect,} from "react";
 import { Button,  Box, Center, } from "native-base";
 import {  View, Text, Image, Dimensions, TouchableOpacity} from "react-native";
 import { Icon, CheckBox, Avatar } from '@rneui/themed';
-import Animated, { Layout, LightSpeedInLeft, LightSpeedOutRight, } from 'react-native-reanimated';
 
-import {  
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-  listenOrientationChange as lor,
-  removeOrientationListener as rol } 
-      from 'react-native-responsive-screen';
-
-// import { 
-//   responsiveFontSize,
-//   responsiveScreenFontSize,
-//   responsiveHeight,
-//   responsiveWidth,
-//   responsiveScreenHeight,
-//   responsiveScreenWidth,
-//   useDimensionsChange,
-
-// } from 'react-native-responsive-dimensions';
-
-
-// import { getInitials } from "../../helpers/getInitials";
 import COLORS from "../../consts/colors";
-import { months } from "../../helpers/dates";
 import { useNavigation   } from "@react-navigation/native";
 import CustomDivider from "../Divider/CustomDivider";
-import { Swipeable } from "react-native-gesture-handler";
 import CustomActivityIndicator from "../ActivityIndicator/CustomActivityIndicator";
 
 
@@ -53,8 +30,6 @@ const DuplicatesAlertItem = ({ suspectedDuplicates })=>{
     
   }, [ itemIndex ]);
   
-  console.log('itemIndex:', itemIndex);
-  console.log('suspec:', suspectedDuplicates?.length);
 
   if (loadingActivitiyIndicator) {
     return (

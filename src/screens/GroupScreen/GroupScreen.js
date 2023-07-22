@@ -85,13 +85,6 @@ export default function GroupScreen ({ route, navigation }) {
 
     }, [realm ]);
 
-    // if (loadingActivitiyIndicator) {
-    //   return <CustomActivityIndicator
-    //       loadingActivitiyIndicator={loadingActivitiyIndicator}
-    //       setLoadingActivityIndicator={setLoadingActivityIndicator}
-    //   />
-    // }
-
 
     return (
         <SafeAreaView 
@@ -120,7 +113,6 @@ export default function GroupScreen ({ route, navigation }) {
         }}
         onConfirmPressed={() => {
           setIsAddPhoto(false);
-          // setIsPhotoModalVisible(true);
         }}
       />
 
@@ -151,7 +143,6 @@ export default function GroupScreen ({ route, navigation }) {
                         left: 0,
                         top: 4,
                         flexDirection: 'row',
-                        // justifyContent: 'center',
                         alignItems: 'center',
                     }}
                 >
@@ -159,31 +150,9 @@ export default function GroupScreen ({ route, navigation }) {
                         name="arrow-back-ios" 
                         color={COLORS.main}
                         size={wp('8%')}
-                        // onPress={()=>{}}
                     /> 
-                    <Text
-                        style={{
-                            color: COLORS.main,
-                            fontFamily: 'JosefinSans-Bold',
-                            marginLeft: -10,
-                        }}
-                    >
-                        {/* Voltar */}
-                    </Text>
                 </Pressable>
 
-
-          {/* <Pressable
-              onPress={()=>navigation.goBack()
-                // navigate('Farmers')
-              }
-          >
-            <Icon 
-                name="arrow-back-ios" 
-                color={COLORS.main}
-                size={35}
-            />
-          </Pressable> */}
           </Box>
 
           <Box w="100%" 
@@ -301,7 +270,6 @@ export default function GroupScreen ({ route, navigation }) {
 
       <ScrollView
             contentContainerStyle={{
-                // paddingVertical: 15,
                 padding: 5,
             }}
       >
@@ -317,10 +285,7 @@ export default function GroupScreen ({ route, navigation }) {
             >
             <TouchableOpacity
               onPress={()=>{
-                // if(customUserData?.role !== roles.provincialManager){
-                  // setIsAddPhoto(!isAddPhoto);
                   setIsPhotoModalVisible(true);
-                // }
               }}
               style={{
                 position: 'relative',
@@ -385,9 +350,6 @@ export default function GroupScreen ({ route, navigation }) {
     
     
     </Box>
-    {/* 
-        Personal Data Child Component
-    */}
     <View        
       style={{
           marginTop: 40,
@@ -402,8 +364,9 @@ export default function GroupScreen ({ route, navigation }) {
             padding: 10,
             letterSpacing: 5,
           }}
-        >{farmer?.identifier}</Text>
-
+        >
+          {farmer?.identifier}
+        </Text>
 
         <GroupData farmer={farmer} />
     </View>
@@ -444,7 +407,6 @@ export default function GroupScreen ({ route, navigation }) {
 
             </Box>
             <Box w="50%" 
-              // alignItems={'e'}
               style={{
                 alignItems: 'flex-end',
               }}
@@ -457,15 +419,11 @@ export default function GroupScreen ({ route, navigation }) {
                 onPress={()=>navigation.navigate('FarmlandForm1', {
                   ownerId: farmer?._id,
                   ownerName: `${farmer?.type} ${farmer?.name}`,
+                  ownerImage: farmer?.image,
+                  ownerAddress: farmer?.address,
                   flag: 'Grupo',
                 })}
               >
-                {/* <Icon 
-                  name="add-circle" 
-                  color={COLORS.mediumseagreen} 
-                  size={wp('15%')} 
-                /> */}
-
                 <Box
                     style={{
                         flexDirection: 'row',
@@ -479,8 +437,6 @@ export default function GroupScreen ({ route, navigation }) {
                     }}
                 >
                     <FontAwesomeIcon icon={faTree} size={20} color={COLORS.mediumseagreen} />
-                    {/* <Icon name="save" size={20} color={COLORS.mediumseagreen} /> */}
-                    {/* </Box> */}
                     <Text
                         style={{
                             color: COLORS.mediumseagreen,

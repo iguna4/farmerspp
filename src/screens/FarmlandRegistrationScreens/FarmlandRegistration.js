@@ -41,10 +41,11 @@ import validateFarmlandMainData from '../../helpers/validateFarmlandMainData';
 import { assetTypes } from '../../consts/assetTypes';
 
 import { v4 as uuidv4 } from 'uuid';
-import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetScrollView, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import { categorizeFarmer } from '../../helpers/categorizeFarmer';
-import FarmlandBlockRegistration from '../../components/FarmlandBlockRegistration/FarmlandBlockRegistration';
+import FarmlandBlockRegistration from '../../components/FarmlandBlockRegistration/FarmlandBlockRegistration_BottomSheet';
+
 import categories from '../../consts/categories';
 import validateBlockData from '../../helpers/validateBlockData';
 import CustomDivider from '../../components/Divider/CustomDivider';
@@ -144,6 +145,17 @@ export default function FarmlandRegistration ({ route, navigation }) {
     
     // // ---------------------------------------------
     // BottomSheet
+    const bottomSheetModalRef = useRef(null);
+
+    const snapPoints =  [ "50%", "75%", "90%"];
+  
+    function handlePresentModal(){
+      bottomSheetModalRef.current?.present();
+    }
+
+    function handleDismissModal() {
+        bottomSheetModalRef.current?.dismiss();
+    }
 
 
 
@@ -606,1005 +618,1004 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
    
     return (
-    <SafeAreaView 
-      style={styles.container}
-    >
+        <SafeAreaView 
+        style={styles.container}
+        >
+            <AwesomeAlert
+                show={errorAlert}
+                showProgress={false}
+                title="Dados Obrigatórios"
+                message="Os campos obrigatórios devem ser bem preenchidos!"
+                closeOnTouchOutside={false}
+                closeOnHardwareBackPress={false}
+                showCancelButton={false}
+                showConfirmButton={true}
+                confirmText="   OK!   "
+                confirmButtonColor={COLORS.danger}
+                onConfirmPressed={() => {
+                    setErrorAlert(false);
+                }}
+            />
+
+
         <AwesomeAlert
-            show={errorAlert}
-            showProgress={false}
-            title="Dados Obrigatórios"
-            message="Os campos obrigatórios devem ser bem preenchidos!"
-            closeOnTouchOutside={false}
-            closeOnHardwareBackPress={false}
-            showCancelButton={false}
-            showConfirmButton={true}
-            confirmText="   OK!   "
-            confirmButtonColor={COLORS.danger}
-            onConfirmPressed={() => {
-                setErrorAlert(false);
+            show={alert}
+            
+            titleStyle={{
+                fontSize: 18,
+                // paddingVertical: 5,
+                // color: COLORS.ghostwhite,
+                fontWeight: 'bold',
+                marginBottom: 5,
+                // backgroundColor: COLORS.mediumseagreen,
+                width: '100%',
+                textAlign: 'center',
+
             }}
-        />
+            messageStyle={{
+                fontSize: 16,
+                color: COLORS.grey,
+                fontFamily: 'JosefinSans-Regular',
+                lineHeight: 25,
+                textAlign: 'center',
+            }}
 
+            alertContainerStyle	={{
+                // width: 300,
+                }}
 
-    <AwesomeAlert
-        show={alert}
+            overlayStyle={{
+                // width: 100,
+
+            }}
+
+            contentContainerStyle={{
+                // width: '90%',
+                minHeight: '30%',
+            }}
+
+            contentStyle={{
+                // flex: 1,
+                // paddingVertical: 1,
+            }}
+
+            cancelButtonStyle={{
+                // width: 120,
+                marginRight: 10,
+                }}
         
-        titleStyle={{
-            fontSize: 18,
-            // paddingVertical: 5,
-            // color: COLORS.ghostwhite,
-            fontWeight: 'bold',
-            marginBottom: 5,
-            // backgroundColor: COLORS.mediumseagreen,
-            width: '100%',
-            textAlign: 'center',
-
-        }}
-        messageStyle={{
-            fontSize: 16,
-            color: COLORS.grey,
-            fontFamily: 'JosefinSans-Regular',
-            lineHeight: 25,
-            textAlign: 'center',
-        }}
-
-        alertContainerStyle	={{
-            // width: 300,
-            }}
-
-        overlayStyle={{
-            // width: 100,
-
-        }}
-
-        contentContainerStyle={{
-            // width: '90%',
-            minHeight: '30%',
-        }}
-
-        contentStyle={{
-            // flex: 1,
-            // paddingVertical: 1,
-        }}
-
-        cancelButtonStyle={{
-            // width: 120,
-            marginRight: 10,
-            }}
-    
-            cancelButtonTextStyle={{
+                cancelButtonTextStyle={{
+                    fontSize: 14,
+                    textAlign: 'center',
+                //   fontWeight: 'bold',
+                    fontFamily: 'JosefinSans-Bold',
+                }}
+        
+                confirmButtonStyle={{
+                // width: 120,
+                marginLeft: 10,
+                }}
+        
+                confirmButtonTextStyle={{
                 fontSize: 14,
                 textAlign: 'center',
-            //   fontWeight: 'bold',
+                //   fontWeight: 'bold',
                 fontFamily: 'JosefinSans-Bold',
-            }}
-    
-            confirmButtonStyle={{
-            // width: 120,
-            marginLeft: 10,
-            }}
-    
-            confirmButtonTextStyle={{
-            fontSize: 14,
-            textAlign: 'center',
-            //   fontWeight: 'bold',
-            fontFamily: 'JosefinSans-Bold',
-            }}
-
-            showProgress={false}
-            title={titleAlert}
-            message={messageAlert}
-            closeOnTouchOutside={false}
-            closeOnHardwareBackPress={false}
-            showCancelButton={showCancelButton}
-            showConfirmButton={showConfirmButton}
-            cancelText={cancelText}
-            confirmText={confirmText}
-            cancelButtonColor={COLORS.danger}
-            confirmButtonColor={(logFlag?.includes('inconsistencies') || logFlag?.includes('no blocks') ) ? COLORS.main : COLORS.main}
-            onCancelPressed={()=>{
-                if (logFlag?.includes('inconsistencies') || logFlag?.includes('no blocks')){
-                    try {
-                        invalidateFarmland(farmlandId, invalidationMessage, realm);
-                        // navigation.goBack();
-                        navigateBack();
-                    }
-                    catch(error){
-                        console.log('could not finish invalidation task: ', { cause: error });
-                    }
-                }
-                setAlert(false);
-            }}
-            onConfirmPressed={() => {
-                setAlert(false);
-            }}
-        />
-
-
-
-      <ScrollView
-        decelerationRate={'normal'}
-        fadingEdgeLength={2}
-        keyboardDismissMode = 'on-drag'
-        keyboardShouldPersistTaps = 'handled'
-      >
-                <Box w="100%" 
-                    // alignItems={'center'}
-                    style={{
-                        backgroundColor: COLORS.fourth,
-                        height: 50,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                
-                >
-                    <Pressable
-                        onPress={()=>{
-                            if (farmlandId){
-                                if(checkBlockConformity(farmlandId, realm)){
-                                    navigateBack();
-                                }
-                            }
-                            else {
-                                navigation.goBack();
-                            }   
-                        }}   
-                        style={{
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Icon 
-                            name="arrow-back-ios" 
-                            color={COLORS.main}
-                            size={30}
-                        /> 
-        
-                    </Pressable>
-
-
-                    <Text 
-                        style={{ 
-                            textAlign: 'center', 
-                            fontFamily: 'JosefinSans-Bold', 
-                            fontSize: 16, 
-                            color: COLORS.main,  }}
-                    >
-                        Pomar
-                    </Text>
-                </Box>
-            <Stack direction="row" mt="1" pb="5"
-            
-            >
-                <Box w="5%"></Box>
-                <Box w="95%" 
-                    style={{
-                        flexDirection: 'row',
-                        minHeight: 80,
-                    }}
-                >
-            {  ownerImage ?                  
-                    <Image 
-                
-                        source={{ uri: ownerImage }}
-                        style={{
-                            width: 80,
-                            height: 80,
-                            borderColor: COLORS.main,
-                            marginHorizontal: 3,
-                            borderRadius: 120,
-                        }}
-                    />
-                    :
-
-                    <Icon 
-                        name="account-circle" 
-                        size={80} 
-                        color={COLORS.lightgrey} 
-                  />
-            }
-                    <Box
-                        style={{
-                            justifyContent: 'flex-end',
-                            paddingHorizontal: 10,
-                        }}
-                    >
-                        <Text 
-                            style={{
-                                fontSize: 20,
-                                fontFamily: 'JosefinSans-Bold',
-                                color: COLORS.black,
-                                lineHeight: 30,
-                            }}
-                            // numberOfLines={2}
-                            // ellipsizeMode="tail"
-                        >
-                            {ownerName?.includes('Outra') ? `Instituição ${ownerName?.slice(6)}` : ownerName} 
-                        </Text>  
-                        <Text 
-                            style={{
-                                fontSize: 14,
-                                fontFamily: 'JosefinSans-Regular',
-                                color: COLORS.grey,
-                                lineHeight: 25,
-                            }}
-                            // numberOfLines={2}
-                            // ellipsizeMode="tail"
-                        >
-                            {ownerAddress?.district}; {ownerAddress?.adminPost}
-                        </Text> 
-                    </Box>
-                </Box>
-
-                {/* <Box w="5%"></Box> */}
-            </Stack>
-
-            <CustomDivider thickness={2} bg={COLORS.lightgrey} />
-
-    {
-        loadingActivitiyIndicator && (
-            <CustomActivityIndicator 
-            loadingActivitiyIndicator={loadingActivitiyIndicator}
-            setLoadingActivityIndicator={setLoadingActivityIndicator}
-            />
-        )
-    }
-
-          <Box w="100%" p="4"
-            style={{
-                flexDirection: 'row',
-                height: 90,
-            }}
-          >
-            <Box w="80%" >
-                <Text style={styles.headerText}>
-                    Registo de pomar
-                </Text>
-            {  !farmland &&
-
-            
-            <Text
-                    style={{
-                        color: COLORS.grey,
-                        fontSize: 15,
-                        fontFamily: 'JosefinSans-Regular',
-                        paddingTop: 5,
-                    }}
-                >
-                    Introduza dados do pomar.
-                </Text>
-            }
-            </Box>
-            <Center w="15%"
-                style={{
-                    borderWidth: 2,
-                    borderColor: COLORS.main,
-                    borderRadius: 100,
-                    backgroundColor: COLORS.main,
                 }}
-            >
-                <FontAwesomeIcon icon={faTree} size={30} color={COLORS.ghostwhite} />
-            </Center>
-          </Box>
 
-
-{ 
-
-(!farmland) &&
-
- <Box px="3" my="6">
-        <Box w="100%" alignItems="center">
-            <FormControl isRequired my="1" isInvalid={'description' in errors}>
-                <FormControl.Label>Localização do Pomar</FormControl.Label>
-                <CustomInput
-                    width="100%"
-                    type="text"
-                    maxLength={50}
-                    multiline={true}
-                    // autoFocus={true}
-                    placeholder="Descrição da localização"
-                    value={description}
-                    onChangeText={newDescription=>{
-                        setErrors(prev=>({...prev, description: ''}))
-                        setDescription(newDescription)
-                    }}
-                    />
-                {
-                'description' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.description}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-                }
-            </FormControl>
-        
-
-        <Box w="100%" alignItems="center">
-            <FormControl my="1" isRequired isInvalid={'consociatedCrops' in errors}>
-                <FormControl.Label>Culturas consociadas</FormControl.Label>
-                <MultipleSelectList
-                    setSelected={(crop)=>{
-                        setErrors(prev=>({...prev, consociatedCrops: ''}));
-                        setConsociatedCrops(crop);
-                    }}
-                    data={crops}
-                    notFoundText={'Tipo de cultura não encontrada'}
-                    maxHeight={400}
-                    save="value"
-                    arrowicon={
-                        <Icon 
-                        // size={45} 
-                        name="arrow-drop-down" 
-                        color={COLORS.main} 
-                        />
+                showProgress={false}
+                title={titleAlert}
+                message={messageAlert}
+                closeOnTouchOutside={false}
+                closeOnHardwareBackPress={false}
+                showCancelButton={showCancelButton}
+                showConfirmButton={showConfirmButton}
+                cancelText={cancelText}
+                confirmText={confirmText}
+                cancelButtonColor={COLORS.danger}
+                confirmButtonColor={(logFlag?.includes('inconsistencies') || logFlag?.includes('no blocks') ) ? COLORS.main : COLORS.main}
+                onCancelPressed={()=>{
+                    if (logFlag?.includes('inconsistencies') || logFlag?.includes('no blocks')){
+                        try {
+                            invalidateFarmland(farmlandId, invalidationMessage, realm);
+                            // navigation.goBack();
+                            navigateBack();
+                        }
+                        catch(error){
+                            console.log('could not finish invalidation task: ', { cause: error });
+                        }
                     }
-                    closeicon={
-                        <Icon 
-                        name="close" 
-                        size={20} 
-                        color={COLORS.grey}
-                        />
-                    }
-                    fontFamily='JosefinSans-Regular'
-                    dropdownTextStyles={{
-                        fontSize: 16,
-                        color: COLORS.black,
-                        padding: 5,
-                    }}
-                    inputStyles={{
-                        fontSize: 16,
-                        color: '#A8A8A8',
-                    }}
-                    boxStyles={{
-                        minHeight: 55,
-                        borderRadius: 5,
-                        borderColor: COLORS.lightgrey,
-                    }}
-                    label="Culturas"
-                    placeholder="Culturas consociadas"
-                    badgeStyles={{
-                        backgroundColor: COLORS.main,                        
-                    }}
-                    badgeTextStyles={{
-                        fontSize: 16
-                    }}
-                    checkBoxStyles={{
+                    setAlert(false);
+                }}
+                onConfirmPressed={() => {
+                    setAlert(false);
+                }}
+            />
 
-                    }}
-                />
-                {
-                'consociatedCrops' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={14} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.consociatedCrops}</FormControl.ErrorMessage> 
-                : 
-                <FormControl.HelperText></FormControl.HelperText>
-                }
-            </FormControl>
 
-            {/* show all the newCrops that are typed by the user */}
-            {
-                otherConsociatedCrops.length > 0 &&
 
-                <Box
-                    style={{
-                        flexDirection: 'row',
-                        width: '100%',
-                        minHeight: 30,
-                        backgroundColor: COLORS.grey,
-                        borderRadius: 5,
-                    }}
-                >
-                    <Box
-                        w="90%"
-
+        <ScrollView
+            decelerationRate={'normal'}
+            fadingEdgeLength={2}
+            keyboardDismissMode = 'on-drag'
+            keyboardShouldPersistTaps = 'handled'
+        >
+                    <Box w="100%" 
+                        // alignItems={'center'}
                         style={{
-                            padding: 5,
+                            backgroundColor: COLORS.fourth,
+                            height: 50,
+                            alignItems: 'center',
                             justifyContent: 'center',
                         }}
+                    
                     >
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                fontSize: 13,
-                                textAlign: 'left',
-                                color: COLORS.ghostwhite,
-                                lineHeight: 20,
-                            }}
-                        >
-                            [ {otherConsociatedCrops.join('; ')} ]
-                        </Text>
-                    </Box>
-                    <Box
-                        w="10%"
-                        style={{
-                            alignItems: 'flex-end',
-                            justifyContent: 'flex-start',
-                            padding: 2,
-                        }}
-                    >
-                        <TouchableOpacity
+                        <Pressable
                             onPress={()=>{
-                                setOtherConsociatedCrops([]);
+                                if (farmlandId){
+                                    if(checkBlockConformity(farmlandId, realm)){
+                                        navigateBack();
+                                    }
+                                }
+                                else {
+                                    navigation.goBack();
+                                }   
+                            }}   
+                            style={{
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                flexDirection: 'row',
+                                alignItems: 'center',
                             }}
                         >
                             <Icon 
-                                name="close" 
-                                color={COLORS.ghostwhite} 
-                                size={20} 
-                            />
-                        </TouchableOpacity>
+                                name="arrow-back-ios" 
+                                color={COLORS.main}
+                                size={30}
+                            /> 
+            
+                        </Pressable>
 
+
+                        <Text 
+                            style={{ 
+                                textAlign: 'center', 
+                                fontFamily: 'JosefinSans-Bold', 
+                                fontSize: 16, 
+                                color: COLORS.main,  }}
+                        >
+                            Pomar
+                        </Text>
                     </Box>
-                </Box>
-            }
-
-{/* Show this only when the user chooses 'Outras' option in the consociatedCrops */}
-{ consociatedCrops?.find(crop => crop === 'Outras') &&
-        <Box
-            style={{
-
-            }}
-        >
-        <Stack direction="row" w="100%" space={2}>
-            <Box w="80%">
-            <FormControl isRequired my="2" isInvalid={'newCrop' in errors}>
-                <FormControl.Label>Outras culturas</FormControl.Label>
-                <CustomInput
-                    width="100%"
-                    keyboardType="default"
-                    textAlign="center"
-                    placeholder="Outra cultura"
-                    borderColor={errors?.newCrop ? 'red' : ''}
-                    value={newCrop}
-                    onChangeText={crop=>{
-                        setErrors(prev=>({...prev, newCrop: ''}))
-                        setNewCrop(crop)
-                    }}
-                />
-                    
-                {
-                    'newCrop' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.newCrop}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-                }
-            </FormControl>
-            </Box>
-
-        <Box w="20%"
-            style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingTop: errors?.newCrop ? 10 : 20,
-                // borderWidth: 1,
-            }}
-        >
-
-            <TouchableOpacity
-                onPress={()=>{
-                    if (newCrop !== '' && !otherConsociatedCrops?.find(crop => crop?.toLowerCase() === newCrop?.toLowerCase())){
-                        setOtherConsociatedCrops(prev => [...prev, newCrop]);
-                        setNewCrop('');
-                    }
-                    else {
-                        setErrors(prev =>({prev, newCrop: 'Indica outra cultura'}))
-                    }
-                }}
-            >
-                <Icon name="arrow-circle-up" size={40} color={COLORS.mediumseagreen}  />
-            </TouchableOpacity>               
-
-            </Box>
-        </Stack>  
-        </Box>
-}
-
-
-
-        <Box
-            style={{
-
-            }}
-        >
-        <Stack direction="row" w="100%" space={2}>
-            <Box w="48%">
-            <FormControl isRequired my="2" isInvalid={'totalArea' in errors}>
-                <FormControl.Label>Área Total Declarada</FormControl.Label>
-                <CustomInput
-                    width="100%"
-                    keyboardType="decimal-pad"
-                    textAlign="center"
-                    placeholder="Hectares"
-                    value={totalArea}
-                    onChangeText={newNumber=>{
-                        setErrors(prev=>({...prev, totalArea: ''}))
-                        setTotalArea(Number(newNumber))
-                    }}
-                />
-                    
-                {
-                    'totalArea' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.totalArea}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-                }
-            </FormControl>
-            </Box>
-
-        <Box w="48%"
-            style={{
-                justifyContent: 'flex-end'
-            }}
-        >
-        <FormControl isRequired my="2" isInvalid={'trees' in errors}>
-            <FormControl.Label>N° Total de Cajueiros</FormControl.Label>
-            <CustomInput
-                width="100%"
-                keyboardType="numeric"
-                textAlign="center"
-                placeholder="Cajueiros"
-                value={trees}
-                onChangeText={newNumber=>{
-                    setErrors(prev=>({...prev, trees: ''}))
-                    setTrees(newNumber)
-                }}
-            />
+                <Stack direction="row" mt="1" pb="5"
                 
-            {
-                'trees' in errors 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.trees}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText></FormControl.HelperText>
-            }
-            </FormControl>
-            </Box>
-        </Stack>  
-        </Box>
-    </Box>
-    </Box>
-</Box>
-}
-
-
-{
-   (farmland) && 
-    <>
-    <Box w="100%" 
-    // alignItems={"flex-end"}
-        style={{
-            padding: 20,
-        }}
-    >
-
-        <Box>
-            <Text
-                style={{
-                    color: COLORS.grey,
-                    fontSize: 14,
-                    fontFamily: 'JosefinSans-Regular'
-
-                }}
-            >Área Total</Text>
-            <Chip 
-                title={`${Number(farmland?.totalArea.toFixed(1))} hectares`}
-                // disabled
-                titleStyle={{
-                    color: COLORS.grey,
-                }}
-                icon={{
-                name: 'scatter-plot',
-                size: 20,
-                color: COLORS.grey,
-                }}
-                containerStyle={{ marginVertical: 15,  }}
-            />
-        </Box>
-
-        <Box>
-            <Text
-                style={{
-                    color: COLORS.grey,
-                    fontSize: 14,
-                    fontFamily: 'JosefinSans-Regular'
-                }}                
-            >
-                Cajueiros
-            </Text>
-            <Chip 
-                title={`${farmland?.trees} árvores`}
-                // disabled
-                titleStyle={{
-                    color: COLORS.grey,
-                }}
-                // type='outline'
-                // uppercase
-                icon={{
-                name: 'scatter-plot',
-                //   type: 'font-awesome',
-                size: 20,
-                color: COLORS.grey,
-                }}
-                // iconRight
-                containerStyle={{ marginVertical: 15,  }}
-            />
-            </Box>
-
-            <Box>
-            <Text
-                style={{
-                    color: COLORS.grey,
-                    fontSize: 14,
-                    fontFamily: 'JosefinSans-Regular'
-                }}                
-            >
-                Consociação
-            </Text>
-            <Chip 
-                title={farmland?.consociatedCrops?.join('; ')}
-                // disabled
-                titleStyle={{
-                    color: COLORS.grey,
-                }}
-                icon={{
-                name: 'scatter-plot',
-                size: 20,
-                color: COLORS.grey,
-                }}
-                containerStyle={{ marginVertical: 15,  }}
-            />
-            </Box>
-    </Box>
-
-    {
-        farmland?.blocks?.length > 0 && normalizeBlockList(farmland?.blocks)?.map((block, index)=>{
-          
-            return (
-            <Box key={index}
-                style={{
-                    flex: 1,
-                    margin: 10,
-
-                }}
-            >
-                <Box
-                    style={{
-                        borderBottomWidth: 2,
-                        borderBottomColor: COLORS.main,
-                    }}
                 >
-                    <Box w="100%"
+                    <Box w="5%"></Box>
+                    <Box w="95%" 
                         style={{
-                            backgroundColor: COLORS.main,
-                            paddingVertical: 3,
-                            paddingHorizontal: 6,
                             flexDirection: 'row',
+                            minHeight: 80,
                         }}
                     >
-                        <Box w="85%"
+                {  ownerImage ?                  
+                        <Image 
+                    
+                            source={{ uri: ownerImage }}
                             style={{
-                                paddingLeft: 10,
+                                width: 80,
+                                height: 80,
+                                borderColor: COLORS.main,
+                                marginHorizontal: 3,
+                                borderRadius: 120,
+                            }}
+                        />
+                        :
+
+                        <Icon 
+                            name="account-circle" 
+                            size={80} 
+                            color={COLORS.lightgrey} 
+                    />
+                }
+                        <Box
+                            style={{
+                                justifyContent: 'flex-end',
+                                paddingHorizontal: 10,
+                            }}
+                        >
+                            <Text 
+                                style={{
+                                    fontSize: 20,
+                                    fontFamily: 'JosefinSans-Bold',
+                                    color: COLORS.black,
+                                    lineHeight: 30,
+                                }}
+                                // numberOfLines={2}
+                                // ellipsizeMode="tail"
+                            >
+                                {ownerName?.includes('Outra') ? `Instituição ${ownerName?.slice(6)}` : ownerName} 
+                            </Text>  
+                            <Text 
+                                style={{
+                                    fontSize: 14,
+                                    fontFamily: 'JosefinSans-Regular',
+                                    color: COLORS.grey,
+                                    lineHeight: 25,
+                                }}
+                                // numberOfLines={2}
+                                // ellipsizeMode="tail"
+                            >
+                                {ownerAddress?.district}; {ownerAddress?.adminPost}
+                            </Text> 
+                        </Box>
+                    </Box>
+
+                    {/* <Box w="5%"></Box> */}
+                </Stack>
+
+                <CustomDivider thickness={2} bg={COLORS.lightgrey} />
+
+        {
+            loadingActivitiyIndicator && (
+                <CustomActivityIndicator 
+                loadingActivitiyIndicator={loadingActivitiyIndicator}
+                setLoadingActivityIndicator={setLoadingActivityIndicator}
+                />
+            )
+        }
+
+            <Box w="100%" p="4"
+                style={{
+                    flexDirection: 'row',
+                    height: 90,
+                }}
+            >
+                <Box w="80%" >
+                    <Text style={styles.headerText}>
+                        Registo de pomar
+                    </Text>
+                {  !farmland &&
+
+                
+                <Text
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: 15,
+                            fontFamily: 'JosefinSans-Regular',
+                            paddingTop: 5,
+                        }}
+                    >
+                        Introduza dados do pomar.
+                    </Text>
+                }
+                </Box>
+                <Center w="15%"
+                    style={{
+                        borderWidth: 2,
+                        borderColor: COLORS.main,
+                        borderRadius: 100,
+                        backgroundColor: COLORS.main,
+                    }}
+                >
+                    <FontAwesomeIcon icon={faTree} size={30} color={COLORS.ghostwhite} />
+                </Center>
+            </Box>
+
+
+    { 
+
+    (!farmland) &&
+
+    <Box px="3" my="6">
+            <Box w="100%" alignItems="center">
+                <FormControl isRequired my="1" isInvalid={'description' in errors}>
+                    <FormControl.Label>Localização do Pomar</FormControl.Label>
+                    <CustomInput
+                        width="100%"
+                        type="text"
+                        maxLength={50}
+                        multiline={true}
+                        // autoFocus={true}
+                        placeholder="Descrição da localização"
+                        value={description}
+                        onChangeText={newDescription=>{
+                            setErrors(prev=>({...prev, description: ''}))
+                            setDescription(newDescription)
+                        }}
+                        />
+                    {
+                    'description' in errors 
+                    ? <FormControl.ErrorMessage 
+                    leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                    _text={{ fontSize: 'xs'}}>{errors?.description}</FormControl.ErrorMessage> 
+                    : <FormControl.HelperText></FormControl.HelperText>
+                    }
+                </FormControl>
+            
+
+            <Box w="100%" alignItems="center">
+                <FormControl my="1" isRequired isInvalid={'consociatedCrops' in errors}>
+                    <FormControl.Label>Culturas consociadas</FormControl.Label>
+                    <MultipleSelectList
+                        setSelected={(crop)=>{
+                            setErrors(prev=>({...prev, consociatedCrops: ''}));
+                            setConsociatedCrops(crop);
+                        }}
+                        data={crops}
+                        notFoundText={'Tipo de cultura não encontrada'}
+                        maxHeight={400}
+                        save="value"
+                        arrowicon={
+                            <Icon 
+                            // size={45} 
+                            name="arrow-drop-down" 
+                            color={COLORS.main} 
+                            />
+                        }
+                        closeicon={
+                            <Icon 
+                            name="close" 
+                            size={20} 
+                            color={COLORS.grey}
+                            />
+                        }
+                        fontFamily='JosefinSans-Regular'
+                        dropdownTextStyles={{
+                            fontSize: 16,
+                            color: COLORS.black,
+                            padding: 5,
+                        }}
+                        inputStyles={{
+                            fontSize: 16,
+                            color: '#A8A8A8',
+                        }}
+                        boxStyles={{
+                            minHeight: 55,
+                            borderRadius: 5,
+                            borderColor: COLORS.lightgrey,
+                        }}
+                        label="Culturas"
+                        placeholder="Culturas consociadas"
+                        badgeStyles={{
+                            backgroundColor: COLORS.main,                        
+                        }}
+                        badgeTextStyles={{
+                            fontSize: 16
+                        }}
+                        checkBoxStyles={{
+
+                        }}
+                    />
+                    {
+                    'consociatedCrops' in errors 
+                    ? <FormControl.ErrorMessage 
+                    leftIcon={<Icon name="error-outline" size={14} color="red" />}
+                    _text={{ fontSize: 'xs'}}>{errors?.consociatedCrops}</FormControl.ErrorMessage> 
+                    : 
+                    <FormControl.HelperText></FormControl.HelperText>
+                    }
+                </FormControl>
+
+                {/* show all the newCrops that are typed by the user */}
+                {
+                    otherConsociatedCrops.length > 0 &&
+
+                    <Box
+                        style={{
+                            flexDirection: 'row',
+                            width: '100%',
+                            minHeight: 30,
+                            backgroundColor: COLORS.grey,
+                            borderRadius: 5,
+                        }}
+                    >
+                        <Box
+                            w="90%"
+
+                            style={{
+                                padding: 5,
+                                justifyContent: 'center',
                             }}
                         >
                             <Text
                                 style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    fontSize: 13,
+                                    textAlign: 'left',
                                     color: COLORS.ghostwhite,
-                                    fontFamily: 'JosefinSans-Bold',
-                                    fontSize: 15,
+                                    lineHeight: 20,
                                 }}
-                                numberOfLines={1}
-                                ellipsizeMode="head"
                             >
-                                Ano de Plantio: {block?.plantingYear}</Text>
+                                [ {otherConsociatedCrops.join('; ')} ]
+                            </Text>
                         </Box>
-
-                        <Box w="15%">
+                        <Box
+                            w="10%"
+                            style={{
+                                alignItems: 'flex-end',
+                                justifyContent: 'flex-start',
+                                padding: 2,
+                            }}
+                        >
                             <TouchableOpacity
-                                disabled={block?.position === (farmland?.blocks?.length - 1) ? false : true}
                                 onPress={()=>{
-                                    setAreaFlag(prev=>prev - parseFloat(block?.usedArea));
-                                    setTreesFlag(prev =>prev - parseInt(block?.trees));
-
-                                    setIsDeleteBlockOn(true);
-
+                                    setOtherConsociatedCrops([]);
                                 }}
                             >
                                 <Icon 
-                                    name={block?.position === (farmland?.blocks?.length - 1) ? 'delete-forever' : 'check-circle'} 
-                                    size={35} 
-                                    color={block?.position === (farmland?.blocks?.length - 1) ? COLORS.ghostwhite : COLORS.ghostwhite} 
+                                    name="close" 
+                                    color={COLORS.ghostwhite} 
+                                    size={20} 
                                 />
                             </TouchableOpacity>
-                        </Box>
-                        <Box w="5%">
+
                         </Box>
                     </Box>
-                    <Box
-                        w="100%"
-                        style={{
+                }
 
+    {/* Show this only when the user chooses 'Outras' option in the consociatedCrops */}
+    { consociatedCrops?.find(crop => crop === 'Outras') &&
+            <Box
+                style={{
+
+                }}
+            >
+            <Stack direction="row" w="100%" space={2}>
+                <Box w="80%">
+                <FormControl isRequired my="2" isInvalid={'newCrop' in errors}>
+                    <FormControl.Label>Outras culturas</FormControl.Label>
+                    <CustomInput
+                        width="100%"
+                        keyboardType="default"
+                        textAlign="center"
+                        placeholder="Outra cultura"
+                        borderColor={errors?.newCrop ? 'red' : ''}
+                        value={newCrop}
+                        onChangeText={crop=>{
+                            setErrors(prev=>({...prev, newCrop: ''}))
+                            setNewCrop(crop)
+                        }}
+                    />
+                        
+                    {
+                        'newCrop' in errors 
+                    ? <FormControl.ErrorMessage 
+                    leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                    _text={{ fontSize: 'xs'}}>{errors?.newCrop}</FormControl.ErrorMessage> 
+                    : <FormControl.HelperText></FormControl.HelperText>
+                    }
+                </FormControl>
+                </Box>
+
+            <Box w="20%"
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingTop: errors?.newCrop ? 10 : 20,
+                    // borderWidth: 1,
+                }}
+            >
+
+                <TouchableOpacity
+                    onPress={()=>{
+                        if (newCrop !== '' && !otherConsociatedCrops?.find(crop => crop?.toLowerCase() === newCrop?.toLowerCase())){
+                            setOtherConsociatedCrops(prev => [...prev, newCrop]);
+                            setNewCrop('');
+                        }
+                        else {
+                            setErrors(prev =>({prev, newCrop: 'Indica outra cultura'}))
+                        }
+                    }}
+                >
+                    <Icon name="arrow-circle-up" size={40} color={COLORS.mediumseagreen}  />
+                </TouchableOpacity>               
+
+                </Box>
+            </Stack>  
+            </Box>
+    }
+
+
+
+            <Box
+                style={{
+
+                }}
+            >
+            <Stack direction="row" w="100%" space={2}>
+                <Box w="48%">
+                <FormControl isRequired my="2" isInvalid={'totalArea' in errors}>
+                    <FormControl.Label>Área Total Declarada</FormControl.Label>
+                    <CustomInput
+                        width="100%"
+                        keyboardType="decimal-pad"
+                        textAlign="center"
+                        placeholder="Hectares"
+                        value={totalArea}
+                        onChangeText={newNumber=>{
+                            setErrors(prev=>({...prev, totalArea: ''}))
+                            setTotalArea(Number(newNumber))
+                        }}
+                    />
+                        
+                    {
+                        'totalArea' in errors 
+                    ? <FormControl.ErrorMessage 
+                    leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                    _text={{ fontSize: 'xs'}}>{errors?.totalArea}</FormControl.ErrorMessage> 
+                    : <FormControl.HelperText></FormControl.HelperText>
+                    }
+                </FormControl>
+                </Box>
+
+            <Box w="48%"
+                style={{
+                    justifyContent: 'flex-end'
+                }}
+            >
+            <FormControl isRequired my="2" isInvalid={'trees' in errors}>
+                <FormControl.Label>N° Total de Cajueiros</FormControl.Label>
+                <CustomInput
+                    width="100%"
+                    keyboardType="numeric"
+                    textAlign="center"
+                    placeholder="Cajueiros"
+                    value={trees}
+                    onChangeText={newNumber=>{
+                        setErrors(prev=>({...prev, trees: ''}))
+                        setTrees(newNumber)
+                    }}
+                />
+                    
+                {
+                    'trees' in errors 
+                    ? <FormControl.ErrorMessage 
+                    leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                    _text={{ fontSize: 'xs'}}>{errors?.trees}</FormControl.ErrorMessage> 
+                    : <FormControl.HelperText></FormControl.HelperText>
+                }
+                </FormControl>
+                </Box>
+            </Stack>  
+            </Box>
+        </Box>
+        </Box>
+    </Box>
+    }
+
+
+    {
+    (farmland) && 
+        <>
+        <Box w="100%" 
+        // alignItems={"flex-end"}
+            style={{
+                padding: 20,
+            }}
+        >
+
+            <Box>
+                <Text
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular'
+
+                    }}
+                >Área Total</Text>
+                <Chip 
+                    title={`${Number(farmland?.totalArea.toFixed(1))} hectares`}
+                    // disabled
+                    titleStyle={{
+                        color: COLORS.grey,
+                    }}
+                    icon={{
+                    name: 'scatter-plot',
+                    size: 20,
+                    color: COLORS.grey,
+                    }}
+                    containerStyle={{ marginVertical: 15,  }}
+                />
+            </Box>
+
+            <Box>
+                <Text
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular'
+                    }}                
+                >
+                    Cajueiros
+                </Text>
+                <Chip 
+                    title={`${farmland?.trees} árvores`}
+                    // disabled
+                    titleStyle={{
+                        color: COLORS.grey,
+                    }}
+                    // type='outline'
+                    // uppercase
+                    icon={{
+                    name: 'scatter-plot',
+                    //   type: 'font-awesome',
+                    size: 20,
+                    color: COLORS.grey,
+                    }}
+                    // iconRight
+                    containerStyle={{ marginVertical: 15,  }}
+                />
+                </Box>
+
+                <Box>
+                <Text
+                    style={{
+                        color: COLORS.grey,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular'
+                    }}                
+                >
+                    Consociação
+                </Text>
+                <Chip 
+                    title={farmland?.consociatedCrops?.join('; ')}
+                    // disabled
+                    titleStyle={{
+                        color: COLORS.grey,
+                    }}
+                    icon={{
+                    name: 'scatter-plot',
+                    size: 20,
+                    color: COLORS.grey,
+                    }}
+                    containerStyle={{ marginVertical: 15,  }}
+                />
+                </Box>
+        </Box>
+
+        {
+            farmland?.blocks?.length > 0 && normalizeBlockList(farmland?.blocks)?.map((block, index)=>{
+            
+                return (
+                <Box key={index}
+                    style={{
+                        flex: 1,
+                        margin: 10,
+
+                    }}
+                >
+                    <Box
+                        style={{
+                            borderBottomWidth: 2,
+                            borderBottomColor: COLORS.main,
                         }}
                     >
-                        <Stack direction="row" w="100%" space={1} my="3">
-                            <Box w="50%"
-                                alignItems={"center"}
-                            >
-                                <Text
-                                    style={{ 
-                                        color: COLORS.black, 
-                                        fontFamily: 'JosefinSans-Bold', 
-                                        fontSize: 14, }}
-                                >
-                                    Área (hectares)
-                                </Text>
-                                <Text>({Number(block?.usedArea.toFixed(1))})</Text>
-                            </Box>
-                            <Box w="50%"
-                             alignItems={"center"}
-                            >
-                                <Text
-                                 style={{ 
-                                    color: COLORS.black, 
-                                    fontFamily: 'JosefinSans-Bold',  
-                                    fontSize: 14, 
+                        <Box w="100%"
+                            style={{
+                                backgroundColor: COLORS.main,
+                                paddingVertical: 3,
+                                paddingHorizontal: 6,
+                                flexDirection: 'row',
+                            }}
+                        >
+                            <Box w="85%"
+                                style={{
+                                    paddingLeft: 10,
                                 }}
+                            >
+                                <Text
+                                    style={{
+                                        color: COLORS.ghostwhite,
+                                        fontFamily: 'JosefinSans-Bold',
+                                        fontSize: 15,
+                                    }}
+                                    numberOfLines={1}
+                                    ellipsizeMode="head"
                                 >
-                                    Cajueiros (árvores)
-                                </Text>
-                                <Text>({block?.trees})</Text>
+                                    Ano de Plantio: {block?.plantingYear}</Text>
                             </Box>
-                        </Stack>
-                    </Box>
 
-                    <Box
-                        w="100%"
-                        style={{
-                            
-                        }}
-                    >
-                        <Stack direction="row" w="100%" space={1} my="3">
-                            <Box w="50%"
-                                alignItems={"center"}
-                            >
-                                <Text
-                                style={{ 
-                                    color: COLORS.black, 
-                                    fontFamily: 'JosefinSans-Bold',  
-                                    fontSize: 14, 
-                                }}
+                            <Box w="15%">
+                                <TouchableOpacity
+                                    disabled={block?.position === (farmland?.blocks?.length - 1) ? false : true}
+                                    onPress={()=>{
+                                        setAreaFlag(prev=>prev - parseFloat(block?.usedArea));
+                                        setTreesFlag(prev =>prev - parseInt(block?.trees));
+
+                                        setIsDeleteBlockOn(true);
+
+                                    }}
                                 >
-                                    Compasso (metros)
-                                </Text>
-                                <Text>{block?.density?.mode === 'Regular' ? `(${block?.density?.mode}: ${block?.density?.length}x${block?.density?.width})` : `(${block?.density?.mode})`}</Text>
+                                    <Icon 
+                                        name={block?.position === (farmland?.blocks?.length - 1) ? 'delete-forever' : 'check-circle'} 
+                                        size={35} 
+                                        color={block?.position === (farmland?.blocks?.length - 1) ? COLORS.ghostwhite : COLORS.ghostwhite} 
+                                    />
+                                </TouchableOpacity>
                             </Box>
-                            <Box w="50%"
-                             alignItems={"center"}
-                            >
-                                <Text
+                            <Box w="5%">
+                            </Box>
+                        </Box>
+                        <Box
+                            w="100%"
+                            style={{
+
+                            }}
+                        >
+                            <Stack direction="row" w="100%" space={1} my="3">
+                                <Box w="50%"
+                                    alignItems={"center"}
+                                >
+                                    <Text
+                                        style={{ 
+                                            color: COLORS.black, 
+                                            fontFamily: 'JosefinSans-Bold', 
+                                            fontSize: 14, }}
+                                    >
+                                        Área (hectares)
+                                    </Text>
+                                    <Text>({Number(block?.usedArea.toFixed(1))})</Text>
+                                </Box>
+                                <Box w="50%"
+                                alignItems={"center"}
+                                >
+                                    <Text
                                     style={{ 
                                         color: COLORS.black, 
                                         fontFamily: 'JosefinSans-Bold',  
                                         fontSize: 14, 
                                     }}
-                                >
-                                    Tipo de plantas
-                                </Text>
-                                <Text
-                                    style={{ textAlign: 'center', }}
+                                    >
+                                        Cajueiros (árvores)
+                                    </Text>
+                                    <Text>({block?.trees})</Text>
+                                </Box>
+                            </Stack>
+                        </Box>
 
-                                >({block?.plantTypes?.plantType?.join("; ") })</Text>
-                                <Text
-                                    style={{ textAlign: 'center', }}
-                                >{block?.plantTypes?.plantType?.some(plant=>plant?.includes('enxert')) ? `(clones: ${block?.plantTypes?.clones?.join("; ")})` : ''}</Text>
-                            </Box>
-                        </Stack>
+                        <Box
+                            w="100%"
+                            style={{
+                                
+                            }}
+                        >
+                            <Stack direction="row" w="100%" space={1} my="3">
+                                <Box w="50%"
+                                    alignItems={"center"}
+                                >
+                                    <Text
+                                    style={{ 
+                                        color: COLORS.black, 
+                                        fontFamily: 'JosefinSans-Bold',  
+                                        fontSize: 14, 
+                                    }}
+                                    >
+                                        Compasso (metros)
+                                    </Text>
+                                    <Text>{block?.density?.mode === 'Regular' ? `(${block?.density?.mode}: ${block?.density?.length}x${block?.density?.width})` : `(${block?.density?.mode})`}</Text>
+                                </Box>
+                                <Box w="50%"
+                                alignItems={"center"}
+                                >
+                                    <Text
+                                        style={{ 
+                                            color: COLORS.black, 
+                                            fontFamily: 'JosefinSans-Bold',  
+                                            fontSize: 14, 
+                                        }}
+                                    >
+                                        Tipo de plantas
+                                    </Text>
+                                    <Text
+                                        style={{ textAlign: 'center', }}
+
+                                    >({block?.plantTypes?.plantType?.join("; ") })</Text>
+                                    <Text
+                                        style={{ textAlign: 'center', }}
+                                    >{block?.plantTypes?.plantType?.some(plant=>plant?.includes('enxert')) ? `(clones: ${block?.plantTypes?.clones?.join("; ")})` : ''}</Text>
+                                </Box>
+                            </Stack>
+                        </Box>
                     </Box>
                 </Box>
-            </Box>
-        )})
-        }
+            )})
+            }
 
-</>
-}
-
-{/* <Box> */}
-{ farmland &&
-        <Box w="100%" p="4">
-            <Text
-                style={{
-                    fontSize: 15,
-                    fontFamily: 'JosefinSans-Regular',
-                    color: COLORS.main,
-                    textAlign: 'right',
-                    // padding: 10,
-                }}
-            >
-                A {ordinalNumberings[(farmland?.blocks?.length + 1)]} parcela!
-            </Text>    
-        </Box>
+    </>
     }
-{/* </Box> */}
 
-<Stack w="100%" direction="row" pb="10">
-        <Box w="50%"
-            style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-        {  farmland?.blocks?.length > 0 &&
-        <Box w="70%">        
-                <TouchableOpacity   
-                    onPress={()=>{
-                        if(checkBlockConformity(farmlandId, realm)){
-                            setIsCoordinatesModalVisible(true)
-                        }
-                    }}  
-                >
-                    <Box 
-                        style={{ 
-                            borderWidth: 2, 
-                            borderColor: COLORS.red, 
-                            backgroundColor: COLORS.red,
-                            borderRadius: 100, 
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            padding: 4,
-                        }}
-                    >
-                    <Text
-                        style={{ 
-                            fontSize: 13, 
-                            color: COLORS.ghostwhite, 
-                            fontFamily: 'JosefinSans-Bold', 
-                            textAlign: 'center',
-                            padding: 4,
-                        }}
-                    >
-                        Concluir Registo
-                    </Text>
-                </Box>
-            </TouchableOpacity> 
-        </Box>
-
-        }      
-        </Box>
-
-
-        <Box w="50%"
-            style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-{ 
-        <Box w="70%">
-            <TouchableOpacity
-                onPress={()=>{
-                    if (farmland){
-
-                        // make the block data form visible
-                        setIsOverlayVisible(true);
-                    }
-                    else {
-                        setLoadingButton(true);
-                        
-                        // visualize and save the farmland main data
-                        visualizeFarmlandMainData();
-                    }
-                }}
-            >
-                <Box
+    {/* <Box> */}
+    { farmland &&
+            <Box w="100%" p="4">
+                <Text
                     style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: 100,
-                        borderWidth: 2,
-                        borderColor: COLORS.main,
-                        backgroundColor: COLORS.main,
-                        padding: 4,
-            
+                        fontSize: 15,
+                        fontFamily: 'JosefinSans-Regular',
+                        color: COLORS.main,
+                        textAlign: 'right',
+                        // padding: 10,
                     }}
                 >
-                    <Text
-                        style={{
-                            color: COLORS.ghostwhite,
-                            fontSize: 13,
-                            fontFamily: 'JosefinSans-Bold',
-                            textAlign: 'center',
-                            padding: 4,
+                    A {ordinalNumberings[(farmland?.blocks?.length + 1)]} parcela!
+                </Text>    
+            </Box>
+        }
+    {/* </Box> */}
 
+    <Stack w="100%" direction="row" pb="10">
+            <Box w="50%"
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+            {  farmland?.blocks?.length > 0 &&
+            <Box w="70%">        
+                    <TouchableOpacity   
+                        onPress={()=>{
+                            if(checkBlockConformity(farmlandId, realm)){
+                                setIsCoordinatesModalVisible(true)
+                            }
+                        }}  
+                    >
+                        <Box 
+                            style={{ 
+                                borderWidth: 2, 
+                                borderColor: COLORS.red, 
+                                backgroundColor: COLORS.red,
+                                borderRadius: 100, 
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: 4,
+                            }}
+                        >
+                        <Text
+                            style={{ 
+                                fontSize: 13, 
+                                color: COLORS.ghostwhite, 
+                                fontFamily: 'JosefinSans-Bold', 
+                                textAlign: 'center',
+                                padding: 4,
+                            }}
+                        >
+                            Concluir Registo
+                        </Text>
+                    </Box>
+                </TouchableOpacity> 
+            </Box>
+
+            }      
+            </Box>
+
+
+            <Box w="50%"
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+    { 
+            <Box w="70%">
+                <TouchableOpacity
+                    onPress={()=>{
+                        if (farmland){
+
+                            // make the block data form visible
+                            // setIsOverlayVisible(true);
+                            handlePresentModal();
+                        }
+                        else {
+                            setLoadingButton(true);
+                            
+                            // visualize and save the farmland main data
+                            visualizeFarmlandMainData();
+                        }
+                    }}
+                >
+                    <Box
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: 100,
+                            borderWidth: 2,
+                            borderColor: COLORS.main,
+                            backgroundColor: COLORS.main,
+                            padding: 4,
+                
                         }}
                     >
-                        {!farmland ? "Adicionar Pomar" : "Adicionar Parcela"}
-                    </Text>
+                        <Text
+                            style={{
+                                color: COLORS.ghostwhite,
+                                fontSize: 13,
+                                fontFamily: 'JosefinSans-Bold',
+                                textAlign: 'center',
+                                padding: 4,
 
-                </Box>
-            </TouchableOpacity>
-        </Box>
-}
+                            }}
+                        >
+                            {!farmland ? "Adicionar Pomar" : "Adicionar Parcela"}
+                        </Text>
 
-        </Box>
-</Stack>
+                    </Box>
+                </TouchableOpacity>
+            </Box>
+    }
 
+            </Box>
+    </Stack>
 
-
-    <FarmlandBlockRegistration 
-        isOverlayVisible={isOverlayVisible}
-        setIsOverlayVisible={setIsOverlayVisible}
-        customUserData={customUserData}
-        errors={errors}
-        setErrors={setErrors}
-        alert={alert}
-        setAlert={setAlert}
-        plantingYear={plantingYear}
-        setPlantingYear={setPlantingYear}
-        blockTrees={blockTrees}
-        setBlockTrees={setBlockTrees}
-        usedArea={usedArea}
-        setUsedArea={setUsedArea}
-        plantTypes={plantTypes}
-        setPlantTypes={setPlantTypes}
-        clones={clones}
-        setClones={setClones}
-        densityLength={densityLength}
-        setDensityLength={setDensityLength}
-        setDensityWidth={setDensityWidth}
-        densityWidth={densityWidth}
-        isDensityModeIrregular={isDensityModeIrregular}
-        isDensityModeRegular={isDensityModeRegular}
-        setIsDensityModeIrregular={setIsDensityModeIrregular}
-        setIsDensityModeRegular={setIsDensityModeRegular}
-        visualizeBlockData={visualizeBlockData}
-        farmlandId={farmlandId}
-
-        totalArea={totalArea}
-        setTotalArea={setTotalArea}
-        totalTrees={trees}
-        setTotalTrees={setTrees}
-        sameTypeTreesList={sameTypeTreesList}
-        setSameTypeTreesList={setSameTypeTreesList}
-
-        treesFlag={treesFlag}
-        setTreesFlag={setTreesFlag}
-        areaFlag={areaFlag}
-        setAreaFlag={setAreaFlag}
-
-        turnOffOverlay={turnOffOverlay}
-
-        messageAlert={messageAlert}
-        setMessageAlert={setMessageAlert}
-        titleAlert={titleAlert}
-        setTitleAlert={setTitleAlert}
-        cancelText={cancelText}
-        setCancelText={setCancelText}
-        confirmText={confirmText}
-        setConfirmText={setConfirmText}
-        showCancelButton={showCancelButton}
-        setShowCancelButton={setShowCancelButton}
-        showConfirmButton={showConfirmButton}
-        setShowConfirmButton={setShowConfirmButton}
-
-    />
-
-      <Box>
-        <SuccessAlert
-            isCoordinatesModalVisible={isCoordinatesModalVisible}
-            setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}
+        <FarmlandBlockRegistration 
+            isOverlayVisible={isOverlayVisible}
+            setIsOverlayVisible={setIsOverlayVisible}
+            customUserData={customUserData}
+            errors={errors}
+            setErrors={setErrors}
+            alert={alert}
+            setAlert={setAlert}
+            plantingYear={plantingYear}
+            setPlantingYear={setPlantingYear}
+            blockTrees={blockTrees}
+            setBlockTrees={setBlockTrees}
+            usedArea={usedArea}
+            setUsedArea={setUsedArea}
+            plantTypes={plantTypes}
+            setPlantTypes={setPlantTypes}
+            clones={clones}
+            setClones={setClones}
+            densityLength={densityLength}
+            setDensityLength={setDensityLength}
+            setDensityWidth={setDensityWidth}
+            densityWidth={densityWidth}
+            isDensityModeIrregular={isDensityModeIrregular}
+            isDensityModeRegular={isDensityModeRegular}
+            setIsDensityModeIrregular={setIsDensityModeIrregular}
+            setIsDensityModeRegular={setIsDensityModeRegular}
+            visualizeBlockData={visualizeBlockData}
             farmlandId={farmlandId}
-            flag={'farmland'}      
-            farmlandOwnerType={flag}     
-            ownerId={ownerId}
+
+            totalArea={totalArea}
+            setTotalArea={setTotalArea}
+            totalTrees={trees}
+            setTotalTrees={setTrees}
+            sameTypeTreesList={sameTypeTreesList}
+            setSameTypeTreesList={setSameTypeTreesList}
+
+            treesFlag={treesFlag}
+            setTreesFlag={setTreesFlag}
+            areaFlag={areaFlag}
+            setAreaFlag={setAreaFlag}
+
+            turnOffOverlay={turnOffOverlay}
+
+            messageAlert={messageAlert}
+            setMessageAlert={setMessageAlert}
+            titleAlert={titleAlert}
+            setTitleAlert={setTitleAlert}
+            cancelText={cancelText}
+            setCancelText={setCancelText}
+            confirmText={confirmText}
+            setConfirmText={setConfirmText}
+            showCancelButton={showCancelButton}
+            setShowCancelButton={setShowCancelButton}
+            showConfirmButton={showConfirmButton}
+            setShowConfirmButton={setShowConfirmButton}
+
         />
-      </Box>
-      </ScrollView>
-    </SafeAreaView>
+
+        <Box>
+            <SuccessAlert
+                isCoordinatesModalVisible={isCoordinatesModalVisible}
+                setIsCoordinatesModalVisible={setIsCoordinatesModalVisible}
+                farmlandId={farmlandId}
+                flag={'farmland'}      
+                farmlandOwnerType={flag}     
+                ownerId={ownerId}
+            />
+        </Box>
+        </ScrollView>
+        </SafeAreaView>
   )
 }

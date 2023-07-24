@@ -605,7 +605,6 @@ export default function FarmerScreen ({ route, navigation }) {
             ref={bottomSheetModalRef}
             index={0}
             snapPoints={snapPoints}
-            // onDismiss={()=>setIsBottomSheetOpen(false)}
             backgroundStyle={{
               borderRadius: 50,
               backgroundColor: COLORS.fourth,

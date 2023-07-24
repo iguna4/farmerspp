@@ -325,10 +325,8 @@ export default function NewFarmlandBlock({
             titleStyle={{
                 fontSize: 20,
                 paddingVertical: 10,
-                // color: COLORS.ghostwhite,
                 fontWeight: 'bold',
                 marginBottom: 20,
-                // backgroundColor: COLORS.main,
                 width: '100%',
                 textAlign: 'center',
 
@@ -533,7 +531,6 @@ export default function NewFarmlandBlock({
                             }}
                             arrowicon={
                                 <Icon 
-                                // size={35} 
                                 name="arrow-drop-down" 
                                 color={COLORS.main} 
                                 />
@@ -559,41 +556,6 @@ export default function NewFarmlandBlock({
                         />
 
 
-                            {/* <Select
-                                selectedValue={plantingYear}
-                                accessibilityLabel="Ano de plantio"
-                                placeholder="Escolha o ano"
-                                minHeight={55}
-                                _selectedItem={{
-                                    bg: 'teal.600',
-                                    fontSize: 'lg',
-                                    endIcon: <CheckIcon size="5" />,
-                                }}
-                                dropdownCloseIcon={plantingYear 
-                                        ? <Icon 
-                                            name="close" 
-                                            size={20} 
-                                            color="grey" 
-                                            onPress={()=>setPlantingYear('')} 
-                                        /> 
-                                        : <Icon 
-                                            size={40} 
-                                            name="arrow-drop-down" 
-                                            color={COLORS.main} 
-                                        />
-                                    }
-                                mt={1}
-                                onValueChange={newYear => {
-                                    setErrors((prev)=>({...prev, plantingYear: ''}));
-                                    setPlantingYear(newYear);
-                                }}
-                            >
-                                {
-                                    getFullYears(100)?.map((year, index)=>(
-                                        <Select.Item key={index} label={`${year}`} value={year} />
-                                    ))
-                                }
-                            </Select> */}
                         {
                             'plantingYear' in errors 
                         ? <FormControl.ErrorMessage 
@@ -637,13 +599,6 @@ export default function NewFarmlandBlock({
                             }}
                         />
                             
-                        {/* {
-                            'usedArea' in errors 
-                        ? <FormControl.ErrorMessage 
-                        leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                        _text={{ fontSize: 'xs'}}>{errors?.usedArea}</FormControl.ErrorMessage> 
-                        : <FormControl.HelperText><Text></Text></FormControl.HelperText>
-                        } */}
                     </FormControl>
                     </Box>
 
@@ -671,14 +626,6 @@ export default function NewFarmlandBlock({
 
                         }}
                     />
-                        
-                    {/* {
-                        'blockTrees' in errors 
-                        ? <FormControl.ErrorMessage 
-                        leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                        _text={{ fontSize: 'xs'}}>{errors?.blockTrees}</FormControl.ErrorMessage> 
-                        : <FormControl.HelperText><Text></Text></FormControl.HelperText>
-                    } */}
                     </FormControl>
                     </Box>
                 </Stack> 
@@ -697,29 +644,15 @@ export default function NewFarmlandBlock({
 
                 {
                     (errors?.blockTrees && !errors?.usedArea) &&
-                    <Box
-                    //     style={{
-                    //         backgroundColor: COLORS.danger,
-                    //         marginTop: -30,
-                    //     }}
-                    >
-                        {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>        */}
+                    <Box>
                         <Text style={{ fontSize: 14, color: COLORS.red, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.red} /> {errors?.blockTrees}</Text>       
-                        {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
                     </Box>
                 } 
 
                 {
                     (!errors?.blockTrees && errors?.usedArea) &&
-                    <Box
-                    //     style={{
-                    //         backgroundColor: COLORS.danger,
-                    //         marginTop: -30,
-                    //     }}
-                    >
+                    <Box>
                         <Text style={{ fontSize: 14, color: COLORS.red, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.red} /> {errors?.usedArea}</Text>       
-                        {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>        */}
-                        {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
                     </Box>
                 } 
                 </Box>
@@ -835,9 +768,6 @@ export default function NewFarmlandBlock({
                 </FormControl>
 
             </Box>
-
-
-
 
             { isDensityModeRegular  && (
             
@@ -1061,11 +991,9 @@ export default function NewFarmlandBlock({
                         </FormControl>
                     </Box>
                     <Box
-                        // w="15%"
                         style={{
                             justifyContent: 'center',
                             alignItems: 'center',
-                            // backgroundColor: 'red',
                             position: 'relative',
                             bottom: -5,
                             left: 0,
@@ -1087,8 +1015,6 @@ export default function NewFarmlandBlock({
 
                             onPress={()=>{
                                 if (addedClone){
-                                    // let updatedCloneList = [...allClones].unshift(addedClone)
-                                    // setAllClones(updatedCloneList);
                                     setClones(prev=>[...prev, addedClone]);
 
                                     setAddedClone('');
@@ -1142,17 +1068,7 @@ export default function NewFarmlandBlock({
                     <Box 
                         w="100%"
                         mb="2"
-                        style={{
-                            // backgroundColor: COLORS.main,
-                            // borderTopLeftRadius: 20,
-                            // borderTopRightRadius: 20,
-                            // borderWidth: 2, 
-                            // borderColor: COLORS.main,
-            
-                        }}
                     >
-
-
                     <Stack direction="row" space={2} >
                         <Box w="65%">
                             <Text
@@ -1181,18 +1097,12 @@ export default function NewFarmlandBlock({
                         <Box 
                             w="100%" 
                             key={index} 
-                            // px="5" 
                             mb="1"
-                            style={{
-                                // borderColor: COLORS.lightgrey,
-                                // borderWidth: 2,
-                            }}
                         >
                             <Stack 
                                 direction="row" 
                                 w="100%" 
                                 space={2} 
-                                // mt="1"
                             >
                                 <Box w="65%"
                                     style={{ 

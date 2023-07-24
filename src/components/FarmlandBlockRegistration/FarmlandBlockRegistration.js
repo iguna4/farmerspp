@@ -29,8 +29,6 @@ import { CustomInput } from "../Inputs/CustomInput";
 
 import { v4 as uuidv4 } from 'uuid';
 
-// import { useUser } from '@realm/react';
-
 import { realmContext } from '../../models/realmContext';
 import { TouchableOpacity } from "react-native";
 import validateBlockData from "../../helpers/validateBlockData";
@@ -40,7 +38,6 @@ const {useRealm, useQuery, useObject} = realmContext;
 
 
 export default function FarmlandBlockRegistration({ 
-    // farmland, setFarmland, 
     customUserData, 
     farmlandId,
     isOverlayVisible, setIsOverlayVisible, errors, setErrors,
@@ -148,8 +145,6 @@ export default function FarmlandBlockRegistration({
         setSameTypeTreesList(normalizedSameTypeTrees);
 
     }, [ clones, plantTypes]);
-
-    // console.log('errors:', errors);
 
 
  return (

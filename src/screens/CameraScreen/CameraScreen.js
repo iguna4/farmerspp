@@ -45,21 +45,21 @@ else if (ownerType === 'Instituição') {
 // const [isImageTestVisible, setIsImageTestVisible] = useState(false);
 
  useEffect(()=>{
-  if (photoOwner?.image === ''){
-    async function getPhonePermission(){
-        const permission = await Camera.requestCameraPermission();
-        console.log(`Camera permission status: ${permission}`);
-        if (permission === 'denied') await Linking.openSettings();
-        if(permission === 'authorized'){
-         setShowCamera(true);
-        }
-    }
+   async function getPhonePermission(){
+       const permission = await Camera.requestCameraPermission();
+       console.log(`Camera permission status: ${permission}`);
+       if (permission === 'denied') await Linking.openSettings();
+       if(permission === 'authorized' && photoOwner?.image === ''){
+        setShowCamera(true);
+       }
+   }
   
-    getPhonePermission();
+   if (photoOwner?.image !== ''){
+     setImageSource(photoOwner?.image);
   }
-  else {
-    setImageSource(photoOwner?.image);
-  }
+  // else {
+  // }
+  getPhonePermission();
 
 }, [ ]);
 
@@ -196,11 +196,11 @@ const navigateBack = ()=>{
  }
 
 
-useEffect(()=>{
-  if(!isFocused) {
-    setShowCamera(false);
-  }
-}, [ isFocused ])
+  useEffect(()=>{
+    if(!isFocused) {
+      setShowCamera(false);
+    }
+  }, [ isFocused ]);
 
 
  return (

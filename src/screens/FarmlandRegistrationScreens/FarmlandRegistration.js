@@ -1,6 +1,6 @@
 
-import { Text, ScrollView, SafeAreaView, TouchableOpacity, Pressable, Image,  } from 'react-native'
-import React, { useEffect, useState, useCallback } from 'react'
+import { Text, ScrollView, SafeAreaView, TouchableOpacity, Pressable, Image, View,  } from 'react-native'
+import React, { useEffect, useState, useCallback, useRef, useMemo,  } from 'react'
 import { Icon, Button, CheckBox, Chip } from '@rneui/themed';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio  } from 'native-base';
 import { MultipleSelectList  } from 'react-native-dropdown-select-list';
@@ -41,6 +41,7 @@ import validateFarmlandMainData from '../../helpers/validateFarmlandMainData';
 import { assetTypes } from '../../consts/assetTypes';
 
 import { v4 as uuidv4 } from 'uuid';
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 import { categorizeFarmer } from '../../helpers/categorizeFarmer';
 import FarmlandBlockRegistration from '../../components/FarmlandBlockRegistration/FarmlandBlockRegistration';
@@ -142,6 +143,11 @@ export default function FarmlandRegistration ({ route, navigation }) {
     const [errors, setErrors] = useState({});
     
     // // ---------------------------------------------
+    // BottomSheet
+
+
+
+
 
 
     const toggleOverlay = () => {
@@ -770,7 +776,9 @@ export default function FarmlandRegistration ({ route, navigation }) {
                         Pomar
                     </Text>
                 </Box>
-            <Stack direction="row" mt="6" pb="5">
+            <Stack direction="row" mt="1" pb="5"
+            
+            >
                 <Box w="5%"></Box>
                 <Box w="95%" 
                     style={{
@@ -1430,7 +1438,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 alignItems: 'center',
             }}
         >
-        {  farmland?.blocks?.length > 0 ?  
+        {  farmland?.blocks?.length > 0 &&
         <Box w="70%">        
                 <TouchableOpacity   
                     onPress={()=>{
@@ -1464,11 +1472,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 </Box>
             </TouchableOpacity> 
         </Box>
-            :
 
-            <Box w="45%" >
-
-            </Box>
         }      
         </Box>
 
@@ -1529,6 +1533,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
 
         </Box>
 </Stack>
+
 
 
     <FarmlandBlockRegistration 

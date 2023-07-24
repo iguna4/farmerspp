@@ -35,24 +35,23 @@ const GeolocationScreen = ({ route, navigation })=>{
     const resourceId = route.params?.resourceId;
     let resource;
     let ownerType; // farmland ownertype (single, group, institution) 
-    const [ successLottieVisibile, setSuccessLottieVisible ] = useState(false); // controlling the success toast component
     const [ areCoordinatesConfirmed, setAreCoordinatesConfirmed] = useState(false);
-
+    
     if (resourceName === 'Farmer') {
         resource = useObject('Actor', resourceId);
     }
-
+    
     if (resourceName === 'Group') {
         resource = useObject('Group', resourceId);
     }
-
+    
     if (resourceName === 'Institution') {
         resource = useObject('Institution', resourceId);
     }
-
+    
     if (resourceName === 'Farmland') {
         resource = useObject('Farmland', resourceId);
-
+        
         // identity the farmland ownertype (single, group, institution)
         ownerType = route.params?.ownerType;
     }
@@ -69,16 +68,17 @@ const GeolocationScreen = ({ route, navigation })=>{
         longitude: -1,
         position: 0,
     });
-
-
+    
+    
     const [currentCoordinates, setCurrentCoordinates] = useState({
         latitude: -1,
         longitude: -1,
     });
-
+    
     const [isMapVisible, setIsMapVisible] = useState(false);
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
-
+    const [ successLottieVisibile, setSuccessLottieVisible ] = useState(false); // controlling the success toast component
+    
     
 
 
@@ -252,8 +252,8 @@ const GeolocationScreen = ({ route, navigation })=>{
         // And disappear by its own
         if (successLottieVisibile && !areCoordinatesConfirmed){
             setTimeout(()=>{
-                setSuccessLottieVisible(false);
                 navigateBack();
+                setSuccessLottieVisible(false);
             }, 3000)
         }
 

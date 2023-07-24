@@ -106,7 +106,6 @@ export default function GroupFarmerForm({
                             backgroundColor: COLORS.ghostwhite,
                         }}
                         textStyle={{
-                            
                             fontWeight: '120',
                             color: isGroupInactive ? COLORS.main : errors.isGroupActive ? COLORS.red : COLORS.grey,
                         }}

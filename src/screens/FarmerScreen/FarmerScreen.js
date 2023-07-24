@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef, useMemo, } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, SafeAreaView, FlatList, Pressable, StyleSheet, Platform } from 'react-native';
 import { Box, Stack, Center, } from 'native-base';
 import { Divider, Icon, Avatar } from '@rneui/base';
@@ -27,6 +27,10 @@ import FarmlandData from '../../components/FarmlandData/FarmlandData';
 import styles from './styles';
 import COLORS from '../../consts/colors';
 import PhotoModal from '../../components/Modals/PhotoModal';
+import BottomSheet, {   
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  useBottomSheetModal, } from "@gorhom/bottom-sheet";
 
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
@@ -35,6 +39,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 import { Dimensions } from 'react-native';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
+import { CustomizedBottomSheet } from '../../components/BottomSheet/BottomSheet';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const singleFarmer = 'singleFarmer';
@@ -55,9 +60,18 @@ export default function FarmerScreen ({ route, navigation }) {
     const [currentNode, setCurrentNode] = useState({next: null, prev: null, current: null });
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
     // ------------------------------------------------------------------------
-    // Editing Single Farmer Data
     
+    // Bottom Sheet code block
+    
+    const bottomSheetRef = useRef(null);
+    // const { dismiss, dismissAll } = useBottomSheetModal();
 
+    // variables
+    const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
+  
+    const handlePresentModalPress = useCallback(() => {
+      bottomSheetRef.current?.present();
+    }, []);
 
     // ----------------------------------------------------------------------
 
@@ -96,17 +110,11 @@ export default function FarmerScreen ({ route, navigation }) {
     // }, [ navigation ]);
 
 
-    if (loadingActivitiyIndicator) {
-      return <CustomActivityIndicator 
-          loadingActivitiyIndicator={loadingActivitiyIndicator}
-          setLoadingActivityIndicator={setLoadingActivityIndicator}
-      />
-    }
-
 
 
 
     return (
+      <BottomSheetModalProvider>
         <SafeAreaView 
             style={{ 
                 minHeight: '100%', 
@@ -114,6 +122,7 @@ export default function FarmerScreen ({ route, navigation }) {
 
             }}
         >
+          
           <AwesomeAlert
             show={isAddPhoto}
             showProgress={false}
@@ -132,7 +141,7 @@ export default function FarmerScreen ({ route, navigation }) {
             }}
             onConfirmPressed={() => {
               setIsAddPhoto(false);
-              setIsPhotoModalVisible(true);
+              // setIsPhotoModalVisible(true);
             }}
           />
 
@@ -249,10 +258,16 @@ export default function FarmerScreen ({ route, navigation }) {
             style={{
               height: 60,
               width: 30,
-              backgroundColor: COLORS.lightgrey,
+              backgroundColor: COLORS.fourth,
               opacity: .5,
               justifyContent: 'center',
               alignItems: 'center',
+              shadowColor: "#470000",
+              shadowOffset: {
+                width: 0, height: 1
+              },
+              shadowOpacity: .2,
+              elevation: 1,
             }}
             onPress={()=>{
               setLoadingActivityIndicator(true);
@@ -280,10 +295,16 @@ export default function FarmerScreen ({ route, navigation }) {
             style={{
               height: 60,
               width: 30,
-              backgroundColor: COLORS.lightgrey,
+              backgroundColor: COLORS.fourth,
               opacity: .5,
               justifyContent: 'center',
               alignItems: 'center',
+              shadowColor: "#470000",
+              shadowOffset: {
+                width: 0, height: 1
+              },
+              shadowOpacity: .2,
+              elevation: 1,
             }}
             onPress={()=>{
               setLoadingActivityIndicator(true);
@@ -297,10 +318,15 @@ export default function FarmerScreen ({ route, navigation }) {
           </TouchableOpacity>}
         </Box>
 
-
-      <ScrollView
+  {  loadingActivitiyIndicator ?
+     <CustomActivityIndicator 
+        loadingActivitiyIndicator={loadingActivitiyIndicator}
+        setLoadingActivityIndicator={setLoadingActivityIndicator}
+    />
+    :
+    <ScrollView
         contentContainerStyle={{
-            // paddingVertical: 15,
+          // paddingVertical: 15,
             padding: 5,
             // marginBottom: 60,
         }}
@@ -318,9 +344,11 @@ export default function FarmerScreen ({ route, navigation }) {
         >
           <TouchableOpacity
             onPress={()=>{
-              if(customUserData?.role !== roles.provincialManager){
-                setIsAddPhoto(!isAddPhoto);
-              }
+              // if(customUserData?.role !== roles.provincialManager){
+                // setIsAddPhoto(!isAddPhoto);
+                setIsPhotoModalVisible(true);
+                // handlePresentModalPress();
+              // }
             }}
             style={{
               position: 'relative',
@@ -330,12 +358,19 @@ export default function FarmerScreen ({ route, navigation }) {
         {            
           farmer?.image &&   
           ( 
-          <>
+          <Box>
             <Image 
               source={{ uri: farmer?.image }}
-              style={styles.images}
+              style={{
+                width: 200,
+                height: 200,
+                borderColor: COLORS.main,
+                // borderWidth: 2,
+                marginHorizontal: 3,
+                borderRadius: 120,
+              }}
             />
-          </>
+          </Box>
           )        
         }
         {            
@@ -348,11 +383,26 @@ export default function FarmerScreen ({ route, navigation }) {
               }}
               name="account-circle" 
               size={wp('60%')} 
-              color={COLORS.grey} 
+              color={COLORS.lightgrey} 
             />
+              <Box
+                style={{
+                  position: 'relative',
+                  bottom: 50,
+                  right: -60,
+                  zIndex: 10,
+                }} 
+                >
+                <Icon        
+                  name="add-circle" 
+                  size={30} 
+                  color={COLORS.main} 
+                />
+            </Box>
           </Box>
          )      
        }
+
       </TouchableOpacity>
 
       <Text 
@@ -518,15 +568,71 @@ export default function FarmerScreen ({ route, navigation }) {
             />))
         }
         </Box>
+
+        <BottomSheetModal
+          ref={bottomSheetRef}
+          index={0}
+          snapPoints={snapPoints}
+          onChange={()=>{}}
+
+        >
+          <View style={{
+            padding: 24,
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            // backgroundColor: COLORS.fourth,
+          }}>
+            
+            <Box>
+              <Icon name='add-a-photo'  size={35} color={COLORS.main} />
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontFamily: 'JosefinSans-Regular',
+                  color: COLORS.grey,
+                  textAlign: 'center',
+                }}
+              >Foto</Text>
+            </Box>
+            <Box>
+              <Icon name='photo-library'  size={35} color={COLORS.main} />
+              <Text
+                  style={{
+                    fontSize: 10,
+                    fontFamily: 'JosefinSans-Regular',
+                    color: COLORS.grey,
+                    textAlign: 'center',
+                  }}
+              >Galeria</Text>
+            </Box>
+            <Box>
+              <Icon name='delete'  size={35} color={COLORS.main} />
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontFamily: 'JosefinSans-Regular',
+                  color: COLORS.grey,
+                  textAlign: 'center',
+                }}
+              >Apagar</Text>
+            </Box>
+          </View>
+        </BottomSheetModal>
+
+
         <PhotoModal 
           realm={realm}
           photoOwner={farmer}
           photoOwnerType={'Indivíduo'}
           isPhotoModalVisible={isPhotoModalVisible}
           setIsPhotoModalVisible={setIsPhotoModalVisible}
+          userRole={customUserData?.role}
         />
         </ScrollView>
+    }
 </SafeAreaView>
+</BottomSheetModalProvider>
     )
 };
 

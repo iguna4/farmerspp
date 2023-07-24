@@ -5,6 +5,7 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import org.devio.rn.splashscreen.SplashScreen; // splash screen
+// import com.image.zoom.ReactImageZoom;
 
 public class MainActivity extends ReactActivity {
 

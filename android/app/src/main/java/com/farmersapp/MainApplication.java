@@ -15,6 +15,8 @@ import com.facebook.soloader.SoLoader;
 import com.farmersapp.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+// import com.image.zoom.ReactImageZoom;
+
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -32,6 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           // packages.add(new RNDateTimePickerPackage());
+          // packages.add(new ReactImageZoom());
           return packages;
         }
 

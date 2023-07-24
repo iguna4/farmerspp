@@ -831,13 +831,13 @@ export default function FarmlandRegistration ({ route, navigation }) {
         {  !farmland &&
           <Text
                 style={{
-                    color: COLORS.red,
+                    color: COLORS.mediumseagreen,
                     fontSize: 15,
                     fontFamily: 'JosefinSans-Regular',
                     paddingTop: 5,
                 }}
             >
-                Introduza dados genéricos deste pomar.
+                Introduza dados do pomar.
             </Text>
         }
           </Box>
@@ -1330,8 +1330,6 @@ export default function FarmlandRegistration ({ route, navigation }) {
                             paddingVertical: 3,
                             paddingHorizontal: 6,
                             flexDirection: 'row',
-                            // borderTopLeftRadius: 20,
-                            // borderTopRightRadius: 20,
                         }}
                     >
                         <Box w="85%"
@@ -1467,7 +1465,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                 style={{
                     fontSize: 15,
                     fontFamily: 'JosefinSans-Regular',
-                    color: COLORS.red,
+                    color: COLORS.main,
                     textAlign: 'right',
                     // padding: 10,
                 }}
@@ -1563,15 +1561,12 @@ export default function FarmlandRegistration ({ route, navigation }) {
             
                     }}
                 >
-
-                    {/* <Icon name={!farmland ? "add" : "add"} size={20} color={!farmland ? COLORS.mediumseagreen : COLORS.main} /> */}
                     <Text
                         style={{
                             color: !farmland ? COLORS.ghostwhite : COLORS.ghostwhite,
                             fontSize: 13,
                             fontFamily: 'JosefinSans-Bold',
                             textAlign: 'center',
-                            // paddingLeft: 3,
                         }}
                     >
                         {!farmland ? "Adicionar Pomar" : "Adicionar Parcela"}
@@ -1585,125 +1580,6 @@ export default function FarmlandRegistration ({ route, navigation }) {
         </Box>
 </Stack>
 
-
-
-
-    <Box
-        style={{
-            alignItems: 'flex-end',
-            paddingHorizontal: 20,
-            paddingBottom: 20,
-            // flexDirection: 'row-reverse',
-        }}
-    >
-    { 
-    // farmland &&
-    //     <Box>
-    //         <Text
-    //             style={{
-    //                 fontSize: 15,
-    //                 fontFamily: 'JosefinSans-Regular',
-    //                 color: COLORS.red,
-    //                 // textAlign: 'right',
-    //                 padding: 10,
-    //             }}
-    //         >
-    //             Adicionar a {ordinalNumberings[(farmland?.blocks?.length + 1)]} parcela!
-    //         </Text>    
-    //     </Box>
-    }
-
-
-{ 
-        // <Box>
-        //     <TouchableOpacity
-        //         onPress={()=>{
-        //             if (farmland){
-
-        //                 // make the block data form visible
-        //                 setIsOverlayVisible(true);
-        //             }
-        //             else {
-        //                 setLoadingButton(true);
-                        
-        //                 // visualize and save the farmland main data
-        //                 visualizeFarmlandMainData();
-        //             }
-        //         }}
-        //     >
-        //         <Box
-        //             style={{
-        //                 flexDirection: 'row',
-        //                 justifyContent: 'center',
-        //                 alignItems: 'center',
-        //                 borderRadius: 100,
-        //                 borderWidth: 2,
-        //                 borderColor: !farmland ? COLORS.mediumseagreen : COLORS.main,
-        //                 padding: 4,
-            
-        //             }}
-        //         >
-
-        //             <Icon name={!farmland ? "add" : "add"} size={20} color={!farmland ? COLORS.mediumseagreen : COLORS.main} />
-        //             <Text
-        //                 style={{
-        //                     color: !farmland ? COLORS.mediumseagreen : COLORS.main,
-        //                     fontSize: 14,
-        //                     fontFamily: 'JosefinSans-Bold',
-        //                     // paddingLeft: 3,
-        //                 }}
-        //             >
-        //                 {!farmland ? "Adicionar Pomar" : "Adicionar Parcela"}
-        //             </Text>
-
-        //         </Box>
-        //     </TouchableOpacity>
-        // </Box>
-}
-    </Box>
-
-
-    <Box w="100%" mt="1">
-        <Stack w="100%" direction="row" >
-        <Box w="5%"></Box>
-        {  
-        // farmland?.blocks?.length > 0 ?          
-        //         <TouchableOpacity   
-        //             onPress={()=>{
-        //                 if(checkBlockConformity(farmlandId, realm)){
-        //                     setIsCoordinatesModalVisible(true)
-        //                 }
-        //             }}  
-        //         >
-        //             <Box 
-        //                 style={{ 
-        //                     borderWidth: 2, 
-        //                     borderColor: COLORS.red, 
-        //                     borderRadius: 100, 
-        //                     justifyContent: 'center',
-        //                     alignItems: 'center',
-        //                     padding: 4,
-        //                 }}
-        //             >
-        //             <Text
-        //                 style={{ fontSize: 16, color: COLORS.red, fontFamily: 'JosefinSans-Bold', }}
-        //             >
-        //                 Concluir Registo
-        //             </Text>
-        //         </Box>
-        //     </TouchableOpacity> 
-
-        //     :
-
-        //     <Box w="45%" >
-
-        //     </Box>
-        }               
-            <Box w="30%"></Box>
-
-            <Box w="5%"></Box>
-        </Stack>
-    </Box>
 
     <FarmlandBlockRegistration 
         isOverlayVisible={isOverlayVisible}

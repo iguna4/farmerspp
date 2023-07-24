@@ -1680,7 +1680,8 @@ const FarmlandData = ({ farmland, setRefresh, refresh })=>{
         />
     }
 
-{isNewBlockVisible && <NewFarmlandBlock 
+{isNewBlockVisible && 
+<NewFarmlandBlock 
     isNewBlockVisible={isNewBlockVisible}
     setIsNewBlockVisible={setIsNewBlockVisible}
     farmland={farmland}

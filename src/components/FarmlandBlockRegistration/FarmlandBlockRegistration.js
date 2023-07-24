@@ -155,10 +155,11 @@ export default function FarmlandBlockRegistration({
  return (
   <Overlay 
   overlayStyle={{ 
-      backgroundColor: COLORS.ghostwhite, 
-      width: '95%',
+      backgroundColor: COLORS.fourth, 
+      width: '100%',
       maxHeight: '95%',
-      borderRadius: 10,
+      borderTopLeftRadius: 30,
+      borderTopRightRadius: 30,
       paddingBottom: 5,
   }}
     isVisible={isOverlayVisible} 
@@ -180,8 +181,6 @@ export default function FarmlandBlockRegistration({
         
         titleStyle={{
             fontSize: 18,
-            // paddingVertical: 10,
-            // color: COLORS.ghostwhite,
             fontWeight: 'bold',
             marginBottom: 5,
             // backgroundColor: COLORS.main,
@@ -259,14 +258,9 @@ export default function FarmlandBlockRegistration({
             }}
         />
 
-
-
-
   <View
       style={{ 
           width: '100%', 
-        //   backgroundColor: COLORS.main,
-          marginBottom: 10, 
           flexDirection: 'row',
       }}
   >
@@ -389,42 +383,6 @@ export default function FarmlandBlockRegistration({
                             }}
 
                         />
-
-                            {/* <Select
-                                selectedValue={plantingYear}
-                                accessibilityLabel="Ano de plantio"
-                                 placeholder="Escolha o ano"
-                                minHeight={55}
-                                _selectedItem={{
-                                    bg: 'teal.600',
-                                    fontSize: 'lg',
-                                    endIcon: <CheckIcon size="5" />,
-                                }}
-                                dropdownCloseIcon={plantingYear 
-                                        ? <Icon 
-                                            name="close" 
-                                            size={20} 
-                                            color="grey" 
-                                            onPress={()=>setPlantingYear('')} 
-                                        /> 
-                                        : <Icon 
-                                            size={40} 
-                                            name="arrow-drop-down" 
-                                            color={COLORS.main} 
-                                        />
-                                    }
-                                mt={1}
-                                onValueChange={newYear => {
-                                    setErrors((prev)=>({...prev, plantingYear: ''}));
-                                    setPlantingYear(newYear);
-                                }}
-                            >
-                                {
-                                    getFullYears(100)?.map((year, index)=>(
-                                        <Select.Item key={index} label={`${year}`} value={year} />
-                                    ))
-                                }
-                            </Select> */}
                         {
                             'plantingYear' in errors 
                         ? <FormControl.ErrorMessage 
@@ -467,13 +425,6 @@ export default function FarmlandBlockRegistration({
                         setUsedArea(newNumber)
                     }}
                 />
-                    
-                {/* { ('usedArea' in errors)
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.usedArea}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText>{errors?.blockTrees && <Text></Text>}</FormControl.HelperText>
-                } */}
             </FormControl>
             </Box>
 
@@ -500,14 +451,6 @@ export default function FarmlandBlockRegistration({
                     setBlockTrees(newNumber);
                 }}
             />
-                
-            {/* {
-                ('blockTrees' in errors) 
-                ? <FormControl.ErrorMessage 
-                leftIcon={<Icon name="error-outline" size={16} color="red" />}
-                _text={{ fontSize: 'xs'}}>{errors?.blockTrees}</FormControl.ErrorMessage> 
-                : <FormControl.HelperText>{errors?.usedArea && <Text></Text>}</FormControl.HelperText>
-            } */}
             </FormControl>
             </Box>
         </Stack>
@@ -527,45 +470,18 @@ export default function FarmlandBlockRegistration({
 
             {
                 (errors?.blockTrees && !errors?.usedArea) &&
-                <Box
-                //     style={{
-                //         backgroundColor: COLORS.danger,
-                //         // marginTop: -30,
-                //     }}
-                 >
-                    {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>        */}
+                <Box>
                      <Text style={{ fontSize: 14, color: COLORS.red, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.red} /> {errors?.blockTrees}</Text>       
-                     {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
                  </Box>
             } 
 
             {
                 (!errors?.blockTrees && errors?.usedArea) &&
-                <Box
-                //     style={{
-                //         backgroundColor: COLORS.danger,
-                //         // marginTop: -30,
-                //     }}
-                 >
+                <Box>
                      <Text style={{ fontSize: 14, color: COLORS.red, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.red} /> {errors?.usedArea}</Text>       
-                     {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>        */}
-                     {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
                 </Box>
             } 
 
-
-        {/* {
-            (errors?.blockTrees && errors?.usedArea) &&
-            <Box
-                style={{
-                    backgroundColor: COLORS.danger,
-                }}
-            >
-                <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>       
-                <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>       
-                <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>        
-            </Box>
-        }  */}
         </Box>
 
         <Box w="100%"
@@ -590,7 +506,7 @@ export default function FarmlandBlockRegistration({
                 center
                 fontFamily = 'JosefinSans-Bold'
                 containerStyle={{
-                    backgroundColor: COLORS.ghostwhite,
+                    backgroundColor: COLORS.fourth,
                 }}
                 textStyle={{
                     fontWeight: '120',
@@ -631,7 +547,7 @@ export default function FarmlandBlockRegistration({
                 center
                 fontFamily = 'JosefinSans-Bold'
                 containerStyle={{
-                    backgroundColor: COLORS.ghostwhite,
+                    backgroundColor: COLORS.fourth,
                 }}
                 textStyle={{
                     
@@ -766,9 +682,6 @@ export default function FarmlandBlockRegistration({
         </Box>
     </Stack>            
 )}
-
-
-
 
 
     <FormControl isRequired my="1" isInvalid={'plantTypes' in errors}>
@@ -947,8 +860,6 @@ export default function FarmlandBlockRegistration({
 
                     onPress={()=>{
                         if (addedClone){
-                            // let updatedCloneList = [...allClones].unshift(addedClone)
-                            // setAllClones(updatedCloneList);
                             setClones(prev=>[...prev, addedClone]);
 
                             setAddedClone('');
@@ -1028,7 +939,6 @@ export default function FarmlandBlockRegistration({
 
 
         {
-        // sameTypeTreesList?.length > 1 &&
          sameTypeTreesList?.map((sameTypeTree, index)=>(
                 <Box 
                     w="100%" 
@@ -1078,74 +988,12 @@ export default function FarmlandBlockRegistration({
                     </Stack>
                 </Box>
             ))
-        //     :
-        //     sameTypeTreesList?.length === 1 ?
-        //      <Box 
-        //         w="100%" 
-        //         key={index} 
-        //         mb="1"
-        //     >
-        //     <Stack 
-        //         direction="row" 
-        //         w="100%" 
-        //         space={2} 
-        //         // mt="1"
-        //     >
-        //         <Box w="65%"
-        //             style={{ 
-        //                 justifyContent: 'center',
-        //             }}
-        //         >
-        //             <Text
-        //                 style={{
-        //                     fontSize: 16,
-        //                     fontFamily: 'JosefinSans-Regular',
-        //                     color: COLORS.grey,
-        //                 }}
-        //             >
-        //                 <Icon name="arrow-forward" color={COLORS.grey} size={10} /> {sameTypeTreesList[0]?.treeType}
-        //             </Text>
-        //         </Box>
-        //         <Box w="35%">
-        //         <Text
-        //             style={{
-        //                 fontSize: 16,
-        //                 fontFamily: 'JosefinSans-Regular',
-        //                 color: COLORS.grey,
-        //             }}
-        //         >
-        //             {sameTypeTreesList[0]?.trees}
-        //             </Text>
-        //             {/* <CustomInput
-        //                 width="90%"
-        //                 textAlign="center"
-        //                 keyboardType="numeric"
-        //                 placeholder="Cajueiros"
-        //                 value={sameTypeTree?.trees}
-        //                 onChangeText={newTrees=>{
-        //                     setErrors(prev=>({...prev, sameTypeTrees: ''}));
-        //                     setSameTypeTreesList(sameTypeTreesList.map((object)=>{
-        //                         if (object?.treeType === sameTypeTree?.treeType){
-        //                             object.trees = newTrees;
-        //                         }
-        //                         return object;
-        //                     }));
-
-        //                 }}
-        //             /> */}
-        //         </Box>
-        //     </Stack>
-        // </Box>
-        // :
-        // <></>
         }
     </Box>
 }
-
-
-
-
     </View>
+    </ScrollView>
+
   <Button
       title="Salvar Parcela"
       titleStyle={{
@@ -1200,7 +1048,6 @@ export default function FarmlandBlockRegistration({
           setTreeRedFlag(false);
     }}
   />
-</ScrollView>
 </Overlay>
 
  )

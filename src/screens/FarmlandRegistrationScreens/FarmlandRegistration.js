@@ -44,7 +44,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { BottomSheetModal, BottomSheetScrollView, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import { categorizeFarmer } from '../../helpers/categorizeFarmer';
-import FarmlandBlockRegistration from '../../components/FarmlandBlockRegistration/FarmlandBlockRegistration_BottomSheet';
+import FarmlandBlockRegistration from '../../components/FarmlandBlockRegistration/FarmlandBlockRegistration';
 
 import categories from '../../consts/categories';
 import validateBlockData from '../../helpers/validateBlockData';
@@ -1502,8 +1502,7 @@ export default function FarmlandRegistration ({ route, navigation }) {
                         if (farmland){
 
                             // make the block data form visible
-                            // setIsOverlayVisible(true);
-                            handlePresentModal();
+                            setIsOverlayVisible(true);
                         }
                         else {
                             setLoadingButton(true);

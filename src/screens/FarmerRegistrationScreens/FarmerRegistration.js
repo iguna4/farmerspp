@@ -72,9 +72,10 @@ export default function FarmerRegistration({ route, navigation }) {
 
     // handle modal view
     const [modalVisible, setModalVisible] = useState(false);
+    const [isDuplicateModalVisible, setIsDuplicateModalVisible] = useState(false);
 
     const [errorAlert, setErrorAlert] = useState(false);
-    const [duplicatesAlert, setDuplicatesAlert] = useState(false);
+    // const [duplicatesAlert, setDuplicatesAlert] = useState(false);
 
     const localePickerState = useDatepickerState();
     const [birthDate, setBirthDate] = useState(null);
@@ -230,7 +231,8 @@ export default function FarmerRegistration({ route, navigation }) {
                 suspected = detectDuplicates(retrievedFarmerData, suspected);
                 if (suspected.length > 0) {
                     setSuspectedDuplicates(suspected);
-                    setDuplicatesAlert(true);
+                    // setDuplicatesAlert(true);
+                    setIsDuplicateModalVisible(true);
                     return ;
                 }
             }
@@ -344,28 +346,31 @@ export default function FarmerRegistration({ route, navigation }) {
 
     useEffect(()=>{
         setLoadingActivityIndicator(true);
-
+        // if (duplicatesAlert){
+        //     setIsDuplicateModalVisible(true);
+        // }
     }, [navigation, farmerType])
  
 
-    if (duplicatesAlert) {
-        return (
-            <Center flex={1} px="3">
-                <DuplicatesAlert 
-                    setDuplicatesAlert={setDuplicatesAlert}
-                    suspectedDuplicates={suspectedDuplicates}
-                    setFarmerType={setFarmerType}
-                    setModalVisible={setModalVisible}
-                    addFarmer={addFarmer}
-                    farmerData={farmerData}
-                    realm={realm}
-                    customUserData={customUserData}
+    // if (duplicatesAlert) {
+
+        // return (
+        //     <Center flex={1} px="3">
+                // <DuplicatesAlert 
+                    // setDuplicatesAlert={setDuplicatesAlert}
+                    // suspectedDuplicates={suspectedDuplicates}
+                    // setFarmerType={setFarmerType}
+                    // setModalVisible={setModalVisible}
+                    // addFarmer={addFarmer}
+                    // farmerData={farmerData}
+                    // realm={realm}
+                    // customUserData={customUserData}
                     // setModalVisible={setModalVisible}
                     
-                />
-            </Center>
-        )
-    }
+                // />
+            // </Center>
+        // )
+    // }
         
   return (
     <SafeAreaView style={styles.container}>
@@ -530,7 +535,7 @@ export default function FarmerRegistration({ route, navigation }) {
             errorAlert={errorAlert}
             setErrorAlert={setErrorAlert}
             setModalVisible={setModalVisible}
-            setDuplicatesAlert={setDuplicatesAlert}
+            // setDuplicatesAlert={setDuplicatesAlert}
             docType={docType}
             setDocType={setDocType}
             docNumber={docNumber}
@@ -765,8 +770,9 @@ farmerType === "Instituição" && (
      
 
                 />
-        )
-    }
+
+                )
+            }
     </Center>
     <Box>
         <SuccessAlert
@@ -775,6 +781,12 @@ farmerType === "Instituição" && (
             farmerItem={farmerItem}
             flag={'farmer'}
             
+        />
+        <DuplicatesAlert 
+            suspectedDuplicates={suspectedDuplicates} 
+            setModalVisible={setModalVisible}
+            isDuplicateModalVisible={isDuplicateModalVisible}
+            setIsDuplicateModalVisible={setIsDuplicateModalVisible}
         />
       </Box>
     </Box>

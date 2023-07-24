@@ -1,165 +1,110 @@
-import React from "react";
-import { useNavigation } from "@react-navigation/native";
-import { Alert, Collapse, Button, VStack, HStack, IconButton, CloseIcon, Box, Center, NativeBaseProvider, Stack } from "native-base";
+import React, { useState, useEffect,  } from "react";
 import { FlatList, Pressable, ScrollView, View, Text, SafeAreaView, TouchableOpacity} from "react-native";
 import { Icon, CheckBox, Overlay } from '@rneui/themed';
 import DuplicatesAlertItem from "./DuplicatesAlertItem";
 import COLORS from "../../consts/colors";
-import DangerAlert from "../LottieComponents/DangerAlert";
 
-import { user } from "../../consts/user";
 
 
 const DuplicatesAlert = ({ 
-    setDuplicatesAlert, 
-    suspectedDuplicates, 
-    setFarmerType,
-    addFarmer,
-    farmerData,
-    realm,
-    customUserData,
-    setModalVisible
+  suspectedDuplicates, 
+  setModalVisible,
+  isDuplicateModalVisible,
+  setIsDuplicateModalVisible,
+
    })=> {
 
-    const navigation = useNavigation();
+
 
   return (
 
-    <SafeAreaView
-      style={{ 
-        flex: 1,
-        backgroundColor: 'ghostwhite', 
+    <Overlay
+      isVisible={isDuplicateModalVisible}
+      onBackdropPress={()=>{
+        setIsDuplicateModalVisible(false);
+      }}
+      overlayStyle={{
+        backgroundColor: COLORS.second,
         
       }}
-      >
-          <Box
-            style={{ 
-              paddingVertical: 5,
-              paddingHorizontal: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              // backgroundColor: COLORS.danger,
-            }}
-          >
-            {/* <Icon 
-              name="warning"
-              color={COLORS.ghostwhite}
-              size={45}
-            /> */}
-
-
-              <DangerAlert />
-
- 
-            <Text
-              style={{
-                color: COLORS.red,
-                fontSize: 20,
-                paddingHorizontal: 2,
-                lineHeight: 25,
-                textAlign: 'center',
-                fontFamily: "JosefinSans-Regular",
-              }}
-            >
-              O produtor que pretendes registar tem 
-              dados similares {suspectedDuplicates?.length > 1 ? "aos seguintes produtores já registados" : "ao seguinte produtor já registado"}:
-            </Text>
-          </Box>
-
-    <ScrollView  
-      contentContainerStyle={{
-        minHeight: '100%',
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
+      fullScreen
     >
-    {
-      suspectedDuplicates?.map((item)=>(
-        <DuplicatesAlertItem 
-          key={item._id} 
-          item={item} 
-        />
-      ))
-    }
-
-      <Stack 
-        direction="row" 
-        w="100%"
-        style={{ paddingTop: 40, }}
-        >
-        <Box w="8%">
-
-        </Box>
-        <Box w="38%" alignItems={'center'}       
+        <Text
           style={{
-            borderRadius: 100,
-            borderWidth: 2,
-            borderColor: COLORS.main,
-            padding: 5,
+            textAlign: 'center',
+            fontSize: 20,
+            paddingTop: 10,
+            color: COLORS.ghostwhite,
+            fontFamily: 'JosefinSans-Bold',
           }}
         >
-            <TouchableOpacity 
-              style={{ 
-              }}
-              onPress={() => {
-                setDuplicatesAlert(false);
-                setFarmerType('')
-                navigation.navigate('FarmerForm1', { customUserData, })
-              }} 
-            >
-              <Text
-                  style={{
-                      color: COLORS.main,
-                      fontSize: 16,
-                      fontFamily: 'JosefinSans-Bold',
-                      textDecoration: 'underline',
-                      textAlign: 'center',
-                    }}
-                >
-                  Cancelar registo
-                </Text>
-            </TouchableOpacity>
-          </Box>
-          <Box w="10%">
+          {suspectedDuplicates?.length > 1 ? "Registos Similares" : "Registo Similar"}
+        </Text>
 
-          </Box>
-          <Box 
-            w="38%" 
-            alignItems={'center'}
-            style={{
-              borderRadius: 100,
-              borderWidth: 2,
-              borderColor: COLORS.red,
-              padding: 5,
+          <View
+            style={{ 
+              flex: 1, 
+              alignItems: 'center',
+              paddingTop: 20,
             }}
           >
+            <DuplicatesAlertItem 
+              suspectedDuplicates={suspectedDuplicates}
+            />
+          </View>
+
+        <TouchableOpacity 
+            style={{ 
+              flexDirection: 'row',
+              position: 'absolute',
+              bottom: 20,
+              left: 10,
+            }}
+            onPress={() => {
+              setIsDuplicateModalVisible(false)
+            }} 
+          >
+            <Icon name="arrow-back" size={25} color={COLORS.ghostwhite} />
+          <Text
+              style={{
+                  color: COLORS.ghostwhite,
+                  fontSize: 16,
+                  fontFamily: 'JosefinSans-Bold',
+                  textDecoration: 'underline',
+                  textAlign: 'center',
+                  paddingHorizontal: 5,
+                }}
+            >
+              Voltar
+            </Text>
+            </TouchableOpacity>
+
           <TouchableOpacity 
             style={{ 
+              flexDirection: 'row',
+              position: 'absolute',
+              bottom: 20,
+              right: 10,
             }}
               onPress={() => {
-                setDuplicatesAlert(false);
+                setIsDuplicateModalVisible(false);
                 setModalVisible(true);
               }} 
             >
             <Text
                 style={{
-                    color: COLORS.red,
+                    color: COLORS.ghostwhite,
                     fontSize: 16,
                     fontFamily: 'JosefinSans-Bold',
                     textDecoration: 'underline',
+                    paddingHorizontal: 5,
                 }}
                 >
-                  Validar registo
+                  Continuar
             </Text>
+            <Icon name="arrow-forward" size={25} color={COLORS.ghostwhite} />
           </TouchableOpacity>
-          </Box>
-          <Box w="8%">
-
-          </Box>
-        </Stack>
-      </ScrollView>
-    </SafeAreaView>
+          </Overlay>
 )
 }
 

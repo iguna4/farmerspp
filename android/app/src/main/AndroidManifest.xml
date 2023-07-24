@@ -6,8 +6,14 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+<<<<<<< HEAD
     <!-- if you want to record audio: -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+=======
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+
+>>>>>>> 9cda1957e225ef1c7130b6a0ab60f22205d7218a
     
     <application
       android:name=".MainApplication"

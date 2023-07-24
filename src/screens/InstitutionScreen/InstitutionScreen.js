@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, } from 'react';
 import { View, Text, ScrollView, StyleSheet,  SafeAreaView, Image, Pressable, TouchableOpacity, Dimensions } from 'react-native';
 import { Box, Stack, Center } from 'native-base';
 import { Icon } from '@rneui/base';
@@ -28,12 +28,13 @@ import COLORS from '../../consts/colors';
 import PhotoModal from '../../components/Modals/PhotoModal';
 
 import { realmContext } from '../../models/realmContext';
-import { useEffect } from 'react';
 import { useUser } from '@realm/react';
 import { roles } from '../../consts/roles';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
+import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import PhotoBottomSheet from '../../components/BottomSheet/PhotoBottomSheet';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const institution = 'institution';
@@ -52,6 +53,14 @@ export default function InstitutionScreen ({ route, navigation }) {
     const farmlands = realm.objects("Farmland").filtered('farmerId == $0', ownerId);
     const [currentNode, setCurrentNode] = useState({next: null, prev: null, current: null });
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
+
+    // bottom sheet 
+    const bottomSheetModalRef = useRef(null);
+    const snapPoints =  ["25%", "50%", "75%"];
+  
+    function handlePresentModal(){
+      bottomSheetModalRef.current?.present();
+    }
 
     const keyExtractor = (item, index)=>index.toString();
 
@@ -84,14 +93,9 @@ export default function InstitutionScreen ({ route, navigation }) {
 
     }, [realm ]);
 
-    // if (loadingActivitiyIndicator) {
-    //   return <CustomActivityIndicator
-    //       loadingActivitiyIndicator={loadingActivitiyIndicator}
-    //       setLoadingActivityIndicator={setLoadingActivityIndicator}
-    //   />
-    // }
 
     return (
+      <BottomSheetModalProvider>
         <SafeAreaView 
             style={{ 
                 minHeight: '100%', 
@@ -102,16 +106,10 @@ export default function InstitutionScreen ({ route, navigation }) {
 
       <View
           style={{
-            // height: "10%",
             width: '100%',
             paddingHorizontal: 5,
             paddingVertical:hp('1%'),
             backgroundColor: '#EBEBE4',
-            // borderTopWidth: 0,
-            // borderColor: '#EBEBE4',
-            // borderBottomWidth: 3,
-            // borderLeftWidth: 3,
-            // borderRightWidth: 3,
             alignItems: 'center',
             justifyContent: 'center',
           }}
@@ -134,16 +132,13 @@ export default function InstitutionScreen ({ route, navigation }) {
         }}
         onConfirmPressed={() => {
           setIsAddPhoto(false);
-          // setIsPhotoModalVisible(true);
         }}
       />
 
         <Stack
           direction="row" w="100%"
         >
-          <Box
-            // style={{ justifyContent: 'center'}}
-          >
+          <Box >
 
         <Pressable
                 onPress={()=>{
@@ -154,7 +149,6 @@ export default function InstitutionScreen ({ route, navigation }) {
                         left: 0,
                         top: 4,
                         flexDirection: 'row',
-                        // justifyContent: 'center',
                         alignItems: 'center',
                     }}
                 >
@@ -162,17 +156,7 @@ export default function InstitutionScreen ({ route, navigation }) {
                         name="arrow-back-ios" 
                         color={COLORS.main}
                         size={wp('8%')}
-                        // onPress={()=>{}}
                     /> 
-                    <Text
-                        style={{
-                            color: COLORS.main,
-                            fontFamily: 'JosefinSans-Bold',
-                            marginLeft: -10,
-                        }}
-                    >
-                        {/* Voltar */}
-                    </Text>
                 </Pressable>
           </Box>
 
@@ -298,7 +282,6 @@ export default function InstitutionScreen ({ route, navigation }) {
       :
       <ScrollView
             contentContainerStyle={{
-                // paddingVertical: 15,
                 padding: 5,
             }}
       >
@@ -311,29 +294,30 @@ export default function InstitutionScreen ({ route, navigation }) {
               borderColor: COLORS.pantone,
             }}
             >
-              {/* <View> */}
             <TouchableOpacity
+              // onPress={handlePresentModal}
               onPress={()=>{
-                // if(customUserData?.role !== roles.provincialManager){
-                  // setIsAddPhoto(!isAddPhoto);
-                  setIsPhotoModalVisible(true);
-                // }
+                navigation.navigate('Camera', {
+                    ownerType: 'Instituição',
+                    ownerId: farmer?._id,
+                    farmersIDs,
+                });
               }}
               style={{
                 position: 'relative',
                 top: -50,
               }}
             >
-{            
-     farmer?.image  &&   
-     ( <>
-          <Image 
-            source={{ uri: farmer?.image }}
-            style={styles.images}
-          />
-      </>
-     )        
-  }
+    {            
+      farmer?.image  &&   
+      ( <>
+            <Image 
+              source={{ uri: farmer?.image }}
+              style={styles.images}
+            />
+        </>
+      )        
+    }
 
 
 {            
@@ -416,7 +400,6 @@ export default function InstitutionScreen ({ route, navigation }) {
             color: COLORS.black,
             textAlign: 'center',
             fontFamily: 'JosefinSans-Bold',
-            // paddingVertical: 5,
         }}>
           Pomares
         </Text>
@@ -449,6 +432,8 @@ export default function InstitutionScreen ({ route, navigation }) {
                 onPress={()=>navigation.navigate('FarmlandForm1', {
                   ownerId: farmer?._id,
                   ownerName: `${farmer?.type} ${farmer?.name}`,
+                  ownerImage: farmer?.image,
+                  ownerAddress: farmer?.address,
                   flag: 'Instituição',
                 })}
               >
@@ -465,8 +450,6 @@ export default function InstitutionScreen ({ route, navigation }) {
                     }}
                 >
                     <FontAwesomeIcon icon={faTree} size={20} color={COLORS.mediumseagreen} />
-                    {/* <Icon name="save" size={20} color={COLORS.mediumseagreen} /> */}
-                    {/* </Box> */}
                     <Text
                         style={{
                             color: COLORS.mediumseagreen,
@@ -491,6 +474,31 @@ export default function InstitutionScreen ({ route, navigation }) {
             (<FarmlandData key={farmland?._id} farmland={farmland} />))
         }
         </Box>
+
+        {/* <View
+          style={{
+            flex: 1,
+          }}
+        >
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
+            index={0}
+            snapPoints={snapPoints}
+            // onDismiss={()=>setIsBottomSheetOpen(false)}
+            backgroundStyle={{
+              borderRadius: 50,
+              backgroundColor: COLORS.fourth,
+            }}
+          >
+            <PhotoBottomSheet 
+              ownerType={'Instituição'} 
+              ownerId={farmer?._id} 
+              farmersIDs={farmersIDs} 
+            />
+          </BottomSheetModal>
+        </View> */}
+
+
         <PhotoModal 
           realm={realm}
           photoOwner={farmer}
@@ -498,10 +506,13 @@ export default function InstitutionScreen ({ route, navigation }) {
           isPhotoModalVisible={isPhotoModalVisible}
           setIsPhotoModalVisible={setIsPhotoModalVisible}
           userRole={customUserData?.role}
+          loadingActivitiyIndicator={loadingActivitiyIndicator}
+          setLoadingActivityIndicator={setLoadingActivityIndicator}
         />
         </ScrollView>
     }
 </SafeAreaView>
+</BottomSheetModalProvider>
     )
 }
 

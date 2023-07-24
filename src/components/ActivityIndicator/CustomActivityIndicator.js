@@ -5,7 +5,7 @@ import styles from './style'
 import COLORS from '../../consts/colors';
 
 
-const CustomActivityIndicator = ({ loadingActivitiyIndicator, setLoadingActivityIndicator, backgroundColor }) => {
+const CustomActivityIndicator = ({ loadingActivitiyIndicator, setLoadingActivityIndicator, backgroundColor, indicatorColor }) => {
     
     // const startLoading = ()=>{
         // setLoadingActivityIndicator(true);
@@ -34,15 +34,15 @@ const CustomActivityIndicator = ({ loadingActivitiyIndicator, setLoadingActivity
             // textContent={'Connect Caju...'}
             //Text style of the Spinner Text
             textStyle={{
-              color: COLORS.main,
+              color: indicatorColor ? indicatorColor : COLORS.main,
           }}
             
             size={'large'} 
-            color={COLORS.main} 
+            color={indicatorColor ? indicatorColor : COLORS.main} 
   
           />
           <Text style={{
-            textAlign: 'center', fontSize: 12, color: COLORS.main, fontFamily: 'JosefinSans-Regular',
+            textAlign: 'center', fontSize: 12, color: indicatorColor ? indicatorColor : COLORS.main, fontFamily: 'JosefinSans-Regular',
           }}>Connect Caju...</Text>
     </View>
   )

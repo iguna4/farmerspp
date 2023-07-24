@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef, useMemo, } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, SafeAreaView, FlatList, Pressable, StyleSheet, Platform } from 'react-native';
 import { Box, Stack, Center, } from 'native-base';
-import { Divider, Icon, Avatar } from '@rneui/base';
+import { Divider, Icon, Avatar, BottomSheet, } from '@rneui/base';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import {  
@@ -22,24 +22,29 @@ import {
 
 } from 'react-native-responsive-dimensions';
 
+
+
 import PersonalData from '../../components/PersonalData/PersonalData';
 import FarmlandData from '../../components/FarmlandData/FarmlandData';
 import styles from './styles';
 import COLORS from '../../consts/colors';
 import PhotoModal from '../../components/Modals/PhotoModal';
-import BottomSheet, {   
+import {   
   BottomSheetModal,
   BottomSheetModalProvider,
+  BottomSheetView,
   useBottomSheetModal, } from "@gorhom/bottom-sheet";
 
-import { useUser } from '@realm/react';
+  import { roles } from '../../consts/roles';
+  import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+  import { faTree } from '@fortawesome/free-solid-svg-icons';
+  import { Dimensions } from 'react-native';
+  import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
+  import CustomizedBottomSheet  from '../../components/BottomSheet/CustomizedBottomSheet';
+  import Animated from 'react-native-reanimated';
+  import PhotoBottomSheet from '../../components/BottomSheet/PhotoBottomSheet';
+  import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
-import { roles } from '../../consts/roles';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faTree } from '@fortawesome/free-solid-svg-icons';
-import { Dimensions } from 'react-native';
-import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
-import { CustomizedBottomSheet } from '../../components/BottomSheet/BottomSheet';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const singleFarmer = 'singleFarmer';
@@ -59,19 +64,29 @@ export default function FarmerScreen ({ route, navigation }) {
     const [refresh, setRefresh] = useState(false);
     const [currentNode, setCurrentNode] = useState({next: null, prev: null, current: null });
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
+
     // ------------------------------------------------------------------------
     
     // Bottom Sheet code block
+
     
-    const bottomSheetRef = useRef(null);
-    // const { dismiss, dismissAll } = useBottomSheetModal();
+    // const sheetRef = forwardRef(null);
 
     // variables
-    const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
+    const bottomSheetModalRef = useRef(null);
+    const snapPoints =  ["25%", "50%", "75%"];
   
-    const handlePresentModalPress = useCallback(() => {
-      bottomSheetRef.current?.present();
-    }, []);
+    function handlePresentModal(){
+      bottomSheetModalRef.current?.present();
+    }
+
+    // const handleSheetChange = useCallback((index) => {
+    //   console.log("handleSheetChange", index);
+    // }, []);
+  
+    // const handleClosePress = useCallback(() => {
+    //   sheetRef.current?.close();
+    // }, []);
 
     // ----------------------------------------------------------------------
 
@@ -105,10 +120,60 @@ export default function FarmerScreen ({ route, navigation }) {
 
     }, [realm, refresh ]);
 
-    // useEffect(()=>{
+  // picker a picture from gallery
+  const launchNativeImageLibrary = () => {
+    let options = {
+      includeBase64: true,
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    launchImageLibrary(options, (response) => {
 
-    // }, [ navigation ]);
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorCode) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        const source = { uri: response.assets.uri };
 
+        // realm.write(()=>{
+        //   photoOwner.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
+        // })
+        const imageString = 'data:image/jpeg;base64,' + response.assets[0].base64;
+
+        realm.write(()=>{
+            // photoOwner.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
+            farmer.image = imageString;
+            setLoadingActivityIndicator(true);
+        });
+
+
+        // setIsPhotoModalVisible(false);
+        // if (photoOwnerType === 'Grupo') {
+        //     navigation.navigate('Group', {
+        //         ownerId: photoOwner?._id,
+        //     })
+        // } 
+        // else if (photoOwnerType === 'Indivíduo') {
+        //     navigation.navigate('Farmer', {
+        //         ownerId: photoOwner?._id,
+        //     })
+        // } 
+        // else if (photoOwnerType === 'Instituição') {
+        //     navigation.navigate('Institution', {
+        //         ownerId: photoOwner?._id,
+        //     })
+        // }
+        // else if (photoOwnerType === 'Usuário') {
+        //     // taking user photo
+        //     // navigation.goBack();
+        // }
+      }
+    });
+
+  } 
 
 
 
@@ -141,7 +206,6 @@ export default function FarmerScreen ({ route, navigation }) {
             }}
             onConfirmPressed={() => {
               setIsAddPhoto(false);
-              // setIsPhotoModalVisible(true);
             }}
           />
 
@@ -149,7 +213,6 @@ export default function FarmerScreen ({ route, navigation }) {
 
       <View
           style={{
-            // height: "10%",
             width: '100%',
             paddingHorizontal: 5,
             paddingVertical:hp('1%'),
@@ -165,21 +228,17 @@ export default function FarmerScreen ({ route, navigation }) {
         <Stack
           direction="row" w="100%"
         >
-          <Box 
-            // style={{ justifyContent: 'center'}}
-          >
+          <Box>
 
           <Pressable
                 onPress={()=>{
                   navigation.navigate('Farmers');
-                  // setRefresh(!refresh);
                 }}
                     style={{
                         position: 'absolute',
                         left: 0,
                         top: 4,
                         flexDirection: 'row',
-                        // justifyContent: 'center',
                         alignItems: 'center',
                     }}
                 >
@@ -187,31 +246,8 @@ export default function FarmerScreen ({ route, navigation }) {
                         name="arrow-back-ios" 
                         color={COLORS.main}
                         size={wp('8%')}
-                        // onPress={()=>{}}
                     /> 
-                    <Text
-                        style={{
-                            color: COLORS.main,
-                            fontFamily: 'JosefinSans-Bold',
-                            marginLeft: -10,
-                        }}
-                    >
-                        {/* Voltar */}
-                    </Text>
                 </Pressable>
-
-
-            {/* <Pressable
-                onPress={()=>navigation.goBack()
-                  // .navigate('Farmers')
-                }
-            >
-                <Icon 
-                    name="arrow-back-ios" 
-                    color={COLORS.main}
-                    size={35}
-                    />
-            </Pressable> */}
           </Box>
 
           <Box w="100%">
@@ -326,9 +362,7 @@ export default function FarmerScreen ({ route, navigation }) {
     :
     <ScrollView
         contentContainerStyle={{
-          // paddingVertical: 15,
             padding: 5,
-            // marginBottom: 60,
         }}
       >
 
@@ -343,12 +377,13 @@ export default function FarmerScreen ({ route, navigation }) {
           }}
         >
           <TouchableOpacity
+            // onPress={handlePresentModal}
             onPress={()=>{
-              // if(customUserData?.role !== roles.provincialManager){
-                // setIsAddPhoto(!isAddPhoto);
-                setIsPhotoModalVisible(true);
-                // handlePresentModalPress();
-              // }
+              navigation.navigate('Camera', {
+                  ownerType: 'Indivíduo',
+                  ownerId: farmer?._id,
+                  farmersIDs,
+              });
             }}
             style={{
               position: 'relative',
@@ -365,7 +400,6 @@ export default function FarmerScreen ({ route, navigation }) {
                 width: 200,
                 height: 200,
                 borderColor: COLORS.main,
-                // borderWidth: 2,
                 marginHorizontal: 3,
                 borderRadius: 120,
               }}
@@ -497,7 +531,6 @@ export default function FarmerScreen ({ route, navigation }) {
 
           </Box>
           <Box w="50%" 
-              // alignItems={'center'}
               style={{
                 alignItems: 'flex-end',
               }}
@@ -512,17 +545,13 @@ export default function FarmerScreen ({ route, navigation }) {
                   navigation.navigate('FarmlandForm1', {
                   ownerId: farmer._id,
                   ownerName: `${farmer?.names?.otherNames} ${farmer?.names?.surname}`,
+                  ownerImage: farmer?.image || '',
+                  ownerAddress: farmer?.address,
                   flag: 'Indivíduo',
                 })
                 setRefresh(!refresh);
               }}
               >
-                {/* <Icon 
-                  name="add-circle" 
-                  color={COLORS.mediumseagreen} 
-                  size={wp('15%')} 
-                /> */}
-
                 <Box
                     style={{
                         flexDirection: 'row',
@@ -536,8 +565,6 @@ export default function FarmerScreen ({ route, navigation }) {
                     }}
                 >
                     <FontAwesomeIcon icon={faTree} size={20} color={COLORS.mediumseagreen} />
-                    {/* <Icon name="save" size={20} color={COLORS.mediumseagreen} /> */}
-                    {/* </Box> */}
                     <Text
                         style={{
                             color: COLORS.mediumseagreen,
@@ -569,57 +596,30 @@ export default function FarmerScreen ({ route, navigation }) {
         }
         </Box>
 
-        <BottomSheetModal
-          ref={bottomSheetRef}
-          index={0}
-          snapPoints={snapPoints}
-          onChange={()=>{}}
-
+        {/* <View
+          style={{
+            flex: 1,
+          }}
         >
-          <View style={{
-            padding: 24,
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            // backgroundColor: COLORS.fourth,
-          }}>
-            
-            <Box>
-              <Icon name='add-a-photo'  size={35} color={COLORS.main} />
-              <Text
-                style={{
-                  fontSize: 10,
-                  fontFamily: 'JosefinSans-Regular',
-                  color: COLORS.grey,
-                  textAlign: 'center',
-                }}
-              >Foto</Text>
-            </Box>
-            <Box>
-              <Icon name='photo-library'  size={35} color={COLORS.main} />
-              <Text
-                  style={{
-                    fontSize: 10,
-                    fontFamily: 'JosefinSans-Regular',
-                    color: COLORS.grey,
-                    textAlign: 'center',
-                  }}
-              >Galeria</Text>
-            </Box>
-            <Box>
-              <Icon name='delete'  size={35} color={COLORS.main} />
-              <Text
-                style={{
-                  fontSize: 10,
-                  fontFamily: 'JosefinSans-Regular',
-                  color: COLORS.grey,
-                  textAlign: 'center',
-                }}
-              >Apagar</Text>
-            </Box>
-          </View>
-        </BottomSheetModal>
-
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
+            index={0}
+            snapPoints={snapPoints}
+            // onDismiss={()=>setIsBottomSheetOpen(false)}
+            backgroundStyle={{
+              borderRadius: 50,
+              backgroundColor: COLORS.fourth,
+            }}
+          >
+            <PhotoBottomSheet 
+              ownerType={'Indivíduo'} 
+              ownerId={farmer?._id} 
+              farmersIDs={farmersIDs} 
+              setIsPhotoModalVisible={setIsPhotoModalVisible}
+              launchNativeImageLibrary={launchNativeImageLibrary}
+            />
+          </BottomSheetModal>
+        </View> */}
 
         <PhotoModal 
           realm={realm}
@@ -628,6 +628,9 @@ export default function FarmerScreen ({ route, navigation }) {
           isPhotoModalVisible={isPhotoModalVisible}
           setIsPhotoModalVisible={setIsPhotoModalVisible}
           userRole={customUserData?.role}
+          loadingActivitiyIndicator={loadingActivitiyIndicator}
+          setLoadingActivityIndicator={setLoadingActivityIndicator}
+          launchNativeImageLibrary={launchNativeImageLibrary}
         />
         </ScrollView>
     }

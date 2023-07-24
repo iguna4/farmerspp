@@ -438,17 +438,17 @@ export default function HomeScreen({ route, navigation }) {
     backgroundColor: COLORS.ghostwhite,
     marginVertical: 10,
     // paddingVertical: 4,
-    paddingHorizontal: 5,
-    borderColor: '#005000',
-    shadowColor: "#005000",
-    shadowOffset: {
-      width: 2,
-      height: 3,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
-    elevation: 3,
-    opacity: 1,
+    // paddingHorizontal: 5,
+    // borderColor: '#005000',
+    // shadowColor: "#005000",
+    // shadowOffset: {
+    //   width: 2,
+    //   height: 3,
+    // },
+    // shadowOpacity: 0.27,
+    // shadowRadius: 4.65,
+    // elevation: 3,
+    // opacity: 1,
   }}
 >
 
@@ -544,16 +544,16 @@ export default function HomeScreen({ route, navigation }) {
     marginVertical: 10,
     // paddingVertical: 4,
     paddingHorizontal: 5,
-    borderColor: '#005000',
-    shadowColor: "#005000",
-    shadowOffset: {
-      width: 2,
-      height: 3,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
-    elevation: 3,
-    opacity: 1,
+    // borderColor: '#005000',
+    // shadowColor: "#005000",
+    // shadowOffset: {
+    //   width: 2,
+    //   height: 3,
+    // },
+    // shadowOpacity: 0.27,
+    // shadowRadius: 4.65,
+    // elevation: 3,
+    // opacity: 1,
   }}
 >
 

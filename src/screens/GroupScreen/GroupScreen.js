@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, } from 'react';
 import { View, Text, ScrollView, StyleSheet, SafeAreaView, TouchableOpacity, Image, Pressable, Dimensions } from 'react-native';
 import { Box, Stack, Center } from 'native-base';
 import { Icon } from '@rneui/base';
@@ -28,12 +28,13 @@ import PhotoModal from '../../components/Modals/PhotoModal';
 import styles from './styles';
 
 import { realmContext } from '../../models/realmContext';
-import { useEffect } from 'react';
 import { roles } from '../../consts/roles';
 import { useUser } from '@realm/react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
+import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import PhotoBottomSheet from '../../components/BottomSheet/PhotoBottomSheet';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const group = 'group';
@@ -52,6 +53,16 @@ export default function GroupScreen ({ route, navigation }) {
     const farmlands = realm.objects("Farmland").filtered('farmerId == $0', ownerId);
     const [currentNode, setCurrentNode] = useState({next: null, prev: null, current: null });
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
+
+    // bottom sheet 
+      const bottomSheetModalRef = useRef(null);
+      const snapPoints =  ["25%", "50%", "75%"];
+    
+      function handlePresentModal(){
+        bottomSheetModalRef.current?.present();
+      }
+  
+
 
     const keyExtractor = (item, index)=>index.toString();
 
@@ -85,15 +96,9 @@ export default function GroupScreen ({ route, navigation }) {
 
     }, [realm ]);
 
-    // if (loadingActivitiyIndicator) {
-    //   return <CustomActivityIndicator
-    //       loadingActivitiyIndicator={loadingActivitiyIndicator}
-    //       setLoadingActivityIndicator={setLoadingActivityIndicator}
-    //   />
-    // }
-
 
     return (
+      <BottomSheetModalProvider>
         <SafeAreaView 
             style={{ 
                 minHeight: '100%', 
@@ -120,7 +125,6 @@ export default function GroupScreen ({ route, navigation }) {
         }}
         onConfirmPressed={() => {
           setIsAddPhoto(false);
-          // setIsPhotoModalVisible(true);
         }}
       />
 
@@ -151,7 +155,6 @@ export default function GroupScreen ({ route, navigation }) {
                         left: 0,
                         top: 4,
                         flexDirection: 'row',
-                        // justifyContent: 'center',
                         alignItems: 'center',
                     }}
                 >
@@ -159,31 +162,9 @@ export default function GroupScreen ({ route, navigation }) {
                         name="arrow-back-ios" 
                         color={COLORS.main}
                         size={wp('8%')}
-                        // onPress={()=>{}}
                     /> 
-                    <Text
-                        style={{
-                            color: COLORS.main,
-                            fontFamily: 'JosefinSans-Bold',
-                            marginLeft: -10,
-                        }}
-                    >
-                        {/* Voltar */}
-                    </Text>
                 </Pressable>
 
-
-          {/* <Pressable
-              onPress={()=>navigation.goBack()
-                // navigate('Farmers')
-              }
-          >
-            <Icon 
-                name="arrow-back-ios" 
-                color={COLORS.main}
-                size={35}
-            />
-          </Pressable> */}
           </Box>
 
           <Box w="100%" 
@@ -301,7 +282,6 @@ export default function GroupScreen ({ route, navigation }) {
 
       <ScrollView
             contentContainerStyle={{
-                // paddingVertical: 15,
                 padding: 5,
             }}
       >
@@ -316,11 +296,13 @@ export default function GroupScreen ({ route, navigation }) {
             }}
             >
             <TouchableOpacity
+              // onPress={handlePresentModal}
               onPress={()=>{
-                // if(customUserData?.role !== roles.provincialManager){
-                  // setIsAddPhoto(!isAddPhoto);
-                  setIsPhotoModalVisible(true);
-                // }
+                navigation.navigate('Camera', {
+                    ownerType: 'Grupo',
+                    ownerId: farmer?._id,
+                    farmersIDs,
+                });
               }}
               style={{
                 position: 'relative',
@@ -385,9 +367,6 @@ export default function GroupScreen ({ route, navigation }) {
     
     
     </Box>
-    {/* 
-        Personal Data Child Component
-    */}
     <View        
       style={{
           marginTop: 40,
@@ -402,8 +381,9 @@ export default function GroupScreen ({ route, navigation }) {
             padding: 10,
             letterSpacing: 5,
           }}
-        >{farmer?.identifier}</Text>
-
+        >
+          {farmer?.identifier}
+        </Text>
 
         <GroupData farmer={farmer} />
     </View>
@@ -444,7 +424,6 @@ export default function GroupScreen ({ route, navigation }) {
 
             </Box>
             <Box w="50%" 
-              // alignItems={'e'}
               style={{
                 alignItems: 'flex-end',
               }}
@@ -457,15 +436,11 @@ export default function GroupScreen ({ route, navigation }) {
                 onPress={()=>navigation.navigate('FarmlandForm1', {
                   ownerId: farmer?._id,
                   ownerName: `${farmer?.type} ${farmer?.name}`,
+                  ownerImage: farmer?.image,
+                  ownerAddress: farmer?.address,
                   flag: 'Grupo',
                 })}
               >
-                {/* <Icon 
-                  name="add-circle" 
-                  color={COLORS.mediumseagreen} 
-                  size={wp('15%')} 
-                /> */}
-
                 <Box
                     style={{
                         flexDirection: 'row',
@@ -479,8 +454,6 @@ export default function GroupScreen ({ route, navigation }) {
                     }}
                 >
                     <FontAwesomeIcon icon={faTree} size={20} color={COLORS.mediumseagreen} />
-                    {/* <Icon name="save" size={20} color={COLORS.mediumseagreen} /> */}
-                    {/* </Box> */}
                     <Text
                         style={{
                             color: COLORS.mediumseagreen,
@@ -506,6 +479,31 @@ export default function GroupScreen ({ route, navigation }) {
             (<FarmlandData key={farmland?._id} farmland={farmland} />))
         }
         </Box>
+
+        {/* <View
+          style={{
+            flex: 1,
+          }}
+        >
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
+            index={0}
+            snapPoints={snapPoints}
+            // onDismiss={()=>setIsBottomSheetOpen(false)}
+            backgroundStyle={{
+              borderRadius: 50,
+              backgroundColor: COLORS.fourth,
+            }}
+          >
+            <PhotoBottomSheet 
+              ownerType={'Grupo'} 
+              ownerId={farmer?._id} 
+              farmersIDs={farmersIDs} 
+            />
+          </BottomSheetModal>
+        </View> */}
+
+
         <PhotoModal 
           realm={realm}
           photoOwner={farmer}
@@ -513,10 +511,13 @@ export default function GroupScreen ({ route, navigation }) {
           isPhotoModalVisible={isPhotoModalVisible}
           setIsPhotoModalVisible={setIsPhotoModalVisible}
           userRole={customUserData?.role}
+          loadingActivitiyIndicator={loadingActivitiyIndicator}
+          setLoadingActivityIndicator={setLoadingActivityIndicator}
         />
         </ScrollView>
     }
 </SafeAreaView>
+</BottomSheetModalProvider>
     )
 }
 

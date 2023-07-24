@@ -227,13 +227,11 @@ export default function NewFarmlandBlock({
  return (
   <Overlay 
   overlayStyle={{ 
-      backgroundColor: (remainingArea <= 0.1) ? COLORS.ghostwhite : COLORS.fourth, 
-      width: (remainingArea <= 0.1) ? '70%' : '100%',
+      backgroundColor: COLORS.ghostwhite, 
+      width: '95%',
       maxHeight: '95%',
-      borderTopLeftRadius: (remainingArea <= 0.1) ? 7 : 30,
-      borderTopRightRadius: (remainingArea <= 0.1) ? 7 : 30,
-      borderBottomLeftRadius: (remainingArea <= 0.1) ? 7 : 0,
-      borderBottomRightRadius: (remainingArea <= 0.1) ? 7 : 0,
+      minHeight: '40%',
+      borderRadius: 10,
       paddingBottom: 5,
   }}
     isVisible={isNewBlockVisible} 
@@ -241,8 +239,6 @@ export default function NewFarmlandBlock({
         setIsNewBlockVisible(false);
     }}
 >
-
-    {/* Display this if there no enough area size left for a new cashew block plot */}
     {
     remainingArea <= 0.1 &&
     <View
@@ -250,72 +246,194 @@ export default function NewFarmlandBlock({
         width: '100%', 
     }}
     >
-
-
-        <Text
+        {/* <View
+            style={{
+                position: 'absolute',
+                top: -20,
+                left: -20,
+            }}
+        >
+            <DangerAlert />
+        </View> */}
+        <View
             style={{ 
-                textAlign: 'center',
-                color: COLORS.black,
-                fontSize: 16,
-                fontFamily: 'JosefinSans-Bold',
+                width: '100%', 
+                flexDirection: 'row',
             }}
         >
-            Insuficiência da área
-        </Text>
+            <Box w="90%">
+                <Text
+                    style={{ 
+                        textAlign: 'center',
+                        color: COLORS.black,
+                        fontSize: responsiveFontSize(2),
+                        fontFamily: 'JosefinSans-Bold',
+                    }}
+                >
+                    Insuficiência da área
+                </Text>
+            </Box>
+            <Box w="10%">
+                <TouchableOpacity 
+                    onPress={()=>{
+                        setIsNewBlockVisible(false);
+                    }}
+                >
+                <Icon name="close" color={COLORS.grey} size={25} />
+                </TouchableOpacity>
+            </Box>
+        </View>
 
-
-        <Text
+        {/* <View
             style={{
-                color: COLORS.grey,
-                fontSize: 15,
-                fontFamily: 'JosefinSans-Regular',
-                textAlign: 'center',
-                lineHeight: 20,
-                paddingTop: 10,
+                // minHeight: '40%',
+                // flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingTop: 2,
+                // paddingBottom: 50,
+                // borderWidth: 1,
             }}
         >
-            Este pomar não tem área suficiente para uma nova parcela de cajueiros.
-        </Text>
+                <Box w="55%" px="1" 
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                    }}
+                >
+                    <Text
+                        style={{
+                            fontSize: 14,
+                            color: false ? COLORS.red : COLORS.mediumseagreen,
+                            fontFamily: 'JosefinSans-Regular',
+                            textAlign: 'right',
+                        }}
+                    >
+                        Este pomar tem...
+                    </Text>
+                    <Text
+                        style={{
+                            fontSize: 14,
+                            color: false ? COLORS.red : COLORS.mediumseagreen,
+                            fontFamily: 'JosefinSans-Regular',
+                            textAlign: 'right',
+                        }}
+                    >
+                        {farmland?.blocks?.length} blocos;             
+                    </Text>
+                    <Text
+                        style={{
+                            fontSize: 14,
+                            color: false ? COLORS.red : COLORS.mediumseagreen,
+                            fontFamily: 'JosefinSans-Regular',
+                            textAlign: 'right',
+                        }}
+                    >
+                        {farmland.trees} árvores;
+                    </Text>
+                    <Text
+                        style={{
+                            fontSize: 14,
+                            color: false ? COLORS.red : COLORS.mediumseagreen,
+                            fontFamily: 'JosefinSans-Regular',
+                            textAlign: 'right',
+                        }}
+                    >
+                        {remainingArea?.toFixed(1)} hectares disponíveis.
+                    </Text>
+                </Box>  
+                <Box
+                    style={{
+                        // borderWidth: 1,
+                    }}
+                >
 
-        <Text
-            style={{
-                color: COLORS.danger,
-                fontSize: 15,
-                fontFamily: 'JosefinSans-Regular',
-                textAlign: 'center',
-                lineHeight: 25,
-                paddingVertical: 10,
-                // height: '30%',
-            }}
-        >
-            ({remainingArea?.toFixed(1)} hectares disponíveis) 
-        </Text>
+                </Box>
+        </View> */}
 
-        <TouchableOpacity
-            onPress={()=>{
-                setIsNewBlockVisible(false);
-            }}
+        <View
             style={{
-                backgroundColor: COLORS.danger,
-                padding: 5,
-                paddingHorizontal: 10,
-                alignSelf: 'center',
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingHorizontal: 30,
+                paddingTop: 50,
             }}
         >
             <Text
                 style={{
-                    color: COLORS.ghostwhite,
+                    color: COLORS.grey,
                     fontSize: 15,
-                    fontFamily: 'JosefinSans-Bold',
+                    fontFamily: 'JosefinSans-Regular',
+                    textAlign: 'center',
+                    lineHeight: 20,
                 }}
             >
-                OK
+                Este pomar não tem área suficiente para uma nova parcela de cajueiros.
             </Text>
-        </TouchableOpacity>
+ 
+        </View>
+
+        <View
+            style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingHorizontal: 30,
+                paddingTop: 15,
+            }}
+        >
+            <Text
+                style={{
+                    color: COLORS.red,
+                    fontSize: 15,
+                    fontFamily: 'JosefinSans-Regular',
+                    textAlign: 'center',
+                    lineHeight: 25,
+                    // height: '30%',
+                }}
+            >
+                ({remainingArea?.toFixed(1)} hectares disponíveis) 
+            </Text>
+        </View>
+
+        <View
+            style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingTop: 30,
+            }}
+        >
+            <TouchableOpacity
+                onPress={()=>{
+                    setIsNewBlockVisible(false);
+                }}
+            >
+                <View
+                    style={{
+                        // borderWidth: 3,
+                        // borderRadius: 100,
+                        paddingHorizontal: 15,
+                        paddingVertical: 4,
+                        // borderColor: COLORS.mediumseagreen,
+                        flexDirection: 'row',
+                    }}
+                >
+                    <Icon name="arrow-back" size={25} color={COLORS.mediumseagreen}  />
+
+                    <Text
+                        style={{
+                            color: COLORS.mediumseagreen,
+                            fontSize: 15,
+                            fontFamily: 'JosefinSans-Bold',
+                        }}
+                    >Voltar</Text>
+                </View>
+
+            </TouchableOpacity>
+        </View>
     </View>   
     }
 
-    {/* Display this if there enough area size for a new cashew block plot to be added  */}
     { remainingArea > 0.1 &&
     <>
     
@@ -325,8 +443,10 @@ export default function NewFarmlandBlock({
             titleStyle={{
                 fontSize: 20,
                 paddingVertical: 10,
+                // color: COLORS.ghostwhite,
                 fontWeight: 'bold',
                 marginBottom: 20,
+                // backgroundColor: COLORS.mediumseagreen,
                 width: '100%',
                 textAlign: 'center',
 
@@ -467,7 +587,7 @@ export default function NewFarmlandBlock({
                     <Text
                         style={{
                             fontSize: 14,
-                            color: false ? COLORS.red : COLORS.main,
+                            color: false ? COLORS.red : COLORS.mediumseagreen,
                             fontFamily: 'JosefinSans-Regular',
                             textAlign: 'right',
                         }}
@@ -477,7 +597,7 @@ export default function NewFarmlandBlock({
                     <Text
                         style={{
                             fontSize: 14,
-                            color: false ? COLORS.red : COLORS.main,
+                            color: false ? COLORS.red : COLORS.mediumseagreen,
                             fontFamily: 'JosefinSans-Regular',
                             textAlign: 'right',
                         }}
@@ -487,7 +607,7 @@ export default function NewFarmlandBlock({
                     <Text
                         style={{
                             fontSize: 14,
-                            color: false ? COLORS.red : COLORS.main,
+                            color: false ? COLORS.red : COLORS.mediumseagreen,
                             fontFamily: 'JosefinSans-Regular',
                             textAlign: 'right',
                         }}
@@ -497,7 +617,7 @@ export default function NewFarmlandBlock({
                     <Text
                         style={{
                             fontSize: 14,
-                            color: false ? COLORS.red : COLORS.main,
+                            color: false ? COLORS.red : COLORS.mediumseagreen,
                             fontFamily: 'JosefinSans-Regular',
                             textAlign: 'right',
                         }}
@@ -506,7 +626,31 @@ export default function NewFarmlandBlock({
                     </Text>
                 </Box>  
 
+    {/* show this only there is no more area for more cashew trees blocks */}
+    {/* {
+        remainingArea <= 0.1 &&  */}
+        {/* <Box 
+            style={{
+                // height: '100%',
+                flex: 1,
+                justifyContent: 'center',
+                width: '100%',
+                borderWidth: 1,
+            }}
+        >
+            <Text
+            
+            >
+                Este pomar nao tem area suficiente para 
+            </Text>
 
+        </Box> */}
+    {/* } */}
+
+
+    {/* Show this only there is enough area for a new cashew trees block */}
+    {/* {
+        remainingArea > 0.1 && */}
         <>
         <Stack direction="row" mx="3" w="100%">
                 <Box w="45%" px="1">
@@ -531,8 +675,9 @@ export default function NewFarmlandBlock({
                             }}
                             arrowicon={
                                 <Icon 
+                                // size={35} 
                                 name="arrow-drop-down" 
-                                color={COLORS.main} 
+                                color={COLORS.mediumseagreen} 
                                 />
                             }
                             closeicon={
@@ -556,6 +701,41 @@ export default function NewFarmlandBlock({
                         />
 
 
+                            {/* <Select
+                                selectedValue={plantingYear}
+                                accessibilityLabel="Ano de plantio"
+                                placeholder="Escolha o ano"
+                                minHeight={55}
+                                _selectedItem={{
+                                    bg: 'teal.600',
+                                    fontSize: 'lg',
+                                    endIcon: <CheckIcon size="5" />,
+                                }}
+                                dropdownCloseIcon={plantingYear 
+                                        ? <Icon 
+                                            name="close" 
+                                            size={20} 
+                                            color="grey" 
+                                            onPress={()=>setPlantingYear('')} 
+                                        /> 
+                                        : <Icon 
+                                            size={40} 
+                                            name="arrow-drop-down" 
+                                            color={COLORS.mediumseagreen} 
+                                        />
+                                    }
+                                mt={1}
+                                onValueChange={newYear => {
+                                    setErrors((prev)=>({...prev, plantingYear: ''}));
+                                    setPlantingYear(newYear);
+                                }}
+                            >
+                                {
+                                    getFullYears(100)?.map((year, index)=>(
+                                        <Select.Item key={index} label={`${year}`} value={year} />
+                                    ))
+                                }
+                            </Select> */}
                         {
                             'plantingYear' in errors 
                         ? <FormControl.ErrorMessage 
@@ -599,6 +779,13 @@ export default function NewFarmlandBlock({
                             }}
                         />
                             
+                        {/* {
+                            'usedArea' in errors 
+                        ? <FormControl.ErrorMessage 
+                        leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                        _text={{ fontSize: 'xs'}}>{errors?.usedArea}</FormControl.ErrorMessage> 
+                        : <FormControl.HelperText><Text></Text></FormControl.HelperText>
+                        } */}
                     </FormControl>
                     </Box>
 
@@ -626,6 +813,14 @@ export default function NewFarmlandBlock({
 
                         }}
                     />
+                        
+                    {/* {
+                        'blockTrees' in errors 
+                        ? <FormControl.ErrorMessage 
+                        leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                        _text={{ fontSize: 'xs'}}>{errors?.blockTrees}</FormControl.ErrorMessage> 
+                        : <FormControl.HelperText><Text></Text></FormControl.HelperText>
+                    } */}
                     </FormControl>
                     </Box>
                 </Stack> 
@@ -644,15 +839,29 @@ export default function NewFarmlandBlock({
 
                 {
                     (errors?.blockTrees && !errors?.usedArea) &&
-                    <Box>
+                    <Box
+                    //     style={{
+                    //         backgroundColor: COLORS.danger,
+                    //         marginTop: -30,
+                    //     }}
+                    >
+                        {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.usedArea}</Text>        */}
                         <Text style={{ fontSize: 14, color: COLORS.red, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.red} /> {errors?.blockTrees}</Text>       
+                        {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
                     </Box>
                 } 
 
                 {
                     (!errors?.blockTrees && errors?.usedArea) &&
-                    <Box>
+                    <Box
+                    //     style={{
+                    //         backgroundColor: COLORS.danger,
+                    //         marginTop: -30,
+                    //     }}
+                    >
                         <Text style={{ fontSize: 14, color: COLORS.red, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.red} /> {errors?.usedArea}</Text>       
+                        {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.blockTrees}</Text>        */}
+                        {/* <Text style={{ fontSize: 14, color: COLORS.ghostwhite, padding: 6, }}> <Icon name="error-outline" size={20} color={COLORS.ghostwhite} /> {errors?.treeDensity}</Text>         */}
                     </Box>
                 } 
                 </Box>
@@ -679,18 +888,18 @@ export default function NewFarmlandBlock({
                         center
                         fontFamily = 'JosefinSans-Bold'
                         containerStyle={{
-                            backgroundColor: COLORS.fourth,
+                            backgroundColor: COLORS.ghostwhite,
                         }}
                         textStyle={{
                             fontWeight: '120',
-                            color: isDensityModeRegular ? COLORS.main : COLORS.grey,
+                            color: isDensityModeRegular ? COLORS.mediumseagreen : COLORS.grey,
                         }}
                         title="Regular"
                         checked={isDensityModeRegular}
                         checkedIcon={
                             <Icon
                                 name="check-box"
-                                color={COLORS.main}
+                                color={COLORS.mediumseagreen}
                                 size={30}
                                 iconStyle={{ marginRight: 1 }}
                             />
@@ -719,19 +928,19 @@ export default function NewFarmlandBlock({
                         center
                         fontFamily = 'JosefinSans-Bold'
                         containerStyle={{
-                            backgroundColor: COLORS.fourth,
+                            backgroundColor: COLORS.ghostwhite,
                         }}
                         textStyle={{
                             
                             fontWeight: '120',
-                            color: isDensityModeIrregular ? COLORS.main : COLORS.grey,
+                            color: isDensityModeIrregular ? COLORS.mediumseagreen : COLORS.grey,
                         }}
                         title="Irregular"
                         checked={isDensityModeIrregular}
                         checkedIcon={
                             <Icon
                                 name="check-box"
-                                color={COLORS.main}
+                                color={COLORS.mediumseagreen}
                                 size={30}
                                 iconStyle={{ marginRight: 1 }}
                             />
@@ -768,6 +977,9 @@ export default function NewFarmlandBlock({
                 </FormControl>
 
             </Box>
+
+
+
 
             { isDensityModeRegular  && (
             
@@ -865,7 +1077,7 @@ export default function NewFarmlandBlock({
                     save="value"
                     label="Tipo de plantas"
                     badgeStyles={{
-                        backgroundColor: COLORS.main,                        
+                        backgroundColor: COLORS.mediumseagreen,                        
                     }}
                     badgeTextStyles={{
                         fontSize: 16
@@ -874,7 +1086,7 @@ export default function NewFarmlandBlock({
                         <Icon 
                             // size={45} 
                             name="arrow-drop-down" 
-                            color={COLORS.main} 
+                            color={COLORS.mediumseagreen} 
                             />
                         }
                         closeicon={
@@ -929,7 +1141,7 @@ export default function NewFarmlandBlock({
                             <Icon 
                                 size={45} 
                                 name="arrow-drop-down" 
-                                color={COLORS.main} 
+                                color={COLORS.mediumseagreen} 
                             />
                         }
                         closeicon={
@@ -991,9 +1203,11 @@ export default function NewFarmlandBlock({
                         </FormControl>
                     </Box>
                     <Box
+                        // w="15%"
                         style={{
                             justifyContent: 'center',
                             alignItems: 'center',
+                            // backgroundColor: 'red',
                             position: 'relative',
                             bottom: -5,
                             left: 0,
@@ -1007,14 +1221,16 @@ export default function NewFarmlandBlock({
                                 marginTop: 10,
                                 padding: 5,
                                 borderRadius: 100,
-                                backgroundColor: COLORS.main,
-                                borderColor: COLORS.main,
+                                backgroundColor: COLORS.mediumseagreen,
+                                borderColor: COLORS.mediumseagreen,
                                 borderWidth: 1,
                             }}
 
 
                             onPress={()=>{
                                 if (addedClone){
+                                    // let updatedCloneList = [...allClones].unshift(addedClone)
+                                    // setAllClones(updatedCloneList);
                                     setClones(prev=>[...prev, addedClone]);
 
                                     setAddedClone('');
@@ -1068,12 +1284,22 @@ export default function NewFarmlandBlock({
                     <Box 
                         w="100%"
                         mb="2"
+                        style={{
+                            // backgroundColor: COLORS.mediumseagreen,
+                            // borderTopLeftRadius: 20,
+                            // borderTopRightRadius: 20,
+                            // borderWidth: 2, 
+                            // borderColor: COLORS.mediumseagreen,
+            
+                        }}
                     >
+
+
                     <Stack direction="row" space={2} >
                         <Box w="65%">
                             <Text
                                 style={{
-                                    color: COLORS.main,
+                                    color: COLORS.mediumseagreen,
                                     fontSize: 16,
                                     fontFamily: 'JosefinSans-Bold',
                                 }}
@@ -1082,7 +1308,7 @@ export default function NewFarmlandBlock({
                         <Box w="35%">
                             <Text
                                 style={{
-                                    color: COLORS.main,
+                                    color: COLORS.mediumseagreen,
                                     fontSize: 16,
                                     fontFamily: 'JosefinSans-Bold',
                                 }}
@@ -1097,12 +1323,18 @@ export default function NewFarmlandBlock({
                         <Box 
                             w="100%" 
                             key={index} 
+                            // px="5" 
                             mb="1"
+                            style={{
+                                // borderColor: COLORS.lightgrey,
+                                // borderWidth: 2,
+                            }}
                         >
                             <Stack 
                                 direction="row" 
                                 w="100%" 
                                 space={2} 
+                                // mt="1"
                             >
                                 <Box w="65%"
                                     style={{ 
@@ -1149,7 +1381,6 @@ export default function NewFarmlandBlock({
 
         </View>
 
-    </ScrollView>
     <Button
         title="Salvar Parcela"
         titleStyle={{
@@ -1159,7 +1390,7 @@ export default function NewFarmlandBlock({
         iconPosition="right"
 
         containerStyle={{
-            backgroundColor: COLORS.main,
+            backgroundColor: COLORS.mediumseagreen,
             borderRadius: 10,
 
         }}
@@ -1169,6 +1400,7 @@ export default function NewFarmlandBlock({
 
         }}
     />
+    </ScrollView>
     </>
 }
 

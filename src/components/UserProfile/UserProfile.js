@@ -106,9 +106,8 @@ const { useRealm, useQuery, useObject } = realmContext;
             backgroundColor: 'ghostwhite', 
             width: '100%',
             height: '100%',
-            // borderRadius: 10,
+            backgroundColor: COLORS.second,
             paddingTop: 10,
-            // marginBottom: 10,
         }}
         isVisible={isUserProfileVisible} 
         onBackdropPress={toggleOverlay}
@@ -144,19 +143,17 @@ const { useRealm, useQuery, useObject } = realmContext;
 
 
         <Box 
-        // h="100%" 
-        w="100%"
+            w="100%"
             style={{ flex: 1, }}
         >
 
         <Stack w="100%" direction="row">
-            <Box w="90%">
-            </Box>
+
             <Box w="10%">
                 <Icon 
                     name='close' 
-                    color={COLORS.grey} 
-                    size={30}  
+                    color={COLORS.ghostwhite} 
+                    size={25}  
                     onPress={()=>{
                         setIsUserProfileVisible(false);
                     }}
@@ -164,86 +161,12 @@ const { useRealm, useQuery, useObject } = realmContext;
             </Box>
         </Stack>
         
-        <ScrollView
-            // style={{ paddingTop: 40}}
-        >
+        <ScrollView>
 
 
-        <Center 
-        // h="100%"
-        >
-                {/* <Icon 
-                    name="account-circle" 
-                    size={200} 
-                    color={COLORS.grey} 
-                /> */}
-        <TouchableOpacity
-            disabled={true}
-            onPress={()=>{
-            setIsAddPhoto(true);
-            setTitleAlert(errorMessages.addPhoto.title);
-            setMessageAlert(errorMessages.addPhoto.message);
-            setShowCancelButton(errorMessages.addPhoto.showCancelButton);
-            setShowConfirmButtom(errorMessages.addPhoto.showConfirmButton);
-            setCancelText(errorMessages.addPhoto.cancelText);
-            setConfirmText(errorMessages.addPhoto.confirmText);
-            setAlert(true);
-
-            }}
-        >
-    {            
-        customUserData?.image &&   
-        ( 
-        <Box
-            style={{ marginTop: 50, }}
-        >
-            <Image 
-                source={{ uri: customUserData?.image }}
-                style={styles.images}
-            />     
-        </Box>
-        )        
-    }
-
-
-    {            
-        !customUserData?.image &&   
-        ( <Box
-            style={{ marginTop: 50, }}
-        >
-            <Icon name="account-circle" size={200} color={COLORS.grey} />
-        </Box>
-        )        
-    }
-    </TouchableOpacity>
-
-
-                <Text
-                    style={{
-                        textAlign: 'center',
-                        fontSize: 20,
-                        fontFamily: 'JosefinSans-Bold',
-                        color: COLORS.main,
-                    }}
-                    >
-                    {customUserData?.name}
-                </Text>
-                <Text
-                    style={{
-                        textAlign: 'center',
-                        fontSize: 14,
-                        fontFamily: 'JosefinSans-Regular',
-                        color: COLORS.grey,
-                    }}
-                    >
-                    ({customUserData?.role?.includes(roles.coopManager) ? roles.coopManager : customUserData?.role})
-                </Text>
-            {/* </Box> */}
-
-
+        <Center>
 
             <Box w="95%" 
-                h="70%"
                 style={{
                     marginTop: 5,
                 }}
@@ -253,21 +176,89 @@ const { useRealm, useQuery, useObject } = realmContext;
                         flex: 1,
                         width: '100%',
                         height: '100%',
-                        padding: 15,
+                        paddingHorizontal: 15,
+                        paddingBottom: 20,
                         marginVertical: 10,
-                        minHeight: 100,
-                        borderColor: COLORS.main,
-                        shadowColor: COLORS.main,
-                        shadowOffset: {
-                          width: 0,
-                          height: 3,
-                        },
-                        shadowOpacity: 0.27,
-                        shadowRadius: 4.65,
-                
-                        elevation: 3,
+                        borderRadius: 20,
+                        backgroundColor: COLORS.ghostwhite,
                     }}
+                    >
+                    
+
+                    <TouchableOpacity
+                        disabled={true}
+                        onPress={()=>{
+                        setIsAddPhoto(true);
+                        setTitleAlert(errorMessages.addPhoto.title);
+                        setMessageAlert(errorMessages.addPhoto.message);
+                        setShowCancelButton(errorMessages.addPhoto.showCancelButton);
+                        setShowConfirmButtom(errorMessages.addPhoto.showConfirmButton);
+                        setCancelText(errorMessages.addPhoto.cancelText);
+                        setConfirmText(errorMessages.addPhoto.confirmText);
+                        setAlert(true);
+            
+                        }}
+                    >
+                {            
+                    customUserData?.image &&   
+                    ( 
+                    <Box>
+                        <Image 
+                            source={{ uri: customUserData?.image }}
+                            style={styles.images}
+                        />     
+                    </Box>
+                    )        
+                }
+            
+            
+                {            
+                    !customUserData?.image &&   
+                    ( <Box>
+                        <Icon name="account-circle" size={200} color={COLORS.lightgrey} />
+                    </Box>
+                    )        
+                }
+                </TouchableOpacity>
+            
+                <Box
+                style={{
+                    paddingBottom: 20,
+                }}
                 >
+                    <Text
+                        style={{
+                            textAlign: 'center',
+                            fontSize: 20,
+                            fontFamily: 'JosefinSans-Bold',
+                            color: COLORS.black,
+                        }}
+                        >
+                        {customUserData?.name}
+                    </Text>
+                    <Text
+                        style={{
+                            textAlign: 'center',
+                            fontSize: 14,
+                            fontFamily: 'JosefinSans-Regular',
+                            color: COLORS.grey,
+                        }}
+                        >
+                        ({customUserData?.role?.includes(roles.coopManager) ? roles.coopManager : customUserData?.role})
+                    </Text>
+
+                </Box>
+        
+
+
+                    <CustomDivider thickness={2} my={2}  bg={COLORS.second} />
+
+                    <Box
+                        style={{
+                            paddingVertical: 20,
+                        }}
+                    >
+
                     <Stack w="100%" direction="row" my="1">
                         <Box w="40%">
                             <Text
@@ -326,38 +317,16 @@ const { useRealm, useQuery, useObject } = realmContext;
                             <Text>{customUserData?.email}</Text>
                         </Box>
                     </Stack>
-                    <CustomDivider thickness={2} my={2}  bg={COLORS.main} />
+                    </Box>
+
+                    <CustomDivider thickness={2} my={2}  bg={COLORS.second} />
+                    
                     <Box
                         style={{
                             marginTop: 20,
                         }}
                     >
-                        <TouchableOpacity
-                            onPress={()=>{
-                                user?.logOut()
-                            }}
-                        >
 
-                        <Stack w="100%" direction="row" my="2" space={5}
-                            style={{
-                                borderColor: COLORS.danger,
-                                borderWidth: 2,
-                                padding: 10,
-                                borderRadius: 10,
-                            }}
-                            >
-                            <Icon name="logout" size={30} color={COLORS.danger} />
-                            <Text 
-                                style={{
-                                    color: COLORS.danger, 
-                                    fontSize: 18, 
-                                    fontFamily: 'JosefinSans-Bold'
-                                }}
-                                >
-                                    Terminar sessão
-                            </Text>
-                        </Stack>
-                        </TouchableOpacity>
 
         { (customUserData?.role.includes(roles.provincialManager) || customUserData?.email.includes('connectcaju2023')) &&  
                     <TouchableOpacity
@@ -366,20 +335,19 @@ const { useRealm, useQuery, useObject } = realmContext;
                         }}
                     >
 
-                         <Stack w="100%" direction="row" my="2" space={5}
+                         <Stack w="100%" direction="row" space={5}
                             style={{
-                                borderColor: COLORS.main,
-                                borderWidth: 2,
-                                padding: 10,
+                                borderColor: COLORS.grey,
+                                paddingVertical: 5,
                                 borderRadius: 10,
                             }}
                             >
-                            <Icon name="update" size={30} color={COLORS.main} />
+                            <Icon name="update" size={25} color={COLORS.grey} />
                             <Text 
                                 style={{
-                                    color: COLORS.main, 
-                                    fontSize: 18, 
-                                    fontFamily: 'JosefinSans-Bold'
+                                    color: COLORS.grey, 
+                                    fontSize: 16, 
+                                    fontFamily: 'JosefinSans-Regular'
                                 }}
                                 >
                                     Actualizar metas
@@ -397,26 +365,52 @@ const { useRealm, useQuery, useObject } = realmContext;
                         }}
                     >
 
-                        <Stack w="100%" direction="row" my="2" space={5}
+                        <Stack w="100%" direction="row" space={5}
                             style={{
-                                borderColor: COLORS.main,
-                                borderWidth: 2,
-                                padding: 10,
+                                borderColor: COLORS.grey,
+                                paddingVertical: 5,
                                 borderRadius: 10,
                             }}
                             >
-                            <Icon name="integration-instructions" size={30} color={COLORS.main} />
+                            <Icon name="integration-instructions" size={25} color={COLORS.grey} />
                             <Text 
                                 style={{
-                                    color: COLORS.main, 
-                                    fontSize: 18, 
-                                    fontFamily: 'JosefinSans-Bold'
+                                    color: COLORS.grey, 
+                                    fontSize: 16, 
+                                    fontFamily: 'JosefinSans-Regular'
                                 }}
                                 >
-                                    Manual de usuário
+                                    Manual de usuários
                             </Text>
                         </Stack>
                     </TouchableOpacity>
+
+                    <TouchableOpacity
+                            onPress={()=>{
+                                user?.logOut()
+                            }}
+                        >
+
+                        <Stack w="100%" direction="row"  space={5}
+                            style={{
+                                borderColor: COLORS.grey,
+                                paddingVertical: 5,
+                                borderRadius: 10,
+                            }}
+                            >
+                            <Icon name="logout" size={25} color={COLORS.grey} />
+                            <Text 
+                                style={{
+                                    color: COLORS.grey, 
+                                    fontSize: 16, 
+                                    fontFamily: 'JosefinSans-Regular'
+                                }}
+                                >
+                                    Terminar sessão
+                            </Text>
+                        </Stack>
+                        </TouchableOpacity>
+
                     </Box>
 
                 </Box>

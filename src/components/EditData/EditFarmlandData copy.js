@@ -115,6 +115,8 @@ const EditFarmlandData = ({
     useEffect(()=>{
         // save the block if everything is fine
         if (editBlockIsOn){
+            // edit the block
+            // addBlockData();
             setEditBlockIsOn(false);
         }
 
@@ -130,6 +132,7 @@ const EditFarmlandData = ({
         editBlockIsOn,
         isEditBlockVisible,
         resource, 
+        // farmresouland,
     ]);
 
 
@@ -321,7 +324,6 @@ const EditFarmlandData = ({
             width: '90%',
             maxHeight: '80%',
             borderRadius: 10,
-            // paddingBottom: 10,
         }}
         isVisible={isOverlayVisible} 
         onBackdropPress={toggleOverlay}
@@ -372,24 +374,7 @@ const EditFarmlandData = ({
                 fadingEdgeLength={2}
                 keyboardDismissMode = 'on-drag'
                 keyboardShouldPersistTaps = 'handled'
-                style={{
-                    // flex: 1,
-                    // minHeight: '100%',
-                    // marginVertical: 10,
-                }}
             >
-            {/* <Box>
-                <Text
-                    style={{ 
-                        textAlign: 'center',
-                        color: COLORS.black,
-                        fontSize: 18,
-                        paddingVertical: 15,
-                        fontFamily: 'JosefinSans-Bold',
-                        
-                    }}
-                >{overlayTitle}</Text>
-            </Box> */}
 
     {/* update the farmland block data */}
 
@@ -446,41 +431,6 @@ const EditFarmlandData = ({
                             
                         />
 
-                        {/* <Select
-                            selectedValue={plantingYear}
-                            accessibilityLabel="Ano de plantio"
-                                placeholder="Escolha o ano"
-                            minHeight={55}
-                            _selectedItem={{
-                                bg: 'teal.600',
-                                fontSize: 'lg',
-                                endIcon: <CheckIcon size="5" />,
-                            }}
-                            dropdownCloseIcon={plantingYear 
-                                    ? <Icon 
-                                        name="close" 
-                                        size={25} 
-                                        color="grey" 
-                                        onPress={()=>setPlantingYear('')} 
-                                    /> 
-                                    : <Icon 
-                                        size={40} 
-                                        name="arrow-drop-down" 
-                                        color={COLORS.pantone} 
-                                    />
-                                }
-                            mt={1}
-                            onValueChange={newYear => {
-                                setErrors((prev)=>({...prev, plantingYear: ''}));
-                                setPlantingYear(newYear);
-                            }}
-                        >
-                            {
-                                getFullYears(100)?.map((year, index)=>(
-                                    <Select.Item key={index} label={`${year}`} value={year} />
-                                ))
-                            }
-                        </Select> */}
                     {
                         'plantingYear' in errors 
                     ? <FormControl.ErrorMessage 

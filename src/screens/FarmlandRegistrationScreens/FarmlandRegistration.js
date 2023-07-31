@@ -1620,6 +1620,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
             showConfirmButton={showConfirmButton}
             setShowConfirmButton={setShowConfirmButton}
             
+            ownerImage={ownerImage}
+            
             // successLottieVisible={successLottieVisible}
             // setSuccessLottieVisible={setSuccessLottieVisible}
 

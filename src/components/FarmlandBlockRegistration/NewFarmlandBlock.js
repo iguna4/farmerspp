@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio  } from 'native-base';
 import { MultipleSelectList, SelectList  } from 'react-native-dropdown-select-list';
 import {  
@@ -52,6 +52,7 @@ export default function NewFarmlandBlock({
     autoRefresh,
     successLottieVisible,
     setSuccessLottieVisible,
+    ownerImage,
     
 }){
 
@@ -234,9 +235,9 @@ export default function NewFarmlandBlock({
   overlayStyle={{ 
       backgroundColor: (remainingArea <= 0.1) ? COLORS.ghostwhite : COLORS.ghostwhite, 
       width: (remainingArea <= 0.1) ? '70%' : '100%',
-      maxHeight: '95%',
-      borderTopLeftRadius: (remainingArea <= 0.1) ? 7 : 30,
-      borderTopRightRadius: (remainingArea <= 0.1) ? 7 : 30,
+    //   maxHeight: '95%',
+      borderTopLeftRadius: (remainingArea <= 0.1) ? 7 : 0,
+      borderTopRightRadius: (remainingArea <= 0.1) ? 7 : 0,
       borderBottomLeftRadius: (remainingArea <= 0.1) ? 7 : 0,
       borderBottomRightRadius: (remainingArea <= 0.1) ? 7 : 0,
       paddingBottom: 5,
@@ -245,6 +246,7 @@ export default function NewFarmlandBlock({
     onBackdropPress={()=>{
         setIsNewBlockVisible(false);
     }}
+    fullScreen
 >
 
     {/* Display this if there no enough area size left for a new cashew block plot */}
@@ -255,8 +257,6 @@ export default function NewFarmlandBlock({
         width: '100%', 
     }}
     >
-
-
         <Text
             style={{ 
                 textAlign: 'center',
@@ -416,7 +416,7 @@ export default function NewFarmlandBlock({
             flexDirection: 'row',
         }}
     >
-        <Box w="90%">
+        <Box w="100%">
 
             {/* { remainingArea > 0.1 &&  */}
             <Text
@@ -432,7 +432,13 @@ export default function NewFarmlandBlock({
             </Text>
 
         </Box>
-        <Box w="10%">
+        <Box         
+            style={{
+                position: 'absolute',
+                top: 5,
+                right: 5,
+            }}
+        >
             <TouchableOpacity 
                 onPress={()=>{
                     setIsNewBlockVisible(false);
@@ -453,6 +459,82 @@ export default function NewFarmlandBlock({
 
             }}
         >
+            <Box w="100%" px="1" 
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingTop: 10,
+                    paddingBottom: 20,
+                }}
+            >
+                {/* <FontAwesomeIcon  icon={faTree} size={30} color={COLORS.fourth} /> */}
+            
+                {  ownerImage ?                  
+                        <Image 
+                    
+                            source={{ uri: ownerImage }}
+                            style={{
+                                width: 60,
+                                height: 60,
+                                borderColor: COLORS.main,
+                                marginHorizontal: 3,
+                                borderRadius: 120,
+                            }}
+                        />
+                        :
+
+                        <Icon 
+                            name="account-circle" 
+                            size={80} 
+                            color={COLORS.lightgrey} 
+                    />
+                }     
+
+                <Box>
+                    <Text
+                        style={{
+                            fontSize: 14,
+                            color: false ? COLORS.red : COLORS.main,
+                            fontFamily: 'JosefinSans-Regular',
+                            textAlign: 'right',
+                        }}
+                    >
+                        Este pomar tem...
+                    </Text>
+                    <Text
+                        style={{
+                            fontSize: 14,
+                            color: false ? COLORS.red : COLORS.main,
+                            fontFamily: 'JosefinSans-Regular',
+                            textAlign: 'right',
+                        }}
+                    >
+                        {farmland?.blocks?.length} {farmland?.blocks?.length <= 1 ? 'parcela': 'parcelas'}             
+                    </Text>
+                    <Text
+                        style={{
+                            fontSize: 14,
+                            color: false ? COLORS.red : COLORS.main,
+                            fontFamily: 'JosefinSans-Regular',
+                            textAlign: 'right',
+                        }}
+                    >
+                        {farmland.trees} árvores;
+                    </Text>
+                    <Text
+                        style={{
+                            fontSize: 14,
+                            color: false ? COLORS.red : COLORS.main,
+                            fontFamily: 'JosefinSans-Regular',
+                            textAlign: 'right',
+                        }}
+                    >
+                        {remainingArea?.toFixed(1)} hectares disponíveis.
+                    </Text>
+
+                </Box>
+            </Box>  
             <View
                 style={{
                     minHeight: '70%',
@@ -462,73 +544,6 @@ export default function NewFarmlandBlock({
                     paddingBottom: 50,
                 }}
             >
-                <Box w="100%" px="1" 
-                    style={{
-                        justifyContent: 'space-between',
-                        // top: 0,
-                        // right: 0,
-                        flexDirection: 'row',
-                    }}
-                >
-                    <Box
-                        style={{
-                            // borderWidth: 2,
-                            // borderColor: COLORS.main,
-                            // borderRadius: 5,
-                            // backgroundColor: COLORS.main,
-                            padding: 5,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <FontAwesomeIcon  icon={faTree} size={30} color={COLORS.fourth} />
-                
-                    </Box>
-
-                    <Box>
-                        <Text
-                            style={{
-                                fontSize: 14,
-                                color: false ? COLORS.red : COLORS.main,
-                                fontFamily: 'JosefinSans-Regular',
-                                textAlign: 'right',
-                            }}
-                        >
-                            Este pomar tem...
-                        </Text>
-                        <Text
-                            style={{
-                                fontSize: 14,
-                                color: false ? COLORS.red : COLORS.main,
-                                fontFamily: 'JosefinSans-Regular',
-                                textAlign: 'right',
-                            }}
-                        >
-                            {farmland?.blocks?.length} {farmland?.blocks?.length <= 1 ? 'parcela': 'parcelas'}             
-                        </Text>
-                        <Text
-                            style={{
-                                fontSize: 14,
-                                color: false ? COLORS.red : COLORS.main,
-                                fontFamily: 'JosefinSans-Regular',
-                                textAlign: 'right',
-                            }}
-                        >
-                            {farmland.trees} árvores;
-                        </Text>
-                        <Text
-                            style={{
-                                fontSize: 14,
-                                color: false ? COLORS.red : COLORS.main,
-                                fontFamily: 'JosefinSans-Regular',
-                                textAlign: 'right',
-                            }}
-                        >
-                            {remainingArea?.toFixed(1)} hectares disponíveis.
-                        </Text>
-
-                    </Box>
-                </Box>  
 
 
         <>

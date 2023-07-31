@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, } from 'react-native';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio  } from 'native-base';
 import { MultipleSelectList, SelectList  } from 'react-native-dropdown-select-list';
 import {  
@@ -68,6 +68,8 @@ export default function FarmlandBlockRegistration({
     confirmText, setConfirmText,
     showCancelButton, setShowCancelButton,
     showConfirmButton, setShowConfirmButton,
+
+    ownerImage,
 
     // successLottieVisible, setSuccessLottieVisible,
     
@@ -151,12 +153,13 @@ export default function FarmlandBlockRegistration({
 
  return (
   <Overlay 
+    fullScreen
     overlayStyle={{ 
         backgroundColor: COLORS.ghostwhite, 
         width: '100%',
-        maxHeight: '95%',
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
+        // maxHeight: '95%',
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
         paddingBottom: 5,
     }}
     isVisible={isOverlayVisible} 
@@ -259,7 +262,7 @@ export default function FarmlandBlockRegistration({
           flexDirection: 'row',
       }}
   >
-    <Box w="90%">
+    <Box w="100%">
       <Text
           style={{ 
               textAlign: 'center',
@@ -271,7 +274,13 @@ export default function FarmlandBlockRegistration({
         Parcela {foundFarmland?.blocks?.length + 1}
     </Text>
     </Box>
-    <Box w="10%">
+    <Box 
+        style={{
+            position: 'absolute',
+            top: 5,
+            right: 5,
+        }}
+    >
         <TouchableOpacity 
             onPress={()=>{
                 turnOffOverlay();
@@ -306,31 +315,56 @@ export default function FarmlandBlockRegistration({
                 paddingBottom: 50,
             }}
         >
-        <Stack direction="row">
-            <Box w="30%" px="1">
+            <Box w="100%" px="1"
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingTop: 10,
+                    paddingBottom: 20,
+                }}
+            >
+            {  ownerImage ?                  
+                        <Image 
+                    
+                            source={{ uri: ownerImage }}
+                            style={{
+                                width: 60,
+                                height: 60,
+                                borderColor: COLORS.main,
+                                marginHorizontal: 3,
+                                borderRadius: 120,
+                            }}
+                        />
+                        :
 
+                        <Icon 
+                            name="account-circle" 
+                            size={80} 
+                            color={COLORS.lightgrey} 
+                    />
+                } 
+                <Box>
+                    <Text
+                        style={{
+                            fontSize: 14,
+                            color: treeRedFlag ? COLORS.red : COLORS.main,
+                            fontFamily: 'JosefinSans-Regular',
+                            textAlign: 'right',
+                        }}
+                    >Quantas das {totalTrees - treesFlag} árvores?</Text>
+                    <Text
+                        style={{
+                            fontSize: 14,
+                            color: areaRedFlag ? COLORS.red : COLORS.main,
+                            fontFamily: 'JosefinSans-Regular',
+                            textAlign: 'right',
+                        }}
+                    >
+                        Quais dos {(totalArea - areaFlag).toFixed(1)} hectares?
+                    </Text>
+                </Box>  
             </Box>  
-            <Box w="70%" px="1" >
-                <Text
-                    style={{
-                        fontSize: 14,
-                        color: treeRedFlag ? COLORS.red : COLORS.main,
-                        fontFamily: 'JosefinSans-Regular',
-                        textAlign: 'right',
-                    }}
-                >Quantas das {totalTrees - treesFlag} árvores?</Text>
-                <Text
-                    style={{
-                        fontSize: 14,
-                        color: areaRedFlag ? COLORS.red : COLORS.main,
-                        fontFamily: 'JosefinSans-Regular',
-                        textAlign: 'right',
-                    }}
-                >
-                    Quais dos {(totalArea - areaFlag).toFixed(1)} hectares?
-                </Text>
-            </Box>  
-        </Stack>
         <Stack direction="row" mx="3" w="100%">
                 <Box w="100%" px="1">
                     <FormControl isRequired my="1" isInvalid={'plantingYear' in errors}>

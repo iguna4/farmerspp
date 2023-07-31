@@ -35,6 +35,7 @@ import { faTree } from '@fortawesome/free-solid-svg-icons';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import PhotoBottomSheet from '../../components/BottomSheet/PhotoBottomSheet';
+import { SuccessLottie } from '../../components/LottieComponents/SuccessLottie';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const institution = 'institution';
@@ -53,6 +54,7 @@ export default function InstitutionScreen ({ route, navigation }) {
     const farmlands = realm.objects("Farmland").filtered('farmerId == $0', ownerId);
     const [currentNode, setCurrentNode] = useState({next: null, prev: null, current: null });
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
+    const [successLottieVisible, setSuccessLottieVisible] = useState(false);
 
     // bottom sheet 
     const bottomSheetModalRef = useRef(null);
@@ -63,6 +65,18 @@ export default function InstitutionScreen ({ route, navigation }) {
     }
 
     const keyExtractor = (item, index)=>index.toString();
+
+
+    // SuccesLottie effect
+    useEffect(()=>{
+
+        if (successLottieVisible){
+            setTimeout(()=>{
+              setSuccessLottieVisible(false);
+            }, 3000)
+        }
+      
+    }, [ successLottieVisible ]);
 
     useEffect(()=>{
 
@@ -467,7 +481,13 @@ export default function InstitutionScreen ({ route, navigation }) {
 
         {
             farmlands?.map((farmland)=>
-            (<FarmlandData key={farmland?._id} farmland={farmland} />))
+            (<FarmlandData 
+                key={farmland?._id} 
+                farmland={farmland} 
+                successLottieVisible={successLottieVisible} 
+                setSuccessLottieVisible={setSuccessLottieVisible} 
+                ownerImage={farmer?.image}
+            />))
         }
         </Box>
 
@@ -506,6 +526,13 @@ export default function InstitutionScreen ({ route, navigation }) {
           setLoadingActivityIndicator={setLoadingActivityIndicator}
         />
         </ScrollView>
+    }
+    
+    { successLottieVisible &&   
+        <SuccessLottie 
+            successLottieVisible={successLottieVisible} 
+            setSuccessLottieVisible={setSuccessLottieVisible} 
+        />      
     }
 </SafeAreaView>
 </BottomSheetModalProvider>

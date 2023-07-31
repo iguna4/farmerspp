@@ -47,6 +47,7 @@ const farmlandResourceMessage = 'farmlandResourceMessage';
 const FarmlandData = ({ 
     farmland, setRefresh, refresh,
     setSuccessLottieVisible,  successLottieVisible,
+    ownerImage,
  })=>{
 
 
@@ -78,7 +79,6 @@ const FarmlandData = ({
     // adding new Block to an existing farmland 
     const [isNewBlockVisible, setIsNewBlockVisible] = useState(false);
     const [isAreaNotEnough, setIsAreaNotEnough] = useState(false);
-    const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
     // ----------------------------------------------- 
 
@@ -1689,6 +1689,7 @@ const FarmlandData = ({
     autoRefresh={autoRefresh}
     setSuccessLottieVisible={setSuccessLottieVisible}
     successLottieVisible={successLottieVisible}
+    ownerImage={ownerImage ? ownerImage : ''}
 />
 }
 

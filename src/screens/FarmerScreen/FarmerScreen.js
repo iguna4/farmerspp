@@ -607,6 +607,7 @@ export default function FarmerScreen ({ route, navigation }) {
               refresh={refresh}  
               successLottieVisible={successLottieVisible}
               setSuccessLottieVisible={setSuccessLottieVisible}
+              ownerImage={farmer?.image}
             />))
         }
         </Box>

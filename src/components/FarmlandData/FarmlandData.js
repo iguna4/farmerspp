@@ -44,7 +44,10 @@ const { useRealm, useQuery, useObject } = realmContext;
 const farmlandResourceMessage = 'farmlandResourceMessage';
 
 
-const FarmlandData = ({ farmland, setRefresh, refresh })=>{
+const FarmlandData = ({ 
+    farmland, setRefresh, refresh,
+    setSuccessLottieVisible,  successLottieVisible,
+ })=>{
 
 
     const realm = useRealm();
@@ -151,6 +154,8 @@ const FarmlandData = ({ farmland, setRefresh, refresh })=>{
             setIsAreaNotEnough(true);
         }  
     }
+
+
 
     useEffect(()=>{
 
@@ -1671,14 +1676,10 @@ const FarmlandData = ({ farmland, setRefresh, refresh })=>{
             resourceName={'Farmland'}
             blockId={blockId}
 
-            // refresh={refresh}
-            // setRefresh={setRefresh}
-            // setAutoRefresh={setAutoRefresh}
-            // autoRefresh={autoRefresh}
-            // checkAreasConformity={checkAreasConformity}
-            // farmland={farmland}
         />
     }
+
+
 
 {isNewBlockVisible && <NewFarmlandBlock 
     isNewBlockVisible={isNewBlockVisible}
@@ -1686,6 +1687,8 @@ const FarmlandData = ({ farmland, setRefresh, refresh })=>{
     farmland={farmland}
     setAutoRefresh={setAutoRefresh}
     autoRefresh={autoRefresh}
+    setSuccessLottieVisible={setSuccessLottieVisible}
+    successLottieVisible={successLottieVisible}
 />
 }
 

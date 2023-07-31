@@ -45,6 +45,7 @@ import {
   import PhotoBottomSheet from '../../components/BottomSheet/PhotoBottomSheet';
   import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
+import { SuccessLottie } from '../../components/LottieComponents/SuccessLottie';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const singleFarmer = 'singleFarmer';
@@ -65,6 +66,7 @@ export default function FarmerScreen ({ route, navigation }) {
     const [currentNode, setCurrentNode] = useState({next: null, prev: null, current: null });
     const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
+    const [successLottieVisible, setSuccessLottieVisible] = useState(false);
     // ------------------------------------------------------------------------
     
     // Bottom Sheet code block
@@ -89,6 +91,18 @@ export default function FarmerScreen ({ route, navigation }) {
     // }, []);
 
     // ----------------------------------------------------------------------
+
+    // SuccesLottie effect
+    useEffect(()=>{
+
+      if (successLottieVisible){
+          setTimeout(()=>{
+            setSuccessLottieVisible(false);
+          }, 3000)
+      }
+    
+  }, [ successLottieVisible ]);
+
 
     useEffect(()=>{
 
@@ -591,6 +605,8 @@ export default function FarmerScreen ({ route, navigation }) {
               farmland={farmland} 
               setRefresh={setRefresh} 
               refresh={refresh}  
+              successLottieVisible={successLottieVisible}
+              setSuccessLottieVisible={setSuccessLottieVisible}
             />))
         }
         </Box>
@@ -632,6 +648,13 @@ export default function FarmerScreen ({ route, navigation }) {
           launchNativeImageLibrary={launchNativeImageLibrary}
         />
         </ScrollView>
+    }
+
+    { successLottieVisible &&   
+        <SuccessLottie 
+            successLottieVisible={successLottieVisible} 
+            setSuccessLottieVisible={setSuccessLottieVisible} 
+        />      
     }
 </SafeAreaView>
 </BottomSheetModalProvider>

@@ -38,6 +38,8 @@ import { useUser } from "@realm/react";
 import { realmContext } from '../../models/realmContext';
 import { resourceValidation } from "../../consts/resourceValidation";
 import DangerAlert from "../LottieComponents/DangerAlert";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faTree } from "@fortawesome/free-solid-svg-icons";
 const {useRealm, useQuery, useObject} = realmContext;
 
 
@@ -48,6 +50,8 @@ export default function NewFarmlandBlock({
     farmland,
     setAutoRefresh,
     autoRefresh,
+    successLottieVisible,
+    setSuccessLottieVisible,
     
 }){
 
@@ -84,7 +88,7 @@ export default function NewFarmlandBlock({
     const [isDensityModeIrregular, setIsDensityModeIrregular] = useState(false);
     const [isDensityModeRegular, setIsDensityModeRegular] = useState(false);
     const [sameTypeTreesList, setSameTypeTreesList] = useState([]);
-    
+
     // ----------------------------------------------
    
     const toggleOverlay = () => {
@@ -171,6 +175,7 @@ export default function NewFarmlandBlock({
         });
 
         setAutoRefresh(!autoRefresh);
+        setSuccessLottieVisible(true);
 
     }, [realm, farmland ]);
 
@@ -227,7 +232,7 @@ export default function NewFarmlandBlock({
  return (
   <Overlay 
   overlayStyle={{ 
-      backgroundColor: (remainingArea <= 0.1) ? COLORS.ghostwhite : COLORS.fourth, 
+      backgroundColor: (remainingArea <= 0.1) ? COLORS.ghostwhite : COLORS.ghostwhite, 
       width: (remainingArea <= 0.1) ? '70%' : '100%',
       maxHeight: '95%',
       borderTopLeftRadius: (remainingArea <= 0.1) ? 7 : 30,
@@ -457,59 +462,78 @@ export default function NewFarmlandBlock({
                     paddingBottom: 50,
                 }}
             >
-                <Box w="55%" px="1" 
+                <Box w="100%" px="1" 
                     style={{
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
+                        justifyContent: 'space-between',
+                        // top: 0,
+                        // right: 0,
+                        flexDirection: 'row',
                     }}
                 >
-                    <Text
+                    <Box
                         style={{
-                            fontSize: 14,
-                            color: false ? COLORS.red : COLORS.main,
-                            fontFamily: 'JosefinSans-Regular',
-                            textAlign: 'right',
+                            // borderWidth: 2,
+                            // borderColor: COLORS.main,
+                            // borderRadius: 5,
+                            // backgroundColor: COLORS.main,
+                            padding: 5,
+                            justifyContent: 'center',
+                            alignItems: 'center',
                         }}
                     >
-                        Este pomar tem...
-                    </Text>
-                    <Text
-                        style={{
-                            fontSize: 14,
-                            color: false ? COLORS.red : COLORS.main,
-                            fontFamily: 'JosefinSans-Regular',
-                            textAlign: 'right',
-                        }}
-                    >
-                        {farmland?.blocks?.length} {farmland?.blocks?.length <= 1 ? 'parcela': 'parcelas'}             
-                    </Text>
-                    <Text
-                        style={{
-                            fontSize: 14,
-                            color: false ? COLORS.red : COLORS.main,
-                            fontFamily: 'JosefinSans-Regular',
-                            textAlign: 'right',
-                        }}
-                    >
-                        {farmland.trees} árvores;
-                    </Text>
-                    <Text
-                        style={{
-                            fontSize: 14,
-                            color: false ? COLORS.red : COLORS.main,
-                            fontFamily: 'JosefinSans-Regular',
-                            textAlign: 'right',
-                        }}
-                    >
-                        {remainingArea?.toFixed(1)} hectares disponíveis.
-                    </Text>
+                        <FontAwesomeIcon  icon={faTree} size={30} color={COLORS.fourth} />
+                
+                    </Box>
+
+                    <Box>
+                        <Text
+                            style={{
+                                fontSize: 14,
+                                color: false ? COLORS.red : COLORS.main,
+                                fontFamily: 'JosefinSans-Regular',
+                                textAlign: 'right',
+                            }}
+                        >
+                            Este pomar tem...
+                        </Text>
+                        <Text
+                            style={{
+                                fontSize: 14,
+                                color: false ? COLORS.red : COLORS.main,
+                                fontFamily: 'JosefinSans-Regular',
+                                textAlign: 'right',
+                            }}
+                        >
+                            {farmland?.blocks?.length} {farmland?.blocks?.length <= 1 ? 'parcela': 'parcelas'}             
+                        </Text>
+                        <Text
+                            style={{
+                                fontSize: 14,
+                                color: false ? COLORS.red : COLORS.main,
+                                fontFamily: 'JosefinSans-Regular',
+                                textAlign: 'right',
+                            }}
+                        >
+                            {farmland.trees} árvores;
+                        </Text>
+                        <Text
+                            style={{
+                                fontSize: 14,
+                                color: false ? COLORS.red : COLORS.main,
+                                fontFamily: 'JosefinSans-Regular',
+                                textAlign: 'right',
+                            }}
+                        >
+                            {remainingArea?.toFixed(1)} hectares disponíveis.
+                        </Text>
+
+                    </Box>
                 </Box>  
 
 
         <>
         <Stack direction="row" mx="3" w="100%">
-                <Box w="45%" px="1">
+                <Box w="100%" px="1">
                     <FormControl isRequired my="1" isInvalid={'plantingYear' in errors}>
                         <FormControl.Label>Ano de plantio</FormControl.Label>
                             <SelectList
@@ -679,7 +703,7 @@ export default function NewFarmlandBlock({
                         center
                         fontFamily = 'JosefinSans-Bold'
                         containerStyle={{
-                            backgroundColor: COLORS.fourth,
+                            backgroundColor: COLORS.ghostwhite,
                         }}
                         textStyle={{
                             fontWeight: '120',
@@ -719,7 +743,7 @@ export default function NewFarmlandBlock({
                         center
                         fontFamily = 'JosefinSans-Bold'
                         containerStyle={{
-                            backgroundColor: COLORS.fourth,
+                            backgroundColor: COLORS.ghostwhite,
                         }}
                         textStyle={{
                             
@@ -1148,27 +1172,27 @@ export default function NewFarmlandBlock({
     {/* } */}
 
         </View>
+        <Button
+            title="Salvar Parcela"
+            titleStyle={{
+                color: COLORS.ghostwhite,
+                fontFamily: 'JosefinSans-Bold',
+            }}
+            iconPosition="right"
+
+            containerStyle={{
+                backgroundColor: COLORS.main,
+                borderRadius: 10,
+
+            }}
+            type="outline"
+            onPress={()=>{
+                setAddBlockIsOn(true); 
+
+            }}
+        />
 
     </ScrollView>
-    <Button
-        title="Salvar Parcela"
-        titleStyle={{
-            color: COLORS.ghostwhite,
-            fontFamily: 'JosefinSans-Bold',
-        }}
-        iconPosition="right"
-
-        containerStyle={{
-            backgroundColor: COLORS.main,
-            borderRadius: 10,
-
-        }}
-        type="outline"
-        onPress={()=>{
-            setAddBlockIsOn(true); 
-
-        }}
-    />
     </>
 }
 

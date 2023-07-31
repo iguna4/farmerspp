@@ -336,7 +336,7 @@ export default function FarmlandBlockRegistration({
                         <FormControl.Label>Ano de plantio</FormControl.Label>
 
                         <SelectList
-                            data={getFullYears2}
+                            data={()=>getFullYears2(70)}
                             setSelected={newYear => {
                                 setErrors((prev)=>({...prev, plantingYear: ''}));
                                 setPlantingYear(newYear);

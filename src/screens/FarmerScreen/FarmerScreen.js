@@ -391,7 +391,7 @@ export default function FarmerScreen ({ route, navigation }) {
             }}
           >
         {            
-          farmer?.image &&   
+          farmer?.image ?
           ( 
           <Box>
             <Image 
@@ -405,10 +405,9 @@ export default function FarmerScreen ({ route, navigation }) {
               }}
             />
           </Box>
-          )        
-        }
-        {            
-          !farmer?.image &&   
+          )  
+                
+          :  
           ( <Box>
             <Icon 
               style={{

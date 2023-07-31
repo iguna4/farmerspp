@@ -309,8 +309,8 @@ export default function GroupScreen ({ route, navigation }) {
                 top: -50,
               }}
             >
-{            
-     farmer?.image &&   
+  {            
+     farmer?.image ?   
      ( <>
           <Image 
             source={{ uri: farmer?.image }}
@@ -319,11 +319,7 @@ export default function GroupScreen ({ route, navigation }) {
             
       </>
      )        
-          }
-
-
-{            
-     !farmer?.image &&   
+    :              
      ( <Box>
         <Icon 
           style={{
@@ -336,8 +332,8 @@ export default function GroupScreen ({ route, navigation }) {
         />
       </Box>
      )        
-          }
-            </TouchableOpacity>            
+    }
+      </TouchableOpacity>            
     
             <Text 
                 style={{

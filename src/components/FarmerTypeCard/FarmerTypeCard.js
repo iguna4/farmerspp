@@ -67,7 +67,7 @@ export function FarmerTypeCard({ route, item,  }) {
         >
 
         </View> */}
-         <FontAwesomeIcon icon={item?.icon} size={50} color={item?.color} />
+         <FontAwesomeIcon icon={item?.icon} size={40} color={item?.color} />
       </View>
       </View>
 
@@ -78,7 +78,7 @@ export function FarmerTypeCard({ route, item,  }) {
       flexDirection: 'column'
      }}
     >
-      <View
+      {/* <View
         style={{
           position: 'absolute',
           top: 30,
@@ -93,9 +93,9 @@ export function FarmerTypeCard({ route, item,  }) {
             color: COLORS.grey,
           }}
         >
-          {Intl.NumberFormat().format(item?.total)}
+         {Intl.NumberFormat().format(item?.total)} 
         </Text>
-      </View>
+      </View> */}
      <View
       style={{
        width: '100%',
@@ -112,7 +112,7 @@ export function FarmerTypeCard({ route, item,  }) {
 
        <Text
         style={{
-         fontSize: 24,
+         fontSize: 22,
          fontFamily: 'JosefinSans-Bold',
          textAlign: 'right',
          color: item?.color,
@@ -134,7 +134,7 @@ export function FarmerTypeCard({ route, item,  }) {
          numberOfLines={2}
          ellipsizeMode={'tail'}
       >
-       {item?.description}</Text>
+       ({Intl.NumberFormat().format(item?.total)}) {item?.description}</Text>
 
       </View>
 

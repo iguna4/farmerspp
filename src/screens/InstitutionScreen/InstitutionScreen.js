@@ -309,7 +309,7 @@ export default function InstitutionScreen ({ route, navigation }) {
               }}
             >
     {            
-      farmer?.image  &&   
+      farmer?.image ?  
       ( <>
             <Image 
               source={{ uri: farmer?.image }}
@@ -317,11 +317,7 @@ export default function InstitutionScreen ({ route, navigation }) {
             />
         </>
       )        
-    }
-
-
-{            
-     !farmer?.image &&   
+      :   
      ( <Box>
       <Icon 
         style={{

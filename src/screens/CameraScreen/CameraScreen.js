@@ -8,7 +8,8 @@ import { useIsFocused } from '@react-navigation/native';
 import { realmContext } from '../../models/realmContext';
 import { useUser } from '@realm/react';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { launchImageLibrary} from 'react-native-image-picker';
+import { SuccessLottie } from '../../components/LottieComponents/SuccessLottie';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 
@@ -26,6 +27,7 @@ const customUserData = user?.customData;
  const [showCamera, setShowCamera] = useState(false);
  const [imageSource, setImageSource] = useState('');
  const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
+ const [successLottieVisible, setSuccessLottieVisible] = useState(false);
 const isFocused = useIsFocused();
 
 const ownerType = route.params?.ownerType;
@@ -63,41 +65,114 @@ else if (ownerType === 'Instituição') {
 
 }, [ ]);
 
-const capturePhoto = async ()=>{
- if (camera.current !== null) {
-   try{
-     const snapPhoto = await camera.current.takeSnapshot({
+
+  useEffect(()=>{
+
+    if (successLottieVisible){
+        setTimeout(()=>{
+          setSuccessLottieVisible(false);
+          navigateBack();
+        }, 3000)
+    }
+
+  }, [ successLottieVisible ]);
+
+
+  const capturePhoto = async ()=>{
+    if (!camera.current) return console.log('device is null: is there no Camera?'); 
+
+    const photo = await camera.current?.takeSnapshot({
       quality: 85,
       skipMetadata: true,
-     });
+    });
+    //  console.log('photo', photo)
+    fetchImage(`file://${photo.path}`);
+  }
 
-    //  const photo = await camera.current.takePhoto({
+  const fetchImage = async (uri) =>{
+    try {
+      const imageResponse = await fetch(uri);
+      const imageBlob = await imageResponse.blob();
+      const base64Data = await blobToBase64(imageBlob);
+      setImageSource(base64Data);
+      setShowCamera(false);
+        
+    } catch (error) {
+      console.log('fetchImage failed: ', { cause: error });
+    }
+  }
 
-    //  })
-     const imagePath = `file://'${snapPhoto.path}`
-     setImageSource(imagePath);
-    //  setIsImageTestVisible(true);
-     setShowCamera(false);
-     console.log('photo:', snapPhoto);
+  const blobToBase64 = (blob) =>{
+    return new Promise((resolve, reject)=>{
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = () =>{
+        resolve(String(reader.result));
+      };
+      reader.readAsDataURL(blob);
+    })
+  }
+  
 
-    //  navigation.goBack();
-   }
-   catch(error){
-    // console.log('Could not take picture');
-    throw new Error('Could not take picture:', { cause: error })
-   }
- }
- else{
-  console.log('device is null')
- }
-}
+    const launchNativeImageLibrary = () => {
+      let options = {
+        includeBase64: true,
+        storageOptions: {
+          skipBackup: true,
+          path: 'images',
+        },
+      };
+      launchImageLibrary(options, (response) => {
+  
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.errorCode) {
+          console.log('ImagePicker Error: ', response.error);
+        } else {
+          const source = { uri: response.assets.uri };
+
+          const imageString = 'data:image/jpeg;base64,' + response.assets[0].base64;
+
+          savePhoto(realm, photoOwner, imageString)
+        }
+      });
+  
+    } 
+
+
+
+// const capturePhotoBlob = async ()=>{
+//  if (camera.current !== null) {
+//    try{
+//      const snapPhoto = await camera.current.takeSnapshot({
+//       quality: 85,
+//       skipMetadata: true,
+//      });
+
+//     //  const photo = await camera.current.takePhoto({
+
+//     //  })
+//      const imagePath = `file://'${snapPhoto.path}`;
+//      setImageSource(imagePath);
+//      setShowCamera(false);
+//      console.log('photo:', snapPhoto);
+//    }
+//    catch(error){
+//     throw new Error('Could not take picture:', { cause: error })
+//    }
+//  }
+//  else{
+//   console.log('device is null')
+//  }
+// }
 
 const savePhoto = useCallback((realm, photoOwner, imageSource) =>{
   realm.write(()=>{
     photoOwner.image = imageSource;
   });
 
-  navigateBack();
+  setSuccessLottieVisible(true);
+
 }, [ realm, imageSource, ownerId ]);
 
 const deletePhoto = useCallback((photoOwner, realm)=>{
@@ -112,7 +187,6 @@ const deletePhoto = useCallback((photoOwner, realm)=>{
 
 const navigateBack = ()=>{
   if (ownerType === 'Grupo') {
-    // photoOwner = realm.objectForPrimaryKey('Group', ownerId);
     navigation.navigate('Group', {
       ownerId,
       farmersIDs,
@@ -134,33 +208,33 @@ const navigateBack = ()=>{
 }
 
   // picker a picture from gallery
-  const launchNativeImageLibrary = () => {
-    let options = {
-      includeBase64: true,
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-    launchImageLibrary(options, (response) => {
+  // const launchNativeImageLibrary = () => {
+  //   let options = {
+  //     includeBase64: true,
+  //     storageOptions: {
+  //       skipBackup: true,
+  //       path: 'images',
+  //     },
+  //   };
+  //   launchImageLibrary(options, (response) => {
 
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.errorCode) {
-        console.log('ImagePicker Error: ', response.error);
-      } else {
-        const source = { uri: response.assets.uri };
+  //     if (response.didCancel) {
+  //       console.log('User cancelled image picker');
+  //     } else if (response.errorCode) {
+  //       console.log('ImagePicker Error: ', response.error);
+  //     } else {
+  //       const source = { uri: response.assets.uri };
 
-        // realm.write(()=>{
-        //   photoOwner.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
-        // })
-        const imageString = 'data:image/jpeg;base64,' + response.assets[0].base64;
+  //       // realm.write(()=>{
+  //       //   photoOwner.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
+  //       // })
+  //       const imageString = 'data:image/jpeg;base64,' + response.assets[0].base64;
 
-        realm.write(()=>{
-            // photoOwner.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
-            photoOwner.image = imageString;
-        });
-        setLoadingActivityIndicator(true);
+  //       realm.write(()=>{
+  //           // photoOwner.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
+  //           photoOwner.image = imageString;
+  //       });
+  //       setLoadingActivityIndicator(true);
 
 
         // setIsPhotoModalVisible(false);
@@ -183,10 +257,10 @@ const navigateBack = ()=>{
         //     // taking user photo
         //     // navigation.goBack();
         // }
-      }
-    });
+  //     }
+  //   });
 
-  } 
+  // } 
 
 
 
@@ -209,6 +283,13 @@ const navigateBack = ()=>{
       flex: 1,
   }}
   >
+    { successLottieVisible &&   
+        <SuccessLottie 
+            successLottieVisible={successLottieVisible} 
+            setSuccessLottieVisible={setSuccessLottieVisible} 
+        />      
+    }
+
   {(device && showCamera) ?
     <>
       <Camera 
@@ -238,6 +319,27 @@ const navigateBack = ()=>{
       </View>
       <TouchableOpacity 
           onPress={()=>{
+            launchNativeImageLibrary()
+          }}
+          style={{
+              position: 'absolute',
+              bottom: 20,
+              alignSelf: 'flex-start',
+              // height: 40,
+              padding: 10,
+              // marginLeft: 5,
+              // borderWidth: 2,
+              // borderColor: COLORS.lightgrey,
+              borderRadius: 30,
+              // backgroundColor: COLORS.lightgrey,
+          }}
+      >
+      <Icon name="photo-library" size={38} color={COLORS.grey} />
+      </TouchableOpacity>
+
+
+      <TouchableOpacity 
+          onPress={()=>{
           capturePhoto()
           }}
           style={{
@@ -245,13 +347,14 @@ const navigateBack = ()=>{
               bottom: 20,
               alignSelf: 'center',
               // height: 40,
-              padding: 5,
+              padding: 10,
               borderWidth: 2,
               borderColor: COLORS.grey,
               borderRadius: 30,
+              backgroundColor: COLORS.grey,
           }}
       >
-      <Icon name="photo-camera" size={35} color={COLORS.grey} />
+      <Icon name="photo-camera" size={38} color={COLORS.red} />
       </TouchableOpacity>
     </>
     : 
@@ -294,7 +397,7 @@ const navigateBack = ()=>{
                 navigateBack();
             }}                            
         >
-          <Icon name='close' color={COLORS.ghostwhite} size={30}  />
+          <Icon name='close' color={COLORS.grey} size={30}  />
         </TouchableOpacity>
       </View>
 
@@ -321,7 +424,6 @@ const navigateBack = ()=>{
     >
       <View
         style={{
-          // justifyContent: ' space-between',
           flexDirection: 'row'
         }}      
       >
@@ -334,6 +436,10 @@ const navigateBack = ()=>{
         }}
         style={{
           marginHorizontal: 15,
+          borderWidth: 2,
+          borderColor: COLORS.grey,
+          backgroundColor: COLORS.grey,
+          borderRadius: 30,
         }}
       >
         <Icon name="delete" size={30} color={COLORS.ghostwhite} />
@@ -347,6 +453,10 @@ const navigateBack = ()=>{
         }}
         style={{
           marginHorizontal: 15,
+          borderWidth: 2,
+          borderColor: COLORS.grey,
+          backgroundColor: COLORS.grey,
+          borderRadius: 30,
         }}
       >
         <Icon name="photo-camera" size={30} color={COLORS.ghostwhite} />
@@ -372,8 +482,8 @@ const navigateBack = ()=>{
         style={{
           marginHorizontal: 15,
           borderWidth: 2,
-          borderColor: COLORS.main,
-          backgroundColor: COLORS.main,
+          borderColor: COLORS.grey,
+          backgroundColor: COLORS.grey,
           borderRadius: 30,
         }}
       >

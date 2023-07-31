@@ -297,9 +297,6 @@ export default function HomeScreen({ route, navigation }) {
       borderTopLeftRadius: wp('10%'),
       borderTopRightRadius: wp('10%'),
       padding: 10,
-      // borderWidth: 1,
-      // borderColor: COLORS.main,
-      // marginVertical: 30,
 
     }}
 
@@ -314,11 +311,6 @@ export default function HomeScreen({ route, navigation }) {
       <View 
         style={{ 
           width: '100%',
-          // backgroundColor: COLORS.pantone,
-          // borderWidth: 1,
-          // borderColor: COLORS.pantone,
-          // borderTopLeftRadius: wp('10%'),
-          // borderTopRightRadius: wp('10%'),
         }}
       >
         <Box

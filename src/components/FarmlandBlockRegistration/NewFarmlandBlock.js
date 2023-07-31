@@ -513,7 +513,7 @@ export default function NewFarmlandBlock({
                     <FormControl isRequired my="1" isInvalid={'plantingYear' in errors}>
                         <FormControl.Label>Ano de plantio</FormControl.Label>
                             <SelectList
-                            data={getFullYears2}
+                            data={()=>getFullYears2(70)}
                             setSelected={newYear => {
                                 setErrors((prev)=>({...prev, plantingYear: ''}));
                                 setPlantingYear(newYear);

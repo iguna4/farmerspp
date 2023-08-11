@@ -57,6 +57,7 @@ import { realmContext } from '../../models/realmContext';
 import { errorMessages } from '../../consts/errorMessages';
 import { resourceValidation } from '../../consts/resourceValidation';
 import { ordinalNumberings } from '../../consts/ordinalNumberings';
+import { SuccessLottie } from '../../components/LottieComponents/SuccessLottie';
 const {useRealm, useQuery, useObject} = realmContext;
 
 
@@ -68,6 +69,9 @@ export default function FarmlandRegistration ({ route, navigation }) {
     const user = useUser()
     const customUserData = user?.customData;
     const [farmlandId, setFarmlandId] = useState('');
+
+    // SuccessLottie
+    const [successLottieVisible, setSuccessLottieVisible] = useState(false);
 
     const currentUserStat = useQuery('UserStat').filtered("userId == $0", customUserData?.userId)[0];
     const farmland = realm.objectForPrimaryKey('Farmland', farmlandId);
@@ -158,7 +162,15 @@ export default function FarmlandRegistration ({ route, navigation }) {
     }
 
 
+    useEffect(()=>{
 
+        if (successLottieVisible){
+            setTimeout(()=>{
+              setSuccessLottieVisible(false);
+            }, 3000)
+        }
+      
+    }, [ successLottieVisible ]);
 
 
 
@@ -339,6 +351,9 @@ export default function FarmlandRegistration ({ route, navigation }) {
     };
 
 
+    
+
+
     useEffect(()=>{
         if (isDeleteBlockOn) {
             deleteBlock(farmlandId, realm);
@@ -373,7 +388,8 @@ export default function FarmlandRegistration ({ route, navigation }) {
             setBlockCount(prev=>prev+1);
 
         })
-        setRefresh(!refresh)
+        setRefresh(!refresh);
+        setSuccessLottieVisible(true);
     }, [realm, farmland, farmlandId ]);
 
     
@@ -868,10 +884,11 @@ export default function FarmlandRegistration ({ route, navigation }) {
             <Box w="100%" p="4"
                 style={{
                     flexDirection: 'row',
+                    justifyContent: 'space-between',
                     height: 90,
                 }}
             >
-                <Box w="80%" >
+                <Box >
                     <Text style={styles.headerText}>
                         Registo de pomar
                     </Text>
@@ -890,15 +907,16 @@ export default function FarmlandRegistration ({ route, navigation }) {
                     </Text>
                 }
                 </Box>
-                <Center w="15%"
+                <Center 
                     style={{
                         borderWidth: 2,
                         borderColor: COLORS.main,
-                        borderRadius: 100,
+                        borderRadius: 5,
                         backgroundColor: COLORS.main,
+                        padding: 5,
                     }}
                 >
-                    <FontAwesomeIcon icon={faTree} size={30} color={COLORS.ghostwhite} />
+                    <FontAwesomeIcon icon={faTree} size={30} color={COLORS.fourth} />
                 </Center>
             </Box>
 
@@ -1722,8 +1740,20 @@ export default function FarmlandRegistration ({ route, navigation }) {
             setShowCancelButton={setShowCancelButton}
             showConfirmButton={showConfirmButton}
             setShowConfirmButton={setShowConfirmButton}
+            
+            ownerImage={ownerImage}
+            
+            // successLottieVisible={successLottieVisible}
+            // setSuccessLottieVisible={setSuccessLottieVisible}
 
         />
+
+    { successLottieVisible &&   
+        <SuccessLottie 
+            successLottieVisible={successLottieVisible} 
+            setSuccessLottieVisible={setSuccessLottieVisible} 
+        />      
+    }
 
         <Box>
             <SuccessAlert

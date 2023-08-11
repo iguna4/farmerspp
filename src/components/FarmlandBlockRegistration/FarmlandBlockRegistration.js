@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, } from 'react-native';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio  } from 'native-base';
 import { MultipleSelectList, SelectList  } from 'react-native-dropdown-select-list';
 import {  
@@ -68,6 +68,10 @@ export default function FarmlandBlockRegistration({
     confirmText, setConfirmText,
     showCancelButton, setShowCancelButton,
     showConfirmButton, setShowConfirmButton,
+
+    ownerImage,
+
+    // successLottieVisible, setSuccessLottieVisible,
     
 }){
 
@@ -149,14 +153,15 @@ export default function FarmlandBlockRegistration({
 
  return (
   <Overlay 
-  overlayStyle={{ 
-      backgroundColor: COLORS.fourth, 
-      width: '100%',
-      maxHeight: '95%',
-      borderTopLeftRadius: 30,
-      borderTopRightRadius: 30,
-      paddingBottom: 5,
-  }}
+    fullScreen
+    overlayStyle={{ 
+        backgroundColor: COLORS.ghostwhite, 
+        width: '100%',
+        // maxHeight: '95%',
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+        paddingBottom: 5,
+    }}
     isVisible={isOverlayVisible} 
     onBackdropPress={()=>{
 
@@ -166,10 +171,8 @@ export default function FarmlandBlockRegistration({
             setTreeRedFlag(false);
             setAreaRedFlag(false);
         }
-
     }}
 >
-
 
     <AwesomeAlert
         show={alert}
@@ -259,18 +262,25 @@ export default function FarmlandBlockRegistration({
           flexDirection: 'row',
       }}
   >
-    <Box w="90%">
+    <Box w="100%">
       <Text
           style={{ 
               textAlign: 'center',
               color: COLORS.black,
               fontSize: responsiveFontSize(2),
               fontFamily: 'JosefinSans-Bold',
-
           }}
-      >Parcela {foundFarmland?.blocks?.length + 1}</Text>
+      >
+        Parcela {foundFarmland?.blocks?.length + 1}
+    </Text>
     </Box>
-    <Box w="10%">
+    <Box 
+        style={{
+            position: 'absolute',
+            top: 5,
+            right: 5,
+        }}
+    >
         <TouchableOpacity 
             onPress={()=>{
                 turnOffOverlay();
@@ -305,38 +315,63 @@ export default function FarmlandBlockRegistration({
                 paddingBottom: 50,
             }}
         >
-        <Stack direction="row">
-            <Box w="30%" px="1">
+            <Box w="100%" px="1"
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingTop: 10,
+                    paddingBottom: 20,
+                }}
+            >
+            {  ownerImage ?                  
+                        <Image 
+                    
+                            source={{ uri: ownerImage }}
+                            style={{
+                                width: 60,
+                                height: 60,
+                                borderColor: COLORS.main,
+                                marginHorizontal: 3,
+                                borderRadius: 120,
+                            }}
+                        />
+                        :
 
+                        <Icon 
+                            name="account-circle" 
+                            size={80} 
+                            color={COLORS.lightgrey} 
+                    />
+                } 
+                <Box>
+                    <Text
+                        style={{
+                            fontSize: 14,
+                            color: treeRedFlag ? COLORS.red : COLORS.main,
+                            fontFamily: 'JosefinSans-Regular',
+                            textAlign: 'right',
+                        }}
+                    >Quantas das {totalTrees - treesFlag} árvores?</Text>
+                    <Text
+                        style={{
+                            fontSize: 14,
+                            color: areaRedFlag ? COLORS.red : COLORS.main,
+                            fontFamily: 'JosefinSans-Regular',
+                            textAlign: 'right',
+                        }}
+                    >
+                        Quais dos {(totalArea - areaFlag).toFixed(1)} hectares?
+                    </Text>
+                </Box>  
             </Box>  
-            <Box w="70%" px="1" >
-                <Text
-                    style={{
-                        fontSize: 14,
-                        color: treeRedFlag ? COLORS.red : COLORS.main,
-                        fontFamily: 'JosefinSans-Regular',
-                        textAlign: 'right',
-                    }}
-                >Quantas das {totalTrees - treesFlag} árvores?</Text>
-                <Text
-                    style={{
-                        fontSize: 14,
-                        color: areaRedFlag ? COLORS.red : COLORS.main,
-                        fontFamily: 'JosefinSans-Regular',
-                        textAlign: 'right',
-                    }}
-                >
-                    Quais dos {(totalArea - areaFlag).toFixed(1)} hectares?
-                </Text>
-            </Box>  
-        </Stack>
         <Stack direction="row" mx="3" w="100%">
-                <Box w="45%" px="1">
+                <Box w="100%" px="1">
                     <FormControl isRequired my="1" isInvalid={'plantingYear' in errors}>
                         <FormControl.Label>Ano de plantio</FormControl.Label>
 
                         <SelectList
-                            data={getFullYears2}
+                            data={()=>getFullYears2(70)}
                             setSelected={newYear => {
                                 setErrors((prev)=>({...prev, plantingYear: ''}));
                                 setPlantingYear(newYear);
@@ -388,10 +423,6 @@ export default function FarmlandBlockRegistration({
                     </FormControl>
 
                 </Box>
-                <Box w="10%">
-                    
-                </Box>
-        
             </Stack>   
 
 
@@ -497,11 +528,11 @@ export default function FarmlandBlockRegistration({
     </FormControl.Label>
     <Stack  direction="row" mx="3" w="100%">
         <Box w="50%" px="1">
-        <CheckBox
+            <CheckBox
                 center
                 fontFamily = 'JosefinSans-Bold'
                 containerStyle={{
-                    backgroundColor: COLORS.fourth,
+                    backgroundColor: COLORS.ghostwhite,
                 }}
                 textStyle={{
                     fontWeight: '120',
@@ -531,21 +562,18 @@ export default function FarmlandBlockRegistration({
                     setErrors({
                         ...errors,
                         densityMode: '',
-
                     })
-
                 }}
-                />
+            />
         </Box>
         <Box w="50%" px="1">
             <CheckBox
                 center
                 fontFamily = 'JosefinSans-Bold'
                 containerStyle={{
-                    backgroundColor: COLORS.fourth,
+                    backgroundColor: COLORS.ghostwhite,
                 }}
                 textStyle={{
-                    
                     fontWeight: '120',
                     color: isDensityModeIrregular ? COLORS.main : COLORS.grey,
                 }}
@@ -573,27 +601,23 @@ export default function FarmlandBlockRegistration({
                     setErrors({
                         ...errors,
                         densityMode: '',
-
                     });
                     setDensityWidth('');  
                     setDensityLength('');
-        
                 }}
                 />
             </Box>
         </Stack>    
-        {
-        'densityMode' in errors 
-        ? <FormControl.ErrorMessage 
-        leftIcon={<Icon name="error-outline" size={16} color="red" />}
-        _text={{ fontSize: 'xs'}}>{errors?.densityMode}</FormControl.ErrorMessage> 
-        : <FormControl.HelperText></FormControl.HelperText>
-        }
+            {
+            'densityMode' in errors 
+            ? <FormControl.ErrorMessage 
+            leftIcon={<Icon name="error-outline" size={16} color="red" />}
+            _text={{ fontSize: 'xs'}}>{errors?.densityMode}</FormControl.ErrorMessage> 
+            : <FormControl.HelperText></FormControl.HelperText>
+            }
         </FormControl>
 
     </Box>
-
-
 
 
     { isDensityModeRegular  && (
@@ -987,62 +1011,62 @@ export default function FarmlandBlockRegistration({
     </Box>
 }
     </View>
+    <Button
+        title="Salvar Parcela"
+        titleStyle={{
+            color: COLORS.ghostwhite,
+            fontFamily: 'JosefinSans-Bold',
+        }}
+        iconPosition="right"
+
+        containerStyle={{
+            backgroundColor: COLORS.main,
+            borderRadius: 10,
+
+        }}
+        type="outline"
+        onPress={()=>{
+            // validate data before you update flags
+            let blockData = {
+                plantingYear, 
+                usedArea, 
+                densityWidth,
+                densityLength,
+                blockTrees,
+                plantTypes,
+                clones,
+                isDensityModeIrregular,
+                isDensityModeRegular,
+                sameTypeTreesList,
+            }
+            // if any required data is not validated
+            // a alert message is sent to the user   
+            if (!validateBlockData(blockData, errors, setErrors)) {
+                setAlert(true);
+                // setValidated(true);
+                setTitleAlert(errorMessages.farmlandError.title);
+                setMessageAlert(errorMessages.farmlandError.message);
+                setShowCancelButton(errorMessages.farmlandError.showCancelButton);
+                setShowConfirmButton(errorMessages.farmlandError.showConfirmButton);
+                setCancelText(errorMessages.farmlandError.cancelText);
+                setConfirmText(errorMessages.farmlandError.confirmText);
+
+                return;
+            }
+            // created the validated data object to be passed to the FarmlandModal component
+            // let retrievedBlockData = validateBlockData(blockData, errors, setErrors);
+
+            setTreesFlag(prev=>prev + parseInt(blockTrees));
+            setAreaFlag(prev=>prev + parseFloat(usedArea));
+
+            setAddBlockIsOn(true); 
+
+            setAreaRedFlag(false);
+            setTreeRedFlag(false);
+        }}
+    />
     </ScrollView>
 
-  <Button
-      title="Salvar Parcela"
-      titleStyle={{
-          color: COLORS.ghostwhite,
-          fontFamily: 'JosefinSans-Bold',
-      }}
-      iconPosition="right"
-
-      containerStyle={{
-          backgroundColor: COLORS.main,
-          borderRadius: 10,
-
-      }}
-      type="outline"
-      onPress={()=>{
-        // validate data before you update flags
-        let blockData = {
-            plantingYear, 
-            usedArea, 
-            densityWidth,
-            densityLength,
-            blockTrees,
-            plantTypes,
-            clones,
-            isDensityModeIrregular,
-            isDensityModeRegular,
-            sameTypeTreesList,
-        }
-        // if any required data is not validated
-        // a alert message is sent to the user   
-        if (!validateBlockData(blockData, errors, setErrors)) {
-            setAlert(true);
-            // setValidated(true);
-            setTitleAlert(errorMessages.farmlandError.title);
-            setMessageAlert(errorMessages.farmlandError.message);
-            setShowCancelButton(errorMessages.farmlandError.showCancelButton);
-            setShowConfirmButton(errorMessages.farmlandError.showConfirmButton);
-            setCancelText(errorMessages.farmlandError.cancelText);
-            setConfirmText(errorMessages.farmlandError.confirmText);
-
-            return;
-        }
-        // created the validated data object to be passed to the FarmlandModal component
-        // let retrievedBlockData = validateBlockData(blockData, errors, setErrors);
-
-          setTreesFlag(prev=>prev + parseInt(blockTrees));
-          setAreaFlag(prev=>prev + parseFloat(usedArea));
-
-          setAddBlockIsOn(true); 
-
-          setAreaRedFlag(false);
-          setTreeRedFlag(false);
-    }}
-  />
 </Overlay>
 
  )

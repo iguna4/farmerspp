@@ -46,14 +46,14 @@ export const getFullYears = (count=20)=>{
 }
 
 
-export const getFullYears2 = ((count=20)=>{
+export const getFullYears2 = (count=20)=>{
   let years = [];
   // let count = 20;
   for (let i = 0; i <= count; i++) {
     years[i] = { key: i, value: (new Date().getFullYear() - i).toString() };
   }
   return years;
-})();
+}
 
 export const months = {
     '0': 'Janeiro',

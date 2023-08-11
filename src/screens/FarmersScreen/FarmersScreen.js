@@ -432,7 +432,9 @@ export default function FarmersScreen({ route, navigation }) {
 
     <Box
       style={{
-
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
       }}
     >
       <FlatList

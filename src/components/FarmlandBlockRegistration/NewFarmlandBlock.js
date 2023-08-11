@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio  } from 'native-base';
 import { MultipleSelectList, SelectList  } from 'react-native-dropdown-select-list';
 import {  
@@ -38,6 +38,8 @@ import { useUser } from "@realm/react";
 import { realmContext } from '../../models/realmContext';
 import { resourceValidation } from "../../consts/resourceValidation";
 import DangerAlert from "../LottieComponents/DangerAlert";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faTree } from "@fortawesome/free-solid-svg-icons";
 const {useRealm, useQuery, useObject} = realmContext;
 
 
@@ -48,6 +50,9 @@ export default function NewFarmlandBlock({
     farmland,
     setAutoRefresh,
     autoRefresh,
+    successLottieVisible,
+    setSuccessLottieVisible,
+    ownerImage,
     
 }){
 
@@ -84,7 +89,7 @@ export default function NewFarmlandBlock({
     const [isDensityModeIrregular, setIsDensityModeIrregular] = useState(false);
     const [isDensityModeRegular, setIsDensityModeRegular] = useState(false);
     const [sameTypeTreesList, setSameTypeTreesList] = useState([]);
-    
+
     // ----------------------------------------------
    
     const toggleOverlay = () => {
@@ -171,6 +176,7 @@ export default function NewFarmlandBlock({
         });
 
         setAutoRefresh(!autoRefresh);
+        setSuccessLottieVisible(true);
 
     }, [realm, farmland ]);
 
@@ -227,11 +233,11 @@ export default function NewFarmlandBlock({
  return (
   <Overlay 
   overlayStyle={{ 
-      backgroundColor: (remainingArea <= 0.1) ? COLORS.ghostwhite : COLORS.fourth, 
+      backgroundColor: (remainingArea <= 0.1) ? COLORS.ghostwhite : COLORS.ghostwhite, 
       width: (remainingArea <= 0.1) ? '70%' : '100%',
-      maxHeight: '95%',
-      borderTopLeftRadius: (remainingArea <= 0.1) ? 7 : 30,
-      borderTopRightRadius: (remainingArea <= 0.1) ? 7 : 30,
+    //   maxHeight: '95%',
+      borderTopLeftRadius: (remainingArea <= 0.1) ? 7 : 0,
+      borderTopRightRadius: (remainingArea <= 0.1) ? 7 : 0,
       borderBottomLeftRadius: (remainingArea <= 0.1) ? 7 : 0,
       borderBottomRightRadius: (remainingArea <= 0.1) ? 7 : 0,
       paddingBottom: 5,
@@ -240,6 +246,7 @@ export default function NewFarmlandBlock({
     onBackdropPress={()=>{
         setIsNewBlockVisible(false);
     }}
+    fullScreen
 >
 
     {/* Display this if there no enough area size left for a new cashew block plot */}
@@ -250,8 +257,6 @@ export default function NewFarmlandBlock({
         width: '100%', 
     }}
     >
-
-
         <Text
             style={{ 
                 textAlign: 'center',
@@ -411,7 +416,7 @@ export default function NewFarmlandBlock({
             flexDirection: 'row',
         }}
     >
-        <Box w="90%">
+        <Box w="100%">
 
             {/* { remainingArea > 0.1 &&  */}
             <Text
@@ -427,7 +432,13 @@ export default function NewFarmlandBlock({
             </Text>
 
         </Box>
-        <Box w="10%">
+        <Box         
+            style={{
+                position: 'absolute',
+                top: 5,
+                right: 5,
+            }}
+        >
             <TouchableOpacity 
                 onPress={()=>{
                     setIsNewBlockVisible(false);
@@ -448,22 +459,39 @@ export default function NewFarmlandBlock({
 
             }}
         >
-            <View
+            <Box w="100%" px="1" 
                 style={{
-                    minHeight: '70%',
-                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
                     alignItems: 'center',
-                    paddingTop: 2,
-                    paddingBottom: 50,
+                    paddingTop: 10,
+                    paddingBottom: 20,
                 }}
             >
-                <Box w="55%" px="1" 
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                    }}
-                >
+                {/* <FontAwesomeIcon  icon={faTree} size={30} color={COLORS.fourth} /> */}
+            
+                {  ownerImage ?                  
+                        <Image 
+                    
+                            source={{ uri: ownerImage }}
+                            style={{
+                                width: 60,
+                                height: 60,
+                                borderColor: COLORS.main,
+                                marginHorizontal: 3,
+                                borderRadius: 120,
+                            }}
+                        />
+                        :
+
+                        <Icon 
+                            name="account-circle" 
+                            size={80} 
+                            color={COLORS.lightgrey} 
+                    />
+                }     
+
+                <Box>
                     <Text
                         style={{
                             fontSize: 14,
@@ -504,16 +532,27 @@ export default function NewFarmlandBlock({
                     >
                         {remainingArea?.toFixed(1)} hectares disponíveis.
                     </Text>
-                </Box>  
+
+                </Box>
+            </Box>  
+            <View
+                style={{
+                    minHeight: '70%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingTop: 2,
+                    paddingBottom: 50,
+                }}
+            >
 
 
         <>
         <Stack direction="row" mx="3" w="100%">
-                <Box w="45%" px="1">
+                <Box w="100%" px="1">
                     <FormControl isRequired my="1" isInvalid={'plantingYear' in errors}>
                         <FormControl.Label>Ano de plantio</FormControl.Label>
                             <SelectList
-                            data={getFullYears2}
+                            data={()=>getFullYears2(70)}
                             setSelected={newYear => {
                                 setErrors((prev)=>({...prev, plantingYear: ''}));
                                 setPlantingYear(newYear);
@@ -679,7 +718,7 @@ export default function NewFarmlandBlock({
                         center
                         fontFamily = 'JosefinSans-Bold'
                         containerStyle={{
-                            backgroundColor: COLORS.fourth,
+                            backgroundColor: COLORS.ghostwhite,
                         }}
                         textStyle={{
                             fontWeight: '120',
@@ -719,7 +758,7 @@ export default function NewFarmlandBlock({
                         center
                         fontFamily = 'JosefinSans-Bold'
                         containerStyle={{
-                            backgroundColor: COLORS.fourth,
+                            backgroundColor: COLORS.ghostwhite,
                         }}
                         textStyle={{
                             
@@ -1148,27 +1187,27 @@ export default function NewFarmlandBlock({
     {/* } */}
 
         </View>
+        <Button
+            title="Salvar Parcela"
+            titleStyle={{
+                color: COLORS.ghostwhite,
+                fontFamily: 'JosefinSans-Bold',
+            }}
+            iconPosition="right"
+
+            containerStyle={{
+                backgroundColor: COLORS.main,
+                borderRadius: 10,
+
+            }}
+            type="outline"
+            onPress={()=>{
+                setAddBlockIsOn(true); 
+
+            }}
+        />
 
     </ScrollView>
-    <Button
-        title="Salvar Parcela"
-        titleStyle={{
-            color: COLORS.ghostwhite,
-            fontFamily: 'JosefinSans-Bold',
-        }}
-        iconPosition="right"
-
-        containerStyle={{
-            backgroundColor: COLORS.main,
-            borderRadius: 10,
-
-        }}
-        type="outline"
-        onPress={()=>{
-            setAddBlockIsOn(true); 
-
-        }}
-    />
     </>
 }
 

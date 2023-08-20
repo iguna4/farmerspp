@@ -62,19 +62,18 @@ export default function GroupRepresentativeItem({
  
 
  return (
-  <Animated.View
-      exiting={LightSpeedOutRight}
+  <View
+      // exiting={LightSpeedOutRight}
       style={{
-        paddingHorizontal: 10,
-        marginVertical: hp('1%'),
-        minHeight: hp('10%'),
-        width: '100%',
+        paddingHorizontal: 2,
+        marginVertical: 10,
+        minHeight: 60,
+        width: '95%',
+        alignSelf: 'center',
         flex: 1,
-        shadowOffset: {
-          width: 0,
-          height: 3,
-        },
-        backgroundColor: '#F5F5F5',
+        backgroundColor: COLORS.ghostwhite,
+        elevation: 3,
+        opacity: 1,
       }}
   >
     <Stack direction="row" w="100%">
@@ -133,7 +132,7 @@ export default function GroupRepresentativeItem({
 
            }}
           >
-           {item?.adminPost}
+           {item?.address?.adminPost}
           </Text>
         </TouchableOpacity>
        </Box>
@@ -163,6 +162,6 @@ export default function GroupRepresentativeItem({
        </TouchableOpacity>
      </Box>
     </Stack>
-  </Animated.View>
+  </View>
  )
 }

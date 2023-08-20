@@ -6,7 +6,7 @@ import {
  Switch, Image, SafeAreaView, Text, View, PermissionsAndroid, 
  TextInput,
  TouchableOpacity, SectionList, ActivityIndicator, Platform } from 'react-native';
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo, } from 'react';
 import {ListItem, Avatar, Icon, SearchBar } from '@rneui/themed';
 import { Box, Center, Pressable, Stack } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
@@ -55,13 +55,15 @@ export default function GroupRepresentativeScreen({ route, navigation }) {
  const user = useUser();
  let customUserData = user.customData;
  const { groupId, district } = route?.params;  // get the group id and district from the previous screen
- 
+ let farmers = [];
+ farmers = realm.objects('Actor').filtered("userDistrict == $0", district);
 
- const farmers = realm.objects('Actor').filtered("userDistrict == $0", district);
+
+//  const farmers = realm.objects('Actor').filtered("userDistrict == $0", district);
  const group = realm.objectForPrimaryKey('Group', groupId);
- const [farmersList, setFarmersList] = useState([]);
  const [isEndReached, setIsEndReached] = useState(false);
  const [isLoading, setIsLoading] = useState(false);
+ const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
 
  let thisActorMembership = [];
 
@@ -79,9 +81,23 @@ export default function GroupRepresentativeScreen({ route, navigation }) {
 
  const [searchQuery, setSearchQuery] = useState("");
 
- const filtererdItems = farmersList.filter((item)=>{
-  return ((item.names.otherNames.toLowerCase().includes(searchQuery.toLowerCase())) || (item.names.surname.toLowerCase().includes(searchQuery.toLowerCase())))
- })
+ const computedItems = useMemo(()=>{
+  let result = []
+   if (searchQuery){
+    result = farmers.filter((item)=>{
+      return ((item.names.otherNames.toLowerCase().includes(searchQuery.toLowerCase())) || (item.names.surname.toLowerCase().includes(searchQuery.toLowerCase())))
+    });
+  }
+  else {
+    result = farmers;
+    // .filter((item)=>{
+    //   return ((item.names.otherNames.toLowerCase().includes(searchQuery.toLowerCase())) || (item.names.surname.toLowerCase().includes(searchQuery.toLowerCase())))
+    // });
+  }
+    return result;
+ }, [ searchQuery ]);
+
+ 
 
 
  const handleEndReached = ()=>{
@@ -94,15 +110,6 @@ export default function GroupRepresentativeScreen({ route, navigation }) {
    }
  }
 
-const customizeFarmerItem = (farmer)=>{
-  return {
-    names: farmer?.names,
-    image: farmer?.image,
-    district: farmer?.address.district,
-    adminPost: farmer?.address.adminPost,
-    _id: farmer?._id,
-  }
-};
 
 
 useEffect(()=>{
@@ -115,21 +122,6 @@ useEffect(()=>{
   }
 }, [ selectedId ])
 
-
- useEffect(()=>{
-  // filter farmers by the group adminPost, else do it by the group distrct
-  if (group?.address.adminPost !== 'NA') {
-    const filterKey = group?.address.adminPost;
-    setFarmersList(
-      farmers?.map(farmer=>customizeFarmerItem(farmer))
-    );
-  }
-  else {
-    const filterKey = group?.address.district;
-    setFarmersList(farmers?.map(farmer=>farmer)?.filter(farmer=>farmer.address.district === filterKey));
-  }
-
- }, [ realm ]);
 
  const updateGroupManager = useCallback(()=>{
   realm.write(async ()=>{
@@ -152,7 +144,7 @@ useEffect(()=>{
     }
     else {
       // find the farmer to extract actorName from
-      const foundFarmer = farmersList?.find(farmer => farmer?._id === selectedId);
+      const foundFarmer = farmers?.find(farmer => farmer?._id === selectedId);
 
         // create the actor member from scratch
         const actorMembershipObject = {
@@ -186,7 +178,6 @@ useEffect(()=>{
   }, [ selectedId, ]);
 
 
-
  const keyExtractor = (item, index)=>index.toString();
 
  return (
@@ -194,7 +185,7 @@ useEffect(()=>{
      style={{    
        flex: 1,
       //  paddingBottom: 0,
-       backgroundColor: 'ghostwhite',
+       backgroundColor: COLORS.white,
      }}
    >
 
@@ -230,6 +221,7 @@ useEffect(()=>{
             onPress={()=>{
               if (isSearching){
                 setIsSearching(false);
+                setSearchQuery('');
               }
               else {
                 navigation.navigate('Profile', {
@@ -363,6 +355,8 @@ useEffect(()=>{
         </Stack>
      </View>
 
+
+
      <Box 
             alignItems="stretch" 
             w="100%" 
@@ -384,12 +378,15 @@ useEffect(()=>{
               )}
               stickyHeaderHiddenOnScroll={true}
               data={
-                // farmersList
-                filtererdItems
+                // filtererdItems
+                computedItems
+                // farmers
+                // ?.length > 0 ? computedItems : filtererdItems
               }
               keyExtractor={keyExtractor}
               onEndReached={handleEndReached}
               onEndReachedThreshold={0.1}
+              // ItemSeparatorComponent={()=><CustomDivider thickness={2} />}
               renderItem={({ item })=>{
                 const isSelected = item._id === selectedId;
                 return <GroupRepresentativeItem 
@@ -419,6 +416,23 @@ useEffect(()=>{
 
              />
           </Box>
+        {/* } */}
+
+        {
+          (computedItems.length === 0 && searchQuery.length > 0 && isSearching) &&
+            <Box
+              style={{
+                flex: 1,
+                position: 'absolute',
+                top: 100,
+                alignSelf: 'center',
+              }}
+            >
+              <Icon name="info-outline" color={COLORS.grey} size={30} />
+              <Text style={{ color: COLORS.grey, fontSize: 14, fontFamily: 'JosefinSans-Regular'}}>Não encontrado</Text>
+            </Box>
+
+        }
 
 
 </View>

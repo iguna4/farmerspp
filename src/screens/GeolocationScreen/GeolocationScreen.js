@@ -222,43 +222,6 @@ const GeolocationScreen = ({ route, navigation })=>{
                 farmersIDs: [],
             })                   
         }
-        // if (resourceName === 'Farmland'){
-        // }
-        // if (resourceName === 'Farmer'){
-        // }
-        // else if (resourceName === 'Group'){
-        //     navigation.navigate('Profile', {
-        //         ownerId: resource?._id,
-        //         farmerType: farmerTypes.group,
-        //         farmersIDs,
-        //     })
-        // }
-        // else if (resourceName === 'Institution'){
-        //     navigation.navigate('Profile', {
-        //         ownerId: resource?._id,
-        //         farmerType: farmerTypes.institution,
-        //         farmersIDs,
-        //     })
-        // }
-        // else if (resourceName === 'Farmland') {
-
-        //     if (ownerType === 'Single') {
-        //         navigation.navigate('Farmer', {
-        //             ownerId: resource?.farmerId,
-        //         })                   
-        //     }
-        //     else if (ownerType === 'Group'){
-        //         navigation.navigate('Group', {
-        //             ownerId: resource?.farmerId,
-        //         });
-        //     }
-        //     else if (ownerType === 'Institution') {
-        //         navigation.navigate('Institution', {
-        //             ownerId: resource?.farmerId,
-        //         })  
-        //     }
-        //     // navigation.goBack();
-        // }
     }
 
 

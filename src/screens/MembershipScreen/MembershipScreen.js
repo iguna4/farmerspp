@@ -6,7 +6,7 @@ import {
  Switch, Image, SafeAreaView, Text, View, PermissionsAndroid, 
  TextInput,
  TouchableOpacity, SectionList, ActivityIndicator, Platform } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {ListItem, Avatar, Icon, SearchBar } from '@rneui/themed';
 import { Box, Center, Pressable, Stack } from 'native-base';
 import { useFocusEffect } from '@react-navigation/native';
@@ -210,19 +210,18 @@ function MemberGroupItem ({
  
 
  return (
-  <Animated.View
-      exiting={LightSpeedOutRight}
+  <View
+      // exiting={LightSpeedOutRight}
       style={{
         paddingHorizontal: 10,
-        marginVertical: hp('1%'),
-        minHeight: hp('10%'),
-        width: '100%',
+        marginVertical: 10,
+        minHeight: 60,
+        width: '95%',
         flex: 1,
-        shadowOffset: {
-          width: 0,
-          height: 3,
-        },
-        backgroundColor: '#F5F5F5',
+        alignSelf: 'center',
+        backgroundColor: COLORS.ghostwhite,
+        elevation: 3,
+        opacity: 1,
       }}
   
   >
@@ -356,7 +355,7 @@ function MemberGroupItem ({
        </TouchableOpacity>
      </Box>
     </Stack>
-  </Animated.View>
+  </View>
  )
 }
 
@@ -385,12 +384,25 @@ export default function MembershipScreen({ route, navigation }) {
  // search an organization (group)
 
 const [searchQuery, setSearchQuery] = useState("");
-const [selectedId, setSelectedId] = useState(null);
+// const [selectedId, setSelectedId] = useState(null);
 const [isSearching, setIsSearching] = useState(false);
 
-const filtererdItems = groupsList.filter((item)=>{
- return ((item.type.toLowerCase().includes(searchQuery.toLowerCase())) || (item.name.toLowerCase().includes(searchQuery.toLowerCase())))
-});
+// const filtererdItems = groupsList.filter((item)=>{
+//  return ((item.type.toLowerCase().includes(searchQuery.toLowerCase())) || (item.name.toLowerCase().includes(searchQuery.toLowerCase())))
+// });
+
+const computedItems = useMemo(()=>{
+  let result = [];
+  if (searchQuery){
+    result = groups.filter((item)=>{
+      return ((item.type.toLowerCase().includes(searchQuery.toLowerCase())) || (item.name.toLowerCase().includes(searchQuery.toLowerCase())))
+     });
+  }
+  else {
+    result = groups;
+  }
+  return result;
+}, [ searchQuery ]);
 
 
  const handleEndReached = ()=>{
@@ -403,30 +415,25 @@ const filtererdItems = groupsList.filter((item)=>{
    }
  }
 
- const priorizeSelectedGroups = (groupsList)=>{
-
- }
-
-
 
 
  useEffect(()=>{
 
   // this turn the fetched realm group into a iterable data structure
   // of which items are group objects with customized properties
-  setGroupsList(groups?.map((group)=>{
-   return group;
- }));
+//   setGroupsList(groups?.map((group)=>{
+//    return group;
+//  }));
 
- if (groupsList.length > 0){
+//  if (groupsList.length > 0){
   // reset the counter to zero before new countings
   // setCountIdOccurrence(0);
-  groupsList.map((group)=>{
+  groups.map((group)=>{
    if (group.members.indexOf(farmerId) >= 0) {
     setCountIdOccurrence(prev=>prev + 1);
    }
   })
- }
+//  }
 
  }, [   autoRefresh ]);
 
@@ -467,6 +474,7 @@ const filtererdItems = groupsList.filter((item)=>{
               onPress={()=>{
                 if (isSearching){
                   setIsSearching(false);
+                  setSearchQuery('');
                 }
                 else {
                   navigation.navigate('Profile', {
@@ -620,7 +628,8 @@ const filtererdItems = groupsList.filter((item)=>{
               stickyHeaderHiddenOnScroll={true}
               data={
                 // groupsList
-                filtererdItems
+                // filtererdItems
+                computedItems
               }
               keyExtractor={keyExtractor}
               onEndReached={handleEndReached}
@@ -660,6 +669,22 @@ const filtererdItems = groupsList.filter((item)=>{
 
              />
           </Box>
+
+          {
+          (computedItems.length === 0 && searchQuery.length > 0 && isSearching) &&
+            <Box
+              style={{
+                flex: 1,
+                position: 'absolute',
+                top: 100,
+                alignSelf: 'center',
+              }}
+            >
+              <Icon name="info-outline" color={COLORS.grey} size={30} />
+              <Text style={{ color: COLORS.grey, fontSize: 14, fontFamily: 'JosefinSans-Regular'}}>Não encontrado</Text>
+            </Box>
+
+        }
 
 
 </View>

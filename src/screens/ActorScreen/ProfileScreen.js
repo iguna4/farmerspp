@@ -71,7 +71,6 @@ const ProfileScreen = ({ route, navigation })=>{
  }
 
  const farmlands = realm.objects("Farmland").filtered('farmerId == $0', ownerId);
- const [loadingActivitiyIndicator, setLoadingActivityIndicator] = useState(false);
  const [profileType, setProfileType] = useState('');
  const [refresh, setRefresh] = useState(false);
  const scale = useRef(new NativeAnimated.Value(0)).current; 

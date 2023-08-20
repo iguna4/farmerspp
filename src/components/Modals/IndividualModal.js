@@ -1,8 +1,9 @@
 
 import React, {useCallback, useState} from 'react';
 import { Text,  Stack, Box, Center } from 'native-base';
-import { Modal, ScrollView, TouchableOpacity, View, Pressable, } from 'react-native';
+import { ScrollView, TouchableOpacity, View, Pressable, } from 'react-native';
 import { Button, Icon } from '@rneui/themed';
+import Modal from 'react-native-modal';
 import CustomDivider from '../Divider/CustomDivider';
 import styles from './styles';
 
@@ -213,79 +214,52 @@ export default function IndividualModal (
 
 
   return (
-  <View
-  style={{ flex: 1, }}
-  >
+    <View>
+
     <Modal
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-        animationType="slide"
+        isVisible={modalVisible}
+        supportedOrientations={['portrait', 'landscape']}
+        propagateSwipe
+        animationIn={'zoomIn'}
+        animationInTiming={600}
+        animationOut={'zoomOut'}
+        swipeDirection={['left', 'right']}
+        // animationOutTiming={600}
+        hideModalContentWhileAnimating={true}
+        // scrollOffsetMax={5}
+        // scrollOffset={1}
+        // coverScreen
+        // scrollHorizontal
+        swipeThreshold={1000}
+    
     >
-            <Stack 
-                direction="row" 
-                w="100%"
-                style={{
-                    backgroundColor: '#EBEBE4',
-                }}
-            >
-            <Box >
 
-                <Pressable
-                        onPress={()=>{
-                            setModalVisible(false);
-                        }} 
-                    style={{
-                        position: 'absolute',
-                        left: 0,
-                        top: 4,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Icon 
-                        name="arrow-back-ios" 
-                        color={COLORS.main}
-                        size={25}
-                    /> 
-                    {/* <Text
-                        style={{
-                            color: COLORS.main,
-                            fontFamily: 'JosefinSans-Bold',
-                            marginLeft: -10,
-                        }}
-                    >
-                        Voltar
-                    </Text> */}
-                </Pressable>
-
-
-                {/* <TouchableOpacity
-                    onPress={()=>{
-                        setModalVisible(false);
-                    }}                            
-                >
-                    <Icon name='arrow-back-ios' color="#005000" size={30}  />
-                </TouchableOpacity> */}
-            </Box>
-            <Box w="80%">
-            </Box>
-            <Box w="20%">
-                <Icon 
-                    name="close" 
-                    size={35} 
-                    color="grey" 
-                    onPress={() => setModalVisible(false)}
-                />
-            </Box>
-            </Stack>
-         <ScrollView
-            contentContainerStyle={{
+        <ScrollView
+           containerStyle={{
+            //    justifyContent: 'center', 
+               minHeight: '100%',
+               paddingVertical: 50,
+           }}
+        >
+        <View
+            style={{
+                backgroundColor: COLORS.ghostwhite,
+                padding: 5,
+                borderRadius: 10,
+                height: '100%',
+                width: '100%',
                 flex: 1, 
-                justifyContent: 'center', 
-                minHeight: '150%',
-                paddingVertical: 50,
             }}
-         >
+        >
+
+            <Icon 
+                name="close" 
+                size={30} 
+                color="grey" 
+                onPress={() => setModalVisible(false)}
+                style={{ alignSelf: 'flex-end', }}
+            />
+
         <Box 
             mx="6"
             mt="200"
@@ -614,6 +588,7 @@ export default function IndividualModal (
         </Center>
         </Box>
     {/* </View> */}
+    </View>
     </ScrollView>
     </Modal>
 

@@ -71,15 +71,16 @@ const InstitutionItem = ({ item, route }) => {
         width: '100%',
         backgroundColor: '#F5F5F5',
         flex: 1,
-        shadowColor: COLORS.main,
-        shadowOffset: {
-          width: 0,
-          height: 3,
-        },
+        // shadowColor: COLORS.main,
+        // shadowOffset: {
+        //   width: 0,
+        //   height: 3,
+        // },
         // shadowOpacity: 0.27,
         // shadowRadius: 4.65,
 
-        // elevation: 3,
+        elevation: 3,
+        opacity: 1,
 
       }}
     >   

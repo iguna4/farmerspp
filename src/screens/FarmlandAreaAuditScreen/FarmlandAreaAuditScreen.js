@@ -170,7 +170,6 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         };
     }, [ navigation ]);
     
-    console.log('farmland.ownerType:', JSON.stringify(farmland.ownerType))
 
     const navigateBack = ()=>{
         navigation.navigate('Profile', {
@@ -216,8 +215,6 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         });
         const area = calculatePolygonArea(points); 
         setArea(Number(area));
-        // console.log('new area:', area);
-
         return area;
     };
 

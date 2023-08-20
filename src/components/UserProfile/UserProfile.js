@@ -106,7 +106,7 @@ const { useRealm, useQuery, useObject } = realmContext;
             backgroundColor: 'ghostwhite', 
             width: '100%',
             height: '100%',
-            backgroundColor: COLORS.second,
+            backgroundColor: COLORS.dark,
             paddingTop: 10,
         }}
         isVisible={isUserProfileVisible} 
@@ -393,15 +393,15 @@ const { useRealm, useQuery, useObject } = realmContext;
 
                         <Stack w="100%" direction="row"  space={5}
                             style={{
-                                borderColor: COLORS.grey,
+                                // borderColor: COLORS.grey,
                                 paddingVertical: 5,
                                 borderRadius: 10,
                             }}
                             >
-                            <Icon name="logout" size={25} color={COLORS.grey} />
+                            <Icon name="logout" size={25} color={COLORS.danger} />
                             <Text 
                                 style={{
-                                    color: COLORS.grey, 
+                                    color: COLORS.danger, 
                                     fontSize: 16, 
                                     fontFamily: 'JosefinSans-Regular'
                                 }}

@@ -53,8 +53,6 @@ const GroupItem = ({ item, route }) => {
    }, [ item ]);
 
 
-  //  console.log('farmlandList: ', item.farmlandsList);
-
 
    return (
     <Animated.View
@@ -74,14 +72,7 @@ const GroupItem = ({ item, route }) => {
         borderTopLeftRadius: 10,
         borderColor: COLORS.main,
         shadowColor: COLORS.main,
-        shadowOffset: {
-          width: 0,
-          height: 3,
-        },
-        // shadowOpacity: 0.27,
-        // shadowRadius: 4.65,
-
-        // elevation: 3,
+        elevation: 3,
 
       }}
     >

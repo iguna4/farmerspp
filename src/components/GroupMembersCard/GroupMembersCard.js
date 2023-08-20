@@ -28,10 +28,6 @@ export default function GroupMembersCard({ setPresentGroupMemberOptions, handleP
  let members = [];
  if (group?.members?.length > 0){
   const memberIDs = Array.from(group?.members);
-  // console.log('memberIDs:',memberIDs);
-   // members = realm.objects('Actor').filtered("_id IN $0", memberIDs);
-
-
   for(let i = 0; i < memberIDs.length; i++){
    members.push(realm.objects('Actor').filtered("_id == $0", memberIDs[i])[0]);
   }

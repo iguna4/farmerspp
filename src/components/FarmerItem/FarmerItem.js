@@ -80,14 +80,8 @@ const FarmerItem = ({ item, route, farmerType }) => {
         borderTopLeftRadius: 10,
         borderColor: COLORS.main,
         shadowColor: COLORS.main,
-        shadowOffset: {
-          width: 0,
-          height: 3,
-        },
-        // shadowOpacity: 0.27,
-        // shadowRadius: 4.65,
-
-        // elevation: 3,
+        elevation: 3,
+        opacity: 1,
 
       }}
     >

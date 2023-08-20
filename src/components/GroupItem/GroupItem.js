@@ -114,9 +114,10 @@ const GroupItem = ({ item, route }) => {
       <Box w="80%">
     <TouchableOpacity
       onPress={()=>{
-        navigation.navigate('Group', {
+        navigation.navigate('Profile', {
           ownerId: item._id,
           farmersIDs: item?.farmersIDs,
+          farmerType: 'Grupo'
         })
       }}    
     >

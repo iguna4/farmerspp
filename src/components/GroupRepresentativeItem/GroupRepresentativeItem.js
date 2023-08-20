@@ -37,6 +37,7 @@ import COLORS from '../../consts/colors';
 
 import { realmContext } from '../../models/realmContext';
 import { useUser } from '@realm/react';
+import { farmerTypes } from '../../consts/farmerTypes';
 
 const { useRealm, useQuery } = realmContext; 
 
@@ -146,8 +147,10 @@ export default function GroupRepresentativeItem({
      >
       <TouchableOpacity
         onPress={()=>{
-         navigation.navigate('Farmer', {
+         navigation.navigate('Profile', {
           ownerId: item._id,
+          farmerType: farmerTypes.farmer,
+          farmersIDs: []
          })
 
         }}

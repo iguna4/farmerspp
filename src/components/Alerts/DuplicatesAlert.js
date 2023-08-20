@@ -1,6 +1,7 @@
 import React, { useState, useEffect,  } from "react";
 import { FlatList, Pressable, ScrollView, View, Text, SafeAreaView, TouchableOpacity} from "react-native";
 import { Icon, CheckBox, Overlay } from '@rneui/themed';
+
 import DuplicatesAlertItem from "./DuplicatesAlertItem";
 import COLORS from "../../consts/colors";
 
@@ -24,7 +25,7 @@ const DuplicatesAlert = ({
         setIsDuplicateModalVisible(false);
       }}
       overlayStyle={{
-        backgroundColor: COLORS.second,
+        backgroundColor: COLORS.dark,
         
       }}
       fullScreen

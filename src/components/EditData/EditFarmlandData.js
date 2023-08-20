@@ -1,11 +1,14 @@
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Text, TouchableOpacity, SafeAreaView, StyleSheet, ScrollView, TextInput, View } from 'react-native';
+import { 
+    Text, TouchableOpacity, SafeAreaView, StyleSheet, 
+    ScrollView, TextInput, View,
+ Animated, } from 'react-native';
 import { Overlay, Icon, Button, CheckBox } from "@rneui/base";
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
 import { MultipleSelectList, SelectList  } from 'react-native-dropdown-select-list';
-
-import ConfirmData from './ConfirmData';
+import Modal from 'react-native-modal';
+import ConfirmData from './ConfirmDataCopy';
 import COLORS from "../../consts/colors";
 import { getFullYears, getFullYears2 } from "../../helpers/dates";
 import { plantingTypes } from "../../consts/plantingTypes";
@@ -22,7 +25,9 @@ import validateEditedBlockData from "../../helpers/validateEditedBlockData";
 const {useRealm} = realmContext;
 
 
-const EditFarmlandData = ({  
+const EditFarmlandData = ({ 
+    scale,
+    resizeBox, 
     isOverlayVisible, 
     setIsOverlayVisible,
     isConfirmDataVisible,
@@ -313,19 +318,83 @@ const EditFarmlandData = ({
         setIsOverlayVisible(!isOverlayVisible);
       };
 
+
     return (
 
-    <Overlay 
-        overlayStyle={{ 
-            backgroundColor: COLORS.ghostwhite, 
-            width: '90%',
-            maxHeight: '80%',
-            borderRadius: 10,
-            // paddingBottom: 10,
-        }}
-        isVisible={isOverlayVisible} 
-        onBackdropPress={toggleOverlay}
-    >
+
+        <View>
+
+        <Modal
+            isVisible={isOverlayVisible}
+            supportedOrientations={['portrait', 'landscape']}
+            propagateSwipe
+            avoidKeyboard
+            animationIn={'zoomIn'}
+            animationInTiming={600}
+            animationOut={'zoomOut'}
+            hideModalContentWhileAnimating={true}
+            onBackButtonPress={()=>{
+                setIsOverlayVisible(false);
+            }}
+            onBackdropPress={()=>{
+                setIsOverlayVisible(false);
+            }}
+            onModalHide={()=>{
+                // if (isConfirmButtonPressed){
+                //     setIsConfirmDataVisible(true);
+                // }
+            }}
+            onSwipeComplete={()=>{
+                setIsOverlayVisible(false);            
+            }}
+            swipeDirection={["left", "right", "up", "down"]}
+        >
+    
+        <View
+            style={{
+                backgroundColor: COLORS.ghostwhite,
+                padding: 15,
+                borderRadius: 25,
+                minHeight: '50%',
+            }}
+        >
+    
+
+        {/* <Modal
+            transparent
+            statusBarTranslucent
+            visible={isOverlayVisible}
+            style={{
+                minHeight: '50%',
+            }}
+            onRequestClose={()=>{
+                resizeBox(0);
+            }}
+        >
+        <SafeAreaView
+            style={{
+                flex: 1,
+            }}        
+        >
+
+        <Animated.View
+            style={{
+                width: '90%',
+                // justifyContent: 'center',
+                backgroundColor: COLORS.ghostwhite,
+                borderColor: COLORS.lightgrey,
+                borderTopWidth: 2,
+                borderRadius: 8,
+                minHeight: 400,
+                maxHeight: '60%',
+                padding: 20,
+                // position: 'absolute',
+                // bottom: 0,
+                alignSelf: 'center',
+                opacity: scale?.interpolate({ inputRange: [0, 1], outputRange: [0, 1]}),
+                transform: [{scale}],
+            }}
+        > */}
 
         <View
             style={{
@@ -372,11 +441,6 @@ const EditFarmlandData = ({
                 fadingEdgeLength={2}
                 keyboardDismissMode = 'on-drag'
                 keyboardShouldPersistTaps = 'handled'
-                style={{
-                    // flex: 1,
-                    // minHeight: '100%',
-                    // marginVertical: 10,
-                }}
             >
             {/* <Box>
                 <Text
@@ -396,13 +460,66 @@ const EditFarmlandData = ({
     {
         (dataToBeUpdated === 'blockData' && resourceName === 'Farmland' && blockId) &&
         <Stack direction="column">
+            <Box w="100%"
+                style={{
+                    // position: 'absolute',
+                    // top: 5,
+                    // right: 0,
+                }}
+            >
+                <Text
+                    style={{
+                        fontSize: 14,
+                        color: false ? COLORS.red : COLORS.pantone,
+                        fontFamily: 'JosefinSans-Regular',
+                        textAlign: 'right',
+                        lineHeight: 15,
+                    }}
+                >
+                    Este pomar tem...
+                </Text>
+                <Text
+                    style={{
+                        fontSize: 14,
+                        color: false ? COLORS.red : COLORS.pantone,
+                        fontFamily: 'JosefinSans-Regular',
+                        textAlign: 'right',
+                        lineHeight: 15,
+                    }}
+                >
+                    {resource?.blocks?.length} parcelas;             
+                </Text>
+                <Text
+                    style={{
+                        fontSize: 14,
+                        color: false ? COLORS.red : COLORS.pantone,
+                        fontFamily: 'JosefinSans-Regular',
+                        textAlign: 'right',
+                        lineHeight: 15,
+                    }}
+                >
+                    {resource.trees} árvores;
+                </Text>
+                <Text
+                    style={{
+                        fontSize: 14,
+                        color: false ? COLORS.red : COLORS.pantone,
+                        fontFamily: 'JosefinSans-Regular',
+                        textAlign: 'right',
+                        lineHeight: 15,
+                    }}
+                >
+                    {remainingArea?.toFixed(2)} hectares disponíveis.
+                </Text>
+            </Box> 
+
         <Stack direction="row" w="100%" space={1}>
-            <Box w="50%">
+            <Box w="100%">
                 <FormControl isRequired my="1" isInvalid={'plantingYear' in errors}>
                     <FormControl.Label>Ano de plantio</FormControl.Label>
 
                         <SelectList
-                            data={getFullYears2}
+                            data={()=>getFullYears2(70)}
                             setSelected={newYear => {
                                 setErrors((prev)=>({...prev, plantingYear: ''}));
                                 setPlantingYear(newYear);
@@ -491,54 +608,6 @@ const EditFarmlandData = ({
                 </FormControl>
             </Box>
 
-        <Box w="50%"
-                style={{
-                    position: 'absolute',
-                    top: 5,
-                    right: 0,
-                }}
-            >
-                <Text
-                    style={{
-                        fontSize: 14,
-                        color: false ? COLORS.red : COLORS.pantone,
-                        fontFamily: 'JosefinSans-Regular',
-                        textAlign: 'right',
-                    }}
-                >
-                    Este pomar tem...
-                </Text>
-                <Text
-                    style={{
-                        fontSize: 14,
-                        color: false ? COLORS.red : COLORS.pantone,
-                        fontFamily: 'JosefinSans-Regular',
-                        textAlign: 'right',
-                    }}
-                >
-                    {resource?.blocks?.length} parcelas;             
-                </Text>
-                <Text
-                    style={{
-                        fontSize: 14,
-                        color: false ? COLORS.red : COLORS.pantone,
-                        fontFamily: 'JosefinSans-Regular',
-                        textAlign: 'right',
-                    }}
-                >
-                    {resource.trees} árvores;
-                </Text>
-                <Text
-                    style={{
-                        fontSize: 14,
-                        color: false ? COLORS.red : COLORS.pantone,
-                        fontFamily: 'JosefinSans-Regular',
-                        textAlign: 'right',
-                    }}
-                >
-                    {remainingArea?.toFixed(2)} hectares disponíveis.
-                </Text>
-            </Box> 
         </Stack>
 
         <FormControl isRequired my="2" isInvalid={'usedArea' in errors}>
@@ -905,9 +974,12 @@ const EditFarmlandData = ({
                 placeholder="clones"
                 save="value"
                 label="Clones"
+                badgeStyles={{
+                    backgroundColor: COLORS.pantone,                        
+                }}
                 arrowicon={
                     <Icon 
-                        size={45} 
+                        // size={20} 
                         name="arrow-drop-down" 
                         color={COLORS.pantone} 
                     />
@@ -1211,7 +1283,7 @@ const EditFarmlandData = ({
                     save="value"
                     arrowicon={
                         <Icon 
-                        size={45} 
+                        // size={45} 
                         name="arrow-drop-down" 
                         color={COLORS.main} 
                         />
@@ -1230,6 +1302,9 @@ const EditFarmlandData = ({
                     inputStyles={{
                         fontSize: 16,
                         color: '#A8A8A8',
+                    }}
+                    badgeStyles={{
+                        backgroundColor: COLORS.pantone,
                     }}
                     boxStyles={{
                         borderRadius: 4,
@@ -1265,7 +1340,7 @@ const EditFarmlandData = ({
                             description: '',
                             areaInconsistencies: '',
                         }))
-                        setTotalArea(newNumber)
+                        setTotalArea(Number(newNumber))
                     }}
                 />
                     
@@ -1322,6 +1397,7 @@ const EditFarmlandData = ({
             containerStyle={{
                 backgroundColor: COLORS.pantone,
                 borderRadius: 10,
+                marginTop: 30,
             }}
             type="outline"
             onPress={()=>{
@@ -1331,8 +1407,11 @@ const EditFarmlandData = ({
         </ScrollView>
 
         </View>
+    </View>
+    </Modal>
+    </View>
 
-    </Overlay>
+    // </Overlay>
 
     )
 }

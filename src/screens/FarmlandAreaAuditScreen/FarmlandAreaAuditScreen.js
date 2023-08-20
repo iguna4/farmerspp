@@ -26,6 +26,7 @@ import CustomActivityIndicator from "../../components/ActivityIndicator/CustomAc
 import { Pressable } from "react-native";
 import { calculatePolygonArea } from "../../helpers/calculatePolygonArea";
 import { SuccessLottie } from "../../components/LottieComponents/SuccessLottie";
+import { farmerTypes } from "../../consts/farmerTypes";
 const {useRealm, useObject, useQuery } = realmContext;
 
 
@@ -169,23 +170,26 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         };
     }, [ navigation ]);
     
+    console.log('farmland.ownerType:', JSON.stringify(farmland.ownerType))
 
     const navigateBack = ()=>{
-        if (farmland.ownerType === 'Group'){
-            navigation.navigate('Group', {
-                ownerId: farmland?.farmerId,
-            });
-        }
-        else if (farmland.ownerType === 'Single') {
-            navigation.navigate('Farmer', {
-                ownerId: farmland?.farmerId,
-            });
-        }
-        else if (farmland.ownerType === 'Institution') {
-            navigation.navigate('Institution', {
-                ownerId: farmland?.farmerId,
-            });
-        }
+        navigation.navigate('Profile', {
+            ownerId: farmland?.farmerId,
+            farmerType: farmland.ownerType === 'Single' ? farmerTypes.farmer : farmland.ownerType === 'Group' ? farmerTypes.group : farmland.ownerType === 'Institution' ? farmerTypes.institution : '',
+            farmersIDs: [],
+        });
+        // if (farmland.ownerType === 'Group'){
+        // }
+        // else if (farmland.ownerType === 'Single') {
+        //     navigation.navigate('Farmer', {
+        //         ownerId: farmland?.farmerId,
+        //     });
+        // }
+        // else if (farmland.ownerType === 'Institution') {
+        //     navigation.navigate('Institution', {
+        //         ownerId: farmland?.farmerId,
+        //     });
+        // }
     }
 
     const keyExtractor = (item, index)=>index.toString();
@@ -231,6 +235,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
         if (isCalculatedAreaConfirmed){
             setIsCalculatedAreaConfirmed(false);
             setSuccessLottieVisible(true);
+            // navigateBack();
         }
 
         // The SuccessLottie Overlay should show up for 2 seconds
@@ -239,7 +244,7 @@ const FarmlandAreaAuditScreen = ({ route, navigation })=>{
             setTimeout(()=>{
                 navigateBack();
                 setSuccessLottieVisible(false);
-            }, 3000)
+            }, 2000)
         }
 
     }, [ successLottieVisibile, isCalculatedAreaConfirmed ]);

@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, StyleSheet, ScrollView, } from 'react-native';
+import Modal from 'react-native-modal';
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
 import { Overlay, Icon, Button } from "@rneui/base";
 import COLORS from "../../consts/colors";
@@ -9,6 +10,7 @@ import { resourceValidation } from '../../consts/resourceValidation';
 
 import { useUser } from "@realm/react";
 import { realmContext } from '../../models/realmContext';
+import { SuccessLottie } from "../LottieComponents/SuccessLottie";
 const {useRealm} = realmContext;
 
 const ConfirmData = ({  
@@ -27,17 +29,13 @@ const ConfirmData = ({
 
     blockId,
 
-    // setAutoRefresh,
-    // autoRefresh,
-    // refresh,
-    // setRefresh,
-    // checkAreasConformity,
-    // farmland,
 })=>{
 
     const realm = useRealm();
     const user = useUser();
     const customUserData = user?.customData;
+    const [successLottieVisible, setSuccessLottieVisible] = useState(false);
+
 
 
     const onUpdateData = (resource, newDataObject, realm, dataToBeUpdated, resourceName) =>{
@@ -220,10 +218,23 @@ const ConfirmData = ({
                 }
                 // resource.status = resourceValidation.status.pending;
             }
+            setSuccessLottieVisible(true);
         });
         // setAutoRefresh(!autoRefresh);
         // setRefresh(!refresh);
     }
+
+    // SuccesLottie effect
+    useEffect(()=>{
+
+        if (successLottieVisible){
+            setTimeout(()=>{
+              setSuccessLottieVisible(false);
+            }, 3000)
+        }
+      
+    }, [ successLottieVisible ]);
+
 
     const toggleOverlay = () => {
         setIsConfirmDataVisible(!isConfirmDataVisible);
@@ -232,66 +243,480 @@ const ConfirmData = ({
 
     return (
 
-    <Overlay 
-        overlayStyle={{ 
-            backgroundColor: COLORS.ghostwhite, 
-            width: '90%',
-            maxHeight: '90%',
-            borderRadius: 10,
-        }}
-        isVisible={isConfirmDataVisible} 
-        onBackdropPress={toggleOverlay}
-        >
+    // <Overlay 
+    //     overlayStyle={{ 
+    //         backgroundColor: COLORS.ghostwhite, 
+    //         width: '90%',
+    //         maxHeight: '90%',
+    //         borderRadius: 10,
+    //     }}
+    //     isVisible={isConfirmDataVisible} 
+    //     onBackdropPress={toggleOverlay}
+    //     >
 
-    <ScrollView
-        style={{
-            maxHeight: '100%',
-        }}
+    <View>
+
+    <Modal
+        isVisible={isConfirmDataVisible}
+        supportedOrientations={['portrait', 'landscape']}
+        propagateSwipe
+        animationIn={'zoomIn'}
+        animationInTiming={600}
+        animationOut={'zoomOut'}
+        // animationOutTiming={600}
+        hideModalContentWhileAnimating={true}
+    
     >
+
         <View
             style={{
-                // minHeight: '70%',
-                justifyContent: 'center',
+                backgroundColor: COLORS.ghostwhite,
+                padding: 15,
+                borderRadius: 25,
+                minHeight: '50%',
             }}
         >
-        <View
-            style={{ 
-                width: '100%', 
-                // backgroundColor: COLORS.main, 
+            <View
+                style={{
+                    // minHeight: '70%',
+                    justifyContent: 'center',
+                }}
+            >
+            <View
+                style={{ 
+                    width: '100%', 
+                    // backgroundColor: COLORS.main, 
+                }}
+                >
+                <Text
+                    style={{ 
+                        textAlign: 'center',
+                        color: COLORS.black,
+                        fontSize: 16,
+                        paddingVertical: 5,
+                        fontFamily: 'JosefinSans-Bold',
+                        
+                    }}
+                    >{ownerName}</Text>
+            </View>
+            <View
+                style={{
+                    position: 'absolute',
+                    right: 0,
+                    top: 0,
+                }}
+                >
+                <Icon 
+                    onPress={()=>{
+                        setIsConfirmDataVisible(false);
+                    }}
+                    name="close" 
+                    size={25} 
+                    color={COLORS.grey} 
+                    />
+            </View>
+            
+        {/* farmland block */}
+
+        {
+            (dataToBeUpdated === 'plantType' && resourceName === 'Farmland') &&
+            <Box
+            style={{
+                paddingVertical: 30,
+                // alignItems: 'center',
             }}
             >
             <Text
-                style={{ 
-                    textAlign: 'center',
+                style={{
+                    color: COLORS.black,
+                    fontSize: 18,
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingBottom: 5,
+                }}
+            >
+                Tipos de Planta Actuais
+            </Text>
+
+            {/* <Stack direction="row">
+                <Box w="50%"
+                    style={{
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Text>Tipos de plantas</Text>
+                </Box>
+                <Box w="50%">
+                <Text>{oldDataObject?.plantTypes.plantType?.join('; ')}</Text>
+                { oldDataObject?.plantTypes.clones?.length > 0 &&
+                    <Text>Clones: {oldDataObject?.plantTypes.clones?.join('; ')}</Text>
+                }
+                </Box>
+            </Stack> */}
+
+    
+            <Stack direction="row">
+                {/* <Box w="10%">
+                <Text></Text>
+                </Box> */}
+                <Box w="100%">
+                { 
+                newDataObject.sameTypeTrees?.map(same=>(
+                        <Stack key={same.treeType} direction="row">
+                            <Box w="60%">
+                                <Text
+                                    style={{
+                                        fontFamily: 'JosefinSans-Bold',
+                                        paddingTop: 2,
+                                    }}
+                                ><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
+                            </Box>
+                            <Box w="40%">
+                                <Text
+                                    style={{
+                                        fontFamily: 'JosefinSans-Regular',
+                                        paddingTop: 2,
+                                    }}            
+                                >{same?.trees} árvores</Text>
+                            </Box>   
+                        </Stack>
+                )
+                )
+                    }
+                </Box>
+            </Stack>
+            {/* <Box
+                style={{
+                    paddingVertical: 20,
+                }}
+            > 
+            </Box> */}
+
+            {/* <Text
+                style={{
                     color: COLORS.black,
                     fontSize: 16,
-                    paddingVertical: 5,
                     fontFamily: 'JosefinSans-Bold',
-                    
+                    paddingBottom: 5,
                 }}
-                >{ownerName}</Text>
-        </View>
-        <View
+            >
+                Dados Actuais do Parcela
+            </Text> */}
+
+            {/* <Stack direction="row">
+                <Box w="50%"
+                    style={{
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Text>Tipos de plantas</Text>
+                </Box>
+                <Box w="50%">
+                <Text>{newDataObject?.plantTypes.plantType?.join('; ')}</Text>
+                { newDataObject?.plantTypes.clones?.length > 0 &&
+                    <Text>Clones: {newDataObject?.plantTypes.clones?.join('; ')}</Text>
+                }
+                </Box>
+            </Stack> */}
+
+
+            {/* <Stack direction="row">
+                <Box w="10%">
+                <Text></Text>
+                </Box>
+                <Box w="90%">
+                { 
+                newDataObject.sameTypeTrees?.map(same=>(
+                        <Stack key={same.treeType} direction="row">
+                            <Box w="60%">
+                                <Text><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
+                            </Box>
+                            <Box w="40%">
+                                <Text>{same?.trees} árvores</Text>
+                            </Box>   
+                        </Stack>
+                )
+                )
+                    }
+                </Box>
+            </Stack> */}
+            </Box>
+            
+        }
+
+
+
+
+
+        {
+            (dataToBeUpdated === 'blockData' && resourceName === 'Farmland') &&
+            <Box
             style={{
-                position: 'absolute',
-                right: 0,
-                top: 0,
+                paddingVertical: 30,
+                // alignItems: 'center',
             }}
             >
-            <Icon 
-                onPress={()=>{
-                    setIsConfirmDataVisible(false);
+            <Text
+                style={{
+                    color: COLORS.black,
+                    fontSize: 16,
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingBottom: 5,
                 }}
-                name="close" 
-                size={25} 
-                color={COLORS.grey} 
-                />
-        </View>
+            >
+                Dados Anteriores da Parcela
+            </Text>
+            <Stack direction="row">
+                <Box w="50%">
+                    <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingTop: 2,
+                        }}            
+                    >Ano de plantio</Text>
+                </Box>
+                <Box w="50%">
+                <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Regular',
+                            paddingTop: 2,
+                        }}           
+                >{oldDataObject?.plantingYear}</Text>
+                </Box>
+            </Stack>
+            <Stack direction="row">
+                <Box w="50%">
+                    <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingTop: 2,
+                        }}            
+                    >Área aproveitada</Text>
+                </Box>
+                <Box w="50%">
+                <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Regular',
+                            paddingTop: 2,
+                        }}           
+                >{oldDataObject?.usedArea ? `${oldDataObject?.usedArea} hectares` : 'Nenhum'}</Text>
+                </Box>
+            </Stack>
+            <Stack direction="row">
+                <Box w="50%">
+                    <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingTop: 2,
+                        }}            
+                    >Compasso</Text>
+                </Box>
+                <Box w="50%">
+                    <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Regular',
+                            paddingTop: 2,
+                        }}            
+                    >
+                        {oldDataObject.density?.mode ? oldDataObject.density.mode : 'Nenhum'}
+                        {oldDataObject.density?.mode === 'Regular' && `(${oldDataObject.density?.width} x ${oldDataObject.density?.length} metros)`}
+                    </Text>
+                </Box>
+            </Stack>
+            {/* <Stack direction="row">
+                <Box w="50%"
+                    style={{
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Text>Tipos de plantas</Text>
+                </Box>
+                <Box w="50%">
+                <Text>{oldDataObject?.plantTypes.plantType?.join('; ')}</Text>
+                { oldDataObject?.plantTypes.clones?.length > 0 &&
+                    <Text>Clones: {oldDataObject?.plantTypes.clones?.join('; ')}</Text>
+                }
+                </Box>
+            </Stack> */}
+
+            <Stack direction="row">
+                <Box w="50%">
+                    <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingTop: 2,
+                        }}            
+                    >Cajueiros</Text>
+                </Box>
+                <Box w="50%">
+                    <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Regular',
+                            paddingTop: 2,
+                        }}            
+                    >{oldDataObject.trees ? `${oldDataObject.trees} árvores` : 'Nenhum'}</Text>
+                </Box>
+            </Stack>
+    
+            {/* <Stack direction="row"> */}
+                {/* <Box w="10%"> */}
+                {/* <Text></Text> */}
+                {/* </Box> */}
+                {/* <Box w="90%"> */}
+                { 
+                //    oldDataObject.sameTypeTrees?.map(same=>(
+                //         <Stack key={same.treeType} direction="row">
+                //             <Box w="60%">
+                //                 <Text><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
+                //             </Box>
+                //             <Box w="40%">
+                //                 <Text>{same?.trees} árvores</Text>
+                //             </Box>   
+                //         </Stack>
+                //    )
+                //    )
+                    }
+                {/* </Box> */}
+            {/* </Stack> */}
+            <Box
+                style={{
+                    paddingVertical: 20,
+                }}
+            > 
         
-    {/* farmland block */}
+        
+            </Box>
+            <Text
+                style={{
+                    color: COLORS.black,
+                    fontSize: 16,
+                    fontFamily: 'JosefinSans-Bold',
+                    paddingBottom: 5,
+                }}
+            >
+                Dados Actuais do Parcela
+            </Text>
+            <Stack direction="row">
+                <Box w="50%">
+                    <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingTop: 2,
+                        }}
+                    >Ano de plantio</Text>
+                </Box>
+                <Box w="50%">
+                <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Regular',
+                            paddingTop: 2,
+                        }}
+                >{newDataObject?.plantingYear}</Text>
+                </Box>
+            </Stack>
+            <Stack direction="row">
+                <Box w="50%">
+                    <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingTop: 2,
+                        }}
+                    >Área aproveitada</Text>
+                </Box>
+                <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}
+                >{newDataObject?.usedArea ? `${newDataObject?.usedArea} hectares` : 'Nenhum'}</Text>
+                </Box>
+            </Stack>
+            <Stack direction="row">
+                <Box w="50%">
+                    <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingTop: 2,
+                        }}
+                    >Compasso</Text>
+                </Box>
+                <Box w="50%">
+                    <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Regular',
+                            paddingTop: 2,
+                        }}        
+                    >
+                        {newDataObject.density?.mode ? newDataObject.density.mode : 'Nenhum'}
+                        {newDataObject.density?.mode === 'Regular' && `(${newDataObject.density?.width} x ${newDataObject.density?.length} metros)`}
+                    </Text>
+                </Box>
+            </Stack>
+
+            {/* <Stack direction="row">
+                <Box w="50%"
+                    style={{
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Text>Tipos de plantas</Text>
+                </Box>
+                <Box w="50%">
+                <Text>{newDataObject?.plantTypes.plantType?.join('; ')}</Text>
+                { newDataObject?.plantTypes.clones?.length > 0 &&
+                    <Text>Clones: {newDataObject?.plantTypes.clones?.join('; ')}</Text>
+                }
+                </Box>
+            </Stack> */}
+
+
+            <Stack direction="row">
+                <Box w="50%">
+                    <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingTop: 2,
+                        }}            
+                    >Cajueiros</Text>
+                </Box>
+                <Box w="50%">
+                    <Text
+                        style={{
+                            fontFamily: 'JosefinSans-Regular',
+                            paddingTop: 2,
+                        }}            
+                    >{newDataObject.trees ? `${newDataObject.trees} árvores` : 'Nenhum'}</Text>
+                </Box>
+            </Stack>
+            {/* <Stack direction="row"> */}
+                {/* <Box w="10%"> */}
+                {/* <Text></Text> */}
+                {/* </Box> */}
+                {/* <Box w="90%"> */}
+                { 
+                //    newDataObject.sameTypeTrees?.map(same=>(
+                //         <Stack key={same.treeType} direction="row">
+                //             <Box w="60%">
+                //                 <Text><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
+                //             </Box>
+                //             <Box w="40%">
+                //                 <Text>{same?.trees} árvores</Text>
+                //             </Box>   
+                //         </Stack>
+                //    )
+                //    )
+                    }
+                {/* </Box> */}
+            {/* </Stack> */}
+            </Box>
+            
+        }
+
+
+    {/* farmland data updating */}
 
     {
-        (dataToBeUpdated === 'plantType' && resourceName === 'Farmland') &&
+        (dataToBeUpdated === 'farmlandMainData' && resourceName === 'Farmland') &&
         <Box
         style={{
             paddingVertical: 30,
@@ -301,1886 +726,1493 @@ const ConfirmData = ({
         <Text
             style={{
                 color: COLORS.black,
-                fontSize: 18,
+                fontSize: 16,
                 fontFamily: 'JosefinSans-Bold',
                 paddingBottom: 5,
             }}
         >
-            Tipos de Planta Actuais
+            Dados Anteriores do Pomar
         </Text>
-
-        {/* <Stack direction="row">
-            <Box w="50%"
-                style={{
-                    justifyContent: 'center',
-                }}
-            >
-                <Text>Tipos de plantas</Text>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}         
+                >Descrição</Text>
             </Box>
             <Box w="50%">
-               <Text>{oldDataObject?.plantTypes.plantType?.join('; ')}</Text>
-               { oldDataObject?.plantTypes.clones?.length > 0 &&
-                <Text>Clones: {oldDataObject?.plantTypes.clones?.join('; ')}</Text>
-               }
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}             
+                >{oldDataObject?.description ? oldDataObject?.description : 'Nenhuma' }</Text>
             </Box>
-        </Stack> */}
-
-   
+        </Stack>
         <Stack direction="row">
-            {/* <Box w="10%">
-               <Text></Text>
-            </Box> */}
-            <Box w="100%">
-               { 
-               newDataObject.sameTypeTrees?.map(same=>(
-                    <Stack key={same.treeType} direction="row">
-                        <Box w="60%">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}             
+                >Culturas consociadas</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{oldDataObject?.consociatedCrops?.length > 0 ? oldDataObject?.consociatedCrops?.join('; ') : 'Nenhuma'}</Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}             
+                >Área total</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{oldDataObject?.totalArea ? oldDataObject?.totalArea : 'Nenhuma'}</Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}             
+                >N° de cajueiros</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{oldDataObject?.trees ? oldDataObject?.trees : 'Nenhum'}</Text>
+            </Box>
+        </Stack>
+
+        <Box
+            style={{
+                paddingVertical: 20,
+            }}
+        > 
+    
+    
+        </Box>
+        <Text
+            style={{
+                color: COLORS.black,
+                fontSize: 16,
+                fontFamily: 'JosefinSans-Bold',
+                paddingBottom: 5,
+            }}
+        >
+            Dados Actuais do Pomar
+        </Text>
+    
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}             
+                >Descrição</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}             
+                >{newDataObject?.description ? newDataObject?.description : 'Nenhuma' }</Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}             
+                >Culturas consociadas</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{newDataObject?.consociatedCrops?.length > 0 ? newDataObject?.consociatedCrops?.join('; ') : 'Nenhuma'}</Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}             
+                >Área total</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{newDataObject?.totalArea ? newDataObject?.totalArea : 'Nenhuma'}</Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}             
+                >N° de cajueiros</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{newDataObject?.trees ? newDataObject?.trees : 'Nenhum'}</Text>
+            </Box>
+        </Stack> 
+        </Box>
+    }
+
+
+
+            {/* groups data updating  */}
+
+    {
+        (dataToBeUpdated === 'groupType' && resourceName === 'Group') &&
+
+        <Box
+        style={{
+            paddingVertical: 30,
+            // alignItems: 'center',
+        }}
+        >
+        <Text
+            style={{
+                color: COLORS.black,
+                fontSize: 16,
+                fontFamily: 'JosefinSans-Bold',
+                paddingBottom: 5,
+            }}
+        >
+            Tipo de Organização Anterior
+        </Text>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Nome</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{oldDataObject?.name ? oldDataObject?.name : 'Nenhum' }</Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Tipo</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{oldDataObject?.type ? oldDataObject?.type : 'Nenhum'}</Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Finalidade</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{oldDataObject?.goals?.length > 0 ? oldDataObject?.goals?.join('; ') : 'Nenhuma'}</Text>
+            </Box>
+        </Stack>
+
+        <Box
+            style={{
+                paddingVertical: 20,
+            }}
+        > 
+
+
+        </Box>
+        <Text
+            style={{
+                color: COLORS.black,
+                fontSize: 16,
+                fontFamily: 'JosefinSans-Bold',
+                paddingBottom: 5,
+            }}
+        >
+            Tipo de Organização Actual
+        </Text>
+
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Nome</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{newDataObject?.name ? newDataObject?.name : 'Nenhum' }</Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Tipo</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{newDataObject?.type ? newDataObject?.type : 'Nenhum'}</Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Finalidade</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{newDataObject?.goals?.length > 0 ? newDataObject?.goals?.join('; ') : 'Nenhuma'}</Text>
+            </Box>
+        </Stack>
+
+        </Box>
+
+    }
+
+
+
+    {
+        (dataToBeUpdated === 'groupIdentity' &&  resourceName === 'Group') && 
+        <Box
+        style={{
+            paddingVertical: 30,
+            // alignItems: 'center',
+        }}
+        >
+        <Text
+            style={{
+                color: COLORS.black,
+                fontSize: 16,
+                fontFamily: 'JosefinSans-Bold',
+                paddingBottom: 5,
+            }}
+        >
+            Identidade Anterior
+        </Text>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Situação Legal</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{oldDataObject?.legalStatus ? oldDataObject?.legalStatus : 'Nenhum' }</Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Ano de Criação</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{oldDataObject?.creationYear ? oldDataObject?.creationYear : 'Nenhum'}</Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Ano de Legalização</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{oldDataObject?.affiliationYear ? oldDataObject?.affiliationYear : 'Nenhum'}</Text>
+            </Box>
+        </Stack>
+
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >NUIT</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
+            </Box>
+        </Stack>
+
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Alvará</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                
+                >{oldDataObject?.licence ? oldDataObject?.licence : 'Nenhum'}</Text>
+            </Box>
+        </Stack>
+
+
+        <Box
+            style={{
+                paddingVertical: 20,
+            }}
+        > 
+
+
+        </Box>
+        <Text
+            style={{
+                color: COLORS.black,
+                fontSize: 16,
+                fontFamily: 'JosefinSans-Bold',
+                paddingBottom: 5,
+            }}
+        >
+            Identidade Actual
+        </Text>
+
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Situação Legal</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{newDataObject?.legalStatus ? newDataObject?.legalStatus : 'Nenhum' }</Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Ano de Criação</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{newDataObject?.creationYear ? newDataObject?.creationYear : 'Nenhum'}</Text>
+            </Box>
+        </Stack>
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Ano de Legalização</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{newDataObject?.affiliationYear ? newDataObject?.affiliationYear : 'Nenhum'}</Text>
+            </Box>
+        </Stack>
+
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >NUIT</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{newDataObject?.nuit ? newDataObject.nuit : 'Nenhum'}</Text>
+            </Box>
+        </Stack>
+
+        <Stack direction="row">
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Bold',
+                        paddingTop: 2,
+                    }}            
+                >Alvará</Text>
+            </Box>
+            <Box w="50%">
+                <Text
+                    style={{
+                        fontFamily: 'JosefinSans-Regular',
+                        paddingTop: 2,
+                    }}            
+                >{newDataObject?.licence ? newDataObject?.licence : 'Nenhum'}</Text>
+            </Box>
+        </Stack>
+        </Box>
+    }
+
+
+            {  (dataToBeUpdated === 'groupMembers' &&  resourceName === 'Group') &&        
+                <Box
+                    style={{
+                        paddingVertical: 30,
+                        // alignItems: 'center',
+                    }}
+                >
+                    <Text
+                        style={{
+                            color: COLORS.black,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingBottom: 5,
+                        }}
+                    >Efectividade Anterior</Text>
+                    <Stack direction="row">
+                        <Box w="50%">
                             <Text
                                 style={{
                                     fontFamily: 'JosefinSans-Bold',
                                     paddingTop: 2,
-                                }}
-                            ><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
+                                }}            
+                            >Modo de Funcionamento</Text>
                         </Box>
-                        <Box w="40%">
+                        <Box w="50%">
                             <Text
                                 style={{
                                     fontFamily: 'JosefinSans-Regular',
                                     paddingTop: 2,
                                 }}            
-                            >{same?.trees} árvores</Text>
-                        </Box>   
-                    </Stack>
-               )
-               )
-                }
-            </Box>
-        </Stack>
-        {/* <Box
-            style={{
-                paddingVertical: 20,
-            }}
-        > 
-        </Box> */}
-
-        {/* <Text
-            style={{
-                color: COLORS.black,
-                fontSize: 16,
-                fontFamily: 'JosefinSans-Bold',
-                paddingBottom: 5,
-            }}
-        >
-            Dados Actuais do Parcela
-        </Text> */}
-
-        {/* <Stack direction="row">
-            <Box w="50%"
-                style={{
-                    justifyContent: 'center',
-                }}
-            >
-                <Text>Tipos de plantas</Text>
-            </Box>
-            <Box w="50%">
-               <Text>{newDataObject?.plantTypes.plantType?.join('; ')}</Text>
-               { newDataObject?.plantTypes.clones?.length > 0 &&
-                <Text>Clones: {newDataObject?.plantTypes.clones?.join('; ')}</Text>
-               }
-            </Box>
-        </Stack> */}
-
-
-        {/* <Stack direction="row">
-            <Box w="10%">
-               <Text></Text>
-            </Box>
-            <Box w="90%">
-               { 
-               newDataObject.sameTypeTrees?.map(same=>(
-                    <Stack key={same.treeType} direction="row">
-                        <Box w="60%">
-                            <Text><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
+                            >{oldDataObject?.operationalStatus ? 'Activo' : 'Inactivo' }</Text>
                         </Box>
-                        <Box w="40%">
-                            <Text>{same?.trees} árvores</Text>
-                        </Box>   
                     </Stack>
-               )
-               )
-                }
-            </Box>
-        </Stack> */}
-        </Box>
-        
-    }
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Total de Membros</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{oldDataObject?.total ? oldDataObject?.total : 0}</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Total de Mulheres </Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{oldDataObject?.women ? oldDataObject?.women : 0}</Text>
+                        </Box>
+                    </Stack>
+
+                    <Box
+                        style={{
+                            paddingVertical: 20,
+                        }}
+                    > 
+
+
+                    </Box>
+                    <Text
+                        style={{
+                            color: COLORS.black,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingBottom: 5,
+                        }}
+                    >Efectividade Actual</Text>
+
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Modo de Funcionamento</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{newDataObject?.operationalStatus ? 'Activo' : 'Inactivo'}</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Total de Membros</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{newDataObject?.total ? newDataObject?.total : 0}</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Total de Mulheres</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{newDataObject?.women ? newDataObject?.women : 0}</Text>
+                        </Box>
+                    </Stack>
+                </Box>
+            }
 
 
 
 
-
-    {
-        (dataToBeUpdated === 'blockData' && resourceName === 'Farmland') &&
-        <Box
-        style={{
-            paddingVertical: 30,
-            // alignItems: 'center',
-        }}
-        >
-        <Text
-            style={{
-                color: COLORS.black,
-                fontSize: 16,
-                fontFamily: 'JosefinSans-Bold',
-                paddingBottom: 5,
-            }}
-        >
-            Dados Anteriores da Parcela
-        </Text>
-        <Stack direction="row">
-            <Box w="50%">
-                <Text
+            {  (dataToBeUpdated === 'groupManager' &&  resourceName === 'Group') &&        
+                <Box
                     style={{
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingTop: 2,
-                    }}            
-                >Ano de plantio</Text>
-            </Box>
-            <Box w="50%">
-               <Text
-                    style={{
-                        fontFamily: 'JosefinSans-Regular',
-                        paddingTop: 2,
-                    }}           
-               >{oldDataObject?.plantingYear}</Text>
-            </Box>
-        </Stack>
-        <Stack direction="row">
-            <Box w="50%">
-                <Text
-                    style={{
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingTop: 2,
-                    }}            
-                >Área aproveitada</Text>
-            </Box>
-            <Box w="50%">
-               <Text
-                    style={{
-                        fontFamily: 'JosefinSans-Regular',
-                        paddingTop: 2,
-                    }}           
-               >{oldDataObject?.usedArea ? `${oldDataObject?.usedArea} hectares` : 'Nenhum'}</Text>
-            </Box>
-        </Stack>
-        <Stack direction="row">
-            <Box w="50%">
-                <Text
-                    style={{
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingTop: 2,
-                    }}            
-                >Compasso</Text>
-            </Box>
-            <Box w="50%">
-                <Text
-                    style={{
-                        fontFamily: 'JosefinSans-Regular',
-                        paddingTop: 2,
-                    }}            
+                        paddingVertical: 30,
+                        // alignItems: 'center',
+                    }}
                 >
-                    {oldDataObject.density?.mode ? oldDataObject.density.mode : 'Nenhum'}
-                    {oldDataObject.density?.mode === 'Regular' && `(${oldDataObject.density?.width} x ${oldDataObject.density?.length} metros)`}
-                </Text>
-            </Box>
-        </Stack>
-        {/* <Stack direction="row">
-            <Box w="50%"
-                style={{
-                    justifyContent: 'center',
-                }}
-            >
-                <Text>Tipos de plantas</Text>
-            </Box>
-            <Box w="50%">
-               <Text>{oldDataObject?.plantTypes.plantType?.join('; ')}</Text>
-               { oldDataObject?.plantTypes.clones?.length > 0 &&
-                <Text>Clones: {oldDataObject?.plantTypes.clones?.join('; ')}</Text>
-               }
-            </Box>
-        </Stack> */}
+                    <Text
+                        style={{
+                            color: COLORS.black,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingBottom: 5,
+                        }}
+                    >Contacto Anterior</Text>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Nome do Presidente</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{oldDataObject?.fullname ? oldDataObject?.fullname : 'Nenhum' }</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Número de telemóvel</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{oldDataObject?.phone ? oldDataObject?.phone : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
+                    {/* <Stack direction="row">
+                        <Box w="50%">
+                            <Text>NUIT</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text>{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack> */}
 
-        <Stack direction="row">
-            <Box w="50%">
-                <Text
+                    <Box
+                        style={{
+                            paddingVertical: 20,
+                        }}
+                    > 
+
+
+                    </Box>
+                    <Text
+                        style={{
+                            color: COLORS.black,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingBottom: 5,
+                        }}
+                    >Contacto Actual</Text>
+
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Nome do Presidente</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{newDataObject?.fullname ? newDataObject?.fullname : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Número de telemóvel</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{newDataObject?.phone ? newDataObject?.phone : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
+                    {/* <Stack direction="row">
+                        <Box w="50%">
+                            <Text>NUIT</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text>{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack> */}
+                </Box>
+            }
+
+
+
+            {/* Institutions data updating  */}
+
+            {  (dataToBeUpdated === 'institutionManager' &&  resourceName === 'Institution') &&        
+                <Box
                     style={{
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingTop: 2,
-                    }}            
-                >Cajueiros</Text>
-            </Box>
-            <Box w="50%">
-                <Text
-                    style={{
-                        fontFamily: 'JosefinSans-Regular',
-                        paddingTop: 2,
-                    }}            
-                >{oldDataObject.trees ? `${oldDataObject.trees} árvores` : 'Nenhum'}</Text>
-            </Box>
-        </Stack>
-   
-        {/* <Stack direction="row"> */}
-            {/* <Box w="10%"> */}
-               {/* <Text></Text> */}
-            {/* </Box> */}
-            {/* <Box w="90%"> */}
-               { 
-            //    oldDataObject.sameTypeTrees?.map(same=>(
-            //         <Stack key={same.treeType} direction="row">
-            //             <Box w="60%">
-            //                 <Text><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
-            //             </Box>
-            //             <Box w="40%">
-            //                 <Text>{same?.trees} árvores</Text>
-            //             </Box>   
-            //         </Stack>
-            //    )
-            //    )
-                }
-            {/* </Box> */}
-        {/* </Stack> */}
-        <Box
-            style={{
-                paddingVertical: 20,
-            }}
-        > 
-    
-    
-        </Box>
-        <Text
-            style={{
-                color: COLORS.black,
-                fontSize: 16,
-                fontFamily: 'JosefinSans-Bold',
-                paddingBottom: 5,
-            }}
-        >
-            Dados Actuais do Parcela
-        </Text>
-        <Stack direction="row">
-            <Box w="50%">
-                <Text
-                    style={{
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingTop: 2,
+                        paddingVertical: 30,
+                        // alignItems: 'center',
                     }}
-                >Ano de plantio</Text>
-            </Box>
-            <Box w="50%">
-               <Text
-                    style={{
-                        fontFamily: 'JosefinSans-Regular',
-                        paddingTop: 2,
-                    }}
-               >{newDataObject?.plantingYear}</Text>
-            </Box>
-        </Stack>
-        <Stack direction="row">
-            <Box w="50%">
-                <Text
-                    style={{
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingTop: 2,
-                    }}
-                >Área aproveitada</Text>
-            </Box>
-            <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}
-            >{newDataObject?.usedArea ? `${newDataObject?.usedArea} hectares` : 'Nenhum'}</Text>
-            </Box>
-        </Stack>
-        <Stack direction="row">
-            <Box w="50%">
-                <Text
-                    style={{
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingTop: 2,
-                    }}
-                >Compasso</Text>
-            </Box>
-            <Box w="50%">
-                <Text
-                    style={{
-                        fontFamily: 'JosefinSans-Regular',
-                        paddingTop: 2,
-                    }}        
                 >
-                    {newDataObject.density?.mode ? newDataObject.density.mode : 'Nenhum'}
-                    {newDataObject.density?.mode === 'Regular' && `(${newDataObject.density?.width} x ${newDataObject.density?.length} metros)`}
-                </Text>
-            </Box>
-        </Stack>
+                    <Text
+                        style={{
+                            color: COLORS.black,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingBottom: 5,
+                        }}
+                    >Contacto Anterior</Text>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Nome do Responsável</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{oldDataObject?.fullname ? oldDataObject?.fullname : 'Nenhum' }</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Número de telemóvel</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{oldDataObject?.phone ? oldDataObject?.phone : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
+                    {/* <Stack direction="row">
+                        <Box w="50%">
+                            <Text>NUIT</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text>{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack> */}
 
-        {/* <Stack direction="row">
-            <Box w="50%"
-                style={{
-                    justifyContent: 'center',
-                }}
-            >
-                <Text>Tipos de plantas</Text>
-            </Box>
-            <Box w="50%">
-               <Text>{newDataObject?.plantTypes.plantType?.join('; ')}</Text>
-               { newDataObject?.plantTypes.clones?.length > 0 &&
-                <Text>Clones: {newDataObject?.plantTypes.clones?.join('; ')}</Text>
-               }
-            </Box>
-        </Stack> */}
-
-
-        <Stack direction="row">
-            <Box w="50%">
-                <Text
-                    style={{
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingTop: 2,
-                    }}            
-                >Cajueiros</Text>
-            </Box>
-            <Box w="50%">
-                <Text
-                    style={{
-                        fontFamily: 'JosefinSans-Regular',
-                        paddingTop: 2,
-                    }}            
-                >{newDataObject.trees ? `${newDataObject.trees} árvores` : 'Nenhum'}</Text>
-            </Box>
-        </Stack>
-        {/* <Stack direction="row"> */}
-            {/* <Box w="10%"> */}
-               {/* <Text></Text> */}
-            {/* </Box> */}
-            {/* <Box w="90%"> */}
-               { 
-            //    newDataObject.sameTypeTrees?.map(same=>(
-            //         <Stack key={same.treeType} direction="row">
-            //             <Box w="60%">
-            //                 <Text><Icon name="arrow-forward" color={COLORS.grey} size={10} /> {same?.treeType}</Text>
-            //             </Box>
-            //             <Box w="40%">
-            //                 <Text>{same?.trees} árvores</Text>
-            //             </Box>   
-            //         </Stack>
-            //    )
-            //    )
-                }
-            {/* </Box> */}
-        {/* </Stack> */}
-        </Box>
-        
-    }
+                    <Box
+                        style={{
+                            paddingVertical: 20,
+                        }}
+                    > 
 
 
-{/* farmland data updating */}
-
-{
-     (dataToBeUpdated === 'farmlandMainData' && resourceName === 'Farmland') &&
-     <Box
-     style={{
-         paddingVertical: 30,
-         // alignItems: 'center',
-     }}
-     >
-     <Text
-         style={{
-             color: COLORS.black,
-             fontSize: 16,
-             fontFamily: 'JosefinSans-Bold',
-             paddingBottom: 5,
-         }}
-     >
-         Dados Anteriores do Pomar
-     </Text>
-     <Stack direction="row">
-         <Box w="50%">
-             <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}         
-             >Descrição</Text>
-         </Box>
-         <Box w="50%">
-             <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}             
-             >{oldDataObject?.description ? oldDataObject?.description : 'Nenhuma' }</Text>
-         </Box>
-     </Stack>
-     <Stack direction="row">
-         <Box w="50%">
-             <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}             
-             >Culturas consociadas</Text>
-         </Box>
-         <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{oldDataObject?.consociatedCrops?.length > 0 ? oldDataObject?.consociatedCrops?.join('; ') : 'Nenhuma'}</Text>
-         </Box>
-     </Stack>
-     <Stack direction="row">
-         <Box w="50%">
-             <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}             
-             >Área total</Text>
-         </Box>
-         <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{oldDataObject?.totalArea ? oldDataObject?.totalArea : 'Nenhuma'}</Text>
-         </Box>
-     </Stack>
-     <Stack direction="row">
-         <Box w="50%">
-             <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}             
-             >N° de cajueiros</Text>
-         </Box>
-         <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{oldDataObject?.trees ? oldDataObject?.trees : 'Nenhum'}</Text>
-         </Box>
-     </Stack>
-
-     <Box
-         style={{
-             paddingVertical: 20,
-         }}
-     > 
- 
- 
-     </Box>
-     <Text
-         style={{
-             color: COLORS.black,
-             fontSize: 16,
-             fontFamily: 'JosefinSans-Bold',
-             paddingBottom: 5,
-         }}
-     >
-         Dados Actuais do Pomar
-     </Text>
- 
-     <Stack direction="row">
-         <Box w="50%">
-             <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}             
-             >Descrição</Text>
-         </Box>
-         <Box w="50%">
-             <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}             
-             >{newDataObject?.description ? newDataObject?.description : 'Nenhuma' }</Text>
-         </Box>
-     </Stack>
-     <Stack direction="row">
-         <Box w="50%">
-             <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}             
-             >Culturas consociadas</Text>
-         </Box>
-         <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{newDataObject?.consociatedCrops?.length > 0 ? newDataObject?.consociatedCrops?.join('; ') : 'Nenhuma'}</Text>
-         </Box>
-     </Stack>
-     <Stack direction="row">
-         <Box w="50%">
-             <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}             
-             >Área total</Text>
-         </Box>
-         <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{newDataObject?.totalArea ? newDataObject?.totalArea : 'Nenhuma'}</Text>
-         </Box>
-     </Stack>
-     <Stack direction="row">
-         <Box w="50%">
-             <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}             
-             >N° de cajueiros</Text>
-         </Box>
-         <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{newDataObject?.trees ? newDataObject?.trees : 'Nenhum'}</Text>
-         </Box>
-     </Stack> 
-     </Box>
-}
-
-
-
-        {/* groups data updating  */}
-
-{
-    (dataToBeUpdated === 'groupType' && resourceName === 'Group') &&
-
-    <Box
-    style={{
-        paddingVertical: 30,
-        // alignItems: 'center',
-    }}
-    >
-    <Text
-        style={{
-            color: COLORS.black,
-            fontSize: 16,
-            fontFamily: 'JosefinSans-Bold',
-            paddingBottom: 5,
-        }}
-    >
-        Tipo de Organização Anterior
-    </Text>
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >Nome</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{oldDataObject?.name ? oldDataObject?.name : 'Nenhum' }</Text>
-        </Box>
-    </Stack>
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >Tipo</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{oldDataObject?.type ? oldDataObject?.type : 'Nenhum'}</Text>
-        </Box>
-    </Stack>
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >Finalidade</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{oldDataObject?.goals?.length > 0 ? oldDataObject?.goals?.join('; ') : 'Nenhuma'}</Text>
-        </Box>
-    </Stack>
-
-    <Box
-        style={{
-            paddingVertical: 20,
-        }}
-    > 
-
-
-    </Box>
-    <Text
-        style={{
-            color: COLORS.black,
-            fontSize: 16,
-            fontFamily: 'JosefinSans-Bold',
-            paddingBottom: 5,
-        }}
-    >
-        Tipo de Organização Actual
-    </Text>
-
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >Nome</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{newDataObject?.name ? newDataObject?.name : 'Nenhum' }</Text>
-        </Box>
-    </Stack>
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >Tipo</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{newDataObject?.type ? newDataObject?.type : 'Nenhum'}</Text>
-        </Box>
-    </Stack>
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >Finalidade</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{newDataObject?.goals?.length > 0 ? newDataObject?.goals?.join('; ') : 'Nenhuma'}</Text>
-        </Box>
-    </Stack>
-
-    </Box>
-
-}
-
-
-
-{
-    (dataToBeUpdated === 'groupIdentity' &&  resourceName === 'Group') && 
-    <Box
-    style={{
-        paddingVertical: 30,
-        // alignItems: 'center',
-    }}
-    >
-    <Text
-        style={{
-            color: COLORS.black,
-            fontSize: 16,
-            fontFamily: 'JosefinSans-Bold',
-            paddingBottom: 5,
-        }}
-    >
-        Identidade Anterior
-    </Text>
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >Situação Legal</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{oldDataObject?.legalStatus ? oldDataObject?.legalStatus : 'Nenhum' }</Text>
-        </Box>
-    </Stack>
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >Ano de Criação</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{oldDataObject?.creationYear ? oldDataObject?.creationYear : 'Nenhum'}</Text>
-        </Box>
-    </Stack>
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >Ano de Legalização</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{oldDataObject?.affiliationYear ? oldDataObject?.affiliationYear : 'Nenhum'}</Text>
-        </Box>
-    </Stack>
-
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >NUIT</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
-        </Box>
-    </Stack>
-
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >Alvará</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            
-            >{oldDataObject?.licence ? oldDataObject?.licence : 'Nenhum'}</Text>
-        </Box>
-    </Stack>
-
-
-    <Box
-        style={{
-            paddingVertical: 20,
-        }}
-    > 
-
-
-    </Box>
-    <Text
-        style={{
-            color: COLORS.black,
-            fontSize: 16,
-            fontFamily: 'JosefinSans-Bold',
-            paddingBottom: 5,
-        }}
-    >
-        Identidade Actual
-    </Text>
-
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >Situação Legal</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{newDataObject?.legalStatus ? newDataObject?.legalStatus : 'Nenhum' }</Text>
-        </Box>
-    </Stack>
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >Ano de Criação</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{newDataObject?.creationYear ? newDataObject?.creationYear : 'Nenhum'}</Text>
-        </Box>
-    </Stack>
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >Ano de Legalização</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{newDataObject?.affiliationYear ? newDataObject?.affiliationYear : 'Nenhum'}</Text>
-        </Box>
-    </Stack>
-
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >NUIT</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{newDataObject?.nuit ? newDataObject.nuit : 'Nenhum'}</Text>
-        </Box>
-    </Stack>
-
-    <Stack direction="row">
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Bold',
-                    paddingTop: 2,
-                }}            
-            >Alvará</Text>
-        </Box>
-        <Box w="50%">
-            <Text
-                style={{
-                    fontFamily: 'JosefinSans-Regular',
-                    paddingTop: 2,
-                }}            
-            >{newDataObject?.licence ? newDataObject?.licence : 'Nenhum'}</Text>
-        </Box>
-    </Stack>
-    </Box>
-}
-
-
-        {  (dataToBeUpdated === 'groupMembers' &&  resourceName === 'Group') &&        
-            <Box
-                style={{
-                    paddingVertical: 30,
-                    // alignItems: 'center',
-                }}
-            >
-                <Text
-                    style={{
-                        color: COLORS.black,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingBottom: 5,
-                    }}
-                >Efectividade Anterior</Text>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Modo de Funcionamento</Text>
                     </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{oldDataObject?.operationalStatus ? 'Activo' : 'Inactivo' }</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Total de Membros</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{oldDataObject?.total ? oldDataObject?.total : 0}</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Total de Mulheres </Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{oldDataObject?.women ? oldDataObject?.women : 0}</Text>
-                    </Box>
-                </Stack>
+                    <Text
+                        style={{
+                            color: COLORS.black,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingBottom: 5,
+                        }}
+                    >Contacto Actual</Text>
 
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Nome do Responsável</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{newDataObject?.fullname ? newDataObject?.fullname : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Número de telemóvel</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{newDataObject?.phone ? newDataObject?.phone : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
+                    {/* <Stack direction="row">
+                        <Box w="50%">
+                            <Text>NUIT</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text>{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack> */}
+                </Box>
+            }
+
+
+
+
+            {  (dataToBeUpdated === 'institutionDocument' &&  resourceName === 'Institution') &&        
                 <Box
                     style={{
-                        paddingVertical: 20,
+                        paddingVertical: 30,
+                        // alignItems: 'center',
                     }}
-                > 
+                >
+                    <Text
+                        style={{
+                            color: COLORS.black,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingBottom: 5,
+                        }}
+                    >Documentação Anterior</Text>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >NUIT da instituição</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum' }</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Número do alvará</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{oldDataObject?.licence ? oldDataObject?.licence : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
+                    {/* <Stack direction="row">
+                        <Box w="50%">
+                            <Text>NUIT</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text>{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack> */}
+
+                    <Box
+                        style={{
+                            paddingVertical: 20,
+                        }}
+                    > 
 
 
+                    </Box>
+                    <Text
+                        style={{
+                            color: COLORS.black,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingBottom: 5,
+                        }}
+                    >Documentação Actual</Text>
+
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >NUIT da instituição</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Número do alvará</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{newDataObject?.licence ? newDataObject?.licence : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
+                    {/* <Stack direction="row">
+                        <Box w="50%">
+                            <Text>NUIT</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text>{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack> */}
                 </Box>
-                <Text
-                    style={{
-                        color: COLORS.black,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingBottom: 5,
-                    }}
-                >Efectividade Actual</Text>
-
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Modo de Funcionamento</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{newDataObject?.operationalStatus ? 'Activo' : 'Inactivo'}</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Total de Membros</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{newDataObject?.total ? newDataObject?.total : 0}</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Total de Mulheres</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{newDataObject?.women ? newDataObject?.women : 0}</Text>
-                    </Box>
-                </Stack>
-            </Box>
-        }
+            }
 
 
 
 
-        {  (dataToBeUpdated === 'groupManager' &&  resourceName === 'Group') &&        
-            <Box
-                style={{
-                    paddingVertical: 30,
-                    // alignItems: 'center',
-                }}
-            >
-                <Text
-                    style={{
-                        color: COLORS.black,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingBottom: 5,
-                    }}
-                >Contacto Anterior</Text>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Nome do Presidente</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{oldDataObject?.fullname ? oldDataObject?.fullname : 'Nenhum' }</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Número de telemóvel</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{oldDataObject?.phone ? oldDataObject?.phone : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-                {/* <Stack direction="row">
-                    <Box w="50%">
-                        <Text>NUIT</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text>{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
-                    </Box>
-                </Stack> */}
-
+            {  (dataToBeUpdated === 'idDocument' &&  resourceName === 'Farmer') &&        
                 <Box
                     style={{
-                        paddingVertical: 20,
+                        paddingVertical: 30,
+                        // alignItems: 'center',
                     }}
-                > 
+                >
+                    <Text
+                        style={{
+                            color: COLORS.black,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingBottom: 5,
+                        }}
+                    >Documentos de Identificação Anteriores</Text>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Tipo do documento</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{oldDataObject?.docType ? oldDataObject?.docType : 'Nenhum' }</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Número do documento</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{oldDataObject?.docNumber ? oldDataObject?.docNumber : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >NUIT</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
+
+                    <Box
+                        style={{
+                            paddingVertical: 20,
+                        }}
+                    > 
 
 
+                    </Box>
+                    <Text
+                        style={{
+                            color: COLORS.black,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingBottom: 5,
+                        }}
+                    >Documentos de Identificação Actuais</Text>
+
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Tipo do documento</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{newDataObject?.docType ? newDataObject?.docType : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Número do documento</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{newDataObject?.docNumber ? newDataObject?.docNumber : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >NUIT</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
                 </Box>
-                <Text
-                    style={{
-                        color: COLORS.black,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingBottom: 5,
-                    }}
-                >Contacto Actual</Text>
-
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Nome do Presidente</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{newDataObject?.fullname ? newDataObject?.fullname : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Número de telemóvel</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{newDataObject?.phone ? newDataObject?.phone : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-                {/* <Stack direction="row">
-                    <Box w="50%">
-                        <Text>NUIT</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text>{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
-                    </Box>
-                </Stack> */}
-            </Box>
-        }
+            }
 
 
 
-        {/* Institutions data updating  */}
-
-        {  (dataToBeUpdated === 'institutionManager' &&  resourceName === 'Institution') &&        
-            <Box
-                style={{
-                    paddingVertical: 30,
-                    // alignItems: 'center',
-                }}
-            >
-                <Text
-                    style={{
-                        color: COLORS.black,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingBottom: 5,
-                    }}
-                >Contacto Anterior</Text>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Nome do Responsável</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{oldDataObject?.fullname ? oldDataObject?.fullname : 'Nenhum' }</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Número de telemóvel</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{oldDataObject?.phone ? oldDataObject?.phone : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-                {/* <Stack direction="row">
-                    <Box w="50%">
-                        <Text>NUIT</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text>{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
-                    </Box>
-                </Stack> */}
-
+            {  (dataToBeUpdated === 'contact' &&  resourceName === 'Farmer') &&        
                 <Box
                     style={{
-                        paddingVertical: 20,
+                        paddingVertical: 30,
+                        // alignItems: 'center',
                     }}
-                > 
+                >
+                    <Text
+                        style={{
+                            color: COLORS.black,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingBottom: 5,
+                        }}
+                    >Contacto Anterior</Text>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Telemóvel principal</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{oldDataObject?.primaryPhone ? oldDataObject?.primaryPhone : 'Nenhum' }</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Telemóvel alternativo</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{oldDataObject?.secondaryPhone ? oldDataObject?.secondaryPhone : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
 
+                    <Box
+                        style={{
+                            paddingVertical: 20,
+                        }}
+                    > 
+                    </Box>
+                    <Text
+                        style={{
+                            color: COLORS.black,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingBottom: 5,
+                        }}
+                    >Contacto Actual</Text>
 
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Telemóvel principal</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{newDataObject?.primaryPhone ? newDataObject?.primaryPhone : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Telemóvel alternativo</Text>
+                        </Box>
+                        <Box w="50%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{newDataObject?.secondaryPhone ? newDataObject?.secondaryPhone : 'Nenhum'}</Text>
+                        </Box>
+                    </Stack>
                 </Box>
-                <Text
-                    style={{
-                        color: COLORS.black,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingBottom: 5,
-                    }}
-                >Contacto Actual</Text>
-
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Nome do Responsável</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{newDataObject?.fullname ? newDataObject?.fullname : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Número de telemóvel</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{newDataObject?.phone ? newDataObject?.phone : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-                {/* <Stack direction="row">
-                    <Box w="50%">
-                        <Text>NUIT</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text>{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
-                    </Box>
-                </Stack> */}
-            </Box>
-        }
+            }
 
 
 
-
-        {  (dataToBeUpdated === 'institutionDocument' &&  resourceName === 'Institution') &&        
-            <Box
-                style={{
-                    paddingVertical: 30,
-                    // alignItems: 'center',
-                }}
-            >
-                <Text
-                    style={{
-                        color: COLORS.black,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingBottom: 5,
-                    }}
-                >Documentação Anterior</Text>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >NUIT da instituição</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum' }</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Número do alvará</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{oldDataObject?.licence ? oldDataObject?.licence : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-                {/* <Stack direction="row">
-                    <Box w="50%">
-                        <Text>NUIT</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text>{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
-                    </Box>
-                </Stack> */}
-
+            {  (dataToBeUpdated === 'address' &&  resourceName === 'Farmer') &&        
                 <Box
                     style={{
-                        paddingVertical: 20,
+                        paddingVertical: 30,
+                        // alignItems: 'center',
                     }}
-                > 
+                >
+                    <Text
+                        style={{
+                            color: COLORS.black,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingBottom: 5,
+                        }}
+                    >Endereço Anterior</Text>
+                    <Stack direction="row">
+                        <Box w="40%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Posto Admin.</Text>
+                        </Box>
+                        <Box w="60%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{oldDataObject?.adminPost}</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="40%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}            
+                            >Localidade</Text>
+                        </Box>
+                        <Box w="60%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}        
+                            >{oldDataObject?.village}</Text>
+                        </Box>
+                    </Stack>
+
+                    <Box
+                        style={{
+                            paddingVertical: 20,
+                        }}
+                    > 
 
 
+                    </Box>
+                    <Text
+                        style={{
+                            color: COLORS.black,
+                            fontSize: 16,
+                            fontFamily: 'JosefinSans-Bold',
+                            paddingBottom: 5,
+                        }}
+                    >Endereço Actual</Text>
+
+                    <Stack direction="row">
+                        <Box w="40%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}                
+                            >Posto Admin.</Text>
+                        </Box>
+                        <Box w="60%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}            
+                            >{newDataObject?.adminPost}</Text>
+                        </Box>
+                    </Stack>
+                    <Stack direction="row">
+                        <Box w="40%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Bold',
+                                    paddingTop: 2,
+                                }}                    
+                            >Localidade</Text>
+                        </Box>
+                        <Box w="60%">
+                            <Text
+                                style={{
+                                    fontFamily: 'JosefinSans-Regular',
+                                    paddingTop: 2,
+                                }}
+                            >{newDataObject?.village ? newDataObject?.village : 'Não Aplicável?'}</Text>
+                        </Box>
+                    </Stack>
                 </Box>
-                <Text
-                    style={{
-                        color: COLORS.black,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingBottom: 5,
-                    }}
-                >Documentação Actual</Text>
-
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >NUIT da instituição</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Número do alvará</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{newDataObject?.licence ? newDataObject?.licence : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-                {/* <Stack direction="row">
-                    <Box w="50%">
-                        <Text>NUIT</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text>{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
-                    </Box>
-                </Stack> */}
-            </Box>
-        }
-
-
-
-
-        {  (dataToBeUpdated === 'idDocument' &&  resourceName === 'Farmer') &&        
-            <Box
-                style={{
-                    paddingVertical: 30,
-                    // alignItems: 'center',
+            }
+            </View>
+            <Button
+                title="Actualizar"
+                titleStyle={{
+                    color: COLORS.ghostwhite,
+                    fontFamily: 'JosefinSans-Bold',
                 }}
-            >
-                <Text
-                    style={{
-                        color: COLORS.black,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingBottom: 5,
-                    }}
-                >Documentos de Identificação Anteriores</Text>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Tipo do documento</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{oldDataObject?.docType ? oldDataObject?.docType : 'Nenhum' }</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Número do documento</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{oldDataObject?.docNumber ? oldDataObject?.docNumber : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >NUIT</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{oldDataObject?.nuit ? oldDataObject?.nuit : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-
-                <Box
-                    style={{
-                        paddingVertical: 20,
-                    }}
-                > 
-
-
-                </Box>
-                <Text
-                    style={{
-                        color: COLORS.black,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingBottom: 5,
-                    }}
-                >Documentos de Identificação Actuais</Text>
-
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Tipo do documento</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{newDataObject?.docType ? newDataObject?.docType : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Número do documento</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{newDataObject?.docNumber ? newDataObject?.docNumber : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >NUIT</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{newDataObject?.nuit ? newDataObject?.nuit : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-            </Box>
-        }
-
-
-
-        {  (dataToBeUpdated === 'contact' &&  resourceName === 'Farmer') &&        
-            <Box
-                style={{
-                    paddingVertical: 30,
-                    // alignItems: 'center',
+                iconPosition="right"
+                containerStyle={{
+                    backgroundColor: COLORS.pantone,
+                    borderRadius: 10,
+                    // color: COLORS.ghostwhite,
                 }}
-            >
-                <Text
-                    style={{
-                        color: COLORS.black,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingBottom: 5,
-                    }}
-                >Contacto Anterior</Text>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Telemóvel principal</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{oldDataObject?.primaryPhone ? oldDataObject?.primaryPhone : 'Nenhum' }</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Telemóvel alternativo</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{oldDataObject?.secondaryPhone ? oldDataObject?.secondaryPhone : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
+                type="outline"
+                onPress={()=>{
 
-                <Box
-                    style={{
-                        paddingVertical: 20,
-                    }}
-                > 
-                </Box>
-                <Text
-                    style={{
-                        color: COLORS.black,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingBottom: 5,
-                    }}
-                >Contacto Actual</Text>
-
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Telemóvel principal</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{newDataObject?.primaryPhone ? newDataObject?.primaryPhone : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Telemóvel alternativo</Text>
-                    </Box>
-                    <Box w="50%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{newDataObject?.secondaryPhone ? newDataObject?.secondaryPhone : 'Nenhum'}</Text>
-                    </Box>
-                </Stack>
-            </Box>
-        }
-
-
-
-        {  (dataToBeUpdated === 'address' &&  resourceName === 'Farmer') &&        
-            <Box
-                style={{
-                    paddingVertical: 30,
-                    // alignItems: 'center',
+                    try {
+                        onUpdateData(resource, newDataObject, realm, dataToBeUpdated, resourceName);
+                    } catch (error) {
+                        console.log('Could not update data', { cause: error })
+                        
+                    }
+                    finally{
+                        setIsConfirmDataVisible(false);
+                    }
                 }}
-            >
-                <Text
-                    style={{
-                        color: COLORS.black,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingBottom: 5,
-                    }}
-                >Endereço Anterior</Text>
-                <Stack direction="row">
-                    <Box w="40%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Posto Admin.</Text>
-                    </Box>
-                    <Box w="60%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{oldDataObject?.adminPost}</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="40%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}            
-                        >Localidade</Text>
-                    </Box>
-                    <Box w="60%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}        
-                        >{oldDataObject?.village}</Text>
-                    </Box>
-                </Stack>
-
-                <Box
-                    style={{
-                        paddingVertical: 20,
-                    }}
-                > 
-
-
-                </Box>
-                <Text
-                    style={{
-                        color: COLORS.black,
-                        fontSize: 16,
-                        fontFamily: 'JosefinSans-Bold',
-                        paddingBottom: 5,
-                    }}
-                >Endereço Actual</Text>
-
-                <Stack direction="row">
-                    <Box w="40%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}                
-                        >Posto Admin.</Text>
-                    </Box>
-                    <Box w="60%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}            
-                        >{newDataObject?.adminPost}</Text>
-                    </Box>
-                </Stack>
-                <Stack direction="row">
-                    <Box w="40%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Bold',
-                                paddingTop: 2,
-                            }}                    
-                        >Localidade</Text>
-                    </Box>
-                    <Box w="60%">
-                        <Text
-                            style={{
-                                fontFamily: 'JosefinSans-Regular',
-                                paddingTop: 2,
-                            }}
-                        >{newDataObject?.village}</Text>
-                    </Box>
-                </Stack>
-            </Box>
-        }
+            />
         </View>
-        <Button
-            title="Actualizar"
-            titleStyle={{
-                color: COLORS.ghostwhite,
-                fontFamily: 'JosefinSans-Bold',
-            }}
-            iconPosition="right"
-            containerStyle={{
-                backgroundColor: COLORS.pantone,
-                borderRadius: 10,
-                // color: COLORS.ghostwhite,
-            }}
-            type="outline"
-            onPress={()=>{
+    </Modal>
+    { successLottieVisible &&   
+        <SuccessLottie 
+            successLottieVisible={successLottieVisible} 
+            setSuccessLottieVisible={setSuccessLottieVisible} 
+        />      
+    }
 
-                try {
-                    onUpdateData(resource, newDataObject, realm, dataToBeUpdated, resourceName);
-                } catch (error) {
-                    console.log('Could not update data', { cause: error })
-                    
-                }
-                finally{
-                    setIsConfirmDataVisible(false);
-                    
-                    // checkAreasConformity(farmland);
-                    // toggleOverlay();
-                    // setIsOverlayVisible(false);
-                }
-            }}
-        />
-    </ScrollView>
-    </Overlay>
+    </View>
 
     )
 }

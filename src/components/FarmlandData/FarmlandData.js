@@ -1,5 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, TextInput, ScrollView, SafeAreaView, FlatList, TouchableHighlight, DynamicColorIOS } from 'react-native';
+import React, { useState, useEffect, useCallback, useRef, } from 'react';
+import { 
+    View, Text, TouchableOpacity, TextInput, ScrollView, 
+    SafeAreaView, Animated, Easing, useNativeDriver,
+} from 'react-native';
 import { Box,  FormControl, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
 import { Avatar, Divider, Icon, Tooltip } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
@@ -32,13 +35,15 @@ import EditFarmlandData from '../EditData/EditFarmlandData';
 import { roles } from '../../consts/roles';
 import { errorMessages } from '../../consts/errorMessages';
 import validateInvalidationMessage from '../../helpers/validateInvalidationMessage';
-import ConfirmData from '../EditData/ConfirmData';
+import ConfirmData from '../EditData/ConfirmDataCopy';
 
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 import { normalizeBlockList } from '../../helpers/normalizeBlockList';
 import NewFarmlandBlock from '../FarmlandBlockRegistration/NewFarmlandBlock';
 import { getPlantingYears } from '../../helpers/getPlantingYears';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCrop, faEllipsisVertical, faTree } from '@fortawesome/free-solid-svg-icons';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const farmlandResourceMessage = 'farmlandResourceMessage';
@@ -48,6 +53,8 @@ const FarmlandData = ({
     farmland, setRefresh, refresh,
     setSuccessLottieVisible,  successLottieVisible,
     ownerImage,
+    // scale, resizeBox,
+    
  })=>{
 
 
@@ -56,9 +63,10 @@ const FarmlandData = ({
     const customUserData = user?.customData;
     const invalidationMotives = realm.objects('InvalidationMotive').filtered(`resourceId == "${farmland?._id}"`);
 
-    const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+    // const scaleBlockBox = useRef(new Animated.Value(0)).current
+    const [presentEditFarmland, setPresentEditFarmland] = useState(false);
     const [autoRefresh, setAutoRefresh] = useState(false);
-    const [isCollapseOn, setIsCallapseOne] = useState(false);
+    const [isCollapseOn, setIsCallapseOn] = useState(false);
 
     const navigation = useNavigation();
     
@@ -231,18 +239,17 @@ const FarmlandData = ({
     }, [ realm, user, message, invalidationMotives, autoRefresh, isCollapseOn, isNewBlockVisible ]);
 
     
-    // const getPlantingYears = (blocks)=>{
-    //     if (blocks?.length > 0) {
-    //         return blocks?.map(block=>{
-    //                 return block.plantingYear
-    //             }).join("; ")
-    //     }
-    //     else {
-    //         return 'Desconhecido';
-    //     }
+
+    // const resizeBlockBox = (to)=>{
+    //     to === 1 && setIsNewBlockVisible(true);
+    //     Animated.timing(scaleBlockBox, {
+    //         toValue: to,
+    //         useNativeDriver: true,
+    //         duration: 400,
+    //         easing: Easing.linear,
+    //     }).start(()=>to === 0 && setIsNewBlockVisible(false))
     // }
 
-    
 
 
     return (
@@ -353,41 +360,110 @@ const FarmlandData = ({
     >
         <CollapseHeader
             style={{                     
-                height: hp('10%'),
-                paddingTop: 14,
+                height: 100,
+                padding: 14,
+                borderRadius: 8,
                 backgroundColor: COLORS.mediumseagreen,
-                paddingHorizontal: 10,
+                // paddingHorizontal: 10,
+                justifyContent: 'space-between',
             }}
             onToggle={(isOn)=>{
-                setIsCallapseOne(isOn)
+                setIsCallapseOn(isOn)
                 setRefresh(!isOn);
             }}
         >
             <View
                 style={{
-                }}
+                    flexDirection: 'row',
+                }}            
             >
-                <Text
-                    style={{ 
-                        fontSize: responsiveFontSize(2), 
-                        color: COLORS.ghostwhite,
-                        fontFamily: 'JosefinSans-Bold',
+                <View
+                    style={{
+                        width: '90%',
+                    }}                
+                >
+                    <Text
+                        style={{ 
+                            fontSize: 18, 
+                            color: COLORS.ghostwhite,
+                            fontFamily: 'JosefinSans-Bold',
+    
+                        }}
+                        >
+                        Anos de Plantio : [{getPlantingYears(farmland?.blocks)}]
+                    </Text>
+                </View>
+                {/* <TouchableOpacity
+                    style={{
+                        width: '10%',
+                    }} 
+                    disabled={farmland?.status === resourceValidation.status.validated ? true : false}
+                    onPress={
+                        ()=>{
+                            setPresentEditFarmland(true);
+                            // resizeBox(1);
+                            setDataToBeUpdated('farmlandMainData');
+                            setBlockId(''); // remove the blockId to avoid confusion in the overlay component
+                        }
+                    }               
+                >
+                    <FontAwesomeIcon icon={faEllipsisVertical} size={25} color={COLORS.ghostwhite} />                    
+                </TouchableOpacity> */}
 
+            </View>
+
+                <View
+                    style={{
+                        flexDirection: 'row',
                     }}
                     >
-                    Anos de Plantio : [{getPlantingYears(farmland?.blocks)}]
-                </Text>
-                <Text
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '50%',
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faTree} size={25} color={COLORS.ghostwhite} />
+                        <Text
+                            style={{ 
+                                fontSize: 14, 
+                                color: COLORS.ghostwhite,
+                                fontFamily: 'JosefinSans-Bold',
+        
+                            }}            
+                        >{'   '}{farmland?.trees} árvores</Text>
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '50%',
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faCrop} size={25} color={COLORS.ghostwhite} />
+                        <Text
+                            style={{ 
+                                fontSize: 14, 
+                                color: COLORS.ghostwhite,
+                                fontFamily: 'JosefinSans-Bold',
+        
+                            }}                 
+                        >{'   '}{farmland?.totalArea.toFixed(1)} hectares</Text>
+                    </View>
+                </View>
+                {/* <Text
                     style={{ 
-                        fontSize: responsiveFontSize(1.6), 
+                        fontSize: 12, 
                         color: COLORS.ghostwhite,
                         fontFamily: 'JosefinSans-Bold',
                         textAlign: 'right',
                     }}
                     >
-                    {/* {(new Date().getFullYear() - farmland?.plantingYear) < 3 ? 'Parcela Nova' : 'Parcela Estabelecida'} */}
-                </Text>
-            </View>
+                    {farmland?.description}
+                </Text> */}
         </CollapseHeader>
         <CollapseBody>
         <View
@@ -396,6 +472,7 @@ const FarmlandData = ({
                 padding: 10,
                 borderColor: COLORS.mediumseagreen,
                 shadowColor: COLORS.mediumseagreen,
+                backgroundColor: COLORS.ghostwhite,
                 shadowOffset: {
                   width: 0,
                   height: 3,
@@ -438,7 +515,7 @@ const FarmlandData = ({
         <Stack w="100%" direction="column" py="4">
             <Stack direction="row" mt="5">
                 <Box w="90%">
-                    <Text
+                    {/* <Text
                         style={{
                             color: COLORS.black,
                             fontSize: responsiveFontSize(2),
@@ -447,7 +524,7 @@ const FarmlandData = ({
                         }}
                     >
                         Dados do Pomar
-                    </Text>
+                    </Text> */}
                 </Box>
                 {/* <Box w="25%">
                 
@@ -456,11 +533,10 @@ const FarmlandData = ({
             {   customUserData?.role !== roles.provincialManager &&             
                 <TouchableOpacity
                     disabled={farmland?.status === resourceValidation.status.validated ? true : false}
-                    style={{
-                    }}
                     onPress={
                         ()=>{
-                            setIsOverlayVisible(!isOverlayVisible);
+                            setPresentEditFarmland(true);
+                            // resizeBox(1);
                             setDataToBeUpdated('farmlandMainData');
                             setBlockId(''); // remove the blockId to avoid confusion in the overlay component
                         }
@@ -478,7 +554,7 @@ const FarmlandData = ({
             </Stack>
 
         <Stack w="100%" direction="row">
-                <Box w="40%" >
+                {/* <Box w="40%" >
                     <Text
                         style={{
                             color: COLORS.grey,
@@ -503,7 +579,7 @@ const FarmlandData = ({
                     >
                         {farmland?.description}
                     </Text>
-                </Box>
+                </Box> */}
             </Stack>
             <Stack w="100%" direction="row">
                 <Box w="40%" >
@@ -533,7 +609,7 @@ const FarmlandData = ({
 
 
             <Stack w="100%" direction="row">
-                <Box w="40%" >
+                {/* <Box w="40%" >
                     <Text
                         style={{
                             color: COLORS.grey,
@@ -555,11 +631,11 @@ const FarmlandData = ({
                         >
                         {farmland?.totalArea} hectares
                     </Text>
-                </Box>
+                </Box> */}
             </Stack>
 
             <Stack w="100%" direction="row">
-                <Box w="40%" >
+                {/* <Box w="40%" >
                     <Text
                         style={{
                             color: COLORS.grey,
@@ -581,7 +657,7 @@ const FarmlandData = ({
                         >
                         {farmland?.trees} árvores
                     </Text>
-                </Box>
+                </Box> */}
             </Stack>
         </Stack>
         <CustomDivider />
@@ -882,7 +958,8 @@ const FarmlandData = ({
             onPress={()=>{
                 if (farmland){
                     // make the block data form visible
-                    setIsNewBlockVisible(true);
+                    // setIsNewBlockVisible(true);
+                    resizeBlockBox(1);
                 }
             }}
         >
@@ -895,7 +972,7 @@ const FarmlandData = ({
         {/* blocks start here */}
         <Box w="100%"
             style={{
-                backgroundColor: COLORS.mediumseagreen,
+                backgroundColor: COLORS.dark,
                 paddingVertical: 10,
                 paddingHorizontal: 5,
             }}
@@ -950,7 +1027,7 @@ const FarmlandData = ({
                         >
                             <Box
                                 style={{
-                                    backgroundColor: COLORS.black,
+                                    backgroundColor: COLORS.dark,
                                     borderRadius: 100,
                                     width: wp('6%'),
                                     // justifyContent: 'center',
@@ -972,7 +1049,7 @@ const FarmlandData = ({
                         <Box w="80%">
                             <Text
                                 style={{
-                                    color: COLORS.black,
+                                    color: COLORS.dark,
                                     fontSize: responsiveFontSize(2),
                                     fontFamily: 'JosefinSans-Bold',
                                 }}
@@ -990,6 +1067,7 @@ const FarmlandData = ({
                                 onPress={
                                     ()=>{
                                         setIsOverlayVisible(!isOverlayVisible);
+                                        // resizeBox(1)
                                         setDataToBeUpdated('blockData');
                                         setBlockId(block._id);
                                         setIsEditBlockVisible(true);
@@ -1112,6 +1190,7 @@ const FarmlandData = ({
                                 onPress={
                                     ()=>{
                                         setIsOverlayVisible(!isOverlayVisible);
+                                        // resizeBox(1);
                                         setDataToBeUpdated('plantType');
                                         setBlockTrees(block?.trees);
                                         setBlockId(block._id);
@@ -1177,7 +1256,7 @@ const FarmlandData = ({
                     padding: 20,
                 }}
             >
-                Actualizar os tipos de planta para este parcela de cajueiros
+                Actualizar os tipos de plantas para esta parcela de cajueiros
             </Text>
                     
         }
@@ -1556,12 +1635,14 @@ const FarmlandData = ({
 
 </View>
 
-{
-    isOverlayVisible && 
-    (
+{/* {
+    presentEditFarmland && 
+    ( */}
     <EditFarmlandData
-        isOverlayVisible={isOverlayVisible}
-        setIsOverlayVisible={setIsOverlayVisible}
+        // resizeBox={resizeBox}
+        // scale={scale}
+        isOverlayVisible={presentEditFarmland}
+        setIsOverlayVisible={setPresentEditFarmland}
         isConfirmDataVisible={isConfirmDataVisible}
         setIsConfirmDataVisible={setIsConfirmDataVisible}
 
@@ -1660,8 +1741,8 @@ const FarmlandData = ({
 
 
     />
-    )
-}
+    {/* )
+} */}
 
 {isConfirmDataVisible &&
         <ConfirmData
@@ -1683,6 +1764,8 @@ const FarmlandData = ({
 
 {isNewBlockVisible && <NewFarmlandBlock 
     isNewBlockVisible={isNewBlockVisible}
+    // scaleBlockBox={scaleBlockBox}
+    // resizeBlockBox={resizeBlockBox}
     setIsNewBlockVisible={setIsNewBlockVisible}
     farmland={farmland}
     setAutoRefresh={setAutoRefresh}

@@ -37,6 +37,7 @@ import { realmContext } from '../../models/realmContext';
 import { useUser } from '@realm/react';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import { getInitials } from '../../helpers/getInitials';
+import { farmerTypes } from '../../consts/farmerTypes';
 // import { TextInput } from 'react-native-paper';
 const { useRealm, useQuery } = realmContext; 
 
@@ -66,7 +67,11 @@ export function MemberItem({ item, isGroupManager, }) {
    >
     <TouchableOpacity
      onPress={()=>{
-      navigation.navigate('Farmer', { ownerId: item._id });
+      navigation.navigate('Profile', { 
+        ownerId: item._id, 
+        farmerType: farmerTypes.farmer, 
+        farmersIDs: [], 
+      });
      }}
     >
       <View
@@ -216,8 +221,10 @@ export default function GroupMembersScreen({ navigation, route }) {
          <Center w="10%">
           <Pressable
             onPress={()=>{
-              navigation.navigate('Group', {
-               ownerId: groupId
+              navigation.navigate('Profile', {
+               ownerId: groupId,
+               farmerType: farmerTypes.group,
+               farmersIDs: [],
               });
             }}
                 style={{

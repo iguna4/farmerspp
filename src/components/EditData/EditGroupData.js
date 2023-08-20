@@ -4,7 +4,7 @@ import { Text, SafeAreaView, StyleSheet, ScrollView, TextInput, View } from 'rea
 import { Overlay, Icon, Button, CheckBox } from "@rneui/base";
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
 import { MultipleSelectList, SelectList  } from 'react-native-dropdown-select-list';
-
+import Modal from 'react-native-modal';
 import ConfirmData from './ConfirmData';
 import COLORS from "../../consts/colors";
 import CustomActivityIndicator from "../ActivityIndicator/CustomActivityIndicator";
@@ -33,87 +33,17 @@ const {useRealm} = realmContext;
 const EditGroupData = ({  
     isOverlayVisible, 
     setIsOverlayVisible,
-    isConfirmDataVisible,
     setIsConfirmDataVisible,
 
-    ownerName,
-    resource,
     
     resourceName,
     dataToBeUpdated,
 
-    newDataObject,
-    oldDataObject,
     setNewDataObject,
     setOldDataObject,
 
-    // the group manager personal data
-    groupManagerPhone,
-    setGroupManagerPhone,
-    groupManagerName,
-    setGroupManagerName,
-    oldGroupManagerPhone,
-    setOldGroupManagerPhone,
-    oldGroupManagerName,
-    setOldGroupManagerName,
+    farmerId,
 
-    // the group members data
-    isGroupActive,
-    setIsGroupActive,
-    isGroupInactive,
-    setIsGroupInactive,
-
-    isOldGroupActive,
-    isOldGroupInactive,
-    setIsOldGroupActive,
-    setIsOldGroupInactive,
-
-    groupMembersNumber,
-    setGroupMembersNumber,
-    groupWomenNumber,
-    setGroupWomenNumber,
-
-    oldGroupMembersNumber,
-    setOldGroupMembersNumber,
-    oldGroupWomenNumber,
-    setOldGroupWomenNumber,
-
-    groupNuit,
-    setGroupNuit,
-    groupAffiliationYear,
-    setGroupAffiliationYear,
-    groupCreationYear,
-    setGroupCreationYear,
-    groupLegalStatus,
-    setGroupLegalStatus,
-    groupOperatingLicence,
-    setGroupOperatingLicence,
-
-    oldGroupNuit,
-    setOldGroupNuit,
-    oldGroupAffiliationYear,
-    setOldGroupAffiliationYear,
-    oldGroupCreationYear,
-    setOldGroupCreationYear,
-    oldGroupLegalStatus,
-    setOldGroupLegalStatus,
-    oldGroupOperatingLicence, 
-    setOldGroupOperatingLicence,   
-
-    // group type
-    groupType,
-    setGroupType,
-    oldGroupType,
-    setOldGroupType,
-
-    groupName,
-    setGroupName,
-    oldGroupName,
-    setOldGroupName,
-    groupGoals,
-    setGroupGoals,
-    oldGroupGoals,
-    setOldGroupGoals,
 
 
 })=>{
@@ -122,7 +52,46 @@ const EditGroupData = ({
     const user = useUser();
     const customUserData = user?.customData;
 
+    const farmer = realm.objectForPrimaryKey('Group', farmerId);
+
     // // ----------------------------------------------------
+    const [groupName, setGroupName] = useState('');
+    const [groupType, setGroupType] = useState('');
+    const [groupGoals, setGroupGoals] = useState('');
+    
+    const [oldGroupName, setOldGroupName] = useState('');
+    const [oldGroupType, setOldGroupType] = useState('');
+    const [oldGroupGoals, setOldGroupGoals] = useState('');
+
+
+    // ------------------------------------------------
+    const [oldGroupNuit, setOldGroupNuit] = useState('');
+    const [oldGroupAffiliationYear, setOldGroupAffiliationYear] = useState('');
+    const [oldGroupCreationYear, setOldGroupCreationYear] = useState('');
+    const [oldGroupLegalStatus, setOldGroupLegalStatus] = useState('');
+    const [oldGroupOperatingLicence, setOldGroupOperatingLicence] = useState('');
+
+    const [groupNuit, setGroupNuit] = useState('');
+    const [groupAffiliationYear, setGroupAffiliationYear] = useState('');
+    const [groupCreationYear, setGroupCreationYear] = useState('');
+    const [groupLegalStatus, setGroupLegalStatus] = useState('');
+    const [groupOperatingLicence, setGroupOperatingLicence] = useState('');
+
+    // ----------------------------------------------------------
+    const [oldGroupMembersNumber, setOldGroupMembersNumber] = useState('');
+    const [oldGroupWomenNumber, setOldGroupWomenNumber] = useState('');
+    
+    const [groupMembersNumber, setGroupMembersNumber] = useState('');
+    const [groupWomenNumber, setGroupWomenNumber] = useState('');
+
+    // ------------------------------------
+    const [isOldGroupActive, setIsOldGroupActive] = useState(false);
+    const [isOldGroupInactive, setIsOldGroupInactive] = useState(false);
+    
+
+    const [isGroupActive, setIsGroupActive] = useState(false);
+    const [isGroupInactive, setIsGroupInactive] = useState(false);
+
     const [errors, setErrors] = useState({});
     const [overlayTitle, setOverlayTitle] = useState('');
 
@@ -139,55 +108,46 @@ const EditGroupData = ({
 
     useEffect(()=>{
         if (dataToBeUpdated === 'groupType' && resourceName === 'Group') {
-            setGroupName(resource?.name);
-            setGroupType(resource?.type);
-            setGroupGoals(resource?.assets?.map(asset=>asset.subcategory));
+            setGroupName(farmer?.name);
+            setGroupType(farmer?.type);
+            setGroupGoals(farmer?.assets?.map(asset=>asset.subcategory));
             setOverlayTitle('Actualizar Tipo de Organização');
 
-            setOldGroupName(resource?.name);
-            setOldGroupType(resource?.type);
-            setOldGroupGoals(resource?.assets?.map(asset=>asset.subcategory));
+            setOldGroupName(farmer?.name);
+            setOldGroupType(farmer?.type);
+            setOldGroupGoals(farmer?.assets?.map(asset=>asset.subcategory));
                 
         }
 
-        // if (dataToBeUpdated === 'groupManager' && resourceName === 'Group'){
-        //     setGroupManagerName(resource?.manager.fullname);
-        //     setGroupManagerPhone(resource?.manager.phone);
-        //     setOverlayTitle('Actualizar Contacto.');
-
-        //     setOldGroupManagerName(resource?.manager.fullname);
-        //     setOldGroupManagerPhone(resource?.manager.phone);
-        // }
-
         if (dataToBeUpdated === 'groupMembers' && resourceName === 'Group') {
-            setIsGroupActive(Boolean(resource?.operationalStatus) ? true : false);
-            setIsGroupInactive(!Boolean(resource?.operationalStatus) ? true : false);
+            setIsGroupActive(Boolean(farmer?.operationalStatus) ? true : false);
+            setIsGroupInactive(!Boolean(farmer?.operationalStatus) ? true : false);
             setOverlayTitle('Actualizar Efectividade.');
 
-            setIsOldGroupActive(Boolean(resource?.operationalStatus) ? true : false);
-            setIsOldGroupInactive(!Boolean(resource?.operationalStatus) ? true : false);
+            setIsOldGroupActive(Boolean(farmer?.operationalStatus) ? true : false);
+            setIsOldGroupInactive(!Boolean(farmer?.operationalStatus) ? true : false);
 
-            setGroupMembersNumber(resource?.numberOfMembers.total);
-            setGroupWomenNumber(resource?.numberOfMembers.women);
+            setGroupMembersNumber(farmer?.numberOfMembers.total);
+            setGroupWomenNumber(farmer?.numberOfMembers.women);
 
-            setOldGroupMembersNumber(resource?.numberOfMembers.total);
-            setOldGroupWomenNumber(resource?.numberOfMembers.women);
+            setOldGroupMembersNumber(farmer?.numberOfMembers.total);
+            setOldGroupWomenNumber(farmer?.numberOfMembers.women);
         }
 
         if (dataToBeUpdated === 'groupIdentity' && resourceName === 'Group') {
-            setGroupAffiliationYear(resource?.affiliationYear);
-            setGroupOperatingLicence(resource?.licence);
-            setGroupNuit(resource?.nuit);
-            setGroupCreationYear(resource?.creationYear);
-            setGroupLegalStatus(resource?.legalStatus);
+            setGroupAffiliationYear(farmer?.affiliationYear);
+            setGroupOperatingLicence(farmer?.licence);
+            setGroupNuit(farmer?.nuit);
+            setGroupCreationYear(farmer?.creationYear);
+            setGroupLegalStatus(farmer?.legalStatus);
 
             setOverlayTitle('Actualizar Identidade.');
 
-            setOldGroupAffiliationYear(resource?.affiliationYear);
-            setOldGroupOperatingLicence(resource?.licence);
-            setOldGroupNuit(resource?.nuit);
-            setOldGroupCreationYear(resource?.creationYear);
-            setOldGroupLegalStatus(resource?.legalStatus);
+            setOldGroupAffiliationYear(farmer?.affiliationYear);
+            setOldGroupOperatingLicence(farmer?.licence);
+            setOldGroupNuit(farmer?.nuit);
+            setOldGroupCreationYear(farmer?.creationYear);
+            setOldGroupLegalStatus(farmer?.legalStatus);
         }
 
     }, [ dataToBeUpdated, resourceName ]);
@@ -283,7 +243,44 @@ const EditGroupData = ({
 
     return (
 
-    <Overlay 
+
+        <View>
+
+        <Modal
+            isVisible={isOverlayVisible}
+            supportedOrientations={['portrait', 'landscape']}
+            propagateSwipe
+            avoidKeyboard
+            animationIn={'zoomIn'}
+            animationInTiming={600}
+            animationOut={'zoomOut'}
+            hideModalContentWhileAnimating={true}
+            onBackButtonPress={()=>{
+                setIsOverlayVisible(false);
+            }}
+            onBackdropPress={()=>{
+                setIsOverlayVisible(false);
+            }}
+            onModalHide={()=>{
+                setIsOverlayVisible(false);    
+            }}
+            onSwipeComplete={()=>{
+                setIsOverlayVisible(false);            
+            }}
+            swipeDirection={["left", "right", "up", "down"]}
+        >
+    
+        <View
+            style={{
+                backgroundColor: COLORS.ghostwhite,
+                padding: 15,
+                borderRadius: 25,
+                minHeight: '50%',
+            }}
+        >
+    
+
+    {/* <Overlay 
         overlayStyle={{ 
             backgroundColor: COLORS.ghostwhite, 
             width: '90%',
@@ -293,16 +290,16 @@ const EditGroupData = ({
         }}
         isVisible={isOverlayVisible} 
         onBackdropPress={toggleOverlay}
-    >
+    > */}
 
-        <View
+        {/* <View
             style={{
                 // minHeight: '80%',
                 maxHeight: '100%',
                 justifyContent: 'center',
                 // marginVertical: 10,
             }}
-        >
+        > */}
                     <View
                         style={{ 
                             width: '100%', 
@@ -324,8 +321,8 @@ const EditGroupData = ({
                     <View
                         style={{
                             position: 'absolute',
-                            right: 0,
-                            top: 0,
+                            right: 10,
+                            top: 10,
                         }}
                     >
                         <Icon 
@@ -342,11 +339,6 @@ const EditGroupData = ({
                 fadingEdgeLength={2}
                 keyboardDismissMode = 'on-drag'
                 keyboardShouldPersistTaps = 'handled'
-                style={{
-                    // flex: 1,
-                    // minHeight: '100%',
-                    // marginVertical: 10,
-                }}
             >
 
 
@@ -384,7 +376,7 @@ const EditGroupData = ({
                 closeicon={
                     <Icon 
                         name="close" 
-                        size={20} 
+                        size={15} 
                         color={COLORS.grey}
                     />
                 }
@@ -402,32 +394,7 @@ const EditGroupData = ({
                 
             />
 
-            {/* <Select
-                selectedValue={groupType}
-                accessibilityLabel="Grupo"
-                placeholder="Tipo de organização "
-                minHeight={55}
-                _selectedItem={{
-                    bg: 'teal.600',
-                    fontSize: 'lg',
-                    endIcon: <CheckIcon size="5" />,
-                }}
-                mt={1}
-                dropdownCloseIcon={groupType 
-                                    ? <Icon name="close" size={25} color="grey" onPress={()=>setGroupType('')} /> 
-                                    : <Icon size={45} name="arrow-drop-down" color={COLORS.pantone} />
-                                }
-                onValueChange={newGroupType => {
-                    setErrors((prev)=>({...prev, groupType: ''}));
-                    setGroupType(newGroupType)
-                }}
-            >
-                {
-                    groups?.map((group, index)=>(
-                    <Select.Item key={index} label={group} value={group} />
-                ))  
-                }
-            </Select> */}
+
             {
             'groupType' in errors 
             ? <FormControl.ErrorMessage 
@@ -488,7 +455,7 @@ const EditGroupData = ({
                         closeicon={
                             <Icon 
                             name="close" 
-                            size={20} 
+                            size={15} 
                             color="grey" 
                             />
                     }
@@ -540,12 +507,12 @@ const EditGroupData = ({
                       dropdownCloseIcon={groupCreationYear 
                                         ? <Icon 
                                             name="close" 
-                                            size={20} 
+                                            size={15} 
                                             color="grey" 
                                             onPress={()=>setGroupCreationYear('')} 
                                         /> 
                                         : <Icon 
-                                            size={45} 
+                                            // size={45} 
                                             name="arrow-drop-down" 
                                             color={COLORS.pantone} 
                                         />
@@ -586,12 +553,12 @@ const EditGroupData = ({
                       dropdownCloseIcon={groupLegalStatus
                                         ? <Icon 
                                             name="close" 
-                                            size={20} 
+                                            size={15} 
                                             color="grey" 
                                             onPress={()=>setGroupLegalStatus('')} 
                                         /> 
                                         : <Icon 
-                                            size={45} 
+                                            // size={45} 
                                             name="arrow-drop-down" 
                                             color={COLORS.pantone} 
                                         />
@@ -644,12 +611,12 @@ const EditGroupData = ({
                  dropdownCloseIcon={groupAffiliationYear 
                         ? <Icon 
                             name="close" 
-                            size={20} 
+                            size={15} 
                             color="grey" 
                             onPress={()=>setGroupAffiliationYear('')} 
                         /> 
                         : <Icon 
-                        size={45} 
+                        // size={45} 
                         name="arrow-drop-down" 
                             color={COLORS.pantone} 
                         />
@@ -878,68 +845,6 @@ const EditGroupData = ({
     }
 
 
-    {
-    //     (dataToBeUpdated === 'groupManager' && resourceName === 'Group') &&
-    //     <Stack direction="column">
-          
-    //       <FormControl isRequired my="1" isInvalid={'groupManagerName' in errors}>
-    //         <FormControl.Label>Nome do Presidente</FormControl.Label>
-    //         <CustomInput
-    //             width="100%"
-    //             type="text"
-    //             autoCapitalize="words"
-    //             placeholder="Nome completo do Presidente"
-    //             value={groupManagerName}
-    //             onChangeText={newManagerName=>{
-    //                 setErrors(prev=>({...prev, groupManagerName: ''}))
-    //                 setGroupManagerName(newManagerName)
-    //             }}
-    //         />
-    //         {
-    //         'groupManagerName' in errors 
-    //         ? <FormControl.ErrorMessage 
-    //         leftIcon={<Icon name="error-outline" size={16} color="red" />}
-    //         _text={{ fontSize: 'xs'}}>{errors?.groupManagerName}</FormControl.ErrorMessage> 
-    //         : <FormControl.HelperText></FormControl.HelperText>
-    //         }
-    //     </FormControl>
-
-    //     <FormControl  isInvalid={'groupManagerPhone' in errors}>
-    //         <FormControl.Label>Telemóvel do Presidente</FormControl.Label>
-    //         <CustomInput
-    //             width="100%"
-    //             type="telephoneNumber"
-    //             placeholder={groupManagerPhone ? groupManagerPhone.toString() : 'Nenhum'}
-    //             keyboardType="numeric"
-    //             value={groupManagerPhone ? groupManagerPhone?.toString() : ''}
-    //             onChangeText={newManagerPhone=>{
-    //                 setErrors((prev)=>({...prev, groupManagerPhone: ''}))                        
-    //                 setGroupManagerPhone(newManagerPhone);
-    //             }}
-    //             InputLeftElement={
-    //                 <Icon
-    //                     name="phone"
-    //                     color="grey"
-    //                     size={25}
-    //                     type="material"
-    //                 />
-    //             }
-    //         />
-    //         {
-    //         'groupManagerPhone' in errors 
-    //         ? <FormControl.ErrorMessage 
-    //         leftIcon={<Icon name="error-outline" size={16} color="red" />}
-    //         _text={{ fontSize: 'xs'}}>{errors?.groupManagerPhone}</FormControl.ErrorMessage> 
-    //         : <FormControl.HelperText></FormControl.HelperText>
-    //         }
-    //     </FormControl>
-
-   
-
-    // </Stack>
-
-    }
-
 
 
         <Button
@@ -953,7 +858,7 @@ const EditGroupData = ({
             containerStyle={{
                 backgroundColor: COLORS.pantone,
                 borderRadius: 10,
-                // color: COLORS.ghostwhite,
+                marginTop: 30,
             }}
             type="outline"
             onPress={()=>{
@@ -985,7 +890,9 @@ const EditGroupData = ({
 
         </View>
 
-    </Overlay>
+    {/* </Overlay> */}
+    </Modal>
+    </View>
 
     )
 }

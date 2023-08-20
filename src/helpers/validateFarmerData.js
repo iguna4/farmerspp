@@ -1,3 +1,4 @@
+import { containsNonNumeric } from "./containsNonNumeric";
 
 const validateFarmerData = (
     {   surname, 
@@ -157,7 +158,7 @@ const validateFarmerData = (
         (
         !Number.isInteger(parseInt(retrievedNuit))  || 
         retrievedNuit?.toString().length !== 9   
-        )
+        ) || containsNonNumeric(retrievedNuit)
         ){
         setErrors({ ...errors,
             nuit: 'NUIT inválido.',

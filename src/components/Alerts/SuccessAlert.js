@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Icon, CheckBox } from '@rneui/themed';
 import { Button, Text, View, Modal, Pressable, TouchableOpacity } from "react-native";
 import COLORS from "../../consts/colors";
+import { farmerTypes } from "../../consts/farmerTypes";
 // import Modal from "react-native-modal";
 
 function SuccessAlert({ 
@@ -22,42 +23,53 @@ function SuccessAlert({
     // after any successful actor/farmland registration
     // the backward icon takes the user back to the respective registered actor main screen
     const navigateBack = ()=>{
+        console.log('flag:', flag);
         if (flag === 'farmer'){
-            if (farmerItem.flag === 'Grupo'){
-                navigation.navigate('Group', {
+            if (farmerItem.flag === farmerTypes.farmer || farmerItem.flag === farmerTypes.group || farmerItem.flag === farmerTypes.institution){
+                navigation.navigate('Profile', {
                     ownerId: farmerItem.ownerId,
+                    farmerType: farmerItem.flag,
+                    farmersIDs: [],
                 });
+                // if (farmerItem.flag === 'Grupo'){
+                // }
+                // else if (farmerItem.flag === 'Indivíduo'){
+                //     navigation.navigate('Farmer', {
+                //         ownerId: farmerItem.ownerId,
+                //     });
+                // }
+                // else if(farmerItem.flag === 'Instituição') {
+                //     navigation.navigate('Institution', {
+                //         ownerId: farmerItem.ownerId,
+                //     });
+                // }
             }
-            else if (farmerItem.flag === 'Indivíduo'){
-                navigation.navigate('Farmer', {
-                    ownerId: farmerItem.ownerId,
-                });
-            }
-            else if(farmerItem.flag === 'Instituição') {
-                navigation.navigate('Institution', {
-                    ownerId: farmerItem.ownerId,
-                });
-            }
+
         }
         else if(flag === 'farmland') { 
             // after a successful farmland registration
             // find out which actor type is the owner of the farmland
             // take the user back to the current actor screen
-            if (farmlandOwnerType === 'Grupo'){
-                navigation.navigate('Group', {
-                    ownerId: ownerId,
-                });
-            }
-            else if (farmlandOwnerType === 'Indivíduo'){
-                navigation.navigate('Farmer', {
-                    ownerId: ownerId,
-                });
-            }
-            else if(farmlandOwnerType === 'Instituição') {
-                navigation.navigate('Institution', {
-                    ownerId: ownerId,
-                });
-            }
+            
+            navigation.navigate('Profile', {
+                ownerId: ownerId,
+                farmerType: farmlandOwnerType,
+                farmersIDs: [],
+            });
+            
+            
+            // if (farmlandOwnerType === 'Grupo'){
+            // }
+            // else if (farmlandOwnerType === 'Indivíduo'){
+            //     navigation.navigate('Farmer', {
+            //         ownerId: ownerId,
+            //     });
+            // }
+            // else if(farmlandOwnerType === 'Instituição') {
+            //     navigation.navigate('Institution', {
+            //         ownerId: ownerId,
+            //     });
+            // }
         }
     }
 

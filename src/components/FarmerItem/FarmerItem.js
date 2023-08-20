@@ -138,9 +138,10 @@ const FarmerItem = ({ item, route, farmerType }) => {
 
       <TouchableOpacity
         onPress={()=>{
-          navigation.navigate('Farmer', {
+          navigation.navigate('Profile', {
             ownerId: item._id,
             farmersIDs: item?.farmersIDs,
+            farmerType: 'Indivíduo'
           })
         }}
         >

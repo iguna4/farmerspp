@@ -44,6 +44,7 @@ import { roles } from '../../consts/roles';
 import { useCallback } from 'react';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import { getInitials } from '../../helpers/getInitials';
+import { farmerTypes } from '../../consts/farmerTypes';
 // import { TextInput } from 'react-native-paper';
 const { useRealm, useQuery } = realmContext; 
 
@@ -468,8 +469,10 @@ const filtererdItems = groupsList.filter((item)=>{
                   setIsSearching(false);
                 }
                 else {
-                  navigation.navigate('Farmer', {
+                  navigation.navigate('Profile', {
                     ownerId: farmerId,
+                    farmerType: farmerTypes.farmer,
+                    farmersIDs: [],
                   })
                 }
               }}

@@ -69,3 +69,18 @@ export const months = {
     '10': 'Novembro',
     '11': 'Dezembro',
 }
+
+export function calculateAge(dateOfBirth) {
+  const dob = new Date(dateOfBirth);
+  const today = new Date();
+  
+  const yearsDiff = today.getFullYear() - dob.getFullYear();
+  const monthsDiff = today.getMonth() - dob.getMonth();
+  const daysDiff = today.getDate() - dob.getDate();
+  
+  if (monthsDiff < 0 || (monthsDiff === 0 && daysDiff < 0)) {
+    return yearsDiff - 1;
+  } else {
+    return yearsDiff;
+  }
+}

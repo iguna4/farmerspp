@@ -112,9 +112,10 @@ const InstitutionItem = ({ item, route }) => {
 
     <TouchableOpacity
       onPress={()=>{
-        navigation.navigate('Institution', {
+        navigation.navigate('Profile', {
           ownerId: item._id,
           farmersIDs: item?.farmersIDs,
+          farmerType: 'Instituição'
         })
       }}  
       >

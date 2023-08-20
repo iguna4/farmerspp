@@ -30,8 +30,7 @@ import EditInstitutionData from '../EditData/EditInstitutionData';
 
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { resourceValidation } from '../../consts/resourceValidation';
-import EditData from '../EditData/EditData';
-import ConfirmData from '../EditData/ConfirmData';
+import ConfirmData from '../EditData/ConfirmDataCopy';
 
 import { roles } from '../../consts/roles';
 import { errorMessages } from '../../consts/errorMessages';

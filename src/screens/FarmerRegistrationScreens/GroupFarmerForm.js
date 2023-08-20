@@ -365,7 +365,7 @@ export default function GroupFarmerForm({
                 <FormControl isRequired my="1" isInvalid={'groupCreationYear' in errors}>
                     <FormControl.Label>Ano de criação</FormControl.Label>
                     <SelectList
-                        data={getFullYears2}
+                        data={getFullYears2(50)}
                         setSelected={newYear => {
                             setErrors((prev)=>({...prev, groupCreationYear: ''}));
                             setGroupCreationYear(newYear);
@@ -461,9 +461,15 @@ export default function GroupFarmerForm({
                             setErrors((prev)=>({
                                 ...prev, 
                                 groupCreationYear: '',
-                                groupLegalStatus: ''
+                                groupLegalStatus: '',
+                                groupNuit: '',
+                                groupOperatingLicence: '',
+                                groupAffiliationYear: '',
                             }));
                             setGroupLegalStatus(status);
+                            setGroupNuit();
+                            setGroupOperatingLicence('');
+                            setGroupAffiliationYear('');
                         }}
 
                         save="value"
@@ -502,43 +508,7 @@ export default function GroupFarmerForm({
                             marginTop: 5,
                         }}
                     />
-                    {/* <Select
-                        selectedValue={groupLegalStatus}
-                        accessibilityLabel="Escolha a situação"
-                        placeholder="Escolha a situação"
-                        minHeight={55}
-                        _selectedItem={{
-                            bg: 'teal.600',
-                            fontSize: 'lg',
-                            endIcon: <CheckIcon size="5" />,
-                        }}
-                      dropdownCloseIcon={groupLegalStatus
-                                        ? <Icon 
-                                            name="close" 
-                                            size={20} 
-                                            color="grey" 
-                                            onPress={()=>setGroupLegalStatus('')} 
-                                        /> 
-                                        : <Icon 
-                                            size={45} 
-                                            name="arrow-drop-down" 
-                                            color={COLORS.main} 
-                                        />
-                                    }
-                        mt={1}
-                        onValueChange={status => {
-                            setErrors((prev)=>({
-                                ...prev, 
-                                groupCreationYear: '',
-                                groupLegalStatus: ''
-                            }));
-                            setGroupLegalStatus(status);
-                        }}
-                    >
-                        <Select.Item label={groupAffiliationStatus.notAffiliated} value={groupAffiliationStatus.notAffiliated} />
-                        <Select.Item label={groupAffiliationStatus.pendingAffiliation} value={groupAffiliationStatus.pendingAffiliation} />
-                        <Select.Item label={groupAffiliationStatus.affiliated} value={groupAffiliationStatus.affiliated} />
-                    </Select> */}
+
                 {
                 'groupLegalStatus' in errors 
                 ? <FormControl.ErrorMessage 
@@ -559,11 +529,11 @@ export default function GroupFarmerForm({
         <Stack direction="row" mx="3" w="100%">
 
             <Box w="50%" px="1">
-                <FormControl isRequired my="1" isInvalid={'groupAffiliationYear' in errors}>
+                <FormControl isRequired my="1" isInvalid={ groupLegalStatus === groupAffiliationStatus.affiliated && 'groupAffiliationYear' in errors}>
                     <FormControl.Label>Ano de legalização</FormControl.Label>
 
                         <SelectList 
-                            data={getFullYears2}
+                            data={getFullYears2(50)}
                             setSelected={newYear => {
                                 setErrors((prev)=>({...prev, groupAffiliationYear: ''}));
                                 setGroupAffiliationYear(newYear);
@@ -606,43 +576,8 @@ export default function GroupFarmerForm({
                             }}
                         />
 
-                    {/* <Select
-                        selectedValue={groupAffiliationYear}
-                        accessibilityLabel="Escolha o ano"
-                        placeholder="Escolha o ano"
-                        minHeight={55}
-                        _selectedItem={{
-                            bg: 'teal.600',
-                            fontSize: 'lg',
-                            endIcon: <CheckIcon size="5" />,
-                        }}
-                      dropdownCloseIcon={groupAffiliationYear 
-                                        ? <Icon 
-                                            name="close" 
-                                            size={20} 
-                                            color="grey" 
-                                            onPress={()=>setGroupAffiliationYear('')} 
-                                        /> 
-                                        : <Icon 
-                                        size={45} 
-                                        name="arrow-drop-down" 
-                                            color={COLORS.main} 
-                                        />
-                                    }
-                        mt={1}
-                        onValueChange={newYear => {
-                            setErrors((prev)=>({...prev, groupAffiliationYear: ''}));
-                            setGroupAffiliationYear(newYear);
-                        }}
-                    >
-                    {
-                        getFullYears()?.map((year, index)=>(
-                            <Select.Item key={index} label={`${year}`} value={year} />
-                        ))
-                    }
-                    </Select> */}
                 {
-                'groupAffiliationYear' in errors 
+                 groupLegalStatus === groupAffiliationStatus.affiliated && 'groupAffiliationYear' in errors 
                 ? <FormControl.ErrorMessage 
                 leftIcon={<Icon name="error-outline" size={16} color="red" />}
                 _text={{ fontSize: 'xs'}}>{errors?.groupAffiliationYear}</FormControl.ErrorMessage> 
@@ -652,14 +587,11 @@ export default function GroupFarmerForm({
             </Box>
 
             <Box w="50%" px="1" my="2">
-                <FormControl  isInvalid={'groupOperatingLicence' in errors} isRequired>
+                <FormControl  isInvalid={ groupLegalStatus === groupAffiliationStatus.affiliated && 'groupOperatingLicence' in errors} isRequired>
                     <FormControl.Label>N°. de Alvará</FormControl.Label>
                     <CustomInput
                         width="100%"
-                        // type="telephoneNumber"
                         placeholder="Alvará"
-                        // keyboardType="numeric"
-                        // isDisabled={groupType === '' ? true : false}
                         value={groupOperatingLicence}
                         onChangeText={newOperatingLicence=>{
                             setErrors((prev)=>({...prev, groupOperatingLicence: ''}))                        
@@ -667,7 +599,7 @@ export default function GroupFarmerForm({
                         }}
                     />
                     {
-                        'groupOperatingLicence' in errors 
+                       groupLegalStatus === groupAffiliationStatus.affiliated &&  'groupOperatingLicence' in errors 
                     ? <FormControl.ErrorMessage 
                     leftIcon={<Icon name="error-outline" size={16} color="red" />}
                     _text={{ fontSize: 'xs'}}>{errors?.groupOperatingLicence}</FormControl.ErrorMessage> 
@@ -681,14 +613,13 @@ export default function GroupFarmerForm({
     <Stack direction="row" mx="3" w="100%">
 
         <Box w="50%" px="1" my="2">
-            <FormControl isInvalid={'groupNuit' in errors} isRequired>
+            <FormControl isInvalid={ groupLegalStatus === groupAffiliationStatus.affiliated && 'groupNuit' in errors} isRequired>
                 <FormControl.Label>NUIT</FormControl.Label>
                 <CustomInput
                     width="100%"
                     type="number"
                     placeholder="NUIT"
                     value={groupNuit}
-                    // isDisabled={groupType === '' ? true : false}
                     keyboardType="numeric"
                     onChangeText={newNuit=>{
                         setErrors((prev)=>({...prev, groupNuit: ''}));
@@ -696,7 +627,7 @@ export default function GroupFarmerForm({
                     }}
                     />
                 {
-                    'groupNuit' in errors 
+                   groupLegalStatus === groupAffiliationStatus.affiliated &&  'groupNuit' in errors 
                     ? <FormControl.ErrorMessage 
                     leftIcon={<Icon name="error-outline" size={16} color="red" />}
                     _text={{ fontSize: 'xs'}}>{errors?.groupNuit}</FormControl.ErrorMessage> 
@@ -706,28 +637,6 @@ export default function GroupFarmerForm({
         </Box>
 
         <Box w="50%" px="1" my="2">
-        {/* <FormControl  isInvalid={'groupOperatingLicence' in errors}>
-            <FormControl.Label>N°. de Alvará</FormControl.Label>
-            <CustomInput
-                width="100%"
-                // type="telephoneNumber"
-                placeholder={groupType ? `Alvará da ${groupType}` : `Alvará do grupo`}
-                // keyboardType="numeric"
-                isDisabled={groupType === '' ? true : false}
-                value={groupOperatingLicence}
-                onChangeText={newOperatingLicence=>{
-                    setErrors((prev)=>({...prev, groupOperatingLicence: ''}))                        
-                    setGroupOperatingLicence(newOperatingLicence);
-                }}
-            />
-            {
-                'groupOperatingLicence' in errors 
-            ? <FormControl.ErrorMessage 
-            leftIcon={<Icon name="error-outline" size={16} color="red" />}
-            _text={{ fontSize: 'xs'}}>{errors?.groupOperatingLicence}</FormControl.ErrorMessage> 
-            : <FormControl.HelperText></FormControl.HelperText>
-            }
-        </FormControl> */}
         </Box>
 
         </Stack>

@@ -2,6 +2,7 @@ import {  assetTypes } from "../consts/assetTypes";
 import categories from "../consts/categories";
 import { groupAffiliationStatus } from "../consts/groupAffiliationStatus";
 import { capitalize } from "./capitalize";
+import { containsNonNumeric } from "./containsNonNumeric";
 
 
 
@@ -166,15 +167,13 @@ const validateGroupFarmerData = (
             return false;
         }
 
-
-
     }
 
     if (retrievedGroupNuit &&
         (
         !Number.isInteger(parseInt(retrievedGroupNuit))  || 
         retrievedGroupNuit?.toString().length !== 9   
-        )
+         || containsNonNumeric(retrievedGroupNuit))
         ){
         setErrors({ ...errors,
             groupNuit: 'NUIT inválido.',
@@ -188,28 +187,6 @@ const validateGroupFarmerData = (
         });
         return false;
     }
-
-    // if ((!retrievedGroupManagerName) || (retrievedGroupManagerName?.split(' ').length <= 1)){
-    //     setErrors({ ...errors,
-    //         groupManagerName: 'Indica nome completo do gerente.',
-    //     });
-    //     return false;
-    // }
-
-
-    // if (retrievedGroupManagerPhone !== 0 && (
-    //     !Number.isInteger(parseInt(retrievedGroupManagerPhone))  || 
-    //     retrievedGroupManagerPhone?.toString().length !== 9       ||
-    //     parseInt(retrievedGroupManagerPhone.toString()[0]) !== 8 ||
-    //     [2,3,4,5,6,7].indexOf(parseInt(retrievedGroupManagerPhone?.toString()[1])) < 0 )
-    //     ) {      
-    //     setErrors({ ...errors,
-    //         groupManagerPhone: 'Número de telefone inválido.',
-    //     });    
-    //     return false;                   
-    // }    
-
-    // console.log('assets:',JSON.stringify(normalizeAssets(retrivedGroupGoals)))
     
 
     const farmerData = {
@@ -230,10 +207,7 @@ const validateGroupFarmerData = (
             total: retrievedGroupMembersNumber ? parseInt(retrievedGroupMembersNumber) : 0,
             women: retrievedGroupWomenNumber ? parseInt(retrievedGroupWomenNumber) : 0,
         },
-        // manager: {
-        //     fullname: retrievedGroupManagerName,
-        //     phone: retrievedGroupManagerPhone ? parseInt(retrievedGroupManagerPhone) : 0,
-        // },
+
         licence: retrievedGroupOperatingLicence,
         nuit: retrievedGroupNuit ? parseInt(retrievedGroupNuit) : 0,
     }

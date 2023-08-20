@@ -1,7 +1,11 @@
 import React, { useEffect, useState, useCallback, useRef, useMemo, } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image, SafeAreaView, FlatList, Pressable, StyleSheet, Platform } from 'react-native';
+import { 
+  View, Text, ScrollView, TouchableOpacity, Image, 
+  SafeAreaView, FlatList, Pressable, StyleSheet, 
+  Animated as NativeAnimated, Easing, useNativeDriver,
+  Platform } from 'react-native';
 import { Box, Stack, Center, } from 'native-base';
-import { Divider, Icon, Avatar, BottomSheet, } from '@rneui/base';
+import { Divider, Icon, Avatar, } from '@rneui/base';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import {  
@@ -13,12 +17,6 @@ import {
 
 import { 
   responsiveFontSize,
-  responsiveScreenFontSize,
-  responsiveHeight,
-  responsiveWidth,
-  responsiveScreenHeight,
-  responsiveScreenWidth,
-  useDimensionsChange,
 
 } from 'react-native-responsive-dimensions';
 
@@ -29,23 +27,17 @@ import FarmlandData from '../../components/FarmlandData/FarmlandData';
 import styles from './styles';
 import COLORS from '../../consts/colors';
 import PhotoModal from '../../components/Modals/PhotoModal';
-import {   
-  BottomSheetModal,
-  BottomSheetModalProvider,
-  BottomSheetView,
-  useBottomSheetModal, } from "@gorhom/bottom-sheet";
 
-  import { roles } from '../../consts/roles';
-  import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-  import { faTree } from '@fortawesome/free-solid-svg-icons';
-  import { Dimensions } from 'react-native';
-  import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
-  import CustomizedBottomSheet  from '../../components/BottomSheet/CustomizedBottomSheet';
-  import Animated from 'react-native-reanimated';
-  import PhotoBottomSheet from '../../components/BottomSheet/PhotoBottomSheet';
-  import { useUser } from '@realm/react';
+
+import { roles } from '../../consts/roles';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faTree } from '@fortawesome/free-solid-svg-icons';
+import { Dimensions } from 'react-native';
+import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';  import Animated from 'react-native-reanimated';
+import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 import { SuccessLottie } from '../../components/LottieComponents/SuccessLottie';
+import EditDataBottomSheet from '../../components/EditData/EditDataBottomSheet';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const singleFarmer = 'singleFarmer';
@@ -68,27 +60,33 @@ export default function FarmerScreen ({ route, navigation }) {
 
     const [successLottieVisible, setSuccessLottieVisible] = useState(false);
     // ------------------------------------------------------------------------
-    
-    // Bottom Sheet code block
 
-    
-    // const sheetRef = forwardRef(null);
+
+    // controle EditFarmerData Component animation
+      const scale = useRef(new NativeAnimated.Value(0)).current; 
+      const bottomSheetRef = useRef(null);
+      const onScrollToBottomSheet = useCallback(()=>{
+        bottomSheetRef?.current?.scrollTo(-20000);
+      }, [])
+      const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+  
+
+
+    // Animate by resizing EditFarmerData Component
+    const resizeBox = (to)=>{
+      to === 1 && setIsOverlayVisible(true);
+      NativeAnimated.timing(scale, {
+          toValue: to,
+          useNativeDriver: true,
+          duration: 400,
+          easing: Easing.linear,
+      }).start(()=> to === 0 && setIsOverlayVisible(false));
+      
+  }
 
     // variables
     const bottomSheetModalRef = useRef(null);
-    const snapPoints =  ["25%", "50%", "75%"];
   
-    function handlePresentModal(){
-      bottomSheetModalRef.current?.present();
-    }
-
-    // const handleSheetChange = useCallback((index) => {
-    //   console.log("handleSheetChange", index);
-    // }, []);
-  
-    // const handleClosePress = useCallback(() => {
-    //   sheetRef.current?.close();
-    // }, []);
 
     // ----------------------------------------------------------------------
 
@@ -152,38 +150,12 @@ export default function FarmerScreen ({ route, navigation }) {
       } else {
         const source = { uri: response.assets.uri };
 
-        // realm.write(()=>{
-        //   photoOwner.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
-        // })
         const imageString = 'data:image/jpeg;base64,' + response.assets[0].base64;
 
         realm.write(()=>{
-            // photoOwner.image = 'data:image/jpeg;base64,' + response.assets[0].base64;
             farmer.image = imageString;
             setLoadingActivityIndicator(true);
         });
-
-
-        // setIsPhotoModalVisible(false);
-        // if (photoOwnerType === 'Grupo') {
-        //     navigation.navigate('Group', {
-        //         ownerId: photoOwner?._id,
-        //     })
-        // } 
-        // else if (photoOwnerType === 'Indivíduo') {
-        //     navigation.navigate('Farmer', {
-        //         ownerId: photoOwner?._id,
-        //     })
-        // } 
-        // else if (photoOwnerType === 'Instituição') {
-        //     navigation.navigate('Institution', {
-        //         ownerId: photoOwner?._id,
-        //     })
-        // }
-        // else if (photoOwnerType === 'Usuário') {
-        //     // taking user photo
-        //     // navigation.goBack();
-        // }
       }
     });
 
@@ -193,7 +165,6 @@ export default function FarmerScreen ({ route, navigation }) {
 
 
     return (
-      <BottomSheetModalProvider>
         <SafeAreaView 
             style={{ 
                 minHeight: '100%', 
@@ -506,6 +477,12 @@ export default function FarmerScreen ({ route, navigation }) {
           setRefresh={setRefresh} 
           refresh={refresh} 
           farmer={farmer} 
+          scale={scale}
+          resizeBox={resizeBox}
+          isOverlayVisible={isOverlayVisible}
+          setIsOverlayVisible={setIsOverlayVisible}
+          bottomSheetRef={bottomSheetRef}
+          onScrollToBottomSheet={onScrollToBottomSheet}
         />
     </View>
 
@@ -597,6 +574,7 @@ export default function FarmerScreen ({ route, navigation }) {
           </Stack>
         }
 
+    
 
         {
             farmlands?.map((farmland)=>
@@ -608,34 +586,14 @@ export default function FarmerScreen ({ route, navigation }) {
               successLottieVisible={successLottieVisible}
               setSuccessLottieVisible={setSuccessLottieVisible}
               ownerImage={farmer?.image}
+              scale={scale}
+              resizeBox={resizeBox}
+              isOverlayVisible={isOverlayVisible}
+              setIsOverlayVisible={setIsOverlayVisible}
             />))
         }
         </Box>
 
-        {/* <View
-          style={{
-            flex: 1,
-          }}
-        >
-          <BottomSheetModal
-            ref={bottomSheetModalRef}
-            index={0}
-            snapPoints={snapPoints}
-            // onDismiss={()=>setIsBottomSheetOpen(false)}
-            backgroundStyle={{
-              borderRadius: 50,
-              backgroundColor: COLORS.fourth,
-            }}
-          >
-            <PhotoBottomSheet 
-              ownerType={'Indivíduo'} 
-              ownerId={farmer?._id} 
-              farmersIDs={farmersIDs} 
-              setIsPhotoModalVisible={setIsPhotoModalVisible}
-              launchNativeImageLibrary={launchNativeImageLibrary}
-            />
-          </BottomSheetModal>
-        </View> */}
 
         <PhotoModal 
           realm={realm}
@@ -657,8 +615,9 @@ export default function FarmerScreen ({ route, navigation }) {
             setSuccessLottieVisible={setSuccessLottieVisible} 
         />      
     }
+
+
 </SafeAreaView>
-</BottomSheetModalProvider>
     )
 };
 

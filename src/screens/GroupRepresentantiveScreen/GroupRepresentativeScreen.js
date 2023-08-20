@@ -45,6 +45,7 @@ import { roles } from '../../consts/roles';
 import CustomDivider from '../../components/Divider/CustomDivider';
 import { getInitials } from '../../helpers/getInitials';
 import GroupRepresentativeItem from '../../components/GroupRepresentativeItem/GroupRepresentativeItem';
+import { farmerTypes } from '../../consts/farmerTypes';
 const { useRealm, useQuery } = realmContext; 
 
 
@@ -67,9 +68,7 @@ export default function GroupRepresentativeScreen({ route, navigation }) {
 //  the id of the farmer who is selected as group representative 
  const [selectedId, setSelectedId] = useState(null);
  const [actorMembership, setActorMembership] = useState(null);
- const [selectedFarmer, setSelectedFarmer] = useState(null);
 
- const [isFocused, setIsFocused] = useState(false);
  const [isSearching, setIsSearching] = useState(false);
 
 
@@ -84,9 +83,6 @@ export default function GroupRepresentativeScreen({ route, navigation }) {
   return ((item.names.otherNames.toLowerCase().includes(searchQuery.toLowerCase())) || (item.names.surname.toLowerCase().includes(searchQuery.toLowerCase())))
  })
 
-//  const updateSearch = (search) => {
-//   setSearchText(search);
-// };
 
  const handleEndReached = ()=>{
    if(!isEndReached ){
@@ -98,7 +94,6 @@ export default function GroupRepresentativeScreen({ route, navigation }) {
    }
  }
 
-// console.log('farmersList: ', farmersList);
 const customizeFarmerItem = (farmer)=>{
   return {
     names: farmer?.names,
@@ -117,10 +112,6 @@ useEffect(()=>{
     if(thisActorMembership?.length > 0){
       setActorMembership(thisActorMembership[0]);
     } 
-
-    // const foundFarmer = farmersList?.find(farmer => farmer?._id === selectedId);
-    // console.log('foundFarmer')
-    // setSelectedFarmer(foundFarmer);
   }
 }, [ selectedId ])
 
@@ -146,7 +137,6 @@ useEffect(()=>{
       // update the group manager
       group.manager = selectedId;
     }
-    
     // add the manager to the group in case is not yes a member
     if(selectedId && !(group.members.find(memberId => memberId === selectedId))){
       group.members.push(selectedId);
@@ -233,7 +223,6 @@ useEffect(()=>{
         <Stack
           direction="row" w="100%"
         >
-{/* { && */}
           <Box
             w="10%"
           >
@@ -243,9 +232,11 @@ useEffect(()=>{
                 setIsSearching(false);
               }
               else {
-                navigation.navigate('Group', {
-                  ownerId: group?._id,
-                });
+                navigation.navigate('Profile', {
+                  ownerId: group._id,
+                  farmerType: farmerTypes.group,
+                  farmersIDs: []
+                 })
               }
             }}
             style={{

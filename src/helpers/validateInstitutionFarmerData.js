@@ -1,6 +1,7 @@
 import { assetTypes } from "../consts/assetTypes";
 import categories from "../consts/categories";
 import { capitalize } from "./capitalize";
+import { containsNonNumeric } from "./containsNonNumeric";
 
 
 
@@ -97,7 +98,7 @@ const validateInstitutionFarmerData = (
         (
         !Number.isInteger(parseInt(retrievedInstitutionNuit))  || 
         retrievedInstitutionNuit?.toString().length !== 9   
-        )
+         || containsNonNumeric(retrievedInstitutionNuit))
         ){
         setErrors({ ...errors,
             institutionNuit: 'NUIT inválido.',

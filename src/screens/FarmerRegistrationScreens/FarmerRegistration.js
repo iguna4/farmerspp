@@ -301,6 +301,7 @@ export default function FarmerRegistration({ route, navigation }) {
                 // groupManagerName,
                 // groupManagerPhone,
             }
+            console.log('group data:', farmerData);
             if (!validateGroupFarmerData(farmerData, errors, setErrors, farmerType)) {
                 setErrorAlert(true)
                 return ;

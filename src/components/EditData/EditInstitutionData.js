@@ -3,8 +3,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Text, SafeAreaView, StyleSheet, ScrollView, TextInput, View } from 'react-native';
 import { Overlay, Icon, Button, CheckBox } from "@rneui/base";
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
-
-import ConfirmData from './ConfirmData';
+import Modal from 'react-native-modal';
+import ConfirmData from './ConfirmDataCopy';
 import COLORS from "../../consts/colors";
 import CustomActivityIndicator from "../ActivityIndicator/CustomActivityIndicator";
 
@@ -25,70 +25,60 @@ const {useRealm} = realmContext;
 const EditInstitutionData = ({  
     isOverlayVisible, 
     setIsOverlayVisible,
-    isConfirmDataVisible,
     setIsConfirmDataVisible,
-
-    ownerName,
-    resource,
+    farmerId,
     
     resourceName,
     dataToBeUpdated,
 
-    newDataObject,
-    oldDataObject,
     setNewDataObject,
     setOldDataObject,
 
-    // the institution manager personal data
-    institutionManagerPhone,
-    setInstitutionManagerPhone,
-    institutionManagerName,
-    setInstitutionManagerName,
-    oldInstitutionManagerPhone,
-    setOldInstitutionManagerPhone,
-    oldInstitutionManagerName,
-    setOldInstitutionManagerName,
-
-    // the institution documents
-    institutionNuit,
-    setInstitutionNuit,
-    institutionLicence,
-    setInstitutionLicence,
-    oldInstitutionNuit,
-    setOldInstitutionNuit,
-    oldInstitutionLicence,
-    setOldInstitutionLicence
     
 })=>{
 
     const realm = useRealm();
     const user = useUser();
     const customUserData = user?.customData;
+    const farmer = realm.objectForPrimaryKey('Institution', farmerId);
 
     // // ----------------------------------------------------
     const [errors, setErrors] = useState({});
     const [overlayTitle, setOverlayTitle] = useState('');
 
+// the institution manager details
+    const [institutionManagerPhone, setInstitutionManagerPhone] = useState('');
+    const [institutionManagerName, setInstitutionManagerName] = useState('');
+
+    const [oldInstitutionManagerPhone, setOldInstitutionManagerPhone] = useState('');
+    const [oldInstitutionManagerName, setOldInstitutionManagerName] = useState('');
+
+    // the institution documents
+    const [ institutionNuit, setInstitutionNuit] = useState('');
+    const [institutionLicence, setInstitutionLicence] = useState('');
+
+    const [oldInstitutionNuit, setOldInstitutionNuit] = useState('');
+    const [oldInstitutionLicence, setOldInstitutionLicence] = useState('');
 
 
     useEffect(()=>{
         if (dataToBeUpdated === 'institutionDocument' && resourceName === 'Institution'){
-            setInstitutionNuit(resource?.nuit);
-            setInstitutionLicence(resource?.licence);
+            setInstitutionNuit(farmer?.nuit);
+            setInstitutionLicence(farmer?.licence);
             setOverlayTitle('Actualizar Documentação.');
 
-            setOldInstitutionNuit(resource?.nuit);
-            setOldInstitutionLicence(resource?.licence);
+            setOldInstitutionNuit(farmer?.nuit);
+            setOldInstitutionLicence(farmer?.licence);
 
         }
 
         if (dataToBeUpdated === 'institutionManager' && resourceName === 'Institution') {
-            setInstitutionManagerName(resource?.manager.fullname);
-            setInstitutionManagerPhone(resource?.manager.phone);
+            setInstitutionManagerName(farmer?.manager.fullname);
+            setInstitutionManagerPhone(farmer?.manager.phone);
             setOverlayTitle('Actualizar Contacto.');
 
-            setOldInstitutionManagerName(resource?.manager.fullname);
-            setOldInstitutionManagerPhone(resource?.manager.phone);
+            setOldInstitutionManagerName(farmer?.manager.fullname);
+            setOldInstitutionManagerPhone(farmer?.manager.phone);
         }
 
     }, [ dataToBeUpdated, resourceName ]);
@@ -140,23 +130,49 @@ const EditInstitutionData = ({
     }
 
 
+
     const toggleOverlay = () => {
         setIsOverlayVisible(!isOverlayVisible);
       };
 
     return (
 
-    <Overlay 
-        overlayStyle={{ 
-            backgroundColor: COLORS.ghostwhite, 
-            width: '90%',
-            maxHeight: '80%',
-            borderRadius: 10,
-            // paddingBottom: 10,
-        }}
-        isVisible={isOverlayVisible} 
-        onBackdropPress={toggleOverlay}
-    >
+        <View>
+
+        <Modal
+            isVisible={isOverlayVisible}
+            supportedOrientations={['portrait', 'landscape']}
+            propagateSwipe
+            avoidKeyboard
+            animationIn={'zoomIn'}
+            animationInTiming={600}
+            animationOut={'zoomOut'}
+            hideModalContentWhileAnimating={true}
+            onBackButtonPress={()=>{
+                setIsOverlayVisible(false);
+            }}
+            onBackdropPress={()=>{
+                setIsOverlayVisible(false);
+            }}
+            onModalHide={()=>{
+                if (isConfirmButtonPressed){
+                    setIsConfirmDataVisible(true);
+                }
+            }}
+            onSwipeComplete={()=>{
+                setIsOverlayVisible(false);            
+            }}
+            swipeDirection={"left"}
+        >
+    
+        <View
+            style={{
+                backgroundColor: COLORS.ghostwhite,
+                padding: 15,
+                borderRadius: 25,
+                minHeight: '50%',
+            }}
+        >
 
         <View
             style={{
@@ -340,6 +356,8 @@ const EditInstitutionData = ({
             containerStyle={{
                 backgroundColor: COLORS.pantone,
                 borderRadius: 10,
+                marginTop: 30,
+
                 // color: COLORS.ghostwhite,
             }}
             type="outline"
@@ -361,9 +379,9 @@ const EditInstitutionData = ({
         </ScrollView>
 
         </View>
-
-    </Overlay>
-
+        </View>
+</Modal>
+</View>
     )
 }
 

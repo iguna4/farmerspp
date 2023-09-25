@@ -2,6 +2,8 @@ import React, { useState, useEffect,} from "react";
 import { Button,  Box, Center, } from "native-base";
 import {  View, Text, Image, Dimensions, TouchableOpacity} from "react-native";
 import { Icon, CheckBox, Avatar } from '@rneui/themed';
+import { faAdd, faBirthdayCake, faCircleUser, faEllipsisVertical, faHome, faIdCard, faInstitution, faLocation, faLocationPin, faMapLocation, faMapPin, faPeopleGroup, faPerson, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import COLORS from "../../consts/colors";
 import { useNavigation   } from "@react-navigation/native";
@@ -41,7 +43,7 @@ const DuplicatesAlertItem = ({ suspectedDuplicates })=>{
         }}
       >
         <CustomActivityIndicator
-            backgroundColor={COLORS.second}
+            backgroundColor={COLORS.dark}
             indicatorColor={COLORS.ghostwhite}
             loadingActivitiyIndicator={loadingActivitiyIndicator}
             setLoadingActivityIndicator={setLoadingActivityIndicator}
@@ -188,7 +190,7 @@ const DuplicatesAlertItem = ({ suspectedDuplicates })=>{
                       width: '20%',
                     }}
                   >
-                    <Icon name="cake" size={25} color={COLORS.grey} />
+                    <FontAwesomeIcon icon={faBirthdayCake} size={25} color={COLORS.grey} />
                   </Box>
 
                   <Box
@@ -223,7 +225,14 @@ const DuplicatesAlertItem = ({ suspectedDuplicates })=>{
                       // justifyContent: 'center',
                     }}
                   >
-                    <Icon name="location-pin" size={25} color={COLORS.grey} />
+                      <FontAwesomeIcon
+                          style={{
+                            // alignSelf: 'center',
+                          }} 
+                          icon={faHome} 
+                          size={25} 
+                          color={COLORS.grey} 
+                        />
                   </Box>
 
                   <Box

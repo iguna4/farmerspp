@@ -4,6 +4,7 @@ import { assetTypes } from "../consts/assetTypes";
 import categories from "../consts/categories";
 import { capitalize } from "./capitalize";
 import { groupAffiliationStatus } from "../consts/groupAffiliationStatus";
+import { containsNonNumeric } from "./containsNonNumeric";
 
 /**
  * 
@@ -192,7 +193,7 @@ const validateGroupEditedData = (
             (
             !Number.isInteger(parseInt(retrievedGroupNuit))  || 
             retrievedGroupNuit?.toString().length !== 9   
-            )
+             || containsNonNumeric(retrievedGroupNuit))
             ){
             setErrors({ ...errors,
                 groupNuit: 'NUIT inválido.',

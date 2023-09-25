@@ -3,6 +3,7 @@
 import { assetTypes } from "../consts/assetTypes";
 import categories from "../consts/categories";
 import { capitalize } from "./capitalize";
+import { containsNonNumeric } from "./containsNonNumeric";
 /**
  * 
  * @param {*} farmerData 
@@ -18,30 +19,19 @@ import { capitalize } from "./capitalize";
 
 const validateIndividualFarmerData = (
     {   
-
-        addressAdminPost,
-        addressVillage,
-        primaryPhone,
-        secondaryPhone,
-        docType, docNumber, nuit,  
-        addressOldAdminPost,
-        addressOldVillage,
-        oldPrimaryPhone,
-        oldSecondaryPhone,
-        oldDocType, oldDocNumber, oldNuit,
+        address, oldAddress, contact, oldContact, idDocument, oldIdDocument,
     }, errors, setErrors, dataToBeUpdated, resourceName,
     ) => {
 
     // sanitizing recieved data
      if ( dataToBeUpdated === 'address' && resourceName == 'Farmer') {
 
-      const retrievedAddressAdminPost = addressAdminPost?.trim();
-      const retrievedAddressVillage = addressVillage?.trim();
+      const retrievedAddressAdminPost = address?.addressAdminPost?.trim();
+      const retrievedAddressVillage = address?.addressVillage?.trim();
 
-      const retrievedAddressOldAdminPost = addressOldAdminPost?.trim();
-      const retrievedAddressOldVillage = addressOldVillage?.trim();
+      const retrievedAddressOldAdminPost = oldAddress?.addressAdminPost?.trim();
+      const retrievedAddressOldVillage = oldAddress?.addressVillage?.trim();
 
-    //   console.log('new phone:', retrievedPrimaryPhone)
 
       if (
        (retrievedAddressAdminPost === retrievedAddressOldAdminPost) 
@@ -65,6 +55,8 @@ const validateIndividualFarmerData = (
           });
           return false;
       }
+
+      
        return {
            adminPost: retrievedAddressAdminPost,
            village: retrievedAddressVillage,
@@ -72,11 +64,12 @@ const validateIndividualFarmerData = (
      }
 
      if ( dataToBeUpdated === 'contact' && resourceName == 'Farmer') {
-      const retrievedPrimaryPhone = Number(parseInt(primaryPhone)) ? Number(parseInt(primaryPhone)) : 0;
-      const retrievedSecondaryPhone = Number(parseInt(secondaryPhone)) ? Number(parseInt(secondaryPhone)) : 0;
+         const retrievedPrimaryPhone = Number(parseInt(contact?.primaryPhone)) ? Number(parseInt(contact?.primaryPhone)) : 0;
+         const retrievedSecondaryPhone = Number(parseInt(contact?.secondaryPhone)) ? Number(parseInt(contact?.secondaryPhone)) : 0;
+         
+         const retrievedOldPrimaryPhone = Number(parseInt(oldContact?.primaryPhone)) ? Number(parseInt(oldContact?.primaryPhone)) : 0;
+         const retrievedOldSecondaryPhone = Number(parseInt(oldContact?.secondaryPhone)) ? Number(parseInt(oldContact?.secondaryPhone)) : 0;
 
-      const retrievedOldPrimaryPhone = Number(parseInt(oldPrimaryPhone)) ? Number(parseInt(oldPrimaryPhone)) : 0;
-      const retrievedOldSecondaryPhone = Number(parseInt(oldSecondaryPhone)) ? Number(parseInt(oldSecondaryPhone)) : 0;
 
       if(
         (retrievedPrimaryPhone === retrievedOldPrimaryPhone) 
@@ -235,13 +228,16 @@ const validateIndividualFarmerData = (
      }
 
      if ( dataToBeUpdated === 'idDocument' && resourceName == 'Farmer') {
-      const retrievedDocType = docType;
-      const retrievedDocNumber = docNumber;
-      const retrievedNuit = nuit; 
+      const retrievedDocType = idDocument?.docType;
+      const retrievedDocNumber = idDocument?.docNumber;
+      const retrievedNuit = idDocument?.nuit; 
 
-      const retrievedOldDocType = oldDocType;
-      const retrievedOldDocNumber = oldDocNumber;
-      const retrievedOldNuit = oldNuit; 
+      const retrievedOldDocType = oldIdDocument?.docType;
+      const retrievedOldDocNumber = oldIdDocument?.docNumber;
+      const retrievedOldNuit = oldIdDocument?.nuit; 
+
+      console.log('new doc:', JSON.stringify(idDocument));
+      console.log('old doc:', JSON.stringify(oldIdDocument));
 
       if(
        (retrievedDocType === retrievedOldDocType) 
@@ -278,7 +274,7 @@ const validateIndividualFarmerData = (
           (
           !Number.isInteger(parseInt(retrievedNuit))  || 
           retrievedNuit?.toString().length !== 9   
-          )
+          ) || containsNonNumeric(retrievedNuit)
           ){
           setErrors({ ...errors,
               nuit: 'NUIT inválido.',

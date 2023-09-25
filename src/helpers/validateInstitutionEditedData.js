@@ -3,6 +3,7 @@
 import { assetTypes } from "../consts/assetTypes";
 import categories from "../consts/categories";
 import { capitalize } from "./capitalize";
+import { containsNonNumeric } from "./containsNonNumeric";
 /**
  * 
  * @param {*} farmerData 
@@ -16,6 +17,8 @@ import { capitalize } from "./capitalize";
  * in the form.
  */
 
+
+
 const validateInstitutionEditedData = (
     {   
 
@@ -25,6 +28,7 @@ const validateInstitutionEditedData = (
         institutionManagerPhone, oldInstitutionManagerPhone,
     }, errors, setErrors, dataToBeUpdated, resourceName,
     ) => {
+
 
     // sanitizing recieved data
     if (dataToBeUpdated === 'institutionManager' && resourceName === 'Institution') {
@@ -86,7 +90,7 @@ const validateInstitutionEditedData = (
 
 
 
-    if ( dataToBeUpdated === 'institutionDocument' && resourceName == 'Institution') {
+    if ( dataToBeUpdated === 'institutionDocument' && resourceName === 'Institution') {
 
       const retrievedInstitutionNuit = institutionNuit ?  Number(parseInt(institutionNuit)) : 0;
       const retrievedInstitutionLicence = institutionLicence ? institutionLicence?.trim(): '';
@@ -108,6 +112,18 @@ const validateInstitutionEditedData = (
 
        return false;
       }
+
+    if (retrievedInstitutionNuit &&
+        (
+        !Number.isInteger(parseInt(retrievedInstitutionNuit))  || 
+        retrievedInstitutionNuit?.toString().length !== 9   
+         || containsNonNumeric(retrievedInstitutionNuit))
+        ){
+        setErrors({ ...errors,
+            institutionNuit: 'NUIT inválido.',
+        });
+        return false;
+    }
 
       if (!retrievedInstitutionNuit && retrievedOldInstitutionNuit) {
         setErrors({

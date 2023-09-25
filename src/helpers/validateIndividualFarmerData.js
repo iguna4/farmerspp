@@ -2,6 +2,7 @@
 import { assetTypes } from "../consts/assetTypes";
 import categories from "../consts/categories";
 import { capitalize } from "./capitalize";
+import { containsNonNumeric } from "./containsNonNumeric";
 /**
  * 
  * @param {*} farmerData 
@@ -234,8 +235,7 @@ const validateIndividualFarmerData = (
     if (retrievedNuit &&
         (
         !Number.isInteger(parseInt(retrievedNuit))  || 
-        retrievedNuit?.toString().length !== 9   
-        )
+        retrievedNuit?.toString().length !== 9 || containsNonNumeric(retrievedNuit))
         ){
         setErrors({ ...errors,
             nuit: 'NUIT inválido.',

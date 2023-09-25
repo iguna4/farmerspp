@@ -3,8 +3,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Text, SafeAreaView, StyleSheet, ScrollView, TextInput, View } from 'react-native';
 import { Overlay, Icon, Button, CheckBox } from "@rneui/base";
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
-
-import ConfirmData from './ConfirmData';
+import Modal from 'react-native-modal';
+import ConfirmData from './ConfirmDataCopy';
 import COLORS from "../../consts/colors";
 import CustomActivityIndicator from "../ActivityIndicator/CustomActivityIndicator";
 
@@ -25,70 +25,60 @@ const {useRealm} = realmContext;
 const EditInstitutionData = ({  
     isOverlayVisible, 
     setIsOverlayVisible,
-    isConfirmDataVisible,
     setIsConfirmDataVisible,
-
-    ownerName,
-    resource,
+    farmerId,
     
     resourceName,
     dataToBeUpdated,
 
-    newDataObject,
-    oldDataObject,
     setNewDataObject,
     setOldDataObject,
 
-    // the institution manager personal data
-    institutionManagerPhone,
-    setInstitutionManagerPhone,
-    institutionManagerName,
-    setInstitutionManagerName,
-    oldInstitutionManagerPhone,
-    setOldInstitutionManagerPhone,
-    oldInstitutionManagerName,
-    setOldInstitutionManagerName,
-
-    // the institution documents
-    institutionNuit,
-    setInstitutionNuit,
-    institutionLicence,
-    setInstitutionLicence,
-    oldInstitutionNuit,
-    setOldInstitutionNuit,
-    oldInstitutionLicence,
-    setOldInstitutionLicence
     
 })=>{
 
     const realm = useRealm();
     const user = useUser();
     const customUserData = user?.customData;
+    const farmer = realm.objectForPrimaryKey('Institution', farmerId);
 
     // // ----------------------------------------------------
     const [errors, setErrors] = useState({});
     const [overlayTitle, setOverlayTitle] = useState('');
 
+// the institution manager details
+    const [institutionManagerPhone, setInstitutionManagerPhone] = useState('');
+    const [institutionManagerName, setInstitutionManagerName] = useState('');
+
+    const [oldInstitutionManagerPhone, setOldInstitutionManagerPhone] = useState('');
+    const [oldInstitutionManagerName, setOldInstitutionManagerName] = useState('');
+
+    // the institution documents
+    const [ institutionNuit, setInstitutionNuit] = useState('');
+    const [institutionLicence, setInstitutionLicence] = useState('');
+
+    const [oldInstitutionNuit, setOldInstitutionNuit] = useState('');
+    const [oldInstitutionLicence, setOldInstitutionLicence] = useState('');
 
 
     useEffect(()=>{
         if (dataToBeUpdated === 'institutionDocument' && resourceName === 'Institution'){
-            setInstitutionNuit(resource?.nuit);
-            setInstitutionLicence(resource?.licence);
+            setInstitutionNuit(farmer?.nuit);
+            setInstitutionLicence(farmer?.licence);
             setOverlayTitle('Actualizar Documentação.');
 
-            setOldInstitutionNuit(resource?.nuit);
-            setOldInstitutionLicence(resource?.licence);
+            setOldInstitutionNuit(farmer?.nuit);
+            setOldInstitutionLicence(farmer?.licence);
 
         }
 
         if (dataToBeUpdated === 'institutionManager' && resourceName === 'Institution') {
-            setInstitutionManagerName(resource?.manager.fullname);
-            setInstitutionManagerPhone(resource?.manager.phone);
+            setInstitutionManagerName(farmer?.manager.fullname);
+            setInstitutionManagerPhone(farmer?.manager.phone);
             setOverlayTitle('Actualizar Contacto.');
 
-            setOldInstitutionManagerName(resource?.manager.fullname);
-            setOldInstitutionManagerPhone(resource?.manager.phone);
+            setOldInstitutionManagerName(farmer?.manager.fullname);
+            setOldInstitutionManagerPhone(farmer?.manager.phone);
         }
 
     }, [ dataToBeUpdated, resourceName ]);
@@ -140,78 +130,101 @@ const EditInstitutionData = ({
     }
 
 
+
     const toggleOverlay = () => {
         setIsOverlayVisible(!isOverlayVisible);
       };
 
     return (
 
-    <Overlay 
-        overlayStyle={{ 
-            backgroundColor: COLORS.ghostwhite, 
-            width: '90%',
-            maxHeight: '80%',
-            borderRadius: 10,
-            // paddingBottom: 10,
-        }}
-        isVisible={isOverlayVisible} 
-        onBackdropPress={toggleOverlay}
-    >
-
-        <View
-            style={{
-                // minHeight: '80%',
-                justifyContent: 'center',
-                maxHeight: '100%',
-                // marginVertical: 10,
+        <Modal
+            isVisible={isOverlayVisible}
+            supportedOrientations={['portrait', 'landscape']}
+            propagateSwipe
+            avoidKeyboard
+            animationIn={'zoomIn'}
+            animationInTiming={600}
+            animationOut={'zoomOut'}
+            hideModalContentWhileAnimating={true}
+            onBackButtonPress={()=>{
+                setIsOverlayVisible(false);
             }}
+            onBackdropPress={()=>{
+                setIsOverlayVisible(false);
+            }}
+            onModalHide={()=>{
+                if (isConfirmButtonPressed){
+                    setIsConfirmDataVisible(true);
+                }
+            }}
+            onSwipeComplete={()=>{
+                setIsOverlayVisible(false);            
+            }}
+            swipeDirection={["left", "right"]}
         >
-                    <View
-                        style={{ 
-                            width: '100%', 
-                            // backgroundColor: COLORS.pantone, 
-                        }}
-                    >
-                        <Text
-                            style={{ 
-                                textAlign: 'center',
-                                color: COLORS.black,
-                                fontSize: 16,
-                                paddingVertical: 5,
-                                fontFamily: 'JosefinSans-Bold',
-                                
-                            }}
-                        >{overlayTitle}</Text>
-                    </View>
 
-                    <View
-                        style={{
-                            position: 'absolute',
-                            right: 0,
-                            top: 0,
-                        }}
-                    >
-                        <Icon 
-                            onPress={()=>{
-                                setIsOverlayVisible(false);
-                            }}
-                            name="close" 
-                            size={25} 
-                            color={COLORS.grey} 
-                        />
-                    </View>
-            <ScrollView
-                decelerationRate={'normal'}
-                fadingEdgeLength={2}
-                keyboardDismissMode = 'on-drag'
-                keyboardShouldPersistTaps = 'handled'
-                style={{
-                    // flex: 1,
-                    // minHeight: '100%',
-                    // marginVertical: 10,
+        <View>
+    
+           <View 
+                style={{ 
+                    width: '100%',
+                    minHeight: 50,
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.dark,
+                    borderTopLeftRadius: 8,
+                    borderTopRightRadius: 8,
                 }}
             >
+                <View
+                    style={{ width: '90%'}}
+                >
+                    <Text
+                        style={{ 
+                            fontFamily: 'JosefinSans-Bold', 
+                            fontSize: 18,
+                            // fontWeigth: 'bold',
+                            color: COLORS.ghostwhite,
+                            paddingTop: 15,
+                            textAlign: 'center',
+                        }}
+                        >
+                        {overlayTitle}
+                    </Text>
+                </View>
+                <View
+                    style={{ width: '10%', justifyContent: 'center', alignItems: 'center',}}
+                >
+                    <Icon 
+                        name="close" 
+                        size={30} 
+                        color={COLORS.ghostwhite} 
+                        onPress={()=>{
+                            setIsOverlayVisible(false);
+                        }}
+                    />
+                </View>
+            </View>
 
+
+
+
+                    
+            <ScrollView>
+
+            <View
+                flex={1}
+                onStartShouldSetResponder={()=>true}
+                style={{
+                    backgroundColor: COLORS.ghostwhite,
+                    borderBottomLeftRadius: 8,
+                    borderBottomRightRadius: 8,
+                    padding: 10,
+                }}
+
+            >
+
+
+<>
     {
         (dataToBeUpdated === 'institutionManager' && resourceName === 'Institution') &&
         <Stack direction="column">
@@ -274,10 +287,9 @@ const EditInstitutionData = ({
 
     }
 
+</>
 
-
-
-
+<>
     {/* update the institution Documents */}
 
     {
@@ -330,6 +342,9 @@ const EditInstitutionData = ({
     </Stack>
 
     }
+</>
+
+
         <Button
             title="Confirmar Dados"
             titleStyle={{
@@ -340,6 +355,8 @@ const EditInstitutionData = ({
             containerStyle={{
                 backgroundColor: COLORS.pantone,
                 borderRadius: 10,
+                marginTop: 30,
+
                 // color: COLORS.ghostwhite,
             }}
             type="outline"
@@ -358,12 +375,11 @@ const EditInstitutionData = ({
 
             }}
         />
+        </View>
         </ScrollView>
 
         </View>
-
-    </Overlay>
-
+</Modal>
     )
 }
 

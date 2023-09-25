@@ -43,3 +43,9 @@ export const groups2 = [
     { key: 3, value: "Grupo de Produtores"},
     { key: 4, value: "Escola na Machamba do Camponês"},
 ];
+
+export const farmerTypes = {
+    farmer: 'Indivíduo',
+    group: 'Grupo',
+    institution: 'Instituição',
+}

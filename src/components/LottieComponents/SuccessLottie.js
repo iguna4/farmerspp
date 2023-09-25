@@ -23,8 +23,16 @@ export function SuccessLottie({ successLottieVisible, setSuccessLottieVisible })
 }
 
 useEffect(()=>{
+
  handleAdd();
-}, []);
+
+ if (successLottieVisible){
+  setTimeout(()=>{
+    setSuccessLottieVisible(false);
+  }, 3000);
+ }
+ 
+}, [ successLottieVisible ]);
 
 
 

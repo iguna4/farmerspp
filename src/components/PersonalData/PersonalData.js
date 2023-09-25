@@ -1,8 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable prettier/prettier */
-/* eslint-disable semi */
-import React, { useEffect, useState, useCallback } from 'react';
-import { View, TouchableOpacity, Modal, TextInput, Text, ScrollView, InteractionManager, SafeAreaView, FlatList } from 'react-native';
+import React, { useEffect, useState, useCallback, useRef, } from 'react';
+import { 
+    Animated, Easing, View, TouchableOpacity, Modal, 
+    TextInput, Text, ScrollView, InteractionManager, 
+    SafeAreaView, FlatList ,
+    useNativeDriver,
+} from 'react-native';
 import { Box,  FormControl, Stack, } from 'native-base';
 import { Divider, Icon } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
@@ -35,11 +37,10 @@ import {
 
 import CustomDivider from '../../components/Divider/CustomDivider';
 import COLORS from '../../consts/colors';
-import EditData from '../EditData/EditData';
 import EditFarmerData from '../EditData/EditFarmerData';
 import { errorMessages } from '../../consts/errorMessages';
 import { roles } from '../../consts/roles';
-import ConfirmData from '../EditData/ConfirmData';
+import ConfirmData from '../EditData/ConfirmDataCopy';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEllipsisVertical, faPeopleGroup, faEye, } from '@fortawesome/free-solid-svg-icons';
@@ -50,15 +51,22 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import { resourceValidation } from '../../consts/resourceValidation';
 import validateInvalidationMessage from '../../helpers/validateInvalidationMessage';
 import CustomActivityIndicator from '../ActivityIndicator/CustomActivityIndicator';
-import { PopMenuWrapper, PopupMenu } from '../PopupMenu/PopupMenu';
+import { PopupMenu } from '../PopupMenu/PopupMenu';
 import { Platform } from 'react-native';
 import { StatusBar } from 'react-native';
+import BottomSheet from '../EditData/EditDataBottomSheet';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 
 const resourceMessage = 'resourceMessage';
 
-const PersonalData = ({ farmer, setRefresh, refresh })=>{
+const PersonalData = ({ 
+    farmer, setRefresh, refresh,
+    setIsOverlayVisible, isOverlayVisible,
+    resizeBox, scale,
+    // BottomSheetRef,
+    // onScrollToBottomSheet,
+})=>{
 
     const realm = useRealm();
     const navigation = useNavigation();
@@ -75,10 +83,10 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
         member = membership[0];
     }
 
-    
-    const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+    // controle EditFarmerData Component animation
+    // const scale = useRef(new Animated.Value(0)).current;    
     const [isConfirmDataVisible, setIsConfirmDataVisible] = useState(false);
-
+    const [popupMenuVisible, setPopupMenuVisible] = useState(false);
     
     const [autoRefresh, setAutoRefresh] = useState(false);
     const [isCollapseOn, setIsCallapseOne] = useState(false);
@@ -143,7 +151,17 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
     const [isEllipsisVisible, setIsEllipsisVisible] = useState(false);
     // ---------------------------------------------------------------
     
+    // const bottomSheetRef = useRef(null);
+    // const onScrollToBottomSheet = useCallback(()=>{
+    //     const isActive = bottomSheetRef?.current?.isActive();
+    //     if (isActive) {
+    //         bottomSheetRef?.current?.scrollTo(0);
 
+    //     }
+    //     else {
+    //         bottomSheetRef?.current?.scrollTo(-200);
+    //     }
+    // }, [])
 
 
 
@@ -226,6 +244,18 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
         return () => task.cancel();
       }, [])
     );
+
+    // Animate by resizing EditFarmerData Component
+    // const resizeBox = (to)=>{
+    //     to === 1 && setIsOverlayVisible(true);
+    //     Animated.timing(scale, {
+    //         toValue: to,
+    //         useNativeDriver: true,
+    //         duration: 400,
+    //         easing: Easing.linear,
+    //     }).start(()=> to === 0 && setIsOverlayVisible(false));
+        
+    // }
   
   
   
@@ -471,7 +501,8 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                             fontSize: 14,
                             // paddingLeft: 10,
                             fontFamily: 'JosefinSans-Regular',
-                        }} >
+                        }} 
+                    >
                         {`${new Date(farmer?.birthDate).getDate()}/${new Date(farmer?.birthDate).getMonth()+1}/${new Date(farmer?.birthDate).getFullYear()}`}  ({new Date().getFullYear() - new Date(farmer?.birthDate).getFullYear()} anos)
                     </Text>
                 </Box>
@@ -587,6 +618,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                     onPress={
                         ()=>{
                             setIsOverlayVisible(!isOverlayVisible);
+                            // resizeBox(1);
                             setDataToBeUpdated('address');
                         }
                     }
@@ -599,6 +631,13 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                     />
                 </TouchableOpacity>
         }
+            {
+                // popupMenuVisible && 
+                //     <PopupMenu 
+                //         popupMenuVisible={popupMenuVisible}  
+                //         setPopupMenuVisible={setPopupMenuVisible}
+                //     />
+            }
             </Box>
         </Stack>
 
@@ -734,6 +773,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                         onPress={
                             ()=>{
                                 setIsOverlayVisible(!isOverlayVisible);
+                                // resizeBox(1);
                                 setDataToBeUpdated('contact');
                             }
                         }
@@ -877,6 +917,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
                     onPress={
                         ()=>{
                             setIsOverlayVisible(!isOverlayVisible);
+                        //    resizeBox(1);
                             setDataToBeUpdated('idDocument');
                         }
                     }
@@ -1601,6 +1642,8 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
         <EditFarmerData 
             isOverlayVisible={isOverlayVisible}
             setIsOverlayVisible={setIsOverlayVisible}
+            resizeBox={resizeBox}
+            scale={scale}
             isConfirmDataVisible={isConfirmDataVisible}
             setIsConfirmDataVisible={setIsConfirmDataVisible}
 
@@ -1680,7 +1723,7 @@ const PersonalData = ({ farmer, setRefresh, refresh })=>{
     }
 
 
-
+    {/* <BottomSheet ref={bottomSheetRef} /> */}
     </CollapseBody>
     </Collapse>  
         </>

@@ -4,10 +4,11 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import { Text,  Stack, Box, Center, Divider } from 'native-base';
-import { Modal, ScrollView, Pressable, View, TouchableOpacity } from 'react-native';
+import { ScrollView, Pressable, View, TouchableOpacity } from 'react-native';
 import { Button, Icon } from '@rneui/themed';
 import CustomDivider from '../Divider/CustomDivider';
 import styles from './styles';
+import Modal from 'react-native-modal';
 
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
@@ -142,324 +143,281 @@ export default function GroupModal (
 
 
   return (
-    <View
-        style={{ flex: 1, }}
-    >
+    // <View
+    //     style={{ flex: 1, }}
+    // >
     <Modal
-        visible={modalVisible}
-        animationType="slide"
-        onRequestClose={()=>setModalVisible(false)}
-        // statusBarTranslucent={false}
+        // visible={modalVisible}
+        // animationType="slide"
+        // onRequestClose={()=>setModalVisible(false)}
+        // // statusBarTranslucent={false}
+        isVisible={modalVisible}
+        supportedOrientations={['portrait', 'landscape']}
+        propagateSwipe
+        animationIn={'zoomIn'}
+        animationInTiming={600}
+        animationOut={'zoomOut'}
+        swipeDirection={['left', 'right']}
+        // animationOutTiming={600}
+        hideModalContentWhileAnimating={true}
+        swipeThreshold={1000}
     >
-        <Stack 
-                direction="row" 
-                w="100%"
-                // pt="3"
-                style={{
-                    backgroundColor: '#EBEBE4',
+
+    <View>
+
+            <View 
+                style={{ 
+                    width: '100%',
+                    height: 50,
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.dark,
+                    borderTopLeftRadius: 8,
+                    borderTopRightRadius: 8,
                 }}
             >
-            <Box>
-                <Pressable
-                    onPress={()=>{
-                        // navigation.goBack();
-                        setModalVisible(false);
-                    }}   
-                    style={{
-                        position: 'absolute',
-                        left: 5,
-                        top: 4,
-                        flexDirection: 'row',
-                        // justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
+                <View
+                    style={{ width: '90%'}}
+                >
+                    <Text
+                        style={{ 
+                            fontFamily: 'JosefinSans-Bold', 
+                            fontSize: 18,
+                            // fontWeigth: 'bold',
+                            color: COLORS.ghostwhite,
+                            paddingTop: 15,
+                            textAlign: 'center',
+                        }}
+                        >
+                        Confirmar Dados
+                    </Text>
+                </View>
+                <View
+                    style={{ width: '10%', justifyContent: 'center', alignItems: 'center',}}
                 >
                     <Icon 
-                        name="arrow-back-ios" 
-                        color={COLORS.main}
-                        size={25}
-                        // onPress={()=>{}}
-                    /> 
-                    {/* <Text
-                        style={{
-                            color: COLORS.main,
-                            fontFamily: 'JosefinSans-Bold',
-                            marginLeft: -10,
-                        }}
-                    >
-                        Voltar
-                    </Text> */}
-                </Pressable>
-            </Box>
-            <Box w="80%">
-            </Box>
-            <Box w="20%">
-                <Icon 
-                    name="close" 
-                    size={35} 
-                    color="grey" 
-                    onPress={() => setModalVisible(false)}
-                />
-            </Box>
-        </Stack>
-        <ScrollView
-            contentContainerStyle={{
-                flex: 1, 
-                justifyContent: 'center', 
-                minHeight: '120%',
-                paddingVertical: 15,
-            }}
-        >
+                        name="close" 
+                        size={30} 
+                        color={COLORS.ghostwhite} 
+                        onPress={() => setModalVisible(false)}
+                        // style={{ position: 'relative', top: 10, right: 10, }}
+                    />
+                </View>
+            </View>
 
-        <Center 
-            style={{ 
-                paddingBottom: 5,    
-                paddingTop: 10,
-                width: '100%',
-                // backgroundColor: '#EBEBE4',           
-            }}
-        >
-            <Text
-                style={{ 
-                    fontFamily: 'JosefinSans-Bold', 
-                    fontSize: 24,
-                    fontWeigth: 'bold',
-                    color: '#000',
-                    paddingTop: 15,
+            <ScrollView >
 
+            <View
+                flex={1}
+                onStartShouldSetResponder={()=>true}
+                style={{
+                    backgroundColor: COLORS.ghostwhite,
+                    borderBottomLeftRadius: 8,
+                    borderBottomRightRadius: 8,
                 }}
             >
-                Confirmar Dados
-            </Text>
-        </Center>
 
-        <Box mx="6">
-        <CustomDivider
-            marginVertical="1"
-            thickness={1}
-            bg="grey"
-        />
-        <Stack direction="row" w="100%" my="1">
-            <Box w="40%">
-                <Text style={styles.keys}>Grupo:</Text>
-            </Box>
-            <Box w="60%" style={styles.values}>
-                <Box>
-                    <Text style={styles.values}>
-                        {farmerData?.name} ({farmerData?.type})
-                    </Text>
-                    <Text style={styles.values}>
-                        {farmerData?.operationalStatus ? 'Activo': 'Inactivo'} 
-                    </Text>
-                </Box>
-            </Box>
-        </Stack>
+                    <Box mx="2">
+                    <Stack direction="row" w="100%" my="1">
+                        <Box w="40%">
+                            <Text style={styles.keys}>Organização:</Text>
+                        </Box>
+                        <Box w="60%" style={styles.values}>
+                            <Box>
+                                <Text style={styles.values}>
+                                    {farmerData?.name} ({farmerData?.type})
+                                </Text>
+                                <Text style={styles.values}>
+                                    {farmerData?.operationalStatus ? 'Activo': 'Inactivo'} 
+                                </Text>
+                            </Box>
+                        </Box>
+                    </Stack>
 
 
-    <CustomDivider
-        marginVertical="1"
-        thickness={1}
-        bg="grey"
-    />
+                <CustomDivider
+                    marginVertical="1"
+                    thickness={1}
+                    bg={COLORS.lightgrey}
+                />
 
-    <Stack direction="row" w="100%" my="1">
-        <Box w="40%">
-            <Text style={styles.keys}>Finalidade:</Text>
-        </Box>
-        <Box w="60%" style={styles.values}>
-            <Box>
-                {
-                    farmerData?.assets?.map((asset, index)=>(
-                        <Text key={index} style={styles.values}>
-                            - {asset?.subcategory} 
-                        </Text>
-                    ))
-                }
-            </Box>
-        </Box>
-    </Stack>
+                <Stack direction="row" w="100%" my="1">
+                    <Box w="40%">
+                        <Text style={styles.keys}>Finalidade:</Text>
+                    </Box>
+                    <Box w="60%" style={styles.values}>
+                        <Box>
+                            {
+                                farmerData?.assets?.map((asset, index)=>(
+                                    <Text key={index} style={styles.values}>
+                                        - {asset?.subcategory} 
+                                    </Text>
+                                ))
+                            }
+                        </Box>
+                    </Box>
+                </Stack>
 
-    <CustomDivider
-        marginVertical="1"
-        thickness={1}
-        bg="grey"
-    />
+                <CustomDivider
+                    marginVertical="1"
+                    thickness={1}
+                    bg={COLORS.lightgrey}
+                />
 
-    <Stack direction="row" w="100%" my="1">
-        <Box w="40%">
-            <Text style={styles.keys}>Membros</Text>
-        </Box>
-        <Box w="60%">
-            <Box>
-                <Text style={styles.values}>
-                    {farmerData.numberOfMembers?.women} (Mulheres)
-                </Text>
-            </Box>
-            <Box>
-                <Text style={styles.values}>
-                    {farmerData.numberOfMembers?.total - farmerData.numberOfMembers?.women} (Homens)
-                </Text>
-            </Box>
-            <Box>
-                <Text style={styles.values}>________</Text>
-                <Text style={styles.values}>
-                    {farmerData.numberOfMembers?.total} (Total)
-                </Text>
-            </Box>
-        </Box>
-    </Stack>
-
-
-        <CustomDivider
-            marginVertical="1"
-            thickness={1}
-            bg="grey"
-        />
-
-    <Stack direction="row" w="100%" my="1">
-        <Box w="40%">
-            <Text style={styles.keys}>Estado de legalização</Text>
-        </Box>
-        <Box w="60%">
-            <Box>
-                <Text style={styles.values}>
-                    {farmerData?.legalStatus}
-                </Text>
-                <Text style={styles.values}>
-                    {farmerData?.creationYear} (an de criação)
-                </Text>
-                {
-                    farmerData?.legalStatus === groupAffiliationStatus.affiliated &&
-                    <Text style={styles.values}>
-                        {farmerData?.affiliationYear} (ano de legalização)
-                    </Text>
-                }
-            </Box>
-        </Box>
-    </Stack>
+                <Stack direction="row" w="100%" my="1">
+                    <Box w="40%">
+                        <Text style={styles.keys}>Membros</Text>
+                    </Box>
+                    <Box w="60%">
+                        <Box>
+                            <Text style={styles.values}>
+                                {farmerData.numberOfMembers?.women} (Mulheres)
+                            </Text>
+                        </Box>
+                        <Box>
+                            <Text style={styles.values}>
+                                {farmerData.numberOfMembers?.total - farmerData.numberOfMembers?.women} (Homens)
+                            </Text>
+                        </Box>
+                        <Box>
+                            <Text style={styles.values}>________</Text>
+                            <Text style={styles.values}>
+                                {farmerData.numberOfMembers?.total} (Total)
+                            </Text>
+                        </Box>
+                    </Box>
+                </Stack>
 
 
-{   farmerData?.legalStatus === groupAffiliationStatus.affiliated &&
-    <>
-        <CustomDivider
-            marginVertical="1"
-            thickness={1}
-            bg="grey"
-        />
+                    <CustomDivider
+                        marginVertical="1"
+                        thickness={1}
+                        bg={COLORS.lightgrey}
+                    />
 
-        <Stack direction="row" w="100%" my="1">
-            <Box w="40%">
-                <Text style={styles.keys}>Documentos:</Text>
-            </Box>
-            <Box w="60%">
-                <Box>
-                    <Text style={styles.values}>
-                        {farmerData?.nuit ? farmerData?.nuit + ` (NUIT)` : 'Nenhum (NUIT)'} 
-                    </Text>
-                    <Text style={styles.values}>
-                        {farmerData?.licence ? farmerData?.licence + ` (Licença/Alvará)` : 'Nenhum (Licença/Alvará)'} 
-                    </Text>
-                </Box>
-            </Box>
-        </Stack>
-    </>
-}
+                <Stack direction="row" w="100%" my="1">
+                    <Box w="40%">
+                        <Text style={styles.keys}>Estado de legalização</Text>
+                    </Box>
+                    <Box w="60%">
+                        <Box>
+                            <Text style={styles.values}>
+                                {farmerData?.legalStatus}
+                            </Text>
+                            <Text style={styles.values}>
+                                {farmerData?.creationYear} (an de criação)
+                            </Text>
+                            {
+                                farmerData?.legalStatus === groupAffiliationStatus.affiliated &&
+                                <Text style={styles.values}>
+                                    {farmerData?.affiliationYear} (ano de legalização)
+                                </Text>
+                            }
+                        </Box>
+                    </Box>
+                </Stack>
 
 
-    {/* <CustomDivider
-        marginVertical="1"
-        thickness={1}
-        bg="grey"
-    /> */}
+            {   farmerData?.legalStatus === groupAffiliationStatus.affiliated &&
+                <>
+                    <CustomDivider
+                        marginVertical="1"
+                        thickness={1}
+                        bg={COLORS.lightgrey}
+                    />
 
-    {/* <Stack direction="row" w="100%" my="1">
-        <Box w="40%">
-            <Text style={styles.keys}>Contacto:</Text>
-        </Box>
-        <Box w="60%">
-            <Text style={styles.values}>
-                {farmerData.manager?.fullname} ({farmerData?.type?.includes('Grupo') ? "Representante" : "Presidente"})
-            </Text>
-            <Text style={styles.values}>
-            {
-                farmerData.manager?.phone ? 
-                farmerData.manager?.phone + ` (Telefone)` : 
-                'Nenhum (Telefone)' 
+                    <Stack direction="row" w="100%" my="1">
+                        <Box w="40%">
+                            <Text style={styles.keys}>Documentos:</Text>
+                        </Box>
+                        <Box w="60%">
+                            <Box>
+                                <Text style={styles.values}>
+                                    {farmerData?.nuit ? farmerData?.nuit + ` (NUIT)` : 'Nenhum (NUIT)'} 
+                                </Text>
+                                <Text style={styles.values}>
+                                    {farmerData?.licence ? farmerData?.licence + ` (Licença/Alvará)` : 'Nenhum (Licença/Alvará)'} 
+                                </Text>
+                            </Box>
+                        </Box>
+                    </Stack>
+                </>
             }
-            </Text>
-        </Box>
-    </Stack> */}
-    <CustomDivider
-        marginVertical="1"
-        thickness={1}
-        bg="grey"
-    />
 
-        <Stack direction="row" w="100%" my="1">
-        <Box w="40%">
-            <Text style={styles.keys}>Endereço:</Text>
-        </Box>
-        <Box w="60%">
-            <Box>
-                <Text style={styles.values}>
-                    {farmerData?.address?.province} (Província)
-                </Text>
-                <Text style={styles.values}>
-                    {farmerData?.address?.district} (Distrito)
-                </Text>
-                <Text style={styles.values}>
-                    {farmerData?.address?.adminPost} (Posto Admin.)
-                </Text>
-                <Text style={styles.values}>
-                    {farmerData.address?.village ? farmerData.address?.village + ' (localidade)' : 'Nenhum (Localidade)'}
-                </Text>
-            </Box>
-        </Box>
-    </Stack>
+                <CustomDivider
+                    marginVertical="1"
+                    thickness={1}
+                    bg={COLORS.lightgrey}
+                />
 
-    <CustomDivider
-        marginVertical="1"
-        thickness={1}
-        bg="grey"
-    />
-    <Center
-        w="100%"
-    >
-        <Button
-            onPress={()=>{
-                try {
-                    addGroup(farmerData, realm)
-                    setModalVisible(false);
-                    setIsCoordinatesModalVisible(true);
-                } catch (error) {
-                    throw new Error('Failed to register Group', { cause: error})
-                }
-                finally {
-                    setGroupType('');
-                    setGroupName('');
-                    setGroupAffiliationYear(''); 
-                    setGroupAdminPost('');
-                    setGroupVillage('');
-                    // setGroupManagerName('');
-                    // setGroupManagerPhone('');
-                    setGroupOperatingLicence(''); 
-                    setGroupNuit(''); 
-                    setGroupMembersNumber('')
-                    setGroupWomenNumber('')
-                }
-            }}
-            type="outline"
-            title="Salvar Dados"
-            containerStyle={{
-                width: '100%',
-            }}
-        />
-    </Center>
-    </Box>
-    </ScrollView>
+                    <Stack direction="row" w="100%" my="1">
+                    <Box w="40%">
+                        <Text style={styles.keys}>Endereço:</Text>
+                    </Box>
+                    <Box w="60%">
+                        <Box>
+                            <Text style={styles.values}>
+                                {farmerData?.address?.province} (Província)
+                            </Text>
+                            <Text style={styles.values}>
+                                {farmerData?.address?.district} (Distrito)
+                            </Text>
+                            <Text style={styles.values}>
+                                {farmerData?.address?.adminPost} (Posto Admin.)
+                            </Text>
+                            <Text style={styles.values}>
+                                {farmerData.address?.village ? farmerData.address?.village + ' (localidade)' : 'Nenhum (Localidade)'}
+                            </Text>
+                        </Box>
+                    </Box>
+                </Stack>
+
+                <CustomDivider
+                    marginVertical="1"
+                    thickness={1}
+                    bg={COLORS.lightgrey}
+                />
+                <Center
+                    w="100%"
+                >
+                    <Button
+                        onPress={()=>{
+                            try {
+                                addGroup(farmerData, realm)
+                                setModalVisible(false);
+                                setIsCoordinatesModalVisible(true);
+                            } catch (error) {
+                                throw new Error('Failed to register Group', { cause: error})
+                            }
+                            finally {
+                                setGroupType('');
+                                setGroupName('');
+                                setGroupAffiliationYear(''); 
+                                setGroupAdminPost('');
+                                setGroupVillage('');
+                                // setGroupManagerName('');
+                                // setGroupManagerPhone('');
+                                setGroupOperatingLicence(''); 
+                                setGroupNuit(''); 
+                                setGroupMembersNumber('')
+                                setGroupWomenNumber('')
+                            }
+                        }}
+                        type="outline"
+                        title="Salvar Dados"
+                        containerStyle={{
+                            width: '100%',
+                        }}
+                    />
+                </Center>
+                </Box>
+            </View>
+
+        </ScrollView>
+    </View>
+
 
       </Modal>
-    </View>
+    // </View>
 
   )
 }

@@ -3,6 +3,7 @@ const COLORS = {
     main: '#008000',
     second: '#005000',
     third: '#003000',
+    dark: '#698992',
     fourth: '#EBEBE4',
     fifth: '#f7f7b7',
     sixth: '#f7d7f7',

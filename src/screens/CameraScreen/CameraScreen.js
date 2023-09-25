@@ -187,22 +187,25 @@ const deletePhoto = useCallback((photoOwner, realm)=>{
 
 const navigateBack = ()=>{
   if (ownerType === 'Grupo') {
-    navigation.navigate('Group', {
+    navigation.navigate('Profile', {
       ownerId,
       farmersIDs,
+      farmerType: ownerType,
     })
   
   } 
   else if (ownerType === 'Indivíduo') {
-    navigation.navigate('Farmer', {
+    navigation.navigate('Profile', {
       ownerId,
       farmersIDs,
+      farmerType: ownerType,
     })  
   } 
   else if (ownerType === 'Instituição') {
-    navigation.navigate('Institution', {
+    navigation.navigate('Profile', {
       ownerId,
       farmersIDs,
+      farmerType: ownerType,
     })  
   } 
 }

@@ -1,10 +1,13 @@
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Text, SafeAreaView, StyleSheet, ScrollView, TextInput, View } from 'react-native';
+import { 
+    Text, Animated, Easing, SafeAreaView, 
+    StyleSheet, ScrollView, TextInput, View, TouchableOpacity, } from 'react-native';
 import { Overlay, Icon, Button, CheckBox } from "@rneui/base";
 import { Box, FormControl, Stack, Select, CheckIcon, Center, Radio,  } from 'native-base';
+import Modal from 'react-native-modal';
 
-import ConfirmData from './ConfirmData';
+import ConfirmData from './ConfirmDataCopy';
 import COLORS from "../../consts/colors";
 import CustomActivityIndicator from "../ActivityIndicator/CustomActivityIndicator";
 
@@ -19,111 +22,128 @@ import validateFarmerEditedData from '../../helpers/validateFarmerEditedData';
 
 import { useUser } from "@realm/react";
 import { realmContext } from '../../models/realmContext';
+import { useRef } from "react";
+import { far } from "@fortawesome/free-regular-svg-icons";
 const {useRealm} = realmContext;
 
 
 const EditFarmerData = ({  
     isOverlayVisible, 
     setIsOverlayVisible,
-    isConfirmDataVisible,
     setIsConfirmDataVisible,
-
-
-    ownerName,
-    resource,
-    
+    // resizeBox,
+    // scale,    
     resourceName,
     dataToBeUpdated,
-
-    newDataObject,
-    oldDataObject,
+    farmerId,
     setNewDataObject,
     setOldDataObject,
-
-    addressProvince,
-    addressDistrict,
-    addressAdminPost,
-    addressVillage,
-
-    addressOldProvince,
-    addressOldDistrict,
-    addressOldAdminPost,
-    addressOldVillage,
-
-    setAddressProvince,
-    setAddressDistrict,
-    setAddressAdminPost,
-    setAddressVillage,
-    selectedAddressAdminPosts,
-    setSelectedAddressAdminPosts,
-    setAddressOldProvince,
-    setAddressOldDistrict,
-    setAddressOldAdminPost,
-    setAddressOldVillage,
-
-    // contact
-    primaryPhone,
-    secondaryPhone,
-    setPrimaryPhone,
-    setSecondaryPhone,
-    oldPrimaryPhone,
-    oldSecondaryPhone,
-    setOldPrimaryPhone,
-    setOldSecondaryPhone,
-
-    // idDocument
-    docNumber, setDocNumber,
-    docType, setDocType,
-    nuit, setNuit,
-
-    oldDocNumber, setOldDocNumber,
-    oldDocType, setOldDocType,
-   oldNuit, setOldNuit,
+    
 
 })=>{
 
     const realm = useRealm();
     const user = useUser();
     const customUserData = user?.customData;
+    const farmer = realm.objectForPrimaryKey('Actor', farmerId);
 
     // // ----------------------------------------------------
     const [errors, setErrors] = useState({});
     const [overlayTitle, setOverlayTitle] = useState('');
 
+    // Address code block
+
+
+    const [address, setAddress] = useState({
+        addressProvince: '',
+        addressDistrict: '',
+        addressAdminPost: '',
+        addressVillage: '',
+        overlayTitle: '',
+    });
+    
+
+    const [oldAddress, setOldAddress] = useState({
+        addressProvince: '',
+        addressDistrict: '',
+        addressAdminPost: '',
+        addressVillage: '',
+    });
+
+    const [contact, setContact] = useState({
+        primaryPhone: '',
+        secondaryPhone: '',
+        overlayTitle: '',
+    });
+
+    const [oldContact, setOldContact] = useState({
+        primaryPhone: '',
+        secondaryPhone: '',
+    });
+
+    const [idDocument, setIdDocument] = useState({
+        docType: '',
+        docNumber: '',
+        nuit: '',
+        overlayTitle: '',
+    });
+
+    const [oldIdDocument, setOldIdDocument] = useState({
+        docType: '',
+        docNumber: '',
+        nuit: '',
+    });
+
+    const handleAddressChange = useCallback(()=>{
+
+    }, []);
+
+    // Contact code block
+
+
+
 
     useEffect(()=>{
         if (dataToBeUpdated === 'address' && resourceName === 'Farmer'){
-            setAddressProvince(customUserData?.userProvince);
-            setAddressDistrict(customUserData?.userDistrict);
-            setAddressAdminPost(resource?.address.adminPost);
-            setAddressVillage(resource?.address.village);
+            const currentAddress = {
+                addressProvince: customUserData?.userProvince,
+                addressDistrict: customUserData?.userDistrict,
+                addressAdminPost: farmer?.address.adminPost,
+                addressVillage: farmer?.address.village,
+            }
+
+            setAddress(()=>(currentAddress));
+            setOldAddress(()=>(currentAddress));
+            
             setOverlayTitle('Actualizar endereço.');
 
-            setAddressOldProvince(customUserData?.userProvince);
-            setAddressOldDistrict(customUserData?.userDistrict);
-            setAddressOldAdminPost(resource?.address.adminPost);
-            setAddressOldVillage(resource?.address.village);
         }
 
         if (dataToBeUpdated === 'contact' && resourceName === 'Farmer') {
-            setPrimaryPhone(resource?.contact.primaryPhone);
-            setSecondaryPhone(resource?.contact.secondaryPhone);
-            setOverlayTitle('Actualizar contactos.');
+            const currentContact = {
+                primaryPhone: farmer?.contact.primaryPhone,
+                secondaryPhone: farmer?.contact.secondaryPhone,
+            };
 
-            setOldPrimaryPhone(resource?.contact.primaryPhone);
-            setOldSecondaryPhone(resource?.contact.secondaryPhone);
+            setContact(()=>(currentContact));
+            setOldContact(()=>(currentContact));
+
+            setOverlayTitle('Actualizar contactos.');
         }
 
         if (dataToBeUpdated === 'idDocument' && resourceName === 'Farmer') {
-            setDocType(resource?.idDocument.docType);
-            setDocNumber(resource?.idDocument.docNumber);
-            setNuit(resource?.idDocument.nuit);
+            
+            const currentIdDocument = {
+                docType: farmer?.idDocument.docType,
+                docNumber: farmer?.idDocument.docNumber,  
+                nuit: farmer?.idDocument.nuit,
+                // overlayTitle: 'Actualizar Documentos de Identidade',
+            };
 
+            setIdDocument(()=>(currentIdDocument));
+            setOldIdDocument(()=>(currentIdDocument));
+            
             setOverlayTitle('Actualizar Documentos de Identidade.');
-
-            setOldDocType(resource?.idDocument.docType);
-            setOldDocNumber(resource?.idDocument.docNumber);
-            setOldNuit(resource?.idDocument.nuit);
         }
 
     }, [ dataToBeUpdated, resourceName ]);
@@ -131,10 +151,8 @@ const EditFarmerData = ({
     const onConfirmUpdate = (dataToBeUpdated, resourceName)=> {
 
         const validatedData = validateFarmerEditedData({
-            addressAdminPost, addressVillage, primaryPhone,
-            secondaryPhone, docType, docNumber, nuit,
-            addressOldAdminPost, addressOldVillage, oldPrimaryPhone,
-            oldSecondaryPhone, oldDocType, oldDocNumber, oldNuit,
+            address, oldAddress, contact, oldContact, idDocument, oldIdDocument,
+
         }, errors, setErrors, dataToBeUpdated, resourceName);
 
         const newData = {};
@@ -142,16 +160,16 @@ const EditFarmerData = ({
 
         if (dataToBeUpdated === 'address' && resourceName === 'Farmer') {
             //  new incoming data
-            newData['province'] = addressProvince;
-            newData['district'] = addressDistrict;
+            newData['province'] = address?.addressProvince;
+            newData['district'] = address?.addressDistrict;
             newData['adminPost'] = validatedData?.adminPost;
             newData['village'] = validatedData?.village;
 
             // old data
-            oldData['province'] = addressOldProvince;
-            oldData['district'] = addressOldDistrict;
-            oldData['adminPost'] = addressOldAdminPost;
-            oldData['village'] = addressOldVillage;
+            oldData['province'] = oldAddress?.addressProvince;
+            oldData['district'] = oldAddress?.addressDistrict;
+            oldData['adminPost'] = oldAddress?.addressAdminPost;
+            oldData['village'] = oldAddress?.addressVillage;
             
             setNewDataObject(newData);
             setOldDataObject(oldData);
@@ -165,8 +183,8 @@ const EditFarmerData = ({
 
 
             // old data
-            oldData['primaryPhone'] = oldPrimaryPhone ? Number(parseInt(oldPrimaryPhone)) : 0;
-            oldData['secondaryPhone'] = oldSecondaryPhone ? Number(parseInt(oldSecondaryPhone)) : 0;
+            oldData['primaryPhone'] = oldContact?.primaryPhone ? Number(parseInt(oldContact?.primaryPhone)) : 0;
+            oldData['secondaryPhone'] = oldContact?.secondaryPhone ? Number(parseInt(oldContact?.secondaryPhone)) : 0;
         
 
             setNewDataObject(newData);
@@ -182,9 +200,9 @@ const EditFarmerData = ({
             newData['nuit'] = validatedData?.nuit ? Number(parseInt(validatedData?.nuit)) : 0;
 
             // old data
-            oldData['docType'] = oldDocType ? oldDocType : 'Não tem';
-            oldData['docNumber'] = oldDocNumber ? oldDocNumber : '';
-            oldData['nuit'] = oldNuit ? oldNuit : 0;
+            oldData['docType'] = oldIdDocument?.docType ? oldIdDocument?.docType : 'Não tem';
+            oldData['docNumber'] = oldIdDocument?.docNumber ? oldIdDocument?.docNumber : '';
+            oldData['nuit'] = oldIdDocument?.nuit ? oldIdDocument?.nuit : 0;
 
             setNewDataObject(newData);
             setOldDataObject(oldData);
@@ -192,102 +210,107 @@ const EditFarmerData = ({
 
     }
 
+    
+    const [isConfirmButtonPressed, setIsConfirmButtonPressed] = useState(false);
+
     useEffect(()=>{
-        if (docType === 'Não tem'){
-            setDocNumber('');
+        if (idDocument?.docType === 'Não tem'){
+            // setDocNumber('');
+            setIdDocument((prev)=>({
+                ...prev,
+                docNumber: '',
+            }))
         }
-    }, [docType])
+    }, [ idDocument.docType ])
 
 
-    // console.log('errors: ', errors);
-    // console.log('oldDataObject: ', oldDataObject);
-
-    const toggleOverlay = () => {
-        setIsOverlayVisible(!isOverlayVisible);
-      };
 
     return (
 
-    <Overlay 
-        overlayStyle={{ 
-            backgroundColor: 'ghostwhite', 
-            width: '90%',
-            maxHeight: '80%',
-            borderRadius: 10,
-            // paddingBottom: 10,
+    <Modal
+        isVisible={isOverlayVisible}
+        supportedOrientations={['portrait', 'landscape']}
+        propagateSwipe
+        avoidKeyboard
+        animationIn={'zoomIn'}
+        animationInTiming={600}
+        animationOut={'zoomOut'}
+        hideModalContentWhileAnimating={true}
+        onBackButtonPress={()=>{
+            setIsOverlayVisible(false);
         }}
-        isVisible={isOverlayVisible} 
-        onBackdropPress={toggleOverlay}
+        onBackdropPress={()=>{
+            setIsOverlayVisible(false);
+        }}
+        onModalHide={()=>{
+            if (isConfirmButtonPressed){
+                setIsConfirmDataVisible(true);
+            }
+        }}
+        onSwipeComplete={()=>{
+            setIsOverlayVisible(false);            
+        }}
+        swipeDirection={["left", "right",]}
     >
 
-        <View
-            style={{
-                // minHeight: '80%',
-                justifyContent: 'center',
-                maxHeight: '100%',
-                // marginVertical: 10,
-            }}
-        >
-                    <View
-                        style={{ 
-                            width: '100%', 
-                            // backgroundColor: COLORS.pantone, 
-                        }}
-                    >
-                        <Text
-                            style={{ 
-                                textAlign: 'center',
-                                color: COLORS.black,
-                                fontSize: 16,
-                                paddingVertical: 5,
-                                fontFamily: 'JosefinSans-Bold',
-                                
-                            }}
-                        >{overlayTitle}</Text>
-                    </View>
+<View>
+    
+    <View 
+         style={{ 
+             width: '100%',
+             minHeight: 50,
+             flexDirection: 'row',
+             backgroundColor: COLORS.dark,
+             borderTopLeftRadius: 8,
+             borderTopRightRadius: 8,
+         }}
+     >
+         <View
+             style={{ width: '90%'}}
+         >
+             <Text
+                 style={{ 
+                     fontFamily: 'JosefinSans-Bold', 
+                     fontSize: 18,
+                     // fontWeigth: 'bold',
+                     color: COLORS.ghostwhite,
+                     paddingTop: 15,
+                     textAlign: 'center',
+                 }}
+                 >
+                 {overlayTitle}
+             </Text>
+         </View>
+         <View
+             style={{ width: '10%', justifyContent: 'center', alignItems: 'center',}}
+         >
+             <Icon 
+                 name="close" 
+                 size={30} 
+                 color={COLORS.ghostwhite} 
+                 onPress={()=>{
+                     setIsOverlayVisible(false);
+                     setErrors({});
+                 }}
+             />
+         </View>
+     </View>
+            <ScrollView>
 
-                    <View
-                        style={{
-                            position: 'absolute',
-                            right: 0,
-                            top: 0,
-                        }}
-                    >
-                        <Icon 
-                            onPress={()=>{
-                                setIsOverlayVisible(false);
-                            }}
-                            name="close" 
-                            size={25} 
-                            color={COLORS.grey} 
-                        />
-                    </View>
-            <ScrollView
-                decelerationRate={'normal'}
-                fadingEdgeLength={2}
-                keyboardDismissMode = 'on-drag'
-                keyboardShouldPersistTaps = 'handled'
+                
+            <View
+                flex={1}
+                onStartShouldSetResponder={()=>true}
                 style={{
-                    // flex: 1,
-                    // minHeight: '100%',
-                    // marginVertical: 10,
+                    backgroundColor: COLORS.ghostwhite,
+                    borderBottomLeftRadius: 8,
+                    borderBottomRightRadius: 8,
+                    padding: 10,
                 }}
+
             >
-            {/* <Box>
-                <Text
-                    style={{ 
-                        textAlign: 'center',
-                        color: COLORS.black,
-                        fontSize: 18,
-                        paddingVertical: 15,
-                        fontFamily: 'JosefinSans-Bold',
-                        
-                    }}
-                >{overlayTitle}</Text>
-            </Box> */}
-
+<>
     {/* update the farmer idDocuments */}
-
     {
         (dataToBeUpdated === 'idDocument' && resourceName === 'Farmer') &&
         <Stack direction="column">
@@ -296,7 +319,7 @@ const EditFarmerData = ({
             <FormControl my="2" isRequired isInvalid={'docType' in errors}>
                 <FormControl.Label>Tipo do documento</FormControl.Label>
                   <Select
-                      selectedValue={docType}
+                      selectedValue={idDocument?.docType}
                       accessibilityLabel="Tipo de doc."
                       placeholder="Tipo de documento"
                       minHeight={55}
@@ -305,9 +328,23 @@ const EditFarmerData = ({
                           fontSize: 'lg',
                           endIcon: <CheckIcon size="5" />,
                       }}
-                      dropdownCloseIcon={docType 
-                                        ? <Icon name="close" size={20} color="grey" onPress={()=>setDocType('')} /> 
-                                        : <Icon size={45} name="arrow-drop-down" color={COLORS.pantone} />
+                      dropdownCloseIcon={idDocument?.docType 
+                                        ? <Icon 
+                                            name="close" 
+                                            size={20} 
+                                            color={COLORS.lightgrey} 
+                                            onPress={()=>{
+                                                // setDocType('')
+                                                setIdDocument((prev)=>({
+                                                    ...prev,
+                                                    docType: ''
+                                                }))
+                                            }} /> 
+                                        : <Icon 
+                                            // size={45} 
+                                            name="arrow-drop-down" 
+                                            color={COLORS.pantone} 
+                                        />
                                     }
                       mt={1}
                       onValueChange={newDocType => {
@@ -316,7 +353,11 @@ const EditFarmerData = ({
                             docType: '',
                             docNumber: '',
                         }));
-                        setDocType(newDocType);
+                        setIdDocument((prev)=>({
+                            ...prev,
+                            docType: newDocType,
+                        }))
+                        // setDocType(newDocType);
                       }}
                   >
                 {  
@@ -334,18 +375,22 @@ const EditFarmerData = ({
            </Stack>
            <Stack>
            
-{       !(docType === 'Não tem') &&  
+{       !(idDocument?.docType === 'Não tem') &&  
            <FormControl my="3" isInvalid={'docNumber' in errors}>
                 <FormControl.Label>Número do documento</FormControl.Label>
                 <CustomInput
                     width="100%"
                     type="text"
-                    isDisabled={(docType === 'Não tem' || docType === '') ? true : false }
-                    value={docNumber?.toString()}
-                    placeholder={docNumber ? docNumber?.toString() : 'Nenhum'}
+                    isDisabled={(idDocument?.docType === 'Não tem' || idDocument?.docType === '') ? true : false }
+                    value={idDocument?.docNumber?.toString()}
+                    placeholder={idDocument?.docNumber ? idDocument?.docNumber?.toString() : 'Nenhum'}
                     onChangeText={newDocNumber=>{
                         setErrors((prev)=>({...prev, docNumber: ''}));
-                        setDocNumber(newDocNumber)
+                        // setDocNumber(newDocNumber)
+                        setIdDocument((prev)=>({
+                            ...prev,
+                            docNumber: newDocNumber,
+                        }))
                     }}
                 />
                 {
@@ -368,12 +413,16 @@ const EditFarmerData = ({
                 <CustomInput
                     width="100%"
                     type="number"
-                    placeholder={nuit ? nuit?.toString() : 'Nenhum'}
-                    value={nuit?.toString()}
+                    placeholder={idDocument?.nuit ? idDocument?.nuit?.toString() : 'Nenhum'}
+                    value={idDocument?.nuit?.toString()}
                     keyboardType="numeric"
                     onChangeText={newNuit=>{
                         setErrors((prev)=>({...prev, nuit: ''}));
-                        setNuit(newNuit)
+                        // setNuit(newNuit)
+                        setIdDocument((prev)=>({
+                            ...prev,
+                            nuit: newNuit,
+                        }))
                     }}
                 />
                 {
@@ -389,9 +438,11 @@ const EditFarmerData = ({
 
     }
 
+</>
 
 
 
+<>
     {/* update the farmer contacts  */}
     {
         (dataToBeUpdated === 'contact' && resourceName === 'Farmer') &&
@@ -406,12 +457,16 @@ const EditFarmerData = ({
                 <CustomInput
                     width="100%"
                     type="telephoneNumber"
-                    placeholder={primaryPhone ? primaryPhone?.toString() : 'Nenhum'}
+                    placeholder={contact?.primaryPhone ? contact?.primaryPhone?.toString() : 'Nenhum'}
                     keyboardType="numeric"
-                    value={primaryPhone ? primaryPhone?.toString() : ''}
+                    value={contact?.primaryPhone ? contact?.primaryPhone?.toString() : ''}
                     onChangeText={newPhone=>{
                         setErrors((prev)=>({...prev, primaryPhone: ''}))                        
-                        setPrimaryPhone(newPhone);
+                        // setPrimaryPhone(newPhone);
+                        setContact((prev)=>({
+                            ...prev,
+                            primaryPhone: newPhone,
+                        }))
                     }}
                     InputLeftElement={
                         <Icon
@@ -442,12 +497,16 @@ const EditFarmerData = ({
                 <CustomInput
                     width="100%"
                     type="telephoneNumber"
-                    placeholder={secondaryPhone ? secondaryPhone?.toString() : 'Nenhum'}
+                    placeholder={contact?.secondaryPhone ? contact?.secondaryPhone?.toString() : 'Nenhum'}
                     keyboardType="numeric"
-                    value={secondaryPhone ? secondaryPhone?.toString() : ''}
+                    value={contact?.secondaryPhone ? contact?.secondaryPhone?.toString() : ''}
                     onChangeText={(newPhone=>{
                         setErrors((prev)=>({...prev, secondaryPhone: ''}))
-                        setSecondaryPhone(newPhone)
+                        // setSecondaryPhone(newPhone)
+                        setContact((prev)=>({
+                            ...prev,
+                            secondaryPhone: newPhone,
+                        }));
                     })
                     }
                     InputLeftElement={
@@ -471,9 +530,11 @@ const EditFarmerData = ({
             </Stack>
     }
 
+</>
 
 
 
+<>
     {/*  update the farmer address */}
 
 {
@@ -483,7 +544,7 @@ const EditFarmerData = ({
             <FormControl isRequired my="1" isInvalid={'addressAdminPost' in errors}>
                 <FormControl.Label>Posto Adm.</FormControl.Label>
                     <Select
-                        selectedValue={addressProvince ? addressAdminPost: ''}
+                        selectedValue={address?.addressProvince ? address?.addressAdminPost: ''}
                         accessibilityLabel="Escolha um posto administrativo"
                         placeholder="Escolha um posto administrativo"
                         minHeight={55}
@@ -492,18 +553,44 @@ const EditFarmerData = ({
                             fontSize: 'lg',
                             endIcon: <CheckIcon size="5" />,
                         }}
-                        dropdownCloseIcon={addressAdminPost 
-                            ? <Icon name="close" size={20} color="grey" onPress={()=>setAddressAdminPost('')} /> 
-                            : <Icon size={45} name="arrow-drop-down" color={COLORS.pantone} />
+                        dropdownCloseIcon={address?.addressAdminPost 
+                            ? <Icon 
+                                name="close" 
+                                size={20} 
+                                color={COLORS.lightgrey} 
+                                onPress={()=>{
+                                    // setAddressAdminPost('');
+                                    setAddress((prev)=>({
+                                        ...prev,
+                                        addressAdminPost: '',
+                                    }))
+                                }} 
+                            /> 
+                            : <Icon 
+                                // size={45} 
+                                name="arrow-drop-down" 
+                                color={COLORS.pantone} 
+                            />
                         }
                         mt={1}
                     onValueChange={newAdminPost=> {
-                        setErrors((prev)=>({...prev, addressAdminPost: ''}));
-                        setAddressAdminPost(newAdminPost);
+                        setErrors((prev)=>{
+                            return {
+                                ...prev, 
+                                addressAdminPost: '',
+                                addressVillage: '',
+                            };
+                        });
+                        // setAddressAdminPost(newAdminPost);
+                        setAddress((prev)=>({
+                            ...prev,
+                            addressAdminPost: newAdminPost,
+                            addressVillage: '',
+                        }))
                     }}
                     >
                     {
-                        administrativePosts[addressDistrict]?.map((adminPost, index)=>(
+                        administrativePosts[address?.addressDistrict]?.map((adminPost, index)=>(
                             <Select.Item key={index} label={adminPost} value={adminPost} />
                             ))
                         }
@@ -518,10 +605,10 @@ const EditFarmerData = ({
             </FormControl>
         </Stack>
         <Stack>
-            <FormControl isRequired my="3">
+            <FormControl isRequired my="3" isInvalid={'addressVillage' in errors}>
                 <FormControl.Label>Localidade</FormControl.Label>
                     <Select
-                        selectedValue={addressVillage}
+                        selectedValue={address?.addressVillage}
                         accessibilityLabel="Escolha uma localidade"
                         placeholder="Escolha uma localidade"
                         minHeight={55}
@@ -530,24 +617,60 @@ const EditFarmerData = ({
                             fontSize: 'lg',
                             endIcon: <CheckIcon size="5" />,
                         }}
-                        dropdownCloseIcon={addressVillage 
-                                        ? <Icon name="close" size={20} color="grey" onPress={()=>setAddressVillage('')} /> 
-                                        : <Icon size={45} name="arrow-drop-down" color={COLORS.pantone} />
+                        dropdownCloseIcon={address?.addressVillage 
+                                        ? <Icon 
+                                            name="close" 
+                                            size={20} 
+                                            color="grey" 
+                                            onPress={()=>{
+                                                // setAddressVillage('');
+                                                setAddress((prev)=>({
+                                                    ...prev,
+                                                    addressVillage: '',
+                                                }))
+                                            }} 
+                                        /> 
+                                        : <Icon 
+                                            // size={45} 
+                                            name="arrow-drop-down" 
+                                            color={COLORS.pantone} 
+                                        />
                                     }
                         mt={1}
-                        onValueChange={newVillage => setAddressVillage(newVillage)}
+                        onValueChange={(newVillage) => {
+                            setErrors((prev)=>{
+                                return {
+                                    ...prev, 
+                                    addressAdminPost: '',
+                                    addressVillage: '',
+                                };
+                            });
+                            // setAddressVillage(newVillage);
+                            setAddress((prev)=>({
+                                ...prev,
+                                addressVillage: newVillage,
+                            }))
+                        }}
                     >
                     {
-                        villages[addressAdminPost]?.map((village, index)=>(
+                        villages[address?.addressAdminPost]?.map((village, index)=>(
                             <Select.Item key={index} label={village} value={village} />
                         ))
                     }
                     </Select>
-                <FormControl.ErrorMessage>{''}</FormControl.ErrorMessage>
+                    {
+                    'addressVillage' in errors 
+                    ? <FormControl.ErrorMessage 
+                    leftIcon={<Icon name="error-outline" size={16} color="red" />}
+                    _text={{ fontSize: 'xs'}}>{errors?.addressVillage}</FormControl.ErrorMessage> 
+                    : <FormControl.HelperText></FormControl.HelperText>
+                }
             </FormControl>
         </Stack>
     </Box>
 }
+
+</>
 
         <Button
             title="Confirmar Dados"
@@ -556,46 +679,30 @@ const EditFarmerData = ({
                 fontFamily: 'JosefinSans-Bold',
             }}
             iconPosition="right"
-            // icon={
-            // <Icon
-            //     name="save"
-            //     type="font-awesome"
-            //     color="white"
-            //     size={25}
-            //     iconStyle={{ 
-            //         marginRight: 10,
-            //         // color: COLORS.ghostwhite,
-            //         paddingHorizontal: 10,
-            //      }}
-            // />
-            // }
             containerStyle={{
                 backgroundColor: COLORS.pantone,
                 borderRadius: 10,
+                marginTop: 30,
                 // color: COLORS.ghostwhite,
             }}
             type="outline"
             onPress={()=>{
                 if(!validateFarmerEditedData({
-                    addressAdminPost, addressVillage, primaryPhone,
-                    secondaryPhone, docType, docNumber, nuit,
-                    addressOldAdminPost, addressOldVillage, oldPrimaryPhone,
-                    oldSecondaryPhone, oldDocType, oldDocNumber, oldNuit,
+                    address, oldAddress, contact, oldContact, idDocument, oldIdDocument,
                 }, errors, setErrors, dataToBeUpdated, resourceName)) {
                     return ;
                 }
                 onConfirmUpdate(dataToBeUpdated, resourceName);
                 setIsOverlayVisible(false);
                 setIsConfirmDataVisible(true);
-
+                // setIsConfirmButtonPressed(true);
             }}
         />
-        </ScrollView>
-
-        </View>
-
-    </Overlay>
-
+    </View>
+    </ScrollView>
+    
+    </View>
+        </Modal>
     )
 }
 

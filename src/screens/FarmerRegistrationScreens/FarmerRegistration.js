@@ -203,8 +203,6 @@ export default function FarmerRegistration({ route, navigation }) {
 
             retrievedFarmerData['identifier'] = identifier;
 
-            
-            // console.log('single actor data object: ', JSON.stringify(retrievedFarmerData));
             setFarmerData(retrievedFarmerData);
             
             // not allowed if the user decided to proceed
@@ -274,8 +272,6 @@ export default function FarmerRegistration({ route, navigation }) {
 
             retrievedFarmerData['identifier'] = identifier;
 
-            
-            // console.log('single actor data object: ', JSON.stringify(retrievedFarmerData));
             setFarmerData(retrievedFarmerData);
 
             setFarmerData(retrievedFarmerData)
@@ -316,9 +312,6 @@ export default function FarmerRegistration({ route, navigation }) {
                 identifier = generateUniqueNumber(retrievedFarmerData.address, 'Grupo');
                 foundIdentierMatches = realm.objects('Group').filtered(`identifier == $0`, identifier);
             };
-
-            // console.log('identifier:', identifier);
-
             retrievedFarmerData['identifier'] = identifier;
 
             setFarmerData(retrievedFarmerData)

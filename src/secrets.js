@@ -1,9 +1,11 @@
 
 export const secrets = {
     baseUrl: "https://realm.mongodb.com",
-    appID: 'connectcaju__app-kstla', // the most recently created app
+    // appID: 'connectcaju__app-kstla', // the most recently created app
+    appID: 'connectcaju-uat-test-xkukg',
     serviceName: 'mongodb-atlas',
-    databaseName: 'connectcaju_db',
+    // databaseName: 'connectcaju_db',
+    databaseName: 'db_uat_test',
     userCollectionName: 'User',
     databaseAccess: {
         user: 'appUser',

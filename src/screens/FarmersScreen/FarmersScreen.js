@@ -18,19 +18,19 @@ import {
   removeOrientationListener as rol } 
       from 'react-native-responsive-screen';
 
-import { 
+import {
   responsiveFontSize,
-  responsiveScreenFontSize,
-  responsiveHeight,
-  responsiveWidth,
-  responsiveScreenHeight,
-  responsiveScreenWidth,
-  useDimensionsChange,
+  // responsiveScreenFontSize,
+  // responsiveHeight,
+  // responsiveWidth,
+  // responsiveScreenHeight,
+  // responsiveScreenWidth,
+  // useDimensionsChange,
 
 } from 'react-native-responsive-dimensions';
 
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
-import LottieAddButton from '../../components/Buttons/LottieAddButton';
+// import LottieAddButton from '../../components/Buttons/LottieAddButton';
 import TickComponent from '../../components/LottieComponents/TickComponent';
 import { customizeItem } from '../../helpers/customizeItem'
 

@@ -1,5 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, TextInput, ScrollView, SafeAreaView, FlatList, TouchableHighlight, DynamicColorIOS } from 'react-native';
+import React, { useState, useEffect, useCallback, useRef, } from 'react';
+import { 
+    View, Text, TouchableOpacity, TextInput, ScrollView, 
+    SafeAreaView, Animated, Easing, useNativeDriver,
+} from 'react-native';
 import { Box,  FormControl, Stack, Center, Separator, Thumbnail, List, ListItem } from 'native-base';
 import { Avatar, Divider, Icon, Tooltip } from '@rneui/base';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
@@ -32,13 +35,16 @@ import EditFarmlandData from '../EditData/EditFarmlandData';
 import { roles } from '../../consts/roles';
 import { errorMessages } from '../../consts/errorMessages';
 import validateInvalidationMessage from '../../helpers/validateInvalidationMessage';
-import ConfirmData from '../EditData/ConfirmData';
+import ConfirmData from '../EditData/ConfirmDataCopy';
 
 import { useUser } from '@realm/react';
 import { realmContext } from '../../models/realmContext';
 import { normalizeBlockList } from '../../helpers/normalizeBlockList';
 import NewFarmlandBlock from '../FarmlandBlockRegistration/NewFarmlandBlock';
 import { getPlantingYears } from '../../helpers/getPlantingYears';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCrop, faEllipsisVertical, faTree } from '@fortawesome/free-solid-svg-icons';
+import { SuccessLottie } from '../LottieComponents/SuccessLottie';
 const { useRealm, useQuery, useObject } = realmContext; 
 
 const farmlandResourceMessage = 'farmlandResourceMessage';
@@ -46,8 +52,12 @@ const farmlandResourceMessage = 'farmlandResourceMessage';
 
 const FarmlandData = ({ 
     farmland, setRefresh, refresh,
-    setSuccessLottieVisible,  successLottieVisible,
+    // setSuccessLottieVisible,  successLottieVisible,
     ownerImage,
+    // isOverlayVisible, 
+    // setIsOverlayVisible,
+    // scale, resizeBox,
+    
  })=>{
 
 
@@ -56,9 +66,10 @@ const FarmlandData = ({
     const customUserData = user?.customData;
     const invalidationMotives = realm.objects('InvalidationMotive').filtered(`resourceId == "${farmland?._id}"`);
 
-    const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+    const scaleBlockBox = useRef(new Animated.Value(0)).current
+    const [presentEditFarmland, setPresentEditFarmland] = useState(false);
     const [autoRefresh, setAutoRefresh] = useState(false);
-    const [isCollapseOn, setIsCallapseOne] = useState(false);
+    const [isCollapseOn, setIsCallapseOn] = useState(false);
 
     const navigation = useNavigation();
     
@@ -79,6 +90,8 @@ const FarmlandData = ({
     // adding new Block to an existing farmland 
     const [isNewBlockVisible, setIsNewBlockVisible] = useState(false);
     const [isAreaNotEnough, setIsAreaNotEnough] = useState(false);
+    const [successLottieVisible, setSuccessLottieVisible] = useState(false);
+
 
     // ----------------------------------------------- 
 
@@ -88,6 +101,7 @@ const FarmlandData = ({
 
     const [dataToBeUpdated, setDataToBeUpdated] = useState('');
     const [isConfirmDataVisible, setIsConfirmDataVisible] = useState(false);
+    // const [isOverlayVisible, setIsOverlayVisible] = useState(false);
     
     // update farmland main data
     const [ description, setDescription  ] = useState('');
@@ -231,18 +245,17 @@ const FarmlandData = ({
     }, [ realm, user, message, invalidationMotives, autoRefresh, isCollapseOn, isNewBlockVisible ]);
 
     
-    // const getPlantingYears = (blocks)=>{
-    //     if (blocks?.length > 0) {
-    //         return blocks?.map(block=>{
-    //                 return block.plantingYear
-    //             }).join("; ")
-    //     }
-    //     else {
-    //         return 'Desconhecido';
-    //     }
-    // }
 
-    
+    const resizeBlockBox = (to)=>{
+        to === 1 && setIsNewBlockVisible(true);
+        Animated.timing(scaleBlockBox, {
+            toValue: to,
+            useNativeDriver: true,
+            duration: 400,
+            easing: Easing.linear,
+        }).start(()=>to === 0 && setIsNewBlockVisible(false))
+    }
+
 
 
     return (
@@ -353,49 +366,87 @@ const FarmlandData = ({
     >
         <CollapseHeader
             style={{                     
-                height: hp('10%'),
-                paddingTop: 14,
-                backgroundColor: COLORS.mediumseagreen,
-                paddingHorizontal: 10,
+                minHeight: 80,
+                padding: 8,
+                borderRadius: 8,
+                backgroundColor: COLORS.pantone,
+                // paddingHorizontal: 10,
+                justifyContent: 'space-between',
             }}
             onToggle={(isOn)=>{
-                setIsCallapseOne(isOn)
+                setIsCallapseOn(isOn)
                 setRefresh(!isOn);
             }}
         >
             <View
                 style={{
-                }}
+                    flexDirection: 'row',
+                }}            
             >
                 <Text
                     style={{ 
-                        fontSize: responsiveFontSize(2), 
-                        color: COLORS.ghostwhite,
+                        fontSize: 16, 
+                        color: COLORS.white,
                         fontFamily: 'JosefinSans-Bold',
 
                     }}
                     >
                     Anos de Plantio : [{getPlantingYears(farmland?.blocks)}]
                 </Text>
-                <Text
-                    style={{ 
-                        fontSize: responsiveFontSize(1.6), 
-                        color: COLORS.ghostwhite,
-                        fontFamily: 'JosefinSans-Bold',
-                        textAlign: 'right',
+            </View>
+
+                <View
+                    style={{
+                        flexDirection: 'row',
                     }}
                     >
-                    {/* {(new Date().getFullYear() - farmland?.plantingYear) < 3 ? 'Parcela Nova' : 'Parcela Estabelecida'} */}
-                </Text>
-            </View>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '50%',
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faTree} size={25} color={COLORS.ghostwhite} />
+                        <Text
+                            style={{ 
+                                fontSize: 14, 
+                                color: COLORS.ghostwhite,
+                                fontFamily: 'JosefinSans-Bold',
+        
+                            }}            
+                        >{'   '}{farmland?.trees} árvores</Text>
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '50%',
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faCrop} size={25} color={COLORS.ghostwhite} />
+                        <Text
+                            style={{ 
+                                fontSize: 14, 
+                                color: COLORS.ghostwhite,
+                                fontFamily: 'JosefinSans-Bold',
+        
+                            }}                 
+                        >{'   '}{farmland?.totalArea.toFixed(1)} hectares</Text>
+                    </View>
+                </View>
+
         </CollapseHeader>
         <CollapseBody>
         <View
             style={{
                 marginBottom: 40,
                 padding: 10,
-                borderColor: COLORS.mediumseagreen,
-                shadowColor: COLORS.mediumseagreen,
+                borderColor: COLORS.pantone,
+                shadowColor: COLORS.pantone,
+                backgroundColor: COLORS.ghostwhite,
                 shadowOffset: {
                   width: 0,
                   height: 3,
@@ -416,7 +467,7 @@ const FarmlandData = ({
             right: 4,
             zIndex: 1,
             flexDirection: 'row',
-            borderColor: farmland?.status === resourceValidation.status.pending ? COLORS.danger : farmland?.status === resourceValidation.status.validated ? COLORS.mediumseagreen : COLORS.red,
+            borderColor: farmland?.status === resourceValidation.status.pending ? COLORS.danger : farmland?.status === resourceValidation.status.validated ? COLORS.pantone : COLORS.red,
             borderWidth: 2,
             borderRadius: 10,
             }}
@@ -424,11 +475,11 @@ const FarmlandData = ({
             <Icon 
                 name={farmland?.status === resourceValidation.status.pending ? 'pending-actions' : farmland?.status === resourceValidation.status.validated ? 'check-circle' : 'dangerous'}
                 size={wp('6%')}
-                color={farmland?.status === resourceValidation.status.pending ? COLORS.danger : farmland?.status === resourceValidation.status.validated ? COLORS.mediumseagreen : COLORS.red}
+                color={farmland?.status === resourceValidation.status.pending ? COLORS.danger : farmland?.status === resourceValidation.status.validated ? COLORS.pantone : COLORS.red}
             />
             <Text
                 style={{
-                    color: farmland?.status === resourceValidation.status.pending ? COLORS.danger : farmland?.status === resourceValidation.status.validated ? COLORS.mediumseagreen : COLORS.red,
+                    color: farmland?.status === resourceValidation.status.pending ? COLORS.danger : farmland?.status === resourceValidation.status.validated ? COLORS.pantone : COLORS.red,
                 }}
             >
             {farmland?.status === resourceValidation.status.pending ? resourceValidation.message.pendingResourceMessage : farmland?.status === resourceValidation.status.validated ? resourceValidation.message.validatedResourceMessage : resourceValidation.message.invalidatedResourceMessage}
@@ -438,7 +489,7 @@ const FarmlandData = ({
         <Stack w="100%" direction="column" py="4">
             <Stack direction="row" mt="5">
                 <Box w="90%">
-                    <Text
+                    {/* <Text
                         style={{
                             color: COLORS.black,
                             fontSize: responsiveFontSize(2),
@@ -447,7 +498,7 @@ const FarmlandData = ({
                         }}
                     >
                         Dados do Pomar
-                    </Text>
+                    </Text> */}
                 </Box>
                 {/* <Box w="25%">
                 
@@ -456,11 +507,10 @@ const FarmlandData = ({
             {   customUserData?.role !== roles.provincialManager &&             
                 <TouchableOpacity
                     disabled={farmland?.status === resourceValidation.status.validated ? true : false}
-                    style={{
-                    }}
                     onPress={
                         ()=>{
-                            setIsOverlayVisible(!isOverlayVisible);
+                            setPresentEditFarmland(true);
+                            // resizeBox(1);
                             setDataToBeUpdated('farmlandMainData');
                             setBlockId(''); // remove the blockId to avoid confusion in the overlay component
                         }
@@ -470,7 +520,7 @@ const FarmlandData = ({
                     // name="home" 
                     name="edit" 
                     size={20} 
-                    color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.mediumseagreen } 
+                    color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone } 
                 />
                 </TouchableOpacity>
             }
@@ -478,7 +528,7 @@ const FarmlandData = ({
             </Stack>
 
         <Stack w="100%" direction="row">
-                <Box w="40%" >
+                {/* <Box w="40%" >
                     <Text
                         style={{
                             color: COLORS.grey,
@@ -503,7 +553,7 @@ const FarmlandData = ({
                     >
                         {farmland?.description}
                     </Text>
-                </Box>
+                </Box> */}
             </Stack>
             <Stack w="100%" direction="row">
                 <Box w="40%" >
@@ -533,7 +583,7 @@ const FarmlandData = ({
 
 
             <Stack w="100%" direction="row">
-                <Box w="40%" >
+                {/* <Box w="40%" >
                     <Text
                         style={{
                             color: COLORS.grey,
@@ -555,11 +605,11 @@ const FarmlandData = ({
                         >
                         {farmland?.totalArea} hectares
                     </Text>
-                </Box>
+                </Box> */}
             </Stack>
 
             <Stack w="100%" direction="row">
-                <Box w="40%" >
+                {/* <Box w="40%" >
                     <Text
                         style={{
                             color: COLORS.grey,
@@ -581,7 +631,7 @@ const FarmlandData = ({
                         >
                         {farmland?.trees} árvores
                     </Text>
-                </Box>
+                </Box> */}
             </Stack>
         </Stack>
         <CustomDivider />
@@ -621,8 +671,8 @@ const FarmlandData = ({
                         color={
                             farmland?.status === resourceValidation.status.validated 
                             ? COLORS.lightgrey 
-                            : COLORS.mediumseagreen
-                            // farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.mediumseagreen 
+                            : COLORS.pantone
+                            // farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone 
                         } 
                         // color={farmland?.validated === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.validated === resourceValidation.status.invalidated ? COLORS.red : COLORS.main } 
                     />
@@ -759,8 +809,8 @@ const FarmlandData = ({
                         color={
                             farmland?.status === resourceValidation.status.validated 
                             ? COLORS.lightgrey 
-                            : COLORS.mediumseagreen
-                            // farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.mediumseagreen
+                            : COLORS.pantone
+                            // farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone
                          } 
                     />
                 </TouchableOpacity>
@@ -882,11 +932,12 @@ const FarmlandData = ({
             onPress={()=>{
                 if (farmland){
                     // make the block data form visible
-                    setIsNewBlockVisible(true);
+                    // setIsNewBlockVisible(true);
+                    resizeBlockBox(1);
                 }
             }}
         >
-            <Icon name="add-circle" size={30} color={COLORS.mediumseagreen} />
+            <Icon name="add-circle" size={30} color={COLORS.pantone} />
         </TouchableOpacity>
         </Box>
     </Stack>
@@ -895,7 +946,7 @@ const FarmlandData = ({
         {/* blocks start here */}
         <Box w="100%"
             style={{
-                backgroundColor: COLORS.mediumseagreen,
+                backgroundColor: COLORS.dark,
                 paddingVertical: 10,
                 paddingHorizontal: 5,
             }}
@@ -910,15 +961,23 @@ const FarmlandData = ({
         </Box>
         {
          normalizeBlockList(farmland?.blocks)?.length === 0 &&
-         <Text
-         style={{
-            color: COLORS.red,
-            fontSize: 14,
-            fontFamily: 'JosefinSans-Bold',
-            textAlign: 'center',
-            padding: 30,
-        }}
-         >Nenhuma percela de cajueiros associado a esta área!</Text>
+         <View
+            style={{
+                padding: 30,
+                alignSelf: 'center',
+                width: '70%'
+            }}
+         >
+            <Icon name="warning" size={25} color={COLORS.danger} />
+            <Text
+            style={{
+                color: COLORS.danger,
+                fontSize: 14,
+                fontFamily: 'JosefinSans-Bold',
+                textAlign: 'center',
+            }}
+            >Nenhuma percela de cajueiros associada a esta área</Text>
+         </View>
 
         }
 
@@ -950,7 +1009,7 @@ const FarmlandData = ({
                         >
                             <Box
                                 style={{
-                                    backgroundColor: COLORS.black,
+                                    backgroundColor: COLORS.dark,
                                     borderRadius: 100,
                                     width: wp('6%'),
                                     // justifyContent: 'center',
@@ -972,7 +1031,7 @@ const FarmlandData = ({
                         <Box w="80%">
                             <Text
                                 style={{
-                                    color: COLORS.black,
+                                    color: COLORS.dark,
                                     fontSize: responsiveFontSize(2),
                                     fontFamily: 'JosefinSans-Bold',
                                 }}
@@ -989,7 +1048,9 @@ const FarmlandData = ({
                                 }}
                                 onPress={
                                     ()=>{
-                                        setIsOverlayVisible(!isOverlayVisible);
+                                        // setIsOverlayVisible(!isOverlayVisible);
+                                        setPresentEditFarmland(true);
+                                        // resizeBox(1)
                                         setDataToBeUpdated('blockData');
                                         setBlockId(block._id);
                                         setIsEditBlockVisible(true);
@@ -1000,7 +1061,7 @@ const FarmlandData = ({
                                 // name="home" 
                                 name="edit" 
                                 size={20} 
-                                color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.mediumseagreen } 
+                                color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone } 
                             />
                             </TouchableOpacity>
                         }
@@ -1111,7 +1172,11 @@ const FarmlandData = ({
                                 }}
                                 onPress={
                                     ()=>{
-                                        setIsOverlayVisible(!isOverlayVisible);
+                                        // setIsOverlayVisible(!isOverlayVisible);
+                                        setPlantTypes([]);
+                                        setClones([]);
+                                        setPresentEditFarmland(true)
+                                        // resizeBox(1);
                                         setDataToBeUpdated('plantType');
                                         setBlockTrees(block?.trees);
                                         setBlockId(block._id);
@@ -1123,7 +1188,7 @@ const FarmlandData = ({
                                 // name="home" 
                                 name="edit" 
                                 size={20} 
-                                color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.mediumseagreen } 
+                                color={farmland?.status === resourceValidation.status.validated ? COLORS.lightgrey : farmland?.status === resourceValidation.status.invalidated ? COLORS.red : COLORS.pantone } 
                             />
                             </TouchableOpacity>
                         }   
@@ -1177,7 +1242,7 @@ const FarmlandData = ({
                     padding: 20,
                 }}
             >
-                Actualizar os tipos de planta para este parcela de cajueiros
+                Actualizar os tipos de plantas para esta parcela de cajueiros
             </Text>
                     
         }
@@ -1439,8 +1504,8 @@ const FarmlandData = ({
                     width: wp('10%'),
                     height: hp('6%'),
                     borderWidth: 1,
-                    borderColor: COLORS.mediumseagreen,
-                    backgroundColor: COLORS.mediumseagreen,
+                    borderColor: COLORS.pantone,
+                    backgroundColor: COLORS.pantone,
                 }}
             >
           <TouchableOpacity
@@ -1556,12 +1621,14 @@ const FarmlandData = ({
 
 </View>
 
-{
-    isOverlayVisible && 
-    (
+{/* {
+    presentEditFarmland && 
+    ( */}
     <EditFarmlandData
-        isOverlayVisible={isOverlayVisible}
-        setIsOverlayVisible={setIsOverlayVisible}
+        // resizeBox={resizeBox}
+        // scale={scale}
+        isOverlayVisible={presentEditFarmland}
+        setIsOverlayVisible={setPresentEditFarmland}
         isConfirmDataVisible={isConfirmDataVisible}
         setIsConfirmDataVisible={setIsConfirmDataVisible}
 
@@ -1660,8 +1727,8 @@ const FarmlandData = ({
 
 
     />
-    )
-}
+    {/* )
+} */}
 
 {isConfirmDataVisible &&
         <ConfirmData
@@ -1675,6 +1742,8 @@ const FarmlandData = ({
             resource={farmland}
             resourceName={'Farmland'}
             blockId={blockId}
+            setSuccessLottieVisible={setSuccessLottieVisible}
+            successLottieVisible={successLottieVisible}
 
         />
     }
@@ -1683,6 +1752,8 @@ const FarmlandData = ({
 
 {isNewBlockVisible && <NewFarmlandBlock 
     isNewBlockVisible={isNewBlockVisible}
+    scaleBlockBox={scaleBlockBox}
+    resizeBlockBox={resizeBlockBox}
     setIsNewBlockVisible={setIsNewBlockVisible}
     farmland={farmland}
     setAutoRefresh={setAutoRefresh}
@@ -1691,6 +1762,14 @@ const FarmlandData = ({
     successLottieVisible={successLottieVisible}
     ownerImage={ownerImage ? ownerImage : ''}
 />
+}
+
+{
+    successLottieVisible && 
+    <SuccessLottie 
+        successLottieVisible={successLottieVisible}
+        setSuccessLottieVisible={setSuccessLottieVisible}
+    />
 }
 
     </CollapseBody>

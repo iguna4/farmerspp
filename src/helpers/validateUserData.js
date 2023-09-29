@@ -1,7 +1,9 @@
 import { roles } from "../consts/roles";
 import { capitalize } from "./capitalize";
+import BcryptReactNative from "bcrypt-react-native"; 
 
-const validateUserData = (
+
+const validateUserData = async (
     {   
         name, 
         email, 
@@ -23,8 +25,9 @@ const validateUserData = (
     const retrievedPhone = phone?.trim();
     const retrievedUserDistrict = userDistrict?.trim();
     const retrievedUserProvince = userProvince?.trim();
-    const retrievedCoop = coop?.trim()
-   
+    const retrievedCoop = coop?.trim();
+
+      
         
         if ((!retrievedName) || (retrievedName?.split(' ')?.length <= 1)) {
             setErrors({ ...errors,
@@ -94,11 +97,21 @@ const validateUserData = (
             return false;
         }
 
+        let hashedPassword = retrievedPassword;
+
+        try {
+            const salt = await BcryptReactNative.getSalt(10);
+            hashedPassword= await BcryptReactNative.hash(salt, retrievedPassword);
+
+            
+        } catch (error) {
+            console.log("Could not encrypt password:", { cause: error })
+        }
 
         return {
             name: retrievedName,
             email: retrievedEmail,
-            password: retrievedPassword,
+            password: hashedPassword,
             phone: retrievedPhone ? parseInt(retrievedPhone) : 0,
             role: retrievedRole,
             userProvince: retrievedUserProvince,

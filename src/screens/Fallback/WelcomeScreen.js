@@ -1,25 +1,18 @@
 import { 
-    Pressable, SafeAreaView, Text, View, Image, InteractionManager, StatusBar, TextInput,
+    Pressable, SafeAreaView, Text, View, Image, StatusBar, TextInput,
 } from 'react-native';
 import React, {useEffect, useState, useCallback } from 'react';
-import { Button, Icon, CheckBox, BottomSheet } from '@rneui/themed';
+import { Button, Icon, BottomSheet } from '@rneui/themed';
 import { Box, Stack, FormControl, Center, Select, CheckIcon, ScrollView } from 'native-base';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import {  
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
-    listenOrientationChange as lor,
-    removeOrientationListener as rol } 
+ } 
         from 'react-native-responsive-screen';
 
 import { 
     responsiveFontSize,
-    responsiveScreenFontSize,
-    responsiveHeight,
-    responsiveWidth,
-    responsiveScreenHeight,
-    responsiveScreenWidth,
-    useDimensionsChange,
 
 } from 'react-native-responsive-dimensions';
 
@@ -29,7 +22,7 @@ import { CustomInput } from '../../components/Inputs/CustomInput';
 import validateUserData from '../../helpers/validateUserData';
 import districts from '../../consts/districts';
 import COLORS from '../../consts/colors';
-import { useNavigation } from '@react-navigation/native';
+
 
 
 import { Realm, useApp } from '@realm/react';
@@ -39,9 +32,6 @@ import { roles } from '../../consts/roles';
 import { errorMessages } from '../../consts/errorMessages';
 import CustomActivityIndicator from '../../components/ActivityIndicator/CustomActivityIndicator';
 import { cooperatives } from '../../consts/cooperatives';
-import OtpVerification from '../../components/OtpVerification/OtpVerification';
-import OtpInput from '../../components/OtpVerification/OtpInput';
-import OTPInputField from '../../components/OTPComponents/OTPInputField';
 
 
 
@@ -63,7 +53,7 @@ export default function WelcomeScreen () {
     const [confirmText, setConfirmText] = useState('');
     const [showCancelButton, setShowCancelButton] = useState(false);
     const [showConfirmButton, setShowConfirmButton] = useState(false);
-    const [errorFlag, seterrorFlag] = useState(null);
+    const [errorFlag, setErrorFlag] = useState(null);
 
     // ---------------------------------------------   
     const [errors, setErrors] = useState({});
@@ -109,15 +99,16 @@ export default function WelcomeScreen () {
         }
 
         // validate user data and return nothing if any error is found
-        if (!validateUserData(userData, errors, setErrors)) {
+        if (! await validateUserData(userData, errors, setErrors)) {
             return ;
         }
         
         // extract validated user data
         const {
             name, email, password, phone, role, userDistrict, userProvince, coop,
-        } = validateUserData(userData, errors, setErrors);
+        } = await validateUserData(userData, errors, setErrors);
 
+      
         // try to register new user
         try {
             // remove any current user
@@ -153,7 +144,7 @@ export default function WelcomeScreen () {
         } catch (error) {
             setAlert(true);
             console.log('error: ', { cause: error })
-            seterrorFlag(error);
+            setErrorFlag(error);
             return ;
         }
     }, [app, email, password]);
@@ -322,19 +313,22 @@ export default function WelcomeScreen () {
             confirmButtonColor={COLORS.main}
             onCancelPressed={()=>{
                 setAlert(false);
-                seterrorFlag(null);
+                setErrorFlag(null);
             }}
             onConfirmPressed={() => {
                 setAlert(false);
                 if (isLoggingIn) {
                     // setIsLoggingIn(false);
                 }
+                else if (passwordConfirm){
+                    // 
+                }
                 else {
                     setIsLoggingIn(true);
                     setEmail('');
                     setPassword('');
                 }
-                seterrorFlag(null);
+                setErrorFlag(null);
             }}
         />
 
@@ -755,7 +749,7 @@ export default function WelcomeScreen () {
                     }
                     catch(error){
                         setAlert(true);
-                        seterrorFlag(error);
+                        setErrorFlag(error);
                         return ;
                     }   
                 }   

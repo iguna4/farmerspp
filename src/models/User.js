@@ -13,6 +13,7 @@ export const User = {
         email: 'string',
         password: 'string',
         phone: 'int?',
+        nuit: { type: 'int?', default: 0},
         image: 'string?',
         role: 'string?',
         userProvince: 'string?',
